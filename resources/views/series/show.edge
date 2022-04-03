@@ -14,7 +14,7 @@
 
   {{--  TODO: if user hasn't start the series show series info instead of lesson info  --}}
   {{--   @!lesson.hero() --}}
-  @!series.hero({ item: series })
+  @!series.hero({ item: series, nextLesson })
 
 @endsection
 
@@ -29,7 +29,8 @@
         index: i,
         className: 'rounded-lg',
         getRoute:  (post) => route('series.lesson', { slug: series.slug, index: i + 1 }),
-        lazy: i > 4
+        lazy: i > 4,
+        showProgress: true
       })
     @endeach
   </div>

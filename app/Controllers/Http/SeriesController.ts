@@ -44,12 +44,19 @@ export default class SeriesController {
       .wherePublic()
       .where({ slug: params.slug })
       .preload('asset')
-      .preload('postsFlattened', query => query.apply(scope => scope.forCollectionDisplay({ orderBy: 'pivot_root_sort_order' })))
+      .preload('postsFlattened', query => query
+        .apply(scope => scope.forCollectionDisplay({ orderBy: 'pivot_root_sort_order' }))
+        .if(auth.user, query => query.preload('progressionHistory', query => query.where('userId', auth.user!.id)))
+      )
       .firstOrFail()
+
+    let nextLesson = series.postsFlattened.find(p => !p.progressionHistory.length || p.progressionHistory.some(h => !h.isCompleted))
+
+    if (!nextLesson) nextLesson = series.postsFlattened[0]
 
     this.historyService.recordCollectionView(series.id)
 
-    return view.render('series/show', { series })
+    return view.render('series/show', { series, nextLesson })
   }
 
   public async lesson({ view, params, auth }: HttpContextContract) {

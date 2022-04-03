@@ -266,6 +266,16 @@ export default class Post extends AppBaseModel {
   }
 
   @computed()
+  public get watchMinutes() {
+    if (!this.videoSeconds) return 0
+    const hours = Math.floor(this.videoSeconds / 3600)
+    const time = this.videoSeconds - hours * 3600
+    const minutes = Math.floor(time / 60)
+    const seconds = time - minutes * 60
+    return hours ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`
+  }
+
+  @computed()
   public get routeUrl() {
     if (this.redirectUrl) return this.redirectUrl
 

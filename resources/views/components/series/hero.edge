@@ -1,43 +1,85 @@
+@set('inProgress', nextLesson.progressionHistory?.length && !nextLesson.progressionHistory[0].isCompleted && (nextLesson.progressionHistory[0].watchPercent || nextLesson.progressionHistory[0].readPercent))
+@set('hasStarted', item.postsFlattened.some(p => p.progressionHistory?.length))
+@set('isFirstLesson', nextLesson.$extras.pivot_root_sort_order === 0)
+
 <div class="bg-gradient-to-br from-brand-900 to-brand-800 relative flex items-end">
-  <div class="w-full md:flex absolute md:static top-0 left-0 opacity-30 md:opacity-100" style="min-height: 50vh; max-height: calc(100vh - 65px)">
-    @!picture({
-      filename: '7/2021-QuickTip-JAGR-01_1637429305160.jpeg',
-      className: 'flex w-full',
-      pictureClassName: 'w-full',
-      fit: 'object-cover blur md:blur-none'
-    })
-  </div>
+  @if (nextLesson.assets?.length)
+    <div class="w-full md:flex absolute md:static top-0 left-0 opacity-30 md:opacity-100" style="min-height: 50vh; max-height: calc(100vh - 65px)">
+      @!picture({
+        filename: nextLesson.assets[0].filename,
+        className: 'flex w-full',
+        pictureClassName: 'w-full',
+        fit: 'object-cover blur md:blur-none',
+        width: 1920
+      })
+    </div>
+  @endif
   <div class="w-full h-full md:h-3/4 flex flex-col justify-end pt-6 md:absolute bottom-0 bg-gradient-to-t from-black to-transparent z-10 text-white">
     <div class="bg-gradient-to-t from-black to-transparent">
       @container()
         <div class="flex flex-col max-w-4xl py-4 md:py-6">
-          <h1 class="font-bold text-3xl md:text-4xl lg:text-5xl text-white mb-4">
-            {{ item.name }}
-          </h1>
+          @if (hasStarted)
+            <h2 class="font-bold text-3xl md:text-4xl text-white mb-2">
+              {{ item.name }}
+            </h2>
+            <h1 class="text-3xl md:text-4xl text-white mb-4">
+              {{ nextLesson.lessonIndexDisplay }}: {{ nextLesson.title }}
+            </h1>
+          @else
+            <h1 class="font-bold text-3xl md:text-4xl lg:text-5xl text-white mb-4">
+              {{ item.name }}
+            </h1>
+          @endif
           <div class="flex items-center opacity-80 mb-2 text-xs md:text-base">
-            <div class="mr-3">
-              {{ item.$extras.postsFlattened_count ?? '0' }}
-              {{ getSingularOrPlural('Lesson', item.$extras.root_posts_count ?? 0) }}
-            </div>
-            <div class="mr-3">3 Hours</div>
+            @if (hasStarted)
+              @if (nextLesson.watchMinutes)
+                <div class="mr-3">{{ nextLesson.watchMinutes }} WATCH</div>
+              @endif
+              <div class="mr-3">{{ nextLesson.readMinutes }} MIN READ</div>
+            @else
+              <div class="mr-3">
+                {{ item.$extras.postsFlattened_count ?? '0' }}
+                {{ getSingularOrPlural('Lesson', item.$extras.root_posts_count ?? 0) }}
+              </div>
+              <div class="mr-3">3 Hours</div>
+            @endif
           </div>
           <p class="opacity-80 mb-6 text-sm lg:text-base">
-            {{ item.description }}
+            @if (hasStarted)
+              {{ nextLesson.description }}
+            @else
+              {{ item.description }}
+            @endif
           </p>
+          @if (hasStarted && inProgress)
+            <div class="relative mb-6">
+              @!ui.progression({
+                progressionHistory: nextLesson.progressionHistory,
+                bottom: 'bottom-0',
+                left: 'left-0',
+                right: 'right-0',
+                bg: 'bg-gray-100'
+              })
+            </div>
+          @endif
           <div class="flex items-center pb-12">
-            <a href="{{ route('series.lesson', { slug: item.slug, index: 1 }) }}" class="mr-3 text-xs md:text-sm lg:text-base bg-white hover:bg-brand-800 hover:text-brand-100 transition duration-300 flex items-center rounded-full text-black pr-6">
+            <a href="{{ route('series.lesson', { slug: item.slug, index: nextLesson.$extras.pivot_root_sort_order + 1 }) }}" class="mr-3 text-xs md:text-sm lg:text-base bg-white hover:bg-brand-800 hover:text-brand-100 transition duration-300 flex items-center rounded-full text-black pr-6">
               <svg class="w-8 h-8 md:w-12 md:h-12 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
-              Start Series
+              @if (hasStarted)
+                {{ inProgress ? 'Continue Lesson' : 'Start Lesson' }}
+              @else
+                Start Series
+              @endif
             </a>
             @if (auth.user)
               <div x-cloak x-data="appWatchlist('{{ route('api.watchlist.toggle') }}', { collectionId: {{ item.id }} }, {{ item.isInWatchlist }})">
                 <button x-show="!isInWatchlist" @click="toggle" type="button" class="h-8 md:h-12 text-xs md:text-sm lg:text-base bg-white text-black hover:bg-brand-800 hover:text-brand-100 transition duration-300 rounded-full mr-5 flex items-center justify-center pl-3 pr-4 md:pr-6">
                   @!svg.plus({ className: 'w-7 mr-1' })
-                  Add To Watchlist
+                  Add Series To Watchlist
                 </button>
                 <button x-show="isInWatchlist" @click="toggle" type="button" class="h-8 md:h-12 text-xs md:text-sm lg:text-base bg-brand-800 text-brand-100 transition duration-300 rounded-full mr-5 flex items-center justify-center pl-3 pr-4 md:pr-6">
                   @!svg.check({ className: 'w-5 md:w-7 mr-2 md:mr-3' })
-                  In Watchlist
+                  In Series Watchlist
                 </button>
               </div>
             @endif

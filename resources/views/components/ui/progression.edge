@@ -1,0 +1,17 @@
+@set('bottom', bottom ?? 'bottom-1')
+@set('left', left ?? 'left-3')
+@set('right', right ?? 'right-3')
+@set('bg', bg ?? 'bg-gray-950')
+
+@if (progressionHistory?.length)
+  @set('progress', progressionHistory[0])
+  @set('progressPercent', progress.watchPercent > progress.readPercent ? progress.watchPercent : progress.readPercent)
+
+  @if (progress.isCompleted)
+    @set('progressPercent', 100)
+  @endif
+
+  <div class="absolute {{ left }} {{ bottom }} {{ right }} {{ bg }} bg-opacity-30 h-2 rounded-full">
+    <div class="bg-gradient-to-br from-accent-600 via-accent-700 to-accent-800 h-2 rounded-full" style="width: {{ progressPercent }}%"></div>
+  </div>
+@endif
