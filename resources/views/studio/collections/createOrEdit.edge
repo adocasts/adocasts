@@ -1,0 +1,268 @@
+@layout('layouts/studio')
+
+@section('heading')
+  @studio.heading({
+    heading: collection?.id ? 'Update Collection' : 'Create New Collection',
+    wrapSlot: true
+  })
+    <div class="space-x-3">
+      @button({ onClick: `saveAs(${states.PUBLIC})`, id: 'btnPublish' })
+        Save
+      @end
+
+      @button({ onClick: `saveAs(${states.UNLISTED})`, variant: 'baseSecondary' })
+        Save As Unlisted
+      @end
+
+      @button({ onClick: `saveAs(${states.PRIVATE})`, variant: 'baseSecondary' })
+        Save As Private
+      @end
+    </div>
+  @end
+@endsection
+
+@section('content')
+
+  @set('action', route('studio.collections.store'))
+
+  @if(collection?.id)
+    @set('action', route('studio.collections.update', { id: collection.id}, { qs: { _method: 'PUT' }}))
+  @endif
+
+  <form name="collectionForm" method="POST" action="{{ action }}">
+    {{ csrfField() }}
+    <input type="hidden" name="stateId" value="{{ collection?.stateId ?? states.PUBLIC }}" />
+
+    <div class="flex flex-wrap -mx-3">
+      <div class="w-full lg:w-2/3 lg:px-3">
+        @!form.input.alt({
+          label: 'Name',
+          name: 'name',
+          placeholder: 'Enter a concise & descriptive name',
+          value: flashMessages.get('name') ?? collection?.name,
+          errors: flashMessages.get('errors.name'),
+          required: true,
+          max: 100,
+          title: true
+        })
+
+        @!form.input.alt({
+          label: 'Slug',
+          name: 'slug',
+          placeholder: 'Enter a unique url safe identifier',
+          value: flashMessages.get('slug') ?? collection?.slug ?? '',
+          errors: flashMessages.get('errors.slug')
+        })
+
+        @!form.input.alt({
+          type: 'textarea',
+          label: 'Description',
+          name: 'description',
+          placeholder: 'Enter a high-level overview of your collection',
+          value: flashMessages.get('description') ?? collection?.description ?? '',
+          errors: flashMessages.get('errors.description'),
+          rows: 3
+        })
+
+        <details class="mb-6">
+          <summary>Search Engine Optimization (SEO)</summary>
+
+          @!form.input({
+            label: 'Page Title',
+            name: 'pageTitle',
+            placeholder: 'Enter a concise SEO friendly page title. Defaults to the title when left empty',
+            value: flashMessages.get('pageTitle') ?? collection?.pageTitle ?? '',
+            errors: flashMessages.get('errors.pageTitle')
+          })
+
+          @!form.input({
+            type: 'textarea',
+            label: 'Meta Description',
+            name: 'metaDescription',
+            placeholder: 'Enter a SEO friendly description. Defaults to the summary when left empty.',
+            value: flashMessages.get('metaDescription') ?? collection?.metaDescription ?? '',
+            errors: flashMessages.get('errors.metaDescription'),
+            rows: 3
+          })
+        </details>
+
+        @form.input.alt({
+          type: 'select',
+          label: 'Status',
+          name: 'statusId',
+          value: flashMessages.get('statusId') ?? collection?.statusId ?? statuses.IN_PROGRESS,
+          errors: flashMessages.get('errors.statusId')
+        })
+          <option value="{{ statuses.IN_PROGRESS }}">In-Progress</option>
+          <option value="{{ statuses.COMPLETE }}">Completed</option>
+          <option value="{{ statuses.ARCHIVED }}">Archived</option>
+          <option value="{{ statuses.OUTDATED }}">Outdated</option>
+        @end
+
+        @form.input.alt({
+          type: 'select',
+          label: 'Type',
+          name: 'collectionTypeId',
+          value: flashMessages.get('collectionTypeId') ?? collection?.collectionTypeId ?? collectionTypes.SERIES,
+          errors: flashMessages.get('errors.collectionTypeId')
+        })
+          <option value="{{ collectionTypes.SERIES }}">Series</option>
+          <option value="{{ collectionTypes.COURSE }}">Course</option>
+          <option value="{{ collectionTypes.PLAYLIST }}">Playlist</option>
+        @end
+
+        @form.input.alt({ type: 'group', label: 'Icon', help: 'Max image size of 2MB' })
+          @slot('input')
+            @!form.file.manager({
+              assets: [collection?.asset].filter(Boolean),
+              placeholder: 'Select and image'
+            })
+          @endslot
+        @end
+
+        @!form.input.alt({
+          label: 'YouTube Playlist Url',
+          name: 'youtubePlaylistUrl',
+          placeholder: 'Enter the url for the series YouTube playlist',
+          value: flashMessages.get('youtubePlaylistUrl') ?? collection?.youtubePlaylistUrl ?? '',
+          errors: flashMessages.get('errors.slug')
+        })
+
+        @!form.input.alt({
+          label: 'Repository Url',
+          name: 'repositoryUrl',
+          placeholder: 'Enter the URL to the collection repo',
+          value: flashMessages.get('repositoryUrl') ?? post?.repositoryUrl ?? '',
+          errors: flashMessages.get('errors.repositoryUrl')
+        })
+
+        @form.input.alt({
+          type: 'group',
+          label: 'Feature',
+          name: 'isFeatured',
+          errors: flashMessages.get('errors.isFeatured')
+        })
+          @slot('input')
+            @set('isChecked', flashMessages.get('isFeatured') ?? collection?.isFeatured ?? false)
+            <label class="inline-flex items-center">
+              <input class="mr-2" type="checkbox" name="isFeatured" id="isFeatured" value="1" {{ isChecked && 'checked' }}>
+              Feature this collection
+            </label>
+          @endslot
+        @end
+      </div>
+
+      <div class="w-full lg:w-1/3 lg:px-3 -my-3 p-6 shadow-inner bg-gray-50 rounded-lg">
+        @if (collection?.id)
+          <div x-data="collectionManager({
+            parentId: {{ collection?.id }},
+            collections: {{ stringify(children) }},
+            posts: {{ collection?.posts && stringify(collection.posts) }}
+          })">
+            <div class="flex justify-between border-b border-gray-300 pb-1 mb-3">
+              <strong>Lessons</strong>
+              <button type="button" @click="addCollection()" class="text-xs hover:text-brand-800 transition">
+                + Add new collection
+              </button>
+            </div>
+
+            <ul>
+              <template x-for="(subcollection, x) in collections" :key="subcollection.id">
+                <li class="pb-3">
+                  <input type="hidden" :name="`subcollectionCollectionIds[${x}]`" :value="subcollection.id" />
+
+                  <div class="flex justify-between pb-1">
+                    <input type="text" :name="`subcollectionCollectionNames[${x}]`" x-model="subcollection.name" class="w-full natural bg-transparent border-transparent focus-within:border-gray-300 focus-within:bg-white p-0 placeholder-gray-700 mr-3 -mx-1 px-1" />
+                    <button type="button" @click="collectionPostAddId = subcollection.id" class="text-xs hover:text-brand-800 transition whitespace-nowrap mr-3">
+                      + Add post
+                    </button>
+                    <button type="button" @click="deleteCollection(subcollection)" class="text-xs transition whitespace-nowrap text-red-700 hover:text-red-800">
+                      - Delete
+                    </button>
+                  </div>
+
+                  @form.input({
+                    type: 'group',
+                    groupClass: 'pl-3 border-l-2 border-gray-300 py-1',
+                    pb: false
+                  })
+                    @slot('input')
+                      <ul id="selectedPosts">
+                        <template x-for="(post, y) in subcollection.posts" :key="post.id">
+                          <li class="flex justify-between">
+                            <input type="hidden" :name="`subcollectionPostIds[${x}][]`" :value="post.id" />
+                            <span x-text="post.title" class="text-sm"></span>
+                            <button type="button" class="text-red-700" @click="removePost(post, subcollection)">
+                              &times;
+                            </button>
+                          </li>
+                        </template>
+                      </ul>
+
+                      <div x-show="collectionPostAddId === subcollection.id" class="pt-2">
+                        <div class="flex justify-between">
+                          <div class="text-sm">Select lesson to add</div>
+                          <button type="button" @click="collectionPostAddId = null" class="text-xs hover:text-brand-800 text-sm">
+                            Cancel
+                          </button>
+                        </div>
+                        <input :id="`autocomplete_collection_${subcollection.id}`" type="text" class="block w-full focus:outline-none sm:text-sm rounded-md placeholder-gray-700 px-2 py-1" placeholder="Search posts ..." />
+                      </div>
+                    @endslot
+                  @end
+                </li>
+              </template>
+            </ul>
+
+            @form.input({
+              type: 'group',
+              label: 'Posts'
+            })
+              @slot('input')
+                <ul id="selectedPosts">
+                  <template x-for="post in posts" :key="post.id">
+                    <li class="flex justify-between">
+                      <input type="hidden" name="postIds[]" :value="post.id" />
+                      <span x-text="post.title" class="text-sm"></span>
+                      <button type="button" class="text-red-700" @click="removePost(post)">
+                        &times;
+                      </button>
+                    </li>
+                  </template>
+                </ul>
+
+                <div class="pt-2">
+                  <div class="flex justify-between">
+                    <div class="text-sm">Select lesson to add</div>
+                  </div>
+                  <input id="autocomplete_main" type="text" class="block w-full focus:outline-none sm:text-sm rounded-md placeholder-gray-700 px-2 py-1" placeholder="Search posts ..." />
+                </div>
+              @endslot
+            @end
+          </div>
+          <script src="{{ asset('assets/studio.collections.js') }}"></script>
+        @else
+          <div class="flex flex-col items-center text-gray-700 text-center px-6">
+            @!svg.collection({ className: 'w-10 h-10 mb-3' })
+            <h4 class="font-semibold">Create Your Collection First</h4>
+            <p class="text-sm max-w-xs">
+              First create your collection, then you'll be able to create modules and add lessons to the collection.
+            </p>
+          </div>
+        @endif
+      </div>
+    </div>
+  </form>
+
+@endsection
+
+@section('scripts')
+
+<script>
+  function saveAs(stateId) {
+    document.forms.collectionForm.stateId.value = stateId;
+    document.forms.collectionForm.submit();
+  }
+</script>
+
+@endsection

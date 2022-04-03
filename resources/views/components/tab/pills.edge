@@ -1,0 +1,31 @@
+@set('valueKey', 'href')
+@set('labelKey', 'name')
+@set('activeKey', 'isActive')
+@set('activeValue', true)
+@set('defaultValue', options.find(o => o[activeKey] === activeValue))
+
+<div>
+  <div class="sm:hidden" x-data="{ value: {{ defaultValue && defaultValue[activeKey] }} }">
+    <label for="tabs" class="sr-only">Select a tab</label>
+    <select id="tabs" name="tabs" class="block w-full focus:ring-brand-500 focus:border-brand-500 border-gray-300 rounded-md" x-model="value" @change="window.location = value">
+      @each (option in options)
+        <option value="option[valueKey]">{{ option[labelKey] }}</option>
+      @endeach
+    </select>
+  </div>
+  <div class="hidden sm:block">
+    <nav class="flex space-x-4" aria-label="Tabs">
+      @each (option in options)
+        @if (option[activeKey] === activeValue)
+          <a href="{{ option[valueKey] }}" class="text-brand-100 bg-brand-900 px-3 py-2 font-medium text-sm rounded-md" aria-current="page">
+            {{ option[labelKey] }}
+          </a>
+        @else
+          <a href="{{ option[valueKey] }}" class="text-white opacity-70 hover:opacity-100 transition px-3 py-2 font-medium text-sm rounded-md">
+            {{ option[labelKey] }}
+          </a>
+        @endif
+      @endeach
+    </nav>
+  </div>
+</div>

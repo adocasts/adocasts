@@ -1,0 +1,111 @@
+<ol class="ml-8">
+  @each(comment in nodeComments)
+    @set('childComments', comments.filter(c => c.replyTo === comment.id))
+    @set('rootParentId', comment.replyTo ? rootParentId : comment.id)
+    @set('replyTo', comment.id)
+    @set('levelIndex', levelIndex ? levelIndex + 1 : 1)
+    @set('isAnon', !comment.userId)
+
+    <li class="relative" id="comment{{ comment.id }}">
+      <div class="bg-gray-50 border rounded-lg p-3 mb-6 group" :class="window.location.hash === `#comment{{ comment.id }}` ? 'border-brand-700' : 'border-gray-100'">
+        <div class="mb-3 flex items-center">
+          @if (isAnon)
+            <div class="w-10 h-10 rounded-full mr-3 bg-gray-300 overflow-hidden relative">
+              @!svg.user({ className: 'w-10 h-10 text-gray-700 absolute -bottom-1 left-0' })
+            </div>
+            <div class="flex flex-col">
+              <h6 class="text-base font-semibold">
+                Anonymous <span class="text-sm font-normal">({{ comment.name }})</span>
+              </h6>
+              <div class="text-gray-700 text-xs">
+                Commented <span datetime="{{ comment.createdAt }}">{{ comment.timeago }}</span>
+              </div>
+            </div>
+          @else
+            <img src="{{ comment.user.avatar }}" class="w-10 h-10 rounded-full mr-3" />
+            <div class="flex flex-col">
+              <h6 class="text-base font-semibold">
+                {{ comment.user.username }}
+              </h6>
+              <div class="text-gray-700 text-xs">
+                Commented <span datetime="{{ comment.createdAt }}">{{ comment.timeago }}</span>
+              </div>
+            </div>
+          @endif
+        </div>
+
+        <div class="ml-10 pl-3">
+          <div x-show="editId !== {{ comment.id }}" class="prose mb-3">{{{ comment.body }}}</div>
+
+          @can('CommentPolicy.update', comment, identity)
+            <div x-show="editId === {{ comment.id }}">
+              @!comment.form({
+                ...comment.serialize(),
+                cancelable: true,
+                onCancel: 'cancel()'
+              })
+            </div>
+          @endcan
+
+          <div x-show="editId !== {{ comment.id }}" class="flex items-center space-x-2">
+            <button class="btn-hover-fill text-gray-900 hover:text-gray-950 transition flex items-center text-sm bg-white border border-gray-100 rounded-lg py-1 px-3">
+              <div class="w-5 h-5 -mt-1 mr-2 relative">
+                @!svg.heartOutline({ className: 'btn-outline w-5 h-5 absolute top-0 left-0' })
+                @!svg.heart({ className: 'btn-filled w-5 h-5 text-gray-800 absolute top-0 left-0' })
+              </div>
+              0
+            </button>
+
+            @can('CommentPolicy.reply')
+              <button type="button" @click="create( {{ comment.id }} )" class="text-gray-900 hover:text-gray-950 transition flex items-center text-sm bg-white border border-gray-100 rounded-lg py-1 px-3 opacity-0 group-hover:opacity-100">
+                @!svg.reply({ className: 'w-3 h-3 mr-1' })
+                Reply
+              </button>
+            @endcan
+
+            @can('CommentPolicy.update', comment, identity)
+              <button type="button" @click="edit( {{ comment.id }} )" class="text-blue-800 hover:text-blue-900 transition flex items-center text-sm bg-white border border-gray-100 rounded-lg py-1 px-3 opacity-0 group-hover:opacity-100">
+                @!svg.edit({ className: 'w-3 h-3 mr-1' })
+                Edit
+              </button>
+            @endcan
+
+            @can('CommentPolicy.delete', comment, identity)
+              <form method="POST" action="{{ route('comments.destroy', { id: comment.id }, { qs: { _method: 'DELETE' }}) }}">
+                {{ csrfField() }}
+                <button type="submit" class="text-red-800 hover:text-red-900 transition flex items-center text-sm bg-white border border-gray-100 rounded-lg py-1 px-3 opacity-0 group-hover:opacity-100">
+                  @!svg.delete({ className: 'w-3 h-3 mr-1' })
+                  Delete
+                </button>
+              </form>
+            @endcan
+          </div>
+        </div>
+      </div>
+
+      @can('CommentPolicy.reply', comment, identity)
+        {{--  reply to form  --}}
+        <div x-show="createId === {{ comment.id }}" class="bg-gray-50 border border-gray-100 p-3 rounded-xl ml-8 mb-3">
+          @!comment.form({
+            postId,
+            rootParentId,
+            replyTo,
+            levelIndex,
+            cancelable: true,
+            onCancel: 'cancel()'
+          })
+        </div>
+      @endcan
+
+      @if (childComments.length)
+        @!comment.list({
+          postId,
+          rootParentId,
+          comments,
+          levelIndex,
+          nodeComments: childComments,
+        })
+      @endif
+    </li>
+  @endeach
+</ol>

@@ -1,0 +1,161 @@
+@layout('layouts/studio')
+
+@section('heading')
+  @studio.heading({
+    heading: taxonomy?.id ? 'Update Taxonomy' : 'Create New Taxonomy',
+    wrapSlot: true
+  })
+    <div class="space-x-3">
+      @button({ type: 'submit', form: 'taxonomyForm' })
+        Save
+      @end
+    </div>
+  @end
+@endsection
+
+@section('content')
+
+  @set('action', route('studio.taxonomies.store'))
+
+  @if(taxonomy?.id)
+    @set('action', route('studio.taxonomies.update', { id: taxonomy.id }, { qs: { _method: 'PUT' }}))
+  @endif
+
+  <form id="taxonomyForm" name="taxonomyForm" method="POST" action="{{ action }}">
+    {{ csrfField() }}
+
+    @if (rootParentId)
+      <input type="hidden" name="rootParentId" value="{{ rootParentId }}" />
+    @endif
+
+    @if (parentId)
+      <input type="hidden" name="parentId" value="{{ parentId }}" />
+    @endif
+
+    <div class="flex flex-wrap -mx-3">
+      <div class="w-full lg:w-2/3 lg:px-3">
+        @if (parent)
+          @form.input.alt({
+            type: 'group',
+            label: 'Parent',
+            value: parent.name
+          })
+            @slot('input')
+              <p>{{ parent.name }}</p>
+            @endslot
+          @end
+        @endif
+
+        @!form.input.alt({
+          label: 'Name',
+          name: 'name',
+          placeholder: 'Enter a concise & descriptive name',
+          value: flashMessages.get('name') ?? taxonomy?.name ?? '',
+          errors: flashMessages.get('errors.name'),
+          required: true,
+          max: 100,
+          title: true
+        })
+
+        @!form.input.alt({
+          label: 'Slug',
+          name: 'slug',
+          placeholder: 'Enter a unique url safe identifier',
+          value: flashMessages.get('slug') ?? taxonomy?.slug ?? '',
+          errors: flashMessages.get('errors.slug')
+        })
+
+        @!form.input.alt({
+          type: 'textarea',
+          label: 'Description',
+          name: 'description',
+          placeholder: 'Enter a high-level overview of your collection',
+          value: flashMessages.get('description') ?? taxonomy?.description ?? '',
+          errors: flashMessages.get('errors.description'),
+          rows: 3
+        })
+
+        <details class="mb-6">
+          <summary>Search Engine Optimization (SEO)</summary>
+
+          @!form.input({
+            label: 'Page Title',
+            name: 'pageTitle',
+            placeholder: 'Enter a concise SEO friendly page title. Defaults to the title when left empty',
+            value: flashMessages.get('pageTitle') ?? taxonomy?.pageTitle ?? '',
+            errors: flashMessages.get('errors.pageTitle')
+          })
+
+          @!form.input({
+            type: 'textarea',
+            label: 'Meta Description',
+            name: 'metaDescription',
+            placeholder: 'Enter a SEO friendly description. Defaults to the summary when left empty.',
+            value: flashMessages.get('metaDescription') ?? taxonomy?.metaDescription ?? '',
+            errors: flashMessages.get('errors.metaDescription'),
+            rows: 3
+          })
+        </details>
+
+        @form.input.alt({ type: 'group', label: 'Icon', help: 'Max image size of 2MB' })
+          @slot('input')
+            @!form.file.manager({
+              assets: [taxonomy?.asset].filter(Boolean),
+              placeholder: 'Select and image'
+            })
+          @endslot
+        @end
+
+        @form.input.alt({
+          type: 'group',
+          label: 'Feature',
+          name: 'isFeatured',
+          errors: flashMessages.get('errors.isFeatured')
+        })
+          @slot('input')
+            @set('isChecked', flashMessages.get('isFeatured') ?? collection?.isFeatured ?? false)
+            <label class="inline-flex items-center">
+              <input class="mr-2" type="checkbox" name="isFeatured" id="isFeatured" value="1" {{ isChecked && 'checked' }}>
+              Feature this taxonomy
+            </label>
+          @endslot
+        @end
+      </div>
+
+      <div class="w-full lg:w-1/3 lg:px-3">
+        <div x-data="collectionManager({
+          parentId: {{ taxonomy?.id }},
+          collections: [],
+          posts: {{ taxonomy?.posts && stringify(taxonomy.posts) }}
+        })">
+          @form.input({
+            type: 'group',
+            label: 'Posts'
+          })
+            @slot('input')
+              <div class="pb-2">
+                <div class="flex justify-between">
+                  <div class="text-sm">Select lesson to add</div>
+                </div>
+                <input id="autocomplete_main" type="text" class="block w-full focus:outline-none sm:text-sm rounded-md placeholder-gray-700 px-2 py-1" placeholder="Search posts ..." />
+              </div>
+              <ul id="selectedPosts">
+                <template x-for="post in posts" :key="post.id">
+                  <li class="flex justify-between">
+                    <input type="hidden" name="postIds[]" :value="post.id" />
+                    <span x-text="post.title" class="text-sm"></span>
+                    <button type="button" class="text-red-700" @click="removePost(post)">
+                      &times;
+                    </button>
+                  </li>
+                </template>
+              </ul>
+            @endslot
+          @end
+        </div>
+        <script src="{{ asset('assets/studio.collections.js') }}"></script>
+      </div>
+    </div>
+  </form>
+
+@endsection

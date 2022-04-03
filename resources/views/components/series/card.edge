@@ -1,0 +1,39 @@
+<a href="{{ route('series.show', { slug: item.slug }) }}" class="anchor {{ width ?? 'w-full md:w-1/2 lg:w-1/4' }} group px-2 flex flex-col justify-center items-center transition border border-gray-300 relative left-px -ml-px {{ index === 0 && 'rounded-t-lg md:rounded-t-none lg:rounded-l-lg' }} {{ index + 1 === length && 'rounded-b-lg md:rounded-b-none lg:rounded-r-lg' }} {{ index == null && 'rounded-lg' }} relative overflow-hidden {{ className ?? '' }}">
+  <div class="absolute top-0 left-0 w-full bg-gray-50 transition duration-300 transform -translate-y-full group-hover:translate-y-0" style="height: calc(100% + 1.5rem)"></div>
+  <div class="w-full flex flex-col items-center bg-gray-50 py-6 px-6 rounded-b-3xl relative z-10">
+    <div class="aspect-square mb-3">
+      @if (item.asset)
+        <img src="/img/{{ item.asset.filename }}" class="rounded-full w-24 mb-3" />
+      @else
+        <img src="https://via.placeholder.com/65" class="rounded-full w-24 mb-3" />
+      @endif
+    </div>
+
+    <h4 class="text-lg font-semibold">
+      {{ item.name }}
+    </h4>
+    <div class="flex flex-wrap items-center space-x-1 pt-3">
+      @badge()
+        AdonisJS
+      @end
+      @badge()
+        Lucid
+      @end
+      @badge()
+        Edge
+      @end
+    </div>
+  </div>
+  <div class="w-1/2 mx-auto border-t border-gray-300 relative z-10 opacity-0 group-hover:opacity-100"></div>
+  <div class="w-full text-gray-700 text-xs py-3 px-6 flex justify-around items-center relative z-10">
+    <div class="flex flex-col justify-center text-center px-3">
+      <span class="text-lg">{{ item.$extras.postsFlattened_count ?? '0' }}</span>
+      <span>{{ getSingularOrPlural('Lesson', item.$extras.postsFlattened_count ?? 0) }}</span>
+    </div>
+    <div class="h-6 border border-gray-100"></div>
+    <div class="flex flex-col justify-center text-center px-3">
+      <span class="text-lg">4</span>
+      <span>{{ getSingularOrPlural('Hour', [1,2,3]) }}</span>
+    </div>
+  </div>
+</a>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Studio</title>
+
+  <script src="//unpkg.com/alpinejs" defer></script>
+
+  @entryPointStyles('app')
+  @entryPointScripts('app')
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+  @!header.base({ container: 'max-w-screen-2xl px-2 sm:px-4 lg:px-8' })
+  @!header.studio({ container: 'max-w-screen-2xl mx-auto px-2 sm:px-4 lg:px-8' })
+
+  @!section('heading')
+
+  <main class="max-w-screen-2xl mx-auto pb-12 px-2 sm:px-4 lg:px-8 relative z-10">
+    <div class="bg-white rounded-lg p-6 shadow-xl overflow-hidden">
+      @!section('content')
+    </div>
+  </main>
+
+  @!section('scripts')
+</body>
+</html>

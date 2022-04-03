@@ -1,0 +1,8 @@
+@each((module, x) in modules)
+  <li>
+    <div class="px-3 pb-2 pt-6">{{ module.name }}</div>
+    <ol class="text-sm">
+      @!series.posts({ posts: module.posts })
+    </ol>
+  </li>
+@endeach

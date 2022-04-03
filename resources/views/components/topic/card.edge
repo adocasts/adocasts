@@ -1,0 +1,42 @@
+@set('defaultWidth', !length ? 'w-full md:w-1/2 lg:w-1/6' : `w-full md:w-1/2 lg:w-1/${length > 6 ? '6' : length}`)
+@set('className', className ?? defaultWidth)
+@set('asset', topic.asset ?? topic.parent?.asset)
+@set('index', index ?? null)
+
+<a href="{{ route('topics.show', { slug: topic.slug }) }}" class="anchor {{ className }} {{ index === 0 && 'rounded-t-lg md:rounded-t-none lg:rounded-l-lg' }} {{ index === length - 1 && 'rounded-b-lg md:rounded-b-none lg:rounded-r-lg' }} {{ index === null && 'rounded-lg' }} group py-1 flex flex-col justify-center items-center transition border border-gray-300 relative left-px -ml-px -mt-px md:mt-0 overflow-hidden" style="height: 68px">
+  <div class="absolute top-0 left-0 w-full bg-gray-50 transition duration-300 transform -translate-x-full group-hover:translate-x-0" style="height: calc(100% + 1.5rem)"></div>
+
+  <div class="w-full flex items-center px-3 rounded-b-3xl relative h-full">
+    <div class="bg-gray-50 -m-3 p-3 rounded-r-lg mr-3 w-16 h-full flex items-center justify-center">
+      @if (asset?.filename)
+        <img src="/img/{{ asset.filename }}" class="rounded-full w-16" />
+      @else
+        <img src="https://via.placeholder.com/65" class="rounded-full w-16" />
+      @endif
+    </div>
+
+    <div class="flex flex-col">
+      @if (topic.parent)
+        <h6 class="text-xs px-3 text-gray-700 leading-tight">
+          {{ topic.parent.name }}
+        </h6>
+      @endif
+
+      <h4 class="px-3 font-semibold truncate leading-tight -mb-0.5">
+        {{ topic.name }}
+      </h4>
+
+      <div class="w-full text-gray-700 text-xs pt-1 flex relative z-10 leading-tight">
+        <div class="flex px-3">
+          <span class="mr-1">{{ topic.$extas?.collection_count ?? 0 }}</span>
+          <span>{{ getSingularOrPlural('Series', topic.$extras?.collection_count ?? 0) }}</span>
+        </div>
+        <div class="h-4 border border-gray-100"></div>
+        <div class="flex px-3">
+          <span class="mr-1">{{ topic.$extras?.posts_count ?? 0 }}</span>
+          <span>{{ getSingularOrPlural('Lesson', topic.$extras?.posts_count ?? 0) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</a>

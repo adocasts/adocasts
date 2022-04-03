@@ -1,0 +1,38 @@
+@if (!auth.user)
+  <a href="{{ route('auth.signin.show') }}" class="text-base font-medium text-brand-200 hover:text-white">
+    Sign in
+  </a>
+  <a href="{{ route('auth.signup.show') }}" class="ml-8 inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-brand-800 hover:bg-brand-700 hover:shadow-inner">
+    Sign up
+  </a>
+@else
+  @dropdown.base()
+    @slot('trigger')
+      <img class="rounded-full w-8 h-8" src="{{ auth.user.avatar }}" />
+    @endslot
+
+    @dropdown.item({ href: '#' })
+      {{ auth.user.username }}
+    @end
+
+    <div class="border-b border-gray-200 pt-1 mb-1"></div>
+
+    <div class="text-xs text-gray-700 uppercase px-4 mb-1 pt-3">
+      Studio
+    </div>
+
+    @each (route in studioRoutes)
+      @can(route.show)
+        @dropdown.item({ href: route.href })
+          {{ route.name }}
+        @end
+      @end
+    @endeach
+
+    <div class="border-b border-gray-200 pt-1 mb-1"></div>
+
+    @dropdown.item({ href: route('auth.signout') })
+      Sign out
+    @end
+  @end
+@endif

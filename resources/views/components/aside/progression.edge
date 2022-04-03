@@ -1,0 +1,63 @@
+<div class="py-3 flex flex-wrap justify-between">
+  @heading.section({ className: 'mb-0' })
+    Your Progress
+  @end
+  <a href="#" class="anchor text-sm flex flex-nowrap items-end space-x-2">
+    <span>View your progress</span>
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+  </a>
+</div>
+<div class="flex flex-col mb-8">
+  @each ((progression, i) in histories)
+    @set('collection', progression.collection)
+    @set('lessonQueue', collection.postsFlattened)
+
+    <a href="#" class="anchor w-full group px-2 flex flex-col justify-center items-center transition border border-gray-300 relative left-px -ml-px {{ i === 0 && 'rounded-t-lg' }} {{ i === 5 && 'rounded-b-lg' }} relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-full bg-gray-50 transition duration-300 transform -translate-y-full group-hover:translate-y-0" style="height: calc(100% + 1.5rem)"></div>
+      <div class="w-full flex flex-wrap items-center bg-gray-50 py-3 px-6 rounded-b-3xl relative z-10 -mx-2">
+        <div class="px-2">
+          <img src="https://via.placeholder.com/65" class="rounded-full w-12" />
+        </div>
+        <div class="px-2">
+          <h4 class="font-semibold">
+            {{ collection.name }}
+          </h4>
+          <p class="text-xs text-gray-800">
+            {{ Math.floor((collection.$extras.postCompletedCount / collection.$extras.postCount) * 100) }}% Completed
+          </p>
+        </div>
+      </div>
+
+      <div class="w-1/2 mx-auto border-t border-gray-300 relative z-10 opacity-0 group-hover:opacity-100"></div>
+
+      @if (lessonQueue.length)
+        @each (item in lessonQueue)
+          @set('currentLesson', item)
+          @set('thumbnail', currentLesson.assets && currentLesson.assets[0])
+          @set('lessonInProgress', currentLesson.progressionHistory.length > 0)
+
+          <object class="flex flex-col relative z-10 mb-2">
+            <h6 class="text-xs font-bold tracking-wide px-3 pt-3">
+              {{ lessonInProgress ? 'Continue Your Next Lesson' : 'Start Your Next Lesson' }}
+            </h6>
+            <a href="{{ routePost(currentLesson, { slug: currentLesson.slug }) }}" class="w-full flex flex-wrap p-3 rounded-xl hover:bg-gray-50 transition">
+              @if (thumbnail)
+                <div class="w-full md:w-2/5 md:pr-2">
+                  @!picture({ filename: thumbnail.filename, className: 'rounded-lg overflow-hidden', lazy: lazyItem })
+                </div>
+              @endif
+              <div class="w-full md:w-3/5 flex flex-col md:pl-2">
+                <h5 class="uppercase inline-block text-accent-800 tracking-wide text-xs leading-none mb-2">
+                  Lesson {{ currentLesson.lessonIndexDisplay }}
+                </h5>
+                <h3 class="font-semibold leading-snug">
+                  {{ currentLesson.title }}
+                </h3>
+              </div>
+            </a>
+          </object>
+        @endeach
+      @endif
+    </a>
+  @endeach
+</div>

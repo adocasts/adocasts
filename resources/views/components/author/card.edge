@@ -1,0 +1,85 @@
+<div class="px-3 border border-gray-300 rounded-xl">
+  <div class="bg-gray-100 rounded-b-xl p-3 mb-4">
+    <h5 class="text-xs uppercase font-semibold pb-1 mb-3 border-b border-gray-600">
+      Prepared By
+    </h5>
+    <div class="flex items-center">
+      <div class="mr-3">
+        <img class="rounded-full w-14 h-14 border-2 border-gray-600" src="{{ author.avatar }}" />
+      </div>
+      <div>
+        <h4 class="text-lg lg:text-2xl">
+          Tom Gobich
+        </h4>
+        <p class="text-xs -mt-1 text-gray-900">
+          Cincinnati, OH
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="px-3">
+    <p class="text-gray-900 mb-4 text-sm md:text-base">
+      Owner of Jagr, JavaScript developer, educator, PlayStation gamer, burrito eater.
+    </p>
+
+    <ul class="flex space-x-2 columns-2 mb-6 text-sm md:text-base">
+      @if (author.profile.company)
+        <li class="flex items-center text-sm leading-5 text-gray-900 pr-3">
+          <div class="bg-gray-900 text-white p-1 rounded-full transition duration-300">
+            @!svg.office()
+          </div>
+          <div class="ml-2">
+            {{ author.profile.company }}
+          </div>
+        </li>
+      @endif
+
+      @if (author.profile.youtubeUrl)
+        <li class="flex items-center text-sm leading-5 text-gray-900 hover:text-gray-950">
+          <a href="{{ author.profile.youtubeUrl }}" rel="noopener nofollow" target="_blank" class="bg-gray-900 hover:bg-black text-white p-1 rounded-full transition duration-300">
+            @!svg.youtube()
+          </a>
+        </li>
+      @endif
+      @if (author.profile.githubUrl)
+        <li class="flex items-center text-sm leading-5 text-gray-900 hover:text-gray-950">
+          <a href="{{ author.profile.githubUrl }}" rel="noopener nofollow" target="_blank" class="bg-gray-900 hover:bg-black text-white p-1 rounded-full transition duration-300">
+            @!svg.github()
+          </a>
+        </li>
+      @endif
+      @if (author.profile.twitterUrl)
+        <li class="flex items-center text-sm leading-5 text-gray-900 hover:text-gray-950">
+          <a href="{{ author.profile.twitterUrl }}" rel="noopener nofollow" target="_blank" class="bg-gray-900 hover:bg-black text-white p-1 rounded-full transition duration-300">
+            @!svg.twitter()
+          </a>
+        </li>
+      @endif
+      @if (author.profile.facebookUrl)
+        <li class="flex items-center text-sm leading-5 text-gray-900 hover:text-gray-950">
+          <a href="{{ author.profile.facebookUrl }}" rel="noopener nofollow" target="_blank" class="bg-gray-900 hover:bg-black text-white p-1 rounded-full transition duration-300">
+            @!svg.facebook()
+          </a>
+        </li>
+      @endif
+      @if (author.profile.instagramUrl)
+        <li class="flex items-center text-sm leading-5 text-gray-900 hover:text-gray-950">
+          <a href="{{ author.profile.instagramUrl }}" rel="noopener nofollow" target="_blank" class="bg-gray-900 hover:bg-black text-white p-1 rounded-full transition duration-300">
+            @!svg.instagram()
+          </a>
+        </li>
+      @endif
+      @if (author.profile.linkedinUrl)
+        <li class="flex items-center text-sm leading-5 text-gray-900 hover:text-gray-950">
+          <a href="{{ author.profile.linkedinUrl }}" rel="noopener nofollow" target="_blank" class="bg-gray-900 hover:bg-black text-white p-1 rounded-full transition duration-300">
+            @!svg.linkedin()
+          </a>
+        </li>
+      @endif
+    </ul>
+
+    @button({ href: author.profile.website, variant: 'blackSecondary', block: true, className: 'mb-6 rounded-full' })
+      Visit Website
+    @end
+  </div>
+</div>

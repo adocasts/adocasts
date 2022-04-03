@@ -1,0 +1,40 @@
+@set('seriesTitle', series && !title.startsWith(series.name) ? `${series.name}: ${title}` : title)
+
+<title>
+  @if (title)
+    {{ seriesTitle }} - Jagr
+  @else
+    {{ titleFallback }}
+  @endif
+</title>
+
+<meta name="description" content="{{ desc }}" />
+<link rel="canonical" href="https://jagr.co{{ canonical || url }}" />
+
+{{-- OG --}}
+<meta property="og:type" content="article" />
+<meta property="og:title" content="{{ seriesTitle }}" />
+<meta property="og:description" content="{{ desc }}" />
+<meta property="og:url" content="{{ url }}" />
+<meta property="og:site_name" content="jagr.co" />
+@if (asset)
+  <meta property="og:image" content="https://jagr.co/img/{{ asset.filename }}?w=600" />
+@endif
+
+{{-- Twitter --}}
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ seriesTitle }}">
+<meta name="twitter:description" content="{{ desc }}">
+<meta name="twitter:site" content="@jagr_co">
+<meta name="twitter:creator" content="@jagr_co">
+@if (asset)
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://jagr.co/img/{{ asset.filename }}?w=600">
+@endif
+
+{{-- Robots --}}
+@if (index)
+  <meta name="robots" content="index, follow" />
+@elseif (index === false)
+  <meta name="robots" content="noindex, nofollow" />
+@endif

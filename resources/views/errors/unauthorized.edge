@@ -1,0 +1,50 @@
+@layout('layouts/main')
+
+@section('hero')
+
+<!-- This example requires Tailwind CSS v2.0+ -->
+<!--
+  This example requires updating your template:
+
+  ```
+  <html class="h-full">
+  <body class="h-full">
+  ```
+-->
+<div class="bg-white min-h-full px-4 py-16 sm:px-6 sm:py-24 md:grid md:place-items-center lg:px-8">
+  <div class="max-w-max mx-auto">
+    <main class="sm:flex">
+      <p class="text-4xl font-extrabold text-brand-900 sm:text-5xl">{{ error.status }}</p>
+      <div class="sm:ml-6">
+        <div class="sm:border-l sm:border-gray-200 sm:pl-6">
+          <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">
+            Unauthorized
+          </h1>
+          <p class="mt-1 text-base text-gray-700 max-w-lg">
+            You're not authorized to view this page or perform this action.
+          </p>
+          @if (auth.user.roleId === Roles.ADMIN)
+            <div class="prose mt-3">
+              <strong>Error</strong>
+              <pre class="mt-0"><code>{{ error.message }}</code></pre>
+
+              <strong>Stack</strong>
+              <pre class="mt-0"><code>{{ error.stack }}</code></pre>
+            </div>
+          @endif
+        </div>
+        <div class="mt-10 flex space-x-3 sm:border-l sm:border-transparent sm:pl-6">
+          @button({ href: '/' })
+            Go back home
+          @end
+
+          @button({ href: '/contact', variant: 'baseSecondary' })
+            Contact support
+          @end
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+@endsection

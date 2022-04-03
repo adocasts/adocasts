@@ -1,0 +1,100 @@
+@layout('layouts/main')
+
+@section('meta')
+
+@!meta.tags({
+  url: appUrl('/guidelines'),
+  title: "Content Guidelines",
+  desc: "Content contribution guidelines for the Adocasts platform.",
+  asset: null,
+  index: true
+})
+
+@endsection
+
+@section('content')
+
+<article class="flex flex-wrap mt-12 -mx-6 lg:-mx-12">
+  <main class="w-full md:w-3/4 prose lg:prose-lg bg-white rounded-xl px-6 pb-4 lg:px-12 lg:pb-8">
+    <h1 class="text-4xl font-black">
+      Content Guidelines
+    </h1>
+
+    <h3>Brief Foreword</h3>
+
+    <p>
+      Thank you for your interest in contibuting to the Adocasts community!
+      Below you'll find some guidelines we expect all users to follow when submitting
+      any form of content within the Adocasts platform; whether it be content, comment, or another method.
+    </p>
+
+    <p>
+      We are still actively working to develop and launch our platform. Due to it's current incomplete state,
+      some functionality will be turned off (grayed out). As features are completed and ready for use they'll be turned back on.
+      During this time, you're welcome to <a href="https://adocasts.com/signup">create and account</a> and start posting!
+    </p>
+
+    <h3>Content Contribution Guidelines</h3>
+
+    <p>
+      We want Adocasts to be a welcoming environment, therefore we want to ask our users to adhear to a few simple rules.
+    </p>
+
+    <ul>
+      <li>
+        <strong class="block" style="margin-bottom: .5rem;">Be mindful of your username</strong>
+        Your username isn't a place to attack, impersonate, or be vulgar. Please, keep your username PG.
+      </li>
+      <li>
+        <strong class="block" style="margin-bottom: .5rem;">Keep it a friendly PG</strong>
+        Please refrain from posting, commenting, or sharing porn or other forms of adult content. Please
+        don't curse, use offensive language, attack others, or attack yourself.
+      </li>
+      <li>
+        <strong class="block" style="margin-bottom: .5rem;">Don't try to break Adocasts</strong>
+        Please don't do anything with the intention of breaking our site. We like it here.
+      </li>
+      <li>
+        <strong class="block" style="margin-bottom: .5rem;">Don't spam</strong>
+        We welcome self-promotion, and we even have a specific section build into our platform for it (not yet released), but don't overdue it.
+        We ask that if you self-promote you also contribute to Adocasts in other ways too. Other means of spamming are frowned upon as well.
+      </li>
+      <li>
+        <strong class="block" style="margin-bottom: .5rem;">Cross-posting is welcomed</strong>
+        If you post content on the Adocasts platform, you still own your content and are welcome to post it elsewhere as well.
+        To help yourself, however, make use of the canonical url to tell Google which platform to use when crawling your content.
+      </li>
+      <li>
+        <strong>You MUST own the rights to anything you post</strong>
+      </li>
+      <li>
+        <strong>Respect the privacy of others</strong>
+      </li>
+      <li>
+        <strong>
+          Everything you post must adhear to our
+          <a href="/terms">Terms of Use</a>.
+        </strong>
+      </li>
+    </ul>
+
+    <p>
+      If you believe a user has broken any of the above rules,
+      <a href="mailto:contact@adocasts.co">please let us know</a>!
+    </p>
+  </main>
+
+  <aside class="w-full md:w-1/4 px-6 pb-4 lg:px-12 lg:pb-8">
+    <nav class="prose">
+      <h3>Adocasts Policies</h3>
+      <ul>
+        <li><a href="/guidelines">Content Guidelines</a></li>
+        <li><a href="/terms">Terms of Use</a></li>
+        <li><a href="/cookies">Cookie Policy</a></li>
+        <li><a href="/privacy">Privacy Policy</a></li>
+      </ul>
+    </nav>
+  </aside>
+</article>
+
+@endsection

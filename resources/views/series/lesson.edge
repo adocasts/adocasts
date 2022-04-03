@@ -1,0 +1,194 @@
+@layout('layouts/main')
+
+@section('meta')
+  @!meta.tags({
+    url: route('series.lesson', request.routeParams),
+    canonical: route('lessons.show', { slug: post.slug }),
+    title: post.page_title ?? post.title,
+    series: series,
+    desc: excerpt(post.meta_description ?? post.description, 180),
+    asset: post.assets && post.assets[0],
+    index: post.isPublished
+  })
+@endsection
+
+@section('hero')
+  <progress id="reading-progress" class="hidden" max="100" value="0"></progress>
+@endsection
+
+@section('content')
+  <div class="break">
+    <div class="bg-gray-950">
+      <div class="flex flex-col md:flex-row md:justify-end relative max-w-screen-2xl mx-auto">
+        @!series.postList({ series })
+
+        <div class="w-full md:w-4/5 py-6 px-3 lg:pr-6 bg-gray-950">
+          <div class="aspect-video bg-gradient-to-br from-brand-900 to-brand-800 relative rounded-xl overflow-hidden">
+            <div id="lessonVideoEmbed" class="absolute top-0 left-0 w-full h-full"></div>
+
+            @if (!post.videoUrl)
+              @if (post.assets && post.assets.length)
+                <div class="absolute top-0 left-0 w-full h-full">
+                  @!picture({ filename: post.assets[0].filename })
+                </div>
+              @endif
+
+              <div class="w-full h-3/4 flex flex-col justify-end absolute bottom-0 bg-gradient-to-t from-black to-transparent z-10 text-white">
+                <div class="bg-gradient-to-t from-black to-transparent">
+                  @container()
+                    <div class="flex flex-col max-w-4xl py-4 md:py-6">
+                      <h2 class="font-bold text-3xl md:text-4xl text-white mb-2">
+                        {{ series.name }}
+                      </h2>
+                      <h1 class="text-4xl md:text-5xl text-white mb-4">
+                        {{ post.title }}
+                      </h1>
+                      <div class="flex items-center opacity-80 mb-2">
+                        <div class="mr-3">{{ post.readMinutes }} MIN READ</div>
+                        <div class="mr-3">2 MONTHS AGO</div>
+                      </div>
+                      <p class="opacity-80 mb-6">
+                        {{ post.description }}
+                      </p>
+                      <div class="flex items-center pb-3">
+                        <button class="mr-3">
+                          @!svg.play({ className: 'w-12 h-12 md:w-16 md:h-16' })
+                        </button>
+                        <button class="w-8 h-8 rounded-full bg-white mr-5 text-black flex items-center justify-center">
+                          @!svg.plus({ className: 'w-6 h-6' })
+                        </button>
+                        <button class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center">
+                          @!svg.youtube({ className: 'w-5' })
+                        </button>
+                      </div>
+                    </div>
+                  @end
+                </div>
+              </div>
+            @endif
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @container({ className: 'mt-3 lg:pt-12' })
+      @if (post.videoUrl)
+        <div>
+          <div class="w-full p-3 md:p-6 bg-gray-100 border-4 border-gray-100 rounded-xl mb-6 lg:mb-12">
+            <h2 class="font-bold text-base md:text-xl lg:text-2xl md:mb-2">
+              {{ series.name }}
+            </h2>
+            <h1 class="text-2xl md:text-3xl lg:text-4xl mb-4">
+              {{ post.title }}
+            </h1>
+            <div class="flex items-center opacity-80 mb-2 text-xs md:text-base">
+              <div class="mr-3">{{ post.readMinutes }} MIN READ</div>
+              <div class="mr-3">2 MONTHS AGO</div>
+            </div>
+            <p class="opacity-80 mb-6 max-w-2xl text-sm md:text-base">
+              {{ post.description }}
+            </p>
+            <div class="flex flex-col md:flex-row md:items-center px-3 md:px-6 py-3 rounded-xl bg-gray-50 -mb-3 -mx-3 md:-mb-6 md:-mx-6 text-xs md:text-sm space-y-2 md:space-y-0">
+              <div id="appCompleted" x-cloak x-data="appCompleted('{{ route('api.watchlist.toggle') }}', { postId: {{ post.id }}, collectionId: {{ series.id }}, route: '{{ request.ctx.route?.name }}' }, {{ userProgression?.isCompleted }})" @completed="changeCompleted">
+                <button x-show="!isCompleted" @click="toggle" type="button" class="w-full md:w-auto group mr-3 flex items-center bg-gray-100 hover:bg-black hover:text-white transition duration-300 rounded-full py-1 pl-1 pr-6">
+                  <div class="w-7 h-7 rounded-full bg-black text-white flex items-center group-hover:bg-white group-hover:text-black transition duraton-300 justify-center mr-2">
+                    @!svg.check({ className: 'w-5 h-5' })
+                  </div>
+                  Mark Complete
+                </button>
+                <button x-show="isCompleted" @click="toggle" type="button" class="w-full md:w-auto group mr-3 flex items-center bg-black text-white hover:bg-gray-900 transition duration-300 rounded-full py-1 pl-1 pr-6">
+                  <div class="w-7 h-7 rounded-full bg-white text-black flex items-center transition duraton-300 justify-center mr-2">
+                    @!svg.check({ className: 'w-5 h-5' })
+                  </div>
+                  Completed
+                </button>
+              </div>
+              <div x-cloak x-data="appWatchlist('{{ route('api.watchlist.toggle') }}', { postId: {{ post.id }} }, {{ post.isInWatchlist }})">
+                <button x-show="!isInWatchlist" @click="toggle" title="Add to watchlist" type="button" class="w-full md:w-auto group mr-3 flex items-center bg-gray-100 hover:bg-black hover:text-white transition duration-300 rounded-full py-1 pl-1 pr-6">
+                  <div class="w-7 h-7 rounded-full bg-black text-white flex items-center group-hover:bg-white group-hover:text-black transition duraton-300 justify-center mr-2">
+                    @!svg.plus({ className: 'w-5 h-5' })
+                  </div>
+                  Add To Watchlist
+                </button>
+                <button x-show="isInWatchlist" @click="toggle" title="Remove from watchlist" type="button" class="w-full md:w-auto group mr-3 flex items-center bg-black text-white hover:bg-gray-900 transition duration-300 rounded-full py-1 pl-1 pr-6">
+                  <div class="w-7 h-7 rounded-full bg-white text-black flex items-center transition duraton-300 justify-center mr-2">
+                    @!svg.plus({ className: 'w-5 h-5' })
+                  </div>
+                  In Watchlist
+                </button>
+              </div>
+              @if (post.videoUrl)
+                <a target="_blank" rel="noopener noreferrer nofollow" href="{{ post.videoUrl }}" class="group w-full md:w-auto  mr-3 flex items-center bg-gray-100 hover:bg-black hover:text-white transition duration-300 rounded-full py-1 pl-1 pr-6">
+                  <div class="w-7 h-7 rounded-full bg-black text-white flex items-center group-hover:bg-white group-hover:text-black transition duraton-300 justify-center mr-2">
+                    @!svg.youtube({ className: 'w-4' })
+                  </div>
+                  Watch on YouTube
+                </a>
+              @endif
+              @if (post.repositoryUrl)
+                <a target="_blank" rel="noopener noreferrer nofollow" href="{{ post.repositoryUrl }}" class="group w-full md:w-auto  mr-3 flex items-center bg-gray-100 hover:bg-black hover:text-white transition duration-300 rounded-full py-1 pl-1 pr-6">
+                  <div class="w-7 h-7 rounded-full bg-black text-white flex items-center group-hover:bg-white group-hover:text-black transition duraton-300 justify-center mr-2">
+                    @!svg.github({ className: 'w-4' })
+                  </div>
+                  View Repository
+                </a>
+              @endif
+            </div>
+          </div>
+        </div>
+      @endif
+
+      <div class="flex flex-wrap lg:flex-nowrap lg:justify-center lg:-mx-6">
+        <div class="body-content lg:px-6 order-2 lg:order-1">
+          <div class="prose md:prose-lg lg:prose-xl xl:prose-xl flex-1">
+            {{{ post.body }}}
+          </div>
+
+          @!comment.base({ postId: post.id, comments })
+        </div>
+
+        @if (post.authors && post.authors.length)
+          <div class="w-full flex-1 lg:px-6 order-1 lg:order-2 -mt-3 mb-6 md:mt-0 lg:max-w-md">
+            @!author.card({ author: post.authors[0] })
+          </div>
+        @endif
+      </div>
+    @end
+  </div>
+
+@endsection
+
+@section('scripts')
+
+  {{--   @entryPointScripts('post') --}}
+  <script src="{{ asset('assets/post.js') }}"></script>
+
+  @if (post.videoId)
+    <script defer>
+      initVideo({
+        el: 'lessonVideoEmbed',
+        videoId: '{{ post.videoId }}',
+        watchSeconds: {{ userProgression?.watchSeconds ?? 0 }},
+        httpUrl: '{{ route('api.histories.progression', { id: userProgression?.id }) }}',
+        httpPayload: {
+          postId: {{ post.id }},
+          collectionId: {{ series.id }},
+          userId: {{ auth.user?.id }},
+          route: '{{ request.ctx.route?.name }}'
+        }
+      })
+
+      initProgression({
+        storeProgression: {{ !!auth.user }},
+        httpUrl: '{{ route('api.histories.progression', { id: userProgression?.id }) }}',
+        httpPayload: {
+          postId: {{ post.id }},
+          collectionId: {{ series.id }},
+          userId: {{ auth.user?.id }},
+          route: '{{ request.ctx.route?.name }}'
+        }
+      })
+    </script>
+  @endif
+
+@endsection

@@ -1,0 +1,70 @@
+@set('isPaginated', Array.isArray(data?.rows) && data.currentPage)
+@set('rows', isPaginated ? data.rows : data)
+
+@set('alignments', {
+  left: 'text-left',
+  center: 'text-center',
+  right: 'text-right'
+})
+
+<div class="flex flex-col mb-3">
+  <div class="overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+    <div class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
+      <table class="min-w-full">
+        @if ($slots.thead || columns?.length)
+          <thead>
+            <tr>
+              @if (columns?.length)
+                @each(column in columns)
+                  <th {{{ column.width && `style="width: ${column.width}"` }}} class="
+                    px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-800 uppercase tracking-wider
+                    {{ alignments[align ?? 'left'] }}
+                    {{ column.className }}
+                  ">
+                    {{ column.name }}
+                  </th>
+                @endeach
+              @else
+                {{{ await $slots.thead() }}}
+              @endif
+            </tr>
+          </thead>
+        @endif
+        <tbody class="bg-white">
+          @if (rows?.length)
+            @each(row in rows)
+              <tr>
+                @if (columns?.length)
+                  @each(column in columns)
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      {{{ await $slots.tableData({ row, column }) }}}
+                    </td>
+                  @endeach
+                @elseif ($slots.row)
+                  {{{ await $slots.row() }}}
+                @endif
+              </tr>
+            @endeach
+          @elseif ($slots.tbody)
+            {{{ await $slots.tbody() }}}
+          @else
+            <tr>
+              <td colspan="{{ columns.length ? columns.length : 1 }}" class="text-center">
+                @!component('components/empty', {
+                  title: 'No Posts',
+                  subtitle: 'Get started by creating your first post',
+                  cta: 'Create Post',
+                  href: route('studio.posts.create')
+                })
+              </td>
+            </tr>
+          @endif
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+@if (isPaginated)
+  @!pagination({ data, className: '-mt-3 border-none bg-gray-50 rounded-b-lg border border-t-0 border-gray-200' })
+@endif

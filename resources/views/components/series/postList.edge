@@ -1,0 +1,23 @@
+<div x-data="{ show: false }" class="w-full md:w-1/5 bg-gray-950 text-gray-50 md:absolute top-0 left-0 max-h-full min-h-full overflow-y-scroll overflow-x-hidden border-b border-gray-900 border-opacity-30">
+  <div @click="show = !show" class="flex justify-between items-center pt-6 pb-3 md:pb-0 md:sticky top-0 z-10 bg-gray-950">
+    <div>
+      <h5 class="font-medium uppercase text-xs md:text-sm opacity-60 flex items-center px-6">
+        <span class="mr-2">
+          @!svg.collection()
+        </span>
+        SERIES
+      </h5>
+      <a href="#" class="block px-6" :class="[{ 'pb-3': !show }]">
+        <h4 class="text-base md:text-xl font-black mb-2">{{ series.name }}</h4>
+      </a>
+    </div>
+
+    <div class="md:hidden relative -top-2 text-gray-800 pr-3">
+      @!ui.arrowToggle({ className: 'w-10 h-10' })
+    </div>
+  </div>
+  <ol class="list-none m-0 p-0 px-3 top-0 left-0 overflow-y-auto mb-6 -mt-3 md:mt-0" :class="{ 'hidden md:block': !show }">
+    @!series.modules({ modules: series.children })
+    @!series.posts({ posts: series.posts })
+  </ol>
+</div>

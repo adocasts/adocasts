@@ -1,0 +1,54 @@
+<div class="bg-gradient-to-br from-brand-900 to-brand-800 relative flex items-end">
+  <div class="w-full md:flex absolute md:static top-0 left-0 opacity-30 md:opacity-100" style="min-height: 50vh; max-height: calc(100vh - 65px)">
+    @!picture({
+      filename: '7/2021-QuickTip-JAGR-01_1637429305160.jpeg',
+      className: 'flex w-full',
+      pictureClassName: 'w-full',
+      fit: 'object-cover blur md:blur-none'
+    })
+  </div>
+  <div class="w-full h-full md:h-3/4 flex flex-col justify-end pt-6 md:absolute bottom-0 bg-gradient-to-t from-black to-transparent z-10 text-white">
+    <div class="bg-gradient-to-t from-black to-transparent">
+      @container()
+        <div class="flex flex-col max-w-4xl py-4 md:py-6">
+          <h1 class="font-bold text-3xl md:text-4xl lg:text-5xl text-white mb-4">
+            {{ item.name }}
+          </h1>
+          <div class="flex items-center opacity-80 mb-2 text-xs md:text-base">
+            <div class="mr-3">
+              {{ item.$extras.postsFlattened_count ?? '0' }}
+              {{ getSingularOrPlural('Lesson', item.$extras.root_posts_count ?? 0) }}
+            </div>
+            <div class="mr-3">3 Hours</div>
+          </div>
+          <p class="opacity-80 mb-6 text-sm lg:text-base">
+            {{ item.description }}
+          </p>
+          <div class="flex items-center pb-12">
+            <a href="{{ route('series.lesson', { slug: item.slug, index: 1 }) }}" class="mr-3 text-xs md:text-sm lg:text-base bg-white hover:bg-brand-800 hover:text-brand-100 transition duration-300 flex items-center rounded-full text-black pr-6">
+              <svg class="w-8 h-8 md:w-12 md:h-12 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+              Start Series
+            </a>
+            @if (auth.user)
+              <div x-cloak x-data="appWatchlist('{{ route('api.watchlist.toggle') }}', { collectionId: {{ item.id }} }, {{ item.isInWatchlist }})">
+                <button x-show="!isInWatchlist" @click="toggle" type="button" class="h-8 md:h-12 text-xs md:text-sm lg:text-base bg-white text-black hover:bg-brand-800 hover:text-brand-100 transition duration-300 rounded-full mr-5 flex items-center justify-center pl-3 pr-4 md:pr-6">
+                  @!svg.plus({ className: 'w-7 mr-1' })
+                  Add To Watchlist
+                </button>
+                <button x-show="isInWatchlist" @click="toggle" type="button" class="h-8 md:h-12 text-xs md:text-sm lg:text-base bg-brand-800 text-brand-100 transition duration-300 rounded-full mr-5 flex items-center justify-center pl-3 pr-4 md:pr-6">
+                  @!svg.check({ className: 'w-5 md:w-7 mr-2 md:mr-3' })
+                  In Watchlist
+                </button>
+              </div>
+            @endif
+            @if (item.youtubePlaylistUrl)
+              <a href="{{ item.youtubePlaylistUrl }}" target="_blank" rel="noopener noreferrer" class="w-8 h-8 md:w-12 md:h-12 bg-white text-black hover:bg-brand-800 hover:text-brand-100 transition duration-300 rounded-full flex items-center justify-center">
+                <svg class="w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 461.001 461.001" fill="currentColor"><path d="M365.257 67.393H95.744C42.866 67.393 0 110.259 0 163.137v134.728c0 52.878 42.866 95.744 95.744 95.744h269.513c52.878 0 95.744-42.866 95.744-95.744V163.137c0-52.878-42.866-95.744-95.744-95.744zm-64.751 169.663l-126.06 60.123c-3.359 1.602-7.239-.847-7.239-4.568V168.607c0-3.774 3.982-6.22 7.348-4.514l126.06 63.881c3.748 1.899 3.683 7.274-.109 9.082z" /></svg>
+              </a>
+            @endif
+          </div>
+        </div>
+      @end
+    </div>
+  </div>
+</div>

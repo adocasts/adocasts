@@ -1,0 +1,105 @@
+@layout('layouts/studio')
+@set('activeUrl', request.url(false))
+@set('Tab', (name, href) => ({
+  name,
+  href,
+  isActive: activeUrl === href
+}))
+@set('tabOptions', [
+  Tab('All', route('studio.comments.index')),
+  Tab('Pending', route('studio.comments.index', { stateId: StateEnum.IN_REVIEW })),
+  Tab('Approved', route('studio.comments.index', { stateId: StateEnum.PUBLIC })),
+  Tab('Declined', route('studio.comments.index', { stateId: StateEnum.DECLINED }))
+])
+
+@section('heading')
+  @studio.heading({ heading: 'Comments' })
+    @!tab.pills({ options: tabOptions })
+  @end
+@endsection
+
+@section('content')
+  <div class="-m-6">
+    @table.base({
+      data: comments,
+      columns: [
+        { name: 'User', field: 'user' },
+        { name: 'Action', field: 'action' },
+        { name: 'State', field: 'stateId' },
+        { name: 'Comment Excerpt', field: 'body' },
+        { name: 'Date', field: 'createdAt' },
+        { name: '', field: '_actions' }
+      ]
+    })
+      @slot('tableData', scope)
+        @if (scope.column.field === 'user')
+          <div class="text-sm leading-5 font-medium">
+            {{ scope.row.user?.username ?? scope.row.name }}
+          </div>
+          <div class="text-xs leading-5 text-gray-700">
+            {{ scope.row.user ? 'Authenticated User' : 'Anonymously Commented' }}
+          </div>
+        @elseif (scope.column.field === 'action')
+          @if (scope.row.replyTo)
+            <div class="flex items-center">
+              <div class="p-2 rounded-full bg-gray-100 text-gray-700 mr-2">
+                @!svg.reply()
+              </div>
+              Comment Reply
+            </div>
+          @else
+            <div class="flex items-center">
+              <div class="p-2 rounded-full bg-gray-100 text-gray-700 mr-2">
+                @!svg.comment()
+              </div>
+              Post Comment
+            </div>
+          @endif
+        @elseif (scope.column.field === 'stateId')
+          @badge({ stateId: scope.row.stateId })
+            <div class="flex items-center">
+              <span>{{ StateEnumDesc[scope.row.stateId] }}</span>
+            </div>
+          @end
+        @elseif (scope.column.field === 'body')
+          <div class="prose">
+            {{{ excerpt(stripHtml(scope.row.body), 50) }}}
+          </div>
+        @elseif (scope.column.field === 'createdAt')
+          <span class="text-sm">{{ scope.row.createdAt.toFormat('fff') }}</span>
+        @elseif (scope.column.field === '_actions')
+          <div class="flex text-sm">
+            @if (scope.row.stateId !== StateEnum.IN_REVIEW)
+              <a href="{{ getCommentGoUrl(scope.row) }}" class="mr-2">
+                View
+              </a>
+            @endif
+            @if (scope.row.stateId === StateEnum.IN_REVIEW)
+              @can ('CommentPolicy.state', scope.row)
+                <form method="POST" action="{{ route('studio.comments.state', { id: scope.row.id, stateId: StateEnum.PUBLIC }, { qs: { _method: 'PATCH' }}) }}">
+                  {{ csrfField() }}
+                  <button type="submit" class="text-green-800 hover:text-green-900 mr-2">
+                    Approve
+                  </button>
+                </form>
+              @endcan
+            @endif
+            @if (scope.row.stateId !== StateEnum.DECLINED)
+              @can ('CommentPolicy.state', scope.row)
+                <form method="POST" action="{{ route('studio.comments.state', { id: scope.row.id, stateId: StateEnum.DECLINED }, { qs: { _method: 'PATCH' }}) }}">
+                  {{ csrfField() }}
+                  <button type="submit" class="text-red-800 hover:text-red-900">
+                    Decline
+                  </button>
+                </form>
+              @endcan
+            @endif
+          </div>
+        @else
+          <span class="text-sm">{{ scope.row[scope.column.field] }}</span>
+        @endif
+      @endslot
+    @end
+  </div>
+
+@endsection

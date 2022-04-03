@@ -1,0 +1,129 @@
+@layout('layouts/studio')
+
+@section('heading')
+  @!studio.heading({ heading: 'Settings' })
+@endsection
+
+@section('content')
+
+  @form.section({ title: 'Change Username', description: 'Update your publicly displayed username' })
+    @form.base({ action: route('studio.settings.username.update', {}, { qs: { _method: 'PATCH' } }) })
+      @!form.input({
+        label: 'Username',
+        name: 'username',
+        value: flashMessages.get('username') ?? '',
+        errors: flashMessages.get('errors.username'),
+        autocomplete: 'username',
+        placeholder: auth.user.username,
+        help: 'Minimum of 3 characters containing only letters, numbers, _, or -',
+        min: 3,
+        required: true,
+        groupStyle: 'max-width: 45ch'
+      })
+
+      @button({ type: 'submit', variant: 'blackSecondary', className: 'mt-3' })
+        Change Username
+      @end
+    @end
+  @end
+
+  @form.section({ title: 'Update Email', description: 'Update your account\'s email address' })
+    @form.base({ action: route('studio.settings.email', {}, { qs: { _method: 'PUT' } }) })
+      @!form.input({
+        type: 'email',
+        label: 'Email',
+        name: 'email',
+        placeholder: auth.user.email,
+        value: flashMessages.get('email') ?? '',
+        errors: flashMessages.get('errors.email'),
+        autocomplete: 'email',
+        min: 3,
+        required: true,
+        groupStyle: 'max-width: 45ch'
+      })
+
+      @!form.input({
+        type: 'password',
+        label: 'Confirm Password',
+        name: 'password',
+        value: '',
+        help: 'Please confirm your password to change your email',
+        errors: flashMessages.get('errors.password'),
+        required: true,
+        groupStyle: 'max-width: 45ch'
+      })
+
+      @button({ type: 'submit', variant: 'blackSecondary', className: 'mt-3' })
+        Update Email
+      @end
+    @end
+  @end
+
+  @form.section({ title: 'Email Notifications', description: 'Would you like to be notified via email for anything?' })
+    @form.base({ action: route('studio.settings.email.notifications', {}, { qs: { _method: 'PUT' } }) })
+      @set('emailOnComment', flashMessages.get('emailOnComment') ?? profile.emailOnComment)
+      @set('emailOnCommentReply', flashMessages.get('emailOnCommentReply') ?? profile.emailOnCommentReply)
+      @set('emailOnAchievement', flashMessages.get('emailOnAchievement') ?? profile.emailOnAchievement)
+
+      <div class="mb-3">
+        <label class="inline-flex">
+          <input class="mr-2 mt-1" type="checkbox" name="emailOnComment" {{ emailOnComment && 'checked=checked' }}>
+          <div>
+            <div class="text-sm font-semibold">Comment</div>
+            <div class="text-gray-700 text-xs">
+              Get notified via email when someone posts a comment on one of your posts.
+            </div>
+          </div>
+        </label>
+      </div>
+
+      <div class="mb-3">
+        <label class="inline-flex">
+          <input class="mr-2 mt-1" type="checkbox" name="emailOnCommentReply" {{ emailOnCommentReply && 'checked=checked' }}>
+          <div>
+            <div class="text-sm font-semibold">Comment Reply</div>
+            <div class="text-gray-700 text-xs">
+              Get notified via email when someone replies to one of your comments.
+            </div>
+          </div>
+        </label>
+      </div>
+
+      <div class="mb-3">
+        <label class="inline-flex">
+          <input class="mr-2 mt-1" type="checkbox" name="emailOnAchievement" {{ emailOnAchievement && 'checked=checked' }}>
+          <div>
+            <div class="text-sm font-semibold">Achievements</div>
+            <div class="text-gray-700 text-xs">
+              Get notified via email when you reach an achievement. (not yet complete)
+            </div>
+          </div>
+        </label>
+      </div>
+
+      @button({ type: 'submit', variant: 'blackSecondary', className: 'mt-3' })
+        Update Email Notifications
+      @end
+    @end
+  @end
+
+  @form.section({ title: 'Delete Account', description: 'Permanently delete your account and all data associated with it.' })
+    @form.base({ action: '' })
+      @!form.input({
+        label: 'Username',
+        name: 'username',
+        value: flashMessages.get('username') ?? '',
+        errors: flashMessages.get('errors.username'),
+        autocomplete: 'username',
+        help: `Please enter your username "${auth.user.username}" to confirm account deletion`,
+        required: true,
+        groupStyle: 'max-width: 45ch'
+      })
+
+      @button({ type: 'submit', variant: 'badSecondary', className: 'mt-3' })
+        Delete Account
+      @end
+    @end
+  @end
+
+@endsection

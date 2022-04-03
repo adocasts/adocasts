@@ -1,0 +1,7 @@
+@set('as', 'div')
+
+<{{ as }} class="container mx-auto px-4 sm:px-6 {{ className }}">
+
+  {{{ await $slots.main() }}}
+
+</{{ as }}>

@@ -1,0 +1,24 @@
+<div class="pb-6 border-b border-gray-100 mb-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
+  <div class="mb-6 sm:mb-5">
+    <h3 class="text-lg leading-6 font-medium text-gray-950">
+      {{ title }}
+    </h3>
+    @if (description)
+      <p class="mt-1 max-w-2xl text-sm text-gray-800">
+        {{ description }}
+      </p>
+    @endif
+
+    @if (warning)
+      <p class="mt-1 max-w-2xl text-sm text-yellow-800">
+        {{ warning }}
+      </p>
+    @endif
+  </div>
+
+  @if ($slots.main)
+    <div class="mt-1 sm:mt-0 sm:col-span-2">
+      {{{ await $slots.main() }}}
+    </div>
+  @endif
+</div>

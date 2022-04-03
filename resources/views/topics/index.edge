@@ -1,0 +1,56 @@
+@layout('layouts/main')
+
+@section('meta')
+  @!meta.tags({
+    url: route('topics.index'),
+    title: 'Topics',
+    desc: "Jagr series and lessons are all categorized into topics, some more specific than others. You can find all content about a particular topic by clicking a topic below.",
+    asset: null,
+    index: true
+  })
+@endsection
+
+@section('content')
+
+  <div class="break border-t border-gray-300 relative -top-6 pt-8 mt-3">
+    @container()
+      {{--  Lessons  --}}
+      @heading.page()
+        Topics
+
+        @slot('description')
+          Jagr series and lessons are all categorized into topics, some more specific than others.
+          You can find all content about a particular topic by clicking a topic below.
+        @end
+      @end
+
+      @heading.section()
+        Featured Topics
+      @end
+      <div class="flex flex-wrap md:-mx-6 mb-8">
+        @each(topic in featured)
+          <div class="w-full md:w-1/4 lg:w-1/5 md:px-3 pb-6">
+            @!topic.card({ topic, className: 'w-full' })
+          </div>
+        @endeach
+      </div>
+
+      {{--  Lessons  --}}
+      @heading.section()
+        All Topics
+      @end
+      <div class="flex flex-wrap md:-mx-6">
+        @each(topic in topics)
+          <div class="w-full md:w-1/4 lg:w-1/5 md:px-3 pb-6">
+            @!topic.card({ topic, className: 'w-full' })
+          </div>
+        @endeach
+      </div>
+    @end
+
+    <div class="w-full md:order-3 mt-16">
+      @!newsletter.large()
+    </div>
+  </div>
+
+@endsection

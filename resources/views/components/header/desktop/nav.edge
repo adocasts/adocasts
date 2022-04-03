@@ -1,0 +1,55 @@
+<nav class="hidden md:flex space-x-3">
+  @header.desktop.navItem({ href: route('series.index') })
+    Series
+  @end
+  @header.desktop.navItem({ href: route('lessons.index') })
+    Lessons
+  @end
+{{--   @header.desktop.navItem({ href: '#' }) --}}
+{{--     Shorts --}}
+{{--   @end --}}
+  @header.desktop.navItem({ href: route('topics.index') })
+    Topics
+  @end
+  @header.desktop.navItem({ href: route('posts.index') })
+    Blog
+  @end
+
+  @header.dropdown({ label: 'More' })
+    <a href="#" class="-m-3 p-3 block rounded-md hover:bg-gray-50">
+      <p class="text-base font-medium text-gray-950">
+        Help Center
+      </p>
+      <p class="mt-1 text-sm text-gray-900">
+        Get all of your questions answered in our forums or contact support.
+      </p>
+    </a>
+
+    <a href="#" class="-m-3 p-3 block rounded-md hover:bg-gray-50">
+      <p class="text-base font-medium text-gray-950">
+        Guides
+      </p>
+      <p class="mt-1 text-sm text-gray-900">
+        Learn how to maximize our platform to get the most out of it.
+      </p>
+    </a>
+
+    <a href="#" class="-m-3 p-3 block rounded-md hover:bg-gray-50">
+      <p class="text-base font-medium text-gray-950">
+        Events
+      </p>
+      <p class="mt-1 text-sm text-gray-900">
+        See what meet-ups and other events we might be planning near you.
+      </p>
+    </a>
+
+    <a href="#" class="-m-3 p-3 block rounded-md hover:bg-gray-50">
+      <p class="text-base font-medium text-gray-950">
+        Security
+      </p>
+      <p class="mt-1 text-sm text-gray-900">
+        Understand how we take your privacy seriously.
+      </p>
+    </a>
+  @end
+</nav>

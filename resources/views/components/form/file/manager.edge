@@ -1,0 +1,48 @@
+@set('assets', assets ?? [])
+
+<div x-data="imageUploader({ postId: {{ postId }}, images: {{ JSON.stringify(assets) }} })" class="w-full">
+  <input
+    :id="identifier"
+    :name="name"
+    :class="`file-drop ${isHovered ? 'is-hovered' : ''}`"
+    type="file"
+    ref="thumbnail"
+    @change="fileChosen"
+  />
+  <label
+    :for="identifier"
+    @dragover.prevent
+    @drop.prevent="fileChosen"
+    @dragenter="isHovered = true"
+    @dragleave="isHovered = false"
+    >
+      {{ placeholder }}
+    </label>
+  {{-- <d-alert v-if="invalidFiles.length" variant="error" class="mt-3">
+    <dl
+      v-for="invalid in invalidFiles"
+      :key="invalid.file.name"
+      class="text-label"
+    >
+      <dt>{{ invalid.file.name }}</dt>
+      <dd v-for="error in invalid.errors" :key="error" class="pl-6 border-l">
+        {{ error }}
+      </dd>
+    </dl>
+  </d-alert> --}}
+
+  <div x-show="images.length" class="flex flex-wrap">
+    <template x-for="(image, i) in images" :key="image.id">
+      <div class="relative group mt-3 mr-3" style="width: fit-content; height: 100px;">
+        <button type="button" @click="fileRemove(image.id)" class="rounded-full bg-red-800 text-red-50 w-6 h-6 absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition duration-150">
+          &times;
+        </button>
+        <img :src="`${image.src}?w=400`" class="max-w-full h-full object-fit rounded border border-gray-300" />
+        <input type="hidden" name="assetIds[]" :value="image.id" />
+        <div x-show="image.loading">Loading ...</div>
+      </div>
+    </template>
+  </div>
+</div>
+
+<script src="{{ asset('assets/file_manager.js') }}"></script>

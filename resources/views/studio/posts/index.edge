@@ -1,0 +1,77 @@
+@layout('layouts/studio')
+
+@section('heading')
+  @studio.heading({ heading: 'Posts' })
+    @button({ href: route('studio.posts.create') })
+      Create New Post
+    @end
+  @end
+@endsection
+
+@section('content')
+
+  <div class="-m-6">
+    @table.base({
+      data: posts,
+      columns: [
+        { name: 'Title', field: 'title' },
+        { name: 'Author', field: 'author' },
+        { name: 'Status', field: 'status' },
+        { name: 'Type', field: 'type' },
+        { name: 'Views', field: 'view_count' },
+        { name: 'Publish Date', field: 'publish_at' },
+        { name: '', field: '_actions' }
+      ]
+    })
+      @slot('tableData', scope)
+        @if (scope.column.field === 'title')
+          <div class="text-sm leading-5 font-medium">
+            <a href="{{ route('studio.posts.edit', { id: scope.row.id }) }}" class="hover:underline text-gray-950">
+              {{ scope.row.title }}
+            </a>
+          </div>
+          <div class="text-sm leading-5">
+            <a href="/posts/{{ scope.row.slug }}" target="_blank" class="hover:underline text-gray-800">
+              {{ scope.row.slug }}
+            </a>
+          </div>
+        @elseif (scope.column.field === 'author')
+          @if (scope.row.authors)
+            @each (author in scope.row.authors)
+              <span class="text-sm">{{ author.username }}</span>
+            @endeach
+          @endif
+        @elseif (scope.column.field === 'status')
+          @badge({ stateId: scope.row.stateId })
+            {{ StateEnumDesc[scope.row.stateId] }}
+          @end
+          <div class="whitespace-nowrap text-xs text-gray-800 pt-1">
+            {{--  {{ post.history.length }} versions  --}}
+          </div>
+        @elseif (scope.column.field === 'type')
+          <span class="text-sm">{{ PostTypeEnumDesc[scope.row.postTypeId] }}</span>
+        @elseif (scope.column.field === 'publish_at')
+          <span class="capitalize text-sm">{{ scope.row.timeago }}</span>
+          <div class="text-xs text-gray-800">
+            {{ scope.row.publishAt.toFormat('fff') }}
+          </div>
+        @elseif (scope.column.field === '_actions')
+          <div class="flex text-sm">
+            <a href="{{ route('studio.posts.edit', { id: scope.row.id }) }}" class="text-gray-950 hover:text-brand-800 mr-3">
+              Edit
+            </a>
+            <form method="POST" action="{{ route('studio.posts.destroy', { id: scope.row.id }, { qs: { _method: 'DELETE' }}) }}">
+              {{ csrfField() }}
+              <button type="submit" class="text-red-800 hover:text-red-900">
+                Delete
+              </button>
+            </form>
+          </div>
+        @else
+          <span class="text-sm">{{ scope.row[scope.column.field] }}</span>
+        @endif
+      @endslot
+    @end
+  </div>
+
+@endsection

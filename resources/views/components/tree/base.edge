@@ -1,0 +1,26 @@
+@set('primaryKey', primaryKey ?? 'id')
+@set('columnName', columnName ?? 'parentId')
+@set('nodeIds', nodes.map(n => n[primaryKey]))
+@set('nodes', nodes ?? [])
+@set('rootNodes', nodes.filter(n => !n[columnName]))
+
+<ul class="{{ className ?? '' }}">
+  @each ((node, index) in rootNodes)
+    @tree.node({
+      className,
+      itemClassName,
+      primaryKey,
+      columnName,
+      columnValue,
+      nodes,
+      node,
+      parent: null,
+      rootParent: node,
+      index
+    })
+      @slot('main', slot)
+        {{{ await $slots.main(slot) }}}
+      @endslot
+    @end
+  @endeach
+</ul>

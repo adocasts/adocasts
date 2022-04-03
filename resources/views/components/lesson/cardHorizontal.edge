@@ -1,0 +1,24 @@
+@set('thumbnail', item.assets.length && item.assets[0])
+
+<a href="{{ getRoute(item) }}" class="anchor w-full group flex flex-col justify-center items-center transition relative overflow-hidden rounded-xl {{ className ?? '' }}">
+  <div class="absolute top-0 left-0 w-full bg-gray-50 transition duration-300 transform -translate-y-full group-hover:translate-y-0" style="height: calc(100% + 1.5rem)"></div>
+
+  <div class="w-full h-full flex pt-3 pb-3 relative z-10 -mx-3">
+
+    <div class="w-1/2 px-3">
+      @!picture({ filename: thumbnail.filename, className: 'rounded-lg shadow-md lg:shadow-xl' })
+    </div>
+
+    <div class="w-1/2 px-3">
+      <h5 class="uppercase inline-flex items-center text-accent-800 tracking-wide text-xs">
+        <span class="text-gray-700">
+          Lesson {{ item.lessonIndexDisplay }}
+        </span>
+      </h5>
+
+      <h4 class="text-sm lg:text-base leading-tight lg:leading-normal">
+        {{ item.title }}
+      </h4>
+    </div>
+  </div>
+</a>

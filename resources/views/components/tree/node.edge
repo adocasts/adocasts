@@ -1,0 +1,35 @@
+@set('primaryKey', primaryKey ?? 'id')
+@set('columnName', 'parentId')
+@set('columnValue', null)
+@set('nodes', nodes ?? [])
+@set('node', node ?? {})
+@set('index', index ?? 0)
+
+<li class="{{ itemClassName ?? '' }}">
+  @set('nodeChildren', nodes.filter(c => c[columnName] === node[primaryKey]))
+
+  {{{ await $slots.main({ node, index, parent, rootParent }) }}}
+
+  @if (nodeChildren.length)
+    <ul class="{{ className ?? '' }}">
+      @each ((childNode, childIndex) in nodeChildren)
+        @tree.node({
+          className,
+          itemClassName,
+          primaryKey,
+          columnName,
+          columnValue,
+          nodes,
+          node: childNode,
+          index: childIndex,
+          parent: node,
+          rootParent: rootParent,
+        })
+          @slot('main', slot)
+            {{{ await $slots.main(slot) }}}
+          @endslot
+        @end
+      @endeach
+    </ul>
+  @endif
+</li>

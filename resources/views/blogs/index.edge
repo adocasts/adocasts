@@ -1,0 +1,38 @@
+@layout('layouts/main')
+
+@section('content')
+
+  <div class="break border-t border-gray-300 relative -top-6 pt-8 mt-3">
+    @container()
+
+      @heading.page()
+        Latest Blogs
+        @if (items.currentPage != 1)
+          <span class="font-normal">&mdash; Page {{ items.currentPage }}</span>
+        @endif
+
+        @slot('description')
+          Browse our latest blog posts below. Our blog posts are laid back and meant to be conversational.
+        @end
+      @end
+
+      <div class="flex flex-wrap -mx-6">
+        <div class="w-full md:w-3/4 px-6">
+          @lesson.list({ items })
+            @slot('footer')
+              @!pagination({ data: items })
+            @endslot
+          @end
+        </div>
+        <div class="w-full md:w-1/4 px-6">
+
+        </div>
+      </div>
+    @end
+
+    <div class="w-full md:order-3 mt-16">
+      @!newsletter.large()
+    </div>
+  </div>
+
+@endsection

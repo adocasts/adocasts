@@ -1,0 +1,31 @@
+<div x-data="setupEditor({{ stringify(value) ?? '' }})" x-init="() => init($refs.element)">
+  <div class="bubble-menu bg-gray-900 text-gray-400 text-sm py-1 px-2 rounded-md">
+    <template x-if="typeof isInitialized === 'boolean'">
+      <div class="flex items-center space-x-2">
+        <button type="button" @click="command('h3')" :class="{ 'text-white': isActive('bold') }">
+          H3
+        </button>
+        <button type="button" @click="command('h4')" :class="{ 'text-white': isActive('bold') }">
+          H4
+        </button>
+        <button type="button" @click="command('bold')" :class="{ 'text-white': isActive('bold') }">
+          Bold
+        </button>
+        <button type="button" @click="command('italic')" :class="{ 'text-white': isActive('italic') }">
+          Italic
+        </button>
+        <button type="button" @click="command('strike')" :class="{ 'text-white': isActive('strike') }">
+          Strike
+        </button>
+        <button type="button" @click="command('link')" :class="{ 'text-white': isActive('link') }">
+          Link
+        </button>
+      </div>
+    </template>
+  </div>
+
+  <div x-ref="element" class="{{ className ?? 'prose mt-3 mb-6' }}"></div>
+  <input type="hidden" name="{{ name ?? 'body' }}" :value="content">
+</div>
+
+<script src="{{ asset('assets/tiptap_basic.js') }}"></script>

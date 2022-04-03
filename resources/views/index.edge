@@ -1,0 +1,99 @@
+@layout('layouts/main')
+
+@section('meta')
+  @!meta.tags({
+    url: route('home'),
+    title: "Educational JavaScript Dev Screencasts",
+    desc: `Jagr provides high-quality screencasts and written lessons covering a wide array of topics, including AdonisJS and AWS Amplify.`,
+    asset: null,
+    index: true
+  })
+@endsection
+
+@section('hero')
+
+  @!lesson.feature({ item: featuredLesson })
+
+@endsection
+
+@section('content')
+  @set('trending', trending ?? [])
+
+  {{--  Trending Lessons  --}}
+  @!lesson.trending({ items: trending })
+
+  <div class="break relative mt-3 {{ trending && trending.length ? 'border-t border-gray-300 -top-6 pt-8' : 'pt-12' }}">
+    @container()
+
+      {{--  Series  --}}
+      <div class="py-3 flex flex-wrap justify-between">
+        @heading.section({ className: 'mb-0' })
+          Series
+        @end
+        <a href="{{ route('series.index') }}" class="anchor text-sm flex flex-nowrap items-end space-x-2">
+          <span>View all series</span>
+          @!svg.arrow.right()
+        </a>
+      </div>
+      <div class="flex flex-wrap md:-mx-6 mb-8">
+        @each ((item, i) in series)
+          <div class="w-full md:w-1/2 lg:w-1/4 md:px-3">
+            @!series.card({ item, width: 'w-full' })
+          </div>
+        @endeach
+      </div>
+
+      {{--  Topics  --}}
+      <div class="py-3 flex flex-wrap justify-between">
+        @heading.section({ className: 'mb-0' })
+          Topics
+        @end
+        <a href="{{ route('topics.index') }}" class="anchor text-sm flex flex-nowrap items-end space-x-2">
+          <span>View all topics</span>
+          @!svg.arrow.right()
+        </a>
+      </div>
+      <div class="flex flex-wrap md:-mx-6 mb-8">
+        @each ((topic, i) in topics)
+          <div class="w-full md:w-1/4 lg:w-1/5 md:px-3 pb-3">
+            @!topic.card({ topic, className: 'w-full' })
+          </div>
+        @endeach
+      </div>
+
+      <div class="flex flex-wrap md:-mx-6">
+        {{--  Latest Lessons  --}}
+        <div class="w-full md:w-2/3 md:px-6 md:order-1">
+          <div class="py-3 flex flex-wrap justify-between">
+            @heading.section({ className: 'mb-0' })
+              Latest Lessons
+            @end
+            <a href="{{ route('lessons.index') }}" class="anchor text-sm flex flex-nowrap items-end space-x-2">
+              <span>View all lessons</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+          </div>
+
+          @lesson.list({ items: latestLessons, lazy: true })
+            @slot('footer')
+              <a href="{{ route('lessons.index') }}" class="anchor-inv text-lg font-bold inline-block mx-auto px-6 pb-2 mt-3">
+                View All Lessons
+              </a>
+            @endslot
+          @end
+        </div>
+
+        {{--  Sidebar  --}}
+        <div class="hidden md:block w-full md:w-1/3 md:px-6 md:order-2">
+          @!aside.watchlist({ postWatchlist, collectionWatchlist })
+          @!aside.progression({ histories: collectionProgress })
+        </div>
+      </div>
+    @end
+
+    <div class="w-full md:order-3 mt-16">
+      @!newsletter.large()
+    </div>
+  </div>
+
+@endsection

@@ -1,0 +1,25 @@
+@set('width', width ? width : 600)
+@set('lazy', lazy ?? false)
+
+<div class="overflow-hidden max-w-full {{ className }}">
+  <picture class="max-w-full h-full {{ pictureClassName }}">
+    <source
+      srcset="
+        /img/{{ filename }}?w={{ width * 2 }}&f=webp 2x,
+        /img/{{ filename }}?w={{ width }}&f=webp 1x
+      "
+      type="image/webp"
+    />
+
+    <img
+      src="/img/{{ filename }}?w={{ width * 2 }}"
+      srcset="
+        /img/{{ filename }}?w={{ width * 2 }} 2x,
+        /img/{{ filename }}?w={{ width }} 1x,
+      "
+      alt="{{ altText || '' }}"
+      class="w-full max-w-full {{ ratio ? ratio : 'aspect-video' }} {{ fit ? `${fit} h-full` : '' }} {{ blur ? 'bg-img-blur' : '' }} {{ imgClassName ? imgClassName : '' }}"
+      {{ lazy && 'loading=lazy' }}
+    />
+  </picture>
+</div>

@@ -1,0 +1,13 @@
+<div class="relative z-0 flex-1 px-2 flex items-center justify-end sm:justify-end sm:pr-16 lg:pr-0 sm:absolute lg:relative sm:inset-0">
+  <form action="/search" method="GET" class="w-full max-w-6 mx-3 focus-within:max-w-400">
+    <label for="search" class="sr-only">Search</label>
+    <label class="relative">
+      <div class="search relative -ml-3">
+        <div class="icon absolute inset-y-0 left-0 pl-3 flex items-center z-10">
+          @!svg.search({ className: 'h-5 w-5 text-brand-200 hover:text-white transition duration-150 cursor-pointer' })
+        </div>
+        <input id="search" name="term" class="block w-full bg-transparent focus:bg-brand-800 border-none focus:border border-brand-900 rounded-md py-2 pl-10 pr-3 text-sm placeholder-brand-300 focus:outline-none focus:text-white focus:placeholder-brand-200 focus:ring-1 focus:ring-brand-700 focus:border-brand-700 sm:text-sm" placeholder="Search" type="search">
+      </div>
+    </label>
+  </form>
+</div>

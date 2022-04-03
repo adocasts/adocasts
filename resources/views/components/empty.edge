@@ -1,0 +1,24 @@
+<div class="max-w-md mx-auto my-6">
+  <div class="text-center">
+    @if ($slots.icon)
+      {{{ await $slots.icon() }}}
+    @else
+      <svg class="mx-auto h-12 w-12 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+      </svg>  
+    @endif
+    <h3 class="mt-2 text-sm font-medium text-gray-950">
+      {{ title ?? 'No Items' }}
+    </h3>
+    <p class="mt-1 text-sm text-gray-800">
+      {{ subtitle ?? 'Get started by creating your first item' }}
+    </p>
+    @if (href)
+      <div class="mt-6">
+        @component('components/button', { href, size: 'sm' })
+          {{ cta }}
+        @endcomponent
+      </div>
+    @endif
+  </div>
+</div>

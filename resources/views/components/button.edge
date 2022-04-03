@@ -1,0 +1,54 @@
+@set('variants', {
+  base: 'text-white bg-brand-700 hover:bg-brand-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-700 shadow hover:shadow-lg transition duration-300 ease-in-out',
+  baseSecondary: 'text-brand-900 bg-brand-100 hover:bg-brand-300 hover:bg-opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500',
+  good: 'text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500',
+  goodSecondary: 'text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500',
+  bad: 'text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500',
+  badSecondary: 'text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500',
+  white: 'text-gray-700 bg-white hover:bg-gray-100 focus:ring-2 focus:ring-offset-2 focus:ring-brand-500',
+  black: "text-gray-50 bg-gray-950 hover:bg-gray-800 focus:ring-2 focus:ring-offset-2 focus:ring-brand-700",
+  blackSecondary: `text-black bg-gray-100 hover:bg-gray-950 hover:text-white ${group !== false ? 'group-hover:bg-gray-950 group-hover:text-white' : ''} focus:ring-2 focus:ring-offset-2 focus:ring-brand-700`
+})
+
+@set('sizes', {
+  lg: 'px-4 py-2 text-lg',
+  base: 'px-6 py-2',
+  xs: 'px-2.5 py-1.5 text-xs',
+  sm: 'px-3 py-2 text-sm'
+})
+
+@set('sizeClass', (s) => sizes[s || 'base'])
+@set('variantClass', (v) => variants[v || 'base'])
+@set('displayClass', block ? 'flex w-full justify-center' : 'inline-flex')
+
+@if(!href)
+  <button
+    {{{ id && `id="${id}"` }}}
+    onclick="{{ onClick || undefined }}"
+    @click="{{ atClick || undefined }}"
+    type="{{ type || 'button' }}"
+    class="
+      {{ sizeClass(size) }}
+      {{ variantClass(variant) }}
+      {{ className || '' }}
+      {{ disabled ? "bg-gray-200 text-gray-400 hover:bg-gray-200 hover:text-gray-400 focus:bg-gray-200 focus:text-gray-400" : "" }}
+      {{ displayClass }} items-center rounded transition duration-300
+    "
+    {{  disabled ? "disabled=disabled" : "" }}
+    {{ form ? `form=${form}` : "" }}>
+    {{{ await $slots.main() }}}
+  </button>
+@else
+  <a
+    {{{ id && `id="${id}"` }}}
+    {{ disabled ? "" : `href=${href}` }}
+    class="
+      {{ sizeClass(size) }}
+      {{ variantClass(variant) }}
+      {{ className || '' }}
+      {{ disabled ? "bg-gray-200 text-gray-400 hover:bg-gray-200 hover:text-gray-400 focus:bg-gray-200 focus:text-gray-400" : "" }}
+      {{ displayClass }} items-center rounded transition duration-300
+    ">
+    {{{ await $slots.main() }}}
+  </a>
+@endif

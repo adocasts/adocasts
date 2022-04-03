@@ -1,0 +1,41 @@
+@set('author', item.authors.length && item.authors[0])
+@set('series', item.rootSeries.length && item.rootSeries[0])
+@set('thumbnail', item.assets.length && item.assets[0])
+@set('href', routePost(item, { slug: item.slug }))
+
+<div class="bg-brand-950 text-white transition pt-6 relative z-20 border-b border-gray-300">
+  @container({ className: 'flex flex-wrap md:px-6' })
+    @if (thumbnail)
+      <div class="w-full md:w-3/5 mb-6 md:-mb-8">
+        <a href="{{ href }}">
+          @!picture({ filename: thumbnail.filename, className: 'rounded-lg shadow-xl', width: 900 })
+        </a>
+      </div>
+    @endif
+
+    <div class="w-full md:w-2/5 md:pl-6 lg:pl-12">
+      @if (series)
+        <h5 class="uppercase text-accent-800 tracking-wide text-sm mb-3">
+          <a href="{{ route('series.show', { slug: series.slug }) }}" class="anchor">
+            {{ series.name }}
+          </a>
+        </h5>
+      @endif
+
+      <h1 class="text-2xl md:text-2xl xl:text-4xl font-bold mb-3 lg:mb-6">
+        <a href="{{ href }}">
+          {{ item.title }}
+        </a>
+      </h1>
+      @if (item.description)
+        <p class="mb-3 opacity-70 md:hidden lg:block">
+          {{ item.description }}
+        </p>
+      @endif
+
+      @button({ href, className: 'mt-3 mb-8 xl:mt-6 lg:mb-6' })
+        View Lesson
+      @end
+    </div>
+  @end
+</div>

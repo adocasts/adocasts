@@ -1,0 +1,32 @@
+@set('activeUrl', request.url(false))
+@set('Nav', (name, href, show) => ({ name, href, show, active: activeUrl === href }))
+
+@set('studioRoutes', [
+  Nav('Dashboard', '#', 'StudioPolicy.viewDashboard'),
+  Nav('Posts', route('studio.posts.index'), 'StudioPolicy.viewPosts'),
+  Nav('Collections', route('studio.collections.index'), 'StudioPolicy.viewCollections'),
+  Nav('Taxonomies', route('studio.taxonomies.index'), 'StudioPolicy.viewTaxonomies'),
+  Nav('Comments', route('studio.comments.index'), 'StudioPolicy.viewComments'),
+  Nav('Settings', route('studio.settings.index'), 'StudioPolicy.viewSettings')
+])
+
+<nav id="studioNav" class="py-2 bg-brand-950 overflow-hidden w-full">
+  <div class="{{ container }}">
+    <div class="bg-brand-900 bg-opacity-30 rounded-full p-2">
+      <ul class="list-none flex space-x-4 lg:space-x-3">
+        @each(item in studioRoutes)
+          @can(item.show)
+            @set('isActive', request.matchesRoute(item.href))
+            <li>
+              <a
+                href="{{ item.href }}"
+                class="{{ isActive ? 'bg-brand-800' : 'bg-transparent' }} text-brand-200 hover:bg-brand-900 transition duration-300 hover:text-white rounded-full text-sm px-2 lg:px-3 py-1 inline-block {{ item.active && 'bg-brand-900 text-white' }} {{ item.soon && 'opacity-40' }}">
+                {{ item.name }}
+              </a>
+            </li>
+          @end
+        @endeach
+      </ul>
+    </div>
+   </div>
+</nav>

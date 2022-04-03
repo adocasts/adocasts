@@ -1,0 +1,77 @@
+@set('position', position ?? 'center')
+@set('positions', {
+  center: 'transform lg:left-1/2 lg:-translate-x-1/2',
+  left: 'left-0',
+  right: 'right-0'
+})
+
+@set('size', size ?? 'base')
+@set('sizes', {
+  base: 'px-3 py-4 sm:gap-8 sm:p-6',
+  sm: 'px-3 py-2 sm:pag-3 sm:p-4'
+})
+
+<div x-data="{ isOpen: false }" @mouseover.away="isOpen = false" class="relative" @click.away="isOpen = false">
+  <!-- Item active: "text-gray-950", Item inactive: "text-gray-900" -->
+  <button
+    @mouseover="isOpen = true" @click="isOpen = !isOpen" type="button" class="-my-1 py-2 px-3 text-brand-300 group rounded-md inline-flex items-center text-base hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-800 {{ triggerClassName }}" :class="{ 'ring-2 fing-offset-2 ring-brand-800 text-white': isOpen }" x-aria-expanded="isOpen ? 'true' : 'false'" {{{ triggerStyle && `style="${triggerStyle}"` }}}>
+    @if ($slots.trigger)
+      {{{ await $slots.trigger() }}}
+    @else
+      <span :class="[{ 'text-white': isOpen }]">{{ label }}</span>
+    @endif
+
+    <!--
+      Heroicon name: solid/chevron-down
+
+      Item active: "text-gray-600", Item inactive: "text-gray-400"
+    -->
+    <svg class="text-brand-600 ml-1 mt-1 h-5 w-5 group-hover:text-white" :class="{ 'text-white': isOpen }" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+    </svg>
+  </button>
+
+  <!--
+    'Solutions' flyout menu, show/hide based on flyout menu state.
+
+    Entering: "transition ease-out duration-200"
+      From: "opacity-0 translate-y-1"
+      To: "opacity-100 translate-y-0"
+    Leaving: "transition ease-in duration-150"
+      From: "opacity-100 translate-y-0"
+      To: "opacity-0 translate-y-1"
+  -->
+  @if (big)
+    <div
+      x-cloak
+      x-show="isOpen"
+      class="absolute z-10 -ml-4 mt-3 w-screen max-w-md lg:max-w-2xl lg:ml-0 {{ positions[position] }}"
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0 transform scale-90 translate-y-1"
+      x-transition:enter-end="opacity-100 transform scale-100 translate-y-0"
+      x-transition:leave="transition ease-in duration-300"
+      x-transition:leave-start="opacity-100 transform scale-100 translate-y-0"
+      x-transition:leave-end="opacity-0 transform scale-90 translate-y-1">
+      <div class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
+        {{{ await $slots.main()  }}}
+      </div>
+    </div>
+  @else
+    <div
+      x-cloak
+      x-show="isOpen"
+      class="absolute z-10 pt-3 px-2 w-screen max-w-xs sm:px-0 {{ positions[position] }}"
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0 transform scale-90 translate-y-1"
+      x-transition:enter-end="opacity-100 transform scale-100 translate-y-0"
+      x-transition:leave="transition ease-in duration-300"
+      x-transition:leave-start="opacity-100 transform scale-100 translate-y-0"
+      x-transition:leave-end="opacity-0 transform scale-90 translate-y-1">
+      <div class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
+        <div class="relative grid gap-6 bg-white {{ sizes[size] }}">
+          {{{ await $slots.main() }}}
+        </div>
+      </div>
+    </div>
+  @endif
+</div>

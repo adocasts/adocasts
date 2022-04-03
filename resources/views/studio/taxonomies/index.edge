@@ -1,0 +1,52 @@
+@layout('layouts/studio')
+
+@section('heading')
+  @studio.heading({ heading: 'Taxonomies' })
+    @button({ href: route('studio.taxonomies.create') })
+      Create New Taxonomy
+    @end
+  @end
+@endsection
+
+@section('content')
+
+  <div class="-ml-3">
+    @tree.base({ nodes: taxonomies, className: 'pl-3 border-l border-grey-300' })
+      @slot('main', scope)
+        @set('rootParentId', scope.rootParent?.id)
+
+        <div class="flex items-center group mb-3">
+          <a href="{{ route('studio.taxonomies.edit', { id: scope.node.id }) }}" class="mr-3 flex flex-col rounded-r-xl bg-gray-50 pl-3 pr-6 -ml-3 py-1 border border-grey-300 relative" style="left: -1px">
+            <div class="mr-3 font-semibold border-b border-grey-300">{{ scope.node.name }}</div>
+            <div class="text-xs flex items-center space-x-6">
+              <div>{{ scope.node.$extras.posts_count }} Posts</div>
+              <div>{{ scope.node.$extras.collections_count }} Collections</div>
+            </div>
+          </a>
+          <div class="flex items-center opacity-0 group-hover:opacity-100 transition duration-300">
+            <div class="mr-3">
+              @button({ variant: 'blackSecondary', size: 'xs', href: route('studio.taxonomies.edit', { id: scope.node.id }), group: false })
+                @!svg.edit()
+                Edit
+              @end
+            </div>
+            <div class="mr-3">
+              @button({ variant: 'blackSecondary', size: 'xs', href: route('studio.taxonomies.create', {}, { qs: { rootParentId, parentId: scope.node.id }}), group: false })
+                @!svg.plus()
+                Add
+              @end
+            </div>
+            <form method="POST" action="{{ route('studio.taxonomies.destroy', { id: scope.node.id }, { qs: { _method: 'DELETE' }}) }}" onsubmit="return confirm(`If this taxonomy contains children, they'll be deleted too. Would you like to continue?`)">
+              {{ csrfField() }}
+              @button({ type: 'submit', variant: 'bad', size: 'xs' })
+                @!svg.delete()
+                Delete
+              @end
+            </form>
+          </div>
+        </div>
+      @endslot
+    @end
+  </div>
+
+@endsection

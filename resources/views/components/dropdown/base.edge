@@ -1,0 +1,34 @@
+@set('origin', origin || 'top-right')
+
+@set('direction', origin.includes('-right') ? 'right-0' : 'left-0')
+
+@set('width', width || 'w-48')
+
+@set('shadow', shadow || 'shadow-xs')
+
+<div @click.away="open = false" class="ml-4 relative flex-shrink-0" x-data="{ 
+  open: false, 
+  onOpen() {
+    this.open = !this.open
+    if (this.open) {{onOpen && `${onOpen}({{ JSON.stringify(onOpenData) }})` }} 
+  }
+}">
+  <div>
+    <button type="button" @click.prevent.stop="onOpen" aria-haspopup="true" x-bind:aria-expanded="open" class="flex">
+      {{{ await $slots.trigger() }}}
+    </button>
+  </div>
+  <div x-show="open"
+    x-transition:enter="transition ease-out duration-100"
+    x-transition:enter-start="transform opacity-0 scale-95"
+    x-transition:enter-end="transform opacity-100 scale-100"
+    x-transition:leave="transition ease-in duration-75"
+    x-transition:leave-start="transform opacity-100 scale-100"
+    x-transition:leave-end="transform opacity-0 scale-95"
+    class="origin-{{ origin }} absolute {{ direction }} mt-2 {{ width }} rounded-md {{ shadow }} z-50"
+    style="display: none;">
+    <div class="py-1 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden bg-white px-2 py-2" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+      {{{ await $slots.main() }}}
+    </div>
+  </div>
+</div>

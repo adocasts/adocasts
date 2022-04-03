@@ -1,0 +1,27 @@
+<div class="flex flex-col -mx-3">
+  @each ((item) in items)
+    <a href="{{ routePost(item, { slug: item.slug })}}" class="w-full flex flex-wrap p-3 rounded-xl hover:bg-gray-50 transition">
+      @if (item.assets.length)
+        @set('asset', item.assets[0])
+        <div class="w-full md:w-2/5 md:pr-2">
+          @!picture({ filename: asset.filename, className: 'rounded-lg overflow-hidden' })
+        </div>
+      @endif
+      <div class="w-full md:w-3/5 flex flex-col md:pl-2">
+        @if (item.series.length)
+          @set('series', item.series[0])
+          <object class="flex">
+            <h5 class="uppercase inline-block text-accent-800 tracking-wide text-xs leading-none">
+              <a href="{{ route('series.show', { slug: series.slug }) }}" class="anchor anchor-thin text-xs">
+                {{ series.name }}
+              </a>
+            </h5>
+          </object>
+        @endif
+        <h3 class="font-semibold leading-snug">
+          {{ item.title }}
+        </h3>
+      </div>
+    </a>
+  @endeach
+</div>

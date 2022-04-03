@@ -1,0 +1,27 @@
+<div class="flex flex-col -mx-3">
+  @each ((item) in items)
+    <a href="{{ route('series.show', { slug: item.slug })}}" class="w-full flex flex-wrap p-3 rounded-xl hover:bg-gray-50 transition">
+      @if (item.asset)
+        <div class="w-12 md:w-16 md:pr-2">
+          @!picture({ filename: item.asset.filename, className: 'rounded-lg overflow-hidden' })
+        </div>
+      @endif
+      <div class="flex flex-1 flex-col md:pl-2">
+        <h3 class="font-semibold leading-snug">
+          {{ item.name }}
+        </h3>
+        <div class="w-full text-gray-700 text-xs pt-1 flex relative z-10 leading-tight">
+          <div class="flex pr-3">
+            <span class="mr-1">{{ item.$extras?.postsFlattened_count ?? 0 }}</span>
+            <span>{{ getSingularOrPlural('Lesson', item.$extras?.postsFlattened_count ?? 0) }}</span>
+          </div>
+          <div class="h-4 border border-gray-100"></div>
+          <div class="flex pr-3">
+            <span class="mr-1">4</span>
+            <span>{{ getSingularOrPlural('Hour', [1,2,3]) }}</span>
+          </div>
+        </div>
+      </div>
+    </a>
+  @endeach
+</div>

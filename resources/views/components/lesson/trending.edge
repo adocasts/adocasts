@@ -1,0 +1,37 @@
+@if (items && items.length)
+  <div class="flex flex-wrap -mx-6 relative">
+    <div class="absolute top-16 left-px px-6 py-2 bg-gray-100 rounded-r-full border-l-0 z-20 pointer-events-none">
+      <h3 class="font-bold">{{ heading ?? 'Trending Lessons' }}</h3>
+    </div>
+    @each ((item, i) in items)
+      <a href="{{ routePost(item, { slug: item.slug }) }}" class="anchor-b bg-white w-full md:w-1/2 lg:w-1/5 px-6 pb-6 pt-32 {{ i === 0 && 'md:border-l md:rounded-bl-lg' }} {{ i === 4 && 'md:rounded-br-lg' }} md:border-r md:border-b border-gray-300 hover:bg-gray-50 transition relative z-10 overflow-hidden">
+        @if (item.rootSeries && item.rootSeries.length)
+          @set('series', item.rootSeries[0])
+          <object>
+            <h5 class="uppercase text-accent-800 tracking-wide text-xs mb-2">
+              <a href="{{ route('series.show', { slug: series.slug }) }}" class="anchor">
+                {{ series.name }}
+              </a>
+            </h5>
+          </object>
+        @endif
+
+        <h2 class="text-xl mb-3">
+          {{ item.title }}
+        </h2>
+
+        @if (item.authors && item.authors.length)
+          @set('author', item.authors[0])
+          <object>
+            <p class="text-xs">
+              By
+              <a href="#" class="anchor-inv anchor-thin">
+                {{ author.username }}
+              </a>
+            </p>
+          </object>
+        @endif
+      </a>
+    @endeach
+  </div>
+@endif

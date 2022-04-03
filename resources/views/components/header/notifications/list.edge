@@ -1,0 +1,30 @@
+@panel({ variable: 'showNotifications', closeHandler: 'toggleNotifications' })
+  <div x-show="unreadNotifications.length">
+    <h3 class="border-b border-gray-300 pb-2 px-4 pt-2 text-lg font-semibold">
+      Unread Notifications
+    </h3>
+    <ol class="list-none flex flex-col">
+      <template x-for="item in unreadNotifications" :key="item.id">
+        @!header.notifications.item()
+      </template>
+    </ol>
+  </div>
+
+  <div x-show="readNotifications.length">
+    <h3 class="border-b border-gray-300 pb-2 px-4 pt-2 text-lg font-semibold">
+      Latest Notifications
+    </h3>
+    <ol class="list-none flex flex-col">
+      <template x-for="item in readNotifications" :key="item.id">
+        @!header.notifications.item()
+      </template>
+    </ol>
+  </div>
+
+  <div x-show="!unreadNotifications.length && !readNotifications.length" class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">
+    <strong>No Notifications</strong>
+    <p class="text-xs text-gray-700">
+      You're all set! Start a discussion by leaving a comment on a lesson or replying to an existing comment.
+    </p>
+  </div>
+@end

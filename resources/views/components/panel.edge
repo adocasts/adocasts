@@ -1,0 +1,30 @@
+<div x-cloak @keydown.window.escape="{{ closeHandler }}" x-show="{{ variable }}" class="fixed inset-0 overflow-hidden z-50" aria-labelledby="slide-over-title" x-ref="dialog" aria-modal="true">
+  <div class="absolute inset-0 overflow-hidden">
+
+    <div x-show="{{ variable }}" x-transition:enter="ease-in-out duration-500" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in-out duration-500" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="{{ closeHandler }}" :aria-hidden="{{ variable }}">
+    </div>
+    <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+
+      <div x-show="{{ variable }}" x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full" class="pointer-events-auto relative w-screen max-w-md">
+        <div x-show="{{ variable }}" x-transition:enter="ease-in-out duration-500" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in-out duration-500" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute top-0 left-0 -ml-8 flex pt-4 pr-2 sm:-ml-10 sm:pr-4">
+          <button type="button" class="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white" @click="{{ closeHandler }}">
+            <span class="sr-only">Close panel</span>
+            @!svg.close({ className: 'w-6 h-6' })
+          </button>
+        </div>
+
+        <div class="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+          @if (title)
+            <div class="px-4 sm:px-6">
+              <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">{{ title }}</h2>
+            </div>
+          @endif
+          <div class="relative {{ title && 'mt-6' }} flex-1 px-4 sm:px-6">
+            {{{ await $slots.main() }}}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,145 @@
+@set('internalValue', value === null || value === 'null' || typeof value === 'undefined' ? '' : value)
+@set('cloak', cloak ?? true)
+@set('rightGutter', error || type === 'group' || type === 'password' ? '' : 'pr-10')
+@set('dataAttributes', dataAttributes ?? {})
+
+@set('dataAttrs', Object.keys(dataAttributes).map(attr => `data-${dashCase(attr)}="${dataAttributes[attr]}"`).join(' '))
+
+<div
+  x-data="{ value: `{{ internalValue }}`, max: {{ max }}, min: {{ min }}, focused: false, type: `{{ type || 'text' }}` }"
+  class="transition duration-300 ease-in-out relative py-2 {{ !group && 'mb-6 border-l-2 border-gray-300 focus-within:border-brand-800 pl-3' }} {{ error && 'border-red-600' }}">
+  @if (label)
+    <label for="{{ id ?? name }}" class="block text-sm font-medium text-gray-950">
+      {{ label }}
+      @if (required)
+        <sup class="text-red-800">*</sup>
+      @endif
+    </label>
+  @endif
+  @if (help)
+    <p class="text-xs text-gray-800">
+      {{ help }}
+    </p>
+  @endif
+
+  <div class="mt-1 relative">
+    @if(type === 'textarea')
+      <textarea
+        id="{{ id || name }}"
+        name="{{ name }}"
+        rows="{{ rows || 3 }}"
+        class="
+          {{ rightGutter }}
+          w-full natural bg-transparent border-0 p-0 placeholder-gray-700 {{ title && 'font-semibold text-2xl' }}
+          {{ error
+            ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500'
+            : 'focus:ring-brand-500 focus:border-brand-500 border-gray-700'
+          }}
+        "
+        placeholder="{{ placeholder || '' }}"
+        x-model="value"
+        style="{{ style }}"
+        aria-invalid="{{ error ? true : false }}"
+        aria-describedby="{{ name }}-error"
+        {{ max && `maxlength=${max}` }}
+        {{ min && `minlength=${min}` }}
+        {{ readonly && 'readonly' }}
+        oninput="{{ onInput ?? undefined }}"
+        @focus="focused = true"
+        @blur="focused = false"
+      ></textarea>
+    @elseif(type === 'group')
+      @if($slots.input)
+        {{{ await $slots.input()  }}}
+      @endif
+    @elseif(type === 'select')
+      <select
+        id="{{ id || name }}"
+        name="{{ name }}"
+        x-model="value"
+        placeholder="{{ placeholder || '' }}"
+        class="
+          {{ rightGutter }}
+          w-full natural bg-transparent border-0 p-0 placeholder-gray-700 {{ title && 'font-semibold text-2xl' }}
+          {{ error
+            ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500'
+            : 'focus:ring-brand-500 focus:border-brand-500 border-gray-700'
+          }}
+        "
+        style="{{ style }}"
+        {{ readonly && 'readonly' }}
+        @focus="focused = true"
+        @blur="focused = false">
+        {{{ await $slots.main() }}}
+      </select>
+    @else
+      <input
+        {{{ staticType ? `type="${type || 'text'}"` : `:type="type"` }}}
+        id="{{ id || name }}"
+        name="{{ name }}"
+        class="
+          {{ rightGutter }}
+          w-full natural bg-transparent border-0 p-0 placeholder-gray-700 {{ title && 'font-semibold text-2xl' }}
+          {{ error
+            ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500'
+            : 'focus:ring-brand-500 focus:border-brand-500 border-gray-700'
+          }}
+        "
+        placeholder="{{ placeholder || '' }}"
+        x-model="value"
+        aria-invalid="{{ error ? true : false }}"
+        aria-describedby="{{ name }}-error"
+        style="{{ type === 'date' || type === 'time' ? 'line-height: 1;' : '' }} {{ style }}"
+        {{ max ? `maxlength=${max}` : '' }}
+        {{ min ? `minlength=${min}` : '' }}
+        {{{ dataAttrs }}}
+        {{ readonly && 'readonly' }}
+        oninput="{{ onInput ?? undefined }}"
+        @focus="focused = true"
+        @blur="focused = false">
+    @endif
+
+    @if(error && type !== 'group' && type !== 'password')
+      <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+        <!-- Heroicon name: exclamation-circle -->
+        <svg class="h-5 w-5 text-red-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+        </svg>
+      </div>
+    @endif
+
+    @if (type === 'password')
+      <div class="absolute inset-y-0 right-0 pr-3 flex items-center z-10">
+        <div role="button" @click.stop.prevent="type = type === 'password' ? 'text' : 'password'">
+          <svg x-show="type === 'password'" class="w-5 h-5 text-gray-700 hover:text-gray-900 transition duration-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path></svg>
+          <svg x-show="type === 'text'" class="w-5 h-5 text-gray-700 hover:text-gray-900 transition duration-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clip-rule="evenodd"></path><path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z"></path></svg>
+        </div>
+      </div>
+    @endif
+
+    @if(max)
+      <p {{ cloak && 'x-cloak' }} x-show="value.length > max" class="absolute text-xs text-gray-800 absolute right-0 bottom-0">
+        <span x-text="value.length"></span> of <span x-text="max"></span>
+      </p>
+    @elseif(min && !error)
+      <div {{ cloak && 'x-cloak' }} x-show="value.length < min" class="absolute text-xs text-gray-800 absolute right-0 bottom-0">
+        <span x-text="min"></span> character minimum
+      </div>
+    @endif
+  </div>
+
+  @if(info)
+    <p class="mt-2 text-sm text-gray-700" x-text="`{{ info }}`.replaceAll('[[value]]', value)">
+    </p>
+  @endif
+
+  @if(errors)
+    <p class="mt-2 text-sm text-red-800" id="{{ name }}-error">
+      {{ sentenceCase(errors.join(', ')) }}
+    </p>
+  @endif
+
+  @if ($slots.after)
+    {{{ await $slots.after() }}}
+  @endif
+</div>

@@ -1,0 +1,122 @@
+@layout('layouts/auth')
+
+@section('content')
+<div class="flex flex-col justify-center mt-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md bg-gray-100 sm:rounded-t-lg shadow relative">
+    <div class="w-full flex justify-center absolute -top-8">
+      <figure class="bg-gray-100 flex items-center justify-center text-gray-700 w-16 h-16 border-4 border-white shadow z-10 rounded-full">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 15V17M6 21H18C19.1046 21 20 20.1046 20 19V13C20 11.8954 19.1046 11 18 11H6C4.89543 11 4 11.8954 4 13V19C4 20.1046 4.89543 21 6 21ZM16 11V7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7V11H16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </figure>
+    </div>
+    <h2 class="mt-10 text-center text-3xl font-extrabold text-gray-950">
+      Sign into your account
+    </h2>
+    <p class="mt-2 text-center text-sm text-gray-800 max-w mb-6">
+      Need an account?
+      <a href="{{ route('auth.signup.show') }}" class="font-medium text-brand-800 hover:text-brand-900">
+        Sign up
+      </a>
+    </p>
+  </div>
+
+  <div class="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+    <div class="bg-white py-6 px-3 shadow sm:rounded-b-lg sm:px-8">
+      <form action="{{ route('auth.signin') }}" method="POST">
+        {{ csrfField() }}
+        {{-- @!component('honeypot') --}}
+
+        @if (session.has('forward'))
+          <input type="hidden" name="forward" value="{{ session.get('forward') }}" />
+        @endif
+
+        @if (flashMessages.get('errors.form'))
+          <div role="alert" class="bg-red-100 text-red-800 rounded p-3 mb-4">
+            {{  flashMessages.get('errors.form') }}
+          </div>
+        @endif
+
+        @!form.input({
+          label: 'Username / Email',
+          type: 'text',
+          name: 'uid',
+          placeholder: 'Enter username or email',
+          value: flashMessages.get('uid') ?? '',
+          autocomplete: 'email',
+          required: true,
+        })
+
+        @!form.input({
+          label: 'Password',
+          type: 'password',
+          name: 'password',
+          placeholder: 'Enter password',
+          value: '',
+          autocomplete: 'new-password',
+          required: true
+        })
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <input id="remember_me" name="remember_me" type="checkbox" class="h-4 w-4 text-gray-950 focus:ring-gray-500 border-gray-500 rounded">
+            <label for="remember_me" class="ml-2 block text-sm text-gray-950">
+              Remember me
+            </label>
+          </div>
+
+          <div class="text-sm">
+            <a href="/forgot-password" class="font-medium text-brand-800 hover:text-brand-900">
+              Forgot your password?
+            </a>
+          </div>
+        </div>
+
+        @button({ type: 'submit', className: 'w-full flex justify-center mt-8' })
+          Login
+        @endbutton
+      </form>
+
+      <div class="mt-6">
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-800"></div>
+          </div>
+          <div class="relative flex justify-center text-sm">
+            <span class="px-2 bg-white text-gray-800">
+              Or continue with
+            </span>
+          </div>
+        </div>
+
+        <div class="mt-6 grid grid-cols-2 gap-3">
+          <div>
+            <a href="/google/redirect" class="w-full inline-flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-white text-sm font-medium text-gray-800 hover:bg-gray-100">
+              <span class="sr-only">Sign in with Google</span>
+              <svg class="w-5 h-5" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"/></svg>
+            </a>
+          </div>
+
+          {{--  <div>
+            <a href="/twitter/redirect" class="w-full inline-flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-white text-sm font-medium text-gray-800 hover:bg-gray-100">
+              <span class="sr-only">Sign in with Twitter</span>
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
+              </svg>
+            </a>
+          </div>  --}}
+
+          <div>
+            <a href="/github/redirect" class="w-full inline-flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-white text-sm font-medium text-gray-800 hover:bg-gray-100">
+              <span class="sr-only">Sign in with GitHub</span>
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+@endsection

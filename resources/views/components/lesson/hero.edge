@@ -1,0 +1,38 @@
+<div class="bg-gradient-to-br from-brand-900 to-brand-800 relative">
+  <div class="overflow-hidden" style="min-height: 500px; max-height: calc(100vh - 65px)">
+    @!picture({ filename: '7/2021-QuickTip-JAGR-01_1637429305160.jpeg' })
+  </div>
+  <div class="w-full h-3/4 flex flex-col justify-end absolute bottom-0 bg-gradient-to-t from-black to-transparent z-10 text-white">
+    <div class="bg-gradient-to-t from-black to-transparent">
+      @container()
+        <div class="flex flex-col max-w-4xl py-4 md:py-6">
+          <h2 class="font-bold text-3xl md:text-4xl text-white mb-2">
+            AdonisJS Quick Tip
+          </h2>
+          <h1 class="text-4xl md:text-5xl text-white mb-4">
+            Getting Data by the User's Timezone
+          </h1>
+          <div class="flex items-center opacity-80 mb-2">
+            <div class="mr-3">6 MIN</div>
+            <div class="mr-3">2 MONTHS AGO</div>
+          </div>
+          <p class="opacity-80 mb-6">
+            In this lesson, we'll learn how we can use the user's current time zone to create, update, or query time-sensitive information in AdonisJS using Luxon's DateTime object.
+          </p>
+          <div class="flex items-center pb-12">
+            <a href="{{ route('series.lesson', { slug: 'example', index: 1 }) }}" class="mr-3 bg-white hover:bg-brand-800 hover:text-brand-100 transition duration-300 flex items-center rounded-full text-black pr-6">
+              <svg class="w-6 h-6 md:w-12 md:h-12 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+              Start Lesson
+            </a>
+            <button class="w-8 h-8 md:w-12 md:h-12 bg-white text-black hover:bg-brand-800 hover:text-brand-100 transition duration-300 rounded-full mr-5 flex items-center justify-center">
+              <svg class="w-7" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+            </button>
+            <button class="w-8 h-8 md:w-12 md:h-12 bg-white text-black hover:bg-brand-800 hover:text-brand-100 transition duration-300 rounded-full flex items-center justify-center">
+              <svg class="w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 461.001 461.001" fill="currentColor"><path d="M365.257 67.393H95.744C42.866 67.393 0 110.259 0 163.137v134.728c0 52.878 42.866 95.744 95.744 95.744h269.513c52.878 0 95.744-42.866 95.744-95.744V163.137c0-52.878-42.866-95.744-95.744-95.744zm-64.751 169.663l-126.06 60.123c-3.359 1.602-7.239-.847-7.239-4.568V168.607c0-3.774 3.982-6.22 7.348-4.514l126.06 63.881c3.748 1.899 3.683 7.274-.109 9.082z" /></svg>
+            </button>
+          </div>
+        </div>
+      @end
+    </div>
+  </div>
+</div>
