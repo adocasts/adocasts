@@ -23,6 +23,7 @@ export default class HtmlParser {
       case 'javascript':
         return 'js'
       case 'xml':
+      case 'vbscript-html':
         return 'edge'
       default:
         return language

@@ -12,17 +12,19 @@
     <h4 class="text-lg font-semibold">
       {{ item.name }}
     </h4>
-    <div class="flex flex-wrap items-center space-x-1 pt-3">
-      @badge()
-        AdonisJS
-      @end
-      @badge()
-        Lucid
-      @end
-      @badge()
-        Edge
-      @end
-    </div>
+    <p class="mt-1 text-center line-clamp-2 text-sm">
+      {{ excerpt(item.description, 130) }}
+    </p>
+
+    @if (item.taxonomies?.length)
+      <div class="flex flex-wrap items-center space-x-1 pt-3">
+        @each (taxonomy in item.taxonomies)
+          @badge()
+            {{ taxonomy.name }}
+          @end
+        @endeach
+      </div>
+    @endif
   </div>
   <div class="w-1/2 mx-auto border-t border-gray-300 relative z-10 opacity-0 group-hover:opacity-100"></div>
   <div class="w-full text-gray-700 text-xs py-3 px-6 flex justify-around items-center relative z-10">

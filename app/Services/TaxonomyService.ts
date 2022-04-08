@@ -1,5 +1,6 @@
 import Taxonomy from "App/Models/Taxonomy";
 import States from 'App/Enums/States'
+import CollectionTypes from 'App/Enums/CollectionTypes'
 
 export default class TaxonomyService {
     public static async getLastUpdated(limit: number = 10, excludeIds: number[] = []) {
@@ -9,7 +10,7 @@ export default class TaxonomyService {
         .preload('parent', query => query.preload('asset'))
         .preload('asset')
         .withCount('posts', query => query.apply(scope => scope.published()))
-        .withCount('collections', query => query.where('stateId', States.PUBLIC))
+        .withCount('collections', query => query.where('collectionTypeId', CollectionTypes.SERIES).where('stateId', States.PUBLIC))
         .orderBy('latest_publish_at', 'desc')
         .select('taxonomies.*')
         .limit(limit)

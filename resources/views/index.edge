@@ -85,8 +85,10 @@
 
         {{--  Sidebar  --}}
         <div class="hidden md:block w-full md:w-1/3 md:px-6 md:order-2">
-          @!aside.watchlist({ postWatchlist, collectionWatchlist })
-          @!aside.progression({ histories: collectionProgress })
+          @if (auth.user)
+            @!aside.watchlist({ postWatchlist, collectionWatchlist })
+            @!aside.progression({ histories: collectionProgress })
+          @endif
         </div>
       </div>
     @end

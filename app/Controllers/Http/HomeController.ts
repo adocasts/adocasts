@@ -4,7 +4,6 @@ import CollectionService from 'App/Services/CollectionService'
 import TaxonomyService from 'App/Services/TaxonomyService'
 import WatchlistService from 'App/Services/WatchlistService'
 import HistoryService from 'App/Services/Http/HistoryService'
-import User from 'App/Models/User'
 import History from 'App/Models/History'
 
 export default class HomeController {

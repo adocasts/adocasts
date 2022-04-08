@@ -7,6 +7,7 @@ import CollectionValidator from 'App/Validators/CollectionValidator'
 import Route from '@ioc:Adonis/Core/Route'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import CollectionService from 'App/Services/CollectionService'
+import TaxonomyService from 'App/Services/TaxonomyService'
 
 export default class CollectionsController {
   public async index ({ view, request, auth }: HttpContextContract) {
@@ -33,7 +34,8 @@ export default class CollectionsController {
     const states = State
     const statuses = Status
     const collectionTypes = CollectionType
-    return view.render('studio/collections/createOrEdit', { states, statuses, collectionTypes })
+    const taxonomies = await TaxonomyService.getAllForTree()
+    return view.render('studio/collections/createOrEdit', { states, statuses, collectionTypes, taxonomies })
   }
 
   public async store ({ request, response, session, auth }: HttpContextContract) {
@@ -69,12 +71,15 @@ export default class CollectionsController {
 
     await collection.load('asset')
     await collection.load('posts', query => query.orderBy('pivot_sort_order'))
+    await collection.load('taxonomies', q => q.select(['id']))
 
     const children = await Collection.query()
       .where('parentId', collection.id)
       .preload('posts', query => query.orderBy('pivot_sort_order'))
 
-    return view.render('studio/collections/createOrEdit', { collection, children, states, statuses, collectionTypes })
+    const taxonomies = await TaxonomyService.getAllForTree()
+
+    return view.render('studio/collections/createOrEdit', { collection, children, states, statuses, collectionTypes, taxonomies })
   }
 
   public async update ({ request, response, params }: HttpContextContract) {

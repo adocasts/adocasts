@@ -83,7 +83,8 @@ export default class Taxonomy extends AppBaseModel {
   public posts: ManyToMany<typeof Post>
 
   @manyToMany(() => Collection, {
-    pivotColumns: ['sort_order']
+    pivotColumns: ['sort_order'],
+    pivotTable: 'collection_taxonomies'
   })
   public collections: ManyToMany<typeof Collection>
 

@@ -21,7 +21,7 @@ export default class LessonsController {
     return view.render('lessons/index', { items })
   }
 
-  public async show({ view, params }: HttpContextContract) {
+  public async show({ view, params, auth }: HttpContextContract) {
     const post = await Post.lessons()
       .apply(scope => scope.forDisplay())
       .where({ slug: params.slug })
@@ -33,7 +33,10 @@ export default class LessonsController {
       .preload('posts', query => query.apply(scope => scope.forCollectionDisplay()))
       .preload('children', query => query
         .wherePublic()
-        .preload('posts', query => query.apply(scope => scope.forCollectionDisplay()))
+        .preload('posts', query => query
+          .apply(scope => scope.forCollectionDisplay())
+          .if(auth.user, query => query.preload('progressionHistory', query => query.where('userId', auth.user!.id)))
+        )
       )
       .first()
 

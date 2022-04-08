@@ -46,7 +46,8 @@ export default class CollectionValidator {
 			schema.array.optional().members(
 				schema.number([rules.exists({ table: 'posts', column: 'id' })])
 			)
-		)
+		),
+    taxonomyIds: schema.array.optional().members(schema.number([rules.exists({ table: 'taxonomies', column: 'id' })]))
   })
 
 	/**

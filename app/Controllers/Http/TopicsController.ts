@@ -4,6 +4,7 @@ import CollectionTypes from 'App/Enums/CollectionTypes'
 import UtilityService from 'App/Services/UtilityService'
 import { inject } from '@adonisjs/fold'
 import HistoryService from 'App/Services/Http/HistoryService'
+import States from 'App/Enums/States'
 
 @inject([HistoryService])
 export default class TopicsController {
@@ -43,7 +44,7 @@ export default class TopicsController {
       .preload('parent', query => query.preload('asset'))
       .preload('asset')
       .withCount('posts')
-      .withCount('collections')
+      .withCount('collections', query => query.where('collectionTypeId', CollectionTypes.SERIES).where('stateId', States.PUBLIC))
       .orderBy('name')
 
     const posts = await topic.related('posts').query().apply(scope => scope.forDisplay())
@@ -51,6 +52,8 @@ export default class TopicsController {
     const series = await topic.related('collections').query()
       .wherePublic()
       .where('collectionTypeId', CollectionTypes.SERIES)
+      .withCount('postsFlattened', query => query.apply(scope => scope.published()))
+      .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
       .orderBy('name')
 
     this.historyService.recordTaxonomyView(topic.id)

@@ -7,6 +7,7 @@ export default class CollectionService {
       .apply(scope => scope.withPostLatestPublished())
       .if(excludeIds.length, query => query.whereNotIn('id', excludeIds))
       .withCount('postsFlattened', query => query.apply(scope => scope.published()))
+      .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
       .preload('asset')
       .wherePublic()
       .whereNull('parentId')
@@ -37,12 +38,13 @@ export default class CollectionService {
     return subCollections
   }
 
-  public static async updateOrCreate(collectionId: number | undefined, { postIds, subcollectionCollectionIds = [], subcollectionCollectionNames = [], subcollectionPostIds = [], ...data }: { [x: string]: any }) {
+  public static async updateOrCreate(collectionId: number | undefined, { postIds, taxonomyIds, subcollectionCollectionIds = [], subcollectionCollectionNames = [], subcollectionPostIds = [], ...data }: { [x: string]: any }) {
     const collection = await Collection.firstOrNewById(collectionId)
 
     await collection.merge(data).save()
 
     await CollectionService.syncPosts(collection, postIds, { root_collection_id: collection.id })
+    await CollectionService.syncTaxonomies(collection, taxonomyIds)
 
     if (subcollectionPostIds) {
       await this.syncSubcollectionPosts(collection, subcollectionCollectionIds, subcollectionPostIds, subcollectionCollectionNames)
@@ -77,6 +79,17 @@ export default class CollectionService {
     const syncData = this.getPostSyncData(postIds, intermediaryData)
 
     return collection.related('posts').sync(syncData)
+  }
+
+  public static async syncTaxonomies(collection: Collection, taxonomyIds: number[] = []) {
+    const taxonomyData = taxonomyIds.reduce((prev, currentId, i) => ({
+      ...prev,
+      [currentId]: {
+        sort_order: i
+      }
+    }), {})
+
+    await collection.related('taxonomies').sync(taxonomyData)
   }
 
   public static getPostSyncData(postIds: number[] = [], intermediaryData: { [x: string]: any } = {}) {

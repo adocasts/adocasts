@@ -12,6 +12,7 @@ export default class SeriesController {
   public async index({ view }: HttpContextContract) {
     const featuredItems = await Collection.series()
       .apply(scope => scope.withPostLatestPublished())
+      .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
       .preload('asset')
       .wherePublic()
       .where('isFeatured', true)
@@ -50,7 +51,9 @@ export default class SeriesController {
       )
       .firstOrFail()
 
-    let nextLesson = series.postsFlattened.find(p => !p.progressionHistory.length || p.progressionHistory.some(h => !h.isCompleted))
+    let nextLesson = auth.user
+      ? series.postsFlattened.find(p => !p.progressionHistory.length || p.progressionHistory.some(h => !h.isCompleted))
+      : null
 
     if (!nextLesson) nextLesson = series.postsFlattened[0]
 
@@ -66,7 +69,10 @@ export default class SeriesController {
       .preload('posts', query => query.apply(scope => scope.forCollectionDisplay()))
       .preload('children', query => query
         .wherePublic()
-        .preload('posts', query => query.apply(scope => scope.forCollectionDisplay()))
+        .preload('posts', query => query
+          .apply(scope => scope.forCollectionDisplay())
+          .if(auth.user, query => query.preload('progressionHistory', query => query.where('userId', auth.user!.id)))
+        )
       )
       .firstOrFail()
 

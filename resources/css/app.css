@@ -173,6 +173,31 @@ input[type="file"].file-drop + label:hover {
   z-index: 100;
 }
 
+@keyframes growProgressBar {
+  0%, 33% { --pgPercentage: 0; }
+  100% { --pgPercentage: var(--value); }
+}
+
+@property --pgPercentage {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+div[role="progressbar"].circle {
+  --fg: theme('colors.accent.700');
+  --bg: transparent;
+  --pgPercentage: var(--value);
+  animation: growProgressBar 3s 1 forwards;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(closest-side, theme('colors.gray.950') 90%, transparent 0 99.9%, theme('colors.gray.950') 0),
+    conic-gradient(var(--fg) calc(var(--pgPercentage) * 1%), var(--bg) 0);
+  color: var(--fg);
+}
+
 
 .anchor,
 .anchor-inv,

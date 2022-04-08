@@ -150,6 +150,38 @@
             </label>
           @endslot
         @end
+
+        @form.input.alt({
+          type: 'group',
+          label: 'Taxonomy'
+        })
+          @slot('input')
+            @set('selectedTaxonomyIds', collection?.taxonomies.map(t => t.id) ?? [])
+            @set('parentIds', [])
+
+            <div class="-mx-6">
+              @tree.base({ nodes: taxonomies, className: 'pl-6 border-l border-grey-300' })
+                @slot('main', scope)
+                  @set('parentIds', scope.node.parentId ? [...parentIds, scope.node.parentId] : [])
+
+                  <label class="flex items-center">
+                    <input
+                      type="checkbox"
+                      name="taxonomyIds[]"
+                      value="{{ scope.node.id }}"
+                      class="mr-2"
+                      data-parent-ids="{{ [...new Set(parentIds)].join(',') }},"
+                      onchange="toggleParents(this)"
+                      {{ selectedTaxonomyIds.includes(scope.node.id) ? 'checked=checked' : '' }}
+                    />
+
+                    <span>{{ scope.node.name }}</span>
+                  </label>
+                @endslot
+              @end
+            </div>
+          @endslot
+        @end
       </div>
 
       <div class="w-full lg:w-1/3 lg:px-3 -my-3 p-6 shadow-inner bg-gray-50 rounded-lg">
