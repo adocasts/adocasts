@@ -24,9 +24,9 @@ export default class ContactController {
 
     await Mail.send(message => {
       message
-        .from('tom@jagr.co', 'Tom from Jagr')
+        .from('contact@adocasts.com', 'Contact Form on Adocasts')
         .replyTo(data.email)
-        .to('tom@jagr.co')
+        .to('contact@adocasts.com')
         .subject(data.subject)
         .html(`
           <p><strong>Email:</strong> ${data.email}</p>
@@ -34,7 +34,28 @@ export default class ContactController {
         `)
     })
 
-    session.flash('success', "Your message has been successfully sent. Please allow up to 48 hours for a response.");
+    await Mail.sendLater(message => {
+      message
+        .from('contact@adocasts.com', 'Tom from Adocasts')
+        .replyTo('contact@adocasts.com')
+        .to(data.email)
+        .subject(`Copy of: ${data.subject}`)
+        .html(`
+          <p>
+            We've recieved your message and wanted to forward a copy on to you.
+            If you need to add any additional information, please feel free to respond directly to this email.
+          </p>
+          <p>
+            Thank you,<br/>
+            Tom Gobich<br/>
+            Adocasts, LLC
+          </p>
+          <p><strong>Below is your message:</strong></p>
+          <p>${data.body}</p>
+        `)
+    })
+
+    session.flash('success', "Your message has been successfully sent. Please allow up to 48 hours for a response. A copy has been sent to your email as well");
 
     return response.redirect().back();
   }
