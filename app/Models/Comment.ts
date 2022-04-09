@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BelongsTo, belongsTo, column, computed, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BelongsTo, belongsTo, column, computed, HasMany, hasMany, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import Post from './Post'
 import State from 'App/Enums/States'
@@ -59,6 +59,11 @@ export default class Comment extends AppBaseModel {
 
   @belongsTo(() => Comment, { foreignKey: 'replyTo' })
   public parent: BelongsTo<typeof Comment>
+
+  @manyToMany(() => User, {
+    pivotTable: 'comment_votes'
+  })
+  public userVotes: ManyToMany<typeof User>
 
   @computed()
   public get createdAtCalendar() {

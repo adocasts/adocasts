@@ -1,0 +1,43 @@
+@layout('layouts/main')
+
+@section('meta')
+
+@!meta.tags({
+  url: appUrl('/faq'),
+  title: "Frequently Asked Questiosn",
+  desc: "Find answers to frequently asked questions on development and AdonisJS, or submit a question of your own.",
+  asset: null,
+  index: true
+})
+
+@endsection
+
+@section('content')
+
+<div class="break border-t border-gray-300 relative -top-6 pt-8 mt-3">
+  @container()
+
+    @heading.page()
+      Frequently Asked Questions
+
+      @slot('description')
+        Find answers to frequently asked questions on development and AdonisJS, or submit a question of your own.
+      @end
+    @end
+
+    <dl class="mt-6 space-y-6 divide-y divide-gray-200">
+      @collapse.item()
+        @slot('title')
+          Do migration columns default to nullable or not nullable?
+        @end
+
+        Migration columns will default to nullable when neither nullable or not nullable is provided.
+      @end
+    </dl>
+
+    <p class="text-gray-800 pt-12">
+      This page is coming soon.
+    </p>
+  @end
+</div>
+@endsection

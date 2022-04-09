@@ -1,0 +1,47 @@
+@layout('layouts/main')
+
+@section('meta')
+
+@!meta.tags({
+  url: appUrl('/resources'),
+  title: "Resources",
+  desc: "Resources we've found helpful while doing both common and oddball tasks as developers",
+  asset: null,
+  index: true
+})
+
+@endsection
+
+@section('content')
+@set('item', (name, desc, href) => ({ name, desc, href }))
+
+@set('resources', [
+  item('Reset all id sequences in Postgres', 'Learn how to reset and fix your id sequence count back to zero', 'https://wiki.postgresql.org/wiki/Fixing_Sequences'),
+])
+
+<div class="break border-t border-gray-300 relative -top-6 pt-8 mt-3">
+  @container()
+
+    @heading.page()
+      Resources
+
+      @slot('description')
+        Resources we've found helpful while doing both common and oddball tasks as developers
+      @end
+    @end
+
+    <div class="flex flex-wrap -mx-6">
+      <div class="w-full lg:w-1/2 px-6">
+        <ul class="mb-12">
+          @each (item in resources)
+            <li class="flex flex-col">
+              <a href="{{ item.href }}" target="_blank" class="font-semibold">{{ item.name }}</a>
+              <span class="text-gray-900">{{ item.desc }}</span>
+            </li>
+          @endeach
+        </ul>
+      </div>
+    </div>
+  @end
+</div>
+@endsection
