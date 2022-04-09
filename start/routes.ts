@@ -24,6 +24,7 @@ Route.on('/guidelines').render('guidelines').as('guidelines')
 Route.on('/cookies').render('cookies').as('cookies')
 Route.on('/privacy').render('privacy').as('privacy')
 Route.on('/terms').render('terms').as('terms')
+Route.on('/uses').render('uses').as('uses')
 
 Route.get('/', 'HomeController.index').as('home')
 
