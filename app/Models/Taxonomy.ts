@@ -88,6 +88,10 @@ export default class Taxonomy extends AppBaseModel {
   })
   public collections: ManyToMany<typeof Collection>
 
+  public static roots() {
+    return this.query().whereNull('parentId')
+  }
+
   public static hasContent = scope<typeof Taxonomy>((query) => {
     query.where(q => q
       .orWhereHas('posts', p => p.apply(scope => scope.published()))

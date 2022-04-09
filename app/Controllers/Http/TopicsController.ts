@@ -47,7 +47,9 @@ export default class TopicsController {
       .withCount('collections', query => query.where('collectionTypeId', CollectionTypes.SERIES).where('stateId', States.PUBLIC))
       .orderBy('name')
 
-    const posts = await topic.related('posts').query().apply(scope => scope.forDisplay())
+    const posts = await topic.related('posts').query()
+      .orderBy('publishAt', 'desc')
+      .apply(scope => scope.forDisplay())
 
     const series = await topic.related('collections').query()
       .wherePublic()

@@ -1,0 +1,77 @@
+@layout('layouts/main')
+
+@section('meta')
+
+@!meta.tags({
+  url: appUrl('/sitemap'),
+  title: "Sitemap",
+  desc: "Jagr Sitemap",
+  asset: null,
+  index: true
+})
+
+@endsection
+
+@section('content')
+
+<article class="flex flex-wrap mt-12 -mx-6 lg:-mx-12">
+  <main class="w-full prose lg:prose-lg bg-white rounded-xl px-6 pb-4 lg:px-12 lg:pb-8" style="max-width: 100%;">
+    <h1 class="text-4xl font-black">
+      Sitemap
+    </h1>
+
+    <div class="w-full flex flex-wrap">
+      <div class="w-full lg:w-1/4">
+        <h3>Content</h3>
+        <div class="flex flex-col">
+          <a href="{{ route('home') }}">Home</a>
+          <a href="{{ route('series.index') }}">Series</a>
+          <a href="{{ route('lessons.index') }}">Lessons</a>
+          <a href="{{ route('posts.index') }}">Blogs</a>
+          <a href="{{ route('topics.index') }}">Topics</a>
+        </div>
+      </div>
+
+      <div class="w-full lg:w-1/4">
+        <h3>Series</h3>
+        <div class="flex flex-col mb-3">
+          @each (item in series)
+            <a href="{{ route('series.show', { slug: item.slug }) }}">{{ item.name }}</a>
+            @if (item.children?.length)
+              @each (subItem in item.children)
+                <a class="pl-4 border-l border-gray-300 text-base" href="{{ route('series.show', { slug: item.slug }) }}#lesson_{{ subItem.sortOrder + 1 }}.0">{{ subItem.name }}</a>
+              @endeach
+            @endif
+          @endeach
+        </div>
+      </div>
+
+      <div class="w-full lg:w-1/4">
+        <h3>Topics</h3>
+        <div class="flex flex-col">
+          @each (topic in topics)
+            <a href="{{ route('topics.show', { slug: topic.slug }) }}">{{ topic.name }}</a>
+            @if (topic.children?.length)
+              @each (subTopic in topic.children)
+                <a class="pl-4 border-l border-gray-300 text-base" href="{{ route('topics.show', { slug: subTopic.slug }) }}">{{ subTopic.name }}</a>
+              @endeach
+            @endif
+          @endeach
+        </div>
+      </div>
+
+      <div class="w-full lg:w-1/4">
+        <h3>Support &amp; Legal</h3>
+        <div class="flex flex-col">
+          <a href="{{ route('contact.index') }}">Contact Us</a>
+          <a href="{{ route('cookies') }}">Cookie Policy</a>
+          <a href="{{ route('privacy') }}">Privacy Policy</a>
+          <a href="{{ route('terms') }}">Terms of Use</a>
+          <a href="{{ route('guidelines') }}">Content Guidelines</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</article>
+
+@endsection

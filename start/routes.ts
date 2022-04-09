@@ -20,12 +20,18 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.on('/guidelines').render('guidelines')
-Route.on('/cookies').render('cookies')
-Route.on('/privacy').render('privacy')
-Route.on('/terms').render('terms')
+Route.on('/guidelines').render('guidelines').as('guidelines')
+Route.on('/cookies').render('cookies').as('cookies')
+Route.on('/privacy').render('privacy').as('privacy')
+Route.on('/terms').render('terms').as('terms')
 
 Route.get('/', 'HomeController.index').as('home')
+
+Route.get('/sitemap', 'SyndicationController.sitemap').as('sitemap')
+
+Route.get('/contact', 'ContactController.index').as('contact.index')
+Route.post('/contact', 'ContactController.contact').as('contact.post')
+Route.on('/support').redirect('contact.index')
 
 Route.get('/img/:userId/:filename', 'AssetsController.show').as('userimg');
 // Route.get('/img/*', 'AssetsController.show').where('path', /.*/).as('img');
