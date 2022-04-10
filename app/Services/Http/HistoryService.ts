@@ -4,9 +4,6 @@ import HistoryValidator from 'App/Validators/HistoryValidator'
 import BaseHttpService from 'App/Services/Http/BaseHttpService'
 import Post from 'App/Models/Post'
 import User from 'App/Models/User'
-import Database from '@ioc:Adonis/Lucid/Database'
-import CollectionTypes from 'App/Enums/CollectionTypes'
-import Collection from 'App/Models/Collection'
 import State from 'App/Enums/States'
 
 export default class HistoryService extends BaseHttpService {
