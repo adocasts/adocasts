@@ -71,7 +71,7 @@ export default class AssetsController {
   }
 
   public async show({ request, response, params }: HttpContextContract) {
-    try {
+    // try {
       const tempDirectory = '.cache';
       const path = AssetService.getParamFilename(params);
       const query = request.only(['w', 'width', 'q', 'quality', 'f', 'format']);
@@ -107,9 +107,9 @@ export default class AssetsController {
       response.append('Content-Type', `image/${options.format}`);
 
       return image
-    } catch (error) {
-      Logger.error('AssetController.show', error)
-    }
+    // } catch (error) {
+    //   Logger.error('AssetController.show', error)
+    // }
   }
 
   public async edit({ }: HttpContextContract) {
