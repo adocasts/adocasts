@@ -92,6 +92,14 @@ export default class Taxonomy extends AppBaseModel {
     return this.query().whereNull('parentId')
   }
 
+  public static children(parentId: number | null = null) {
+    if (parentId) {
+      return this.query().where('parentId', parentId)
+    }
+
+    return this.query().whereNotNull('parentId')
+  }
+
   public static hasContent = scope<typeof Taxonomy>((query) => {
     query.where(q => q
       .orWhereHas('posts', p => p.apply(scope => scope.published()))

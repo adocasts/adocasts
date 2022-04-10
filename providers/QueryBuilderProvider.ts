@@ -75,6 +75,11 @@ export default class QueryBuilderProvider {
       return result.length && result[0][idColumn]
     })
 
+    ModelQueryBuilder.macro('selectColumn', async function(columnName: string) {
+      const results = await this.select(columnName)
+      return results.map(r => r[columnName])
+    })
+
     ModelQueryBuilder.macro('highlight', async function(columnName: string = 'body', targetColumnName: string = columnName) {
       const result = await this.first()
       if (!result) return

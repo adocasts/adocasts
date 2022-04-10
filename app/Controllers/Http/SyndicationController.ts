@@ -1,6 +1,10 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Collection from 'App/Models/Collection'
 import Taxonomy from 'App/Models/Taxonomy'
+import { SitemapStream, streamToPromise } from 'sitemap'
+import { createGzip } from 'zlib'
+import SyndicationService from 'App/Services/SyndicationService'
+import CacheService from 'App/Services/CacheService'
 
 export default class SyndicationController {
   public async sitemap({ view }: HttpContextContract) {
@@ -14,5 +18,31 @@ export default class SyndicationController {
       .orderBy('name', 'asc')
 
     return view.render('sitemap', { series, topics })
+  }
+
+  public async xml({ response }: HttpContextContract) {
+    let urls = await SyndicationService.getCachedSitemapUrls()
+
+    response.header('Content-Type', 'application/xml')
+    response.header('Content-Encoding', 'gzip')
+
+    try {
+      const sitemapStream = new SitemapStream({ hostname: 'https://jagr.co' })
+      const pipeline = sitemapStream.pipe(createGzip())
+
+      if (!urls) {
+        urls = await SyndicationService.getSitemapUrls()
+        await SyndicationService.setCacheSitemapUrls(urls)
+      }
+
+      urls.map(url => sitemapStream.write(url))
+
+      sitemapStream.end()
+
+      response.stream(pipeline)
+    } catch (e) {
+      console.error(e)
+      response.status(500)
+    }
   }
 }

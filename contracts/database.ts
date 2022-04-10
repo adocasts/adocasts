@@ -14,6 +14,7 @@ declare module '@ioc:Adonis/Lucid/Orm' {
     selectIds(idColumn?: string): Promise<number>
     selectId(idColumn?: string): Promise<number>
     selectIdOrFail(idColumn?: string): Promise<number>
+    selectColumn(columnName: string): Promise<string[]>
     highlight(columnName?: string, targetColumnName?: string): Promise<Post>
     highlightOrFail(columnName?: string, targetColumnName?: string): Promise<Post>
     highlightAll(columnName?: string, targetColumnName?: string): Promise<Post[]>

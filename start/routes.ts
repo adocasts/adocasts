@@ -30,6 +30,7 @@ Route.on('/resources').render('resources').as('resources')
 Route.get('/', 'HomeController.index').as('home')
 
 Route.get('/sitemap', 'SyndicationController.sitemap').as('sitemap')
+Route.get('/sitemap.xml', 'SyndicationController.xml').as('sitemap.xml')
 
 Route.get('/contact', 'ContactController.index').as('contact.index')
 Route.post('/contact', 'ContactController.contact').as('contact.post')
