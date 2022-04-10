@@ -5,7 +5,6 @@ import AssetService from 'App/Services/AssetService';
 import CacheService from 'App/Services/CacheService';
 import Database from '@ioc:Adonis/Lucid/Database';
 import Drive from '@ioc:Adonis/Core/Drive'
-import Logger from '@ioc:Logger/Discord'
 
 export default class AssetsController {
   public async index({ }: HttpContextContract) {
