@@ -22,6 +22,7 @@ export default class WatchlistService {
       .whereNotNull('collectionId')
       .if(excludeIds.length, query => query.whereNotIn('collectionId', excludeIds))
       .preload('collection', query => query
+        .preload('asset')
         .withCount('postsFlattened', query => query.apply(scope => scope.published()))
         .wherePublic()
       )
