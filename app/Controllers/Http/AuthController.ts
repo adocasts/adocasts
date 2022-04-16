@@ -5,7 +5,12 @@ import SignUpValidator from 'App/Validators/SignUpValidator'
 import SignInValidator from 'App/Validators/SignInValidator'
 
 export default class AuthController {
-  public async signupShow({ view }: HttpContextContract) {
+  public async signupShow({ view, response, session, auth }: HttpContextContract) {
+    if (auth.user) {
+      session.flash('warn', "You're already logged in.")
+      return response.redirect().toRoute('home')
+    }
+
     return view.render('auth/signup')
   }
 
@@ -15,12 +20,17 @@ export default class AuthController {
 
     await auth.login(user)
 
-    session.flash('success', 'Welcome to Jagr!')
+    session.flash('success', 'Welcome to Adocasts!')
 
     return response.redirect('/')
   }
 
-  public async signinShow({ view }: HttpContextContract) {
+  public async signinShow({ view, response, session, auth }: HttpContextContract) {
+    if (auth.user) {
+      session.flash('warn', "You're already logged in.")
+      return response.redirect().toRoute('home')
+    }
+
     return view.render('auth/signin')
   }
 
@@ -53,6 +63,6 @@ export default class AuthController {
 
     session.flash('success', 'You have been logged out')
 
-    return response.redirect('/')
+    return response.redirect().toRoute('home')
   }
 }

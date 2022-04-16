@@ -15,6 +15,10 @@ import Comment from 'App/Models/Comment'
 import NotificationService from 'App/Services/NotificationService'
 import Env from '@ioc:Adonis/Core/Env'
 
+if (Env.get('NODE_ENV') === 'test') {
+  View.global('csrfField', () => '')
+}
+
 View.global('appUrl', (path) => {
   return 'http://localhost:3333' + path
 })

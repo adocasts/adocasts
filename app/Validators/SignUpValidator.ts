@@ -26,7 +26,7 @@ export default class SignUpValidator {
    */
   public schema = schema.create({
     username: usernameValidation,
-    email: schema.string({ trim: true }, [rules.unique({ table: 'users', column: 'email' })]),
+    email: schema.string({ trim: true }, [rules.email(), rules.unique({ table: 'users', column: 'email' })]),
     password: schema.string({ trim: true }, [rules.minLength(8)]),
   })
 
@@ -41,5 +41,11 @@ export default class SignUpValidator {
    * }
    *
    */
-  public messages = {}
+  public messages = {
+    'username.unique': 'This username has already been taken',
+    'username.regex': 'Username must be alphanumeric with - or _',
+    'email.unique': 'An account with this email already exists',
+    'email.email': 'Please enter a valid email',
+    'password.minLength': 'Password must be at least 8 characters long'
+  }
 }

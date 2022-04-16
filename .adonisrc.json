@@ -38,7 +38,8 @@
     "@adonisjs/bouncer",
     "./providers/QueryBuilderProvider",
     "@adonisjs/attachment-lite",
-    "@adonisjs/drive-gcs"
+    "@adonisjs/drive-gcs",
+    "@japa/preset-adonis/TestsProvider"
   ],
   "metaFiles": [
     {
@@ -52,5 +53,16 @@
   ],
   "aceProviders": [
     "@adonisjs/repl"
-  ]
+  ],
+  "tests": {
+    "suites": [
+      {
+        "name": "functional",
+        "files": [
+          "tests/functional/**/*.spec(.ts|.js)"
+        ],
+        "timeout": 60000
+      }
+    ]
+  }
 }

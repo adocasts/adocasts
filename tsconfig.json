@@ -39,7 +39,8 @@
       "@adonisjs/redis",
       "@adonisjs/bouncer",
       "@adonisjs/attachment-lite",
-      "@adonisjs/drive-gcs"
+      "@adonisjs/drive-gcs",
+      "@japa/preset-adonis/build/adonis-typings"
     ]
   }
 }
