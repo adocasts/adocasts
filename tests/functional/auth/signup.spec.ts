@@ -3,6 +3,8 @@ import Database from '@ioc:Adonis/Lucid/Database'
 import Route from '@ioc:Adonis/Core/Route'
 import { UserFactory } from 'Database/factories'
 import Env from '@ioc:Adonis/Core/Env'
+import User from 'App/Models/User'
+import Profile from 'App/Models/Profile'
 
 test.group('Auth - Sign Up', (group) => {
   const appUrl = `http://${Env.get('HOST')}:${Env.get('PORT')}`
@@ -83,5 +85,20 @@ test.group('Auth - Sign Up', (group) => {
 
     response.assertStatus(302)
     response.assertFlashMessage('errors', { password: ['Password must be at least 8 characters long'] })
+  })
+
+  test('a new user should be given a profile', async ({ client, assert }) => {
+    const user = await UserFactory.makeStubbed()
+    const response = await client.post(Route.makeUrl('auth.signup')).form({
+      username: user.username,
+      email: user.email,
+      password: 'Password!01'
+    }).redirects(0)
+
+    response.assertStatus(302)
+    response.assertHeader('location', '/')
+
+    const dbUser = await User.findBy('username', user.username)
+    assert.exists(await Profile.findBy('userId', dbUser?.id))
   })
 })

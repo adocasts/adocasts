@@ -1,8 +1,10 @@
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import BaseValidator from './BaseValidator'
 
-export default class CollectionValidator {
+export default class CollectionValidator extends BaseValidator {
   constructor (protected ctx: HttpContextContract) {
+  	super()
 		const body = ctx.request.body()
 
 		if (body.assetIds && body.assetIds.length) {
@@ -49,17 +51,4 @@ export default class CollectionValidator {
 		),
     taxonomyIds: schema.array.optional().members(schema.number([rules.exists({ table: 'taxonomies', column: 'id' })]))
   })
-
-	/**
-	 * Custom messages for validation failures. You can make use of dot notation `(.)`
-	 * for targeting nested fields and array expressions `(*)` for targeting all
-	 * children of an array. For example:
-	 *
-	 * {
-	 *   'profile.username.required': 'Username is required',
-	 *   'scores.*.number': 'Define scores as valid numbers'
-	 * }
-	 *
-	 */
-  public messages = {}
 }

@@ -18,6 +18,7 @@ export default class AuthController {
     const data = await request.validate(SignUpValidator)
     const user = await User.create(data)
 
+    await user.related('profile').create({})
     await auth.login(user)
 
     session.flash('success', 'Welcome to Adocasts!')

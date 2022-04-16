@@ -20,7 +20,7 @@ import { assert, runFailedTests, specReporter, apiClient } from '@japa/preset-ad
 | Feel free to remove existing plugins or add more.
 |
 */
-export const plugins: Config['plugins'] = [assert(), /*runFailedTests(),*/ apiClient('http://0.0.0.0:50259')]
+export const plugins: Config['plugins'] = [assert(), runFailedTests(), apiClient('http://0.0.0.0:50259')]
 
 /*
 |--------------------------------------------------------------------------

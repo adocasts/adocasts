@@ -2,7 +2,7 @@
 @set('cloak', cloak ?? true)
 @set('rightGutter', error || type === 'group' || type === 'password' ? '' : 'pr-10')
 
-<div x-data="{ value: `{{ internalValue }}`, max: {{ max }}, min: {{ min }}, focused: false, type: `{{ type || 'text' }}` }" class="relative {{ pb !== false && 'pb-4' }} {{ groupClass ?? '' }}">
+<div x-data="{ value: `{{ internalValue }}`, max: {{ max }}, min: {{ min }}, focused: false, type: `{{ type || 'text' }}` }" class="relative {{ pb !== false && 'pb-4' }} {{ groupClass ?? 'mb-3' }}">
   @if (label)
     <label for="{{ id ?? name }}" class="block text-sm font-medium text-gray-950">
       {{ label }}
@@ -95,7 +95,7 @@
       </div>
     @endif
 
-    @if(hint && !error)
+    @if(hint && !errors)
       <div class="text-xs text-right pt-1 absolute right-0 text-gray-700" style="bottom: -1rem">
         {{ hint }}
       </div>
@@ -103,7 +103,7 @@
       <div :class="[`text-xs text-right pt-1 absolute right-0 ${value.length >= max ? 'text-red-800' : 'text-gray-700'}`]" style="bottom: -1rem">
         <span x-text="value.length"></span> of <span x-text="max"></span>
       </div>
-    @elseif(min && !error)
+    @elseif(min && !errors)
       <div {{ cloak ? 'x-cloak' : '' }} x-show="value.length < min" class="text-xs text-right pt-1 absolute right-0 text-gray-700" style="bottom: -1rem">
         <span x-text="min"></span> character minimum
       </div>
@@ -116,7 +116,7 @@
   @endif
 
   @if(errors)
-    <p class="mt-2 text-sm text-red-800" id="{{ name }}-error">
+    <p class="mt-1 text-sm text-red-800" id="{{ name }}-error">
       {{ sentenceCase(errors.join(', ')) }}
     </p>
   @endif

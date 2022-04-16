@@ -1,8 +1,10 @@
 import {rules, schema} from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import BaseValidator from './BaseValidator'
 
-export default class TaxonomyValidator {
+export default class TaxonomyValidator extends BaseValidator {
   constructor(protected ctx: HttpContextContract) {
+    super()
     const body = ctx.request.body()
 
 		if (body.assetIds && body.assetIds.length) {
@@ -65,5 +67,7 @@ export default class TaxonomyValidator {
    * }
    *
    */
-  public messages = {}
+  public messages = {
+    ...this.messages
+  }
 }

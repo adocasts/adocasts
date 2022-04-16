@@ -1,8 +1,10 @@
 import { schema, rules } from "@ioc:Adonis/Core/Validator";
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import BaseValidator from "./BaseValidator";
 
-export default class PostStoreValidator {
+export default class PostStoreValidator extends BaseValidator {
   constructor (protected ctx: HttpContextContract) {
+  	super()
   }
 
   get slugUniqueConstraint() {
@@ -48,5 +50,7 @@ export default class PostStoreValidator {
 	 * }
 	 *
 	 */
-  public messages = {}
+  public messages = {
+  	...this.messages
+  }
 }
