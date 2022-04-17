@@ -6,6 +6,10 @@ import HistoryService from 'App/Services/Http/HistoryService'
 export default class HistoriesController {
   constructor(protected historyService: HistoryService) {}
 
+  public async progress({ view }: HttpContextContract) {
+    return view.render('progress')
+  }
+
   public async view({ response }: HttpContextContract) {
     const view = await this.historyService.recordView()
 
