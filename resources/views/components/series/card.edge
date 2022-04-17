@@ -32,6 +32,7 @@
       <span class="text-lg">{{ item.$extras.postsFlattened_count ?? '0' }}</span>
       <span>{{ getSingularOrPlural('Lesson', item.$extras.postsFlattened_count ?? 0) }}</span>
     </div>
+    
     <div class="h-6 border border-gray-100"></div>
 
     @set('watchDisplay', secondsForDisplay(item.$extras.videoSecondsSum))

@@ -23,16 +23,18 @@
         @end
       @end
 
-      @heading.section()
-        Featured Series
-      @end
-      <div class="flex flex-wrap md:-mx-6 mb-12">
-        @each ((item, i) in featured)
-          <div class="w-full md:w-1/2 lg:w-1/4 md:px-3">
-            @!series.card({ item, width: 'w-full' })
-          </div>
-        @endeach
-      </div>
+      @if (featured?.length)
+        @heading.section()
+          Featured Series
+        @end
+        <div class="flex flex-wrap md:-mx-6 mb-12">
+          @each ((item, i) in featured)
+            <div class="w-full md:w-1/2 lg:w-1/4 md:px-3">
+              @!series.card({ item, width: 'w-full' })
+            </div>
+          @endeach
+        </div>
+      @endif
 
       @heading.section()
         All Series
@@ -60,8 +62,8 @@
               <div class="w-1/2 mx-auto border-t border-gray-300 relative z-10 opacity-0 group-hover:opacity-100"></div>
               <div class="w-full text-gray-700 text-xs py-3 px-6 flex justify-around items-center relative z-10">
                 <div class="flex flex-col justify-center text-center px-3">
-                  <span class="text-lg">23</span>
-                  <span>{{ getSingularOrPlural('Lesson', [1,2]) }}</span>
+                  <span class="text-lg">{{ item.$extras.postsFlattened_count ?? '0' }}</span>
+                  <span>{{ getSingularOrPlural('Lesson', item.$extras.postsFlattened_count ?? 0) }}</span>
                 </div>
                 <div class="h-6 border border-gray-100"></div>
                 @set('watchDisplay', secondsForDisplay(item.$extras.videoSecondsSum))

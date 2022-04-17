@@ -24,16 +24,18 @@
         @end
       @end
 
-      @heading.section()
-        Featured Topics
-      @end
-      <div class="flex flex-wrap md:-mx-6 mb-8">
-        @each(topic in featured)
-          <div class="w-full md:w-1/4 lg:w-1/5 md:px-3 pb-6">
-            @!topic.card({ topic, className: 'w-full' })
-          </div>
-        @endeach
-      </div>
+      @if (featured?.length)
+        @heading.section()
+          Featured Topics
+        @end
+        <div class="flex flex-wrap md:-mx-6 mb-8">
+          @each(topic in featured)
+            <div class="w-full md:w-1/4 lg:w-1/5 md:px-3 pb-6">
+              @!topic.card({ topic, className: 'w-full' })
+            </div>
+          @endeach
+        </div>
+      @endif
 
       {{--  Lessons  --}}
       @heading.section()
