@@ -58,6 +58,40 @@ View.global('getCommentGoUrl', (comment: Comment) => {
   return NotificationService.getGoPath(comment)
 })
 
+View.global('secondsForDisplay', (totalSeconds: number) => {
+  const seconds = Math.floor(totalSeconds % 60);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+  const days = Math.floor(totalSeconds / (3600 * 24));
+
+  let maxDisplay = days
+  let maxDisplayKey = 'day'
+
+  if (!days) {
+    maxDisplay = hours
+    maxDisplayKey = 'hour'
+  }
+
+  if (!hours) {
+    maxDisplay = minutes
+    maxDisplayKey = 'minute'
+  }
+
+  if (!minutes) {
+    maxDisplay = seconds
+    maxDisplayKey = 'second'
+  }
+
+  return {
+    days,
+    hours,
+    minutes,
+    seconds,
+    maxDisplay,
+    maxDisplayKey
+  }
+})
+
 View.global('GA_PROPERTY', Env.get('GA_PROPERTY'))
 
 View.global('DateTime', DateTime)

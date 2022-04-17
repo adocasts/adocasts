@@ -55,6 +55,7 @@ export default class HistoryService extends BaseHttpService {
         )
       )
       .preload('collection', query => query
+        .preload('asset')
         .withCount('postsFlattened', query => query.apply(scope => scope.published()).as('postCount'))
         .withCount('progressionHistory', query => query.where('userId', user.id).where('isCompleted', true).as('postCompletedCount'))
         .preload('postsFlattened', query => query

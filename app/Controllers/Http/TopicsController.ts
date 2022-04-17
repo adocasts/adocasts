@@ -55,6 +55,7 @@ export default class TopicsController {
       .wherePublic()
       .where('collectionTypeId', CollectionTypes.SERIES)
       .withCount('postsFlattened', query => query.apply(scope => scope.published()))
+      .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
       .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
       .orderBy('name')
 

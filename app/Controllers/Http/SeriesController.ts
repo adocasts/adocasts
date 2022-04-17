@@ -12,6 +12,7 @@ export default class SeriesController {
   public async index({ view }: HttpContextContract) {
     const featuredItems = await Collection.series()
       .apply(scope => scope.withPostLatestPublished())
+      .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
       .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
       .preload('asset')
       .wherePublic()
@@ -33,6 +34,7 @@ export default class SeriesController {
         .apply(scope => scope.forCollectionDisplay({ orderBy: 'pivot_root_sort_order', direction: 'desc' }))
         .groupLimit(3)
       )
+      .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
       .orderBy('latest_publish_at', 'desc')
 
     return view.render('series/index', { featured, series })

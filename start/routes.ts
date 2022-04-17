@@ -75,6 +75,8 @@ Route.post('/comments',       'CommentsController.store').as('comments.store')
 Route.put('/comments/:id',    'CommentsController.update').as('comments.update')
 Route.delete('/comments/:id', 'CommentsController.destroy').as('comments.destroy')
 
+Route.get('/watchlist',       'WatchlistsController.index').as('watchlist.index')
+
 // STUDIO
 Route.group(() => {
 

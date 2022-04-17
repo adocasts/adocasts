@@ -4,7 +4,12 @@ import Watchlist from 'App/Models/Watchlist'
 import WatchlistService from 'App/Services/WatchlistService'
 
 export default class WatchlistsController {
-  public async index({}: HttpContextContract) {}
+  public async index({ view, auth }: HttpContextContract) {
+    const collections = await WatchlistService.getLatestCollections(auth.user, 0)
+    const posts = await WatchlistService.getLatestPosts(auth.user, 0)
+
+    return view.render('watchlist', { collections, posts })
+  }
 
   public async create({}: HttpContextContract) {}
 

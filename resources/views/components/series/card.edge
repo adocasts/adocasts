@@ -33,9 +33,11 @@
       <span>{{ getSingularOrPlural('Lesson', item.$extras.postsFlattened_count ?? 0) }}</span>
     </div>
     <div class="h-6 border border-gray-100"></div>
+
+    @set('watchDisplay', secondsForDisplay(item.$extras.videoSecondsSum))
     <div class="flex flex-col justify-center text-center px-3">
-      <span class="text-lg">4</span>
-      <span>{{ getSingularOrPlural('Hour', [1,2,3]) }}</span>
+      <span class="text-lg">{{ watchDisplay.maxDisplay }}</span>
+      <span>{{ getSingularOrPlural(watchDisplay.maxDisplayKey, watchDisplay.maxDisplay) }}</span>
     </div>
   </div>
 </a>

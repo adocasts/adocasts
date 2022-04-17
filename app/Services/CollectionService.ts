@@ -7,6 +7,7 @@ export default class CollectionService {
       .apply(scope => scope.withPostLatestPublished())
       .if(excludeIds.length, query => query.whereNotIn('id', excludeIds))
       .withCount('postsFlattened', query => query.apply(scope => scope.published()))
+      .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
       .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
       .preload('asset')
       .wherePublic()

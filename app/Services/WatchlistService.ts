@@ -10,7 +10,7 @@ export default class WatchlistService {
       .if(excludeIds.length, query => query.whereNotIn('postId', excludeIds))
       .preload('post', query => query.apply(scope => scope.forDisplay()))
       .orderBy('createdAt', 'desc')
-      .limit(limit)
+      .if(limit, query => query.limit(limit))
 
     return results.map(r => r.post)
   }
@@ -24,10 +24,11 @@ export default class WatchlistService {
       .preload('collection', query => query
         .preload('asset')
         .withCount('postsFlattened', query => query.apply(scope => scope.published()))
+        .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
         .wherePublic()
       )
       .orderBy('createdAt', 'desc')
-      .limit(limit)
+      .if(limit, query => query.limit(limit))
 
     return results.map(r => r.collection)
   }
