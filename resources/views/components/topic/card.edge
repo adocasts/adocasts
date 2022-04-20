@@ -7,7 +7,7 @@
   <div class="absolute top-0 left-0 w-full bg-gray-50 transition duration-300 transform -translate-x-full group-hover:translate-x-0" style="height: calc(100% + 1.5rem)"></div>
 
   <div class="w-full flex items-center px-3 rounded-b-3xl relative h-full">
-    <div class="bg-gray-50 -m-3 p-3 rounded-r-lg mr-3 w-16 h-full flex items-center justify-center">
+    <div class="bg-gray-50 -ml-3 px-2 rounded-r-lg mr-3 w-16 h-full flex items-center justify-center" style="width: 56px;">
       @if (asset?.filename)
         <img src="/img/{{ asset.filename }}" class="rounded-full w-8 h-8" />
       @else
@@ -17,7 +17,7 @@
       @endif
     </div>
 
-    <div class="flex flex-col">
+    <div class="flex flex-col" style="width: calc(100% - 56px);">
       @if (topic.parent)
         <h6 class="text-xs px-3 text-gray-700 leading-tight">
           {{ topic.parent.name }}

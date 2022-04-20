@@ -20,7 +20,9 @@
             @if (collection.asset)
               <img src="/img/{{ collection.asset.filename }}" class="rounded-full w-12 mb-3" />
             @else
-              <img src="https://via.placeholder.com/65" class="rounded-full w-12 mb-3" />
+              <div class="w-12 h-12 text-lg font-semibold flex items-center justify-center rounded-full bg-brand-300 text-brand-800 mb-3">
+                {{ getAbbrev(collection.name) }}
+              </div>
             @endif
           </div>
         </div>
