@@ -54,7 +54,7 @@
   <div class="flex justify-between items-center md:space-x-10 py-3 {{ container ?? 'container mx-auto px-4 sm:px-6' }} mx-auto">
     <div class="flex items-center">
       <a href="/" class="flex mr-6 lg:mr-8">
-        <span class="sr-only">Jagr</span>
+        <span class="sr-only">Adocasts</span>
         <img class="h-6 w-auto sm:h-7" src="/imgs/logo-white.svg" alt="Adocasts">
       </a>
 
@@ -108,7 +108,7 @@
       <div class="pt-5 pb-6 px-5">
         <div class="flex items-center justify-between">
           <div>
-            <img class="h-8 w-auto" src="/imgs/full-black.svg" alt="Jagr">
+            <img class="h-8 w-auto" src="/imgs/logo-black.svg" alt="Adocasts">
           </div>
           <div class="-mr-2">
             <button @click="show = false" type="button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-800">
@@ -143,32 +143,36 @@
       </div>
       <div class="py-6 px-5">
         <div class="grid grid-cols-2 gap-4">
-          <a href="#" class="text-base font-medium text-gray-950 hover:text-gray-800">
-            Pricing
+          <a href="{{ route('questions.index') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+            FAQ
           </a>
 
-          <a href="#" class="text-base font-medium text-gray-950 hover:text-gray-800">
-            Docs
+          <a href="{{ route('resources') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+            Resources
           </a>
 
-          <a href="#" class="text-base font-medium text-gray-950 hover:text-gray-800">
-            Enterprise
+          <a href="{{ route('uses') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+            Uses
           </a>
 
-          <a href="#" class="text-base font-medium text-gray-950 hover:text-gray-800">
-            Help Center
+          <a href="{{ route('contact.index') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+            Contact
           </a>
 
-          <a href="#" class="text-base font-medium text-gray-950 hover:text-gray-800">
-            Guides
+          <a href="{{ route('guidelines') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+            Guidelines
           </a>
 
-          <a href="#" class="text-base font-medium text-gray-950 hover:text-gray-800">
-            Events
+          <a href="{{ route('cookies') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+            Cookies
           </a>
 
-          <a href="#" class="text-base font-medium text-gray-950 hover:text-gray-800">
-            Security
+          <a href="{{ route('privacy') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+            Privacy
+          </a>
+
+          <a href="{{ route('terms') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+            Terms
           </a>
         </div>
         <div class="mt-6">

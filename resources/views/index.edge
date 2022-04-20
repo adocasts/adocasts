@@ -37,7 +37,7 @@
       </div>
       <div class="flex flex-wrap md:-mx-6 mb-8">
         @each ((item, i) in series)
-          <div class="w-full md:w-1/2 lg:w-1/4 md:px-3">
+          <div class="w-full md:w-1/2 lg:w-1/4 md:px-3 mb-3">
             @!series.card({ item, width: 'w-full' })
           </div>
         @endeach
@@ -55,7 +55,7 @@
       </div>
       <div class="flex flex-wrap md:-mx-6 mb-8">
         @each ((topic, i) in topics)
-          <div class="w-full md:w-1/4 lg:w-1/5 md:px-3 pb-3">
+          <div class="w-full md:w-1/2 lg:w-1/4 xl:w-1/5 md:px-3 pb-3">
             @!topic.card({ topic, className: 'w-full' })
           </div>
         @endeach

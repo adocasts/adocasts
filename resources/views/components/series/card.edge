@@ -5,11 +5,13 @@
       @if (item.asset)
         <img src="/img/{{ item.asset.filename }}" class="rounded-full w-24 mb-3" />
       @else
-        <img src="https://via.placeholder.com/65" class="rounded-full w-24 mb-3" />
+        <div class="w-24 h-24 text-2xl font-semibold flex items-center justify-center mb-3 rounded-full bg-brand-300 text-brand-800">
+          {{ getAbbrev(item.name) }}
+        </div>
       @endif
     </div>
 
-    <h4 class="text-lg font-semibold">
+    <h4 class="text-lg text-center font-semibold">
       {{ item.name }}
     </h4>
     <p class="mt-1 text-center line-clamp-2 text-sm">
@@ -17,7 +19,7 @@
     </p>
 
     @if (item.taxonomies?.length)
-      <div class="flex flex-wrap items-center space-x-1 pt-3">
+      <div class="flex flex-wrap items-center space-x-1 pt-3 lg:hidden xl:flex">
         @each (taxonomy in item.taxonomies)
           @badge()
             {{ taxonomy.name }}
@@ -32,7 +34,7 @@
       <span class="text-lg">{{ item.$extras.postsFlattened_count ?? '0' }}</span>
       <span>{{ getSingularOrPlural('Lesson', item.$extras.postsFlattened_count ?? 0) }}</span>
     </div>
-    
+
     <div class="h-6 border border-gray-100"></div>
 
     @set('watchDisplay', secondsForDisplay(item.$extras.videoSecondsSum))

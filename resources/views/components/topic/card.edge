@@ -9,9 +9,11 @@
   <div class="w-full flex items-center px-3 rounded-b-3xl relative h-full">
     <div class="bg-gray-50 -m-3 p-3 rounded-r-lg mr-3 w-16 h-full flex items-center justify-center">
       @if (asset?.filename)
-        <img src="/img/{{ asset.filename }}" class="rounded-full w-16" />
+        <img src="/img/{{ asset.filename }}" class="rounded-full w-8 h-8" />
       @else
-        <img src="https://via.placeholder.com/65" class="rounded-full w-16" />
+        <div class="w-8 h-8 text-base font-semibold flex items-center justify-center rounded-full bg-brand-300 text-brand-800">
+          {{ getAbbrev(topic.name) }}
+        </div>
       @endif
     </div>
 

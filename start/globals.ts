@@ -58,6 +58,17 @@ View.global('getCommentGoUrl', (comment: Comment) => {
   return NotificationService.getGoPath(comment)
 })
 
+View.global('getAbbrev', (text: string) => {
+  if (typeof text != 'string' || !text) {
+    return '';
+  }
+  const acronym = text
+    .match(/\b([A-Z])/g)
+    ?.reduce((previous, next) => previous + ((+next === 0 || parseInt(next)) ? parseInt(next): next[0] || ''), '')
+    .toUpperCase()
+  return acronym;
+})
+
 View.global('secondsForDisplay', (totalSeconds: number) => {
   const seconds = Math.floor(totalSeconds % 60);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
