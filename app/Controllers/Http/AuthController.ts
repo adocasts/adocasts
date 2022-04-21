@@ -54,7 +54,7 @@ export default class AuthController {
       return response.redirect().back()
     }
 
-    session.flash('success', 'Welcome back!')
+    session.flash('success', `Welcome back, ${auth.user!.username}!`)
 
     return response.redirect('/')
   }

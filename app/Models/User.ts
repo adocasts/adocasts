@@ -13,7 +13,7 @@ import Watchlist from 'App/Models/Watchlist'
 import EmailHistory from 'App/Models/EmailHistory'
 import Question from 'App/Models/Question'
 
-export default class User extends AppBaseModel {
+class User extends AppBaseModel {
   @column({ isPrimary: true })
   public id: number
 
@@ -96,10 +96,12 @@ export default class User extends AppBaseModel {
 
   @hasMany(() => Question)
   public questions: HasMany<typeof Question>
-
-  public static findForAuth(uids, uidValue) {
-    return this.query().where(query =>
-      uids.map(uid => query.orWhere(uid, 'ILIKE', uidValue))
-    ).firstOrFail()
-  }
 }
+
+User['findForAuth'] = function (uids: string[], uidValue: string) {
+  const query = this.query()
+  uids.map(uid => query.orWhere(uid, 'ILIKE', uidValue))
+  return query.first()
+}
+
+export default User
