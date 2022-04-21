@@ -28,9 +28,9 @@ export default class PasswordResetController {
       if (user) {
         await Mail.sendLater(message => {
           message
-            .from('noreply@jagr.co')
+            .from('noreply@adocasts.com')
             .to(user.email)
-            .subject('[jagr.co] Reset your password')
+            .subject('[Adocasts] Reset your password')
             .htmlView('emails/auth/password_reset', { user, signedUrl })
         })
       }
@@ -75,9 +75,9 @@ export default class PasswordResetController {
 
       await Mail.sendLater(message => {
         message
-          .from('noreply@jagr.co')
+          .from('noreply@adocasts.com')
           .to(user.email)
-          .subject('[jagr.co] Your password has been successfully reset')
+          .subject('[Adocasts] Your password has been successfully reset')
           .htmlView('emails/auth/password_reset_success', { user })
       })
 

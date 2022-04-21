@@ -26,7 +26,7 @@ export default class SyndicationController {
     response.header('Content-Encoding', 'gzip')
 
     try {
-      const sitemapStream = new SitemapStream({ hostname: 'https://jagr.co' })
+      const sitemapStream = new SitemapStream({ hostname: 'https://adocasts.com' })
       const pipeline = sitemapStream.pipe(createGzip())
 
       if (!urls) {

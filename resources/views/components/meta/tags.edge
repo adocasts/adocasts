@@ -2,23 +2,23 @@
 
 <title>
   @if (title)
-    {{ seriesTitle }} - Jagr
+    {{ seriesTitle }} - Adocasts
   @else
     {{ titleFallback }}
   @endif
 </title>
 
 <meta name="description" content="{{ desc }}" />
-<link rel="canonical" href="https://jagr.co{{ canonical || url }}" />
+<link rel="canonical" href="https://adocasts.com{{ canonical || url }}" />
 
 {{-- OG --}}
 <meta property="og:type" content="article" />
 <meta property="og:title" content="{{ seriesTitle }}" />
 <meta property="og:description" content="{{ desc }}" />
 <meta property="og:url" content="{{ url }}" />
-<meta property="og:site_name" content="jagr.co" />
+<meta property="og:site_name" content="adocasts.com" />
 @if (asset)
-  <meta property="og:image" content="https://jagr.co/img/{{ asset.filename }}?w=600" />
+  <meta property="og:image" content="https://adocasts.com/img/{{ asset.filename }}?w=600" />
 @endif
 
 {{-- Twitter --}}
@@ -29,7 +29,7 @@
 <meta name="twitter:creator" content="@jagr_co">
 @if (asset)
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://jagr.co/img/{{ asset.filename }}?w=600">
+  <meta name="twitter:image" content="https://adocasts.com/img/{{ asset.filename }}?w=600">
 @endif
 
 {{-- Robots --}}

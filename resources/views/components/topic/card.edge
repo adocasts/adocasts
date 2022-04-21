@@ -1,6 +1,6 @@
 @set('defaultWidth', !length ? 'w-full md:w-1/2 lg:w-1/6' : `w-full md:w-1/2 lg:w-1/${length > 6 ? '6' : length}`)
 @set('className', className ?? defaultWidth)
-@set('asset', topic.asset ?? topic.parent?.asset)
+@set('asset', topic.asset)
 @set('index', index ?? null)
 
 <a href="{{ route('topics.show', { slug: topic.slug }) }}" class="anchor {{ className }} {{ index === 0 && 'rounded-t-lg md:rounded-t-none lg:rounded-l-lg' }} {{ index === length - 1 && 'rounded-b-lg md:rounded-b-none lg:rounded-r-lg' }} {{ index === null && 'rounded-lg' }} group py-1 flex flex-col justify-center items-center transition border border-gray-300 relative left-px -ml-px -mt-px md:mt-0 overflow-hidden" style="height: 68px">
