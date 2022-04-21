@@ -1,0 +1,19 @@
+<div class="fixed top-0 right-0 z-50">
+  @if(flashMessages.has('success'))
+    @toast.success()
+      {{ flashMessages.get('success') }}
+    @end
+  @endif
+
+  @if(flashMessages.has('error'))
+    @toast.error()
+      {{ flashMessages.get('error') }}
+    @end
+  @endif
+
+  @if(flashMessages.has('warning'))
+    @toast.warning()
+      {{ flashMessages.get('warning') }}
+    @end
+  @endif
+</div>
