@@ -97,8 +97,8 @@ export default class User extends AppBaseModel {
   @hasMany(() => Question)
   public questions: HasMany<typeof Question>
 
-  public static async findForAuth(uids, uidValue) {
-    return this.query().where(query => 
+  public static findForAuth(uids, uidValue) {
+    return this.query().where(query =>
       uids.map(uid => query.orWhere(uid, 'ILIKE', uidValue))
     ).firstOrFail()
   }

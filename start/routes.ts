@@ -48,6 +48,10 @@ Route.get('/signin',  'AuthController.signinShow').as('auth.signin.show')
 Route.post('/signin', 'AuthController.signin').as('auth.signin')
 Route.get('/signout', 'AuthController.signout').as('auth.signout')
 
+// AUTH - Redirect from old
+Route.on('/login').redirect('/signin')
+Route.on('/register').redirect('/signup')
+
 Route.get('/:provider/redirect', 'AuthSocialController.redirect').as('auth.social.redirect');
 Route.get('/:provider/callback', 'AuthSocialController.callback').as('auth.social.callback');
 
