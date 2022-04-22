@@ -6,6 +6,7 @@ import { schema as Schema, rules } from '@ioc:Adonis/Core/Validator'
 import AuthAttemptService from 'App/Services/AuthAttemptService';
 import NotAllowedException from 'App/Exceptions/NotAllowedException'
 import Hash from '@ioc:Adonis/Core/Hash'
+import DiscordLogger from '@ioc:Logger/Discord';
 
 export default class PasswordResetController {
   public async forgotPassword({ view }: HttpContextContract) {
@@ -38,8 +39,8 @@ export default class PasswordResetController {
       return response.redirect().toRoute('auth.password.forgot.sent');
     } catch (error) {
       console.log({ error })
-      // const email = request.input('email');
-      // Logger.error('AuthController.forgotPasswordSend', { email, error })
+      const email = request.input('email');
+      DiscordLogger.error('AuthController.forgotPasswordSend', { email, error })
 
       session.flash('error', "Something went wrong and we couldn't send your forgot password email.");
 
@@ -88,8 +89,8 @@ export default class PasswordResetController {
 
       return response.redirect('/');
     } catch (error) {
-      // const { email } = request.only(['email']);
-      // Logger.error('AuthController.resetPasswordStore', { email, error });
+      const { email } = request.only(['email']);
+      DiscordLogger.error('AuthController.resetPasswordStore', { email, error });
 
       session.flash('error', "Something went wrong and we may not have been able to reset your password.");
       return response.redirect().back();

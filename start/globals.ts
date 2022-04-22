@@ -20,7 +20,7 @@ if (Env.get('NODE_ENV') === 'test') {
 }
 
 View.global('appUrl', (path) => {
-  return 'http://localhost:3333' + path
+  return Env.get('APP_DOMAIN') + path
 })
 
 View.global('routePost', (post: Post, params: { [x: string]: any }, options: { [x: string]: any }) => {
