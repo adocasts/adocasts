@@ -20,6 +20,10 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
+Route.group(() => {
+  Route.on('*').redirect('adocasts.com')
+}).domain('askthisold.dev')
+
 Route.on('/guidelines').render('guidelines').as('guidelines')
 Route.on('/cookies').render('cookies').as('cookies')
 Route.on('/privacy').render('privacy').as('privacy')
