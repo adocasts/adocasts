@@ -2,7 +2,7 @@
   <template x-if="item.href">
     <a :href="item.href" class="flex flex-col px-4 py-2 hover:bg-gray-100 transition duration-300">
       <strong class="text-xs" x-text="item.title"></strong>
-      <div x-html="item.body"></div>
+      <div x-html="item.body" class="overflow-x-auto"></div>
     </a>
   </template>
   <template x-if="!item.href">
