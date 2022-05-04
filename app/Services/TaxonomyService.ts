@@ -16,6 +16,22 @@ export default class TaxonomyService {
         .limit(limit)
     }
 
+    public static async search(term: string, limit: number = 10) {
+      return Taxonomy.query()
+        .apply(scope => scope.withPostLatestPublished())
+        .preload('parent', query => query.preload('asset'))
+        .preload('asset')
+        .withCount('posts', query => query.apply(scope => scope.published()))
+        .withCount('collections', query => query.where('collectionTypeId', CollectionTypes.SERIES).where('stateId', States.PUBLIC))
+        .where(query => query
+          .where('taxonomies.name', 'ILIKE', `%${term}%`)
+          .orWhere('taxonomies.description', 'ILIKE', `%${term}%`)
+        )
+        .orderBy('latest_publish_at', 'desc')
+        .select('taxonomies.*')
+        .limit(limit)
+    }
+
     public static async getAllForTree() {
       return Taxonomy.query().select(['id', 'name', 'parentId'])
     }

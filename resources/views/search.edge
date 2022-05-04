@@ -1,0 +1,66 @@
+@layout('layouts/main')
+
+@section('meta')
+  @!meta.tags({
+    url: route('search', {}, { qs: { term } }),
+    title: 'Search',
+    desc: 'Search all Adocasts lessons, series, and topics',
+    asset: null,
+    index: false
+  })
+@endsection
+
+@section('content')
+
+  <div class="break border-t border-gray-300 relative -top-6 pt-8 mt-3">
+    @container()
+
+      <div class="py-3 flex flex-col mb-3">
+        <h1 class="text-3xl font-extrabold text-gray-950 tracking-tight mb-2">
+          <span class="font-semibold">Searching:</a>
+          <span class="font-normal">{{ term }}</span>
+        </h1>
+      </div>
+
+      @if (topics?.length)
+        <div class="py-3 flex flex-wrap justify-between">
+          <h3 class="font-bold">Topics</h3>
+        </div>
+        <div class="flex flex-wrap -mx-6">
+          @each(topic in topics)
+            <div class="w-full md:w-1/4 lg:w-1/5 px-3 pb-6">
+              @!topic.card({ topic, className: 'w-full' })
+            </div>
+          @endeach
+        </div>
+      @endif
+
+      {{--  Series  --}}
+      @if (series?.length)
+        <div class="py-3 flex flex-wrap justify-between">
+          <h3 class="font-bold">Series</h3>
+        </div>
+        <div class="flex flex-wrap -mx-6 mb-8">
+          @each ((item, i) in series)
+            <div class="w-full md:w-1/3 lg:w-1/4 px-3 mb-3">
+              @!series.card({ item, width: 'w-full', className: 'rounded-xl' })
+            </div>
+          @endeach
+        </div>
+      @endif
+
+      <div class="w-full md:order-1">
+        <div class="py-3 flex flex-wrap justify-between">
+          <h3 class="font-bold">Latest Lessons</h3>
+        </div>
+
+        @!lesson.list({ items: posts, columns: 'columns-2' })
+      </div>
+    @end
+
+    <div class="w-full md:order-3 mt-16">
+      @!newsletter.large()
+    </div>
+  </div>
+
+@endsection

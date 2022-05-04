@@ -20,6 +20,18 @@ export default class PostService {
       .limit(limit)
   }
 
+  public static async search(term: string, limit: number = 100) {
+    return Post.lessons()
+      .apply(scope => scope.forDisplay())
+      .if(term, query => query
+        .where('title', 'ILIKE', `%${term}%`)
+        .orWhere('description', 'ILIKE', `%${term}%`)
+        .orWhere('body', 'ILIKE', `${term}`)
+      )
+      .orderBy('publishAt', 'desc')
+      .limit(limit)
+  }
+
   public static async syncAssets(post: Post, assetIds: number[] = []) {
     const assetData = assetIds.reduce((prev, currentId, i) => ({
       ...prev,

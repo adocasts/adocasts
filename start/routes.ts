@@ -36,6 +36,8 @@ Route.get('/contact', 'ContactController.index').as('contact.index')
 Route.post('/contact', 'ContactController.contact').as('contact.post')
 Route.on('/support').redirect('contact.index')
 
+Route.get('/search', 'HomeController.search').as('search')
+
 Route.get('/faq', 'QuestionsController.index').as('questions.index')
 
 Route.get('/img/:userId/:filename', 'AssetsController.show').as('userimg');

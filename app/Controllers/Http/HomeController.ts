@@ -34,4 +34,13 @@ export default class HomeController {
       postWatchlist
     })
   }
+
+  public async search({ request, view }: HttpContextContract) {
+    const term = request.input('term')
+    const posts = await PostService.search(term)
+    const series = await CollectionService.search(term)
+    const topics = await TaxonomyService.search(term)
+
+    return view.render('search', { term, posts, series, topics })
+  }
 }

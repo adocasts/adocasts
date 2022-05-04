@@ -17,6 +17,24 @@ export default class CollectionService {
       .limit(limit)
   }
 
+  public static async search(term: string, limit: number = 10) {
+    return Collection.series()
+      .apply(scope => scope.withPostLatestPublished())
+      .withCount('postsFlattened', query => query.apply(scope => scope.published()))
+      .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
+      .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
+      .preload('asset')
+      .wherePublic()
+      .whereNull('parentId')
+      .where(query => query
+        .where('collections.name', 'ILIKE', `%${term}%`)
+        .orWhere('collections.description', 'ILIKE', `%${term}%`)  
+      )
+      .orderBy('latest_publish_at', 'desc')
+      .select(['collections.*'])
+      .limit(limit)
+  }
+
   // TODO: finish
   public static async getPostCounts(collections: Collection[]) {
     const ids = collections.map(c => c.id)
