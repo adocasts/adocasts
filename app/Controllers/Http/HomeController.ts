@@ -4,35 +4,26 @@ import CollectionService from 'App/Services/CollectionService'
 import TaxonomyService from 'App/Services/TaxonomyService'
 import WatchlistService from 'App/Services/WatchlistService'
 import HistoryService from 'App/Services/Http/HistoryService'
-import History from 'App/Models/History'
+import HomeVM from 'Contracts/viewModels/HomeVM'
 
 export default class HomeController {
   public async index({ view, auth }: HttpContextContract) {
+    const vm = new HomeVM()
     const excludeIds: number[] = []
-    const featuredLesson = await PostService.getFeatureSingle()
-    let collectionProgress: History[] = []
-
-    featuredLesson && excludeIds.push(featuredLesson.id)
-
-    const series = await CollectionService.getLastUpdated()
-    const topics = await TaxonomyService.getLastUpdated()
-    const latestLessons = await PostService.getLatest(10, excludeIds)
-    const collectionWatchlist = await WatchlistService.getLatestCollections(auth.user)
-    const postWatchlist = await WatchlistService.getLatestPosts(auth.user)
 
     if (auth.user) {
-      collectionProgress = await HistoryService.getLatestSeriesProgress(auth.user)
+      vm.postWatchlist = await WatchlistService.getLatestPosts(auth.user)
+      vm.collectionWatchlist = await WatchlistService.getLatestCollections(auth.user)
+      vm.collectionProgress = await HistoryService.getLatestSeriesProgress(auth.user)
     }
+    
+    vm.featuredLesson = await PostService.getFeatureSingle()
+    vm.featuredLesson && excludeIds.push(vm.featuredLesson.id)
+    vm.series = await CollectionService.getLastUpdated()
+    vm.topics = await TaxonomyService.getLastUpdated()
+    vm.latestLessons = await PostService.getLatest(10, excludeIds)
 
-    return view.render('index', {
-      featuredLesson,
-      latestLessons,
-      series,
-      topics,
-      collectionProgress,
-      collectionWatchlist,
-      postWatchlist
-    })
+    return view.render('index', vm)
   }
 
   public async search({ request, view }: HttpContextContract) {

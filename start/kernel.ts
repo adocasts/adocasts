@@ -25,7 +25,7 @@ Server.middleware.register([
   () => import('@ioc:Adonis/Addons/Shield'),
   () => import('App/Middleware/SilentAuth'),
   () => import('App/Middleware/AppState'),
-  // () => import('App/Middleware/HtmlMinify')
+  () => import('App/Middleware/HtmlMinify')
 ])
 
 /*
