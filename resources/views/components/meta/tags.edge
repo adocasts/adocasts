@@ -2,7 +2,7 @@
 
 <title>
   @if (title)
-    {{ seriesTitle }} - Adocasts
+    {{ seriesTitle }} - {{ env('APP_BRAND') }}
   @else
     {{ titleFallback }}
   @endif

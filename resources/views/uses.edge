@@ -17,9 +17,8 @@
 
 @set('hardware', [
   item('💻 2021 14" Macbook Pro', 'Primary dev, recording, and video editing laptop', 'https://www.theverge.com/22751921/apple-macbook-pro-14-16-inch-2021-m1-pro-max-review'),
-  item('💻 2020 Razer 15', 'Gaming laptop.', 'https://www.razer.com/gaming-laptops/razer-blade'),
   item('🖥 2019 HP OMEN Obelisk 875', 'Gaming and editing desktop. Media Server', 'https://www.hp.com/us-en/shop/pdp/omen-by-hp-obelisk-desktop-875-1055xt'),
-  item('🖥 MSI Optix 34" Curved Ultra Wide', 'The go to monitor', 'https://www.amazon.com/gp/product/B08KWNK6HS/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1'),
+  item('🖥 MSI Optix 34" Curved Ultra Wide', 'My primary and gaming monitor', 'https://www.amazon.com/gp/product/B08KWNK6HS/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1'),
   item('⌨️ Logitech MX Keys', 'Bluetooth keyboard that can connect to 3 devices', 'https://www.logitech.com/en-us/products/keyboards/mx-keys-wireless-keyboard.920-009295.html'),
   item('🖱 Apple Magic Mouse', 'Bluetooth mouse I use alongside my Macbook Pro', 'https://www.apple.com/shop/product/MK2E3AM/A/magic-mouse-white-multi-touch-surface'),
   item('🖱 Corsair Harpoon Mouse', 'Wired mouse I use for my OMEN', 'https://www.corsair.com/us/en/Categories/Products/Gaming-Mice/MOBA-Strategy-%26-Action-Mice/HARPOON-RGB-Gaming-Mouse/p/CH-9301011-NA'),
@@ -31,7 +30,9 @@
 @set('frameworks', [
   item('AdonisJS', 'My go to backend framework', 'https://adonisjs.com/'),
   item('VueJS', 'My go to frontend framework', 'https://vuejs.org/'),
-  item('InertiaJS', "For complex monoliths", 'https://inertiajs.com/'),
+  item('Japa', 'For AdonisJS/NodeJS testing', 'https://japa.dev/'),
+  item('InertiaJS', "For monoliths with heavy front-end updating", 'https://inertiajs.com/'),
+  item('Unpoly', 'For monoliths with light front-end updating', 'https://unpoly.com/'),
   item('TailwindCSS', "Our CSS framework of choice", "https://tailwindcss.com"),
 ])
 
@@ -39,7 +40,9 @@
   item('GitHub', 'What I primarily use for Git', 'https://github.com'),
   item('Cleavr', "An amazingly simple server and deploy manager", "https://cleavr.io?via=adocasts"),
   item('Vultr', "What we now use to host our sites", 'https://www.vultr.com/?ref=9100128'),
-  item('Google Cloud Storage', "What we now use for image hosting", 'https://cloud.google.com/storage')
+  item('Google Cloud Storage', "What we now use for image hosting", 'https://cloud.google.com/storage'),
+  item('Mailjet', 'What we use for transactional email', 'https://www.mailjet.com/'),
+  item('Revue', 'What we use for our newsletter', 'https://www.getrevue.co'),
 ])
 
 @set('software', [
@@ -47,20 +50,21 @@
   item('Movavi Video Editor Plus', 'Video editing software', 'https://www.movavi.com/video-editor-plus-mac/'),
   item('Affinity Designer', 'Vector image editing software', 'https://affinity.serif.com/en-us/designer/'),
   item('Affinity Photo', 'Raster image editing software', 'https://affinity.serif.com/en-us/photo/'),
-  item('Warp', "A nice new terminal with a modern feature set", "https://www.warp.dev/"),
+  item('Hyper', 'My terminal of choice. I use Zsh with Oh-My-Zsh', "https://hyper.is/"),
   item('TablePlus', 'A fantastic database management GUI', "https://tableplus.com/"),
   item('Notion', 'What I use to write docs and lessons', 'https://www.notion.so'),
-  item('YouTrack', 'What I use for project management', 'https://www.jetbrains.com/youtrack/'),
   item('Grammerly', 'Because English is hard', 'https://grammerly.com')
 ])
 
 @set('ide', [
-  item('WebStorm', 'My AdonisJS text editor of choice'),
-  item('GitHub Theme', 'Definitely a great theme', 'https://plugins.jetbrains.com/plugin/15418-github-theme'),
-  item('GitHub CoPilot', 'My helping hand', 'https://plugins.jetbrains.com/plugin/17718-github-copilot'),
-  item('YouTrack Integration', 'So I can peek at my YouTrack cards', 'https://plugins.jetbrains.com/plugin/8215-youtrack-integration'),
-  item('PostCSS', 'I use PostCSS is almost every project', 'https://plugins.jetbrains.com/plugin/8578-postcss'),
-  item('Better Comments', 'I like my TODOs to stand out', 'https://plugins.jetbrains.com/plugin/10850-better-comments')
+  item('VS Code', 'My current text editor of choice'),
+  item('Halcyon Theme', 'Recently replaced the GitHub Dark theme', 'https://marketplace.visualstudio.com/items?itemName=brittanychiang.halcyon-vscode'),
+  item('City Lights Icons', 'I use the color variant', 'https://marketplace.visualstudio.com/items?itemName=Yummygum.city-lights-icon-vsc'),
+  item('GitHub CoPilot', 'My helping hand', 'https://marketplace.visualstudio.com/items?itemName=GitHub.copilot'),
+  item('AdonisJS Extensions', 'Adds some neat AdonisJS support to VS Code', 'https://marketplace.visualstudio.com/items?itemName=jripouteau.adonis-vscode-extension'),
+  item('Edge Template Support', 'Adds support for the Edge Template Engine', 'https://marketplace.visualstudio.com/items?itemName=luongnd.edge'),
+  item('Tailwind CSS Intellisense', 'Adds intellisense for Tailwind CSS', 'https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss'),
+  item('Better Comments', 'I like my TODOs to stand out', 'https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments')
 ])
 
 <div class="break border-t border-gray-300 relative -top-6 pt-8 mt-3">
@@ -70,7 +74,7 @@
       Uses
 
       @slot('description')
-        A collection of tech and software used at Adocasts that we deem vital to our lives as developers and content creators. Some items may be referrals.
+        A collection of tech and software used at {{ env('APP_BRAND') }} that we deem vital to our lives as developers and content creators. Some items may be referrals.
       @end
     @end
 
