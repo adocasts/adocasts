@@ -3,6 +3,7 @@ import User from 'App/Models/User';
 import sharp from 'sharp';
 import StorageService from './StorageService';
 import fetch from 'cross-fetch'
+import Drive from '@ioc:Adonis/Core/Drive'
 
 class ImageOptions {
   width: number
@@ -91,11 +92,11 @@ export default class AssetService {
     const buffer = new Buffer(arrayBuffer)
     const filename = this.getAvatarFilename(user, socialUser.avatarUrl)
 
-    if (await StorageService.exists(filename)) {
-      await StorageService.destroy(filename)
+    if (await Drive.exists(filename)) {
+      await Drive.delete(filename)
     }
 
-    await StorageService.upload(buffer, filename);
+    await Drive.put(filename, buffer);
 
     user.avatarUrl = filename
 

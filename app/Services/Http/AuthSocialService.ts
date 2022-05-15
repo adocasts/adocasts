@@ -97,9 +97,7 @@ export default class AuthSocialService extends BaseHttpService {
       await jagrUser.save()
     }
 
-    if (!jagrUser.avatarUrl) {
-      await AssetService.refreshAvatar(jagrUser, user)
-    }
+    await AssetService.refreshAvatar(jagrUser, user)
 
     return { isSuccess: true, user: jagrUser, message: '' }
   }
