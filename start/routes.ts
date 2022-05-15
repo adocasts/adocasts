@@ -56,6 +56,7 @@ Route.on('/register').redirect('/signup')
 
 Route.get('/:provider/redirect', 'AuthSocialController.redirect').as('auth.social.redirect');
 Route.get('/:provider/callback', 'AuthSocialController.callback').as('auth.social.callback');
+Route.get('/:provider/unlink',   'AuthSocialController.unlink').as('auth.social.unlink')
 
 Route.get('/forgot-password',       'PasswordResetController.forgotPassword').as('auth.password.forgot');
 Route.get('/forgot-password/sent',  'PasswordResetController.forgotPasswordSent').as('auth.password.forgot.sent');

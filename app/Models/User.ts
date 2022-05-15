@@ -37,16 +37,28 @@ class User extends AppBaseModel {
   public rememberMeToken?: string
 
   @column()
-  avatarUrl: string
+  public avatarUrl: string
 
   @column()
-  githubAccessToken: string
+  public githubId: string
 
   @column()
-  googleAccessToken: string
+  public googleId: string
 
   @column()
-  twitterAccessToken: string
+  public githubEmail: string
+
+  @column()
+  public googleEmail: string
+
+  @column()
+  public githubAccessToken: string
+
+  @column()
+  public googleAccessToken: string
+
+  @column()
+  public twitterAccessToken: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

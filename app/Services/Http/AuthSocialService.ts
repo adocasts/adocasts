@@ -15,12 +15,23 @@ export default class AuthSocialService extends BaseHttpService {
     const social = this.ctx.ally.use(socialProvider)
 
     if (!this.checkForErrors(social)) {
-      return { isSuccess: false, user: null }
+      return { isSuccess: false, user: null, message: '' }
     }
 
-    const user = await this.findOrCreateUser(social, socialProvider)
+    return this.findOrCreateUser(social, socialProvider)
+  }
 
-    return { isSuccess: true, user }
+  public async unlink(socialProvider: keyof SocialProviders) {
+    const userIdKey = `${socialProvider}Id`
+    const userEmailKey = `${socialProvider}Email`
+    const tokenKey = `${socialProvider}AccessToken`
+    const user = this.ctx.auth.user!
+
+    user[userIdKey] = null
+    user[userEmailKey] = null
+    user[tokenKey] = null
+
+    await user.save()
   }
 
   /**
@@ -48,17 +59,20 @@ export default class AuthSocialService extends BaseHttpService {
 
   /**
    * Find or create the social authenticated user
-   * @param {GoogleDriverContract|GithubDriverContract} social            [description]
+   * @param {GoogleDriverContract|GithubDriverContract} social [description]
    * @param {keyof SocialProviders} socialProvider [description]
    */
   private async findOrCreateUser(social: GoogleDriverContract|GithubDriverContract, socialProvider: keyof SocialProviders) {
     const user = await social.user()
+    const authUser = this.ctx.auth.user
     const username = await this.getUniqueUsername(user.name)
+    const userIdKey = `${socialProvider}Id`
+    const userEmailKey = `${socialProvider}Email`
     const tokenKey = `${socialProvider}AccessToken`
 
     let jagrUser = await User.query()
       .where('email', user.email!)
-      .whereNotNull(tokenKey)
+      .orWhere(userIdKey, user.id)
       .first()
 
     if (!jagrUser) {
@@ -67,13 +81,27 @@ export default class AuthSocialService extends BaseHttpService {
         email: user.email!,
         avatarUrl: user.avatarUrl ?? undefined,
         roleId: RoleEnum.USER,
+        [userIdKey]: user.id,
+        [userEmailKey]: user.email,
         [tokenKey]: user.token.token
       })
+    } else if (!authUser && !jagrUser[tokenKey]) {
+      return { 
+        isSuccess: false, 
+        message: `This email is already tied to an account. Please login to your account using your email/username and password and add ${socialProvider} through your settings.` 
+      }
+    } else if (!jagrUser[userIdKey]) {
+      jagrUser[userIdKey] = user.id
+      jagrUser[userEmailKey] = user.email
+      jagrUser[tokenKey] = user.token.token
+      await jagrUser.save()
     }
 
-    await AssetService.refreshAvatar(jagrUser, user)
+    if (!jagrUser.avatarUrl) {
+      await AssetService.refreshAvatar(jagrUser, user)
+    }
 
-    return jagrUser
+    return { isSuccess: true, user: jagrUser, message: '' }
   }
 
   /**
