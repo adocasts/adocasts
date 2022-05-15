@@ -1,7 +1,6 @@
 import { AllyUserContract, GithubToken, GoogleToken } from '@ioc:Adonis/Addons/Ally';
 import User from 'App/Models/User';
 import sharp from 'sharp';
-import StorageService from './StorageService';
 import fetch from 'cross-fetch'
 import Drive from '@ioc:Adonis/Core/Drive'
 
