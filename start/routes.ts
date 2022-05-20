@@ -158,6 +158,8 @@ Route.group(() => {
   Route.post('/history/progression/toggle', 'HistoriesController.progressionToggle').as('histories.progression.toggle')
   Route.post('/history/progression/:id?', 'HistoriesController.progression').as('histories.progression')
 
+  Route.post('/comments/:id/like', 'CommentsController.like').as('comments.like')
+
   Route.group(() => {
 
     Route.get('/posts/search', 'PostsController.search').as('posts.search')

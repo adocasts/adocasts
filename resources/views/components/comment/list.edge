@@ -5,6 +5,7 @@
   @set('replyTo', comment.id)
   @set('levelIndex', levelIndex ? levelIndex + 1 : 1)
   @set('isAnon', !comment.userId)
+  @set('userLiked', comment.userVotes.find(v => v.$extras.pivot_user_id === auth.user?.id))
 
   <li class="relative" id="comment{{ comment.id }}">
     <div class="bg-gray-50 border rounded-lg p-3 mb-6 group"
@@ -55,9 +56,9 @@
             @click="toggleLike({{ comment.id }})">
             <div class="w-5 h-5 -mt-1 mr-2 relative">
               @!svg.heartOutline({ className: 'btn-outline w-5 h-5 absolute top-0 left-0' })
-              @!svg.heart({ className: 'btn-filled w-5 h-5 text-gray-800 absolute top-0 left-0' })
+              @!svg.heart({ className: `btn-filled w-5 h-5 text-gray-800 absolute top-0 left-0 ${userLiked && 'active'}` })
             </div>
-            0
+            <span class="btn-count">{{ comment.userVotes.length }}</span>
           </button>
           @endif
 

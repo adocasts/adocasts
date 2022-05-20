@@ -15,8 +15,18 @@
     this.editId = null
     this.createId = null
   },
-  toggleLike(commentId) {
-    console.log({ commentId })
+  async toggleLike(commentId) {
+    const { data } = await axios.post(`/api/comments/${commentId}/like`)
+    const likeIconEl = document.querySelector(`#comment${commentId} .btn-hover-fill`)
+    const countEl = document.querySelector(`#comment${commentId} .btn-count`)
+    
+    if (data.wasRemoved) {
+      likeIconEl.classList.remove('active')
+      countEl.textContent = Number(countEl.textContent) - 1
+    } else {
+      likeIconEl.classList.add('active')
+      countEl.textContent = Number(countEl.textContent) + 1
+    }
   }
 }">
   <h4 class="font-semibold mt-6">Comment</h4>

@@ -17,6 +17,7 @@ export default class CommentService {
     return post.related('comments')
       .query()
       .preload('user')
+      .preload('userVotes', query => query.select(['id']))
       .where(query => query
           .where('stateId', States.PUBLIC)
           .orWhere({ identity })

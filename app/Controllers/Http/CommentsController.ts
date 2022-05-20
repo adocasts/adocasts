@@ -62,4 +62,17 @@ export default class CommentsController {
 
     return response.redirect().back()
   }
+
+  public async like({ response, auth, params }: HttpContextContract) {
+    const user = auth.user!
+    const vote = await user.related('commentVotes').query().where('comments.id', params.id).first()
+    
+    if (vote) {
+      await user.related('commentVotes').detach([params.id])
+    } else {
+      await user.related('commentVotes').attach([params.id])
+    }
+
+    return response.status(200).json({ wasRemoved: !!vote })
+  }
 }

@@ -272,12 +272,17 @@ div[role="progressbar"].circle {
   opacity: 0;
 }
 
+.btn-hover-fill.active .btn-filled {
+  opacity: 1;
+  color: theme('colors.red.700');
+}
+
 .btn-hover-fill:hover .btn-filled {
   opacity: 1;
 }
 
-.btn-hover-fill:hover .btn-outline {
-  opacity: 0;
+.btn-hover-fill.active .btn-outline {
+  color: theme('colors.red.700');
 }
 
 .break {

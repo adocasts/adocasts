@@ -16,7 +16,7 @@ export default class HomeController {
       vm.collectionWatchlist = await WatchlistService.getLatestCollections(auth.user)
       vm.collectionProgress = await HistoryService.getLatestSeriesProgress(auth.user)
     }
-    
+
     vm.featuredLesson = await PostService.getFeatureSingle()
     vm.featuredLesson && excludeIds.push(vm.featuredLesson.id)
     vm.series = await CollectionService.getLastUpdated()

@@ -100,6 +100,11 @@ class User extends AppBaseModel {
   })
   public posts: ManyToMany<typeof Post>
 
+  @manyToMany(() => Comment, {
+    pivotTable: 'comment_votes'
+  })
+  public commentVotes: ManyToMany<typeof Comment>
+
   @hasMany(() => Watchlist)
   public watchlist: HasMany<typeof Watchlist>
 
