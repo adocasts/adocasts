@@ -23,6 +23,10 @@
   {{--  Series Lessons  --}}
   {{--  TODO: need to display modules somehow  --}}
   <div class="flex flex-wrap -mx-2 -mt-6  rounded-t-lg relative bg-white z-10 overflow-hidden">
+    <div class="flex items-center mb-3">
+      @!ads.leaderboard()
+    </div>
+
     @each ((post, i) in series.postsFlattened)
       @!lesson.card({
         item: post,

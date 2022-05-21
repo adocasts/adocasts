@@ -31,7 +31,7 @@
     @end
 
     <div class="flex flex-wrap -mx-6">
-      <div class="w-full lg:w-1/2 px-6">
+      <div class="w-full lg:w-2/3 px-6">
         <ul class="mb-12">
           @each (item in resources)
             <li class="flex flex-col">
@@ -40,6 +40,10 @@
             </li>
           @endeach
         </ul>
+      </div>
+
+      <div class="w-full lg:w-1/3 px-6">
+        @!ads.multiplex()
       </div>
     </div>
   @end

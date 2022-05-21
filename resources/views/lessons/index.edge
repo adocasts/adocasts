@@ -15,6 +15,10 @@
   <div class="-mx-4 sm:-mx-6 border-t border-gray-300 relative -top-6 pt-8 mt-3">
     @container()
 
+      <div class="flex items-center">
+        @!ads.leaderboard()
+      </div>
+
       {{--  Lessons  --}}
       @heading.page()
         Latest Lessons
@@ -36,7 +40,7 @@
           @end
         </div>
         <div class="w-full md:w-1/4 px-6">
-
+          @!ads.multiplex()
         </div>
       </div>
     @end
