@@ -64,6 +64,9 @@ Route.post('/forgot-password',      'PasswordResetController.forgotPasswordSend'
 Route.get('/reset-password/:email', 'PasswordResetController.resetPassword').as('auth.password.reset');
 Route.post('/reset-password',       'PasswordResetController.resetPasswordStore').as('auth.password.reset.store');
 
+// PUBLIC -- Redirects from old
+Route.on('/topics/adonisjs-5').redirect('/topics/adonisjs')
+
 // PUBLIC
 Route.get('/series',                      'SeriesController.index').as('series.index')
 Route.get('/series/:slug',                'SeriesController.show').as('series.show')
