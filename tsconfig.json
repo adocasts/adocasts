@@ -40,7 +40,8 @@
       "@adonisjs/bouncer",
       "@adonisjs/attachment-lite",
       "@adonisjs/drive-gcs",
-      "@japa/preset-adonis/build/adonis-typings"
+      "@japa/preset-adonis/build/adonis-typings",
+      "@adocasts.com/adonisjs-honeypot"
     ]
   }
 }

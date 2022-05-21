@@ -29,7 +29,7 @@
     <div class="bg-white py-6 px-3 shadow sm:rounded-b-lg sm:px-8">
       <form action="{{ route('auth.signin') }}" method="POST">
         {{ csrfField() }}
-        {{-- @!component('honeypot') --}}
+        @!component('honeypot')
 
         @if (session.has('forward'))
           <input type="hidden" name="forward" value="{{ session.get('forward') }}" />

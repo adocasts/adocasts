@@ -39,7 +39,8 @@
     "./providers/QueryBuilderProvider",
     "@adonisjs/attachment-lite",
     "@adonisjs/drive-gcs",
-    "@japa/preset-adonis/TestsProvider"
+    "@japa/preset-adonis/TestsProvider",
+    "@adocasts.com/adonisjs-honeypot"
   ],
   "metaFiles": [
     {

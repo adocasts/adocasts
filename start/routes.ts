@@ -33,7 +33,7 @@ Route.get('/sitemap', 'SyndicationController.sitemap').as('sitemap')
 Route.get('/sitemap.xml', 'SyndicationController.xml').as('sitemap.xml')
 
 Route.get('/contact', 'ContactController.index').as('contact.index')
-Route.post('/contact', 'ContactController.contact').as('contact.post')
+Route.post('/contact', 'ContactController.contact').as('contact.post').middleware(['honeypot'])
 Route.on('/support').redirect('contact.index')
 
 Route.get('/search', 'HomeController.search').as('search')
@@ -45,9 +45,9 @@ Route.get('/img/:userId/:filename', 'AssetsController.show').as('userimg');
 
 // AUTH
 Route.get('/signup',  'AuthController.signupShow').as('auth.signup.show')
-Route.post('/signup', 'AuthController.signup').as('auth.signup')
+Route.post('/signup', 'AuthController.signup').as('auth.signup').middleware(['honeypot'])
 Route.get('/signin',  'AuthController.signinShow').as('auth.signin.show')
-Route.post('/signin', 'AuthController.signin').as('auth.signin')
+Route.post('/signin', 'AuthController.signin').as('auth.signin').middleware(['honeypot'])
 Route.get('/signout', 'AuthController.signout').as('auth.signout')
 
 // AUTH - Redirect from old
@@ -78,8 +78,8 @@ Route.get('/posts/:slug',   'PostsController.show').as('posts.show').middleware(
 Route.get('/topics',        'TopicsController.index').as('topics.index')
 Route.get('/topics/:slug',  'TopicsController.show').as('topics.show')
 
-Route.post('/comments',       'CommentsController.store').as('comments.store')
-Route.put('/comments/:id',    'CommentsController.update').as('comments.update')
+Route.post('/comments',       'CommentsController.store').as('comments.store').middleware(['honeypot'])
+Route.put('/comments/:id',    'CommentsController.update').as('comments.update').middleware(['honeypot'])
 Route.delete('/comments/:id', 'CommentsController.destroy').as('comments.destroy')
 
 Route.get('/watchlist',       'WatchlistsController.index').as('watchlist.index')

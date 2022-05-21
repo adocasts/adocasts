@@ -81,6 +81,7 @@
         @endif
         <form action="{{ route('contact.post') }}?_method=POST" method="POST" class="mt-6 gap-y-6">
             {{ csrfField() }}
+            @!component('honeypot')
 
             <div class="max-w-md">
               @!form.input({

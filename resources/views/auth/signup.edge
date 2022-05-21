@@ -29,7 +29,7 @@
     <div class="bg-white py-6 px-3 shadow sm:rounded-b-lg sm:px-8">
       <form action="{{ route('auth.signup') }}" method="POST">
         {{ csrfField() }}
-{{--         @!component('honeypot') --}}
+       @!component('honeypot')
 
         @if (flashMessages.get('errors.form'))
           <div role="alert" class="bg-red-100 text-red-800 rounded p-3 mb-4">
