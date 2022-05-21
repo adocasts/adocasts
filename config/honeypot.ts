@@ -5,7 +5,7 @@
  * file.
  */
 
-import { HoneypotConfig } from '@ioc:Jagr/Honeypot'
+import { HoneypotConfig } from '@ioc:Adocasts/Honeypot'
 
 /*
 |--------------------------------------------------------------------------
