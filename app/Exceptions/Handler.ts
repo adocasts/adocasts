@@ -16,6 +16,8 @@
 import Logger from '@ioc:Adonis/Core/Logger'
 import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import * as Sentry from '@sentry/node'
+import DiscordLogger from '@ioc:Logger/Discord'
 
 export default class ExceptionHandler extends HttpExceptionHandler {
   protected disableStatusPagesInDevelopment = true
@@ -31,11 +33,26 @@ export default class ExceptionHandler extends HttpExceptionHandler {
   }
 
   public async handle(error: any, ctx: HttpContextContract) {
+    Sentry.captureException(error)
+    
     if (error.code === 'E_BAD_CSRF_TOKEN') {
       return this.handleExpiredCsrf(ctx)
     }
 
     return super.handle(error, ctx)
+  }
+
+  public async report(error: any, ctx: HttpContextContract) {
+    if (!this.shouldReport(error)) {
+      return
+    }
+
+    ctx.logger.error(error.message)
+
+    await DiscordLogger.error(error.message, {
+      method: ctx.request.method,
+      url: ctx.request.url(true)
+    })
   }
 
   public async handleExpiredCsrf(ctx: HttpContextContract) {

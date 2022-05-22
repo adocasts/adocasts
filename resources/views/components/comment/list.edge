@@ -52,11 +52,11 @@
         <div x-show="editId !== {{ comment.id }}" class="flex items-center space-x-2">
           @if (auth.user)
           <button
-            class="btn-hover-fill text-gray-900 hover:text-gray-950 transition flex items-center text-sm bg-white border border-gray-100 rounded-lg py-1 px-3"
+            class="btn-hover-fill text-gray-900 hover:text-gray-950 transition flex items-center text-sm bg-white border border-gray-100 rounded-lg py-1 px-3 {{ userLiked && 'active' }}"
             @click="toggleLike({{ comment.id }})">
             <div class="w-5 h-5 -mt-1 mr-2 relative">
               @!svg.heartOutline({ className: 'btn-outline w-5 h-5 absolute top-0 left-0' })
-              @!svg.heart({ className: `btn-filled w-5 h-5 text-gray-800 absolute top-0 left-0 ${userLiked && 'active'}` })
+              @!svg.heart({ className: `btn-filled w-5 h-5 text-gray-800 absolute top-0 left-0` })
             </div>
             <span class="btn-count">{{ comment.userVotes.length }}</span>
           </button>

@@ -1,6 +1,8 @@
 import '../css/app.css'
 import 'babel-polyfill'
 import axios from 'axios'
+import * as Sentry from '@sentry/browser'
+import { BrowserTracing } from '@sentry/tracing'
 
 window.axios = axios
 
@@ -17,6 +19,16 @@ window.axios = axios
 //
 //   return Promise.reject(error);
 // });
+
+Sentry.init({
+  dsn: "https://eb0d646ec4de4e34867802b90b099f45@o1256915.ingest.sentry.io/6426365",
+  integrations: [new BrowserTracing()],
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
 
 window.appWatchlist = function(route, payload, isInWatchlist) {
   return {
