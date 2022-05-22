@@ -8,7 +8,8 @@ export default class HtmlMinify {
 
     const method = request.method()
     const accepts = request.accepts([]) ?? [] as string[]
-    if (method === 'GET' && accepts.includes('text/html')) {
+    const isXML = request.url().endsWith('.xml')
+    if (method === 'GET' && accepts.includes('text/html') && !isXML) {
       const minified = minify(response.getBody(), {
         minifyCss: true,
         minifyJs: true,
