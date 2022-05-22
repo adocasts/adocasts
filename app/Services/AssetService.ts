@@ -91,11 +91,13 @@ export default class AssetService {
     const buffer = new Buffer(arrayBuffer)
     const filename = this.getAvatarFilename(user, socialUser.avatarUrl)
 
+    if (user.avatarUrl === filename) return
+
     if (await Drive.exists(filename)) {
       await Drive.delete(filename)
     }
 
-    await Drive.put(filename, buffer);
+    await Drive.put(filename, buffer)
 
     user.avatarUrl = filename
 
