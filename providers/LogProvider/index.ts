@@ -1,6 +1,5 @@
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
 import * as Sentry from '@sentry/node'
-import * as Tracing from '@sentry/tracing'
 
 /*
 |--------------------------------------------------------------------------
@@ -40,7 +39,7 @@ export default class LogProvider {
       // Set tracesSampleRate to 1.0 to capture 100%
       // of transactions for performance monitoring.
       // We recommend adjusting this value in production
-      tracesSampleRate: 1.0,
+      tracesSampleRate: 0,
     });
   }
 
