@@ -51,8 +51,8 @@ Route.post('/signin', 'AuthController.signin').as('auth.signin').middleware(['ho
 Route.get('/signout', 'AuthController.signout').as('auth.signout')
 
 // AUTH - Redirect from old
-Route.on('/login').redirect('/signin')
-Route.on('/register').redirect('/signup')
+Route.on('/login').redirectToPath('/signin')
+Route.on('/register').redirectToPath('/signup')
 
 Route.get('/:provider/redirect', 'AuthSocialController.redirect').as('auth.social.redirect');
 Route.get('/:provider/callback', 'AuthSocialController.callback').as('auth.social.callback');
@@ -65,7 +65,8 @@ Route.get('/reset-password/:email', 'PasswordResetController.resetPassword').as(
 Route.post('/reset-password',       'PasswordResetController.resetPasswordStore').as('auth.password.reset.store');
 
 // PUBLIC -- Redirects from old
-Route.on('/topics/adonisjs-5').redirect('/topics/adonisjs')
+Route.on('/topics/adonisjs-5').redirectToPath('/topics/adonisjs')
+Route.on('/series/lets-learn-adonis-5').redirectToPath('/series/lets-learn-adonisjs-5')
 
 // PUBLIC
 Route.get('/series',                      'SeriesController.index').as('series.index')
