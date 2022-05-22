@@ -48,6 +48,7 @@ export default class SeriesController {
       .apply(scope => scope.withPublishedPostCount())
       .wherePublic()
       .where({ slug: params.slug })
+      .whereNull('parentId')
       .preload('asset')
       .preload('postsFlattened', query => query
         .apply(scope => scope.forCollectionDisplay({ orderBy: 'pivot_root_sort_order' }))
