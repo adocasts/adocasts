@@ -30,7 +30,7 @@ export const honeypotConfig: HoneypotConfig = {
   | honeypot component.
   |
   */
-  fields: ['ohbother', 'ohhoney', 'ohpiglet', 'ohtigger', 'ohpoo'],
+  fields: ['ohbother', 'ohhoney', 'ohpiglet', 'ohtigger', 'ohpoo', 'firstName', 'lastName'],
 
   /*
   |--------------------------------------------------------------------------
