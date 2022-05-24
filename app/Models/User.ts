@@ -68,7 +68,13 @@ class User extends AppBaseModel {
 
   @computed()
   public get avatar() {
-    if (this.avatarUrl) return `/img/${this.avatarUrl}`
+    if (this.avatarUrl) {
+      if (this.avatarUrl.startsWith('https://')) {
+        return this.avatarUrl
+      }
+      
+      return `/img/${this.avatarUrl}`
+    }
 
     return gravatar.url(this.email, { s: '40' })
   }
