@@ -14,6 +14,7 @@ import Route from '@ioc:Adonis/Core/Route'
 import Comment from 'App/Models/Comment'
 import NotificationService from 'App/Services/NotificationService'
 import Env from '@ioc:Adonis/Core/Env'
+import AffiliateService from 'App/Services/AffiliateService'
 
 if (Env.get('NODE_ENV') === 'test') {
   View.global('csrfField', () => '')
@@ -22,6 +23,8 @@ if (Env.get('NODE_ENV') === 'test') {
 View.global('appUrl', (path) => {
   return Env.get('APP_DOMAIN') + path
 })
+
+View.global('affiliateService', AffiliateService)
 
 View.global('routePost', (post: Post, params: { [x: string]: any }, options: { [x: string]: any }) => {
   switch(post.postTypeId) {
