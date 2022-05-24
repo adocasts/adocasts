@@ -1,0 +1,10 @@
+@set('href', 'https://200995oeov2n3kc3tzw9lbnyey.hop.clickbank.net')
+@set('filename', 'affiliates/diy-graphic-assets/diy-graphic-assets-728x90.png')
+@set('altText', 'DIY Graphic Design Assets promo image')
+@set('width', 728)
+
+<a href="{{ href }}">
+  <div class="overflow-hidden max-w-full {{ className }}">
+    @!ad({ filename, width, altText, lazy: true })
+  </div>
+</a>

@@ -21,7 +21,11 @@ export default class AssetService {
       return params['*'].join('/');
     }
 
-    return Object.values(params).join('/');
+    if (params['*']) {
+      return params['*'].join('/')
+    }
+
+    return Object.values(params).join('/')
   }
 
   public static getFileExtension(file): string {

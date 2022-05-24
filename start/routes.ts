@@ -41,7 +41,7 @@ Route.get('/search', 'HomeController.search').as('search')
 Route.get('/faq', 'QuestionsController.index').as('questions.index')
 
 Route.get('/img/:userId/:filename', 'AssetsController.show').as('userimg');
-// Route.get('/img/*', 'AssetsController.show').where('path', /.*/).as('img');
+Route.get('/img/*', 'AssetsController.show').where('path', /.*/).as('img');
 
 // AUTH
 Route.get('/signup',  'AuthController.signupShow').as('auth.signup.show')

@@ -1,0 +1,20 @@
+<picture class="block mx-auto h-full {{ pictureClassName }}" style="{{ width ? `max-width: ${width}px;` : '' }}">
+  <source
+    srcset="
+      /img/{{ filename }}?w={{ width * 2 }}&f=webp 2x,
+      /img/{{ filename }}?w={{ width }}&f=webp 1x
+    "
+    type="image/webp"
+  />
+
+  <img
+    src="/img/{{ filename }}?w={{ width * 2 }}"
+    srcset="
+      /img/{{ filename }}?w={{ width * 2 }} 2x,
+      /img/{{ filename }}?w={{ width }} 1x,
+    "
+    alt="{{ altText || '' }}"
+    class="w-full max-w-full {{ fit ? `${fit} h-full` : '' }} {{ imgClassName ? imgClassName : '' }}"
+    {{ lazy && 'loading=lazy' }}
+  />
+</picture>
