@@ -152,11 +152,15 @@
           @!comment.base({ postId: post.id, comments })
         </div>
 
-        @if (post.authors && post.authors.length)
-          <div class="w-full flex-1 lg:px-6 order-1 lg:order-2 -mt-3 mb-6 md:mt-0 lg:max-w-md">
+        <div class="w-full flex-1 lg:px-6 order-1 lg:order-2 -mt-3 mb-6 md:mt-0 lg:max-w-md">
+          @if (post.authors && post.authors.length)
             @!author.card({ author: post.authors[0] })
+          @endif
+
+          <div class="mt-6">
+            @!affiliates.square({ affiliate })
           </div>
-        @endif
+        </div>
       </div>
     @end
   </div>

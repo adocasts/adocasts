@@ -1,12 +1,5 @@
 @if (affiliate && affiliate.tall)
-  @set('href', affiliate.href)
-  @set('filename', affiliate.tall)
-  @set('altText', affiliate.altText)
-  @set('width', 160)
-
-  <a href="{{ href }}">
-    <div class="overflow-hidden max-w-full {{ className }}">
-      @!ad({ filename, width, altText, lazy: true })
-    </div>
-  </a>
+  <div class="affiliate">
+    @!component(`components/affiliates/${affiliate.name}/${affiliate.tall}`)
+  </div>
 @endif

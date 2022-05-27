@@ -1,12 +1,5 @@
 @if (affiliate && affiliate.square)
-  @set('href', affiliate.href)
-  @set('filename', affiliate.square)
-  @set('altText', affiliate.altText)
-  @set('width', 336)
-
-  <a href="{{ href }}">
-    <div class="overflow-hidden max-w-full {{ className }}">
-      @!ad({ filename, width, altText, lazy: true })
-    </div>
-  </a>
+  <div class="affiliate">
+    @!component(`components/affiliates/interserver/${affiliate.square}`)
+  </div>
 @endif

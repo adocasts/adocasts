@@ -14,35 +14,37 @@
 
 @section('content')
 
-<div class="w-full lg:w-2/3 -mx-4 sm:-mx-6 border-t border-gray-300 relative -top-6 pt-8 mt-3">
-  @container()
+<div class="flex flex-wrap -mx-6">
+  <div class="w-full lg:w-2/3 -mx-4 sm:-mx-6 border-t border-gray-300 relative -top-6 pt-8 mt-3">
+    @container()
 
-    @heading.page()
-      Frequently Asked Questions
+      @heading.page()
+        Frequently Asked Questions
 
-      @slot('description')
-        Find answers to frequently asked questions on development and AdonisJS, or submit a question of your own.
-      @end
-    @end
-
-    <dl class="mt-6 space-y-6 divide-y divide-gray-200">
-      @collapse.item()
-        @slot('title')
-          Do migration columns default to nullable or not nullable?
+        @slot('description')
+          Find answers to frequently asked questions on development and AdonisJS, or submit a question of your own.
         @end
-
-        Migration columns will default to nullable when neither nullable or not nullable is provided.
       @end
-    </dl>
 
-    <p class="text-gray-800 pt-12">
-      <strong>This page is coming soon.</strong> <br/>Have a question you think would be good for this page?
-      <a href="mailto:contact@adocasts.com" class="underline">Let me know!</a>
-    </p>
-  @end
-</div>
+      <dl class="mt-6 space-y-6 divide-y divide-gray-200">
+        @collapse.item()
+          @slot('title')
+            Do migration columns default to nullable or not nullable?
+          @end
 
-<div class="w-full lg:w-1/3">
-  @!ads.multiplex()
+          Migration columns will default to nullable when neither nullable or not nullable is provided.
+        @end
+      </dl>
+
+      <p class="text-gray-800 pt-12">
+        <strong>This page is coming soon.</strong> <br/>Have a question you think would be good for this page?
+        <a href="mailto:contact@adocasts.com" class="underline">Let me know!</a>
+      </p>
+    @end
+  </div>
+
+  <div class="w-full lg:w-1/3 mt-12">
+    @!affiliates.square({ affiliate })
+  </div>
 </div>
 @endsection

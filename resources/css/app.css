@@ -285,6 +285,14 @@ div[role="progressbar"].circle {
   color: theme('colors.red.700');
 }
 
+.affiliate {
+  display: flex;
+}
+
+.affiliate a {
+  margin: 0 auto;
+}
+
 .break {
   left: 50%;
   margin-left: -50vw;
