@@ -1,6 +1,7 @@
 export default class AffiliateService {
   public static affiliates = [
     Affiliate('interserver'),
+    Affiliate('interserver2'),
     Affiliate('atlasvpn'),
     Affiliate('atlasvpn2'),
     Affiliate('adagio'),
