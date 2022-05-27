@@ -149,6 +149,10 @@
             {{{ post.body }}}
           </div>
 
+          <div class="mt-6">
+            @!affiliates.leaderboard({ affiliate })
+          </div>
+
           @!comment.base({ postId: post.id, comments })
         </div>
 
@@ -159,6 +163,7 @@
 
           <div class="mt-6">
             @!affiliates.square({ affiliate })
+            @!affiliates.square()
           </div>
         </div>
       </div>

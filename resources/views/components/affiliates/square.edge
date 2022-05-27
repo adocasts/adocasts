@@ -1,5 +1,7 @@
+@set('affiliate', affiliate ?? affiliateService.getRandom())
+
 @if (affiliate && affiliate.square)
   <div class="affiliate">
-    @!component(`components/affiliates/interserver/${affiliate.square}`)
+    @!component(`components/affiliates/${affiliate.name}/${affiliate.square}`)
   </div>
 @endif

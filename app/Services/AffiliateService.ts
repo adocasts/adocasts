@@ -1,6 +1,8 @@
 export default class AffiliateService {
   public static affiliates = [
-    Affiliate('interserver')
+    Affiliate('interserver'),
+    Affiliate('atlasvpn'),
+    Affiliate('atlasvpn2')
   ]
 
   public static getRandom() {
