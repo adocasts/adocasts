@@ -16,7 +16,7 @@ export default class HtmlMinify {
         minifyJs: true,
         removeComments: true,
         preserveLineBreaks: true,
-        collapseInlineTagWhitespace: true,
+        collapseInlineTagWhitespace: false,
         collapseWhitespace: true
       })
 
