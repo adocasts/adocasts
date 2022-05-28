@@ -339,9 +339,9 @@ export default class Post extends AppBaseModel {
       .where('publishAt', '<=', DateTime.now().toSQL())
   })
 
-  public static forDisplay = scope<typeof Post>((query) => {
+  public static forDisplay = scope<typeof Post>((query, skipPublishCheck: boolean = false) => {
     query
-      .apply(scope => scope.published())
+      .if(!skipPublishCheck, query => query.apply(scope => scope.published()))
       .preload('assets')
       .preload('taxonomies')
       .preload('rootSeries')
