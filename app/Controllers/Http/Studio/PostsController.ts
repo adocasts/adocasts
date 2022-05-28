@@ -39,7 +39,7 @@ export default class PostsController {
 
     if (!data.stateId) data.stateId = State.PUBLIC
 
-    const publishAt = DateService.getPublishAtDateTime(publishAtDate, publishAtTime)
+    const publishAt = DateService.getPublishAtDateTime(publishAtDate, publishAtTime, data.timezone)
     const post = await Post.create({ ...data, publishAt })
 
     await auth.user!.related('posts').attach([post.id])
@@ -72,7 +72,7 @@ export default class PostsController {
     await bouncer.with('PostPolicy').authorize('update', post)
 
     let { publishAtDate, publishAtTime, assetIds, taxonomyIds, ...data } = await request.validate(PostStoreValidator)
-    const publishAt = DateService.getPublishAtDateTime(publishAtDate, publishAtTime)
+    const publishAt = DateService.getPublishAtDateTime(publishAtDate, publishAtTime, data.timezone)
 
     post.merge({ ...data, publishAt })
 

@@ -6,8 +6,8 @@ export default class DateService {
 	 * @param {DateTime | undefined} publishAtDate [description]
 	 * @param {DateTime | undefined} publishAtTime [description]
 	 */
-	public static getPublishAtDateTime(publishAtDate: DateTime | undefined, publishAtTime: DateTime | undefined) {
-		let publishAt = DateTime.now()
+	public static getPublishAtDateTime(publishAtDate: DateTime | undefined, publishAtTime: DateTime | undefined, timezone: string | undefined) {
+		let publishAt = DateTime.now().setZone(timezone)
 
     if (publishAtDate) {
       publishAt = publishAt.set({ year: publishAtDate.year, month: publishAtDate.month, day: publishAtDate.day })
