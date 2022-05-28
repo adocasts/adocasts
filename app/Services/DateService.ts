@@ -17,6 +17,6 @@ export default class DateService {
       publishAt = publishAt.set({ hour: publishAtTime.hour, minute: publishAtTime.minute })
     }
 
-    return publishAt
+    return publishAt.setZone('UTC')
 	}
 }
