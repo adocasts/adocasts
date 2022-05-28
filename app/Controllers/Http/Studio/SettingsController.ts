@@ -71,7 +71,12 @@ export default class SettingsController {
 
   public async usernameUpdate({ request, response, auth, session }: HttpContextContract) {
     const { username } = request.only(['username'])
-    const hasChanged = auth.user!.username.toLowerCase() !== username.toLowerCase()
+    const hasChanged = auth.user!.username.toLowerCase() !== username?.toLowerCase()
+
+    if (!username) {
+      session.flash('error', 'Please provide a new username')
+      return response.redirect().back()
+    }
 
     if (!hasChanged) {
       session.flash('success', "The submitted username matches your current username.")
