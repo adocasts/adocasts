@@ -50,6 +50,7 @@
         placeholder="{{ placeholder || '' }}"
         class="mt-1 block w-full pl-3 py-2 text-base border-gray-700 placeholder-gray-700 focus:outline-none focus:ring-brand-500 focus:border-brand-500 sm:text-sm rounded-md {{ rightGutter }}"
         style="{{ style }}"
+        {{ required ? 'required=required' : '' }}
         @focus="focused = true"
         @blur="focused = false">
         {{{ await $slots.main() }}}
@@ -73,6 +74,7 @@
         style="{{ type === 'date' || type === 'time' ? 'line-height: 1;' : '' }} {{ style }}"
         {{ max ? `maxlength=${max}` : '' }}
         {{ min ? `minlength=${min}` : '' }}
+        {{ required ? 'required=required' : '' }}
         @focus="focused = true"
         @blur="focused = false">
     @endif
