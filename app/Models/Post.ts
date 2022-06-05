@@ -197,12 +197,26 @@ export default class Post extends AppBaseModel {
 
   @computed()
   public get publishAtDateString() {
-    return this.publishAt?.toFormat('yyyy-MM-dd')
+    let dte = this.publishAt
+
+    if (dte && this.timezone) {
+      dte = DateTime.now()
+      dte = dte.set(this.publishAt!.toObject()).setZone(this.timezone)
+    }
+
+    return dte?.toFormat('yyyy-MM-dd')
   }
 
   @computed()
   public get publishAtTimeString() {
-    return this.publishAt?.toFormat('HH:mm')
+    let dte = this.publishAt
+    
+    if (dte && this.timezone) {
+      dte = DateTime.now()
+      dte = dte.set(this.publishAt!.toObject()).setZone(this.timezone)
+    }
+
+    return dte?.toFormat('HH:mm')
   }
 
   @computed()
