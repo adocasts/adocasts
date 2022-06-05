@@ -29,6 +29,10 @@ export default class TopicsController {
       .preload('asset')
       .withCount('posts')
       .withCount('collections')
+      .where(query => query
+        .whereHas('posts', query => query.apply(scope => scope.published()))  
+        .orWhereHas('collections', query => query.whereHas('postsFlattened', query => query.apply(scope => scope.published())))
+      )
       .orderBy('name')
     return view.render('topics/index', { featured, topics })
   }
@@ -45,6 +49,10 @@ export default class TopicsController {
       .preload('asset')
       .withCount('posts')
       .withCount('collections', query => query.where('collectionTypeId', CollectionTypes.SERIES).where('stateId', States.PUBLIC))
+      .where(query => query
+        .whereHas('posts', query => query.apply(scope => scope.published()))  
+        .orWhereHas('collections', query => query.whereHas('postsFlattened', query => query.apply(scope => scope.published())))
+      )
       .orderBy('name')
 
     const posts = await topic.related('posts').query()
@@ -56,6 +64,7 @@ export default class TopicsController {
       .where('collectionTypeId', CollectionTypes.SERIES)
       .withCount('postsFlattened', query => query.apply(scope => scope.published()))
       .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
+      .whereHas('postsFlattened', query => query.apply(scope => scope.published()))
       .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
       .orderBy('name')
 
