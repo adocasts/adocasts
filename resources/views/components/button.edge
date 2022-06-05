@@ -41,7 +41,7 @@
 @else
   <a
     {{{ id && `id="${id}"` }}}
-    {{ disabled ? "" : `href=${href}` }}
+    {{{ disabled ? "" : `href="${href}"` }}}
     class="
       {{ sizeClass(size) }}
       {{ variantClass(variant) }}

@@ -31,7 +31,7 @@
               @end
             </div>
             <div class="mr-3">
-              @button({ variant: 'blackSecondary', size: 'xs', href: route('studio.taxonomies.create', {}, { qs: { rootParentId, parentId: scope.node.id }}), group: false })
+              @button({ variant: 'blackSecondary', size: 'xs', href: route('studio.taxonomies.create', {}, { qs: { rootParentId: rootParentId, parentId: scope.node.id }}), group: false })
                 @!svg.plus()
                 Add
               @end
