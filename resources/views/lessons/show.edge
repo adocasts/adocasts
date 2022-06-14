@@ -150,7 +150,7 @@
           </div>
 
           <div class="mt-6">
-            @!affiliates.leaderboard({ affiliate })
+            @!ads.leaderboard()
           </div>
 
           @!comment.base({ postId: post.id, comments })
@@ -162,9 +162,9 @@
           @endif
 
           <div class="mt-6">
-            @!affiliates.square({ affiliate })
+            @!ads.vertical()
             <div class="hidden lg:block">
-              @!affiliates.square()
+              @!affiliates.square({ affiliate })
             </div>
           </div>
         </div>
