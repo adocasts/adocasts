@@ -49,6 +49,8 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 
     ctx.logger.error(error.message)
 
+    if (error.code === 'E_BAD_CSRF_TOKEN') return
+    
     await DiscordLogger.error(error.message, {
       method: ctx.request.method,
       url: ctx.request.url(true)
