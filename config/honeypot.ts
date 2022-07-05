@@ -30,7 +30,7 @@ export const honeypotConfig: HoneypotConfig = {
   | honeypot component.
   |
   */
-  fields: ['ohbother', 'my_name'],
+  fields: ['my_twitter_handle', 'my_website'],
 
   /*
   |--------------------------------------------------------------------------

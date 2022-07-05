@@ -47,7 +47,7 @@ Route.get('/img/*', 'AssetsController.show').where('path', /.*/).as('img');
 Route.get('/signup',  'AuthController.signupShow').as('auth.signup.show')
 Route.post('/signup', 'AuthController.signup').as('auth.signup').middleware(['honeypot'])
 Route.get('/signin',  'AuthController.signinShow').as('auth.signin.show')
-Route.post('/signin', 'AuthController.signin').as('auth.signin').middleware(['honeypot'])
+Route.post('/signin', 'AuthController.signin').as('auth.signin')//.middleware(['honeypot'])
 Route.get('/signout', 'AuthController.signout').as('auth.signout')
 
 // AUTH - Redirect from old
