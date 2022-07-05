@@ -12,22 +12,28 @@ export default class CommentsController {
 
   public async store({ request, response, auth }: HttpContextContract) {
     const identity = await this.httpIdentityService.getRequestIdentity()
+    const referrer = request.header('referrer')
 
-    await CommentService.store(auth.user, identity, request.body())
-
-    return response.redirect().back()
+    const comment = await CommentService.store(auth.user, identity, request.body())
+    
+    return referrer 
+      ? response.redirect(`${referrer}#comment${comment.id}`)
+      : response.redirect().back()
   }
 
   public async update({ request, response, auth, params, bouncer }: HttpContextContract) {
     const data = request.only(['body'])
     const identity = await this.httpIdentityService.getRequestIdentity()
     const comment = await auth.user!.related('comments').query().where('id', params.id).firstOrFail()
+    const referrer = request.header('referrer')
 
     await bouncer.with('CommentPolicy').authorize('update', comment, identity)
     await comment.merge(data).save()
     await NotificationService.onUpdate(Comment.table, comment.id, comment.body)
 
-    return response.redirect().back()
+    return referrer 
+      ? response.redirect(`${referrer}#comment${comment.id}`)
+      : response.redirect().back()
   }
 
   public async destroy({ response, params, bouncer }: HttpContextContract) {
