@@ -63,9 +63,10 @@ export default class PostsController {
 
     await bouncer.with('PostPolicy').authorize('update', post)
 
+    const postTypes = PostType
     const taxonomies = await TaxonomyService.getAllForTree()
 
-    return view.render('studio/posts/createOrEdit', { post, taxonomies })
+    return view.render('studio/posts/createOrEdit', { post, taxonomies, postTypes })
   }
 
   public async update ({ request, response, params, bouncer }: HttpContextContract) {
