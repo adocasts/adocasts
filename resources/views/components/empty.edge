@@ -13,7 +13,7 @@
     <p class="mt-1 text-sm text-gray-800">
       {{ subtitle ?? 'Get started by creating your first item' }}
     </p>
-    @if (href)
+    @if (showCta && href)
       <div class="mt-6">
         @component('components/button', { href, size: 'sm' })
           {{ cta }}

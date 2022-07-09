@@ -1,0 +1,42 @@
+@layout('layouts/main')
+
+@section('content')
+
+  <div class="-mx-4 sm:-mx-6 border-t border-gray-300 relative -top-6 pt-8 mt-3">
+    @container()
+
+      <div class="flex items-center">
+        @!ads.leaderboard()
+      </div>
+
+      @heading.page()
+        Latest News
+        @if (items.currentPage != 1)
+          <span class="font-normal">&mdash; Page {{ items.currentPage }}</span>
+        @endif
+
+        @slot('description')
+          Get the latest news about AdonisJS, JavaScript, and more
+        @end
+      @end
+
+      <div class="flex flex-wrap -mx-6">
+        <div class="w-full md:w-3/4 px-6">
+          @lesson.list({ items })
+            @slot('footer')
+              @!pagination({ data: items })
+            @endslot
+          @end
+        </div>
+        <div class="w-full md:w-1/4 px-6">
+
+        </div>
+      </div>
+    @end
+
+    <div class="w-full md:order-3 mt-16">
+      @!newsletter.large()
+    </div>
+  </div>
+
+@endsection

@@ -94,6 +94,19 @@
           @endslot
         @end
 
+        @form.input.alt({
+          type: 'select',
+          label: 'Type',
+          name: 'postTypeId',
+          value: flashMessages.get('postTypeId') ?? post?.postTypeId ?? postTypes.LESSON,
+          errors: flashMessages.get('errors.postTypeId')
+        })
+          <option value="{{ postTypes.LESSON }}">Lesson</option>
+          <option value="{{ postTypes.BLOG }}">Blog</option>
+          <option value="{{ postTypes.NEWS }}">News</option>
+          <option value="{{ postTypes.LINK }}">Link</option>
+        @end
+
         <details class="mb-6">
           <summary>Search Engine Optimization (SEO)</summary>
 

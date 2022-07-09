@@ -7,6 +7,7 @@ import DateService from 'App/Services/DateService'
 import PostService from 'App/Services/PostService'
 import TaxonomyService from 'App/Services/TaxonomyService'
 import History from 'App/Models/History'
+import PostType from 'App/Enums/PostType'
 
 export default class PostsController {
 
@@ -27,9 +28,10 @@ export default class PostsController {
   public async create({ view, bouncer }: HttpContextContract) {
     await bouncer.with('PostPolicy').authorize('store')
 
+    const postTypes = PostType
     const taxonomies = await TaxonomyService.getAllForTree()
 
-    return view.render('studio/posts/createOrEdit', { taxonomies })
+    return view.render('studio/posts/createOrEdit', { taxonomies, postTypes })
   }
 
   public async store ({ request, response, auth, bouncer }: HttpContextContract) {

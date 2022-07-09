@@ -29,7 +29,10 @@
         { name: 'Comment Excerpt', field: 'body' },
         { name: 'Date', field: 'createdAt' },
         { name: '', field: '_actions' }
-      ]
+      ],
+      emptyTitle: 'No Comments',
+      emptySubTitle: `Remember to leave your thoughts in the comments to get responses!`,
+      emptyCtaShow: false
     })
       @slot('tableData', scope)
         @if (scope.column.field === 'user')

@@ -296,6 +296,8 @@ export default class Post extends AppBaseModel {
     switch (this.postTypeId) {
       case PostType.BLOG:
         return Route.makeUrl('posts.show', { slug: this.slug })
+      case PostType.NEWS:
+        return Route.makeUrl('news.show', { slug: this.slug })
       default:
         return Route.makeUrl('lessons.show', { slug: this.slug })
     }
@@ -337,6 +339,10 @@ export default class Post extends AppBaseModel {
 
   public static blogs() {
     return this.query().where('postTypeId', PostType.BLOG)
+  }
+
+  public static news() {
+    return this.query().where('postTypeId', PostType.NEWS)
   }
 
   public static links() {

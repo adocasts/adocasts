@@ -80,6 +80,9 @@ Route.get('/lessons/:slug', 'LessonsController.show').as('lessons.show').middlew
 Route.get('/posts',         'PostsController.index').as('posts.index')
 Route.get('/posts/:slug',   'PostsController.show').as('posts.show').middleware(['postTypeCheck'])
 
+Route.get('/news',         'NewsController.index').as('news.index')
+Route.get('/news/:slug',   'NewsController.show').as('news.show').middleware(['postTypeCheck'])
+
 Route.get('/topics',        'TopicsController.index').as('topics.index')
 Route.get('/topics/:slug',  'TopicsController.show').as('topics.show')
 
