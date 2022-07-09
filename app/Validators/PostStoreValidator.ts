@@ -36,6 +36,7 @@ export default class PostStoreValidator extends BaseValidator {
 		postTypeId: schema.number.optional(),
 		stateId: schema.number.optional(),
 		assetIds: schema.array.optional().members(schema.number([rules.exists({ table: 'assets', column: 'id' })])),
+		libraryAssetId: schema.number.optional([rules.exists({ table: 'assets', column: 'id' })]),
     taxonomyIds: schema.array.optional().members(schema.number([rules.exists({ table: 'taxonomies', column: 'id' })]))
   })
 

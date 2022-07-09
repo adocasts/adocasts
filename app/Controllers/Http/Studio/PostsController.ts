@@ -8,6 +8,7 @@ import PostService from 'App/Services/PostService'
 import TaxonomyService from 'App/Services/TaxonomyService'
 import History from 'App/Models/History'
 import PostType from 'App/Enums/PostType'
+import Asset from 'App/Models/Asset'
 
 export default class PostsController {
 
@@ -25,27 +26,33 @@ export default class PostsController {
     return view.render('studio/posts/index', { posts })
   }
 
-  public async create({ view, bouncer }: HttpContextContract) {
+  public async create({ view, bouncer, auth }: HttpContextContract) {
     await bouncer.with('PostPolicy').authorize('store')
+
+    const assets = await Asset.query()
+      .where('assetTypeId', 1)
+      .where('filename', 'LIKE', `${auth.user!.id}/%`)
+      .orderBy('createdAt', 'desc')
 
     const postTypes = PostType
     const taxonomies = await TaxonomyService.getAllForTree()
 
-    return view.render('studio/posts/createOrEdit', { taxonomies, postTypes })
+    return view.render('studio/posts/createOrEdit', { assets, taxonomies, postTypes })
   }
 
   public async store ({ request, response, auth, bouncer }: HttpContextContract) {
     await bouncer.with('PostPolicy').authorize('store')
 
-    const { publishAtDate, publishAtTime, assetIds, taxonomyIds, ...data } = await request.validate(PostStoreValidator)
+    const { publishAtDate, publishAtTime, assetIds, libraryAssetId, taxonomyIds, ...data } = await request.validate(PostStoreValidator)
 
     if (!data.stateId) data.stateId = State.PUBLIC
 
     const publishAt = DateService.getPublishAtDateTime(publishAtDate, publishAtTime, data.timezone)
+    const syncAssetIds = libraryAssetId ? [...(assetIds || []), libraryAssetId] : assetIds
     const post = await Post.create({ ...data, publishAt })
 
     await auth.user!.related('posts').attach([post.id])
-    await PostService.syncAssets(post, assetIds)
+    await PostService.syncAssets(post, syncAssetIds)
     await PostService.syncTaxonomies(post, taxonomyIds)
 
     return response.redirect().toRoute('studio.posts.index')
@@ -54,19 +61,24 @@ export default class PostsController {
   public async show ({}: HttpContextContract) {
   }
 
-  public async edit ({ view, params, bouncer }: HttpContextContract) {
+  public async edit ({ view, params, bouncer, auth }: HttpContextContract) {
     const post = await Post.query()
       .where('id', params.id)
       .preload('assets', query => query.orderBy('sort_order'))
       .preload('taxonomies', q => q.select(['id']))
       .firstOrFail()
 
+    const assets = await Asset.query()
+      .where('assetTypeId', 1)
+      .where('filename', 'LIKE', `${auth.user!.id}/%`)
+      .orderBy('createdAt', 'desc')
+
     await bouncer.with('PostPolicy').authorize('update', post)
 
     const postTypes = PostType
     const taxonomies = await TaxonomyService.getAllForTree()
 
-    return view.render('studio/posts/createOrEdit', { post, taxonomies, postTypes })
+    return view.render('studio/posts/createOrEdit', { post, assets, taxonomies, postTypes })
   }
 
   public async update ({ request, response, params, bouncer }: HttpContextContract) {
@@ -74,13 +86,14 @@ export default class PostsController {
 
     await bouncer.with('PostPolicy').authorize('update', post)
 
-    let { publishAtDate, publishAtTime, assetIds, taxonomyIds, ...data } = await request.validate(PostStoreValidator)
+    let { publishAtDate, publishAtTime, assetIds, libraryAssetId, taxonomyIds, ...data } = await request.validate(PostStoreValidator)
     const publishAt = DateService.getPublishAtDateTime(publishAtDate, publishAtTime, data.timezone)
+    const syncAssetIds = libraryAssetId ? [...(assetIds || []), libraryAssetId] : assetIds
 
     post.merge({ ...data, publishAt })
 
     await post.save()
-    await PostService.syncAssets(post, assetIds)
+    await PostService.syncAssets(post, syncAssetIds)
     await PostService.syncTaxonomies(post, taxonomyIds)
 
     return response.redirect().toRoute('studio.posts.index')

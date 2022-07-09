@@ -170,6 +170,17 @@
         @end
 
         @form.input.alt({
+          type: 'select',
+          label: 'Library Image',
+          name: 'libraryAssetId'
+        })
+          <option value="">-- Select from library --</option>
+          @each(asset in assets)
+            <option value="{{ asset.id }}">{{ asset.filename }}</option>
+          @endeach
+        @end
+
+        @form.input.alt({
           label: 'Video URL',
           name: 'videoUrl',
           help: 'Add a YouTube video url to feature a video',

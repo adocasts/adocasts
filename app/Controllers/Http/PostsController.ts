@@ -11,7 +11,10 @@ export default class PostsController {
 
   public async index ({ view, request }: HttpContextContract) {
     const { page = 1, sortBy = 'publishAt', sort = 'desc' } = request.qs()
-    const items = await Post.blogs().orderBy(sortBy, sort).paginate(page, 12)
+    const items = await Post.blogs()
+      .apply(scope => scope.forDisplay())
+      .orderBy(sortBy, sort)
+      .paginate(page, 12)
 
     items.baseUrl(Route.makeUrl('lessons.index'))
 
