@@ -1,5 +1,15 @@
 @layout('layouts/main')
 
+@section('meta')
+  @!meta.tags({
+    url: route('posts.index'),
+    title: 'Latest Blog Posts',
+    desc: "Browse our latest blog posts below. Our blog posts are laid back and meant to be conversational.",
+    asset: null,
+    index: true
+  })
+@endsection
+
 @section('content')
 
   <div class="-mx-4 sm:-mx-6 border-t border-gray-300 relative -top-6 pt-8 mt-3">

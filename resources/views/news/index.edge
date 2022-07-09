@@ -1,5 +1,15 @@
 @layout('layouts/main')
 
+@section('meta')
+  @!meta.tags({
+    url: route('news.index'),
+    title: 'Latest News',
+    desc: "Get the latest news about AdonisJS, JavaScript, and more",
+    asset: null,
+    index: true
+  })
+@endsection
+
 @section('content')
 
   <div class="-mx-4 sm:-mx-6 border-t border-gray-300 relative -top-6 pt-8 mt-3">
