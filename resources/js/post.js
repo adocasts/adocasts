@@ -1,70 +1,85 @@
 let isYtVideoPlaying = false
 window.initVideo = function ({ el = 'ytEmbed', videoId, httpMethod = 'post', httpUrl, httpPayload = {}, watchSeconds = 0 } = {}) {
-  const tag = document.createElement('script')
-  const appCompleted = document.getElementById('appCompleted')
-  let player
-  let playerInterval
-  tag.src = "https://www.youtube.com/iframe_api"
-  document.body.appendChild(tag)
+  const autoplay = window.$params.autoplay ?? 0
 
-  window.onYouTubeIframeAPIReady = function () {
-    player = new YT.Player(el, {
-      videoId: videoId,
-      playerVars: {
-        autoplay: window.$params.autoplay ?? 0,
-        modestbranding: 1,
-        rel: 0,
-        showinfo: 0,
-        ecver: 2,
-        start: watchSeconds
-      },
-      events: {
-        'onReady': onPlayerReady,
-        'onStateChange': onPlayerStateChange
-      }
-    })
+  if (autoplay) {
+    onInitVideo(true)
+    return
   }
+  
+  const element = document.getElementById(el)
 
-  function onPlayerReady(event) {
-    // player.playVideo()
-    // setTimeout(() => player.pauseVideo(), 500)
-    // setTimeout(() => player.seekTo(300), 500)
-    window.player = player
-  }
+  element.addEventListener('click', () => {
+    element.removeEventListener('click')
+    onInitVideo(true)
+  })
 
-  function onPlayerStateChange(event) {
-    isYtVideoPlaying = event.data == YT.PlayerState.PLAYING
-
-    if (isYtVideoPlaying) {
-      playerInterval = setInterval(async () => {
+  function onInitVideo(playOnReady) {
+    const tag = document.createElement('script')
+    const appCompleted = document.getElementById('appCompleted')
+    let player
+    let playerInterval
+    tag.src = "https://www.youtube.com/iframe_api"
+    document.body.appendChild(tag)
+  
+    window.onYouTubeIframeAPIReady = function () {
+      player = new YT.Player(el, {
+        videoId: videoId,
+        playerVars: {
+          autoplay: playOnReady,
+          modestbranding: 1,
+          rel: 0,
+          showinfo: 0,
+          ecver: 2,
+          start: watchSeconds
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      })
+    }
+  
+    function onPlayerReady(event) {
+      // setTimeout(() => player.pauseVideo(), 500)
+      // setTimeout(() => player.seekTo(300), 500)
+      window.player = player
+    }
+  
+    function onPlayerStateChange(event) {
+      isYtVideoPlaying = event.data == YT.PlayerState.PLAYING
+  
+      if (isYtVideoPlaying) {
+        playerInterval = setInterval(async () => {
+          const currentTime = player.getCurrentTime()
+          const duration = player.getDuration()
+  
+          // duration may be 0 if meta data is still loading
+          if (duration !== 0) {
+            await storeWatchingProgression(currentTime, duration)
+          }
+        }, 15000)
+      } else {
         const currentTime = player.getCurrentTime()
         const duration = player.getDuration()
-
-        // duration may be 0 if meta data is still loading
-        if (duration !== 0) {
-          await storeWatchingProgression(currentTime, duration)
-        }
-      }, 15000)
-    } else {
-      const currentTime = player.getCurrentTime()
-      const duration = player.getDuration()
-
-      clearInterval(playerInterval)
-      storeWatchingProgression(currentTime, duration)
+  
+        clearInterval(playerInterval)
+        storeWatchingProgression(currentTime, duration)
+      }
     }
-  }
-
-  async function storeWatchingProgression(currentTime, duration) {
-    const watchPercent = Math.floor(currentTime / duration * 100)
-    const { data } = await axios[httpMethod](httpUrl, {
-      ...httpPayload,
-      watchPercent,
-      watchSeconds: Math.floor(currentTime)
-    })
-
-    const isCompleted = data.progression.isCompleted
-    const event = new CustomEvent('completed', { detail: { isCompleted } })
-    appCompleted.dispatchEvent(event)
+  
+    async function storeWatchingProgression(currentTime, duration) {
+      const watchPercent = Math.floor(currentTime / duration * 100)
+      const { data } = await axios[httpMethod](httpUrl, {
+        ...httpPayload,
+        watchPercent,
+        watchSeconds: Math.floor(currentTime)
+      })
+  
+      const isCompleted = data.progression.isCompleted
+      const event = new CustomEvent('completed', { detail: { isCompleted } })
+      appCompleted.dispatchEvent(event)
+    }
   }
 }
 

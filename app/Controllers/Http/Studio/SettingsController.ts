@@ -7,6 +7,7 @@ import { rules, schema } from '@ioc:Adonis/Core/Validator'
 import Route from '@ioc:Adonis/Core/Route'
 import Event from '@ioc:Adonis/Core/Event'
 import User from 'App/Models/User'
+import State from 'App/Enums/States'
 
 export default class SettingsController {
   public async index({ view, auth }: HttpContextContract) {
@@ -111,7 +112,7 @@ export default class SettingsController {
     return response.redirect().status(303).back()
   }
 
-  public async deleteAccout({ request }: HttpContextContract) {
+  public async deleteAccount({ request, response, auth, session }: HttpContextContract) {
     const _schema = schema.create({
       user_username: schema.string({ trim: true }, [rules.confirmed('username')])
     })
@@ -122,18 +123,45 @@ export default class SettingsController {
 
     await request.validate({ schema: _schema, messages });
 
+    await auth.user!.related('histories').query().delete()
+    await auth.user!.related('watchlist').query().delete()
+    await auth.user!.related('notifications').query().delete()
+    await auth.user!.related('initiatedNotifications').query().delete()
+    await auth.user!.related('emailHistory').query().delete()
+    await auth.user!.related('commentVotes').query().update({ userId: null })
+
     // delete comments
+    const comments = await auth.user!.related('comments').query()
+      .withCount('responses', q => q.where('stateId', State.PUBLIC))
+    
+    for (let i = 0; i < comments.length; i++) {
+      const comment = comments[i]
+      if (comment.$extras.responses_count === '0') {
+        await comment.delete()
+        continue;
+      }
+
+      comment.stateId = State.ARCHIVED
+      comment.userId = null
+      comment.body = '[deleted]'
+      await comment.save()
+    }
 
     // delete collections
-
-    // delete bookmarks
-
-    // delete watchlists
+    // restricted to me for now, we can skip this.
 
     // delete posts
+    // restricted to me for now, we can skip this.
 
     // delete profile
+    await auth.user!.related('profile').query().delete()
 
     // delete account
+    await auth.user!.delete()
+    await auth.logout()
+
+    session.flash('success', "Your account has been successfully deleted.")
+
+    return response.redirect().toRoute('home')
   }
 }

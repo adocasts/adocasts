@@ -32,6 +32,19 @@
 
       <div class="flex flex-wrap -mx-6">
         <div class="w-full md:w-3/4 px-6">
+          @if (!items.length)
+            <div class="border-2 border-dashed border-gray-300 rounded-xl mb-6">
+              @empty({
+                title: "Oh shoot! We haven't created any news posts yet.",
+                subtitle: "Please check back soon."
+              })
+                @slot('icon')
+                  @!svg.newspaper({ className: 'mx-auto h-12 w-12 text-gray-800' })
+                @endslot
+              @end
+            </div>
+          @endif
+
           @lesson.list({ items })
             @slot('footer')
               @!pagination({ data: items })

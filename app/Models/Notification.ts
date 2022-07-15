@@ -14,16 +14,16 @@ export default class Notification extends AppBaseModel {
   public userId: number
 
   @column()
-  public initiatorUserId?: number
+  public initiatorUserId: number | null
 
   @column()
   public notificationTypeId: number
 
   @column()
-  public table?: string
+  public table: string | null
 
   @column()
-  public tableId?: number
+  public tableId: number | null
 
   @column()
   public title: string
@@ -32,13 +32,13 @@ export default class Notification extends AppBaseModel {
   public body: string
 
   @column()
-  public href?: string
+  public href: string | null
 
   @column.dateTime()
-  public readAt?: DateTime
+  public readAt: DateTime | null
 
   @column.dateTime()
-  public actionedAt?: DateTime
+  public actionedAt: DateTime | null
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

@@ -144,6 +144,7 @@ Route.group(() => {
     Route.put('/email', 'SettingsController.emailUpdate').as('email')
     Route.put('/email/notifications', 'SettingsController.emailNotificationUpdate').as('email.notifications')
     Route.get('/email/undo/:id/:oldEmail/:newEmail', 'SettingsController.emailRevert').as('email.undo')
+    Route.post('/account/delete', 'SettingsController.deleteAccount').as('account.delete')
 
   }).prefix('/settings').as('settings')
 

@@ -12,6 +12,8 @@ import AppBaseModel from 'App/Models/AppBaseModel'
 import Watchlist from 'App/Models/Watchlist'
 import EmailHistory from 'App/Models/EmailHistory'
 import Question from 'App/Models/Question'
+import History from './History'
+import Notification from './Notification'
 
 class User extends AppBaseModel {
   @column({ isPrimary: true })
@@ -116,6 +118,17 @@ class User extends AppBaseModel {
 
   @hasMany(() => EmailHistory)
   public emailHistory: HasMany<typeof EmailHistory>
+
+  @hasMany(() => History)
+  public histories: HasMany<typeof History>
+
+  @hasMany(() => Notification)
+  public notifications: HasMany<typeof Notification>
+
+  @hasMany(() => Notification, {
+    foreignKey: 'initiatorUserId'
+  })
+  public initiatedNotifications: HasMany<typeof Notification>
 
   @hasMany(() => Question)
   public questions: HasMany<typeof Question>

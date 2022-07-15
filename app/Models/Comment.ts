@@ -11,13 +11,13 @@ export default class Comment extends AppBaseModel {
   public id: number
 
   @column()
-  public userId?: number
+  public userId: number | null
 
   @column()
   public postId: number
 
   @column()
-  public replyTo?: number
+  public replyTo: number | null
 
   @column()
   public rootParentId: number
