@@ -27,8 +27,6 @@
     }
   </script>
 
-  {{-- Google stuff --}}
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0874550857266190" crossorigin="anonymous"></script>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-MS9CV96KLH"></script>
   <script>
@@ -60,5 +58,14 @@
   @!section('scripts')
   <script src="//unpkg.com/alpinejs" defer></script>
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <script defer>
+    (function() {
+      const script = document.createElement('script');
+      script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0874550857266190";
+      script.defer = true;
+      script.setAttribute('crossorigin', 'anonymous')
+      document.appendChild(script)
+    })();
+  </script>
 </body>
 </html>
