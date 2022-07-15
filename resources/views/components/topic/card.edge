@@ -9,7 +9,7 @@
   <div class="w-full flex items-center px-3 rounded-b-3xl relative h-full">
     <div class="bg-gray-50 -ml-3 px-2 rounded-r-lg mr-3 w-16 h-full flex items-center justify-center" style="width: 56px;">
       @if (asset?.filename)
-        @!picture({ filename: asset.filename, className: 'rounded-full w-8 h-8', width: 32 })
+        @!picture({ filename: asset.filename, className: 'rounded-full w-8 h-8 h-full', width: 32, ratio: 'aspect-square' })
       @else
         <div class="w-8 h-8 text-base font-semibold flex items-center justify-center rounded-full bg-brand-300 text-brand-800">
           {{ getAbbrev(topic.name) }}
