@@ -49,6 +49,8 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 
     ctx.logger.error(error.message)
 
+    if (error.code === 'E_HONEYPOT_FAILURE' && ctx.request.url() === '/contact') return
+    if (error.code === 'E_CANNOT_READ_FILE' && ctx.request.url() === '/img/178/VSCode_1614756076826.png') return
     if (error.code === 'E_BAD_CSRF_TOKEN') return
     
     await DiscordLogger.error(error.message, {
