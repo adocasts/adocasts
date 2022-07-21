@@ -9,12 +9,12 @@
       @set('lazyItem', i > 3 || lazy)
 
       <a href="{{ routePost(item, { slug: item.slug }) }}" class="w-full flex flex-wrap mb-3 p-3 rounded-xl hover:bg-gray-50 transition">
-        <div class="w-full mb-3 md:mb-0 md:w-2/5 md:pr-3">
+        <div class="w-full mb-3 lg:mb-0 lg:w-2/5 lg:pr-3">
           @if (thumbnail)
             @!picture({ filename: thumbnail.filename, className: 'rounded-lg overflow-hidden', lazy: lazyItem })
           @endif
         </div>
-        <div class="w-full md:w-3/5 flex flex-col md:pl-3">
+        <div class="w-full lg:w-3/5 flex flex-col lg:pl-3">
           @if (series)
             <object>
               <h5 class="uppercase inline-flex items-center text-accent-800 tracking-wide text-xs">

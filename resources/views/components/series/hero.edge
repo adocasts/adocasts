@@ -66,7 +66,7 @@
             <a href="{{ route('series.lesson', { slug: item.slug, index: nextLesson.$extras.pivot_root_sort_order + 1 }) }}" class="mr-3 text-xs md:text-sm lg:text-base bg-white hover:bg-brand-800 hover:text-brand-100 transition duration-300 flex items-center rounded-full text-black pr-6">
               <svg class="w-8 h-8 md:w-12 md:h-12 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
               @if (hasStarted)
-                {{ inProgress ? 'Continue Lesson' : 'Start Lesson' }}
+                {{ inProgress ? 'Continue' : 'Start' }} <span class="hidden md:inline">Lesson</span>
               @else
                 Start Series
               @endif

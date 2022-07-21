@@ -16,6 +16,11 @@ a.brand {
   color: theme('colors.brand.800');
 }
 
+html,
+body {
+  overflow-x: hidden;
+}
+
 html {
   font-family: theme("fontFamily.body");
 }
