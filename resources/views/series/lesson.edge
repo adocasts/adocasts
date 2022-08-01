@@ -55,8 +55,8 @@
                         {{ post.title }}
                       </h1>
                       <div class="flex items-center opacity-80 mb-2">
-                        <div class="mr-3">{{ post.readMinutes }} MIN READ</div>
-                        <div class="mr-3">2 MONTHS AGO</div>
+                        <div class="mr-3 uppercase">{{ post.readMinutes }} MIN READ</div>
+                        <div class="mr-3 uppercase">{{ post.timeago }}</div>
                       </div>
                       <p class="opacity-80 mb-6">
                         {{ post.description }}
@@ -95,8 +95,8 @@
               {{ post.title }}
             </h1>
             <div class="flex items-center opacity-80 mb-2 text-xs md:text-base">
-              <div class="mr-3">{{ post.readMinutes }} MIN READ</div>
-              <div class="mr-3">2 MONTHS AGO</div>
+              <div class="mr-3 uppercase">{{ post.readMinutes }} MIN READ</div>
+              <div class="mr-3 uppercase">{{ post.timeago }}</div>
             </div>
             <p class="opacity-80 mb-6 max-w-2xl text-sm md:text-base">
               {{ post.description }}

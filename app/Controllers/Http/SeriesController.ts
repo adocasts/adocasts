@@ -48,6 +48,7 @@ export default class SeriesController {
     const series = await Collection.series()
       .if(auth.user, query => query.withWatchlist(auth.user!.id))
       .apply(scope => scope.withPublishedPostCount())
+      .apply(scope => scope.withPublishedPostDuration())
       .wherePublic()
       .where({ slug: params.slug })
       .whereNull('parentId')

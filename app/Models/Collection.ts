@@ -170,6 +170,14 @@ export default class Collection extends AppBaseModel {
     query.withCount('postsFlattened', post => post.apply(scope => scope.published()))
   })
 
+  public static withPublishedPostDuration = scope<typeof Collection>((query) => {
+    query.withAggregate('postsFlattened', query => query
+      .apply(scope => scope.published())
+      .sum('video_seconds')
+      .as('videoSecondsSum')
+    )
+  })
+
   public static get postCountSubQuery() {
     return Database
       .from('collection_posts')

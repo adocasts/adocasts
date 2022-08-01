@@ -37,11 +37,13 @@
               @endif
               <div class="mr-3">{{ nextLesson.readMinutes }} MIN READ</div>
             @else
+              @set('totalWatchDuration', secondsForDisplay(item.$extras.videoSecondsSum))
+
               <div class="mr-3">
                 {{ item.$extras.postsFlattened_count ?? '0' }}
                 {{ getSingularOrPlural('Lesson', item.$extras.root_posts_count ?? 0) }}
               </div>
-              <div class="mr-3">3 Hours</div>
+              <div class="mr-3">{{ totalWatchDuration.maxDisplay }} {{ getSingularOrPlural(totalWatchDuration.maxDisplayKey, totalWatchDuration.maxDisplay) }}</div>
             @endif
           </div>
           <p class="opacity-80 mb-6 text-sm lg:text-base">
