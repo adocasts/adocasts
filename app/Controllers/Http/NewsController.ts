@@ -4,6 +4,8 @@ import Route from '@ioc:Adonis/Core/Route'
 import CommentService from 'App/Services/CommentService'
 import { inject } from '@adonisjs/fold'
 import HistoryService from 'App/Services/Http/HistoryService'
+import { Exception } from '@adonisjs/core/build/standalone'
+import Role from 'App/Enums/Roles'
 
 @inject([HistoryService])
 export default class NewsController {
@@ -21,8 +23,16 @@ export default class NewsController {
     return view.render('news/index', { items })
   }
 
-  public async show({ view, params }: HttpContextContract) {
-    const post = await Post.news().where({ slug: params.slug }).firstOrFail()
+  public async show({ view, params, auth }: HttpContextContract) {
+    const post = await Post.news()
+      .apply(scope => scope.forDisplay(true))
+      .where({ slug: params.slug })
+      .highlightOrFail()
+
+    if (!post.isViewable && auth.user?.roleId !== Role.ADMIN) {
+      throw new Exception('This post is not currently available to the public', 404)
+    }
+
     const comments = await CommentService.getForPost(post)
 
     this.historyService.recordPostView(post.id)
