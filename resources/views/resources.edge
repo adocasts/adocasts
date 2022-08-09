@@ -38,6 +38,11 @@
 
 @set('resources', [
   item('Reset all id sequences in Postgres', 'Learn how to reset and fix your id sequence count back to zero', 'https://wiki.postgresql.org/wiki/Fixing_Sequences'),
+  item('MacOS Scroll Reverser', 'Do you use a non-mac mouse for your Apple computer? Use this to reverse your mouse scroll to match Windows', 'https://pilotmoon.com/scrollreverser/')
+])
+
+@set('other', [
+  item('Addy Codes Resources', 'A large resource list of topic-based categorized resources', 'https://toolkit.addy.codes/')
 ])
 
 <div class="-mx-4 sm:-mx-6 border-t border-gray-300 relative -top-6 pt-8 mt-3">
@@ -82,6 +87,18 @@
         @end
         <ul class="mb-12">
           @each (item in resources)
+            <li class="flex flex-col mb-2">
+              <a href="{{ item.href }}" target="_blank" class="font-semibold">{{ item.name }}</a>
+              <span class="text-gray-900">{{ item.desc }}</span>
+            </li>
+          @endeach
+        </ul>
+
+        @heading.section()
+          Other Resource Collections
+        @end
+        <ul class="mb-12">
+          @each (item in other)
             <li class="flex flex-col mb-2">
               <a href="{{ item.href }}" target="_blank" class="font-semibold">{{ item.name }}</a>
               <span class="text-gray-900">{{ item.desc }}</span>
