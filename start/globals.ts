@@ -34,6 +34,8 @@ View.global('routePost', (post: Post, params: { [x: string]: any }, options: { [
       return Route.makeUrl('posts.show', params, options)
     case PostType.NEWS:
       return Route.makeUrl('news.show', params, options)
+    case PostType.LIVESTREAM:
+      return Route.makeUrl('livestreams.show', params, options)
     case PostType.LINK:
       return post.redirectUrl
   }

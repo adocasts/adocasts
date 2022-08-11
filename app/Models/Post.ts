@@ -210,7 +210,7 @@ export default class Post extends AppBaseModel {
   @computed()
   public get publishAtTimeString() {
     let dte = this.publishAt
-    
+
     if (dte && this.timezone) {
       dte = DateTime.now()
       dte = dte.set(this.publishAt!.toObject()).setZone(this.timezone)
@@ -298,6 +298,8 @@ export default class Post extends AppBaseModel {
         return Route.makeUrl('posts.show', { slug: this.slug })
       case PostType.NEWS:
         return Route.makeUrl('news.show', { slug: this.slug })
+      case PostType.LIVESTREAM:
+        return Route.makeUrl('livestreams.show', { slug: this.slug })
       default:
         return Route.makeUrl('lessons.show', { slug: this.slug })
     }
@@ -343,6 +345,10 @@ export default class Post extends AppBaseModel {
 
   public static news() {
     return this.query().where('postTypeId', PostType.NEWS)
+  }
+
+  public static livestreams() {
+    return this.query().where('postTypeId', PostType.LIVESTREAM)
   }
 
   public static links() {

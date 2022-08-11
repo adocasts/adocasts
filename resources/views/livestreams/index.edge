@@ -1,0 +1,65 @@
+@layout('layouts/main')
+
+@section('meta')
+  @!meta.tags({
+    url: route('livestreams.index'),
+    title: 'Livestreams',
+    desc: "Watch us build things using AdonisJS in our live and on-demand livestreams.",
+    asset: null,
+    index: true
+  })
+@endsection
+
+@section('content')
+
+  <div class="-mx-4 sm:-mx-6 border-t border-gray-300 relative -top-6 pt-8 mt-3">
+    @container()
+
+      <div class="flex items-center">
+        @!ads.leaderboard()
+      </div>
+
+      @heading.page()
+        Livestreams
+        @if (items.currentPage != 1)
+          <span class="font-normal">&mdash; Page {{ items.currentPage }}</span>
+        @endif
+
+        @slot('description')
+          Watch us build things using AdonisJS in our live and on-demand livestreams.
+        @end
+      @end
+
+      <div class="flex flex-wrap -mx-6">
+        <div class="w-full md:w-3/4 px-6">
+          @if (!items.length)
+            <div class="border-2 border-dashed border-gray-300 rounded-xl mb-6">
+              @empty({
+                title: "Oh shoot! We haven't added any livestreams yet.",
+                subtitle: "Please check back soon."
+              })
+                @slot('icon')
+                  @!svg.newspaper({ className: 'mx-auto h-12 w-12 text-gray-800' })
+                @endslot
+              @end
+            </div>
+          @endif
+
+          @lesson.list({ items })
+            @slot('footer')
+              @!pagination({ data: items })
+            @endslot
+          @end
+        </div>
+        <div class="w-full md:w-1/4 px-6">
+
+        </div>
+      </div>
+    @end
+
+    <div class="w-full md:order-3 mt-16">
+      @!newsletter.large()
+    </div>
+  </div>
+
+@endsection

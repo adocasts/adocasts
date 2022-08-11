@@ -83,6 +83,9 @@ Route.get('/posts/:slug',   'PostsController.show').as('posts.show').middleware(
 Route.get('/news',         'NewsController.index').as('news.index')
 Route.get('/news/:slug',   'NewsController.show').as('news.show').middleware(['postTypeCheck'])
 
+Route.get('/streams',       'LivestreamsController.index').as('livestreams.index')
+Route.get('/streams/:slug', 'LivestreamsController.show').as('livestreams.show').middleware(['postTypeCheck'])
+
 Route.get('/topics',        'TopicsController.index').as('topics.index')
 Route.get('/topics/:slug',  'TopicsController.show').as('topics.show')
 
