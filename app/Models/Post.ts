@@ -70,10 +70,16 @@ export default class Post extends AppBaseModel {
   public videoUrl: string | null
 
   @column()
+  public livestreamUrl: string | null
+
+  @column()
   public isFeatured: boolean | null
 
   @column()
   public isPersonal: boolean | null
+
+  @column()
+  public isLive: boolean | null
 
   @column()
   public viewCount: number | null
@@ -259,6 +265,17 @@ export default class Post extends AppBaseModel {
     if (!this.videoUrl) return '';
 
     return this.videoUrl
+      .replace('https://www.', 'https://')
+      .replace('https://youtube.com/watch?v=', '')
+      .replace('https://youtube.com/embed/', '')
+      .replace('https://youtu.be/', '');
+  }
+
+  @computed()
+  public get streamId() {
+    if (!this.livestreamUrl) return '';
+
+    return this.livestreamUrl
       .replace('https://www.', 'https://')
       .replace('https://youtube.com/watch?v=', '')
       .replace('https://youtube.com/embed/', '')

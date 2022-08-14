@@ -6,6 +6,8 @@ declare module '@ioc:Adonis/Lucid/Orm' {
     Model extends LucidModel,
     Result = InstanceType<Model>
     > {
+    whereTrue(columnName: string): this
+    whereFalse(columnName: string): this
     wherePublic(): this
     whereState(stateId: States): this
     withWatchlist(userId: number | undefined): this

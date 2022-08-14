@@ -145,7 +145,7 @@
           @slot('input')
             @set('isChecked', flashMessages.get('isFeatured') ?? collection?.isFeatured ?? false)
             <label class="inline-flex items-center">
-              <input class="mr-2" type="checkbox" name="isFeatured" id="isFeatured" value="1" {{ isChecked && 'checked' }}>
+              @!form.checkbox({ name: 'isFeatured', checked: isChecked })
               Feature this collection
             </label>
           @endslot

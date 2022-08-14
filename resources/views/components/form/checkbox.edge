@@ -1,0 +1,7 @@
+@set('truthyValue', truthyValue ?? '1')
+@set('falsyValue', falsyValue ?? '0')
+
+<span>
+  <input type="hidden" name="{{ name }}" value="{{ checked ? truthyValue : falsyValue }}" />
+  <input type="checkbox" name="{{ name }}State" {{ checked && 'checked' }} onclick="this.previousElementSibling.value=this.checked ? '{{ truthyValue }}' : '{{ falsyValue }}'" />
+</span>

@@ -113,9 +113,9 @@
           errors: flashMessages.get('errors.isFeatured')
         })
           @slot('input')
-            @set('isChecked', flashMessages.get('isFeatured') ?? collection?.isFeatured ?? false)
+            @set('isChecked', flashMessages.get('isFeatured') ?? taxonomy?.isFeatured ?? false)
             <label class="inline-flex items-center">
-              <input class="mr-2" type="checkbox" name="isFeatured" id="isFeatured" value="1" {{ isChecked && 'checked' }}>
+              @!form.checkbox({ name: 'isFeatured', checked: isChecked })
               Feature this taxonomy
             </label>
           @endslot

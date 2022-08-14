@@ -13,6 +13,11 @@
         "http://localhost:8080/assets/post.js"
       ]
     },
+    "stream": {
+      "js": [
+        "http://localhost:8080/assets/stream.js"
+      ]
+    },
     "file_manager": {
       "js": [
         "http://localhost:8080/assets/file_manager.js"

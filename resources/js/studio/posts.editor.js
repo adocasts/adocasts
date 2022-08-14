@@ -71,7 +71,9 @@ class VideoManager {
 
     function onPlayerReady(event) {
       const duration = player.getDuration()
-      document.querySelector('input[name=videoSeconds]').value = duration
+      if (duration) {
+        document.querySelector('input[name=videoSeconds]').value = duration
+      }
     }
 
     window.onYouTubeIframeAPIReady = function () {

@@ -18,9 +18,9 @@
 @set('hardware', [
   item('💻 2021 14" Macbook Pro', 'Primary dev, recording, and video editing laptop', 'https://www.theverge.com/22751921/apple-macbook-pro-14-16-inch-2021-m1-pro-max-review'),
   item('🖥 2019 HP OMEN Obelisk 875', 'Gaming and editing desktop. Media Server', 'https://www.hp.com/us-en/shop/pdp/omen-by-hp-obelisk-desktop-875-1055xt'),
-  item('🖥 MSI Optix 34" Curved Ultra Wide', 'My primary and gaming monitor', 'https://www.amazon.com/gp/product/B08KWNK6HS/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1'),
+  item('🖥 Z-Edge 32" 4K IPS Monitor', 'My primary and gaming monitor', 'https://www.amazon.com/dp/B09LM5TQ9T'),
   item('⌨️ Logitech MX Keys', 'Bluetooth keyboard that can connect to 3 devices', 'https://www.logitech.com/en-us/products/keyboards/mx-keys-wireless-keyboard.920-009295.html'),
-  item('🖱 Apple Magic Mouse', 'Bluetooth mouse I use alongside my Macbook Pro', 'https://www.apple.com/shop/product/MK2E3AM/A/magic-mouse-white-multi-touch-surface'),
+  item('🖱 Razer Basilisk X Hyperspeed Mouse', 'Mouse I use for my Macbook Pro', 'https://www.amazon.com/Razer-Basilisk-HyperSpeed-Wireless-Gaming/dp/B07YPBQSCK'),
   item('🖱 Corsair Harpoon Mouse', 'Wired mouse I use for my OMEN', 'https://www.corsair.com/us/en/Categories/Products/Gaming-Mice/MOBA-Strategy-%26-Action-Mice/HARPOON-RGB-Gaming-Mouse/p/CH-9301011-NA'),
   item('🎙 Blue Yeti Microphone', 'Microphone I use for all my recordings', 'https://www.bluemic.com/en-us/products/yeti/'),
   item('🗄 WD MyCloud NAS Storage', '4TB worth of network accessible storage', 'https://www.bestbuy.com/site/wd-my-cloud-home-4tb-personal-cloud-white/5990204.p?skuId=5990204'),
@@ -47,24 +47,24 @@
 
 @set('software', [
   item('Firefox Developer Edition', "Long live the Firefox console!", "https://www.mozilla.org/en-US/firefox/developer/"),
-  item('Movavi Video Editor Plus', 'Video editing software', 'https://www.movavi.com/video-editor-plus-mac/'),
-  item('Affinity Designer', 'Vector image editing software', 'https://affinity.serif.com/en-us/designer/'),
-  item('Affinity Photo', 'Raster image editing software', 'https://affinity.serif.com/en-us/photo/'),
+  item('Premiere Pro CS6', 'Video editing software', 'https://helpx.adobe.com/premiere-pro/premiere-pro-cs6-tutorials.html'),
+  item('Photoshop CS6', 'Vector image editing software', 'https://helpx.adobe.com/photoshop/using/whats-new-cs6.html'),
+  item('Illustrator CS6', 'Raster image editing software', 'https://en.wikipedia.org/wiki/Adobe_Illustrator'),
   item('Hyper', 'My terminal of choice. I use Zsh with Oh-My-Zsh', "https://hyper.is/"),
   item('TablePlus', 'A fantastic database management GUI', "https://tableplus.com/"),
   item('Notion', 'What I use to write docs and lessons', 'https://www.notion.so'),
-  item('Grammerly', 'Because English is hard', 'https://grammerly.com')
+  item('Grammerly', 'Because English is hard', 'https://grammerly.com'),
+  item('PilotMoon Scroll Reverser', 'Alters Mac scrolling to match Windows', 'https://pilotmoon.com/scrollreverser/'),
 ])
 
 @set('ide', [
-  item('VS Code', 'My current text editor of choice'),
-  item('Halcyon Theme', 'Recently replaced the GitHub Dark theme', 'https://marketplace.visualstudio.com/items?itemName=brittanychiang.halcyon-vscode'),
+  item('WebStorm 2022.2', 'My current text editor of choice', 'https://www.jetbrains.com/webstorm/'),
+  item('VS Code', 'My editor of choice when working with Edge a lot', 'https://code.visualstudio.com/'),
+  item('GitHub Dark Theme', 'I also use this theme for code snippets on Adocasts', 'https://plugins.jetbrains.com/plugin/19291-github-dark-theme'),
   item('City Lights Icons', 'I use the color variant', 'https://marketplace.visualstudio.com/items?itemName=Yummygum.city-lights-icon-vsc'),
-  item('GitHub CoPilot', 'My helping hand', 'https://marketplace.visualstudio.com/items?itemName=GitHub.copilot'),
   item('AdonisJS Extensions', 'Adds some neat AdonisJS support to VS Code', 'https://marketplace.visualstudio.com/items?itemName=jripouteau.adonis-vscode-extension'),
   item('Edge Template Support', 'Adds support for the Edge Template Engine', 'https://marketplace.visualstudio.com/items?itemName=luongnd.edge'),
-  item('Tailwind CSS Intellisense', 'Adds intellisense for Tailwind CSS', 'https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss'),
-  item('Better Comments', 'I like my TODOs to stand out', 'https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments')
+  item('Better Comments', 'I like my TODOs to stand out', 'https://plugins.jetbrains.com/plugin/10850-better-comments')
 ])
 
 <div class="-mx-4 sm:-mx-6 border-t border-gray-300 relative -top-6 pt-8 mt-3">
@@ -79,7 +79,7 @@
     @end
 
     <div class="flex flex-wrap -mx-6">
-      <div class="w-full lg:w-1/2 px-6">
+      <div class="w-full lg:w-1/2 px-6 order-2 lg:order-1">
         @heading.section()
           Hardware
         @end
@@ -92,6 +92,10 @@
             </li>
           @endeach
         </ul>
+      </div>
+
+      <div class="w-full lg:w-1/2 px-6 order-1 lg:order-2">
+        <img src="/img/1/uses-image.jpg" class="w-full xl:max-w-md rounded-lg mb-6" alt="Adocast's/Tom's office setup">
       </div>
     </div>
 

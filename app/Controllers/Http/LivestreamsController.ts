@@ -13,6 +13,14 @@ export default class LivestreamsController {
 
   public async index ({ view, request }: HttpContextContract) {
     const { page = 1, sortBy = 'publishAt', sort = 'desc' } = request.qs()
+
+    const live = await Post.livestreams()
+      .apply(scope => scope.forDisplay())
+      .whereTrue('isLive')
+      .whereNotNull('livestreamUrl')
+      .orderBy('publishAt', 'desc')
+      .first()
+
     const items = await Post.livestreams()
       .apply(scope => scope.forDisplay())
       .orderBy(sortBy, sort)
@@ -20,7 +28,7 @@ export default class LivestreamsController {
 
     items.baseUrl(Route.makeUrl('livestreams.index'))
 
-    return view.render('livestreams/index', { items })
+    return view.render('livestreams/index', { live, items })
   }
 
   public async show({ view, params, auth }: HttpContextContract) {

@@ -32,6 +32,14 @@ export default class QueryBuilderProvider {
     // All bindings are ready, feel free to use them
     const { ModelQueryBuilder } = this.app.container.resolveBinding('Adonis/Lucid/Database')
 
+    ModelQueryBuilder.macro('whereTrue', function(columnName: string) {
+      return this.where(columnName, true)
+    })
+
+    ModelQueryBuilder.macro('whereFalse', function(columnName: string) {
+      return this.where(columnName, false)
+    })
+
     ModelQueryBuilder.macro('wherePublic', function() {
       return this.where({ stateId: States.PUBLIC })
     })

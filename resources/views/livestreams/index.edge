@@ -12,7 +12,11 @@
 
 @section('content')
 
-  <div class="-mx-4 sm:-mx-6 border-t border-gray-300 relative -top-6 pt-8 mt-3">
+  @if (live)
+    @!streams.live({ post: live })
+  @endif
+
+  <div class="-mx-4 sm:-mx-6 {{ live ? 'pt-8' : 'border-t border-gray-300 relative -top-6 pt-8 mt-3' }}">
     @container()
 
       <div class="flex items-center">
@@ -61,5 +65,19 @@
       @!newsletter.large()
     </div>
   </div>
+
+@endsection
+
+@section('scripts')
+
+  @if (live)
+    <script src="{{ asset('assets/stream.js') }}"></script>
+    <script defer>
+      initVideo({
+        el: 'lessonVideoEmbed',
+        videoId: '{{ live.streamId }}',
+      })
+    </script>
+  @endif
 
 @endsection

@@ -28,6 +28,8 @@ export default class PostStoreValidator extends BaseValidator {
 		bodyBlocks: schema.string.optional(),
     repositoryUrl: schema.string.optional({ trim: true }, [rules.maxLength(255)]),
     isFeatured: schema.boolean.optional(),
+    isLive: schema.boolean.nullable(),
+    livestreamUrl: schema.string.optional({ trim: true }, [rules.maxLength(255), rules.url()]),
 		videoUrl: schema.string.optional({ trim: true }, [rules.maxLength(255), rules.url()]),
     videoSeconds: schema.number.optional(),
 		timezone: schema.string.optional({ trim: true }),

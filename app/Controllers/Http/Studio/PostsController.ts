@@ -85,7 +85,7 @@ export default class PostsController {
     const post = await Post.findOrFail(params.id)
 
     await bouncer.with('PostPolicy').authorize('update', post)
-
+    console.log(request.body())
     let { publishAtDate, publishAtTime, assetIds, libraryAssetId, taxonomyIds, ...data } = await request.validate(PostStoreValidator)
     const publishAt = DateService.getPublishAtDateTime(publishAtDate, publishAtTime, data.timezone)
     const syncAssetIds = libraryAssetId ? [...(assetIds || []), libraryAssetId] : assetIds

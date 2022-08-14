@@ -1,5 +1,7 @@
+@set('color', color ?? 'dark')
+
 <div class="py-3 flex flex-col mb-9">
-  <h1 class="text-3xl font-extrabold text-gray-950 tracking-tight mb-2">
+  <h1 class="text-3xl font-extrabold {{ color === 'dark' ? "text-gray-950" : "text-gray-100" }} tracking-tight mb-2">
     {{{ await $slots.main() }}}
   </h1>
   @if ($slots.description)
