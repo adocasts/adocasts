@@ -31,7 +31,7 @@ export default class HtmlParser {
   }
 
   public static async highlight(html: string) {
-    const root = parse(html)
+    const root = parse(html || '')
     const preBlocks = root.querySelectorAll('pre')
     if (preBlocks?.length) {
       const promises = preBlocks.map(async (c) => {
