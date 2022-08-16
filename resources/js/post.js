@@ -31,16 +31,22 @@ window.initVideo = function ({ el = 'ytEmbed', videoId, httpMethod = 'post', htt
     document.body.appendChild(tag)
 
     window.onYouTubeIframeAPIReady = function () {
+      const playerVars = {
+        autoplay: playOnReady,
+        modestbranding: 1,
+        rel: 0,
+        showinfo: 0,
+        ecver: 2,
+        start: watchSeconds
+      }
+
+      if (isLive) {
+        delete playerVars.start
+      }
+
       player = new YT.Player(el, {
         videoId: videoId,
-        playerVars: {
-          autoplay: playOnReady,
-          modestbranding: 1,
-          rel: 0,
-          showinfo: 0,
-          ecver: 2,
-          start: watchSeconds
-        },
+        playerVars,
         events: {
           'onReady': onPlayerReady,
           'onStateChange': onPlayerStateChange
@@ -59,6 +65,8 @@ window.initVideo = function ({ el = 'ytEmbed', videoId, httpMethod = 'post', htt
 
     function onPlayerStateChange(event) {
       isYtVideoPlaying = event.data == YT.PlayerState.PLAYING
+
+      if (isLive) return
 
       if (isYtVideoPlaying) {
         playerInterval = setInterval(async () => {
