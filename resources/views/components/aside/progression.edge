@@ -12,7 +12,7 @@
     @set('collection', progression.collection)
     @set('lessonQueue', collection.postsFlattened)
 
-    <a href="{{ route('series.show', { slug: collection.slug })}}" class="anchor w-full group px-2 flex flex-col justify-center items-center transition border border-gray-300 relative left-px -ml-px {{ i === 0 && 'rounded-t-lg' }} {{ i === 5 && 'rounded-b-lg' }} relative overflow-hidden">
+    <a href="{{ route('series.show', { slug: collection.slug })}}" class="anchor w-full group px-2 flex flex-col justify-center items-center transition border border-gray-300 relative left-px -ml-px mb-3 {{ i === 0 && 'rounded-t-lg' }} {{ i === 5 && 'rounded-b-lg' }} relative overflow-hidden">
       <div class="absolute top-0 left-0 w-full bg-gray-50 transition duration-300 transform -translate-y-full group-hover:translate-y-0" style="height: calc(100% + 1.5rem)"></div>
       <div class="w-full flex flex-wrap items-center bg-gray-50 py-3 px-6 rounded-b-3xl relative z-10 -mx-2">
         <div class="px-2">

@@ -1,6 +1,8 @@
 import Asset from "App/Models/Asset";
 import Post from "App/Models/Post";
 import StorageService from "./StorageService";
+import CacheService from 'App/Services/CacheService'
+import PostType from 'App/Enums/PostType'
 
 export default class PostService {
   public static async getFeatureSingle(excludeIds: number[] = []) {
@@ -12,9 +14,13 @@ export default class PostService {
       .first()
   }
 
-  public static async getLatest(limit: number = 10, excludeIds: number[] = []) {
-    return Post.lessons()
+  public static async getLatest(limit: number = 10, excludeIds: number[] = [], postTypeIds: number | number[] = PostType.LESSON) {
+    return Post.query()
       .apply(scope => scope.forDisplay())
+      .if(Array.isArray(postTypeIds),
+        query => query.where(q => (<number[]>postTypeIds).map(postTypeId => q.orWhere({ postTypeId }))),
+        query => query.where({ postTypeId: postTypeIds })
+      )
       .if(excludeIds.length, query => query.whereNotIn('id', excludeIds))
       .orderBy('publishAt', 'desc')
       .limit(limit)
@@ -63,5 +69,22 @@ export default class PostService {
     }), {})
 
     await post.related('taxonomies').sync(taxonomyData)
+  }
+
+  public static async checkLive() {
+    if (await CacheService.has('live')) {
+      console.log('here')
+      return CacheService.get('live')
+    }
+
+    const live = await Post.query()
+      .whereTrue('isLive')
+      .whereNotNull('livestreamUrl')
+      .orderBy('publishAt', 'desc')
+      .first()
+
+    await CacheService.set('isLive', live?.serialize(), CacheService.fiveMinutes)
+
+    return live
   }
 }

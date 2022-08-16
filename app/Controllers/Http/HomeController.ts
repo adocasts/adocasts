@@ -5,6 +5,7 @@ import TaxonomyService from 'App/Services/TaxonomyService'
 import WatchlistService from 'App/Services/WatchlistService'
 import HistoryService from 'App/Services/Http/HistoryService'
 import HomeVM from 'Contracts/viewModels/HomeVM'
+import PostType from 'App/Enums/PostType'
 
 export default class HomeController {
   public async index({ view, auth }: HttpContextContract) {
@@ -21,7 +22,7 @@ export default class HomeController {
     vm.featuredLesson && excludeIds.push(vm.featuredLesson.id)
     vm.series = await CollectionService.getLastUpdated()
     vm.topics = await TaxonomyService.getLastUpdated()
-    vm.latestLessons = await PostService.getLatest(10, excludeIds)
+    vm.latestLessons = await PostService.getLatest(10, excludeIds, [PostType.LESSON, PostType.NEWS, PostType.LIVESTREAM, PostType.BLOG])
 
     return view.render('index', vm)
   }

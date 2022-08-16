@@ -176,6 +176,13 @@
     @end
   </div>
 
+  @if (auth?.user?.roleId === Roles.ADMIN)
+    <a href="{{ route('studio.posts.edit', { id: post.id }) }}" class="bg-gray-950 bg-opacity-60 hover:bg-opacity-100 py-2 px-3 rounded-t fixed bottom-0 right-3 text-gray-100 flex items-center transition duration-300 text-sm">
+      @!svg.edit()
+      <span class="ml-2">Edit Post</span>
+    </a>
+  @endif
+
 @endsection
 
 @section('scripts')

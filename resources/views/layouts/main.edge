@@ -41,6 +41,10 @@
 
   @!toast.base()
 
+  @if (live && !request.matchesRoute(route('livestreams.index')) && request.url() !== routePost(live, { slug: live.slug }))
+    @!streams.banner({ post: live })
+  @endif
+
   @!header.base()
 
   @!section('hero')

@@ -77,6 +77,7 @@ export default class HistoryService extends BaseHttpService {
           .groupLimit(1)
         )
       )
+      .limit(5)
   }
 
   public async getProgressionOrNew(data: Partial<History>) {

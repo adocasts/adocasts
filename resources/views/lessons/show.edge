@@ -25,8 +25,14 @@
           @endif
 
           <div class="w-full md:w-4/5 py-6 px-3 lg:pr-6 bg-gray-950 {{ !series && 'mx-auto' }}">
+            @if (post.livestreamUrl && post.isLive)
+              <div class="mb-3">
+                @!streams.liveIndicator()
+              </div>
+            @endif
+
             <div class="aspect-video bg-gradient-to-br from-brand-900 to-brand-800 relative rounded-xl overflow-hidden">
-              @if (post.videoUrl)
+              @if (post.videoUrl || (post.livestreamUrl && post.isLive))
                 <div id="lessonVideoEmbed" class="absolute top-0 left-0 w-full h-full">
                   @!picture({ filename: post.assets[0].filename })
                   <div class="w-full h-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer group hover:bg-gray-950 hover:bg-opacity-40 transition duration-300 hover:scale-110">
@@ -183,7 +189,7 @@
     @end
   </div>
 
-  @if (auth.user.roleId === Roles.ADMIN)
+  @if (auth?.user?.roleId === Roles.ADMIN)
     <a href="{{ route('studio.posts.edit', { id: post.id }) }}" class="bg-gray-950 bg-opacity-60 hover:bg-opacity-100 py-2 px-3 rounded-t fixed bottom-0 right-3 text-gray-100 flex items-center transition duration-300 text-sm">
       @!svg.edit()
       <span class="ml-2">Edit Post</span>
@@ -197,11 +203,12 @@
   {{--   @entryPointScripts('post') --}}
   <script src="{{ asset('assets/post.js') }}"></script>
 
-  @if (post.videoId)
+  @if (post.videoId || (post.isLive && post.livestreamUrl))
     <script defer>
       initVideo({
         el: 'lessonVideoEmbed',
-        videoId: '{{ post.videoId }}',
+        isLive: {{ post.livestreamUrl && post.isLive }},
+        videoId: '{{ post.isLive && post.livestreamUrl ? post.streamId : post.videoId }}',
         watchSeconds: {{ userProgression?.watchSeconds ?? 0 }},
         httpUrl: '{{ route('api.histories.progression', { id: userProgression?.id }) }}',
         httpPayload: {
@@ -212,16 +219,18 @@
         }
       })
 
-      initProgression({
-        storeProgression: {{ !!auth.user }},
-        httpUrl: '{{ route('api.histories.progression', { id: userProgression?.id }) }}',
-        httpPayload: {
-          postId: {{ post.id }},
-          collectionId: {{ series?.id }},
-          userId: {{ auth.user?.id }},
-          route: '{{ request.ctx.route?.name }}'
-        }
-      })
+      @if (!post.isLive)
+        initProgression({
+          storeProgression: {{ !!auth.user }},
+          httpUrl: '{{ route('api.histories.progression', { id: userProgression?.id }) }}',
+          httpPayload: {
+            postId: {{ post.id }},
+            collectionId: {{ series?.id }},
+            userId: {{ auth.user?.id }},
+            route: '{{ request.ctx.route?.name }}'
+          }
+        })
+      @endif
     </script>
   @endif
 

@@ -11,7 +11,7 @@ export default class HomeVM extends BaseVM {
   public postWatchlist: Post[]
   public collectionWatchlist: Collection[]
   public collectionProgress: History[]
-  
+
   // base data
   public featuredLesson: Post | null
   public series: Collection[]

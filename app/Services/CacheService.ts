@@ -1,7 +1,9 @@
 import Redis from '@ioc:Adonis/Addons/Redis'
 
 export default class CacheService {
-  public static stdTTL = 86_400
+  public static fiveMinutes = 300
+  public static oneDay = 86_400
+  public static stdTTL = CacheService.oneDay
 
   public static async set(key: string, value: any, ttl: number = this.stdTTL): Promise<void> {
     await Redis.set(key, value, "EX", ttl)

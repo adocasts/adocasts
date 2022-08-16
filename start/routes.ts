@@ -182,6 +182,16 @@ Route.group(() => {
 
 }).prefix('/api').as('api').middleware(['auth'])
 
+Route.group(() => {
+
+  Route.post('/session/set', async ({ request, response, session }) => {
+    const { target, value } = request.body()
+    await session.put(target, value)
+    return response.status(204)
+  }).as('session.set')
+
+}).prefix('/api').as('api')
+
 // GO
 Route.group(() => {
 

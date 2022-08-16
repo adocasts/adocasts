@@ -3,6 +3,7 @@ import SettingsService from 'App/Services/Http/SettingsService'
 import View from '@ioc:Adonis/Core/View'
 import HttpIdentityService from 'App/Services/Http/HttpIdentityService'
 import NotificationService from 'App/Services/NotificationService'
+import PostService from 'App/Services/PostService'
 
 export default class AppState {
   public async handle (ctx: HttpContextContract, next: () => Promise<void>) {
@@ -19,6 +20,7 @@ export default class AppState {
     View.global('settings', settings)
     View.global('identity', await httpIdentityService.getRequestIdentity())
     View.global('notifications', notifications)
+    View.global('live', await PostService.checkLive())
 
     // code for middleware goes here. ABOVE THE NEXT CALL
     await next()
