@@ -1,5 +1,6 @@
 import Collection from 'App/Models/Collection'
 import Database from '@ioc:Adonis/Lucid/Database'
+import Post from 'App/Models/Post'
 
 export default class CollectionService {
   public static async getLastUpdated(limit: number = 4, excludeIds: number[] = []) {
@@ -29,11 +30,25 @@ export default class CollectionService {
       .whereNull('parentId')
       .where(query => query
         .where('collections.name', 'ILIKE', `%${term}%`)
-        .orWhere('collections.description', 'ILIKE', `%${term}%`)  
+        .orWhere('collections.description', 'ILIKE', `%${term}%`)
       )
       .orderBy('latest_publish_at', 'desc')
       .select(['collections.*'])
       .limit(limit)
+  }
+
+  public static async getSeriesForPost(post: Post, userId: number | null = null) {
+    return post.related('rootSeries').query()
+      .wherePublic()
+      .preload('posts', query => query.apply(scope => scope.forCollectionDisplay()))
+      .preload('children', query => query
+        .wherePublic()
+        .preload('posts', query => query
+          .apply(scope => scope.forCollectionDisplay())
+          .if(userId, query => query.preload('progressionHistory', query => query.where({ userId })))
+        )
+      )
+      .first()
   }
 
   // TODO: finish

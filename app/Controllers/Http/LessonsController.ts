@@ -6,6 +6,7 @@ import { inject } from '@adonisjs/fold'
 import HistoryService from 'App/Services/Http/HistoryService'
 import Role from 'App/Enums/Roles'
 import { Exception } from '@adonisjs/core/build/standalone'
+import CollectionService from 'App/Services/CollectionService'
 
 @inject([HistoryService])
 export default class LessonsController {
@@ -34,17 +35,7 @@ export default class LessonsController {
     }
 
     const comments = await CommentService.getForPost(post)
-    const series = await post.related('rootSeries').query()
-      .wherePublic()
-      .preload('posts', query => query.apply(scope => scope.forCollectionDisplay()))
-      .preload('children', query => query
-        .wherePublic()
-        .preload('posts', query => query
-          .apply(scope => scope.forCollectionDisplay())
-          .if(auth.user, query => query.preload('progressionHistory', query => query.where('userId', auth.user!.id)))
-        )
-      )
-      .first()
+    const series = await CollectionService.getSeriesForPost(post, auth.user?.id)
 
     this.historyService.recordPostView(post.id)
     const userProgression = await this.historyService.getPostProgression(post)

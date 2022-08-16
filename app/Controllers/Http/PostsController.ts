@@ -4,6 +4,7 @@ import Route from '@ioc:Adonis/Core/Route'
 import CommentService from 'App/Services/CommentService'
 import { inject } from '@adonisjs/fold'
 import HistoryService from 'App/Services/Http/HistoryService'
+import CollectionService from 'App/Services/CollectionService'
 
 @inject([HistoryService])
 export default class PostsController {
@@ -21,13 +22,14 @@ export default class PostsController {
     return view.render('blogs/index', { items })
   }
 
-  public async show({ view, params }: HttpContextContract) {
+  public async show({ view, params, auth }: HttpContextContract) {
     const post = await Post.blogs().where({ slug: params.slug }).firstOrFail()
     const comments = await CommentService.getForPost(post)
+    const series = await CollectionService.getSeriesForPost(post, auth.user?.id)
 
     this.historyService.recordPostView(post.id)
     const userProgression = await this.historyService.getPostProgression(post)
 
-    return view.render('lessons/show', { post, comments, userProgression })
+    return view.render('lessons/show', { post, comments, series, userProgression })
   }
 }

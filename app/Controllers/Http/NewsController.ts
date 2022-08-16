@@ -6,6 +6,7 @@ import { inject } from '@adonisjs/fold'
 import HistoryService from 'App/Services/Http/HistoryService'
 import { Exception } from '@adonisjs/core/build/standalone'
 import Role from 'App/Enums/Roles'
+import CollectionService from 'App/Services/CollectionService'
 
 @inject([HistoryService])
 export default class NewsController {
@@ -34,10 +35,11 @@ export default class NewsController {
     }
 
     const comments = await CommentService.getForPost(post)
+    const series = await CollectionService.getSeriesForPost(post, auth.user?.id)
 
     this.historyService.recordPostView(post.id)
     const userProgression = await this.historyService.getPostProgression(post)
 
-    return view.render('lessons/show', { post, comments, userProgression })
+    return view.render('lessons/show', { post, comments, series, userProgression })
   }
 }
