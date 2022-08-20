@@ -35,9 +35,20 @@ export default class HtmlParser {
     const root = parse(html || '')
     const headings = root.querySelectorAll('h1,h2,h3,h4,h5,h6')
     const preBlocks = root.querySelectorAll('pre')
+    const paragraphs = root.querySelectorAll('p')
 
     if (headings?.length) {
       headings.map(el => el.setAttribute('id', slugify(el.textContent, { lower: true, replacement: '_' })))
+    }
+
+    if (paragraphs.length) {
+      const timestampTemplates = ['X:XX', 'XX:XX', 'X:XX:XX', 'XX:XX:XX']
+      const timestamps = paragraphs.filter(el => {
+        const timestampReValue = el.textContent.replaceAll(/[0-9]/g, 'X').trim()
+        const isMatch = timestampTemplates.includes(timestampReValue)
+        return isMatch
+      })
+      timestamps.map(el => el.setAttribute('class', 'timestamp'))
     }
 
     if (preBlocks?.length) {

@@ -46,6 +46,10 @@ export default class CacheService {
     await Redis.flushdb()
   }
 
+  public static async destroyExpiry(key: string) {
+    await Redis.del(`EXPIRE_${key}`)
+  }
+
   public static async get(key: string, defaultValue: any = null): Promise<any> {
     const value = await Redis.get(key)
     return value ?? defaultValue
@@ -101,6 +105,7 @@ export default class CacheService {
     }
 
     const data = await callback()
+    await this.destroyExpiry(key)
     await this.setSerialized(key, data, ttl)
     return data
   }

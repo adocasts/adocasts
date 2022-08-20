@@ -416,3 +416,12 @@ progress[value]::-webkit-progress-value {
   border-radius: var(--progress-border-radius);
 }
 
+.prose .timestamp {
+  @apply text-xs text-gray-700 tracking-wide font-bold;
+  margin-bottom: -2em;
+}
+
+.prose .timestamp + p {
+  margin-bottom: .4em;
+}
+
