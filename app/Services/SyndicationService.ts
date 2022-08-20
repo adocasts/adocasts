@@ -32,6 +32,7 @@ export default class SyndicationService {
     const lessons = await Post.lessons().apply(scope => scope.published()).orderBy('title', 'asc').selectColumn('slug')
     const blogs = await Post.blogs().apply(scope => scope.published()).orderBy('title', 'asc').selectColumn('slug')
     const news = await Post.news().apply(scope => scope.published()).orderBy('title', 'asc').selectColumn('slug')
+    const streams = await Post.livestreams().apply(scope => scope.published()).orderBy('title', 'asc').selectColumn('slug')
 
     let urls: SiteMapItem[] = [
       this.make('/', 'weekly', 1.0),
@@ -39,6 +40,7 @@ export default class SyndicationService {
       this.make('/topics', 'weekly', 0.8),
       this.make('/lessons', 'weekly', 0.8),
       this.make('/news', 'weekly', 0.3),
+      this.make('/streams', 'weekly', 0.3),
       this.make('/posts', 'weekly', 0.3),
     ]
 
@@ -47,6 +49,7 @@ export default class SyndicationService {
     childTopics.map(slug => urls = this.add(urls, this.map('topics.show', { slug }, 'weekly', 0.5)))
     lessons.map(slug => urls = this.add(urls, this.map('lessons.show', { slug }, 'weekly', 0.6)))
     news.map(slug => urls = this.add(urls, this.map('news.show', { slug }, 'weekly', 0.3)))
+    streams.map(slug => urls = this.add(urls, this.map('livestreams.show', { slug }, 'weekly', 0.3)))
     blogs.map(slug => urls = this.add(urls, this.map('posts.show', { slug }, 'weekly', 0.2)))
 
     return urls

@@ -55,7 +55,7 @@
     <div class="flex items-center">
       <a href="/" class="flex mr-6 lg:mr-8">
         <span class="sr-only">{{ env('APP_BRAND') }}</span>
-        <img class="h-6 w-auto sm:h-7" src="{{ env('APP_LOGO') }}" alt="{{ env('APP_BRAND') }}">
+        <img class="h-6 w-auto sm:h-7" width="146px" height="28px" src="{{ env('APP_LOGO') }}" alt="{{ env('APP_BRAND') }}">
       </a>
 
       @!header.desktop.nav()
@@ -123,6 +123,10 @@
               Series
             @end
 
+            @header.mobile.menuItem({ href: route('topics.index'), icon: 'library' })
+              Topics
+            @end
+
             @header.mobile.menuItem({ href: route('lessons.index'), icon: 'academicCap' })
               Lessons
             @end
@@ -131,9 +135,7 @@
 {{--               Shorts --}}
 {{--             @end --}}
 
-            @header.mobile.menuItem({ href: route('topics.index'), icon: 'library' })
-              Topics
-            @end
+
 
             @header.mobile.menuItem({ href: route('news.index'), icon: 'newspaper' })
               News
@@ -157,6 +159,10 @@
 
           <a href="{{ route('uses') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
             Uses
+          </a>
+
+          <a href="{{ route('analytics') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+            Analytics
           </a>
 
           <a href="{{ route('contact.index') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
