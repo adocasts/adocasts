@@ -101,12 +101,12 @@ Route.group(() => {
 
   Route.group(() => {
 
-    Route.get('/',          'PostsController.index').as('index')
-    Route.get('/create',    'PostsController.create').as('create')
-    Route.post('/',         'PostsController.store').as('store')
-    Route.get('/:id/edit',  'PostsController.edit').as('edit')
-    Route.put('/:id',       'PostsController.update').as('update')
-    Route.delete('/:id',    'PostsController.destroy').as('destroy')
+    Route.get('/:postTypeId?',  'PostsController.index').as('index').where('postTypeId', Route.matchers.number())
+    Route.get('/create',        'PostsController.create').as('create')
+    Route.post('/',             'PostsController.store').as('store')
+    Route.get('/:id/edit',      'PostsController.edit').as('edit')
+    Route.put('/:id',           'PostsController.update').as('update')
+    Route.delete('/:id',        'PostsController.destroy').as('destroy')
 
   }).prefix('/posts').as('posts')
 

@@ -13,18 +13,32 @@ import CacheService from 'App/Services/CacheService'
 
 export default class PostsController {
 
-  public async index({ request, view, auth, bouncer }: HttpContextContract) {
+  public async index({ request, view, auth, bouncer, params }: HttpContextContract) {
     await bouncer.with('StudioPolicy').authorize('viewPosts')
 
     const page = request.input('page', 1)
     const posts = await auth.user!.related('posts').query()
+      .if(params.postTypeId, query => query.where('postTypeId', params.postTypeId))
       .preload('authors')
       .orderBy('publishAt', 'desc')
       .paginate(page, 20)
 
     posts.baseUrl(Route.makeUrl('studio.posts.index'))
 
-    return view.render('studio/posts/index', { posts })
+    let heading = 'Posts'
+    switch (params.postTypeId) {
+      case PostType.LESSON:
+        heading = 'Lessons'
+        break;
+      case PostType.NEWS:
+        heading = 'News'
+        break;
+      case PostType.LIVESTREAM:
+        heading = 'Livestreams'
+        break;
+    }
+
+    return view.render('studio/posts/index', { posts, heading })
   }
 
   public async create({ view, bouncer, auth }: HttpContextContract) {
