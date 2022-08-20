@@ -337,11 +337,11 @@ export default class Post extends AppBaseModel {
     post.wordCount = readTime.words
   }
 
+  @computed()
   public get lessonIndexDisplay() {
     const series = this.series?.length && this.series[0]
 
     if (!series) {
-      console.warn("Series info isn't loaded for this post")
       return ''
     }
 
