@@ -97,7 +97,7 @@ export default class CacheService {
     return Redis.keys(pattern)
   }
 
-  public static async try(key: string, callback: () => Promise<any>, ttl: number = this.stdTTL) {
+  public static async try(key: string, callback: () => Promise<any>, ttl: number | null = null) {
     const expiresAt = await this.getExpiry(key)
 
     if (expiresAt > DateTime.now() && await this.has(key)) {
