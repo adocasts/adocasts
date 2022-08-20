@@ -7,6 +7,7 @@ import Role from 'App/Enums/Roles'
 import { Exception } from '@adonisjs/core/build/standalone'
 import CommentService from 'App/Services/CommentService'
 import CollectionService from 'App/Services/CollectionService'
+import CacheService from 'App/Services/CacheService'
 
 @inject()
 export default class LivestreamsController {
@@ -33,20 +34,23 @@ export default class LivestreamsController {
   }
 
   public async show({ view, params, auth }: HttpContextContract) {
-    const post = await Post.livestreams()
-      .apply(scope => scope.forDisplay(true))
-      .where({ slug: params.slug })
-      .highlightOrFail()
+    const post = await CacheService.try(CacheService.getPostKey(params.slug), async () => {
+      return Post.livestreams()
+        .apply(scope => scope.forDisplay(true))
+        .where({ slug: params.slug })
+        .highlightOrFail()
+    })
 
     if (!post.isViewable && auth.user?.roleId !== Role.ADMIN) {
       throw new Exception('This post is not currently available to the public', 404)
     }
 
-    const comments = await CommentService.getForPost(post)
-    const series = await CollectionService.getSeriesForPost(post, auth.user?.id)
+    const postModel = Post.$createFromAdapterResult(post)!
+    const comments = await CommentService.getForPost(postModel)
+    const series = await CollectionService.getSeriesForPost(postModel, auth.user?.id)
 
     this.historyService.recordPostView(post.id)
-    const userProgression = await this.historyService.getPostProgression(post)
+    const userProgression = await this.historyService.getPostProgression(postModel)
 
     return view.render('lessons/show', { post, comments, series, userProgression })
   }

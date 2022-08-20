@@ -1,6 +1,6 @@
 @each((item, i) in posts)
   @set('href', routePost(item, { slug: item.slug }))
-  @set('isActive', request.routeParams.slug == item.slug || request.routeParams.index - 1 === item.$extras.pivot_root_sort_order)
+  @set('isActive', request.routeParams.slug == item.slug || request.routeParams.index - 1 === item.meta.pivot_root_sort_order)
 
   <li>
     <a href="{{ href }}" class="flex items-center p-3 rounded-xl transition duration-300 group {{ isActive ? 'active bg-brand-900 bg-opacity-30' : 'hover:bg-gray-900 hover:bg-opacity-30' }}">

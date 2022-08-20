@@ -149,6 +149,8 @@ Route.group(() => {
     Route.get('/email/undo/:id/:oldEmail/:newEmail', 'SettingsController.emailRevert').as('email.undo')
     Route.post('/account/delete', 'SettingsController.deleteAccount').as('account.delete')
 
+    Route.post('/cache/purge', 'SettingsController.purgeCache').as('cache.purge')
+
   }).prefix('/settings').as('settings')
 
 }).namespace('App/Controllers/Http/Studio').prefix('studio').as('studio').middleware(['auth'])

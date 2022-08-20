@@ -1,6 +1,7 @@
 import Collection from 'App/Models/Collection'
 import Database from '@ioc:Adonis/Lucid/Database'
 import Post from 'App/Models/Post'
+import CacheService from 'App/Services/CacheService'
 
 export default class CollectionService {
   public static async getLastUpdated(limit: number = 4, excludeIds: number[] = []) {
@@ -85,6 +86,8 @@ export default class CollectionService {
       await this.syncSubcollectionPosts(collection, subcollectionCollectionIds, subcollectionPostIds, subcollectionCollectionNames)
     }
 
+    await CacheService.clearForCollection(collection.slug)
+
     return collection
   }
 
@@ -106,6 +109,7 @@ export default class CollectionService {
     await Database.from('collection_posts').whereIn('collection_id', collectionIds).delete()
     await Database.from('collection_taxonomies').whereIn('collection_id', collectionIds).delete()
     await Collection.query().whereIn('id', collectionIds).delete()
+    await CacheService.clearForCollection(collection.slug)
 
     return collection
   }

@@ -8,12 +8,22 @@ import Route from '@ioc:Adonis/Core/Route'
 import Event from '@ioc:Adonis/Core/Event'
 import User from 'App/Models/User'
 import State from 'App/Enums/States'
+import CacheService from 'App/Services/CacheService'
 
 export default class SettingsController {
   public async index({ view, auth }: HttpContextContract) {
     const profile = await Profile.findByOrFail('userId', auth.user!.id)
 
     return view.render('studio/settings/index', { profile })
+  }
+
+  public async purgeCache({ response, session, bouncer }: HttpContextContract) {
+    await bouncer.with('StudioPolicy').authorize('purgeCache')
+    await CacheService.destroyAll()
+
+    session.flash('success', 'All cached values have been successfully purged')
+
+    return response.redirect().back()
   }
 
   public async emailUpdate({ request, response, auth, session }: HttpContextContract) {
@@ -133,7 +143,7 @@ export default class SettingsController {
     // delete comments
     const comments = await auth.user!.related('comments').query()
       .withCount('responses', q => q.where('stateId', State.PUBLIC))
-    
+
     for (let i = 0; i < comments.length; i++) {
       const comment = comments[i]
       if (comment.$extras.responses_count === '0') {

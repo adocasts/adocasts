@@ -32,4 +32,8 @@ export default class StudioPolicy extends BasePolicy {
 	public async viewSettings(user: User) {
 		return this.isAuthenticated(user)
 	}
+
+  public async purgeCache(_: User) {
+    return false
+  }
 }

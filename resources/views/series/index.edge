@@ -68,11 +68,11 @@
               <div class="w-1/2 mx-auto border-t border-gray-300 relative z-10 opacity-0 group-hover:opacity-100"></div>
               <div class="w-full text-gray-700 text-xs py-3 px-6 flex justify-around items-center relative z-10">
                 <div class="flex flex-col justify-center text-center px-3">
-                  <span class="text-lg">{{ item.$extras.postsFlattened_count ?? '0' }}</span>
-                  <span>{{ getSingularOrPlural('Lesson', item.$extras.postsFlattened_count ?? 0) }}</span>
+                  <span class="text-lg">{{ item.meta.postsFlattened_count ?? '0' }}</span>
+                  <span>{{ getSingularOrPlural('Lesson', item.meta.postsFlattened_count ?? 0) }}</span>
                 </div>
                 <div class="h-6 border border-gray-100"></div>
-                @set('watchDisplay', secondsForDisplay(item.$extras.videoSecondsSum))
+                @set('watchDisplay', secondsForDisplay(item.meta.videoSecondsSum))
                 <div class="flex flex-col justify-center text-center px-3">
                   <span class="text-lg">{{ watchDisplay.maxDisplay }}</span>
                   <span>{{ getSingularOrPlural(watchDisplay.maxDisplayKey, watchDisplay.maxDisplay) }}</span>

@@ -9,6 +9,7 @@ import TaxonomyService from 'App/Services/TaxonomyService'
 import History from 'App/Models/History'
 import PostType from 'App/Enums/PostType'
 import Asset from 'App/Models/Asset'
+import CacheService from 'App/Services/CacheService'
 
 export default class PostsController {
 
@@ -54,6 +55,7 @@ export default class PostsController {
     await auth.user!.related('posts').attach([post.id])
     await PostService.syncAssets(post, syncAssetIds)
     await PostService.syncTaxonomies(post, taxonomyIds)
+    await CacheService.clearForPost(post.id)
 
     return response.redirect().toRoute('studio.posts.index')
   }
@@ -85,7 +87,7 @@ export default class PostsController {
     const post = await Post.findOrFail(params.id)
 
     await bouncer.with('PostPolicy').authorize('update', post)
-    console.log(request.body())
+
     let { publishAtDate, publishAtTime, assetIds, libraryAssetId, taxonomyIds, ...data } = await request.validate(PostStoreValidator)
     const publishAt = DateService.getPublishAtDateTime(publishAtDate, publishAtTime, data.timezone)
     const syncAssetIds = libraryAssetId ? [...(assetIds || []), libraryAssetId] : assetIds
@@ -95,6 +97,7 @@ export default class PostsController {
     await post.save()
     await PostService.syncAssets(post, syncAssetIds)
     await PostService.syncTaxonomies(post, taxonomyIds)
+    await CacheService.clearForPost(post.id)
 
     return response.redirect().toRoute('studio.posts.index')
   }
@@ -109,6 +112,7 @@ export default class PostsController {
     await PostService.destroyAssets(post)
     await History.query().where('postId', params.id).delete()
 
+    await CacheService.clearForPost(post.id)
     await post.delete()
 
     return response.redirect().toRoute('studio.posts.index')

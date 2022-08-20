@@ -2,6 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Taxonomy from "App/Models/Taxonomy";
 import TaxonomyValidator from "App/Validators/TaxonomyValidator";
 import TaxonomyService from 'App/Services/TaxonomyService'
+import CacheService from 'App/Services/CacheService'
 
 export default class TaxonomiesController {
   public async index({ view }: HttpContextContract) {
@@ -50,6 +51,7 @@ export default class TaxonomiesController {
 
     await taxonomy.merge(data).save()
     await TaxonomyService.syncPosts(taxonomy, postIds)
+    await CacheService.clearForTaxonomy(taxonomy.slug)
 
     return response.redirect().toRoute('studio.taxonomies.index')
   }
@@ -61,6 +63,7 @@ export default class TaxonomiesController {
 
     await Taxonomy.query().whereIn('id', flatChildrenIds).delete()
     await taxonomy.delete()
+    await CacheService.clearForTaxonomy(taxonomy.slug)
 
     return response.redirect().toRoute('studio.taxonomies.index')
   }

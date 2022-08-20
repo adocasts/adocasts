@@ -1,8 +1,13 @@
-import { BaseModel, ModelAdapterOptions, ModelAssignOptions } from "@ioc:Adonis/Lucid/Orm";
+import { BaseModel, ModelAdapterOptions, ModelAssignOptions } from '@ioc:Adonis/Lucid/Orm'
 import CamelCaseNamingStrategy from "App/Strategies/CamelCaseNamingStrategy";
 
 export default class AppBaseModel extends BaseModel {
   public static namingStrategy = new CamelCaseNamingStrategy()
+  public serializeExtras = true
+
+  public get meta() {
+    return this.$extras
+  }
 
   public static async firstOrNewById(id: number | undefined = undefined, savePayload?: any, options?: ModelAssignOptions): Promise<any> {
     const query = id !== undefined

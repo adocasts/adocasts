@@ -1,5 +1,6 @@
 import { parse } from 'node-html-parser'
 import Application from '@ioc:Adonis/Core/Application'
+import slugify from 'slugify'
 const shiki = require('shiki')
 
 const highlighter = shiki.getHighlighter({
@@ -32,7 +33,13 @@ export default class HtmlParser {
 
   public static async highlight(html: string) {
     const root = parse(html || '')
+    const headings = root.querySelectorAll('h1,h2,h3,h4,h5,h6')
     const preBlocks = root.querySelectorAll('pre')
+
+    if (headings?.length) {
+      headings.map(el => el.setAttribute('id', slugify(el.textContent, { lower: true, replacement: '_' })))
+    }
+
     if (preBlocks?.length) {
       const promises = preBlocks.map(async (c) => {
         const codeRoot = parse(c.text, {

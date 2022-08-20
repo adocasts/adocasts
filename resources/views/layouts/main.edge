@@ -35,6 +35,8 @@
     gtag('js', new Date());
     gtag('config', 'G-MS9CV96KLH');
   </script>
+
+  <script defer data-domain="adocasts.com" src="https://analytics.adocasts.com/js/plausible.js"></script>
 </head>
 <body>
   <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>

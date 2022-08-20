@@ -7,6 +7,7 @@ import HistoryService from 'App/Services/Http/HistoryService'
 import Role from 'App/Enums/Roles'
 import { Exception } from '@adonisjs/core/build/standalone'
 import CollectionService from 'App/Services/CollectionService'
+import CacheService from 'App/Services/CacheService'
 
 @inject([HistoryService])
 export default class LessonsController {
@@ -25,20 +26,24 @@ export default class LessonsController {
   }
 
   public async show({ view, params, auth }: HttpContextContract) {
-    const post = await Post.lessons()
-      .apply(scope => scope.forDisplay(true))
-      .where({ slug: params.slug })
-      .highlightOrFail()
+    const post= await CacheService.try(CacheService.getPostKey(params.slug), async () => {
+      return Post.lessons()
+        .apply(scope => scope.forDisplay(true))
+        .where({ slug: params.slug })
+        .highlightOrFail()
+    })
+
+    let postModel = Post.$createFromAdapterResult(post)
 
     if (!post.isViewable && auth.user?.roleId !== Role.ADMIN) {
       throw new Exception('This post is not currently available to the public', 404)
     }
 
-    const comments = await CommentService.getForPost(post)
-    const series = await CollectionService.getSeriesForPost(post, auth.user?.id)
+    const comments = await CommentService.getForPost(postModel!)
+    const series = await CollectionService.getSeriesForPost(postModel!, auth.user?.id)
 
     this.historyService.recordPostView(post.id)
-    const userProgression = await this.historyService.getPostProgression(post)
+    const userProgression = await this.historyService.getPostProgression(postModel!)
 
     return view.render('lessons/show', { post, series, comments, userProgression })
   }

@@ -6,6 +6,16 @@
 
 @section('content')
 
+  @if (auth.user.roleId === Roles.ADMIN)
+    @form.section({ title: 'Cache', description: 'Clear global caching' })
+      @form.base({ action: route('studio.settings.cache.purge') })
+        @button({ type: 'submit', variant: 'blackSecondary', className: 'mt-3' })
+          Purge All Cache
+        @end
+      @end
+    @end
+  @endif
+
   @form.section({ title: 'Change Username', description: 'Update your publicly displayed username' })
     @form.base({ action: route('studio.settings.username.update', {}, { qs: { _method: 'PATCH' } }) })
       @!form.input({
@@ -159,7 +169,7 @@
   @form.section({ title: 'Delete Account', description: 'Permanently delete your account and all data associated with it.' })
     @form.base({ action: route('studio.settings.account.delete') })
       <input type="hidden" name="user_username" value="{{ auth.user.username }}" />
-      
+
       @!form.input({
         label: 'Username',
         name: 'username',

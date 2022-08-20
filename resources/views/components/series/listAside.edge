@@ -16,8 +16,8 @@
         </h3>
         <div class="w-full text-gray-700 text-xs pt-1 flex relative z-10 leading-tight">
           <div class="flex pr-3">
-            <span class="mr-1">{{ item.$extras?.postsFlattened_count ?? 0 }}</span>
-            <span>{{ getSingularOrPlural('Lesson', item.$extras?.postsFlattened_count ?? 0) }}</span>
+            <span class="mr-1">{{ item.meta?.postsFlattened_count ?? 0 }}</span>
+            <span>{{ getSingularOrPlural('Lesson', item.meta?.postsFlattened_count ?? 0) }}</span>
           </div>
           <div class="h-4 border border-gray-100"></div>
           <div class="flex pr-3">

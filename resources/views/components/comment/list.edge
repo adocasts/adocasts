@@ -5,7 +5,7 @@
   @set('replyTo', comment.id)
   @set('levelIndex', levelIndex ? levelIndex + 1 : 1)
   @set('isAnon', !comment.userId)
-  @set('userLiked', comment.userVotes.find(v => v.$extras.pivot_user_id === auth.user?.id))
+  @set('userLiked', comment.userVotes.find(v => v.meta.pivot_user_id === auth.user?.id))
 
   <li class="relative" id="comment{{ comment.id }}">
     <div class="bg-gray-50 border rounded-lg p-3 mb-6 group"

@@ -30,13 +30,13 @@
 
       <div class="w-full text-gray-700 text-xs pt-1 flex relative z-10 leading-tight">
         <div class="flex px-3">
-          <span class="mr-1">{{ topic.$extras?.collections_count ?? 0 }}</span>
-          <span>{{ getSingularOrPlural('Series', topic.$extras?.collections_count ?? 0) }}</span>
+          <span class="mr-1">{{ topic.meta?.collections_count ?? 0 }}</span>
+          <span>{{ getSingularOrPlural('Series', topic.meta?.collections_count ?? 0) }}</span>
         </div>
         <div class="h-4 border border-gray-100"></div>
         <div class="flex px-3">
-          <span class="mr-1">{{ topic.$extras?.posts_count ?? 0 }}</span>
-          <span>{{ getSingularOrPlural('Lesson', topic.$extras?.posts_count ?? 0) }}</span>
+          <span class="mr-1">{{ topic.meta?.posts_count ?? 0 }}</span>
+          <span>{{ getSingularOrPlural('Lesson', topic.meta?.posts_count ?? 0) }}</span>
         </div>
       </div>
     </div>
