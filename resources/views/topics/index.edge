@@ -14,10 +14,6 @@
 
   <div class="-mx-4 sm:-mx-6 border-t border-gray-300 relative -top-6 pt-8 mt-3">
     @container()
-      <div class="flex items-center">
-        @!ads.leaderboard()
-      </div>
-
       {{--  Lessons  --}}
       @heading.page()
         Topics
@@ -40,6 +36,10 @@
           @endeach
         </div>
       @endif
+
+      <div class="py-4">
+        @!ads.leaderboard()
+      </div>
 
       {{--  Lessons  --}}
       @heading.section()

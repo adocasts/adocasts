@@ -14,11 +14,6 @@
 
   <div class="-mx-4 sm:-mx-6 border-t border-gray-300 relative -top-6 pt-8 mt-3">
     @container()
-
-      <div class="flex items-center">
-        @!ads.leaderboard()
-      </div>
-
       {{--  Lessons  --}}
       <div class="py-3 flex flex-col mb-3">
         <h1 class="text-3xl font-extrabold text-gray-950 tracking-tight mb-2">
@@ -45,6 +40,10 @@
           @endeach
         </div>
       @endif
+
+      <div class="py-4">
+        @!ads.leaderboard()
+      </div>
 
       {{--  Series  --}}
       @if (series?.length)
