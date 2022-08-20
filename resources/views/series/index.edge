@@ -36,10 +36,6 @@
         </div>
       @endif
 
-      <div class="py-4">
-        @!ads.leaderboard()
-      </div>
-
       @heading.section()
         All Series
       @end
@@ -111,6 +107,10 @@
         @endeach
       </div>
     @end
+
+    <div class="py-4">
+      @!ads.leaderboard()
+    </div>
 
     <div class="w-full md:order-3 mt-16">
       @!newsletter.large()

@@ -23,10 +23,6 @@
   {{--  Series Lessons  --}}
   {{--  TODO: need to display modules somehow  --}}
   <div class="flex flex-wrap -mx-2 -mt-6  rounded-t-lg relative bg-white z-10 overflow-hidden">
-    <div class="py-4">
-      @!ads.leaderboard()
-    </div>
-
     @each ((post, i) in series.postsFlattened)
       @!lesson.card({
         item: post,
@@ -37,6 +33,10 @@
         showProgress: true
       })
     @endeach
+
+    <div class="py-4">
+      @!ads.leaderboard()
+    </div>
   </div>
 
 @endsection
