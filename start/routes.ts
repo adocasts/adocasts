@@ -28,6 +28,7 @@ Route.on('/uses').render('uses').as('uses')
 Route.on('/resources').render('resources').as('resources')
 
 Route.get('/', 'HomeController.index').as('home')
+Route.get('/analytics', 'HomeController.analytics').as('analytics')
 
 Route.get('/sitemap', 'SyndicationController.sitemap').as('sitemap')
 Route.get('/sitemap.xml', 'SyndicationController.xml').as('sitemap.xml')

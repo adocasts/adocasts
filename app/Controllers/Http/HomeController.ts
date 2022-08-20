@@ -32,6 +32,10 @@ export default class HomeController {
     return view.render('index', vm)
   }
 
+  public async analytics({ view }: HttpContextContract) {
+    return view.render('analytics')
+  }
+
   public async search({ request, view }: HttpContextContract) {
     const term = request.input('term')
     const posts = await PostService.search(term)
