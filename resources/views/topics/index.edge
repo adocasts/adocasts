@@ -37,10 +37,6 @@
         </div>
       @endif
 
-      <div class="py-4 -mt-6">
-        @!ads.leaderboard()
-      </div>
-
       {{--  Lessons  --}}
       @heading.section()
         All Topics
@@ -53,6 +49,10 @@
         @endeach
       </div>
     @end
+
+    <div class="py-4 -mt-6">
+      @!ads.leaderboard()
+    </div>
 
     <div class="w-full md:order-3 mt-16">
       @!newsletter.large()
