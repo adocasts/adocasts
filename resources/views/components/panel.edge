@@ -1,7 +1,16 @@
 <div x-cloak @keydown.window.escape="{{ closeHandler }}" x-show="{{ variable }}" class="fixed inset-0 overflow-hidden z-50" aria-labelledby="slide-over-title" x-ref="dialog" aria-modal="true">
   <div class="absolute inset-0 overflow-hidden">
 
-    <div x-show="{{ variable }}" x-transition:enter="ease-in-out duration-500" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in-out duration-500" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="{{ closeHandler }}" :aria-hidden="{{ variable }}">
+    <div x-show="{{ variable }}" 
+      x-transition:enter="ease-in-out duration-500" 
+      x-transition:enter-start="opacity-0"
+      x-transition:enter-end="opacity-100" 
+      x-transition:leave="ease-in-out duration-500" 
+      x-transition:leave-start="opacity-100" 
+      x-transition:leave-end="opacity-0" 
+      class="absolute inset-0 bg-gray-500 bg-opacity-75 dark:bg-gray-950 dark:bg-opacity-30 backdrop-blur transition-opacity" 
+      @click="{{ closeHandler }}" 
+      :aria-hidden="{{ variable }}">
     </div>
     <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
 
@@ -13,10 +22,10 @@
           </button>
         </div>
 
-        <div class="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+        <div class="flex h-full flex-col overflow-y-scroll bg-white dark:bg-gray-950 py-6 shadow-xl">
           @if (title)
             <div class="px-4 sm:px-6">
-              <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">{{ title }}</h2>
+              <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100" id="slide-over-title">{{ title }}</h2>
             </div>
           @endif
           <div class="relative {{ title && 'mt-6' }} flex-1 px-4 sm:px-6">

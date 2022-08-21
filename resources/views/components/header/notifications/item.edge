@@ -1,6 +1,6 @@
-<li class="border-b border-gray-100">
+<li class="border-b border-gray-900 dark:border-opacity-10">
   <template x-if="item.href">
-    <a :href="item.href" class="flex flex-col px-4 py-2 hover:bg-gray-100 transition duration-300">
+    <a :href="item.href" class="flex flex-col px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-900 dark:hover:bg-opacity-10 rounded-lg my-1 transition duration-300">
       <strong class="text-xs" x-text="item.title"></strong>
       <div x-html="item.body" class="overflow-x-auto"></div>
     </a>

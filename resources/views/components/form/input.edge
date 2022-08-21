@@ -4,7 +4,7 @@
 
 <div x-data="{ value: `{{ internalValue }}`, max: {{ max }}, min: {{ min }}, focused: false, type: `{{ type || 'text' }}` }" class="relative {{ pb !== false && 'pb-4' }} {{ groupClass ?? 'mb-3' }}">
   @if (label)
-    <label for="{{ id ?? name }}" class="block text-sm font-medium text-gray-950">
+    <label for="{{ id ?? name }}" class="block text-sm font-medium text-gray-950 dark:text-gray-200">
       {{ label }}
     </label>
   @endif
@@ -63,6 +63,7 @@
         class="
           {{ rightGutter }}
           block w-full focus:outline-none sm:text-sm rounded-md placeholder-gray-700
+          dark:bg-gray-950 dark:border dark:border-gray-900 dark:border-opacity-30 dark:text-gray-200
           {{ error
             ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500'
             : 'focus:ring-brand-500 focus:border-brand-500 border-gray-700' }}

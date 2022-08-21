@@ -1,6 +1,6 @@
 @panel({ variable: 'showNotifications', closeHandler: 'toggleNotifications' })
   <div x-show="unreadNotifications.length">
-    <h3 class="border-b border-gray-300 pb-2 px-4 pt-2 text-lg font-semibold">
+    <h3 class="pb-2 px-4 pt-2 text-lg font-semibold">
       Unread Notifications
     </h3>
     <ol class="list-none flex flex-col">
@@ -11,7 +11,7 @@
   </div>
 
   <div x-show="readNotifications.length">
-    <h3 class="border-b border-gray-300 pb-2 px-4 pt-2 text-lg font-semibold">
+    <h3 class="pb-2 px-4 pt-2 text-lg font-semibold">
       Latest Notifications
     </h3>
     <ol class="list-none flex flex-col">

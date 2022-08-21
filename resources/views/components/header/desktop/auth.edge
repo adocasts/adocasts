@@ -2,7 +2,7 @@
   <a href="{{ route('auth.signin.show') }}" class="text-xs lg:text-base font-medium text-theme-200 hover:text-white">
     Sign in
   </a>
-  <a href="{{ route('auth.signup.show') }}" class="ml-3 lg:ml-8 inline-flex items-center justify-center px-2 py-1 lg:px-4 lg:py-2 border border-transparent rounded-md shadow-sm text-xs lg:text-base font-medium text-white bg-theme-800 hover:bg-theme-700 hover:shadow-inner">
+  <a href="{{ route('auth.signup.show') }}" class="ml-3 lg:ml-8 inline-flex items-center justify-center px-2 py-1 lg:px-4 lg:py-2 border border-transparent rounded-md shadow-sm text-xs lg:text-base font-medium text-white bg-theme-800 dark:bg-gray-50 dark:bg-opacity-5 dark:border dark:border-gray-50 dark:border-opacity-10 dark:hover:bg-opacity-10 duration-300 hover:bg-theme-700 hover:shadow-inner">
     Sign up
   </a>
 @else
@@ -15,7 +15,7 @@
       {{ auth.user.username }}
     @end
 
-    <div class="border-b border-gray-200 pt-1 mb-1"></div>
+    <div class="border-b border-gray-200 dark:border-opacity-10 pt-1 mb-1"></div>
 
     <div class="text-xs text-gray-700 uppercase px-4 mb-1 pt-3">
       Studio
@@ -29,7 +29,7 @@
       @end
     @endeach
 
-    <div class="border-b border-gray-200 pt-1 mb-1"></div>
+    <div class="border-b border-gray-200 dark:border-opacity-10 pt-1 mb-1"></div>
 
     @dropdown.item({ href: route('auth.signout') })
       Sign out

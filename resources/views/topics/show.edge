@@ -16,7 +16,7 @@
     @container()
       {{--  Lessons  --}}
       <div class="py-3 flex flex-col mb-3">
-        <h1 class="text-3xl font-extrabold text-gray-950 tracking-tight mb-2">
+        <h1 class="text-3xl font-extrabold text-gray-950 dark:text-gray-200 tracking-tight mb-2">
           @if (topic.parent)
             <a href="{{ route('topics.show', { slug: topic.parent.slug }) }}" class="anchor font-normal">{{ topic.parent.name }}</a>
             <span class="font-normal">/</span>

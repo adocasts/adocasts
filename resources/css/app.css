@@ -82,6 +82,11 @@ h6 {
   aspect-ratio: 1 / 1;
 }
 
+.dark .auth-layout-content {
+  filter: drop-shadow(0 0 32px rgba(0,0,0,.45));
+  padding-bottom: 6rem;
+}
+
 .bg-pattern {
   background-color: theme('colors.gray.950');
   position: relative;
@@ -90,8 +95,8 @@ h6 {
   &:before {
     content:  "";
     width: 100vw;
-    height: 100%;
-    position: absolute;
+    height: 100vh;
+    position: fixed;
     top: 0;
     left: 0;
     opacity: .1;

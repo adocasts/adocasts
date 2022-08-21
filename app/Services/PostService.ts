@@ -72,14 +72,14 @@ export default class PostService {
   }
 
   public static async checkLive() {
-    if (await CacheService.has('live')) {
-      console.log('here')
-      return CacheService.get('live')
+    if (await CacheService.has('isLive')) {
+      return CacheService.get('isLive')
     }
 
     const live = await Post.query()
       .whereTrue('isLive')
       .whereNotNull('livestreamUrl')
+      .apply(s => s.published())
       .orderBy('publishAt', 'desc')
       .first()
 

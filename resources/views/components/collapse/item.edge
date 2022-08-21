@@ -4,7 +4,7 @@
   <dt class="text-lg">
     <!-- Expand/collapse question button -->
     <button type="button" @click="open = !open" class="text-left w-full flex justify-between items-start text-gray-400" aria-controls="faq-{{ index }}" :aria-expanded="open">
-      <span class="font-medium text-gray-950">{{{ await $slots.title() }}}</span>
+      <span class="font-medium text-gray-950 dark:text-gray-600">{{{ await $slots.title() }}}</span>
       <span class="ml-6 h-7 flex items-center text-gray-800">
         <!--
           Expand/collapse icon, toggle classes based on question open state.
