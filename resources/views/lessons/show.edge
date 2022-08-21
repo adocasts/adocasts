@@ -93,7 +93,7 @@
 
     @container({ className: 'mt-3 lg:pt-12' })
       <div>
-        <div class="w-full p-3 md:p-6 bg-gray-100 border-4 border-gray-100 rounded-xl mb-6 lg:mb-12">
+        <div class="w-full p-3 md:p-6 bg-gray-100 dark:bg-opacity-5 border-4 border-gray-100 dark:border-opacity-5 rounded-xl mb-6 lg:mb-12">
           @if (series)
             <h2 class="font-bold text-base md:text-xl lg:text-2xl md:mb-2">
               {{ series.name }}
@@ -110,9 +110,9 @@
             {{ post.description }}
           </p>
           @if(post.postTypeId !== PostTypeEnum.NEWS)
-            <div class="flex flex-col md:flex-row md:items-center px-3 md:px-6 py-3 rounded-xl bg-gray-50 -mb-3 -mx-3 md:-mb-6 md:-mx-6 text-xs md:text-sm space-y-2 md:space-y-0">
+            <div class="flex flex-col md:flex-row md:items-center px-3 md:px-6 py-3 rounded-xl bg-gray-50 dark:bg-opacity-5 relative -bottom-px -mx-3 md:-mb-6 md:-mx-6 text-xs md:text-sm space-y-2 md:space-y-0">
               <div id="appCompleted" x-cloak x-data="appCompleted('{{ route('api.histories.progression.toggle') }}', { postId: {{ post.id }}, collectionId: {{ series?.id }}, route: '{{ request.ctx.route?.name }}' }, {{ userProgression?.isCompleted }})" @completed="changeCompleted">
-                <button x-show="!isCompleted" @click="toggle" type="button" class="w-full md:w-auto group mr-3 flex items-center bg-gray-100 hover:bg-black hover:text-white transition duration-300 rounded-full py-1 pl-1 pr-6">
+                <button x-show="!isCompleted" @click="toggle" type="button" class="w-full md:w-auto group mr-3 flex items-center bg-gray-100 dark:bg-opacity-10 hover:bg-black hover:text-white transition duration-300 rounded-full py-1 pl-1 pr-6">
                   <div class="w-7 h-7 rounded-full bg-black text-white flex items-center group-hover:bg-white group-hover:text-black transition duraton-300 justify-center mr-2">
                     @!svg.check({ className: 'w-5 h-5' })
                   </div>
@@ -125,8 +125,9 @@
                   Completed
                 </button>
               </div>
+              
               <div x-cloak x-data="appWatchlist('{{ route('api.watchlist.toggle') }}', { postId: {{ post.id }} }, {{ post.isInWatchlist }})">
-                <button x-show="!isInWatchlist" @click="toggle" title="Add to watchlist" type="button" class="w-full md:w-auto group mr-3 flex items-center bg-gray-100 hover:bg-black hover:text-white transition duration-300 rounded-full py-1 pl-1 pr-6">
+                <button x-show="!isInWatchlist" @click="toggle" title="Add to watchlist" type="button" class="w-full md:w-auto group mr-3 flex items-center bg-gray-100 dark:bg-opacity-10 hover:bg-black hover:text-white transition duration-300 rounded-full py-1 pl-1 pr-6">
                   <div class="w-7 h-7 rounded-full bg-black text-white flex items-center group-hover:bg-white group-hover:text-black transition duraton-300 justify-center mr-2">
                     @!svg.plus({ className: 'w-5 h-5' })
                   </div>
@@ -140,7 +141,7 @@
                 </button>
               </div>
               @if (post.videoUrl)
-                <a target="_blank" rel="noopener noreferrer nofollow" href="{{ post.videoUrl }}" class="group w-full md:w-auto  mr-3 flex items-center bg-gray-100 hover:bg-black hover:text-white transition duration-300 rounded-full py-1 pl-1 pr-6">
+                <a target="_blank" rel="noopener noreferrer nofollow" href="{{ post.videoUrl }}" class="group w-full md:w-auto  mr-3 flex items-center bg-gray-100 dark:bg-opacity-10 hover:bg-black hover:text-white transition duration-300 rounded-full py-1 pl-1 pr-6">
                   <div class="w-7 h-7 rounded-full bg-black text-white flex items-center group-hover:bg-white group-hover:text-black transition duraton-300 justify-center mr-2">
                     @!svg.youtube({ className: 'w-4' })
                   </div>
@@ -148,7 +149,7 @@
                 </a>
               @endif
               @if (post.repositoryUrl)
-                <a target="_blank" rel="noopener noreferrer nofollow" href="{{ post.repositoryUrl }}" class="group w-full md:w-auto  mr-3 flex items-center bg-gray-100 hover:bg-black hover:text-white transition duration-300 rounded-full py-1 pl-1 pr-6">
+                <a target="_blank" rel="noopener noreferrer nofollow" href="{{ post.repositoryUrl }}" class="group w-full md:w-auto  mr-3 flex items-center bg-gray-100 dark:bg-opacity-10 hover:bg-black hover:text-white transition duration-300 rounded-full py-1 pl-1 pr-6">
                   <div class="w-7 h-7 rounded-full bg-black text-white flex items-center group-hover:bg-white group-hover:text-black transition duraton-300 justify-center mr-2">
                     @!svg.github({ className: 'w-4' })
                   </div>
@@ -162,7 +163,7 @@
 
       <div class="flex flex-wrap lg:flex-nowrap lg:justify-center lg:-mx-6">
         <div class="body-content lg:px-6 order-2 lg:order-1">
-          <div class="prose md:prose-lg lg:prose-xl xl:prose-xl flex-1">
+          <div class="prose md:prose-lg lg:prose-xl xl:prose-xl flex-1 dark:text-gray-400">
             {{{ post.body }}}
           </div>
 

@@ -26,7 +26,7 @@ export default class LessonsController {
   }
 
   public async show({ view, params, auth }: HttpContextContract) {
-    const post= await CacheService.try(CacheService.getPostKey(params.slug), async () => {
+    const post = await CacheService.try(CacheService.getPostKey(params.slug), async () => {
       return Post.lessons()
         .apply(scope => scope.forDisplay(true))
         .where({ slug: params.slug })

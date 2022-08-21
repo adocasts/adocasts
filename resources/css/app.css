@@ -453,3 +453,20 @@ progress[value]::-webkit-progress-value {
   margin-bottom: .4em;
 }
 
+.dark .prose h1,
+.dark .prose h2,
+.dark .prose h3,
+.dark .prose h4,
+.dark .prose h5,
+.dark .prose h6 {
+  color: theme('colors.gray.200');
+}
+
+.dark .prose a,
+.dark .prose p > * {
+  color: theme('colors.gray.500');
+}
+
+.dark .prose code {
+  color: theme('colors.brand.500');
+}

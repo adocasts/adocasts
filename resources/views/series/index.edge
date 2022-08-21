@@ -49,7 +49,7 @@
                   @if (item.asset)
                     <img src="/img/{{ item.asset.filename }}" class="rounded-full w-24 mb-3" />
                   @else
-                    <div class="w-24 h-24 text-2xl font-semibold flex items-center justify-center mb-3 rounded-full bg-brand-300 text-brand-800">
+                    <div class="w-24 h-24 text-2xl font-semibold flex items-center justify-center mb-3 rounded-full bg-brand-300 text-brand-800 dark:bg-brand-900 dark:bg-opacity-30 dark:text-brand-300">
                       {{ getAbbrev(item.name) }}
                     </div>
                   @endif

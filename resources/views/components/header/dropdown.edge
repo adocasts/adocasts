@@ -60,7 +60,7 @@
     <div
       x-cloak
       x-show="isOpen"
-      class="absolute z-10 pt-3 px-2 w-screen max-w-xs sm:px-0 {{ positions[position] }}"
+      class="absolute z-10 pt-3 px-2 w-screen max-w-xs sm:px-0 dark:bg-gray-950 dark:border dark:border-gray-900 rounded-lg {{ positions[position] }}"
       x-transition:enter="transition ease-out duration-300"
       x-transition:enter-start="opacity-0 transform scale-90 translate-y-1"
       x-transition:enter-end="opacity-100 transform scale-100 translate-y-0"
@@ -68,7 +68,7 @@
       x-transition:leave-start="opacity-100 transform scale-100 translate-y-0"
       x-transition:leave-end="opacity-0 transform scale-90 translate-y-1">
       <div class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
-        <div class="relative grid gap-6 bg-white {{ sizes[size] }}">
+        <div class="relative grid gap-6 bg-white dark:bg-transparent {{ sizes[size] }}">
           {{{ await $slots.main() }}}
         </div>
       </div>

@@ -11,7 +11,7 @@
       @if (asset?.filename)
         @!picture({ filename: asset.filename, className: 'rounded-full w-8 h-8 h-full', width: 32, ratio: 'aspect-square' })
       @else
-        <div class="w-8 h-8 text-base font-semibold flex items-center justify-center rounded-full bg-brand-300 text-brand-800 dark:bg-brand-800 dark:text-brand-300">
+        <div class="w-8 h-8 text-base font-semibold flex items-center justify-center rounded-full bg-brand-300 text-brand-800 dark:bg-brand-900 dark:bg-opacity-30 dark:text-brand-300">
           {{ getAbbrev(topic.name) }}
         </div>
       @endif
