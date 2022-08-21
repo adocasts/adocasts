@@ -2,7 +2,7 @@
 @set('hasStarted', item.postsFlattened.some(p => p.progressionHistory?.length))
 @set('isFirstLesson', nextLesson.meta.pivot_root_sort_order === 0)
 
-<div class="bg-gradient-to-br from-brand-900 to-brand-800 relative flex items-end">
+<div class="bg-gradient-to-br from-brand-900 to-brand-800 dark:to-gray-950 relative flex items-end">
   @if (nextLesson.assets?.length)
     <div class="w-full md:flex absolute md:static top-0 left-0 opacity-30" style="min-height: 25vh; max-height: 375px">
       @!picture({

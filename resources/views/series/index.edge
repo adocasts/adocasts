@@ -42,9 +42,9 @@
       <div class="flex flex-col md:-mx-6 mb-8 space-y-6">
         @each ((item, i) in series)
           <div class="flex flex-wrap">
-            <a href="{{ route('series.show', { slug: item.slug }) }}" class="anchor w-full md:w-1/2 lg:w-1/4 group px-2 flex flex-col justify-center items-center transition border border-gray-300 left-px -ml-px rounded-lg relative overflow-hidden z-10 bg-white">
-              <div class="absolute top-0 left-0 w-full bg-gray-50 transition duration-300 transform -translate-y-full group-hover:translate-y-0" style="height: calc(100% + 1.5rem)"></div>
-              <div class="w-full flex flex-col items-center bg-gray-50 py-6 px-6 rounded-b-3xl relative z-10">
+            <a href="{{ route('series.show', { slug: item.slug }) }}" class="anchor w-full md:w-1/2 lg:w-1/4 group px-2 flex flex-col justify-start items-center transition border border-gray-300 dark:border-opacity-5 left-px -ml-px rounded-lg relative overflow-hidden z-10">
+              <div class="absolute top-0 left-0 w-full bg-gray-50 dark:bg-black dark:bg-opacity-30 transition duration-300 transform -translate-y-full group-hover:translate-y-0" style="height: calc(100% + 1.5rem)"></div>
+              <div class="w-full flex flex-col items-center bg-gray-50 dark:bg-opacity-5 dark:group-hover:bg-transparent duration-300 py-6 px-6 rounded-b-3xl relative z-10">
                 <div class="aspect-square mb-3">
                   @if (item.asset)
                     <img src="/img/{{ item.asset.filename }}" class="rounded-full w-24 mb-3" />
@@ -58,23 +58,23 @@
                   {{ item.name }}
                 </h4>
                 <p class="mt-1 text-center line-clamp-2 text-sm">
-                  {{ excerpt(item.description, 130) }}
+                  {{ excerpt(item.description, 160) }}
                 </p>
               </div>
-              <div class="w-1/2 mx-auto border-t border-gray-300 relative z-10 opacity-0 group-hover:opacity-100"></div>
-              <div class="w-full text-gray-700 text-xs py-3 px-6 flex justify-around items-center relative z-10">
+              <div class="w-1/2 mx-auto border-t border-gray-300 dark:border-opacity-5 relative z-10 opacity-0 group-hover:opacity-100"></div>
+              <div class="w-full text-gray-700 text-xs py-4 px-6 flex justify-around items-center relative z-10">
                 <div class="flex flex-col justify-center text-center px-3">
                   <span class="text-lg">{{ item.meta.postsFlattened_count ?? '0' }}</span>
                   <span>{{ getSingularOrPlural('Lesson', item.meta.postsFlattened_count ?? 0) }}</span>
                 </div>
-                <div class="h-6 border border-gray-100"></div>
+                <div class="h-6 border border-gray-100 dark:border-opacity-5"></div>
                 @set('watchDisplay', secondsForDisplay(item.meta.videoSecondsSum))
                 <div class="flex flex-col justify-center text-center px-3">
                   <span class="text-lg">{{ watchDisplay.maxDisplay }}</span>
                   <span>{{ getSingularOrPlural(watchDisplay.maxDisplayKey, watchDisplay.maxDisplay) }}</span>
                 </div>
               </div>
-              <object class="flex flex-col w-full space-y-3 mb-3 mt-2 relative z-10">
+              <object class="flex flex-col w-full mb-3 mt-6 relative z-10">
                   @button({ href: route('series.show', { slug: item.slug }), variant: 'blackSecondary', block: true, group: true })
                     Start Series
                   @end

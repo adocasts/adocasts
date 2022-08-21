@@ -3,15 +3,15 @@
 @set('asset', topic.asset)
 @set('index', index ?? null)
 
-<a href="{{ route('topics.show', { slug: topic.slug }) }}" class="anchor {{ className }} {{ index === 0 && 'rounded-t-lg md:rounded-t-none lg:rounded-l-lg' }} {{ index === length - 1 && 'rounded-b-lg md:rounded-b-none lg:rounded-r-lg' }} {{ index === null && 'rounded-lg' }} group py-1 flex flex-col justify-center items-center transition border border-gray-300 relative left-px -ml-px -mt-px md:mt-0 overflow-hidden" style="height: 68px">
-  <div class="absolute top-0 left-0 w-full bg-gray-50 transition duration-300 transform -translate-x-full group-hover:translate-x-0" style="height: calc(100% + 1.5rem)"></div>
+<a href="{{ route('topics.show', { slug: topic.slug }) }}" class="anchor {{ className }} {{ index === 0 && 'rounded-t-lg md:rounded-t-none lg:rounded-l-lg' }} {{ index === length - 1 && 'rounded-b-lg md:rounded-b-none lg:rounded-r-lg' }} {{ index === null && 'rounded-lg' }} group py-1 flex flex-col justify-center items-center transition border border-gray-300 dark:border-opacity-5 relative left-px -ml-px -mt-px md:mt-0 overflow-hidden" style="height: 68px">
+  <div class="absolute top-0 left-0 w-full bg-gray-50 dark:bg-black dark:bg-opacity-30 transition duration-300 transform -translate-x-full group-hover:translate-x-0" style="height: calc(100% + 1.5rem)"></div>
 
   <div class="w-full flex items-center px-3 rounded-b-3xl relative h-full">
-    <div class="bg-gray-50 -ml-3 px-2 rounded-r-lg mr-3 w-16 h-full flex items-center justify-center" style="width: 56px;">
+    <div class="bg-gray-50 dark:bg-opacity-5 dark:group-hover:bg-transparent duration-300 -ml-3 px-2 rounded-r-lg mr-3 w-16 h-full flex items-center justify-center" style="width: 56px;">
       @if (asset?.filename)
         @!picture({ filename: asset.filename, className: 'rounded-full w-8 h-8 h-full', width: 32, ratio: 'aspect-square' })
       @else
-        <div class="w-8 h-8 text-base font-semibold flex items-center justify-center rounded-full bg-brand-300 text-brand-800">
+        <div class="w-8 h-8 text-base font-semibold flex items-center justify-center rounded-full bg-brand-300 text-brand-800 dark:bg-brand-800 dark:text-brand-300">
           {{ getAbbrev(topic.name) }}
         </div>
       @endif
@@ -33,7 +33,7 @@
           <span class="mr-1">{{ topic.meta?.collections_count ?? 0 }}</span>
           <span>{{ getSingularOrPlural('Series', topic.meta?.collections_count ?? 0) }}</span>
         </div>
-        <div class="h-4 border border-gray-100"></div>
+        <div class="h-4 border border-gray-100 dark:border-opacity-5"></div>
         <div class="flex px-3">
           <span class="mr-1">{{ topic.meta?.posts_count ?? 0 }}</span>
           <span>{{ getSingularOrPlural('Lesson', topic.meta?.posts_count ?? 0) }}</span>

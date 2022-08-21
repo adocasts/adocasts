@@ -3,7 +3,7 @@
 @set('thumbnail', item.assets.length && item.assets[0])
 @set('href', routePost(item, { slug: item.slug }))
 
-<div class="bg-brand-950 text-white transition pt-6 relative z-20 border-b border-gray-300">
+<div class="bg-brand-950 text-white transition pt-6 relative z-20 border-b border-gray-300 dark:border-t dark:border-opacity-5 dark:bg-black dark:bg-opacity-10">
   @container({ className: 'flex flex-wrap md:px-6' })
     @if (thumbnail)
       <div class="w-full md:w-3/5 mb-6 md:-mb-8">

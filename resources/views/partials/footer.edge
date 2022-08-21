@@ -1,4 +1,4 @@
-<footer class="bg-white" aria-labelledby="footer-heading">
+<footer class="bg-white dark:bg-gray-950" aria-labelledby="footer-heading">
     <h2 id="footer-heading" class="sr-only">Footer</h2>
     @container({ className: 'py-12 lg:py-16' })
       <div class="xl:grid xl:grid-cols-3 xl:gap-8">
@@ -9,29 +9,18 @@
                 Content
               </h3>
               <ul class="mt-4 space-y-4">
-                <li>
-                    <a href="/" class="text-base text-gray-900 hover:text-gray-950">
-                      Home
-                    </a>
-                </li>
-
-                <li>
-                  <a href="/series" class="text-base text-gray-900 hover:text-gray-950">
-                    Series
-                  </a>
-                </li>
-
-                <li>
-                    <a href="/topics" class="text-base text-gray-900 hover:text-gray-950">
-                      Topics
-                    </a>
-                </li>
-
-                <li>
-                  <a href="/lessons" class="text-base text-gray-900 hover:text-gray-950">
-                    Lessons
-                  </a>
-                </li>
+                @footer.link({ href: '/' })
+                  Home
+                @end
+                @footer.link({ href: '/series' })
+                  Series
+                @end
+                @footer.link({ href: '/topics' })
+                  Topics
+                @end
+                @footer.link({ href: '/lessons' })
+                  Lessons
+                @end
               </ul>
             </div>
             <div class="mt-12 md:mt-0">
@@ -39,29 +28,18 @@
                 &nbsp;
               </h3>
               <ul class="mt-4 space-y-4">
-                <li>
-                  <a href="{{ route('news.index') }}" class="text-base text-gray-900 hover:text-gray-950">
-                    News
-                  </a>
-                </li>
-
-                <li>
-                    <a href="{{ route('livestreams.index') }}" class="text-base text-gray-900 hover:text-gray-950">
-                      Streams
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{ route('questions.index') }}" class="text-base text-gray-900 hover:text-gray-950">
-                      FAQs
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{ route('resources') }}" class="text-base text-gray-900 hover:text-gray-950">
-                      Resources
-                    </a>
-                </li>
+                @footer.link({ href: route('news.index') })
+                  News
+                @end
+                @footer.link({ href: route('livestreams.index') })
+                  Streams
+                @end
+                @footer.link({ href: route('questions.index') })
+                  FAQs
+                @end
+                @footer.link({ href: route('resources') })
+                  Resources
+                @end
               </ul>
             </div>
           </div>
@@ -71,29 +49,18 @@
                 Company
               </h3>
               <ul class="mt-4 space-y-4">
-                <li>
-                    <a href="/guidelines" class="text-base text-gray-900 hover:text-gray-950">
-                        Guidelines
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/contact" class="text-base text-gray-900 hover:text-gray-950">
-                        Contact Us
-                    </a>
-                </li>
-
-                <li>
-                  <a href="{{ route('analytics') }}" class="text-base text-gray-900 hover:text-gray-950">
-                    Analytics
-                  </a>
-                </li>
-
-                <li>
-                  <a href="/sitemap" class="text-base text-gray-900 hover:text-gray-950">
-                    Sitemap
-                  </a>
-                </li>
+                @footer.link({ href: '/guidelines' })
+                  Guidelines
+                @end
+                @footer.link({ href: '/contact' })
+                  Contact Us
+                @end
+                @footer.link({ href: route('analytics') })
+                  Analytics
+                @end
+                @footer.link({ href: '/sitemap' })
+                  Sitemap
+                @end
               </ul>
             </div>
             <div class="mt-12 md:mt-0">
@@ -101,32 +68,24 @@
                 Legal
               </h3>
               <ul class="mt-4 space-y-4">
-                <li>
-                  <a href="/cookies" class="text-base text-gray-900 hover:text-gray-950">
-                    Cookies
-                  </a>
-                </li>
-
-                <li>
-                  <a href="/privacy" class="text-base text-gray-900 hover:text-gray-950">
-                    Privacy
-                  </a>
-                </li>
-
-                <li>
-                  <a href="/terms" class="text-base text-gray-900 hover:text-gray-950">
-                    Terms
-                  </a>
-                </li>
+                @footer.link({ href: '/cookies' })
+                  Cookies
+                @end
+                @footer.link({ href: '/privacy' })
+                  Privacy
+                @end
+                @footer.link({ href: '/terms' })
+                  Terms
+                @end
               </ul>
             </div>
           </div>
         </div>
         <div class="mt-8 xl:mt-0">
-          <h3 class="text-sm font-semibold text-gray-800 tracking-wider uppercase">
+          <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-700 tracking-wider uppercase">
             Subscribe to our newsletter
           </h3>
-          <p class="text-base text-gray-700">
+          <p class="text-base text-gray-700 dark:text-gray-800">
             It contains the a monthly roundup of our latest lessons.
           </p>
           <form action="https://www.getrevue.co/profile/adocasts/add_subscriber" method="post" id="revue-form" name="revue-form"  target="_blank" class="mt-4 sm:flex sm:max-w-md">

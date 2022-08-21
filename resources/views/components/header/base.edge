@@ -48,14 +48,14 @@
     this.pendingUnread = null
     this.pendingRead = null
   },
-}" class="relative bg-brand-950 z-30">
+}" class="relative bg-brand-950 dark:bg-gray-950 z-30">
   @!header.notifications.list()
 
   <div class="flex justify-between items-center md:space-x-10 py-3 {{ container ?? 'container mx-auto px-4 sm:px-6' }} mx-auto">
     <div class="flex items-center">
       <a href="/" class="flex mr-6 lg:mr-8">
-        <span class="sr-only">{{ env('APP_BRAND') }}</span>
-        <img class="h-6 w-auto sm:h-7" width="146px" height="28px" src="{{ env('APP_LOGO') }}" alt="{{ env('APP_BRAND') }}">
+        <span class="sr-only">{{ env('APP_theme') }}</span>
+        <img class="h-6 w-auto sm:h-7" width="146px" height="28px" src="{{ env('APP_LOGO') }}" alt="{{ env('APP_theme') }}">
       </a>
 
       @!header.desktop.nav()
@@ -66,13 +66,13 @@
         <div class="mr-3">
           <button @click="toggleNotifications" class="relative">
             <div x-cloak x-show="unreadNotifications.length" class="w-2 h-2 rounded-full bg-accent-800 absolute top-0 right-0.5"></div>
-            @!svg.bell({ className: 'h-5 w-5 text-brand-200 hover:text-white transition duration-150 cursor-pointer' })
+            @!svg.bell({ className: 'h-5 w-5 text-theme-200 hover:text-white transition duration-150 cursor-pointer' })
           </button>
         </div>
       @endif
 
       <div class="-mr-2 -my-1">
-        <button @click="show = !show" type="button" class="rounded-md p-1 inline-flex items-center justify-center text-brand-300 hover:text-white hover:bg-brand-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-800" :aria-expanded="show">
+        <button @click="show = !show" type="button" class="rounded-md p-1 inline-flex items-center justify-center text-theme-300 hover:text-white hover:bg-theme-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-theme-800" :aria-expanded="show">
           <span class="sr-only">Open menu</span>
           @!svg.menuOutline({ className: 'w-6 h-6' })
         </button>
@@ -85,7 +85,7 @@
       @if (auth.user)
         <button @click="toggleNotifications" class="relative mr-1">
           <div x-cloak x-show="unreadNotifications.length" class="w-2 h-2 rounded-full bg-accent-800 absolute top-0 right-0.5"></div>
-          @!svg.bell({ className: 'h-5 w-5 text-brand-200 hover:text-white transition duration-150 cursor-pointer' })
+          @!svg.bell({ className: 'h-5 w-5 text-theme-200 hover:text-white transition duration-150 cursor-pointer' })
         </button>
       @endif
 
@@ -108,10 +108,10 @@
       <div class="pt-5 pb-6 px-5">
         <div class="flex items-center justify-between">
           <div>
-            <img class="h-8 w-auto" src="{{ env('APP_LOGO_INV') }}" alt="{{ env('APP_BRAND') }}">
+            <img class="h-8 w-auto" src="{{ env('APP_LOGO_INV') }}" alt="{{ env('APP_theme') }}">
           </div>
           <div class="-mr-2">
-            <button @click="show = false" type="button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-800">
+            <button @click="show = false" type="button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-theme-800">
               <span class="sr-only">Close menu</span>
               @!svg.close({ className: 'w-6 h-6' })
             </button>
@@ -187,12 +187,12 @@
         </div>
         <div class="mt-6">
           @if (!auth.user)
-            <a href="{{ route('auth.signup.show') }}" class="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-brand-900 hover:bg-brand-800">
+            <a href="{{ route('auth.signup.show') }}" class="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-theme-900 hover:bg-theme-800">
               Sign up
             </a>
             <p class="mt-6 text-center text-base font-medium text-gray-900">
               Have an account?
-              <a href="{{ route('auth.signin.show') }}" class="text-brand-900 hover:text-brand-800">
+              <a href="{{ route('auth.signin.show') }}" class="text-theme-900 hover:text-theme-800">
                 Sign in
               </a>
             </p>
