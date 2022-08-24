@@ -1,0 +1,31 @@
+@set('theme', auth.user?.theme || session.get('theme'))
+
+
+<script>
+  const html = document.documentElement
+
+  @if (!theme || theme === Themes.SYSTEM)
+    setTheme('system')
+  @endif
+
+  function getSystemTheme() {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark'
+    } else {
+      return 'light'
+    }
+  }
+
+  function setTheme(theme) {
+    document.documentElement.classList.remove('dark', 'light', 'system') 
+    document.documentElement.dataset.theme = theme
+
+    fetch(`/api/users/theme/${theme}`)
+
+    if (theme === 'system') {
+      theme = getSystemTheme()
+    }
+
+    document.documentElement.classList.add(theme)
+  }
+</script>

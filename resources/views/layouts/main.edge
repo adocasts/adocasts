@@ -1,5 +1,6 @@
+@set('theme', auth.user?.theme || session.get('theme'))
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" data-theme="{{ theme ?? 'system' }}" class="{{ theme ?? 'system' }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
 
   @entryPointStyles('app')
   @entryPointScripts('app')
+  @!scripts.theme()
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,7 +42,7 @@
 </head>
 <body class="dark:bg-gray-950 dark:text-gray-200">
   <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>
-
+  
   @!toast.base()
 
   @if (live && !request.matchesRoute(route('livestreams.index')) && request.url() !== routePost(live, { slug: live.slug }))

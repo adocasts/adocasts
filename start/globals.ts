@@ -15,6 +15,7 @@ import Comment from 'App/Models/Comment'
 import NotificationService from 'App/Services/NotificationService'
 import Env from '@ioc:Adonis/Core/Env'
 import AffiliateService from 'App/Services/AffiliateService'
+import Themes from 'App/Enums/Themes'
 
 if (Env.get('NODE_ENV') === 'test') {
   View.global('csrfField', () => '')
@@ -122,3 +123,4 @@ View.global('CollectionTypeEnumDesc', CollectionTypeDesc)
 View.global('PostTypeEnum', PostType)
 View.global('PostTypeEnumDesc', PostTypeDesc)
 View.global('Roles', Roles)
+View.global('Themes', Themes)

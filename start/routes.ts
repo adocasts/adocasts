@@ -193,6 +193,8 @@ Route.group(() => {
     return response.status(204)
   }).as('session.set')
 
+  Route.get('/users/theme/:theme', 'UsersController.theme').as('users.theme')
+
 }).prefix('/api').as('api')
 
 // GO

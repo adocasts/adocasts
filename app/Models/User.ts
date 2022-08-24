@@ -14,6 +14,7 @@ import EmailHistory from 'App/Models/EmailHistory'
 import Question from 'App/Models/Question'
 import History from './History'
 import Notification from './Notification'
+import Themes from 'App/Enums/Themes'
 
 class User extends AppBaseModel {
   @column({ isPrimary: true })
@@ -61,6 +62,9 @@ class User extends AppBaseModel {
 
   @column()
   public twitterAccessToken: string
+
+  @column()
+  public theme: string = Themes.SYSTEM
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

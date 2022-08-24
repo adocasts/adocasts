@@ -19,6 +19,12 @@
   pendingUnread: null,
   pendingRead: null,
 
+  toggleMenu() {
+    this.show = !this.show
+    this.show
+      ? document.body.classList.add('overflow-hidden', 'max-h-screen')
+      : document.body.classList.remove('overflow-hidden', 'max-h-screen')
+  },
   toggleNotifications() {
     this.showNotifications = !this.showNotifications
 
@@ -48,33 +54,44 @@
     this.pendingUnread = null
     this.pendingRead = null
   },
-}" class="relative bg-brand-950 dark:bg-gray-950 z-30">
+}" class="relative bg-brand-950 dark:bg-gray-950 dark:border-gray-300 dark:border-b dark:border-opacity-5 z-30">
   @!header.notifications.list()
 
   <div class="flex justify-between items-center md:space-x-10 py-3 {{ container ?? 'container mx-auto px-4 sm:px-6' }} mx-auto">
     <div class="flex items-center">
       <a href="/" class="flex mr-6 lg:mr-8">
-        <span class="sr-only">{{ env('APP_theme') }}</span>
-        <img class="h-6 w-auto sm:h-7" width="146px" height="28px" src="{{ env('APP_LOGO') }}" alt="{{ env('APP_theme') }}">
+        <span class="sr-only">Adocasts</span>
+        <img class="h-6 w-auto sm:h-7" width="146px" height="28px" src="{{ env('APP_LOGO') }}" alt="Adocasts">
       </a>
 
       @!header.desktop.nav()
     </div>
 
     <div class="flex justify-end md:hidden">
+      <div class="mr-2">
+        @!header.theme({ mobile: true })
+      </div>
+
       @if (auth.user)
-        <div class="mr-3">
-          <button @click="toggleNotifications" class="relative">
+        <div class="mr-2">
+          <button 
+            @click="toggleNotifications"
+            class="flex h-7 w-7 items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 fill-brand-400 dark:fill-gray-800 ring-black/5 bg-brand-900 dark:bg-gray-50 dark:bg-opacity-10 dark:ring-inset dark:ring-white/5"
+            :class="[unreadNotifications.length ? 'fill-brand-200 dark:fill-gray-200' : 'fill-brand-400 dark:fill-gray-800']">
             <div x-cloak x-show="unreadNotifications.length" class="w-2 h-2 rounded-full bg-accent-800 absolute top-0 right-0.5"></div>
             @!svg.bell({ className: 'h-5 w-5 text-theme-200 hover:text-white transition duration-150 cursor-pointer' })
           </button>
         </div>
       @endif
 
-      <div class="-mr-2 -my-1">
-        <button @click="show = !show" type="button" class="rounded-md p-1 inline-flex items-center justify-center text-theme-300 hover:text-white hover:bg-theme-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-theme-800" :aria-expanded="show">
+      <div class="-mr-2">
+        <button 
+          @click="toggleMenu" 
+          type="button" 
+          class="flex h-7 w-7 items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 text-brand-400 dark:text-gray-800 fill-brand-400 dark:fill-gray-800 ring-black/5 bg-brand-900 dark:bg-gray-50 dark:bg-opacity-10 dark:ring-inset dark:ring-white/5"
+          :aria-expanded="show">
           <span class="sr-only">Open menu</span>
-          @!svg.menuOutline({ className: 'w-6 h-6' })
+          @!svg.menuOutline({ className: 'w-6 h-6 fill-inherit' })
         </button>
       </div>
     </div>
@@ -82,10 +99,17 @@
     <div class="hidden md:flex items-center md:ml-3 lg:ml-12">
       @!header.desktop.search()
 
+      <div class="mr-4">
+        @!header.theme()
+      </div>
+
       @if (auth.user)
-        <button @click="toggleNotifications" class="relative mr-1">
+        <button 
+          @click="toggleNotifications" 
+          class="flex h-8 w-8 items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 fill-brand-400 dark:fill-gray-800 ring-black/5 bg-brand-900 dark:bg-gray-50 dark:bg-opacity-10 dark:ring-inset dark:ring-white/5"
+          :class="[unreadNotifications.length ? 'fill-brand-200 dark:fill-gray-200' : 'fill-brand-400 dark:fill-gray-800']">
           <div x-cloak x-show="unreadNotifications.length" class="w-2 h-2 rounded-full bg-accent-800 absolute top-0 right-0.5"></div>
-          @!svg.bell({ className: 'h-5 w-5 text-theme-200 hover:text-white transition duration-150 cursor-pointer' })
+          @!svg.bell({ className: 'h-5 w-5 fill-inherit transition duration-150 cursor-pointer' })
         </button>
       @endif
 
@@ -103,15 +127,16 @@
       From: "opacity-100 scale-100"
       To: "opacity-0 scale-95"
   -->
-  <div x-cloak x-show="show" class="absolute top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden">
-    <div class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
+  <div x-cloak x-show="show" class="fixed overflow-y-auto max-h-screen top-0 inset-x-0 transition transform origin-top-right md:hidden">
+    <div class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white dark:bg-gray-950 divide-y-2 divide-gray-50 dark:divide-gray-950">
       <div class="pt-5 pb-6 px-5">
         <div class="flex items-center justify-between">
           <div>
-            <img class="h-8 w-auto" src="{{ env('APP_LOGO_INV') }}" alt="{{ env('APP_theme') }}">
+            <img class="h-8 w-auto dark:hidden" src="{{ env('APP_LOGO_INV') }}" alt="Adocasts">
+            <img class="h-8 w-auto hidden dark:block" src="{{ env('APP_LOGO') }}" alt="Adocasts">
           </div>
           <div class="-mr-2">
-            <button @click="show = false" type="button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-theme-800">
+            <button @click="toggleMenu" type="button" class="bg-white dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-gray-400 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-theme-800">
               <span class="sr-only">Close menu</span>
               @!svg.close({ className: 'w-6 h-6' })
             </button>
@@ -149,39 +174,39 @@
       </div>
       <div class="py-6 px-5">
         <div class="grid grid-cols-2 gap-4">
-          <a href="{{ route('questions.index') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+          <a href="{{ route('questions.index') }}" class="text-base font-medium text-gray-950 hover:text-gray-800 dark:text-gray-400">
             FAQ
           </a>
 
-          <a href="{{ route('resources') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+          <a href="{{ route('resources') }}" class="text-base font-medium text-gray-950 hover:text-gray-800 dark:text-gray-400">
             Resources
           </a>
 
-          <a href="{{ route('uses') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+          <a href="{{ route('uses') }}" class="text-base font-medium text-gray-950 hover:text-gray-800 dark:text-gray-400">
             Uses
           </a>
 
-          <a href="{{ route('analytics') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+          <a href="{{ route('analytics') }}" class="text-base font-medium text-gray-950 hover:text-gray-800 dark:text-gray-400">
             Analytics
           </a>
 
-          <a href="{{ route('contact.index') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+          <a href="{{ route('contact.index') }}" class="text-base font-medium text-gray-950 hover:text-gray-800 dark:text-gray-400">
             Contact
           </a>
 
-          <a href="{{ route('guidelines') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+          <a href="{{ route('guidelines') }}" class="text-base font-medium text-gray-950 hover:text-gray-800 dark:text-gray-400">
             Guidelines
           </a>
 
-          <a href="{{ route('cookies') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+          <a href="{{ route('cookies') }}" class="text-base font-medium text-gray-950 hover:text-gray-800 dark:text-gray-400">
             Cookies
           </a>
 
-          <a href="{{ route('privacy') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+          <a href="{{ route('privacy') }}" class="text-base font-medium text-gray-950 hover:text-gray-800 dark:text-gray-400">
             Privacy
           </a>
 
-          <a href="{{ route('terms') }}" class="text-base font-medium text-gray-950 hover:text-gray-800">
+          <a href="{{ route('terms') }}" class="text-base font-medium text-gray-950 hover:text-gray-800 dark:text-gray-400">
             Terms
           </a>
         </div>
@@ -198,7 +223,7 @@
             </p>
           @else
             @set('profileHref', '#')
-            <div class="bg-gray-100 rounded-xl p-3 flex items-center">
+            <div class="bg-gray-100 dark:bg-opacity-5 rounded-xl p-3 flex items-center">
               <a href="{{ profileHref }}" class="mr-3">
                 <img class="rounded-full w-10 h-10" src="{{ auth.user.avatar }}" />
               </a>

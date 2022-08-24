@@ -20,7 +20,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3">
       <!-- Contact information -->
-      <div class="relative overflow-hidden py-10 px-6 border-brand-950 text-gray-950 sm:px-10 xl:p-12 lg:rounded-lg shadow-xl">
+      <div class="relative overflow-hidden py-10 px-6 border-brand-950 text-gray-950 dark:bg-gray-50 dark:bg-opacity-5 dark:text-gray-400 sm:px-10 xl:p-12 lg:rounded-lg shadow-xl">
         @!svg.cornerAccent()
 
         <h3 class="text-lg lg:text-3xl">Contact information</h3>
@@ -30,7 +30,7 @@
         </p>
         <dl class="mt-8 space-y-6">
           <dt><span class="sr-only">Email</span></dt>
-          <dd class="flex text-base text-gray-950">
+          <dd class="flex text-base">
             @!svg.mail({ className: 'w-6 h-6 text-gray-800' })
             <span class="ml-3">contact@adocasts.com</span>
           </dd>
@@ -48,19 +48,19 @@
         </dl>
         <ul class="mt-8 flex space-x-12" role="list">
             <li>
-                <a class="text-gray-800 hover:text-gray-950" href="https://twitter.com/jagr_co">
+                <a class="text-gray-800 hover:text-gray-950 dark:hover:text-gray-400" href="https://twitter.com/jagr_co">
                     <span class="sr-only">Twitter</span>
                     @!svg.twitter({ className: 'w-6 h-6' })
                 </a>
             </li>
             <li>
-                <a class="text-gray-800 hover:text-gray-950" href="https://github.com/jagr-co">
+                <a class="text-gray-800 hover:text-gray-950 dark:hover:text-gray-400" href="https://github.com/jagr-co">
                     <span class="sr-only">GitHub</span>
                     @!svg.github({ className: 'w-6 h-6' })
                 </a>
             </li>
             <li>
-            <a class="text-gray-800 hover:text-gray-950" href="https://youtube.com/jagrco">
+            <a class="text-gray-800 hover:text-gray-950 dark:hover:text-gray-400" href="https://youtube.com/jagrco">
                 <span class="sr-only">YouTube</span>
                 @!svg.youtube({ className: 'w-6 h-6' })
             </a>
@@ -70,12 +70,12 @@
 
         <!-- Contact form -->
         <div class="py-10 px-6 sm:px-10 lg:col-span-2 xl:p-12 mb-12">
-        <h3 class="text-lg lg:text-3xl text-gray-950">Send us a message</h3>
+        <h3 class="text-lg lg:text-3xl text-gray-950 dark:text-gray-200">Send us a message</h3>
         <p class="text-gray-800 mt-2">
             Please allow up to 48 hours for a response.
         </p>
         @if (flashMessages.get('success'))
-          <div role="alert" class="bg-green-100 text-green-800 rounded p-3 mb-4 mt-6">
+          <div role="alert" class="bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-300 rounded p-3 mb-4 mt-6">
             {{  flashMessages.get('success') }}
           </div>
         @endif

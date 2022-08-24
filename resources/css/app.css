@@ -468,7 +468,7 @@ progress[value]::-webkit-progress-value {
 }
 
 .dark .prose a,
-.dark .prose p > * {
+.dark .prose * {
   color: theme('colors.gray.500');
 }
 

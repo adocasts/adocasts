@@ -1,9 +1,6 @@
 @set('origin', origin || 'top-right')
-
 @set('direction', origin.includes('-right') ? 'right-0' : 'left-0')
-
 @set('width', width || 'w-48')
-
 @set('shadow', shadow || 'shadow-xs')
 
 <div @click.away="open = false" class="ml-4 relative flex-shrink-0" x-data="{ 
