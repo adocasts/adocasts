@@ -1,12 +1,17 @@
 @set('theme', auth.user?.theme || session.get('theme'))
 
-
 <script>
-  const html = document.documentElement
-
   @if (!theme || theme === Themes.SYSTEM)
     setTheme('system')
   @endif
+
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(() => {
+      if (document.documentElement.dataset.theme === 'system') {
+        setTheme('system')
+      }
+    })
+  }
 
   function getSystemTheme() {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
