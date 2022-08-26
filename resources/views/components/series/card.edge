@@ -3,7 +3,11 @@
   <div class="w-full flex flex-col items-center bg-gray-50 dark:bg-opacity-5 dark:group-hover:bg-transparent duration-300 py-6 px-6 rounded-b-3xl relative z-10">
     <div class="aspect-square mb-3">
       @if (item.asset)
-        @!picture({ filename: item.asset.filename, className: 'rounded-full w-24 mb-3 h-full', width: 96, ratio: 'aspect-square' })
+        @!picture({ 
+          filename: item.asset.filename, 
+          className: 'rounded-full w-24 mb-3 h-full', width: 96, ratio: 'aspect-square',
+          imgClassName: 'rounded-full'
+        })
       @else
         <div class="w-24 h-24 text-2xl font-semibold flex items-center justify-center mb-3 rounded-full bg-theme-300 text-theme-800">
           {{ getAbbrev(item.name) }}

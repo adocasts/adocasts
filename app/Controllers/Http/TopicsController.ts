@@ -74,6 +74,7 @@ export default class TopicsController {
         .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
         .whereHas('postsFlattened', query => query.apply(scope => scope.published()))
         .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
+        .preload('asset')
         .orderBy('name')
 
       return {
