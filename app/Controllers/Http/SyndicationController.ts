@@ -60,7 +60,7 @@ export default class SyndicationController {
         .makeAllSharable()
 
       return view.render('rss/feed', {
-        title: 'Latest Content on Adocasts - In-depth lessons, screencasts, and livestreams covering AdonisJS',
+        title: 'Adocasts - AdonisJS Screencasts & Lessons',
         description: 'Recent content from Adocasts - Learn AdonisJS, NodeJS, JavaScript and more through in-depth lessons, screencasts, and livestreams.',
         domain: Env.get('APP_DOMAIN'),
         feed: Env.get('APP_DOMAIN') + '/rss',
