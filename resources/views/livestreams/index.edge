@@ -29,6 +29,10 @@
           <span class="font-normal">&mdash; Page {{ items.currentPage }}</span>
         @endif
 
+        <a class="inline-block ml-3 opacity-20 relative top-1 hover:opacity-100 duration-300" href="{{ route('rss') }}" target="_blank">
+          @!svg.rss({ className: 'w-6 h-6' })
+        </a>
+
         @slot('description')
           Watch us build things using AdonisJS in our live and on-demand livestreams.
         @end

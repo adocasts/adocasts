@@ -66,6 +66,6 @@ export default class SyndicationController {
         feed: Env.get('APP_DOMAIN') + '/rss',
         content
       })
-    }, CacheService.oneDay)
+    }, CacheService.fiveMinutes)
   }
 }

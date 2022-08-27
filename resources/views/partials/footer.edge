@@ -115,6 +115,10 @@
                 <span class="sr-only">GitHub</span>
                 @!svg.github({ className: 'w-6 h-6' })
             </a>
+            <a href="{{ route('rss') }}" class="ml-6 text-gray-700 hover:text-gray-800 transition duration-300 ease-in-out" target="_blank">
+              <span class="sr-only">RSS Feed</span>
+              @!svg.rss({ className: 'w-6 h-6' })
+          </a>
         </div>
         <p class="mt-8 text-base text-gray-700 md:mt-0 md:order-1">
             &copy; {{ DateTime.local().year }} {{ env('APP_BRAND') }}. All rights reserved.
