@@ -25,7 +25,7 @@
     @each(item in content)
       @set('series', item.series && item.series.length ? item.series[0] : null)
       @set('seriesTitle', series && !item.title.startsWith(series.name) ? `${series.name}: ${item.title}` : item.title)
-      @set('image', item.assets?.length ? `<div><img src="${domain}${item.assets[0].filename}" alt="${seriesTitle}" /></div>` : '')
+      @set('image', item.assets?.length ? `<div><img src="${domain}/img/${item.assets[0].filename}" alt="${seriesTitle}" /></div>` : '')
       <item>
         <title><![CDATA[{{{ seriesTitle }}}]]></title>
         <link>{{ domain }}{{ routePost(item, { slug: item.slug }) }}</link>
