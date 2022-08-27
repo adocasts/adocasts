@@ -30,9 +30,9 @@ Route.on('/resources').render('resources').as('resources')
 Route.get('/', 'HomeController.index').as('home')
 Route.get('/analytics', 'HomeController.analytics').as('analytics')
 
-Route.get('/sitemap', 'SyndicationController.sitemap').as('sitemap')
+Route.get('/sitemap',     'SyndicationController.sitemap').as('sitemap')
 Route.get('/sitemap.xml', 'SyndicationController.xml').as('sitemap.xml')
-Route.get('/feed', 'SyndicationController.feed').as('feed')
+Route.get('/rss',         'SyndicationController.feed').as('rss')
 
 Route.get('/contact', 'ContactController.index').as('contact.index')
 Route.post('/contact', 'ContactController.contact').as('contact.post').middleware(['honeypot'])
