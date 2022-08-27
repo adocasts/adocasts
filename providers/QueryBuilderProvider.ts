@@ -107,7 +107,16 @@ export default class QueryBuilderProvider {
         r[targetColumnName] = await HtmlParser.highlight(r[columnName])
         return r
       })
-      return await Promise.all(promises)
+      return Promise.all(promises)
+    })
+
+    ModelQueryBuilder.macro('makeAllSharable', async function(columnName: string = 'body', targetColumnName: string = columnName) {
+      const result = await this
+      const promises = result.map(async r => {
+        r[targetColumnName] = await HtmlParser.normalizeUrls(r[columnName])
+        return r
+      })
+      return Promise.all(promises)
     })
   }
 

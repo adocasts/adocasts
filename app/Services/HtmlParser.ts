@@ -1,5 +1,6 @@
 import { parse } from 'node-html-parser'
 import Application from '@ioc:Adonis/Core/Application'
+import Env from '@ioc:Adonis/Core/Env'
 import slugify from 'slugify'
 const shiki = require('shiki')
 
@@ -31,16 +32,44 @@ export default class HtmlParser {
     }
   }
 
+  public static async normalizeUrls(html: string) {
+    const root = parse(html || '')
+    const anchors = root.querySelectorAll('a')
+    const images = root.querySelectorAll('img')
+
+    if (anchors?.length) {
+      anchors.map(el => {
+        const href = el.getAttribute('href')
+        if (href?.startsWith('/') && !href.startsWith('//')) {
+          el.setAttribute('href', `${Env.get('APP_DOMAIN')}${href}`)
+        }
+      })
+    }
+
+    if (images?.length) {
+      images.map(el => {
+        const source = el.getAttribute('src')
+        if (source?.startsWith('/') && !source.startsWith('//')) {
+          el.setAttribute('src', `${Env.get('APP_DOMAIN')}${source}`)
+        }
+      })
+    }
+
+    return root.toString()
+  }
+
   public static async highlight(html: string) {
     const root = parse(html || '')
     const headings = root.querySelectorAll('h1,h2,h3,h4,h5,h6')
     const preBlocks = root.querySelectorAll('pre')
     const paragraphs = root.querySelectorAll('p')
 
+    // set slug anchor id to all headings
     if (headings?.length) {
       headings.map(el => el.setAttribute('id', slugify(el.textContent, { lower: true, replacement: '_' })))
     }
 
+    // add timestamp class to timestamp paragraphs
     if (paragraphs.length) {
       const timestampTemplates = ['X:XX', 'XX:XX', 'X:XX:XX', 'XX:XX:XX']
       const timestamps = paragraphs.filter(el => {
