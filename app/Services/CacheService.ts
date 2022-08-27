@@ -14,7 +14,8 @@ export default class CacheService {
     return [
       CacheKeys.HOME,
       CacheKeys.SERIES,
-      CacheKeys.TOPICS
+      CacheKeys.TOPICS,
+      CacheKeys.RSS_FEED
     ]
   }
 
