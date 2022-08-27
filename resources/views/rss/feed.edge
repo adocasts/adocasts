@@ -25,13 +25,14 @@
     @each(item in content)
       @set('series', item.series && item.series.length ? item.series[0] : null)
       @set('seriesTitle', series && !item.title.startsWith(series.name) ? `${series.name}: ${item.title}` : item.title)
+      @set('image', item.assets?.length ? `<div><img src="${domain}${item.assets[0].filename}" alt="${seriesTitle}" /></div>` : '')
       <item>
         <title><![CDATA[{{{ seriesTitle }}}]]></title>
         <link>{{ domain }}{{ routePost(item, { slug: item.slug }) }}</link>
         <guid>{{ domain }}{{ routePost(item, { slug: item.slug }) }}</guid>
         <pubDate>{{ item.publishAt.toRFC2822() }}</pubDate>
         <description><![CDATA[{{{ item.description }}}]]></description>
-        <content:encoded><![CDATA[{{{ item.body }}}]]></content:encoded>
+        <content:encoded><![CDATA[{{{ image }}}{{{ item.body }}}]]></content:encoded>
       </item>
     @endeach
   </channel>
