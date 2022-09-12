@@ -29,6 +29,7 @@ export default class ContactController {
         .to('contact@adocasts.com')
         .subject(data.subject)
         .html(`
+          <p><strong>IP:</strong> ${request.ip()}</p>
           <p><strong>Email:</strong> ${data.email}</p>
           <p>${data.body}</p>
         `)
