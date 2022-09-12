@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Mail from '@ioc:Adonis/Addons/Mail'
+import Env from '@ioc:Adonis/Core/Env'
 import { rules, schema } from '@ioc:Adonis/Core/Validator'
 
 export default class ContactController {
@@ -8,6 +9,14 @@ export default class ContactController {
   }
 
   public async contact({ response, request, session }: HttpContextContract) {
+    const contactBlockedIps = Env.get('CONTACT_BLOCKED', '').split(',').map(ip => ip.trim())
+    
+    if (contactBlockedIps.includes(request.ip())) {
+      session.put('hideContact', true)
+      session.flash('blocked', "You've been blocked for spamming. Please refrain from spamming again in the future if your block is ever lifted.")
+      return response.redirect().back()
+    }
+
     const validationSchema = schema.create({
       name: schema.string.optional(),
       email: schema.string({ trim: true }, [rules.email()]),
