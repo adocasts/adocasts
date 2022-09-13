@@ -31,6 +31,9 @@ export default class ContactController {
 
     const data = await request.validate({ schema: validationSchema, messages: validationMessages });
 
+    const sent = session.get('contactsSent', 0) + 1
+    session.put('contactsSent', sent)
+
     await Mail.send(message => {
       message
         .from('contact@adocasts.com', 'Contact Form on Adocasts')
@@ -39,6 +42,7 @@ export default class ContactController {
         .subject(data.subject)
         .html(`
           <p><strong>IP:</strong> ${request.ip()}</p>
+          <p><strong>Sends:</strong> ${sent}</p>
           <p><strong>Email:</strong> ${data.email}</p>
           <p>${data.body}</p>
         `)
