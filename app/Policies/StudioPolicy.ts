@@ -9,6 +9,10 @@ export default class StudioPolicy extends BasePolicy {
 		}
 	}
 
+	public async adminOnly(_: User) {
+		return false
+	}
+
 	public async viewDashboard(_: User) {
 		return false
 	}

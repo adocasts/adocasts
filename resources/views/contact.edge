@@ -24,20 +24,29 @@
         @!svg.cornerAccent()
 
         <h3 class="text-lg lg:text-3xl">Contact information</h3>
-        <p class="mt-6 text-base max-w-3xl">
-          Have an issue, question, or any other inquiry?
-          Please contact us either by our contact form on this page or reach out on one of our social platforms.
-        </p>
+        @if (!isGraylisted)
+          <p class="mt-6 text-base max-w-3xl">
+            Have an issue, question, or any other inquiry?
+            Please contact us either by our contact form on this page or reach out on one of our social platforms.
+          </p>
+        @else
+          <p class="mt-6 text-base max-w-3xl">
+            Have an issue, question, or any other inquiry?
+            Please contact us via one of our below social media platforms.
+          </p>
+        @endif
         <dl class="mt-8 space-y-6">
-          <dt><span class="sr-only">Email</span></dt>
-          <dd class="flex text-base">
-            @!svg.mail({ className: 'w-6 h-6 text-gray-800' })
-            @if (session.get('hideContact'))
-              <span class="ml-3 opacity-50">Hidden due to spamming</span>
-            @else
-              <span class="ml-3">contact@adocasts.com</span>
-            @endif
-          </dd>
+          @if (!isGraylisted)
+            <dt><span class="sr-only">Email</span></dt>
+            <dd class="flex text-base">
+              @!svg.mail({ className: 'w-6 h-6 text-gray-800' })
+              @if (session.get('hideContact'))
+                <span class="ml-3 opacity-50">Hidden due to spamming</span>
+              @else
+                <span class="ml-3">contact@adocasts.com</span>
+              @endif
+            </dd>
+          @endif
           <dt><span class="sr-only">Location</span></dt>
           <dd class="flex text-base">
             @!svg.location({ className: 'w-6 h-6 text-gray-800' })
@@ -72,81 +81,87 @@
         </ul>
         </div>
 
-        <!-- Contact form -->
-        <div class="py-10 px-6 sm:px-10 lg:col-span-2 xl:p-12 mb-12">
-        <h3 class="text-lg lg:text-3xl text-gray-950 dark:text-gray-200">Send us a message</h3>
-        <p class="text-gray-800 mt-2">
-          Please don't spam and please allow up to 48 hours for a response. 
-          Spamming may result in you being permanantly or temporarily blocked and your message being ignored.
-        </p>
-        @if (flashMessages.get('success'))
-          <div role="alert" class="bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-300 rounded p-3 mb-4 mt-6">
-            {{  flashMessages.get('success') }}
+        @if (!isGraylisted)
+          <!-- Contact form -->
+          <div class="py-10 px-6 sm:px-10 lg:col-span-2 xl:p-12 mb-12">
+            <h3 class="text-lg lg:text-3xl text-gray-950 dark:text-gray-200">Send us a message</h3>
+            <p class="text-gray-800 mt-2">
+              Please don't spam and please allow up to 48 hours for a response. 
+              Spamming may result in you being permanantly or temporarily blocked and your message being ignored.
+            </p>
+            @if (flashMessages.get('success'))
+              <div role="alert" class="bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-300 rounded p-3 mb-4 mt-6">
+                {{  flashMessages.get('success') }}
+              </div>
+            @elseif (flashMessages.get('blocked'))
+              <div role="alert" class="bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-300 rounded p-3 mb-4 mt-6">
+                {{  flashMessages.get('blocked') }}
+              </div>
+            @endif
+
+            @if (!session.get('hideContact'))
+              <form action="{{ route('contact.post') }}?_method=POST" method="POST" class="mt-6 gap-y-6">
+                  {{ csrfField() }}
+                  @!component('honeypot')
+
+                  <div class="max-w-md">
+                    @!form.input({
+                      label: 'Name',
+                      type: 'text',
+                      name: 'name',
+                      value: flashMessages.get('name') ?? '',
+                      errors: flashMessages.get('errors.name')
+                    })
+                  </div>
+
+                  <div class="max-w-md">
+                    @!form.input({
+                      label: 'Email',
+                      type: 'email',
+                      name: 'email',
+                      value: flashMessages.get('email') ?? '',
+                      errors: flashMessages.get('errors.email'),
+                      autocomplete: 'email',
+                      required: true
+                    })
+                  </div>
+
+                  <div class="max-w-xl">
+                    @!form.input({
+                      label: 'Subject',
+                      type: 'text',
+                      name: 'subject',
+                      value: flashMessages.get('subject') ?? '',
+                      errors: flashMessages.get('errors.subject'),
+                      required: true
+                    })
+
+                    @!form.input({
+                      label: 'Message',
+                      type: 'textarea',
+                      name: 'body',
+                      value: flashMessages.get('body') ?? '',
+                      errors: flashMessages.get('errors.body'),
+                      required: true
+                    })
+
+                    @button({ type: 'submit', className: 'mt-6' })
+                      Send Message
+                    @endbutton
+                  </div>
+              </form>
+            @else
+              <div role="alert" class="bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-300 rounded p-3 mb-4 mt-6">
+                Our contact form is hidden because you've been blocked for spamming. 
+                To prevent this, please refrain from spamming again in the future.
+              </div>
+            @endif
           </div>
-        @elseif (flashMessages.get('blocked'))
-          <div role="alert" class="bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-300 rounded p-3 mb-4 mt-6">
-            {{  flashMessages.get('blocked') }}
-          </div>
-        @endif
-
-        @if (!session.get('hideContact'))
-          <form action="{{ route('contact.post') }}?_method=POST" method="POST" class="mt-6 gap-y-6">
-              {{ csrfField() }}
-              @!component('honeypot')
-
-              <div class="max-w-md">
-                @!form.input({
-                  label: 'Name',
-                  type: 'text',
-                  name: 'name',
-                  value: flashMessages.get('name') ?? '',
-                  errors: flashMessages.get('errors.name')
-                })
-              </div>
-
-              <div class="max-w-md">
-                @!form.input({
-                  label: 'Email',
-                  type: 'email',
-                  name: 'email',
-                  value: flashMessages.get('email') ?? '',
-                  errors: flashMessages.get('errors.email'),
-                  autocomplete: 'email',
-                  required: true
-                })
-              </div>
-
-              <div class="max-w-xl">
-                @!form.input({
-                  label: 'Subject',
-                  type: 'text',
-                  name: 'subject',
-                  value: flashMessages.get('subject') ?? '',
-                  errors: flashMessages.get('errors.subject'),
-                  required: true
-                })
-
-                @!form.input({
-                  label: 'Message',
-                  type: 'textarea',
-                  name: 'body',
-                  value: flashMessages.get('body') ?? '',
-                  errors: flashMessages.get('errors.body'),
-                  required: true
-                })
-
-                @button({ type: 'submit', className: 'mt-6' })
-                  Send Message
-                @endbutton
-              </div>
-          </form>
         @else
-          <div role="alert" class="bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-300 rounded p-3 mb-4 mt-6">
-            Our contact form is hidden because you've been blocked for spamming. 
-            To prevent this, please refrain from spamming again in the future.
+          <div class="px-6 xl:px-12" style="min-width: 500px;">
+            <a class="twitter-timeline" data-width="500" data-height="800" href="https://twitter.com/adocasts?ref_src=twsrc%5Etfw">Tweets by adocasts</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
           </div>
         @endif
-        </div>
     </div>
     </div>
 </div>

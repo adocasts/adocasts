@@ -93,6 +93,7 @@
     "luxon": "^2.3.1",
     "node-discord-logger": "^1.2.1",
     "node-html-parser": "^5.2.0",
+    "node-iplocate": "^1.0.3",
     "pg": "^8.7.3",
     "phc-argon2": "^1.1.3",
     "proxy-addr": "^2.0.7",

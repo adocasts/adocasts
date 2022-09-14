@@ -110,7 +110,7 @@ Route.group(() => {
     Route.put('/:id',           'PostsController.update').as('update')
     Route.delete('/:id',        'PostsController.destroy').as('destroy')
 
-  }).prefix('/posts').as('posts')
+  }).prefix('/posts').as('posts').middleware(['role:admin'])
 
   Route.group(() => {
 
@@ -121,7 +121,7 @@ Route.group(() => {
     Route.put('/:id',       'CollectionsController.update').as('update')
     Route.delete('/:id',    'CollectionsController.destroy').as('destroy')
 
-  }).prefix('/collections').as('collections')
+  }).prefix('/collections').as('collections').middleware(['role:admin'])
 
   Route.group(() => {
 
@@ -132,7 +132,7 @@ Route.group(() => {
     Route.put('/:id',       'TaxonomiesController.update').as('update')
     Route.delete('/:id',    'TaxonomiesController.destroy').as('destroy')
 
-  }).prefix('/taxonomies').as('taxonomies')
+  }).prefix('/taxonomies').as('taxonomies').middleware(['role:admin'])
 
   Route.group(() => {
 
@@ -140,6 +140,13 @@ Route.group(() => {
     Route.patch('/:id/state/:stateId', 'CommentsController.state').as('state').where('stateId', Route.matchers.number())
 
   }).prefix('/comments').as('comments')
+
+  Route.group(() => {
+
+    Route.get('/', 'BlocksController.index').as('index')
+    Route.get('/create', 'BlocksController.create').as('create')
+
+  }).prefix('/blocked').as('blocked').middleware(['role:admin'])
 
   Route.group(() => {
 
@@ -151,7 +158,7 @@ Route.group(() => {
     Route.get('/email/undo/:id/:oldEmail/:newEmail', 'SettingsController.emailRevert').as('email.undo')
     Route.post('/account/delete', 'SettingsController.deleteAccount').as('account.delete')
 
-    Route.post('/cache/purge', 'SettingsController.purgeCache').as('cache.purge')
+    Route.post('/cache/purge', 'SettingsController.purgeCache').as('cache.purge').middleware(['role:admin'])
 
   }).prefix('/settings').as('settings')
 

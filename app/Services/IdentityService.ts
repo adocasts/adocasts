@@ -2,9 +2,14 @@ import Database from "@ioc:Adonis/Lucid/Database";
 import CacheService from 'App/Services/CacheService';
 import { uniqueNamesGenerator, NumberDictionary, animals, colors, names, starWars } from 'unique-names-generator';
 import crypto from 'crypto';
+import ipLocate from 'node-iplocate'
 
 class IdentityService {
   protected key: string = 'identity-secret';
+
+  public async getLocation(ip: string) {
+    return ipLocate(ip)
+  }
 
   public async getByIdentity(table: string, identity: string, identityKey: string = 'name'): Promise<string> {
     const record = await Database.from(table).where('identity', identity).select([identityKey]).first();

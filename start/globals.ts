@@ -17,6 +17,7 @@ import Env from '@ioc:Adonis/Core/Env'
 import AffiliateService from 'App/Services/AffiliateService'
 import Themes from 'App/Enums/Themes'
 import * as timeago from 'timeago.js'
+import IdentityService from 'App/Services/IdentityService'
 
 if (Env.get('NODE_ENV') === 'test') {
   View.global('csrfField', () => '')
@@ -117,6 +118,10 @@ View.global('timeago', (date: string | DateTime | null) => {
     date = DateTime.fromISO(date)
   }
   return date ? timeago.format(date.toJSDate()) : ''
+})
+
+View.global('ipLocate', async (ip) => {
+  return IdentityService.getLocation(ip)
 })
 
 View.global('GA_PROPERTY', Env.get('GA_PROPERTY'))
