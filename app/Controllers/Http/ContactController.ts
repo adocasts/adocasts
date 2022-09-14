@@ -8,7 +8,7 @@ export default class ContactController {
     return view.render('contact')
   }
 
-  public async contact({ response, request, session }: HttpContextContract) {
+  public async contact({ response, request, session, auth }: HttpContextContract) {
     const contactBlockedIps = Env.get('CONTACT_BLOCKED', '').split(',').map(ip => ip.trim())
     
     if (contactBlockedIps.includes(request.ip())) {
@@ -42,6 +42,7 @@ export default class ContactController {
         .subject(data.subject)
         .html(`
           <p><strong>IP:</strong> ${request.ip()}</p>
+          <p><strong>User Id:</strong> ${auth.user?.id}</p>
           <p><strong>Sends:</strong> ${sent}</p>
           <p><strong>Email:</strong> ${data.email}</p>
           <p>${data.body}</p>
