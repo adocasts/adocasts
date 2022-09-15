@@ -16,7 +16,7 @@
 import Logger from '@ioc:Adonis/Core/Logger'
 import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import * as Sentry from '@sentry/node'
+// import * as Sentry from '@sentry/node'
 import DiscordLogger from '@ioc:Logger/Discord'
 
 export default class ExceptionHandler extends HttpExceptionHandler {
@@ -33,7 +33,7 @@ export default class ExceptionHandler extends HttpExceptionHandler {
   }
 
   public async handle(error: any, ctx: HttpContextContract) {
-    Sentry.captureException(error)
+    // Sentry.captureException(error)
     
     if (error.code === 'E_BAD_CSRF_TOKEN') {
       return this.handleExpiredCsrf(ctx)
