@@ -5,7 +5,8 @@ import { rules, schema } from '@ioc:Adonis/Core/Validator'
 
 export default class ContactController {
   public async index({ view }: HttpContextContract) {
-    return view.render('contact')
+    const isGraylisted = true
+    return view.render('contact', { isGraylisted })
   }
 
   public async contact({ response, request, session, auth }: HttpContextContract) {
