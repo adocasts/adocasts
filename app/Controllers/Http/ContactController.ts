@@ -2,10 +2,11 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Mail from '@ioc:Adonis/Addons/Mail'
 import Env from '@ioc:Adonis/Core/Env'
 import { rules, schema } from '@ioc:Adonis/Core/Validator'
+import SecurityService from 'App/Services/SecurityService'
 
 export default class ContactController {
-  public async index({ view }: HttpContextContract) {
-    const isGraylisted = true
+  public async index({ view, request, auth }: HttpContextContract) {
+    const isGraylisted = await SecurityService.isGraylisted(request.ip(), auth.user)
     return view.render('contact', { isGraylisted })
   }
 
