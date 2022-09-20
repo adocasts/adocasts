@@ -5,8 +5,8 @@ import { rules, schema } from '@ioc:Adonis/Core/Validator'
 // import SecurityService from 'App/Services/SecurityService'
 
 export default class ContactController {
-  public async index({ view }: HttpContextContract) {
-    const isGraylisted = true //await SecurityService.isGraylisted(request.ip(), auth.user)
+  public async index({ view, auth }: HttpContextContract) {
+    const isGraylisted = auth.user ? false : true //await SecurityService.isGraylisted(request.ip(), auth.user)
     return view.render('contact', { isGraylisted })
   }
 
