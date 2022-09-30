@@ -7,10 +7,10 @@
 
 <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 dark:bg-opacity-5 dark:border-opacity-10 sm:px-6 {{ className }}">
   <div class="flex-1 flex justify-between sm:hidden">
-    <a {{{ !isFirstPage && `href="${data.getNextPageUrl()}"` }}} class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md bg-white {{ isFirstPage ? disabledClass : 'text-gray-900 hover:bg-gray-50' }} dark:bg-opacity-5 dark:border-opacity-10 dark:text-gray-400">
+    <a {{{ !isFirstPage && `href="${data.getPreviousPageUrl()}"` }}} class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md bg-white {{ isFirstPage ? disabledClass : 'text-gray-900 hover:bg-gray-50' }} dark:bg-opacity-5 dark:border-opacity-10 dark:text-gray-400">
       Previous
     </a>
-    <a {{{ !isLastPage && `href="?page=${data.getPreviousPageUrl()}"` }}} class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md bg-white {{ isLastPage ? disabledClass : 'text-gray-900 hover:bg-gray-50' }} dark:bg-opacity-5 dark:border-opacity-10 dark:text-gray-400">
+    <a {{{ !isLastPage && `href="${data.getNextPageUrl()}"` }}} class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md bg-white {{ isLastPage ? disabledClass : 'text-gray-900 hover:bg-gray-50' }} dark:bg-opacity-5 dark:border-opacity-10 dark:text-gray-400">
       Next
     </a>
   </div>
