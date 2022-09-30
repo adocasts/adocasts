@@ -1,10 +1,10 @@
 @set('index', index ?? 0)
 
-<div x-data="{ open: false }" class="pt-6 max-w-2xl">
+<div x-data="{ isCollapseOpen: false }" class="pt-6 max-w-2xl">
   <dt class="text-lg">
     <!-- Expand/collapse question button -->
-    <button type="button" @click="open = !open" class="text-left w-full flex justify-between items-start text-gray-400" aria-controls="faq-{{ index }}" :aria-expanded="open">
-      <span class="font-medium text-gray-950 dark:text-gray-600">{{{ await $slots.title() }}}</span>
+    <button type="button" @click="isCollapseOpen = !isCollapseOpen" class="text-left w-full flex justify-between items-start text-gray-400" aria-controls="faq-{{ index }}" :aria-expanded="isCollapseOpen">
+      <span class="font-medium text-gray-950 dark:text-gray-200">{{{ await $slots.title() }}}</span>
       <span class="ml-6 h-7 flex items-center text-gray-800">
         <!--
           Expand/collapse icon, toggle classes based on question open state.
@@ -13,11 +13,11 @@
 
           Open: "-rotate-180", Closed: "rotate-0"
         -->
-        @!svg.chevron.down({ className: 'h-6 w-6 transform', xClass: "[open ? '-rotate-180' : 'rotate-0']" })
+        @!svg.chevron.down({ className: 'h-6 w-6 transform', xClass: "[isCollapseOpen ? '-rotate-180' : 'rotate-0']" })
       </span>
     </button>
   </dt>
-  <dd x-show="open" class="mt-2 pr-12" id="faq-{{ index }}" class="prose" x-cloak>
+  <dd x-show="isCollapseOpen" class="mt-2 pr-12 text-gray-700 dark:text-gray-600" id="faq-{{ index }}" class="prose" x-cloak>
     {{{ await $slots.main() }}}
   </dd>
 </div>

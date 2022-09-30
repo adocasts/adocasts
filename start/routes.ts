@@ -211,3 +211,7 @@ Route.group(() => {
   Route.get('/post/:postId/comment/:commentId', 'GoController.comment').as('comment')
 
 }).prefix('/go').as('go')
+
+Route.get('/ping', async ({ response }) => {
+  return response.status(200).json({ pong: true })
+})

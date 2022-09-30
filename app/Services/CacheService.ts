@@ -3,6 +3,7 @@ import Post from 'App/Models/Post'
 import CacheKeys from 'App/Enums/CacheKeys'
 import Collection from 'App/Models/Collection'
 import Taxonomy from 'App/Models/Taxonomy'
+import RedisConfig from 'Config/redis'
 import { DateTime } from 'luxon'
 
 export default class CacheService {
@@ -99,6 +100,8 @@ export default class CacheService {
   }
 
   public static async try(key: string, callback: () => Promise<any>, ttl: number | null = null) {
+    if (!RedisConfig.enabled) return callback()
+
     const expiresAt = await this.getExpiry(key)
 
     if (expiresAt > DateTime.now() && await this.has(key)) {

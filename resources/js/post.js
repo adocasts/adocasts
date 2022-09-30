@@ -197,7 +197,7 @@ window.initProgression = function ({ storeProgression = false, httpMethod = 'pos
   }
 }
 
-const postAnchorLinks = Array.from(document.querySelectorAll('.prose h1[id], .prose h2[id], .prose h3[id], .prose h4[id], .prose h5[id], .prose h6[id]'))
+const postAnchorLinks = Array.from(document.querySelectorAll('.body-content > .prose h1[id], .body-content > .prose h2[id], .body-content > .prose h3[id], .body-content > .prose h4[id], .body-content > .prose h5[id], .body-content > .prose h6[id]'))
 postAnchorLinks.map(heading => {
   const anchor = document.createElement('a')
   anchor.setAttribute('aria-hidden', 'true')

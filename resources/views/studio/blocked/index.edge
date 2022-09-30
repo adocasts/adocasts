@@ -1,0 +1,64 @@
+@layout('layouts/studio')
+
+@section('heading')
+  @studio.heading({ heading: 'Blocked Identities' })
+    @button({ href: route('studio.blocked.create'), size: 'sm' })
+      Block An Identity
+    @end
+  @end
+@endsection
+
+@section('content')
+
+  <div class="-m-6">
+    @table.base({
+      data: blocks,
+      columns: [
+        { name: 'User', field: 'userId' },
+        { name: 'IP Address', field: 'ipAddress' },
+        { name: 'Reason', field: 'reason' },
+        { name: 'Created', field: 'createdAt' },
+        { name: 'Expires', field: 'expiresAt' },
+        { name: '', field: '_actions' }
+      ],
+      emptyTitle: 'No Blocked Identities',
+      emptySubTitle: `Everythings all clear here!`,
+      emptyCtaShow: false
+    })
+      @slot('tableData', scope)
+        @if (scope.column.field === 'title')
+          <div class="text-sm leading-5 font-medium">
+            @if (scope.row.userId)
+              {{ scope.row.user.username }}
+            @else
+              N/A
+            @endif
+          </div>
+        @elseif (scope.column.field === 'expiresAt')
+          <div class="text-xs text-gray-800">
+            {{ scope.row.expiresAt ? scope.row.expiresAt.toFormat('fff') : 'N/A' }}
+          </div>
+        @elseif (scope.column.field === 'createdAt')
+          <div class="text-xs text-gray-800">
+            {{ scope.row.createdAt.toFormat('fff') }}
+          </div>
+        @elseif (scope.column.field === '_actions')
+          <div class="flex text-sm">
+            <a href="{{ route('studio.posts.edit', { id: scope.row.id }) }}" class="text-gray-950 hover:text-brand-800 mr-3">
+              Edit
+            </a>
+            <form method="POST" action="{{ route('studio.posts.destroy', { id: scope.row.id }, { qs: { _method: 'DELETE' }}) }}">
+              {{ csrfField() }}
+              <button type="submit" class="text-red-800 hover:text-red-900">
+                Delete
+              </button>
+            </form>
+          </div>
+        @else
+          <span class="text-sm">{{ scope.row[scope.column.field] }}</span>
+        @endif
+      @endslot
+    @end
+  </div>
+
+@endsection

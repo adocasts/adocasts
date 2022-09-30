@@ -307,6 +307,14 @@ export default class Post extends AppBaseModel {
   }
 
   @computed()
+  public get readMinutesDisplay() {
+    if (!this.readTime) return 0
+    const minutes = Math.floor(this.readTime / 60000);
+    const seconds = ((this.readTime % 60000) / 1000).toFixed(0);
+    return `${minutes}:${(parseInt(seconds) < 10 ? "0" : "")}${seconds}`;
+  }
+
+  @computed()
   public get routeUrl() {
     if (this.redirectUrl) return this.redirectUrl
 

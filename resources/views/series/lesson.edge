@@ -55,8 +55,18 @@
                         {{ post.title }}
                       </h1>
                       <div class="flex items-center opacity-80 mb-2">
-                        <div class="mr-3 uppercase">{{ post.readMinutes }} MIN READ</div>
-                        <div class="mr-3 uppercase">{{ timeago(post.publishAt) }}</div>
+                        @if (post.watchMinutes)
+                          <div class="flex items-center">
+                            @!svg.video({ className: 'w-5 h-5 mr-1' })
+                            <strong>{{ post.watchMinutes }}</strong>&nbsp;Watch
+                          </div>
+                        @endif
+                        @if (post.readMinutesDisplay)
+                          <div class="flex items-center ml-6">
+                            @!svg.newspaper({ className: 'w-5 h-5 mr-1' })
+                            <strong>{{ post.readMinutesDisplay }}</strong>&nbsp;Read
+                          </div>
+                        @endif
                       </div>
                       <p class="opacity-80 mb-6">
                         {{ post.description }}
@@ -95,8 +105,18 @@
               {{ post.title }}
             </h1>
             <div class="flex items-center opacity-80 mb-2 text-xs md:text-base">
-              <div class="mr-3 uppercase">{{ post.readMinutes }} MIN READ</div>
-              <div class="mr-3 uppercase">{{ timeago(post.publishAt) }}</div>
+              @if (post.watchMinutes)
+                <div class="flex items-center">
+                  @!svg.video({ className: 'w-5 h-5 mr-1' })
+                  <strong>{{ post.watchMinutes }}</strong>&nbsp;Watch
+                </div>
+              @endif
+              @if (post.readMinutesDisplay)
+                <div class="flex items-center ml-6">
+                  @!svg.newspaper({ className: 'w-5 h-5 mr-1' })
+                  <strong>{{ post.readMinutesDisplay }}</strong>&nbsp;Read
+                </div>
+              @endif
             </div>
             <p class="opacity-80 mb-6 max-w-2xl text-sm md:text-base">
               {{ post.description }}

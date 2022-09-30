@@ -95,7 +95,7 @@
 
     @can('CommentPolicy.reply', comment, identity)
     {{-- reply to form --}}
-    <div x-show="createId === {{ comment.id }}" class="bg-gray-50 border border-gray-100 p-3 rounded-xl ml-8 mb-3">
+    <div x-show="createId === {{ comment.id }}" class="bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-900 p-3 rounded-xl ml-8 mb-3">
       @!comment.form({
       postId,
       rootParentId,

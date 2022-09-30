@@ -22,6 +22,7 @@ import { RedisConfig } from '@ioc:Adonis/Addons/Redis'
 | Make sure to check `contracts/redis.ts` file for defining extra connections
 */
 const redisConfig: RedisConfig = {
+  enabled: false, // toggle caching on/off
   connection: Env.get('REDIS_CONNECTION'),
 
   connections: {
