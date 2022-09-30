@@ -15,10 +15,17 @@
       @endif
     </div>
 
-    <h5 class="uppercase inline-flex items-center text-accent-800 tracking-wide text-xs">
-      <span class="text-gray-700">
+    <h5 class="uppercase inline-flex items-center text-accent-800 tracking-wide text-xs mb-1">
+      <span class="text-gray-700 tracking-wider">
         Lesson {{ item.lessonIndexDisplay }}
       </span>
+
+      @if (item.series.length)
+        <span class="px-3 font-bold text-gray-400 dark:text-gray-700">/</span>
+        <span class="text-gray-600 tracking-wider">
+          {{ item.series[0].name }}
+        </span>
+      @endif
     </h5>
 
     <h4 class="text-lg mb-2">
