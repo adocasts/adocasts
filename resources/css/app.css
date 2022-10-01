@@ -459,11 +459,29 @@ progress[value]::-webkit-progress-value {
 }
 
 .prose .line.del > span:first-of-type {
-  color: theme('colors.red.500') !important;
+  color: transparent !important;
+  margin-left: -2ch;
 }
 
 .prose .line.add > span:first-of-type {
+  color: transparent !important;
+  margin-left: -2ch;
+}
+
+.prose .line.del > span:first-of-type:before {
+  content: "--";
+  color: theme('colors.red.500') !important;
+  font-size: .9em;
+  position: absolute;
+  left: -2rem;
+}
+
+.prose .line.add > span:first-of-type:before {
+  content: "++";
   color: theme('colors.green.500') !important;
+  font-size: .9em;
+  position: absolute;
+  left: -2rem;
 }
 
 .prose .line.del > span:nth-of-type(2),
