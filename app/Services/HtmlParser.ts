@@ -102,7 +102,6 @@ export default class HtmlParser {
           const lines = code.split('\r\n')
           const delLineNumbers = lines.map((line, i) => line.startsWith('--') ? i + 1 : undefined).filter(Boolean)
           const addLineNumbers = lines.map((line, i) => line.startsWith('++') ? i + 1 : undefined).filter(Boolean)
-          console.log({ delLineNumbers, addLineNumbers })
           const highlighted = await (await highlighter).codeToHtml(code, { 
             lang,
             lineOptions: [
