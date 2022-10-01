@@ -303,7 +303,9 @@ export default class Post extends AppBaseModel {
     const time = this.videoSeconds - hours * 3600
     const minutes = Math.floor(time / 60)
     const seconds = time - minutes * 60
-    return hours ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`
+    const minutesDisplay = minutes < 10 ? "0" + minutes : minutes
+    const secondsDisplay = seconds < 10 ? "0" + seconds : seconds
+    return hours ? `${hours}:${minutesDisplay}:${secondsDisplay}` : `${minutesDisplay}:${secondsDisplay}`
   }
 
   @computed()

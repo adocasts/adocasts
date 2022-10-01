@@ -1,6 +1,7 @@
 let isYtVideoPlaying = false
 window.initVideo = function ({ el = 'ytEmbed', videoId, httpMethod = 'post', httpUrl, httpPayload = {}, watchSeconds = 0, isLive = false, autoplay = false } = {}) {
   const startMuted = isLive || autoplay
+  const bodyContent = document.querySelector('.body-content')
 
   if (isLive) {
     autoplay = true
@@ -11,21 +12,45 @@ window.initVideo = function ({ el = 'ytEmbed', videoId, httpMethod = 'post', htt
   }
 
   if (autoplay) {
-    onInitVideo(true)
+    onInitVideo(true, watchSeconds)
     return
   }
 
   const element = document.getElementById(el)
 
-  element.addEventListener('click', () => {
-    element.removeEventListener('click')
-    onInitVideo(true)
+  bodyContent.addEventListener('click', (event) => {
+    const isTarget = event.target.classList.contains('timestamp')
+    const containsTarget = event.target.closest('.timestamp')
+
+    if (isTarget || containsTarget) {
+      const target = isTarget ? event.target : event.target.closest('.timestamp')
+      const displayDuration = target.textContent
+      const splits = displayDuration.split(':')
+      let duration = splits[splits.length]
+
+      if (splits.length > 1) {
+        duration = splits.reduce((x, s, i) => {
+          return i == splits.length -1 ? x + parseInt(s) : x + (parseInt(s) * 60)
+        }, 0)
+      }
+
+      if (window.player) {
+        window.player.seekTo(duration)
+      } else {
+        onInitVideo(true, duration)
+      }
+    }
   })
 
-  function onInitVideo(playOnReady) {
+  element.addEventListener('click', () => {
+    element.removeEventListener('click', onInitVideo)
+    onInitVideo(true, watchSeconds)
+  })
+
+  function onInitVideo(playOnReady, skipToSeconds = watchSeconds) {
     const tag = document.createElement('script')
     const appCompleted = document.getElementById('appCompleted')
-    let player
+
     let playerInterval
     tag.src = "https://www.youtube.com/iframe_api"
     document.body.appendChild(tag)
@@ -37,14 +62,14 @@ window.initVideo = function ({ el = 'ytEmbed', videoId, httpMethod = 'post', htt
         rel: 0,
         showinfo: 0,
         ecver: 2,
-        start: watchSeconds
+        start: skipToSeconds
       }
 
       if (isLive) {
         delete playerVars.start
       }
 
-      player = new YT.Player(el, {
+      window.player = new YT.Player(el, {
         videoId: videoId,
         playerVars,
         events: {
@@ -57,7 +82,6 @@ window.initVideo = function ({ el = 'ytEmbed', videoId, httpMethod = 'post', htt
     function onPlayerReady(event) {
       // setTimeout(() => player.pauseVideo(), 500)
       // setTimeout(() => player.seekTo(300), 500)
-      window.player = player
       if (startMuted) {
         event.target.mute()
       }
@@ -70,8 +94,8 @@ window.initVideo = function ({ el = 'ytEmbed', videoId, httpMethod = 'post', htt
 
       if (isYtVideoPlaying) {
         playerInterval = setInterval(async () => {
-          const currentTime = player.getCurrentTime()
-          const duration = player.getDuration()
+          const currentTime = window.player.getCurrentTime()
+          const duration = window.player.getDuration()
 
           // duration may be 0 if meta data is still loading
           if (duration !== 0) {
@@ -79,8 +103,8 @@ window.initVideo = function ({ el = 'ytEmbed', videoId, httpMethod = 'post', htt
           }
         }, 15000)
       } else {
-        const currentTime = player.getCurrentTime()
-        const duration = player.getDuration()
+        const currentTime = window.player.getCurrentTime()
+        const duration = window.player.getDuration()
 
         clearInterval(playerInterval)
         storeWatchingProgression(currentTime, duration)

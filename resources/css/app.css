@@ -506,6 +506,16 @@ progress[value]::-webkit-progress-value {
   line-height: 2;
 }
 
+.prose .timestamp {
+  cursor: pointer;
+  color: theme('colors.indigo.500') !important;
+}
+
+.prose .timestamp + p:not(.timestamp) {
+  margin-top: -1.75rem;
+  padding-left: 55px;
+}
+
 pre > code {
   display: flex;
   flex-flow: column;
