@@ -458,6 +458,15 @@ progress[value]::-webkit-progress-value {
   margin-bottom: .4em;
 }
 
+.prose pre code .line.del {
+  opacity: 40%;
+  transition: opacity 300ms ease;
+}
+
+.prose pre code:hover .line.del {
+  opacity: 100%;
+}
+
 .prose .line.del > span:first-of-type {
   color: transparent !important;
   margin-left: -2ch;
