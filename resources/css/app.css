@@ -467,22 +467,12 @@ progress[value]::-webkit-progress-value {
   opacity: 100%;
 }
 
-.prose .line.del > span:first-of-type {
-  color: transparent !important;
-  margin-left: -2ch;
-}
-
-.prose .line.add > span:first-of-type {
-  color: transparent !important;
-  margin-left: -2ch;
-}
-
 .prose .line.del > span:first-of-type:before {
   content: "--";
   color: theme('colors.red.500') !important;
   font-size: .9em;
   position: absolute;
-  left: -2rem;
+  left: -3.25rem;
 }
 
 .prose .line.add > span:first-of-type:before {
@@ -490,12 +480,7 @@ progress[value]::-webkit-progress-value {
   color: theme('colors.green.500') !important;
   font-size: .9em;
   position: absolute;
-  left: -2rem;
-}
-
-.prose .line.del > span:nth-of-type(2),
-.prose .line.add > span:nth-of-type(2) {
-  margin-left: 2ch;
+  left: -3.25rem;
 }
 
 .prose .line.del,
@@ -506,7 +491,7 @@ progress[value]::-webkit-progress-value {
 .prose .line.del:after,
 .prose .line.add:after {
   content: "";
-  width: 200%;
+  width: 300%;
   height: 100%;
   opacity: 30%;
   position: absolute;
