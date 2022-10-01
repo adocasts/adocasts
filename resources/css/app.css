@@ -458,6 +458,81 @@ progress[value]::-webkit-progress-value {
   margin-bottom: .4em;
 }
 
+.prose .line.del > span:first-of-type {
+  color: theme('colors.red.500') !important;
+}
+
+.prose .line.add > span:first-of-type {
+  color: theme('colors.green.500') !important;
+}
+
+.prose .line.del > span:nth-of-type(2),
+.prose .line.add > span:nth-of-type(2) {
+  margin-left: 2ch;
+}
+
+.prose .line.del,
+.prose .line.add {
+  position: relative;
+}
+
+.prose .line.del:after,
+.prose .line.add:after {
+  content: "";
+  width: 200%;
+  height: 100%;
+  opacity: 30%;
+  position: absolute;
+  top: 0;
+  left: -50%;
+}
+
+.prose .line.del:after {
+  background-color: theme('colors.red.500');
+}
+
+.prose .line.add:after {
+  background-color: theme('colors.green.500');
+}
+
+.prose .line.del > span,
+.prose .line.add > span {
+  position: relative; 
+  z-index: 20;
+}
+
+.prose .line {
+  display: block;
+  line-height: 2;
+}
+
+pre > code {
+  display: flex;
+  flex-flow: column;
+}
+
+pre {
+  overflow: hidden;
+}
+
+code {
+  counter-reset: step;
+  counter-increment: step 0;
+}
+
+code .line:before {
+  content: counter(step);
+  counter-increment: step;
+  width: 1rem;
+  background-color: black;
+  opacity: 40%;
+  margin-right: .5rem;
+  margin-left: -1.3333333em;
+  padding-left: 1.3333333em;
+  padding-right: 1.5rem;
+  display: inline-block;
+}
+
 .dark .prose h1,
 .dark .prose h2,
 .dark .prose h3,

@@ -2,40 +2,40 @@
   "entrypoints": {
     "app": {
       "css": [
-        "http://localhost:64153/assets/app.css"
+        "http://localhost:65198/assets/app.css"
       ],
       "js": [
-        "http://localhost:64153/assets/app.js"
+        "http://localhost:65198/assets/app.js"
       ]
     },
     "post": {
       "js": [
-        "http://localhost:64153/assets/post.js"
+        "http://localhost:65198/assets/post.js"
       ]
     },
     "stream": {
       "js": [
-        "http://localhost:64153/assets/stream.js"
+        "http://localhost:65198/assets/stream.js"
       ]
     },
     "file_manager": {
       "js": [
-        "http://localhost:64153/assets/file_manager.js"
+        "http://localhost:65198/assets/file_manager.js"
       ]
     },
     "tiptap_basic": {
       "js": [
-        "http://localhost:64153/assets/tiptap_basic.js"
+        "http://localhost:65198/assets/tiptap_basic.js"
       ]
     },
     "studio.posts.editor": {
       "js": [
-        "http://localhost:64153/assets/studio.posts.editor.js"
+        "http://localhost:65198/assets/studio.posts.editor.js"
       ]
     },
     "studio.collections": {
       "js": [
-        "http://localhost:64153/assets/studio.collections.js"
+        "http://localhost:65198/assets/studio.collections.js"
       ]
     }
   }

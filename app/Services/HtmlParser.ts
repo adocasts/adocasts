@@ -99,7 +99,17 @@ export default class HtmlParser {
           const outerHTML = codeBlock.outerHTML
           const tagStart = outerHTML.replace('</code>', '')
           const code = c.text.replace(tagStart, '').replace('</code>', '')
-          const highlighted = await (await highlighter).codeToHtml(code, { lang })
+          const lines = code.split('\r\n')
+          const delLineNumbers = lines.map((line, i) => line.startsWith('--') ? i + 1 : undefined).filter(Boolean)
+          const addLineNumbers = lines.map((line, i) => line.startsWith('++') ? i + 1 : undefined).filter(Boolean)
+          console.log({ delLineNumbers, addLineNumbers })
+          const highlighted = await (await highlighter).codeToHtml(code, { 
+            lang,
+            lineOptions: [
+              ...delLineNumbers.map(x => ({ line: x, classes: ['del'] })),
+              ...addLineNumbers.map(x => ({ line: x, classes: ['add'] }))
+            ]
+          })
 
           c.replaceWith(highlighted)
         }
