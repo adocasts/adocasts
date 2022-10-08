@@ -14,6 +14,7 @@ export default class SyndicationController {
     const series = await Collection.series()
       .preload('children')
       .wherePublic()
+      .whereNull('parentId')
       .orderBy('name', 'asc')
 
     const topics = await Taxonomy.roots()
