@@ -9,7 +9,7 @@
   <div class="w-full flex items-center px-3 rounded-b-3xl relative h-full">
     <div class="bg-gray-50 dark:bg-opacity-5 dark:group-hover:bg-transparent duration-300 -ml-3 px-2 rounded-r-lg mr-3 w-16 h-full flex items-center justify-center" style="width: 56px;">
       @if (asset?.filename)
-        @!picture({ filename: asset.filename, className: 'rounded-full w-8 h-8 h-full', width: 32, ratio: 'aspect-square' })
+        @!picture({ filename: asset.filename, className: 'rounded-full w-8 h-8 h-full', width: 32, ratio: 'aspect-square', imgClassName: 'object-contain' })
       @else
         <div class="w-8 h-8 text-base font-semibold flex items-center justify-center rounded-full bg-brand-300 text-brand-800 dark:bg-brand-900 dark:bg-opacity-30 dark:text-brand-300">
           {{ getAbbrev(topic.name) }}
