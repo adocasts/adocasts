@@ -32,6 +32,9 @@ export default class Collection extends AppBaseModel {
   public parentId: number | null
 
   @column()
+  public outdatedVersionId: number | null
+
+  @column()
   public collectionTypeId: CollectionTypes
 
   @column()
@@ -97,6 +100,16 @@ export default class Collection extends AppBaseModel {
 
   @belongsTo(() => Collection)
   public parent: BelongsTo<typeof Collection>
+
+  @belongsTo(() => Collection, {
+    localKey: 'outdatedVersionId'
+  })
+  public outdatedVersion: BelongsTo<typeof Collection>
+
+  @hasMany(() => Collection, {
+    foreignKey: 'outdatedVersionId'
+  })
+  public updatedVersions: HasMany<typeof Collection>
 
   @manyToMany(() => Post, {
     pivotTable: 'collection_posts',

@@ -35,7 +35,8 @@ export default class CollectionsController {
     const statuses = Status
     const collectionTypes = CollectionType
     const taxonomies = await TaxonomyService.getAllForTree()
-    return view.render('studio/collections/createOrEdit', { states, statuses, collectionTypes, taxonomies })
+    const collections = await Collection.query().whereNull('parentId').select('id', 'name').orderBy('name')
+    return view.render('studio/collections/createOrEdit', { states, statuses, collectionTypes, taxonomies, collections })
   }
 
   public async store ({ request, response, session, auth }: HttpContextContract) {
@@ -77,9 +78,15 @@ export default class CollectionsController {
       .where('parentId', collection.id)
       .preload('posts', query => query.orderBy('pivot_sort_order'))
 
+    const collections = await Collection.query()
+      .whereNull('parentId')
+      .whereNot('id', collection.id)
+      .select('id', 'name')
+      .orderBy('name')
+
     const taxonomies = await TaxonomyService.getAllForTree()
 
-    return view.render('studio/collections/createOrEdit', { collection, children, states, statuses, collectionTypes, taxonomies })
+    return view.render('studio/collections/createOrEdit', { collection, collections, children, states, statuses, collectionTypes, taxonomies })
   }
 
   public async update ({ request, response, params }: HttpContextContract) {

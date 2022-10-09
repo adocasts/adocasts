@@ -47,6 +47,9 @@
               <div class="w-full h-3/4 flex flex-col justify-end absolute bottom-0 bg-gradient-to-t from-black to-transparent z-10 text-white">
                 <div class="bg-gradient-to-t from-black to-transparent">
                   @container()
+                    @if (series && (series.statusId === StatusEnum.OUTDATED || series.updatedVersions?.length))
+                      @!series.outdatedBanner({ updates: series.updatedVersions, className: 'mb-6' })
+                    @endif
                     <div class="flex flex-col max-w-4xl py-4 md:py-6">
                       <h2 class="font-bold text-3xl md:text-4xl text-white mb-2">
                         <a href="{{ route('series.show', { slug: series.slug }) }}">
@@ -98,6 +101,9 @@
       @if (post.videoUrl)
         <div>
           <div class="w-full p-3 md:p-6 bg-gray-100 dark:bg-opacity-5 border-4 border-gray-100 dark:border-opacity-5 rounded-xl mb-6 lg:mb-12">
+            @if (series && (series.statusId === StatusEnum.OUTDATED || series.updatedVersions?.length))
+              @!series.outdatedBanner({ updates: series.updatedVersions, className: 'mb-6' })
+            @endif
             @if (series)
               <h2 class="font-bold text-base md:text-xl lg:text-2xl md:mb-2">
                 {{ series.name }}

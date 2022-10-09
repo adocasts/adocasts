@@ -111,6 +111,21 @@
           <option value="{{ collectionTypes.PLAYLIST }}">Playlist</option>
         @end
 
+        @form.input.alt({
+          type: 'select',
+          label: 'Updated Version Of',
+          name: 'outdatedVersionId',
+          value: flashMessages.get('outdatedVersionId') ?? collection?.outdatedVersionId,
+          errors: flashMessages.get('errors.outdatedVersionId')
+        })
+          <option value="">None</option>
+          @each (item in collections)
+            <option value="{{ item.id }}" {{ item.id === collection?.outdatedVersionId && 'checked' }}>
+              {{ item.name }}
+            </option>
+          @end
+        @end
+
         @form.input.alt({ type: 'group', label: 'Icon', help: 'Max image size of 2MB' })
           @slot('input')
             @!form.file.manager({
