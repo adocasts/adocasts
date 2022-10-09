@@ -119,6 +119,20 @@ module.exports = {
           '800': colors.slate.slate10,
           '900': colors.slate.slate11,
           '950': colors.slate.slate12,
+        },
+        grayDark: {
+          '0': colors.slateDark.slate1,
+          '50': colors.slateDark.slate2,
+          '100': colors.slateDark.slate3,
+          '200': colors.slateDark.slate4,
+          '300': colors.slateDark.slate5,
+          '400': colors.slateDark.slate6,
+          '500': colors.slateDark.slate7,
+          '600': colors.slateDark.slate8,
+          '700': colors.slateDark.slate9,
+          '900': colors.slateDark.slate11,
+          '800': colors.slateDark.slate10,
+          '950': colors.slateDark.slate12,
         }
       },
       fontFamily: {

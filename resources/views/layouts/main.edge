@@ -1,6 +1,6 @@
 @set('theme', auth.user?.theme || session.get('theme'))
 <!DOCTYPE html>
-<html lang="en" data-theme="{{ theme ?? 'system' }}" class="{{ theme ?? 'system' }}">
+<html lang="en" data-theme="{{ theme ?? 'system' }}" class="{{ theme ?? 'system' }} h-full">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,7 +40,7 @@
 
   <script defer data-domain="adocasts.com" src="https://analytics.adocasts.com/js/plausible.js"></script>
 </head>
-<body class="dark:bg-gray-950 dark:text-gray-200">
+<body class="dark:bg-gray-950 dark:text-gray-200 h-full">
   <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>
   
   @!toast.base()
@@ -49,7 +49,7 @@
     @!streams.banner({ post: live })
   @endif
 
-  @!header.base()
+  @!next.headers.base()
 
   @!section('hero')
 
@@ -57,11 +57,11 @@
     @!section('content')
   </main>
 
-  <div class="flex justify-center items-center mt-6">
+  {{--  <div class="flex justify-center items-center mt-6">
     @!ads.leaderboard()
-  </div>
+  </div>  --}}
 
-  @!include('partials/footer')
+  {{--  @!include('partials/footer')  --}}
 
   @!section('scripts')
   <script src="//unpkg.com/alpinejs" defer></script>

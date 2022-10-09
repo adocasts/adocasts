@@ -1,0 +1,30 @@
+<div class="bg-gray-950 py-5">
+  @next.containers.page({ className: 'flex items-center justify-between' })
+    <div class="flex items-center">
+      <a href="/" class="flex mr-6 lg:mr-8">
+        <span class="sr-only">Adocasts</span>
+        <img class="h-8 w-auto sm:h-10" width="146px" height="28px" src="{{ env('APP_LOGO') }}" alt="Adocasts">
+      </a>
+
+      <nav class="hidden md:flex space-x-3">
+        @next.headers.links.nav({ href: route('series.index') })
+          Series
+        @end
+        @next.headers.links.nav({ href: route('topics.index') })
+          Topics
+        @end
+        @next.headers.links.nav({ href: route('lessons.index') })
+          Lessons
+        @end
+        @next.headers.links.nav({ href: route('news.index') })
+          News
+        @end
+        @next.headers.links.nav({ href: route('livestreams.index') })
+          Streams
+        @end
+      </nav>
+    </div>
+
+    @!next.headers.panelMenu()
+  @end
+</div>

@@ -1,0 +1,13 @@
+<div class="relative z-0 flex-1 flex items-center justify-end sm:justify-end lg:pr-0 md:relative sm:inset-0 -mr-2">
+  <form action="/search" method="GET" class="w-full max-w-6 focus-within:max-w-400">
+    <label for="search" class="sr-only">Search</label>
+    <label class="relative">
+      <div class="search relative -ml-2 fill-gray-600 hover:fill-brand-200 focus-within:fill-brand-200 dark:fill-gray-800 dark:hover:fill-gray-400 dark:focus-within:fill-gray-400">
+        <div class="icon absolute inset-y-0 left-0 z-10 flex h-7 w-7 items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 ring-black/5 bg-grayDark-300 dark:bg-gray-50 dark:bg-opacity-10 dark:ring-inset dark:ring-white/5">
+          @!svg.search({ className: 'h-5 w-5 fill-inherit duration-300 transition duration-150 cursor-pointer' })
+        </div>
+        <input id="search" name="term" class="block w-full bg-transparent focus:bg-gray-800 border-none focus:border border-gray-900 rounded-md py-1 pl-10 pr-3 text-sm placeholder-gray-300 focus:outline-none focus:text-white focus:placeholder-gray-200 focus:ring-1 focus:ring-gray-700 focus:border-gray-700 sm:text-sm" placeholder="Search" type="search">
+      </div>
+    </label>
+  </form>
+</div>

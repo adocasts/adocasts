@@ -1,0 +1,55 @@
+<div class="bg-gray-950">
+  @next.containers.page({ className: 'flex justify-between items-center border-b border-black border-opacity-60' })
+    <div class="flex space-x-3 md:space-x-6">
+      @next.headers.links.social({ href: 'https://twitter.com/adocasts' })
+          <span class="sr-only">Twitter</span>
+          @!next.icons.social.twitter()
+      @end
+      
+      @next.headers.links.social({ href: 'https://youtube.com/adocasts' })
+          <span class="sr-only">YouTube</span>
+          @!next.icons.social.youtube()
+      @end
+      
+      @next.headers.links.social({ href: 'https://github.com/adocasts' })
+        <span class="sr-only">GitHub</span>
+        @!next.icons.social.github()
+      @end
+
+      @next.headers.links.social({ href: route('rss') })
+        <span class="sr-only">RSS Feed</span>
+        @!next.icons.social.rss()
+      @end
+    </div>
+    <div class="flex items-center">
+      @!next.headers.search()
+
+      <div class="mr-3">
+        @!next.headers.theme.selector()
+      </div>
+
+      @if (auth.user)
+        <button 
+          @click="toggleNotifications" 
+          class="flex h-7 w-7 items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 fill-gray-600 dark:fill-gray-800 ring-black/5 bg-grayDark-300 dark:bg-gray-50 dark:bg-opacity-10 dark:ring-inset dark:ring-white/5"
+          :class="[unreadNotifications.length ? 'fill-gray-200 dark:fill-gray-200' : 'fill-gray-600 dark:fill-gray-800']">
+          <div x-cloak x-show="unreadNotifications.length" class="w-2 h-2 rounded-full bg-accent-800 absolute top-0 right-0.5"></div>
+          @!svg.bell({ className: 'h-4 w-4 fill-inherit transition duration-150 cursor-pointer' })
+        </button>
+      @endif
+
+      @if (!auth.user)
+        <div class="flex">
+          <a href="{{ route('auth.signin.show') }}" class="text-brand-600 hover:bg-brand-900 hover:text-brand-100 duration-150 text-sm px-6 py-3">
+            Sign In
+          </a>
+          <a href="{{ route('auth.signup.show') }}" class="bg-brand-800 text-brand-100 hover:bg-brand-900 duration-150 text-sm px-6 py-3">
+            Join Adocasts
+          </a>
+        </div>
+      @else
+        @!next.headers.auth.dropdown()
+      @endif
+    </div>
+  @end
+</div>
