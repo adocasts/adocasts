@@ -12,37 +12,90 @@
 
 @section('hero')
 
-  <div class="bg-gray-100 text-gray-900 dark:bg-grayDark-100 dark:text-gray-400 border-b border-gray-300 dark:border-grayDark-300">
-    @next.containers.page()
-      <div class="grid grid-cols-4 -mx-3">
-        @each (item in series)
-          @set('watchDisplay', secondsForDisplay(item.meta.videoSecondsSum))
+  <div x-data="{ 
+    seriesIds: {{ stringify(series.map(s => s.id)) }},
+    seriesId: {{ series[0].id }},
+    isHover: false,
+    cycle(index) {
+      setInterval(() => {
+        if (this.isHover) return
+        let index = this.seriesIds.indexOf(this.seriesId)
+        if (index + 1 >= this.seriesIds.length) {
+          index = 0
+        }
+        this.cycleTo(index + 1)
+      }, 5000)
+    },
+    cycleTo(index, hover = false) {
+      this.isHover = hover
+      this.seriesId = this.seriesIds[index]
+    }
+  }", x-init="cycle">
+    <div class="bg-gray-950 text-gray-400 border-b border-grayDark-100">
+      @next.containers.page()
+        <div class="grid grid-cols-4 -mx-3 pt-3">
+          @each ((item, i) in series)
+            @set('watchDisplay', secondsForDisplay(item.meta.videoSecondsSum))
 
-          <a href="{{ route('series.show', { slug: item.slug }) }}" class="flex items-center pl-3 py-6 hover:bg-white dark:hover:bg-grayDark-200 border-x -ml-px -mb-px border-transparent hover:border-gray-300 duration-150">
-            <div class="aspect-square">
-              @if (item.asset)
-                <img src="/img/{{ item.asset.filename }}" class="rounded-full w-14 mb-3" />
-              @else
-                <div class="w-14 h-14 text-2xl font-semibold flex items-center justify-center mb-3 rounded-full bg-brand-300 text-brand-800 dark:bg-brand-900 dark:bg-opacity-30 dark:text-brand-300">
-                  {{ getAbbrev(item.name) }}
-                </div>
-              @endif
-            </div>
-            <div class="flex-1 ml-4 border-r border-gray-300 pr-3 -mr-px">
-              <h4 class="font-semibold">
-                {{ item.name }}
-              </h4>
-              <p class="flex items-center text-xs space-x-4">
-                <span>{{ item.meta.postsFlattened_count ?? '0' }} {{ getSingularOrPlural('Lesson', item.meta.postsFlattened_count ?? 0) }}</span>
-                <span>{{ watchDisplay.maxDisplay }} {{ getSingularOrPlural(watchDisplay.maxDisplayKey, watchDisplay.maxDisplay) }}</span>
-              </p>
-            </div>
-          </a>
-        @endeach
-      </div>
+            <a 
+              href="{{ route('series.show', { slug: item.slug }) }}" 
+              class="flex items-center pl-3 py-3 hover:bg-gray-950 border-x border-t rounded-t-lg -ml-px -mb-px hover:border-grayDark-50 duration-150"
+              :class="[seriesId != {{ item.id }} ? 'border-transparent opacity-50' : 'bg-gray-950 border-grayDark-100']"
+              @mouseenter="cycleTo({{ i }}, true)"
+              @mouseleave="isHover = false">
+              <div class="aspect-square">
+                @if (item.asset)
+                  <img src="/img/{{ item.asset.filename }}" class="rounded-full w-14 mb-3" />
+                @else
+                  <div class="w-14 h-14 text-2xl font-semibold flex items-center justify-center mb-3 rounded-full bg-brand-300 text-brand-800 dark:bg-brand-900 dark:bg-opacity-30 dark:text-brand-300">
+                    {{ getAbbrev(item.name) }}
+                  </div>
+                @endif
+              </div>
+              <div 
+                class="flex-1 ml-4 pr-3 -mr-px {{ i !== series.length - 1 ? 'border-r border-grayDark-100' : '' }}">
+                <h4 class="font-semibold font-sans">
+                  {{ item.name }}
+                </h4>
+                <p class="flex items-center text-xs text-gray-800 space-x-4">
+                  <span>{{ item.meta.postsFlattened_count ?? '0' }} {{ getSingularOrPlural('Lesson', item.meta.postsFlattened_count ?? 0) }}</span>
+                  <span>{{ watchDisplay.maxDisplay }} {{ getSingularOrPlural(watchDisplay.maxDisplayKey, watchDisplay.maxDisplay) }}</span>
+                </p>
+              </div>
+            </a>
+          @endeach
+        </div>
+      @end
+    </div>
 
-      {{--  TODO: cycle through series, showing grid preview of lessons  --}}
-    @end
+    <div class="bg-gray-950 py-6 relative z-10 border-b border-grayDark-100">
+      @next.containers.page()
+        <div class="grid-series__lessons -mx-6">
+          {{--  TODO: make specific to each of the above series  --}}
+          @each ((lesson, i) in latestLessons.slice(0, 4))
+            <div class="p-3 grid-series__lesson">
+              @!next.lessons.cardDark({ lesson, i })
+            </div>
+          @endeach  
+
+          <div class="p-3 grid-series__lesson">
+            <div class="flex flex-col h-full space-y-6">
+              <a href="#" class="border h-1/3 border-grayDark-50 rounded-lg flex flex-col items-center justify-center text-gray-400 p-3">
+                <h4 class="font-sans text-sm font-semibold uppercase tracking-wider">View Series</h4>
+                <h3 class="font-sans text-gray-800 text-sm text-center">Let's Learn AdonisJS 5</h3>
+              </a>
+              <a href="#" class="border h-1/3 border-grayDark-50 rounded-lg flex flex-col items-center justify-center text-gray-400 p-3">
+                <h4 class="font-sans text-sm font-semibold uppercase tracking-wider">Continue Series</h4>
+                <h3 class="font-sans text-gray-800 text-sm text-center">Introducing, Installing, and Configuring Lucid ORM</h3>
+              </a>
+              <a href="#" class="border h-1/3 border-grayDark-50 rounded-lg flex flex-col items-center justify-center text-gray-400 p-3">
+                Add To Watchlist
+              </a>
+            </div>
+          </div>
+        </div>
+      @end
+    </div>
   </div>
 
 @endsection

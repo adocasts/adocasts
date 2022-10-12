@@ -138,7 +138,8 @@ module.exports = {
       fontFamily: {
         heading: ['var(--font-heading)', ...defaultTheme.fontFamily.sans],
         body: ['var(--font-body)', ...defaultTheme.fontFamily.sans],
-        sans: ['Venti', ...defaultTheme.fontFamily.sans],
+        serif: ['Cardo', ...defaultTheme.fontFamily.serif],
+        sans: ['Hind', ...defaultTheme.fontFamily.sans],
         mono: ['Dank Mono', ...defaultTheme.fontFamily.mono]
       },
       typography: (theme) => ({
