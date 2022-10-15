@@ -1,0 +1,16 @@
+@set('slot', await $slots.main())
+
+<div class="{{ className }}">
+  <h2 class="text-4xl mb-2">
+    {{ title }}
+  </h2>
+  @if (slot || subtitle)
+    <p class="text-lg">
+      @if (slot)
+        {{{ slot }}}
+      @else
+        {{ subtitle }}
+      @endif
+    </p>
+  @endif
+</div>

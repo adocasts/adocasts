@@ -1,19 +1,19 @@
 <a href="{{ routePost(lesson, { slug: lesson.slug }) }}" class="group flex flex-col justify-center items-center aspect-square h-full relative overflow-hidden p-3">
   @if (lesson.assets.length)
-    <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent shadow-inner group-hover:shadow-xl border border-grayDark-50 to-gray-950 overflow-hidden rounded-lg">
+    <div class="absolute top-0 left-0 w-full h-full shadow-inner group-hover:shadow-xl border border-grayDark-50 overflow-hidden rounded-lg">
       @!picture({ 
         filename: lesson.assets[0].filename, 
-        className: 'h-full grayscale group-hover:grayscale-0 opacity-10 group-hover:opacity-20 duration-150 blur-xl', 
+        className: 'h-full grayscale group-hover:grayscale-0 opacity-20 group-hover:opacity-30 group-hover:scale-125 duration-150 blur-xl group-hover:blur-md', 
         pictureClassName: 'block',
         imgClassName: 'h-full object-cover object-center',
         lazy: lazyItem 
       })
     </div>
 
-    <div class="rounded-lg relative max-h-0 -translate-y-full group-hover:translate-y-0 group-hover:max-h-full opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 z-10 duration-300">
+    <div class="rounded-lg relative max-h-0 group-hover:max-h-full max-w-lg opacity-0 scale-90 group-hover:scale-100 group-hover:opacity-100 z-10 duration-300 {{ i === 0 ? 'group-hover:pt-10' : 'group-hover:pt-3' }}">
       @!picture({ 
         filename: lesson.assets[0].filename, 
-        className: 'h-full group-hover:shadow-xl rounded-lg duration-150', 
+        className: 'h-full shadow-xl shadow-brand-900/40 rounded-lg duration-150', 
         pictureClassName: 'block',
         imgClassName: 'h-full object-contain object-center',
         lazy: lazyItem 
@@ -21,7 +21,7 @@
     </div>
   @endif
 
-  <div class="flex flex-col justify-center items-center text-center text-gray-200 z-10 py-6 px-3 relative group-hover:drop-shadow-md">
+  <div class="flex flex-col justify-center items-center text-center text-gray-200 z-10 px-3 relative group-hover:drop-shadow-md {{ i === 0 ? 'py-12' : 'py-6' }}">
     @!next.lessons.barSeries({ on: 'dark', item: lesson })
     
     <h3 class="{{ i === 0 ? 'text-3xl leading-10' : 'text-lg group-hover:line-clamp-2 duration-150' }}">
