@@ -150,16 +150,49 @@
 
 @section('content')
 
-  <div class="flex py-12">
-    <div class="w-2/5">
+  <div class="flex -mx-6 py-12">
+    <div class="w-1/2 space-y-3 px-6">
       @!next.headings.section({ title: 'The Latest' })
+      @each ((item, i) in latestLessons)
+        @if (i === 0)
+          <div>
+            @!next.lessons.cardThumb({ lesson: item })
+          </div>
+        @else
+          <div class="flex">
+            <div class="w-1/2 rounded-lg relative duration-300">
+              @!picture({ 
+                filename: item.assets[0].filename, 
+                className: 'h-full rounded-lg duration-150', 
+                pictureClassName: 'block',
+                imgClassName: 'h-full object-contain object-center',
+                lazy: lazyItem 
+              })
+            </div>
+
+            <div class="w-1/2 p-6">
+              @!next.lessons.barSeries({ on: 'light', item })
+
+              <h3 class="text-2xl max-w-xl">
+                {{ item.title }}
+              </h3>
+
+              @if (item.description)
+                <p class="mb-2 line-clamp-3 max-w-xl mt-3 text-sm text-gray-800 group-hover:text-gray-600 duration-150">
+                  {{ item.description }}
+                </p>
+              @endif
+            </div>
+          </div>
+        @endif
+      @endeach
     </div>
 
-    <div class="w-2/5">
+    <div class="w-1/4 px-6">
       @!next.headings.section({ title: 'The Top' })
     </div>
 
-    <div class="w-1/5">
+    <div class="w-1/4 px-6">
       {{--  ad  --}}
 
       {{--  watchlist  --}}

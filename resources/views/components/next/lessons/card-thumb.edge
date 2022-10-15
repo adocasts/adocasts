@@ -1,0 +1,30 @@
+@set('roundedClass', rounded === false ? '' : 'rounded-lg')
+
+<a href="{{ routePost(lesson, { slug: lesson.slug }) }}" class="group flex flex-col justify-end items-center aspect-video h-full relative overflow-hidden p-3 {{ roundedClass }}">
+  @if (lesson.assets.length)
+    <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-gray-950 z-10"></div>
+    <div class="absolute top-0 left-0 w-full h-full bg-gray-950 shadow-inner group-hover:shadow-xl border border-gray-300 overflow-hidden {{ roundedClass }}">
+      @!picture({ 
+        filename: lesson.assets[0].filename, 
+        className: 'h-full grayscale group-hover:grayscale-0 opacity-10 group-hover:opacity-30 group-hover:scale-125 duration-150 blur-sm', 
+        pictureClassName: 'block',
+        imgClassName: 'h-full object-cover object-center',
+        lazy: lazyItem 
+      })
+    </div>
+  @endif
+
+  <div class="flex flex-col justify-center items-center text-center text-gray-200 z-20 px-3 relative group-hover:drop-shadow-md py-6">
+    @!next.lessons.barSeries({ on: 'dark', item: lesson })
+    
+    <h3 class="text-3xl leading-10 max-w-xl mt-2">
+      {{ lesson.title }}
+    </h3>
+
+    @if (lesson.description)
+      <p class="mb-2 line-clamp-3 max-w-xl mt-6 text-sm text-gray-800 group-hover:text-gray-600 duration-150">
+        {{ lesson.description }}
+      </p>
+    @endif
+  </div>
+</a>
