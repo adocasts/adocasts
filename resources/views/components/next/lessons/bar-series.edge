@@ -1,4 +1,4 @@
-@set('onClass', on === 'dark' ? 'text-gray-800 group-hover:text-gray-400' : 'text-gray-600')
+@set('onClass', on === 'dark' ? 'text-gray-800 group-hover:text-gray-400' : 'text-gray-700 group-hover:text-gray-800')
 
 @if (item.series.length)
   @set('series', item.series[0])
@@ -7,7 +7,7 @@
       <a href="{{ route('series.show', { slug: series.slug }) }}" class="anchor">
         {{ series.name }}
       </a>
-      <span class="px-3 font-bold {{ onClass }} dark:text-gray-800 duration-150">/</span>
+      <span class="px-3 {{ onClass }} dark:text-gray-800 duration-150">/</span>
       <span class="{{ onClass }} duration-150">
         Lesson {{ item.lessonIndexDisplay }}
       </span>

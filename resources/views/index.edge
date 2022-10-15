@@ -151,52 +151,75 @@
 @section('content')
 
   <div class="flex -mx-6 py-12">
-    <div class="w-1/2 space-y-3 px-6">
-      @!next.headings.section({ title: 'The Latest' })
+    <div class="w-1/2 space-y-6 px-6">
+      @!next.headings.panel({ title: 'The Latest' })
       @each ((item, i) in latestLessons)
         @if (i === 0)
           <div>
             @!next.lessons.cardThumb({ lesson: item })
           </div>
         @else
-          <div class="flex">
-            <div class="w-1/2 rounded-lg relative duration-300">
-              @!picture({ 
-                filename: item.assets[0].filename, 
-                className: 'h-full rounded-lg duration-150', 
-                pictureClassName: 'block',
-                imgClassName: 'h-full object-contain object-center',
-                lazy: lazyItem 
-              })
-            </div>
-
-            <div class="w-1/2 p-6">
-              @!next.lessons.barSeries({ on: 'light', item })
-
-              <h3 class="text-2xl max-w-xl">
-                {{ item.title }}
-              </h3>
-
-              @if (item.description)
-                <p class="mb-2 line-clamp-3 max-w-xl mt-3 text-sm text-gray-800 group-hover:text-gray-600 duration-150">
-                  {{ item.description }}
-                </p>
-              @endif
-            </div>
-          </div>
+          @!next.lessons.listItem({ item })
         @endif
       @endeach
     </div>
 
     <div class="w-1/4 px-6">
-      @!next.headings.section({ title: 'The Top' })
+      @!next.headings.panel({ title: 'Popular This Month' })
+      <div class="-mx-3">
+        @each ((item, i) in latestLessons)
+          @!next.lessons.listItem({ 
+            item, 
+            withImage: false, 
+            px: 'px-3',
+            size: 'xs',
+            className: 'my-3',
+            contentClassName: 'py-3',
+          })
+        @endeach
+      </div>
     </div>
 
     <div class="w-1/4 px-6">
       {{--  ad  --}}
+      {{--  @!next.headings.panel({ title: 'Advertisement' })  --}}
+
 
       {{--  watchlist  --}}
-      @!next.headings.section({ title: 'Your Watchlist' })
+      @if (auth.user)
+        <div>
+          @!next.headings.panel({ title: 'Series Watchlist' })
+          <div class="pt-3 -mx-3">
+            @each (item in collectionWatchlist)
+              @set('watchDisplay', secondsForDisplay(item.meta.videoSecondsSum))
+              <a href="{{ route('series.show', { slug: item.slug }) }}" class="flex flex-col p-3 rounded-lg hover:bg-gray-50">
+                <h4 class="text-lg font-sans font-medium max-w-xl mt-1">
+                  {{ item.name }}
+                </h4>
+                <p class="flex items-center text-xs text-gray-800 space-x-4">
+                  <span>{{ item.meta.postsFlattened_count ?? '0' }} {{ getSingularOrPlural('Lesson', item.meta.postsFlattened_count ?? 0) }}</span>
+                  <span>{{ watchDisplay.maxDisplay }} {{ getSingularOrPlural(watchDisplay.maxDisplayKey, watchDisplay.maxDisplay) }}</span>
+                </p>
+              </a>
+            @endeach
+          </div>
+        </div>
+
+        <div class="mt-6">
+          @!next.headings.panel({ title: 'Lesson Watchlist' })
+          <div class="pt-3 -mx-3">
+            @each (item in postWatchlist)
+              @set('watchDisplay', secondsForDisplay(item.meta.videoSecondsSum))
+              <a href="{{ routePost(item, { slug: item.slug }) }}" class="flex flex-col p-3 rounded-lg hover:bg-gray-50">
+                @!next.lessons.barSeries({ on: 'light', item })
+                <h4 class="text-lg font-sans font-medium max-w-xl mt-1">
+                  {{ item.title }}
+                </h4>
+              </a>
+            @endeach
+          </div>
+        </div>
+      @endif
 
       {{--  progression  --}}
     </div>

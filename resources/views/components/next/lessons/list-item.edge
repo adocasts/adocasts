@@ -1,0 +1,57 @@
+@set('withImage', withImage ?? true)
+@set('useImage', withImage && item.assets.length)
+@set('description', description ?? true)
+@set('rounded', rounded ?? true)
+@set('hoverBg', hoverBg ?? 'hover:bg-gray-50')
+@set('flexFlow', flexFlow ?? 'flex-row')
+@set('px', px ?? 'px-6')
+@set('size', size ?? 'sm')
+@set('sizeClassMap', {
+  xs: {
+    title: 'text-lg',
+    description: 'line-clamp-2'
+  },
+  sm: {
+    title: 'text-xl',
+    description: 'line-clamp-3'
+  },
+  base: {
+    title: 'text-xl',
+    description: 'line-clamp-4'
+  }
+})
+@set('width', () => 
+  flexFlow == 'flex-col' 
+    ? 'w-full' 
+    : useImage 
+      ? 'w-1/2' 
+      : 'w-full'
+)
+
+<a href="{{ routePost(item, { slug: item.slug }) }}" class="flex {{ flexFlow }} items-center group {{ hoverBg }} {{ rounded ? 'rounded-lg overflow-hidden' : '' }} duration-150 {{ className }}">
+  @if (useImage)
+    <div class="{{ width }} relative duration-300 {{ rounded ? 'rounded-lg overflow-hidden' : '' }} {{ imgClassName }}">
+      @!picture({ 
+        filename: item.assets[0].filename, 
+        className: 'h-full duration-150', 
+        pictureClassName: 'block',
+        imgClassName: 'h-full object-contain object-center',
+        lazy: lazyItem 
+      })
+    </div>
+  @endif
+
+  <div class="{{ width }} {{ px }} {{ contentClassName }}">
+    @!next.lessons.barSeries({ on: 'light', item })
+
+    <h3 class="{{ sizeClassMap[size].title }} font-sans font-medium leading-6 max-w-xl mt-1">
+      {{ item.title }}
+    </h3>
+
+    @if (description && item.description)
+      <p class="mb-2 max-w-xl mt-3 text-sm text-gray-700 group-hover:text-gray-800 duration-150 {{ sizeClassMap[size].description }}">
+        {{ item.description }}
+      </p>
+    @endif
+  </div>
+</a>
