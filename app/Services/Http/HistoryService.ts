@@ -37,7 +37,7 @@ export default class HistoryService extends BaseHttpService {
     return this.createView({ taxonomyId })
   }
 
-  public static async getLatestSeriesProgress(user: User) {
+  public static async getLatestSeriesProgress(user: User, limit: number = 5) {
     return History.query()
       .distinctOn('collectionId')
       .where('historyTypeId', HistoryTypes.PROGRESSION)
@@ -77,7 +77,7 @@ export default class HistoryService extends BaseHttpService {
           .groupLimit(1)
         )
       )
-      .limit(5)
+      .limit(limit)
   }
 
   public async getProgressionOrNew(data: Partial<History>) {

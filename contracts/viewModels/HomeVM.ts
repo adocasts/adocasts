@@ -13,8 +13,8 @@ export default class HomeVM extends BaseVM {
   public collectionProgress: History[]
 
   // base data
-  public featuredLesson: Post | null
   public series: Collection[]
   public topics: Taxonomy[]
   public latestLessons: Post[]
+  public trendingLessons: Post[]
 }

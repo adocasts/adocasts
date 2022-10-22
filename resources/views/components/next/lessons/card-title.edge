@@ -1,0 +1,14 @@
+@set('px', px ?? 'px-6')
+
+<a 
+  href="{{ routePost(item, { slug: item.slug }) }}" 
+  class="flex items-center group border-l border-slate-800 pl-6 relative duration-150 {{ className }}">
+  <div class="absolute top-1/2 left-0 -translate-y-1/2 max-h-0 group-hover:max-h-full w-px h-full bg-accent-800 duration-150"></div>
+  <div class="w-full {{ px }} {{ contentClassName }}">
+    @!next.lessons.barSeries({ on: 'light', item })
+
+    <h3 class="text-gray-400 group-hover:text-white font-sans font-medium leading-6 max-w-xl mt-1">
+      {{ item.title }}
+    </h3>
+  </div>
+</a>

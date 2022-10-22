@@ -1,15 +1,15 @@
-@set('onClass', on === 'dark' ? 'text-gray-800 group-hover:text-gray-400' : 'text-gray-700 group-hover:text-gray-800')
+@set('onClass', on === 'dark' ? 'text-slate-600 group-hover:text-slate-400' : 'text-slate-600 group-hover:text-slate-800')
 
 @if (item.series.length)
   @set('series', item.series[0])
   <object>
-    <h5 class="uppercase inline-flex items-center text-accent-800 tracking-wide font-sans text-xs">
+    <h5 class="uppercase inline-flex items-center text-accent-800 tracking-wide font-sans font-medium text-xs">
       <a href="{{ route('series.show', { slug: series.slug }) }}" class="anchor">
         {{ series.name }}
       </a>
-      <span class="px-3 {{ onClass }} dark:text-gray-800 duration-150">/</span>
-      <span class="{{ onClass }} duration-150">
-        Lesson {{ item.lessonIndexDisplay }}
+      {{--  <span class="px-1 {{ onClass }} dark:text-gray-800 duration-150 font-normal">/</span>  --}}
+      <span class="{{ onClass }} duration-150 font-normal ml-2">
+        #{{ item.lessonIndexDisplay }}
       </span>
     </h5>
   </object>

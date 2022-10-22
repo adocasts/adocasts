@@ -26,6 +26,13 @@ export default class PostService {
       .limit(limit)
   }
 
+  public static async getBySlugs(slugs: string[]) {
+    return Post.query()
+      .apply(scope => scope.forDisplay())
+      .whereIn('slug', slugs)
+      .orderBy('publishAt', 'desc')
+  }
+
   public static async search(term: string, limit: number = 100) {
     return Post.lessons()
       .apply(scope => scope.forDisplay())

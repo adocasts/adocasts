@@ -1,7 +1,9 @@
-<div class="bg-gray-950 py-5">
+<div class="py-5">
   @next.containers.page({ className: 'flex items-center justify-between' })
     <div class="flex items-center">
-      <a href="/" class="flex mr-6 lg:mr-8">
+      @!next.headers.panelMenu()
+
+      <a href="/" class="flex ml-3 mr-6 lg:mr-8">
         <span class="sr-only">Adocasts</span>
         <img class="h-8 w-auto sm:h-10" width="146px" height="28px" src="{{ env('APP_LOGO') }}" alt="Adocasts">
       </a>
@@ -24,7 +26,5 @@
         @end
       </nav>
     </div>
-
-    @!next.headers.panelMenu()
   @end
 </div>

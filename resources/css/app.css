@@ -3,36 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --font-heading: 'Cardo', serif;
-  --font-body: 'Hind', serif;
-  
-  --theme-0: theme('colors.brand.0');
-  --theme-50: theme('colors.brand.50');
-  --theme-100: theme('colors.brand.100');
-  --theme-200: theme('colors.brand.200');
-  --theme-300: theme('colors.brand.300');
-  --theme-400: theme('colors.brand.400');
-  --theme-500: theme('colors.brand.500');
-  --theme-600: theme('colors.brand.600');
-  --theme-700: theme('colors.brand.700');
-  --theme-800: theme('colors.brand.800');
-  --theme-900: theme('colors.brand.900');
-  --theme-950: theme('colors.brand.950');
-}
-
-html.dark {
-  --theme-0: theme('colors.gray.0');
-  --theme-50: theme('colors.gray.50');
-  --theme-100: theme('colors.gray.100');
-  --theme-200: theme('colors.gray.200');
-  --theme-300: theme('colors.gray.300');
-  --theme-400: theme('colors.gray.400');
-  --theme-500: theme('colors.gray.500');
-  --theme-600: theme('colors.gray.600');
-  --theme-700: theme('colors.gray.700');
-  --theme-800: theme('colors.gray.800');
-  --theme-900: theme('colors.gray.900');
-  --theme-950: theme('colors.gray.950');
+  --font-heading: 'Lora', serif;
+  --font-body: 'Poppins', serif;
 }
 
 [v-cloak],
@@ -41,12 +13,13 @@ html.dark {
 }
 
 a.brand {
-  color: theme('colors.brand.800');
+  color: theme('colors.violet.600');
 }
 
 html,
 body {
   overflow-x: hidden;
+  margin: 0;
 }
 
 html {
@@ -74,143 +47,6 @@ h6 {
   max-width: 400px;
 }
 
-.aspect-video {
-  aspect-ratio: 16 / 9;
-}
-
-.aspect-square {
-  aspect-ratio: 1 / 1;
-}
-
-.dark .auth-layout-content {
-  filter: drop-shadow(0 0 32px rgba(0,0,0,.45));
-  padding-bottom: 6rem;
-}
-
-.bg-pattern {
-  background-color: theme('colors.gray.950');
-  position: relative;
-
-  /* generated from: https://www.svgbackgrounds.com */
-  &:before {
-    content:  "";
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    opacity: .1;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2000 1500'%3E%3Cdefs%3E%3Crect stroke='%2311181C' stroke-width='.5' width='1' height='1' id='s'/%3E%3Cpattern id='a' width='3' height='3' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cuse fill='%23282b2d' href='%23s' y='2'/%3E%3Cuse fill='%23282b2d' href='%23s' x='1' y='2'/%3E%3Cuse fill='%2336383a' href='%23s' x='2' y='2'/%3E%3Cuse fill='%2336383a' href='%23s'/%3E%3Cuse fill='%23414344' href='%23s' x='2'/%3E%3Cuse fill='%23414344' href='%23s' x='1' y='1'/%3E%3C/pattern%3E%3Cpattern id='b' width='7' height='11' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%234a4c4d'%3E%3Cuse href='%23s'/%3E%3Cuse href='%23s' y='5' /%3E%3Cuse href='%23s' x='1' y='10'/%3E%3Cuse href='%23s' x='2' y='1'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='8'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='5' y='2'/%3E%3Cuse href='%23s' x='5' y='6'/%3E%3Cuse href='%23s' x='6' y='9'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='h' width='5' height='13' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%234a4c4d'%3E%3Cuse href='%23s' y='5'/%3E%3Cuse href='%23s' y='8'/%3E%3Cuse href='%23s' x='1' y='1'/%3E%3Cuse href='%23s' x='1' y='9'/%3E%3Cuse href='%23s' x='1' y='12'/%3E%3Cuse href='%23s' x='2'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='2'/%3E%3Cuse href='%23s' x='3' y='6'/%3E%3Cuse href='%23s' x='3' y='11'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='4' y='10'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='c' width='17' height='13' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23525455'%3E%3Cuse href='%23s' y='11'/%3E%3Cuse href='%23s' x='2' y='9'/%3E%3Cuse href='%23s' x='5' y='12'/%3E%3Cuse href='%23s' x='9' y='4'/%3E%3Cuse href='%23s' x='12' y='1'/%3E%3Cuse href='%23s' x='16' y='6'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='d' width='19' height='17' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%2311181C'%3E%3Cuse href='%23s' y='9'/%3E%3Cuse href='%23s' x='16' y='5'/%3E%3Cuse href='%23s' x='14' y='2'/%3E%3Cuse href='%23s' x='11' y='11'/%3E%3Cuse href='%23s' x='6' y='14'/%3E%3C/g%3E%3Cg fill='%235a5b5c'%3E%3Cuse href='%23s' x='3' y='13'/%3E%3Cuse href='%23s' x='9' y='7'/%3E%3Cuse href='%23s' x='13' y='10'/%3E%3Cuse href='%23s' x='15' y='4'/%3E%3Cuse href='%23s' x='18' y='1'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='e' width='47' height='53' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23555555'%3E%3Cuse href='%23s' x='2' y='5'/%3E%3Cuse href='%23s' x='16' y='38'/%3E%3Cuse href='%23s' x='46' y='42'/%3E%3Cuse href='%23s' x='29' y='20'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='f' width='59' height='71' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23555555'%3E%3Cuse href='%23s' x='33' y='13'/%3E%3Cuse href='%23s' x='27' y='54'/%3E%3Cuse href='%23s' x='55' y='55'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='g' width='139' height='97' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23555555'%3E%3Cuse href='%23s' x='11' y='8'/%3E%3Cuse href='%23s' x='51' y='13'/%3E%3Cuse href='%23s' x='17' y='73'/%3E%3Cuse href='%23s' x='99' y='57'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect fill='url(%23a)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23b)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23h)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23c)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23d)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23e)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23f)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23g)' width='100%25' height='100%25'/%3E%3C/svg%3E");
-    background-attachment: fixed;
-    background-size: 600px;
-    background-repeat: repeat;
-    filter: grayscale(100%);
-  }
-
-  &.light {
-    background-color: theme('colors.gray.100');
-
-    &:before {
-      opacity: .1;
-      filter:  grayscale(100%) invert(100%);
-    }
-  }
-}
-
-[type="text"].natural:focus,
-[type="email"].natural:focus,
-[type="url"].natural:focus,
-[type="password"].natural:focus,
-[type="number"].natural:focus,
-[type="date"].natural:focus,
-[type="datetime-local"].natural:focus,
-[type="month"].natural:focus,
-[type="search"].natural:focus,
-[type="tel"].natural:focus,
-[type="time"].natural:focus,
-[type="week"].natural:focus,
-[multiple].natural:focus,
-textarea.natural:focus,
-select.natural:focus {
-  box-shadow: none !important;
-}
-
-input[type="file"].file {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
-}
-input[type="file"].file + label {
-  display: inline-block;
-  cursor: pointer;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: theme("borderRadius.lg");
-}
-input[type="file"].file + label * {
-  pointer-events: none;
-  transition: none;
-}
-input[type="file"].file + label i {
-  padding-right: theme("padding.3");
-  font-size: 1rem;
-}
-input[type="file"].file + label i:before {
-  position: relative;
-  top: 3px;
-}
-input[type="file"].file-drop {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
-}
-input[type="file"].file-drop + label {
-  @apply py-6 px-3 text-gray-800 border border-dashed border-gray-800 rounded;
-  width: 100%;
-  text-align: center;
-  line-height: 1;
-  font-weight: normal;
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: color 300ms ease, border-color 300ms ease;
-}
-input[type="file"].file-drop + label * {
-  pointer-events: none;
-  transition: none;
-}
-input[type="file"].file-drop + label i {
-  padding-right: theme("padding.3");
-  font-size: 1rem;
-}
-input[type="file"].file-drop + label:before {
-  position: relative;
-  top: 3px;
-}
-input[type="file"].file-drop:focus + label,
-input[type="file"].file-drop:hover + label,
-input[type="file"].file-drop.is-hovered + label,
-input[type="file"].file-drop + label:hover {
-  color: theme("colors.brand.800");
-  border-color: theme("colors.brand.800");
-}
-
-.ce-block__content,
-.ce-toolbar__content {
-  max-width: calc(100% - 120px);
-}
-
-.cdx-notifies {
-  z-index: 100;
-}
-
 @keyframes growProgressBar {
   0%, 33% { --pgPercentage: 0; }
   100% { --pgPercentage: var(--value); }
@@ -223,7 +59,7 @@ input[type="file"].file-drop + label:hover {
 }
 
 div[role="progressbar"].circle {
-  --fg: theme('colors.accent.700');
+  --fg: theme('colors.pink.500');
   --bg: transparent;
   --pgPercentage: var(--value);
   animation: growProgressBar 3s 1 forwards;
@@ -231,7 +67,7 @@ div[role="progressbar"].circle {
   display: grid;
   place-items: center;
   background:
-    radial-gradient(closest-side, theme('colors.gray.950') 90%, transparent 0 99.9%, theme('colors.gray.950') 0),
+    radial-gradient(closest-side, theme('colors.slate.900') 90%, transparent 0 99.9%, theme('colors.slate.900') 0),
     conic-gradient(var(--fg) calc(var(--pgPercentage) * 1%), var(--bg) 0);
   color: var(--fg);
 }
@@ -409,7 +245,7 @@ div[role="progressbar"].circle {
 progress {
   --progress-width: 100%;
   --progress-height: 6px;
-  --progress-bar-color: theme('colors.brand.800');
+  --progress-bar-color: theme('colors.violet.100');
   --progress-bg: none;
   --progress-border-radius: 0 6px 6px 0;
 
@@ -561,16 +397,16 @@ code .line:before {
 .dark .prose h4,
 .dark .prose h5,
 .dark .prose h6 {
-  color: theme('colors.gray.200');
+  color: theme('colors.slate.800');
 }
 
 .dark .prose a,
 .dark .prose * {
-  color: theme('colors.gray.500');
+  color: theme('colors.slate.800');
 }
 
 .dark .prose code {
-  color: theme('colors.brand.500');
+  color: theme('colors.violet.100');
 }
 
 /* NEXT */
@@ -578,8 +414,9 @@ code .line:before {
 .grid-series__lessons {
   display: grid;
   grid-template-areas: 
-    "one two three"
-    "one four five";
+    "one two"
+    "one three"
+    "one four";
   grid-template-columns: 50% 25% 25%;
 }
 
@@ -587,6 +424,6 @@ code .line:before {
 .grid-series__lesson:nth-of-type(2) { grid-area: two; }
 .grid-series__lesson:nth-of-type(3) { grid-area: three; }
 .grid-series__lesson:nth-of-type(4) { grid-area: four; }
-.grid-series__lesson:nth-of-type(5) { grid-area: five; }
+/* .grid-series__lesson:nth-of-type(5) { grid-area: five; } */
 
 /* END NEXT */

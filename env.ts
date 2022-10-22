@@ -41,6 +41,8 @@ export default Env.rules({
 	GITHUB_CLIENT_ID: Env.schema.string(),
 	GITHUB_CLIENT_SECRET: Env.schema.string(),
 
+	PLAUSIBLE_API_KEY: Env.schema.string(),
+
 	SMTP_HOST: Env.schema.string({ format: 'host' }),
 	SMTP_PORT: Env.schema.number(),
 	SMTP_USERNAME: Env.schema.string(),

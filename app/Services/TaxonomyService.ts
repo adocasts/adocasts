@@ -16,6 +16,20 @@ export default class TaxonomyService {
         .limit(limit)
     }
 
+    public static async getList() {
+      return await Taxonomy.query()
+        .apply(scope => scope.hasContent())
+        .preload('parent', query => query.preload('asset'))
+        .preload('asset')
+        .withCount('posts')
+        .withCount('collections')
+        .where(query => query
+          .whereHas('posts', query => query.apply(scope => scope.published()))
+          .orWhereHas('collections', query => query.whereHas('postsFlattened', query => query.apply(scope => scope.published())))
+        )
+        .orderBy('name')
+    }
+
     public static async search(term: string, limit: number = 10) {
       return Taxonomy.query()
         .apply(scope => scope.withPostLatestPublished())

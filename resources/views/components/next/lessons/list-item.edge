@@ -13,11 +13,11 @@
   },
   sm: {
     title: 'text-xl',
-    description: 'line-clamp-3'
+    description: 'line-clamp-2'
   },
   base: {
     title: 'text-xl',
-    description: 'line-clamp-4'
+    description: 'line-clamp-3'
   }
 })
 @set('width', () => 
@@ -36,6 +36,7 @@
         className: 'h-full duration-150', 
         pictureClassName: 'block',
         imgClassName: 'h-full object-contain object-center',
+        ratio: 'aspect-video',
         lazy: lazyItem 
       })
     </div>

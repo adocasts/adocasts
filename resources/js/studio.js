@@ -1,8 +1,10 @@
-import '../css/app.css'
+import '../css/studio.css'
 import 'babel-polyfill'
-
+import axios from 'axios'
 // import * as Sentry from '@sentry/browser'
 // import { BrowserTracing } from '@sentry/tracing'
+
+window.axios = axios
 
 // axios.interceptors.response.use(function (response) {
 //   // Any status code that lie within the range of 2xx cause this function to trigger

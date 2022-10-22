@@ -11,81 +11,39 @@
 @endsection
 
 @section('hero')
+  @set('featuredSeries', series[0])
 
-  <div x-data="{ 
-    seriesIds: {{ stringify(series.map(s => s.id)) }},
-    seriesId: {{ series[0].id }},
-    isHover: false,
-    cycleTo(index, hover = false) {
-      this.isHover = hover
-      this.seriesId = this.seriesIds[index]
-    }
-  }">
-    <div class="bg-gray-950 text-gray-400 border-b border-grayDark-100">
-      @next.containers.page()
-        <div class="grid grid-cols-4 -mx-3 pt-3">
-          @each ((item, i) in series)
-            @set('watchDisplay', secondsForDisplay(item.meta.videoSecondsSum))
+  <div>
+    @!next.series.heroFeature({ item: featuredSeries })
 
-            <a 
-              href="{{ route('series.show', { slug: item.slug }) }}" 
-              class="flex items-center pl-3 py-3 hover:bg-gray-950 border-x border-t rounded-t-lg -ml-px -mb-px hover:border-grayDark-50 duration-150"
-              :class="[seriesId != {{ item.id }} ? 'border-transparent opacity-50' : 'bg-gray-950 border-grayDark-100']"
-              @mouseenter="cycleTo({{ i }}, true)"
-              @mouseleave="isHover = false">
-              <div class="aspect-square">
-                @if (item.asset)
-                  <img src="/img/{{ item.asset.filename }}" class="rounded-full w-14 mb-3" />
-                @else
-                  <div class="w-14 h-14 text-2xl font-semibold flex items-center justify-center mb-3 rounded-full bg-brand-300 text-brand-800 dark:bg-brand-900 dark:bg-opacity-30 dark:text-brand-300">
-                    {{ getAbbrev(item.name) }}
-                  </div>
-                @endif
-              </div>
-              <div 
-                class="flex-1 ml-4 pr-3 -mr-px {{ i !== series.length - 1 ? 'border-r border-grayDark-100' : '' }}">
-                <h4 class="font-semibold font-sans">
-                  {{ item.name }}
-                </h4>
-                <p class="flex items-center text-xs text-gray-800 space-x-4">
-                  <span>{{ item.meta.postsFlattened_count ?? '0' }} {{ getSingularOrPlural('Lesson', item.meta.postsFlattened_count ?? 0) }}</span>
-                  <span>{{ watchDisplay.maxDisplay }} {{ getSingularOrPlural(watchDisplay.maxDisplayKey, watchDisplay.maxDisplay) }}</span>
-                </p>
-              </div>
-            </a>
+    {{--  <div class="bg-slate-900 py-6">
+      @next.containers.page({ className: 'grid grid-cols-2 gap-6' })
+        @set('firstLatestLesson', latestLessons[0])
+        
+        @!next.lessons.cardThumbTall({ lesson: firstLatestLesson, flow: 'flex-col' })
+        
+        <div class="flex flex-col -mb-3">
+          @each ((lesson, i) in latestLessons.slice(1, 5))
+            @!next.lessons.cardThumbTall({ lesson, flow: 'flex-row' })
           @endeach
         </div>
       @end
-    </div>
+    </div>  --}}
 
-    <div class="bg-gray-950 py-6 relative z-10">
-      @next.containers.page()
-        <div class="grid-series__lessons -mx-3">
-          {{--  TODO: make specific to each of the above series  --}}
-          @each ((lesson, i) in latestLessons.slice(0, 4))
-            <div class="p-3 grid-series__lesson">
-              @!next.lessons.cardDark({ lesson, i })
-            </div>
-          @endeach  
+    <div class="bg-slate-900 pt-8">
+      @next.containers.page({ className: 'pb-16' })
+        <h4 class="uppercase tracking-wider text-slate-400 text-sm font-sans mb-6">
+          POPULAR THIS MONTH
+        </h4>
 
-          <div class="p-3 grid-series__lesson">
-            <div class="flex flex-col h-full space-y-6">
-              <a href="#" class="border h-1/3 bg-gray-900 bg-opacity-5 border-grayDark-50 rounded-lg flex flex-col items-center justify-center text-gray-400 p-3">
-                <h4 class="font-sans text-xs font-semibold uppercase tracking-wider">View Series</h4>
-                <h3 class="font-sans text-gray-800 text-sm text-center line-clamp-1">Let's Learn AdonisJS 5</h3>
-              </a>
-              <a href="#" class="border h-1/3 bg-gray-900 bg-opacity-5 border-grayDark-50 rounded-lg flex flex-col items-center justify-center text-gray-400 p-3">
-                <h4 class="font-sans text-xs font-semibold uppercase tracking-wider">Continue Series</h4>
-                <h3 class="font-sans text-gray-800 text-sm text-center line-clamp-1">Introducing, Installing, and Configuring Lucid ORM</h3>
-              </a>
-              <a href="#" class="border h-1/3 bg-gray-900 bg-opacity-5 border-grayDark-50 rounded-lg flex flex-col items-center justify-center text-gray-400 p-3">
-                <h4 class="font-sans text-xs font-semibold uppercase tracking-wider">Advertise Here</h4>
-                <h3 class="font-sans text-gray-800 text-sm text-center line-clamp-1">
-                  Click here for more details
-                </h3>
-              </a>
-            </div>
-          </div>
+        <div class="grid grid-cols-4 gap-6">
+          @each ((item, i) in trendingLessons.slice(0, 4))
+            @!next.lessons.cardTitle({ 
+              item, 
+              px: 'px-3',
+              size: 'xs'
+            })
+          @endeach
         </div>
       @end
     </div>
@@ -132,15 +90,18 @@
     </div>
   </div>
 
-  <div class="bg-gray-100 pt-32 pb-8 -mt-20">
+  <div class="bg-gray-50 pt-32 pb-12 -mt-20">
     @next.containers.page()
       @!next.headings.section({
         title: 'Covered Topics',
-        subtitle: `Each Adocasts topic contains groupings of series, lessons, news, and livestreams.`
+        subtitle: `Each Adocasts topic contains groupings of series, lessons, news, and livestreams.`,
+        className: 'text-center'
       })
-      <div class="w-full grid grid-cols-6 gap-3 py-6">
+      <div class="w-full flex flex-wrap space-x-3 space-y-3 justify-center items-center py-6">
         @each (item in topics)
-          @!next.topics.card({ item })
+          <div class="w-1/2 md:w-1/4 lg:w-1/6">
+            @!next.topics.card({ item })
+          </div>
         @endeach
       </div>
     @end
@@ -167,13 +128,12 @@
     <div class="w-1/4 px-6">
       @!next.headings.panel({ title: 'Popular This Month' })
       <div class="-mx-3">
-        @each ((item, i) in latestLessons)
+        @each ((item, i) in trendingLessons)
           @!next.lessons.listItem({ 
             item, 
             withImage: false, 
             px: 'px-3',
             size: 'xs',
-            className: 'my-3',
             contentClassName: 'py-3',
           })
         @endeach
@@ -222,6 +182,70 @@
       @endif
 
       {{--  progression  --}}
+      @if (auth.user)
+        <div class="mt-6">
+          @!next.headings.panel({ title: 'Your Progress' })
+          <div class="pt-3 -mx-3">
+            @each ((progression, i) in collectionProgress)
+              @set('collection', progression.collection)
+              @set('lessonQueue', collection.postsFlattened)
+
+              @if (i !== 0 && i !== collectionProgress.length)
+                <div class="px-3 my-3">
+                  <div class="border-b border-gray-300"></div>
+                </div>
+              @endif
+
+              <a href="{{ route('series.show', { slug: collection.slug })}}" class="group block p-3 hover:bg-gray-50 rounded-lg">
+                <div class="flex flex-wrap items-center">
+                  <div class="px-2">
+                    <div class="aspect-square">
+                      @if (collection.asset)
+                        <img src="/img/{{ collection.asset.filename }}" class="rounded-full w-12 mb-3" />
+                      @else
+                        <div class="w-12 h-12 text-lg font-semibold flex items-center justify-center rounded-full bg-brand-300 text-brand-800 mb-3">
+                          {{ getAbbrev(collection.name) }}
+                        </div>
+                      @endif
+                    </div>
+                  </div>
+                  <div class="px-2">
+                    <h4 class="font-sans font-medium">
+                      {{ collection.name }}
+                    </h4>
+                    <p class="text-xs text-gray-700">
+                      {{ Math.floor((collection.meta.postCompletedCount / collection.meta.postCount) * 100) }}% Completed
+                    </p>
+                  </div>
+                </div>
+
+                @if (lessonQueue.length)
+                  @each (item in lessonQueue)
+                    @set('currentLesson', item)
+                    @set('thumbnail', currentLesson.assets && currentLesson.assets[0])
+                    @set('lessonInProgress', currentLesson.progressionHistory.length > 0)
+
+                    <object class="flex flex-col relative z-10 mt-3">
+                      <a href="{{ routePost(currentLesson, { slug: currentLesson.slug }) }}" class="w-full flex flex-wrap rounded-xl hover:bg-gray-100 dark:hover:bg-opacity-5 duration-150 p-3">
+                        <div class="w-full">
+                          <h6 class="text-xs font-sans uppercase tracking-wider font-medium text-gray-700">
+                            {{ lessonInProgress ? 'Continue' : 'Start' }} Lesson {{ currentLesson.lessonIndexDisplay }}
+                          </h6>
+                        </div>
+                        <div class="w-full flex flex-col">
+                          <h3 class="font-normal font-sans leading-snug">
+                            {{ currentLesson.title }}
+                          </h3>
+                        </div>
+                      </a>
+                    </object>
+                  @endeach
+                @endif
+              </a>
+            @endeach
+          </div>
+        </div>
+      @endif
     </div>
   </div>
 

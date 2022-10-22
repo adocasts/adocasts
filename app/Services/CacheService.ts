@@ -99,8 +99,8 @@ export default class CacheService {
     return Redis.keys(pattern)
   }
 
-  public static async try(key: string, callback: () => Promise<any>, ttl: number | null = null) {
-    if (!RedisConfig.enabled) return callback()
+  public static async try(key: string, callback: () => Promise<any>, ttl: number | null = null, forceCache: boolean = false) {
+    if (!forceCache && !RedisConfig.enabled) return callback()
 
     const expiresAt = await this.getExpiry(key)
 

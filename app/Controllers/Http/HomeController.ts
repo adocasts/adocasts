@@ -8,6 +8,7 @@ import HomeVM from 'Contracts/viewModels/HomeVM'
 import PostType from 'App/Enums/PostType'
 import CacheService from 'App/Services/CacheService'
 import CacheKeys from 'App/Enums/CacheKeys'
+import AnalyticsService from 'App/Services/AnalyticsService'
 
 export default class HomeController {
   public async index({ view, auth }: HttpContextContract) {
@@ -15,18 +16,20 @@ export default class HomeController {
     let excludeIds: number[] = []
 
     vm = await CacheService.try(CacheKeys.HOME, async () => {
-      vm.featuredLesson = await PostService.getFeatureSingle()
-      vm.featuredLesson && excludeIds.push(vm.featuredLesson.id)
+      const trendingSlugs = await AnalyticsService.getPastMonthsPopularContentSlugs()
+
       vm.series = await CollectionService.getLastUpdated()
-      vm.topics = await TaxonomyService.getLastUpdated()
-      vm.latestLessons = await PostService.getLatest(10, excludeIds, [PostType.LESSON, PostType.NEWS, PostType.LIVESTREAM, PostType.BLOG])
+      vm.topics = await TaxonomyService.getList()
+      vm.latestLessons = await PostService.getLatest(6, excludeIds, [PostType.LESSON, PostType.NEWS, PostType.LIVESTREAM, PostType.BLOG])
+      vm.trendingLessons = await PostService.getBySlugs(trendingSlugs)
+
       return vm
     })
 
     if (auth.user) {
-      vm.postWatchlist = await WatchlistService.getLatestPosts(auth.user)
-      vm.collectionWatchlist = await WatchlistService.getLatestCollections(auth.user)
-      vm.collectionProgress = await HistoryService.getLatestSeriesProgress(auth.user)
+      vm.postWatchlist = await WatchlistService.getLatestPosts(auth.user, 3)
+      vm.collectionWatchlist = await WatchlistService.getLatestCollections(auth.user, 3)
+      vm.collectionProgress = await HistoryService.getLatestSeriesProgress(auth.user, 3)
     }
 
     return view.render('index', vm)

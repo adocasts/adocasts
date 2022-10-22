@@ -46,6 +46,7 @@ Encore.setPublicPath('/assets')
 |
 */
 Encore.addEntry('app', './resources/js/app.js')
+Encore.addEntry('studio', './resources/js/studio.js')
 Encore.addEntry('post', './resources/js/post.js')
 Encore.addEntry('stream', './resources/js/stream.js')
 Encore.addEntry('file_manager', './resources/js/file_manager.js')

@@ -8,6 +8,14 @@
         "http://localhost:8080/assets/app.js"
       ]
     },
+    "studio": {
+      "css": [
+        "http://localhost:8080/assets/studio.css"
+      ],
+      "js": [
+        "http://localhost:8080/assets/studio.js"
+      ]
+    },
     "post": {
       "js": [
         "http://localhost:8080/assets/post.js"

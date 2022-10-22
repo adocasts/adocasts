@@ -12,11 +12,11 @@
 }" class="contents">
   <button 
     @click="toggle" 
-    class="flex h-8 w-8 items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 fill-gray-600 dark:fill-gray-400 text-gray-600 hover:text-gray-200 duration-150 ring-black/5 bg-transparent dark:bg-gray-50 dark:bg-opacity-10 dark:ring-inset dark:ring-white/5">
-    @!next.icons.solid.menu({ className: 'w-6 h-6' })
+    class="flex h-8 w-8 -mt-1 items-center justify-center rounded-lg shadow-md fill-gray-600 dark:fill-gray-400 text-gray-600 hover:text-gray-200 duration-150 ring-black/5 bg-transparent dark:ring-inset dark:ring-white/5">
+    @!next.icons.solid.menuAltTwo({ className: 'w-6 h-6' })
   </button>
 
-  @panel({ variable: 'show', closeHandler: 'toggle' })
+  @next.panel({ variable: 'show', closeHandler: 'toggle' })
     <div class="flex flex-col">
       <a href="/" class="flex bg-gray-100 -mx-4 sm:-mx-6 -mt-6 px-4 sm:px-6 pt-6 pb-3 mb-3">
         <span class="sr-only">Adocasts</span>

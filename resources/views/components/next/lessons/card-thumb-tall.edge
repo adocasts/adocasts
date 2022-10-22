@@ -1,0 +1,41 @@
+@set('roundedClass', rounded === false ? '' : 'rounded-lg')
+@set('isRow', flow === 'flex-row')
+
+<a href="{{ routePost(lesson, { slug: lesson.slug }) }}" class="group flex flex-col justify-end items-center h-full relative overflow-hidden {{ roundedClass }} {{ isRow ? 'py-3 mb-3' : 'py-3' }}">
+  @if (lesson.assets.length)
+    {{--  <div class="absolute top-0 left-0 w-full h-full bg-slate-800 bg-opacity-10 z-10"></div>  --}}
+    <div class="absolute top-0 left-0 w-full h-full bg-slate-900 shadow-inner group-hover:shadow-xl overflow-hidden {{ roundedClass }}">
+      @!picture({ 
+        filename: lesson.assets[0].filename, 
+        className: 'h-full grayscale group-hover:grayscale-0 border-border-gray-800 opacity-0 group-hover:opacity-30 group-hover:scale-125 duration-300 blur group-hover:blur-xl', 
+        pictureClassName: 'block',
+        imgClassName: 'h-full',
+        lazy: lazyItem 
+      })
+    </div>
+  @endif
+
+  <div class="{{ flow ?? 'flex-col' }} h-full flex justify-start items-center text-slate-200 z-20 px-3 relative group-hover:drop-shadow-md">
+    @!picture({ 
+      filename: lesson.assets[0].filename, 
+      className: `mb-6 ${isRow && 'md:mb-0 flex-1 md:mr-6'} rounded-lg overflow-hidden`,
+      pictureClassName: 'block',
+      ratio: 'aspect-video',
+      lazy: lazyItem 
+    })
+
+    <div class="flex flex-col justify-end {{ isRow ? 'w-full md:w-2/3' : 'px-3' }}">
+      @!next.lessons.barSeries({ on: 'dark', item: lesson })
+    
+      <h3 class="{{ isRow ? 'text-lg' : 'text-2xl mt-2' }} max-w-xl text-slate-300 group-hover:text-white duration-150">
+        {{ lesson.title }}
+      </h3>
+
+      @if (!isRow && lesson.description)
+        <p class="md:hidden xl:block mb-2 max-w-xl mt-3 text-sm text-slate-500 group-hover:text-slate-400 duration-150">
+          {{ lesson.description }}
+        </p>
+      @endif
+    </div>
+  </div>
+</a>

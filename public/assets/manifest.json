@@ -1,6 +1,8 @@
 {
   "assets/app.css": "http://localhost:8080/assets/app.css",
   "assets/app.js": "http://localhost:8080/assets/app.js",
+  "assets/studio.css": "http://localhost:8080/assets/studio.css",
+  "assets/studio.js": "http://localhost:8080/assets/studio.js",
   "assets/post.js": "http://localhost:8080/assets/post.js",
   "assets/stream.js": "http://localhost:8080/assets/stream.js",
   "assets/file_manager.js": "http://localhost:8080/assets/file_manager.js",
