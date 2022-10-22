@@ -40,6 +40,10 @@
         <img :src="`${image.src}?w=400`" class="max-w-full h-full object-fit rounded border border-gray-300" />
         <input type="hidden" name="assetIds[]" :value="image.id" />
         <div x-show="image.loading">Loading ...</div>
+        <select name="assetTypeIds[]" class="text-xs absolute bottom-0 right-0 opacity-80 hover:opacity-100" x-model="image.assetTypeId">
+          <option value="1">Thumbnail</option>
+          <option value="2">Cover</option>
+        </select>
       </div>
     </template>
   </div>

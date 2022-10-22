@@ -3,6 +3,7 @@ import User from 'App/Models/User';
 import sharp from 'sharp';
 import fetch from 'cross-fetch'
 import Drive from '@ioc:Adonis/Core/Drive'
+import Asset from 'App/Models/Asset';
 
 class ImageOptions {
   width: number
@@ -111,5 +112,22 @@ export default class AssetService {
   public static getAvatarFilename(user: User, url: string) {
     const extension = AssetService.getFilenameExtension(url, 'jpg');
     return `${user.id}/avatar.${extension}`;
+  }
+
+  public static async syncAssetTypes(assetIds: number[] | null, assetTypeIds: number[] | null) {
+    if (!assetIds || !assetTypeIds) return
+
+    const assetTypeMap = assetIds.reduce((map, id, i) => {
+      const typeId = assetTypeIds[i]
+      map[typeId] = [...(map[typeId] ?? []), id]
+      return map
+    }, {})
+
+    const promises = Object.keys(assetTypeMap).map(typeId => {
+      const assetIds = assetTypeMap[typeId]
+      return Asset.query().whereIn('id', assetIds).update({ assetTypeId: typeId })
+    })
+
+    await Promise.all(promises)
   }
 }

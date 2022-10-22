@@ -4,7 +4,7 @@ function imageUploader({ postId, images = [] } = {}) {
   const generateId = () => '_' + Math.random().toString(36).substr(2, 9)
 
   return {
-    images: images.map(img => ({ id: img.id, src: img.assetUrl, loading: false })),
+    images: images.map(img => ({ id: img.id, assetTypeId: img.assetTypeId, src: img.assetUrl, loading: false })),
     identifier: generateId(),
     isHovered: false,
     isUploading: false,
