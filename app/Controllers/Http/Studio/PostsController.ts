@@ -59,7 +59,17 @@ export default class PostsController {
   public async store ({ request, response, auth, bouncer }: HttpContextContract) {
     await bouncer.with('PostPolicy').authorize('store')
 
-    const { publishAtDate, publishAtTime, assetIds, assetTypeIds, libraryAssetId, taxonomyIds, ...data } = await request.validate(PostStoreValidator)
+    const { 
+      publishAtDate, 
+      publishAtTime, 
+      assetIds, 
+      assetTypeIds, 
+      altTexts,
+      credits,
+      libraryAssetId, 
+      taxonomyIds, 
+      ...data 
+    } = await request.validate(PostStoreValidator)
 
     if (!data.stateId) data.stateId = State.PUBLIC
 
@@ -68,7 +78,7 @@ export default class PostsController {
     const post = await Post.create({ ...data, publishAt })
 
     await auth.user!.related('posts').attach([post.id])
-    await AssetService.syncAssetTypes(assetIds, assetTypeIds)
+    await AssetService.syncAssetTypes(assetIds, assetTypeIds, altTexts, credits)
     await PostService.syncAssets(post, syncAssetIds)
     await PostService.syncTaxonomies(post, taxonomyIds)
     await CacheService.clearForPost(post.id)
@@ -104,14 +114,24 @@ export default class PostsController {
 
     await bouncer.with('PostPolicy').authorize('update', post)
 
-    let { publishAtDate, publishAtTime, assetIds, assetTypeIds, libraryAssetId, taxonomyIds, ...data } = await request.validate(PostStoreValidator)
+    let { 
+      publishAtDate, 
+      publishAtTime, 
+      assetIds, 
+      assetTypeIds, 
+      altTexts,
+      credits,
+      libraryAssetId, 
+      taxonomyIds, 
+      ...data 
+    } = await request.validate(PostStoreValidator)
     const publishAt = DateService.getPublishAtDateTime(publishAtDate, publishAtTime, data.timezone)
     const syncAssetIds = libraryAssetId ? [...(assetIds || []), libraryAssetId] : assetIds
 
     post.merge({ ...data, publishAt })
 
     await post.save()
-    await AssetService.syncAssetTypes(assetIds, assetTypeIds)
+    await AssetService.syncAssetTypes(assetIds, assetTypeIds, altTexts, credits)
     await PostService.syncAssets(post, syncAssetIds)
     await PostService.syncTaxonomies(post, taxonomyIds)
     await CacheService.clearForPost(post.id)

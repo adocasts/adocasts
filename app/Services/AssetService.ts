@@ -114,18 +114,14 @@ export default class AssetService {
     return `${user.id}/avatar.${extension}`;
   }
 
-  public static async syncAssetTypes(assetIds: number[] | undefined, assetTypeIds: number[] | undefined) {
+  public static async syncAssetTypes(assetIds: number[] | undefined, assetTypeIds: number[] | undefined, altTexts: string[] | undefined, credits: string[] | undefined) {
     if (!assetIds || !assetTypeIds) return
 
-    const assetTypeMap = assetIds.reduce((map, id, i) => {
-      const typeId = assetTypeIds[i]
-      map[typeId] = [...(map[typeId] ?? []), id]
-      return map
-    }, {})
-
-    const promises = Object.keys(assetTypeMap).map(typeId => {
-      const assetIds = assetTypeMap[typeId]
-      return Asset.query().whereIn('id', assetIds).update({ assetTypeId: typeId })
+    const promises = assetIds.map((id, i) => {
+      const assetTypeId = assetTypeIds[i]
+      const altText = altTexts && altTexts[i]
+      const credit = credits && credits[i]
+      return Asset.query().where({ id }).update({ assetTypeId, altText, credit })
     })
 
     await Promise.all(promises)
