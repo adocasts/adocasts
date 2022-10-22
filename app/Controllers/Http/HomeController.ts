@@ -9,6 +9,7 @@ import PostType from 'App/Enums/PostType'
 import CacheService from 'App/Services/CacheService'
 import CacheKeys from 'App/Enums/CacheKeys'
 import AnalyticsService from 'App/Services/AnalyticsService'
+import Post from 'App/Models/Post'
 
 export default class HomeController {
   public async index({ view, auth }: HttpContextContract) {
@@ -17,13 +18,16 @@ export default class HomeController {
 
     vm = await CacheService.try(CacheKeys.HOME, async () => {
       const trendingSlugs = await AnalyticsService.getPastMonthsPopularContentSlugs()
-
+      const testLesson = await Post.query().where({ id: 88 }).apply(s => s.forDisplay()).firstOrFail()
       vm.series = await CollectionService.getLastUpdated()
       vm.topics = await TaxonomyService.getList()
-      vm.latestLessons = await PostService.getLatest(6, excludeIds, [PostType.LESSON, PostType.NEWS, PostType.LIVESTREAM, PostType.BLOG])
+      vm.latestLessons = [
+        testLesson,
+        ...(await PostService.getLatest(6, excludeIds, [PostType.LESSON, PostType.NEWS, PostType.LIVESTREAM, PostType.BLOG]))
+      ]
       vm.trendingLessons = await PostService.getBySlugs(trendingSlugs)
 
-      return vm
+      return { ...vm, testLesson }
     })
 
     if (auth.user) {

@@ -11,7 +11,7 @@
       <a href="{{ routePost(item, { slug: item.slug }) }}" class="w-full flex flex-wrap mb-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-opacity-5 transition">
         <div class="w-full mb-3 lg:mb-0 lg:w-2/5 lg:pr-3">
           @if (thumbnail)
-            @!picture({ filename: thumbnail.filename, className: 'rounded-lg overflow-hidden', lazy: lazyItem })
+            @!picture({ filename: thumbnail.filename, fit: 'object-cover', className: 'rounded-lg overflow-hidden', lazy: lazyItem })
           @endif
         </div>
         <div class="w-full lg:w-3/5 flex flex-col lg:pl-3">

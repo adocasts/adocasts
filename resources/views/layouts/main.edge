@@ -15,8 +15,9 @@
   @entryPointScripts('app')
   @!scripts.theme()
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;700&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Vollkorn:wght@400;500;700&display=swap" rel="stylesheet"> 
   <script defer>
     const url = new URL(window.location.href)
     const urlParams = new URLSearchParams(url.search)
@@ -39,7 +40,7 @@
 
   <script defer data-domain="adocasts.com" src="https://analytics.adocasts.com/js/plausible.js"></script>
 </head>
-<body class="dark:bg-gray-950 dark:text-gray-200 h-full">
+<body class="dark:bg-gray-950 dark:text-gray-200 h-full subpixel-antialiased">
   <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>
   
   @!toast.base()

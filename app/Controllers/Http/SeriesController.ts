@@ -63,6 +63,10 @@ export default class SeriesController {
         .apply(scope => scope.forCollectionDisplay({ orderBy: 'pivot_root_sort_order' }))
         .if(auth.user, query => query.preload('progressionHistory', query => query.where('userId', auth.user!.id)))
       )
+      .preload('updatedVersions', query => query
+        .wherePublic()
+        .whereHas('postsFlattened', query => query.apply(s => s.published()))
+      )
       .firstOrFail()
 
     let nextLesson = auth.user
@@ -87,6 +91,10 @@ export default class SeriesController {
           .apply(scope => scope.forCollectionDisplay())
           .if(auth.user, query => query.preload('progressionHistory', query => query.where('userId', auth.user!.id)))
         )
+      )
+      .preload('updatedVersions', query => query
+        .wherePublic()
+        .whereHas('postsFlattened', query => query.apply(s => s.published()))
       )
       .firstOrFail()
 

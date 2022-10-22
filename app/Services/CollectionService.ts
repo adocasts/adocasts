@@ -50,6 +50,10 @@ export default class CollectionService {
           .if(userId, query => query.preload('progressionHistory', query => query.where({ userId })))
         )
       )
+      .preload('updatedVersions', query => query
+        .wherePublic()
+        .whereHas('postsFlattened', query => query.apply(s => s.published()))
+      )
       .first()
   }
 

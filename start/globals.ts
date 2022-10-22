@@ -18,6 +18,7 @@ import AffiliateService from 'App/Services/AffiliateService'
 import Themes from 'App/Enums/Themes'
 import * as timeago from 'timeago.js'
 import IdentityService from 'App/Services/IdentityService'
+import AssetTypes from 'App/Enums/AssetTypes'
 
 if (Env.get('NODE_ENV') === 'test') {
   View.global('csrfField', () => '')
@@ -127,6 +128,7 @@ View.global('ipLocate', async (ip) => {
 View.global('GA_PROPERTY', Env.get('GA_PROPERTY'))
 
 View.global('DateTime', DateTime)
+View.global('AssetTypes', AssetTypes)
 View.global('StateEnum', States)
 View.global('StateEnumDesc', StateDesc)
 View.global('StatusEnum', Status)

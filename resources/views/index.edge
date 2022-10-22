@@ -11,44 +11,92 @@
 @endsection
 
 @section('hero')
-  @set('featuredSeries', series[0])
 
-  <div>
-    @!next.series.heroFeature({ item: featuredSeries })
-
-    {{--  <div class="bg-slate-900 py-6">
-      @next.containers.page({ className: 'grid grid-cols-2 gap-6' })
-        @set('firstLatestLesson', latestLessons[0])
-        
-        @!next.lessons.cardThumbTall({ lesson: firstLatestLesson, flow: 'flex-col' })
-        
-        <div class="flex flex-col -mb-3">
-          @each ((lesson, i) in latestLessons.slice(1, 5))
-            @!next.lessons.cardThumbTall({ lesson, flow: 'flex-row' })
-          @endeach
-        </div>
-      @end
-    </div>  --}}
-
-    <div class="bg-slate-900 pt-8">
-      @next.containers.page({ className: 'pb-16' })
-        <h4 class="uppercase tracking-wider text-slate-400 text-sm font-sans mb-6">
-          POPULAR THIS MONTH
-        </h4>
-
-        <div class="grid grid-cols-4 gap-6">
-          @each ((item, i) in trendingLessons.slice(0, 4))
-            @!next.lessons.cardTitle({ 
-              item, 
-              px: 'px-3',
-              size: 'xs'
+  <div class="bg-slate-900">
+    @next.containers.page({ className: 'py-8' })
+      <div class="flex flex-wrap">
+        <div class="group flex w-full lg:w-1/2 bg-slate-900 duration-150 relative p-3 pb-8 rounded-xl overflow-hidden mb-3">
+          <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-transparent via-transparent to-slate-900/60 duration-150 z-10"></div>
+          <div class="absolute w-full h-full top-0 left-0">
+            @!picture({ 
+              className: 'w-full h-full',
+              imgClassName: 'grayscale group-hover:grayscale-0 opacity-20 group-hover:opacity-30 blur group-hover:blur-none group-hover:scale-125 duration-150',
+              filename: testLesson.covers[0].filename, 
+              altText: testLesson.covers[0].altText,
+              fit: 'object-cover object-center'
             })
+          </div>
+
+          <div class="flex flex-col relative z-20">
+            @!picture({
+              ratio: 'aspect-video',
+              className: 'mb-8 rounded-xl overflow-hidden group-hover:shadow-xl duration-150',
+              filename: testLesson.thumbnails[0].filename,
+              altText: testLesson.thumbnails[0].altText
+            })
+
+            <div class="flex flex-col px-3 pb-3">
+              @!next.lessons.barSeries({ item: testLesson, on: 'dark' })
+
+              <h2 class="font-serif text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl text-slate-300 group-hover:text-slate-200 mt-3 mb-3 2xl:mb-5 duration-150">
+                {{ testLesson.title }}
+              </h2>
+
+              @if (testLesson.description)
+                <p class="text-slate-400 group-hover:text-slate-300 line-clamp-4 text-sm 2xl:text-base duration-150">
+                  {{ testLesson.description}}
+                </p>
+              @endif
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-start w-full lg:w-1/2">
+          @each (i in [...new Array(4)])
+            <div class="w-full md:w-1/2 lg:pl-3 mb-3">
+              <div class="group bg-slate-900 duration-150 relative p-6 md:p-3 pb-6 rounded-xl overflow-hidden">
+                <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-transparent via-transparent to-slate-900/60 duration-150 z-10"></div>
+                <div class="absolute w-full h-full top-0 left-0">
+                  @!picture({ 
+                    className: 'w-full h-full',
+                    imgClassName: 'grayscale group-hover:grayscale-0 opacity-20 group-hover:opacity-30 blur group-hover:blur-none group-hover:scale-125 duration-150',
+                    filename: testLesson.covers[0].filename, 
+                    altText: testLesson.covers[0].altText,
+                    fit: 'object-cover object-center'
+                  })
+                </div>
+
+                <div class="flex flex-col relative z-20">
+                  @!picture({
+                    ratio: 'aspect-video',
+                    className: 'hidden md:block mb-5 rounded-xl overflow-hidden group-hover:shadow-xl duration-150',
+                    filename: testLesson.thumbnails[0].filename,
+                    altText: testLesson.thumbnails[0].altText
+                  })
+
+                  @!next.lessons.barSeries({ item: testLesson, on: 'dark' })
+
+                  <h2 class="font-serif text-2xl md:text-lg 2xl:text-2xl text-slate-300 group-hover:text-slate-200 duration-150 my-3 md:mt-1">
+                    {{ testLesson.title }}
+                  </h2>
+
+                  @if (testLesson.description)
+                    <div class="md:hidden">
+                      <p class="text-slate-400 group-hover:text-slate-300 line-clamp-2 text-sm duration-150">
+                        {{ testLesson.description}}
+                      </p>
+                    </div>
+                  @endif
+                </div>
+              </div>
+            </div>
           @endeach
         </div>
-      @end
-    </div>
+      </div>
+    @end
+  </div>
 
-    <div class="bg-gray-950 pb-6 mb-20 border-b border-grayDark-100">
+  <div class="bg-slate-900 pb-6 mb-20 border-b border-slate-800">
       @next.containers.page({ className: 'flex flex-wrap md:flex-nowrap md:space-x-6 -mb-20' })
         <div class="w-1/3 bg-white border border-gray-100 rounded-lg shadow-xl p-6">
           <div class="sm:text-center mb-6">
@@ -90,7 +138,7 @@
     </div>
   </div>
 
-  <div class="bg-gray-50 pt-32 pb-12 -mt-20">
+  <div class="bg-slate-50 pt-32 pb-12 -mt-20">
     @next.containers.page()
       @!next.headings.section({
         title: 'Covered Topics',
@@ -111,142 +159,5 @@
 
 @section('content')
 
-  <div class="flex -mx-6 py-12">
-    <div class="w-1/2 space-y-6 px-6">
-      @!next.headings.panel({ title: 'The Latest' })
-      @each ((item, i) in latestLessons)
-        @if (i === 0)
-          <div>
-            @!next.lessons.cardThumb({ lesson: item })
-          </div>
-        @else
-          @!next.lessons.listItem({ item })
-        @endif
-      @endeach
-    </div>
-
-    <div class="w-1/4 px-6">
-      @!next.headings.panel({ title: 'Popular This Month' })
-      <div class="-mx-3">
-        @each ((item, i) in trendingLessons)
-          @!next.lessons.listItem({ 
-            item, 
-            withImage: false, 
-            px: 'px-3',
-            size: 'xs',
-            contentClassName: 'py-3',
-          })
-        @endeach
-      </div>
-    </div>
-
-    <div class="w-1/4 px-6">
-      {{--  ad  --}}
-      {{--  @!next.headings.panel({ title: 'Advertisement' })  --}}
-
-
-      {{--  watchlist  --}}
-      @if (auth.user)
-        <div>
-          @!next.headings.panel({ title: 'Series Watchlist' })
-          <div class="pt-3 -mx-3">
-            @each (item in collectionWatchlist)
-              @set('watchDisplay', secondsForDisplay(item.meta.videoSecondsSum))
-              <a href="{{ route('series.show', { slug: item.slug }) }}" class="flex flex-col p-3 rounded-lg hover:bg-gray-50">
-                <h4 class="text-lg font-sans font-medium max-w-xl mt-1">
-                  {{ item.name }}
-                </h4>
-                <p class="flex items-center text-xs text-gray-800 space-x-4">
-                  <span>{{ item.meta.postsFlattened_count ?? '0' }} {{ getSingularOrPlural('Lesson', item.meta.postsFlattened_count ?? 0) }}</span>
-                  <span>{{ watchDisplay.maxDisplay }} {{ getSingularOrPlural(watchDisplay.maxDisplayKey, watchDisplay.maxDisplay) }}</span>
-                </p>
-              </a>
-            @endeach
-          </div>
-        </div>
-
-        <div class="mt-6">
-          @!next.headings.panel({ title: 'Lesson Watchlist' })
-          <div class="pt-3 -mx-3">
-            @each (item in postWatchlist)
-              @set('watchDisplay', secondsForDisplay(item.meta.videoSecondsSum))
-              <a href="{{ routePost(item, { slug: item.slug }) }}" class="flex flex-col p-3 rounded-lg hover:bg-gray-50">
-                @!next.lessons.barSeries({ on: 'light', item })
-                <h4 class="text-lg font-sans font-medium max-w-xl mt-1">
-                  {{ item.title }}
-                </h4>
-              </a>
-            @endeach
-          </div>
-        </div>
-      @endif
-
-      {{--  progression  --}}
-      @if (auth.user)
-        <div class="mt-6">
-          @!next.headings.panel({ title: 'Your Progress' })
-          <div class="pt-3 -mx-3">
-            @each ((progression, i) in collectionProgress)
-              @set('collection', progression.collection)
-              @set('lessonQueue', collection.postsFlattened)
-
-              @if (i !== 0 && i !== collectionProgress.length)
-                <div class="px-3 my-3">
-                  <div class="border-b border-gray-300"></div>
-                </div>
-              @endif
-
-              <a href="{{ route('series.show', { slug: collection.slug })}}" class="group block p-3 hover:bg-gray-50 rounded-lg">
-                <div class="flex flex-wrap items-center">
-                  <div class="px-2">
-                    <div class="aspect-square">
-                      @if (collection.asset)
-                        <img src="/img/{{ collection.asset.filename }}" class="rounded-full w-12 mb-3" />
-                      @else
-                        <div class="w-12 h-12 text-lg font-semibold flex items-center justify-center rounded-full bg-brand-300 text-brand-800 mb-3">
-                          {{ getAbbrev(collection.name) }}
-                        </div>
-                      @endif
-                    </div>
-                  </div>
-                  <div class="px-2">
-                    <h4 class="font-sans font-medium">
-                      {{ collection.name }}
-                    </h4>
-                    <p class="text-xs text-gray-700">
-                      {{ Math.floor((collection.meta.postCompletedCount / collection.meta.postCount) * 100) }}% Completed
-                    </p>
-                  </div>
-                </div>
-
-                @if (lessonQueue.length)
-                  @each (item in lessonQueue)
-                    @set('currentLesson', item)
-                    @set('thumbnail', currentLesson.assets && currentLesson.assets[0])
-                    @set('lessonInProgress', currentLesson.progressionHistory.length > 0)
-
-                    <object class="flex flex-col relative z-10 mt-3">
-                      <a href="{{ routePost(currentLesson, { slug: currentLesson.slug }) }}" class="w-full flex flex-wrap rounded-xl hover:bg-gray-100 dark:hover:bg-opacity-5 duration-150 p-3">
-                        <div class="w-full">
-                          <h6 class="text-xs font-sans uppercase tracking-wider font-medium text-gray-700">
-                            {{ lessonInProgress ? 'Continue' : 'Start' }} Lesson {{ currentLesson.lessonIndexDisplay }}
-                          </h6>
-                        </div>
-                        <div class="w-full flex flex-col">
-                          <h3 class="font-normal font-sans leading-snug">
-                            {{ currentLesson.title }}
-                          </h3>
-                        </div>
-                      </a>
-                    </object>
-                  @endeach
-                @endif
-              </a>
-            @endeach
-          </div>
-        </div>
-      @endif
-    </div>
-  </div>
 
 @endsection

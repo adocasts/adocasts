@@ -28,6 +28,7 @@ import * as timeago from 'timeago.js'
 import History from 'App/Models/History'
 import HistoryTypes from 'App/Enums/HistoryTypes'
 import Route from '@ioc:Adonis/Core/Route'
+import AssetTypes from 'App/Enums/AssetTypes'
 
 export default class Post extends AppBaseModel {
   public serializeExtras = true
@@ -131,6 +132,20 @@ export default class Post extends AppBaseModel {
     pivotColumns: ['sort_order']
   })
   public assets: ManyToMany<typeof Asset>
+
+  @manyToMany(() => Asset, {
+    pivotTable: 'asset_posts',
+    pivotColumns: ['sort_order'],
+    onQuery: q => q.where('assetTypeId', AssetTypes.THUMBNAIL)
+  })
+  public thumbnails: ManyToMany<typeof Asset>
+
+  @manyToMany(() => Asset, {
+    pivotTable: 'asset_posts',
+    pivotColumns: ['sort_order'],
+    onQuery: q => q.where('assetTypeId', AssetTypes.COVER)
+  })
+  public covers: ManyToMany<typeof Asset>
 
   @hasMany(() => PostSnapshot)
   public snapshots: HasMany<typeof PostSnapshot>
@@ -395,7 +410,8 @@ export default class Post extends AppBaseModel {
   public static forDisplay = scope<typeof Post>((query, skipPublishCheck: boolean = false) => {
     query
       .if(!skipPublishCheck, query => query.apply(scope => scope.published()))
-      .preload('assets')
+      .preload('thumbnails')
+      .preload('covers')
       .preload('taxonomies')
       .preload('rootSeries')
       .preload('series')

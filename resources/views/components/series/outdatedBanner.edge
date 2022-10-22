@@ -1,0 +1,34 @@
+<div class="bg-accent-800 bg-opacity-75 rounded-xl shadow-lg {{ className }}">
+  <div class="flex items-center justify-between flex-wrap">
+    <div class="flex-1 flex items-center">
+      <div class="bg-accent-800 text-white p-3 rounded-xl">
+        @!svg.warning({ className: 'w-6 h-6' })
+      </div>
+      <div class="flex flex-col ml-3">
+        <p class="text-white truncate hidden md:inline-block">
+          <span class="inline uppercase tracking-wider font-semibold">
+            Series Outdated
+          </span>
+          @if (updates?.length)
+            <span class="mx-1 text-xs border-r border-accent-400 opacity-80 dark:border-gray-50 dark:border-opacity-20">&nbsp;</span>
+            <span>{{ updates[0].name }} for up-to-date content</span>
+          @else
+            <span class="mx-1 text-xs border-r border-accent-400 opacity-80 dark:border-gray-50 dark:border-opacity-20">&nbsp;</span>
+            <span>This series may not contain up-to-date information</span>
+          @endif
+        </p>
+        <p class="text-white truncate md:hidden">
+          <span class="inline uppercase tracking-wider font-semibold">This series is outdated</span>
+        </p>
+      </div>
+      
+    </div>
+    @if (updates?.length)
+      <div class="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto p-2 pt-0 md:p-0">
+        <a href="{{ route('series.show', { slug: updates[0].slug }) }}" class="flex items-center justify-center px-3 py-1.5 border border-transparent rounded-md shadow-sm text-sm font-medium text-accent-800 bg-accent-100 hover:bg-accent-300 transition duration-300 md:mr-2">
+          View Updated Series
+        </a>
+      </div>
+    @endif
+  </div>
+</div>

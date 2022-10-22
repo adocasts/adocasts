@@ -14,7 +14,13 @@
 
   {{--  TODO: if user hasn't start the series show series info instead of lesson info  --}}
   {{--   @!lesson.hero() --}}
-  @!series.hero({ item: series, nextLesson })
+  @series.hero({ item: series, nextLesson })
+    @slot('top')
+      @if (series.statusId === StatusEnum.OUTDATED || series.updatedVersions?.length)
+        @!series.outdatedBanner({ updates: series.updatedVersions })
+      @endif
+    @endslot
+  @end
 
 @endsection
 

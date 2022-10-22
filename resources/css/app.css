@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --font-heading: 'Lora', serif;
+  --font-heading: 'Vollkorn', serif;
   --font-body: 'Poppins', serif;
 }
 
@@ -34,6 +34,8 @@ h5,
 h6 {
   font-family: theme("fontFamily.heading");
 }
+
+
 
 .max-w-6 {
   max-width: theme("width.6");

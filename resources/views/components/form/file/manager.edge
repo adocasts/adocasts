@@ -33,13 +33,24 @@
 
   <div x-show="images.length" class="flex flex-wrap">
     <template x-for="(image, i) in images" :key="image.id">
-      <div class="relative group mt-3 mr-3" style="width: fit-content; height: 100px;">
-        <button type="button" @click="fileRemove(image.id)" class="rounded-full bg-red-800 text-red-50 w-6 h-6 absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition duration-150">
-          &times;
-        </button>
-        <img :src="`${image.src}?w=400`" class="max-w-full h-full object-fit rounded border border-gray-300" />
+      <div class="relative group mt-3 mr-3">
+        <div style="width: fit-content; height: 100px;">
+          <button type="button" @click="fileRemove(image.id)" class="rounded-full bg-red-800 text-red-50 w-6 h-6 absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition duration-150">
+            &times;
+          </button>
+          <img :src="`${image.src}?w=400`" class="max-w-full h-full object-fit rounded border border-gray-300" />
+        </div>
         <input type="hidden" name="assetIds[]" :value="image.id" />
         <div x-show="image.loading">Loading ...</div>
+        <div class="flex flex-col space-y-1">
+          <select name="assetTypeIds[]" class="text-xs" x-model="image.assetTypeId">
+            <option disabled readonly>Asset Type</option>
+            <option value="1">Thumbnail</option>
+            <option value="2">Cover</option>
+          </select>
+          <input class="text-xs" type="text" name="altTexts[]" :value="image.altText" placeholder="Alt Text" />
+          <input class="text-xs" type="text" name="credits[]" :value="image.credit" placeholder="Credit" />
+        </div>
       </div>
     </template>
   </div>

@@ -40,7 +40,7 @@ module.exports = {
       fontFamily: {
         heading: ['var(--font-heading)', ...defaultTheme.fontFamily.sans],
         body: ['var(--font-body)', ...defaultTheme.fontFamily.sans],
-        serif: ['Lora', ...defaultTheme.fontFamily.serif],
+        serif: ['Vollkorn', ...defaultTheme.fontFamily.serif],
         sans: ['Poppins', ...defaultTheme.fontFamily.sans],
         mono: ['Dank Mono', ...defaultTheme.fontFamily.mono]
       },
