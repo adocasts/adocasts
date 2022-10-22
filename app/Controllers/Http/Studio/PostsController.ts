@@ -11,6 +11,7 @@ import PostType from 'App/Enums/PostType'
 import Asset from 'App/Models/Asset'
 import CacheService from 'App/Services/CacheService'
 import AssetService from 'App/Services/AssetService'
+import AssetTypes from 'App/Enums/AssetTypes'
 
 export default class PostsController {
 
@@ -46,7 +47,7 @@ export default class PostsController {
     await bouncer.with('PostPolicy').authorize('store')
 
     const assets = await Asset.query()
-      .where('assetTypeId', 1)
+      .whereIn('assetTypeId', [AssetTypes.THUMBNAIL, AssetTypes.COVER])
       .where('filename', 'LIKE', `${auth.user!.id}/%`)
       .orderBy('createdAt', 'desc')
 
@@ -97,7 +98,7 @@ export default class PostsController {
       .firstOrFail()
 
     const assets = await Asset.query()
-      .where('assetTypeId', 1)
+      .whereIn('assetTypeId', [AssetTypes.THUMBNAIL, AssetTypes.COVER])
       .where('filename', 'LIKE', `${auth.user!.id}/%`)
       .orderBy('createdAt', 'desc')
 
