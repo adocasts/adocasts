@@ -114,7 +114,7 @@ export default class AssetService {
     return `${user.id}/avatar.${extension}`;
   }
 
-  public static async syncAssetTypes(assetIds: number[] | null, assetTypeIds: number[] | null) {
+  public static async syncAssetTypes(assetIds: number[] | undefined, assetTypeIds: number[] | undefined) {
     if (!assetIds || !assetTypeIds) return
 
     const assetTypeMap = assetIds.reduce((map, id, i) => {
