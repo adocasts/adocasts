@@ -28,6 +28,7 @@ import * as timeago from 'timeago.js'
 import History from 'App/Models/History'
 import HistoryTypes from 'App/Enums/HistoryTypes'
 import Route from '@ioc:Adonis/Core/Route'
+import AssetTypes from 'App/Enums/AssetTypes'
 
 export default class Post extends AppBaseModel {
   public serializeExtras = true
@@ -395,7 +396,7 @@ export default class Post extends AppBaseModel {
   public static forDisplay = scope<typeof Post>((query, skipPublishCheck: boolean = false) => {
     query
       .if(!skipPublishCheck, query => query.apply(scope => scope.published()))
-      .preload('assets')
+      .preload('assets', q => q.where('assetTypeId', AssetTypes.THUMBNAIL))
       .preload('taxonomies')
       .preload('rootSeries')
       .preload('series')
