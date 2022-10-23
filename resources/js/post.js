@@ -21,7 +21,7 @@ window.initVideo = function ({ el = 'ytEmbed', videoId, httpMethod = 'post', htt
   bodyContent.addEventListener('click', (event) => {
     const isTarget = event.target.classList.contains('timestamp')
     const containsTarget = event.target.closest('.timestamp')
-
+    
     if (isTarget || containsTarget) {
       const target = isTarget ? event.target : event.target.closest('.timestamp')
       const displayDuration = target.textContent
@@ -39,6 +39,11 @@ window.initVideo = function ({ el = 'ytEmbed', videoId, httpMethod = 'post', htt
       } else {
         onInitVideo(true, duration)
       }
+
+      window.scrollTo({
+        top: element.offsetTop,
+        behavior: 'smooth'
+      })
     }
   })
 
