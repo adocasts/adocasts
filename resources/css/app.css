@@ -296,6 +296,23 @@ progress[value]::-webkit-progress-value {
   margin-bottom: .4em;
 }
 
+.prose .timestamp {
+  cursor: pointer;
+  color: theme('colors.indigo.500') !important;
+}
+
+.prose.post-type-5 .timestamp + p:not(.timestamp) {
+  margin-top: -1.75rem;
+  padding-left: 55px;
+}
+
+.prose.post-type-1 .timestamp:after {
+  content: "- Jump to this section in video";
+  color: theme('colors.gray.700');
+  font-weight: 300;
+  margin-left: 1ch;
+}
+
 .prose pre code .line.del {
   opacity: 40%;
   transition: opacity 300ms ease;
@@ -354,16 +371,6 @@ progress[value]::-webkit-progress-value {
 .prose .line {
   display: block;
   line-height: 2;
-}
-
-.prose .timestamp {
-  cursor: pointer;
-  color: theme('colors.indigo.500') !important;
-}
-
-.prose .timestamp + p:not(.timestamp) {
-  margin-top: -1.75rem;
-  padding-left: 55px;
 }
 
 pre > code {
