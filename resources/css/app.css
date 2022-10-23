@@ -346,12 +346,12 @@ progress[value]::-webkit-progress-value {
 .prose .line.del:after,
 .prose .line.add:after {
   content: "";
-  width: 300%;
   height: 100%;
+  left: -2ch;
   opacity: 30%;
   position: absolute;
   top: 0;
-  left: -50%;
+  width: calc(100% + 5ch);
 }
 
 .prose .line.del:after {
