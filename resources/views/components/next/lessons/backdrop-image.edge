@@ -1,0 +1,29 @@
+@set('img', item.covers?.length 
+  ? item.covers[0] 
+  : item.thumbnails?.length
+    ? item.thumbnails[0]
+    : null)
+
+@set('size', 'base')
+@set('sizeMap', {
+  base: {
+    via: 'via-transparent'
+  },
+  sm: {
+    via: ''
+  }
+})
+
+<div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-transparent {{ sizeMap[size].via }} to-slate-900/60 duration-150 z-10"></div>
+
+@if (img)
+  <div class="absolute w-full h-full top-0 left-0">
+    @!picture({ 
+      className: 'w-full h-full rounded-xl overflow-hidden',
+      imgClassName: 'grayscale group-hover:grayscale-0 opacity-20 group-hover:opacity-30 blur group-hover:blur-none scale-125 group-hover:scale-100 duration-150',
+      filename: img.filename, 
+      altText: img.altText,
+      fit: 'object-cover object-center'
+    })
+  </div>
+@endif

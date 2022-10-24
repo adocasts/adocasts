@@ -1,0 +1,31 @@
+<div class="w-full md:w-1/2 lg:h-1/2 lg:pl-3 pb-3">
+  <div class="group h-full bg-slate-900 duration-150 relative p-6 md:p-3 pb-6 rounded-xl overflow-hidden">
+    @!next.lessons.backdropImage({ item })
+
+    <div class="flex flex-col relative z-20">
+      @if (item.thumbnails?.length || item.covers?.length)
+        @set('img', item.thumbnails?.length ? item.thumbnails[0] : item.covers[0])
+        @!picture({
+          ratio: 'aspect-video',
+          className: 'hidden md:block mb-5 rounded-xl overflow-hidden group-hover:shadow-xl duration-150',
+          filename: img.filename,
+          altText: img.altText
+        })
+      @endif
+
+      @!next.lessons.barSeries({ item, on: 'dark' })
+
+      <h2 class="font-serif text-2xl md:text-lg 2xl:text-2xl text-slate-300 group-hover:text-slate-200 duration-150 my-3 md:mt-1">
+        {{ item.title }}
+      </h2>
+
+      @if (item.description)
+        <div class="md:hidden">
+          <p class="text-slate-400 group-hover:text-slate-300 line-clamp-2 text-sm duration-150">
+            {{ item.description}}
+          </p>
+        </div>
+      @endif
+    </div>
+  </div>
+</div>

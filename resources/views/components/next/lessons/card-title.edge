@@ -1,0 +1,19 @@
+<div class="w-full md:w-1/2 lg:w-1/4 px-1.5">
+  <a 
+    href="{{ routePost(item, { slug: item.slug }) }}" 
+    class="relative group overview-hidden w-full flex items-center bg-slate-900 duration-150 rounded-xl p-6">
+    @!next.lessons.backdropImage({ item, size: 'sm' })
+
+    <div class="flex flex-col relative z-10">
+      @!next.lessons.barSeries({ item, on: 'dark' })
+
+      <h4 class="font-sans 2xl:text-lg leading-tight text-slate-300 group-hover:text-slate-200 duration-150 mt-1 mb-2">
+        {{ item.title }}
+      </h4>
+
+      <p class="text-slate-400 group-hover:text-slate-300 duration-150 line-clamp-2 text-xs">
+        {{ item.description }}
+      </p>
+    </div>
+  </a>
+</div>
