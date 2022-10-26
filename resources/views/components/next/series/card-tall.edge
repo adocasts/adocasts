@@ -1,0 +1,44 @@
+<a href="{{ route('series.show', { slug: item.slug }) }}" class="w-full lg:w-1/2 xl:w-1/4 px-3 mb-6">
+  <div class="group h-full flex flex-col bg-slate-900 text-center p-6 pt-16 2xl:pt-32 rounded-xl overflow-hidden relative">
+    <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-transparent via-slate-900/60 to-slate-900 z-10"></div>
+    
+    @if (item.asset)
+      <div class="absolute w-full h-full top-0 left-0 opacity-60 group-hover:opacity-80 duration-150">
+        <img 
+          src="/img/{{ item.asset.filename }}" 
+          class="rounded-full w-full h-full object-cover object-center scale-[175%] group-hover:scale-[140%] blur-xl group-hover:blur-none mb-3 duration-150" 
+        />
+      </div>
+    @endif
+
+    <div class="flex flex-col h-full justify-between relative z-20">
+      <div class="flex flex-col">
+        <div class="flex justify-center">
+          @!next.series.icon({ item, width: 'w-32', height: 'h-32', className: 'shadow-xl' })
+        </div>
+        <div class="mt-3">
+          <h3 class="text-slate-200 font-serif text-xl 2xl:text-2xl mb-3">
+            {{ item.name }}
+          </h3>
+          <p class="text-slate-400 group-hover:text-slate-200 duration-150 text-xs 2xl:text-sm line-clamp-4">
+            {{ item.description }}
+          </p>
+        </div>
+      </div>
+      <div class="w-full text-slate-400 text-xs py-3 px-6 mt-6 flex justify-around items-center relative z-10">
+        <div class="flex flex-col justify-center text-center px-3">
+          <span class="text-lg lg:text-xl font-medium">{{ item.meta.postsFlattened_count ?? '0' }}</span>
+          <span>{{ getSingularOrPlural('Lesson', item.meta.postsFlattened_count ?? 0) }}</span>
+        </div>
+
+        <div class="h-10 border border-slate-700"></div>
+
+        @set('watchDisplay', secondsForDisplay(item.meta.videoSecondsSum))
+        <div class="flex flex-col justify-center text-center px-3">
+          <span class="text-lg lg:text-xl font-medium">{{ watchDisplay.maxDisplay }}</span>
+          <span>{{ getSingularOrPlural(watchDisplay.maxDisplayKey, watchDisplay.maxDisplay) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</a>

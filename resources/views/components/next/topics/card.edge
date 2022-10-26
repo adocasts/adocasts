@@ -1,4 +1,4 @@
-<a href="{{ route('topics.show', { slug: item.slug }) }}" class="relative group overview-hidden w-full flex items-center bg-gray-50 hover:bg-white duration-150 border border-gray-200 rounded-lg hover:shadow-inner p-3 mr-3">
+<a href="{{ route('topics.show', { slug: item.slug }) }}" class="relative group overview-hidden w-full flex items-center bg-gray-50 hover:bg-white dark:bg-slate-800 dark:hover:bg-slate-900 duration-150 rounded-lg hover:shadow-inner p-3 mr-3">
   @if (item.asset?.filename)
     <div class="absolute w-full h-full top-0 left-0 opacity-0 group-hover:opacity-5">
       @!picture({ 
@@ -13,7 +13,7 @@
 
   <div class="mr-4 relative z-10">
     @if (item.asset?.filename)
-      @!picture({ filename: item.asset.filename, className: 'rounded-lg w-12 h-12 bg-gray-100 h-full', width: 42, ratio: 'aspect-square', imgClassName: 'object-contain' })
+      @!picture({ filename: item.asset.filename, className: 'rounded-lg w-12 h-12 bg-gray-100 h-full', width: 42, ratio: 'aspect-square', imgClassName: 'object-fit object-center' })
     @else
       <div class="w-12 h-12 text-base lg:text-xl font-semibold flex items-center justify-center rounded-xl bg-gray-200 text-brand-800 dark:bg-brand-900 dark:bg-opacity-30 dark:text-brand-300">
         {{ getAbbrev(item.name) }}
@@ -22,16 +22,16 @@
   </div>
 
   <div class="flex flex-col relative z-10">
-    <h4 class="font-sans font-medium mb-1 text-lg truncate leading-tight">
+    <h4 class="font-sans font-medium mb-1 2xl:text-lg truncate leading-tight">
       {{ item.name }}
     </h4>
 
-    <div class="w-full text-gray-700 text-xs font-thin flex justify-center items-center relative z-10 leading-tight">
+    <div class="w-full text-slate-700 dark:text-slate-500 text-xs font-thin flex justify-center items-center relative z-10 leading-tight">
       <div class="flex items-center pr-2">
         <span class="mr-1">{{ item.meta?.collections_count ?? 0 }}</span>
         <span>{{ getSingularOrPlural('Series', item.meta?.collections_count ?? 0) }}</span>
       </div>
-      <div class="h-3 border border-gray-300 dark:border-opacity-5"></div>
+      <div class="h-3 border border-slate-300 dark:border-slate-700"></div>
       <div class="flex items-center pl-2">
         <span class="mr-1">{{ item.meta?.posts_count ?? 0 }}</span>
         <span>{{ getSingularOrPlural('Lesson', item.meta?.posts_count ?? 0) }}</span>

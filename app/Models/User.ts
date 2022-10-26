@@ -15,6 +15,7 @@ import Question from 'App/Models/Question'
 import History from './History'
 import Notification from './Notification'
 import Themes from 'App/Enums/Themes'
+import Block from './Block'
 
 class User extends AppBaseModel {
   @column({ isPrimary: true })
@@ -136,6 +137,8 @@ class User extends AppBaseModel {
 
   @hasMany(() => Question)
   public questions: HasMany<typeof Question>
+
+  @hasMany(() => Block)
 }
 
 User['findForAuth'] = function (uids: string[], uidValue: string) {
