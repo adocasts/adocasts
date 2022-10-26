@@ -114,7 +114,7 @@ export default class AssetService {
     return `${user.id}/avatar.${extension}`;
   }
 
-  public static async syncAssetTypes(assetIds: number[] | undefined, assetTypeIds: number[] | undefined, altTexts: string[] | undefined, credits: string[] | undefined) {
+  public static async syncAssetTypes(assetIds: number[] | undefined, assetTypeIds: number[] | undefined, altTexts: (string | undefined)[] | undefined, credits: (string | undefined)[] | undefined) {
     if (!assetIds || !assetTypeIds) return
 
     const promises = assetIds.map((id, i) => {
