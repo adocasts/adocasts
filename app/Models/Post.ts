@@ -253,6 +253,11 @@ export default class Post extends AppBaseModel {
   }
 
   @computed()
+  public get isNotViewable() {
+    return this.stateId !== State.PUBLIC && this.stateId !== State.UNLISTED;
+  }
+
+  @computed()
   public get rootSortOrder() {
     if (!this.series || !this.series.length) {
       return undefined

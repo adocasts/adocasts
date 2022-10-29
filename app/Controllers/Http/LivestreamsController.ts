@@ -41,13 +41,16 @@ export default class LivestreamsController {
         .highlightOrFail()
     })
 
-    if (!post.isViewable && auth.user?.roleId !== Role.ADMIN) {
+    const postModel = Post.$createFromAdapterResult(post)!
+    const series = await CollectionService.getSeriesForPost(postModel, auth.user?.id)
+
+    if (post.isNotViewable && auth.user?.roleId !== Role.ADMIN) {
       throw new Exception('This post is not currently available to the public', 404)
+    } else if (!post.isViewable && auth.user?.roleId !== Role.ADMIN) {
+      return view.render('lessons/soon', { post, series })
     }
 
-    const postModel = Post.$createFromAdapterResult(post)!
     const comments = await CommentService.getForPost(postModel)
-    const series = await CollectionService.getSeriesForPost(postModel, auth.user?.id)
 
     this.historyService.recordPostView(post.id)
     const userProgression = await this.historyService.getPostProgression(postModel)

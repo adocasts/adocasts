@@ -1,7 +1,7 @@
 import Asset from "App/Models/Asset";
 import Post from "App/Models/Post";
 import StorageService from "./StorageService";
-// import CacheService from 'App/Services/CacheService'
+import CacheService from 'App/Services/CacheService'
 import PostType from 'App/Enums/PostType'
 
 export default class PostService {
@@ -72,9 +72,9 @@ export default class PostService {
   }
 
   public static async checkLive() {
-    // if (await CacheService.has('isLive')) {
-    //   return CacheService.get('isLive')
-    // }
+    if (await CacheService.has('isLive')) {
+      return CacheService.getParsed('isLive')
+    }
 
     const live = await Post.query()
       .whereTrue('isLive')
@@ -83,7 +83,7 @@ export default class PostService {
       .orderBy('publishAt', 'desc')
       .first()
 
-    // await CacheService.set('isLive', live?.serialize(), CacheService.fiveMinutes)
+    await CacheService.setSerialized('isLive', live, CacheService.fiveMinutes)
 
     return live
   }
