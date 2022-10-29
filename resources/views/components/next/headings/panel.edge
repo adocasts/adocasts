@@ -1,5 +1,9 @@
-<div class="border-b border-gray-300">
-  <h4 class="text-xl text-gray-800 font-medium font-sans mb-1">
-    {{ title }}
-  </h4>
-</div>
+@set('on', on ?? 'light')
+@set('classMap', {
+  dark: 'text-slate-400',
+  light: 'text-slate-600'
+})
+
+<h3 class="font-sans uppercase tracking-wider mb-3 {{ classMap[on] }}">
+  {{ title }}
+</h3>

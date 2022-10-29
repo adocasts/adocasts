@@ -1,4 +1,4 @@
-<div class="bg-slate-900 py-6 relative z-10">
+<div class="py-6 relative z-10">
   @next.containers.page({ className: 'relative' })
     @set('watchDisplay', secondsForDisplay(item.meta.videoSecondsSum))
 
@@ -24,12 +24,12 @@
 
     <div x-show="seriesId === {{ item.id }}" class="flex flex-wrap">
       @set('primaryLesson', item.postsFlattened[0])
-      <div class="w-full md:w-1/2">
-        @!next.lessons.cardThumbTall({ lesson: primaryLesson, flow: 'flex-col' })
-      </div>
-      <div class="w-full md:w-1/2 flex flex-col">
-        @each ((lesson, i) in item.postsFlattened.slice(1, 4))
-          @!next.lessons.cardThumbTall({ lesson, flow: 'flex-row' })
+      
+      @!next.lessons.cardHero({ item: primaryLesson })
+
+      <div class="flex flex-wrap items-start w-full lg:w-1/2">
+        @each ((item, i) in item.postsFlattened.slice(1, 5))
+          @!next.lessons.cardHeroSmall({ item })
         @endeach
       </div>
 

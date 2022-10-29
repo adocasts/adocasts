@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --font-heading: 'Vollkorn', serif;
+  --font-heading: 'Poppins', serif;
   --font-body: 'Poppins', serif;
 }
 

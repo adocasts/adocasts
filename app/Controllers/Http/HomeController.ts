@@ -15,7 +15,7 @@ export default class HomeController {
   public async index({ view, auth }: HttpContextContract) {
     let vm = new HomeVM()
     let excludeIds: number[] = []
-
+    
     vm = await CacheService.try(CacheKeys.HOME, async () => {
       const trendingSlugs = await AnalyticsService.getPastMonthsPopularContentSlugs()
       const testLesson = await Post.query().where({ id: 88 }).apply(s => s.forDisplay()).firstOrFail()

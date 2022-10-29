@@ -13,7 +13,7 @@
 @section('hero')
 
   <div class="bg-slate-900">
-    @next.containers.page({ className: 'py-8' })
+    @next.containers.page({ className: 'py-6' })
       <div class="flex flex-wrap">
         @!next.lessons.cardHero({ item: testLesson })
 
@@ -27,10 +27,8 @@
   </div>
 
   <div class="bg-slate-900">
-    @next.containers.page({ className: 'pb-12' })
-      <h3 class="font-sans uppercase tracking-wider text-slate-400 mb-3">
-        Popular This Month
-      </h3>
+    @next.containers.page({ className: 'pb-8' })
+      @!next.headings.panel({ title: 'Popular This Month', on: 'dark' })
       <div class="flex flex-wrap -mx-3">
         @each (i in [...new Array(4)])
           @!next.lessons.cardTitle({ item: testLesson })
@@ -39,22 +37,22 @@
     @end
   </div>
 
-  <div class="pb-6 mb-12 relative">
+  <div class="pb-8 pt-3 mb-12 relative">
       <div class="absolute top-0 left-0 w-full h-[50%] lg:h-full bg-slate-900 dark:shadow-lg rounded-b-[10%]"></div>
       @next.containers.page({ className: 'flex flex-wrap lg:flex-nowrap lg:space-x-6 -mb-20 relative z-10' })
         <div class="w-full lg:w-1/3 bg-white dark:bg-slate-800 rounded-xl shadow-xl p-6 mb-3">
-          <div class="sm:text-center mb-6">
-            <h4 class="text-2xl">
+          <div class="sm:text-center mb-4">
+            <h4 class="text-xl font-semibold">
               Want our monthly newsletter?
             </h4>
           </div>
-          <form action="https://www.getrevue.co/profile/adocasts/add_subscriber" method="post" id="revue-form" name="revue-form"  target="_blank" class="mb-6 sm:mx-auto sm:max-w-lg sm:flex">
+          <form action="https://www.getrevue.co/profile/adocasts/add_subscriber" method="post" id="revue-form" name="revue-form"  target="_blank" class="mb-4 sm:mx-auto sm:max-w-lg sm:flex">
             <div class="min-w-0 flex-1">
               <label for="member_email" class="sr-only">Email address</label>
-              <input id="member_email" type="email" name="member[email]" class="block w-full border border-transparent rounded-md px-5 py-2 text-base text-gray-900 placeholder-gray-700 bg-gray-100 dark:bg-slate-900 dark:text-slate-400 shadow-sm focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-brand-600" placeholder="Enter your email">
+              <input id="member_email" type="email" name="member[email]" class="block w-full border border-transparent rounded-md px-5 py-2 text-sm text-gray-900 placeholder-gray-700 bg-gray-100 dark:bg-slate-900 dark:text-slate-400 shadow-sm focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-brand-600" placeholder="Enter your email">
             </div>
             <div class="mt-4 sm:mt-0 sm:ml-3">
-              <button type="submit" class="transition duration-300 block w-full rounded-md border border-transparent px-3 py-3 bg-brand-800 text-sm font-medium text-white shadow hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-brand-600 sm:px-6">
+              <button type="submit" class="transition duration-300 block w-full rounded-md border border-transparent px-3 py-3 bg-brand-800 text-xs font-medium text-white shadow hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-brand-600 sm:px-6">
                 Subscribe
               </button>
             </div>
@@ -67,7 +65,7 @@
         </div>
 
         <div class="w-full lg:w-2/3 bg-white relative shadow-xl p-6 flex flex-col items-center justify-center text-center dark:bg-slate-800 rounded-xl overflow-hidden mb-3">
-          <h4 class="text-2xl">
+          <h4 class="text-2xl font-semibold">
             New Lessons Weekly
           </h4>
           <p class="text-sm opacity-80">
@@ -82,20 +80,36 @@
     </div>
   </div>
 
-  <div class="bg-slate-50 dark:bg-gradient-to-br from-slate-800 to-slate-900 pt-[300px] pb-12 -mt-[200px]">
+  <div class="bg-slate-50 dark:bg-gradient-to-br from-slate-800 to-slate-900 pt-[260px] -mt-[200px]">
     @next.containers.page()
       @!next.headings.section({
         title: 'Recently Updated Series',
         subtitle: 'Adocasts series are collections of lessons spanning multiple topics with a common theme',
         className: 'text-center'
       })
-      <div class="w-full flex flex-wrap justify-center py-6 mb-12">
+      <div class="w-full flex flex-wrap justify-center pt-6 pb-10">
         @each (item in series)
           @!next.series.cardTall({ item })
         @endeach
       </div>
     @end
+  </div>
 
+  @next.containers.page({ className: 'py-12' })
+    <div class="px-3">
+      @!next.headings.panel({ title: 'More Recently Released' })
+    </div>
+    <div class="grid xl:grid-cols-2 gap-3 w-full px-3">
+      @each ((item, i) in latestLessons)
+        @if (i === 1)
+          @!ads.article()
+        @endif
+        @!next.lessons.listItem({ item, className: 'mb-6' })
+      @endeach
+    </div>
+  @end
+
+  <div class="bg-slate-50 dark:bg-gradient-to-br from-slate-800 to-slate-900 py-8">
     @next.containers.page()
       @!next.headings.section({
         title: 'Covered Topics',
@@ -110,6 +124,27 @@
         @endeach
       </div>
     @end
+  </div>
+
+  @next.containers.page({ className: 'py-12' })
+    <div class="px-3">
+      @!next.headings.panel({ title: 'More Recently Released' })
+    </div>
+    <div class="grid xl:grid-cols-2 gap-3 w-full px-3">
+      @each ((item, i) in latestLessons)
+        @if (i === 1)
+          @!ads.article()
+        @endif
+        @!next.lessons.listItem({ item, className: 'mb-6' })
+      @endeach
+    </div>
+  @end
+
+  <div class="py-10 lg:mr-6 relative mb-6">
+    <div class="absolute top-0 left-0 h-full w-full bg-slate-900 dark:shadow-lg rounded-r-3xl"></div>
+    <div class="px-3">
+      @!next.series.heroFeature({ item: series[0] })
+    </div>
   </div>
 
 @endsection
