@@ -72,9 +72,9 @@ export default class PostService {
   }
 
   public static async checkLive() {
-    if (await CacheService.has('isLive')) {
-      return CacheService.get('isLive')
-    }
+    // if (await CacheService.has('isLive')) {
+    //   return CacheService.get('isLive')
+    // }
 
     const live = await Post.query()
       .whereTrue('isLive')
@@ -83,7 +83,7 @@ export default class PostService {
       .orderBy('publishAt', 'desc')
       .first()
 
-    await CacheService.set('isLive', live?.serialize(), CacheService.fiveMinutes)
+    // await CacheService.set('isLive', live?.serialize(), CacheService.fiveMinutes)
 
     return live
   }
