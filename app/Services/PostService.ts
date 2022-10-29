@@ -1,7 +1,7 @@
 import Asset from "App/Models/Asset";
 import Post from "App/Models/Post";
 import StorageService from "./StorageService";
-import CacheService from 'App/Services/CacheService'
+// import CacheService from 'App/Services/CacheService'
 import PostType from 'App/Enums/PostType'
 
 export default class PostService {
