@@ -6,29 +6,23 @@ import { inject } from '@adonisjs/fold'
 import HistoryService from 'App/Services/Http/HistoryService'
 import CacheService from 'App/Services/CacheService'
 import CacheKeys from 'App/Enums/CacheKeys'
+import CollectionService from 'App/Services/CollectionService'
 
 @inject([HistoryService])
 export default class SeriesController {
   constructor(protected historyService: HistoryService) {}
 
   public async index({ view }: HttpContextContract) {
-    const { featuredItems, series } = await CacheService.try(CacheKeys.SERIES, async () => {
-      const featuredItems = await Collection.series()
-        .apply(scope => scope.withPostLatestPublished())
-        .withCount('postsFlattened', query => query.apply(scope => scope.published()))
-        .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
-        .whereHas('postsFlattened', query => query.apply(scope => scope.published()))
-        .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
-        .preload('asset')
-        .wherePublic()
-        .where('isFeatured', true)
-        .whereNull('parentId')
-        .orderBy('latest_publish_at', 'desc')
-        .select(['collections.*', Collection.postCountSubQuery])
-        .limit(4)
+    const { featuredItem, series } = await CacheService.try(CacheKeys.SERIES, async () => {
+      let featuredItem = await CollectionService.getFeaturedSeries()
+
+      if (!featuredItem) {
+        featuredItem = await CollectionService.getLatestUpdatedSeries()
+      }
 
       const series = await Collection.series()
         .apply(scope => scope.withPostLatestPublished())
+        .if(featuredItem, query => query.whereNotIn('id', [featuredItem!.id]))
         .select(['collections.*'])
         .wherePublic()
         .whereNull('parentId')
@@ -42,12 +36,10 @@ export default class SeriesController {
         .whereHas('postsFlattened', query => query.apply(scope => scope.published()))
         .orderBy('latest_publish_at', 'desc')
 
-      return { featuredItems, series }
+      return { featuredItem, series }
     })
 
-    const featured = UtilityService.shuffle(featuredItems)
-
-    return view.render('series/index', { featured, series })
+    return view.render('series/index', { featured: featuredItem, series })
   }
 
   public async show({ view, params, auth }: HttpContextContract) {

@@ -12,15 +12,69 @@
 
 @section('hero')
 
+  <div class="bg-slate-900 relative">
+    @if (series.asset)
+      <div class="absolute w-full h-full top-0 left-0 opacity-20 group-hover:opacity-80 duration-150">
+        <img 
+          src="/img/{{ series.asset.filename }}" 
+          class="rounded-full w-full h-full object-cover object-center scale-[175%] group-hover:scale-[140%] blur-xl group-hover:blur-none mb-3 duration-150" 
+        />
+      </div>
+    @endif
+
+    @next.containers.page()
+      <div class="flex justify-between items-center py-6">
+        <div class="inline-flex items-center pb-3">
+          <div class="aspect-square">
+            @if (series.asset)
+              <img src="/img/{{ series.asset.filename }}" class="rounded-full w-16 h-16 mb-3" />
+            @else
+              <div class="w-16 h-16 text-2xl font-semibold flex items-center justify-center mb-3 rounded-full bg-brand-300 text-brand-800 dark:bg-brand-900 dark:bg-opacity-30 dark:text-brand-300">
+                {{ getAbbrev(series.name) }}
+              </div>
+            @endif
+          </div>
+          <div class="flex-1 ml-6 -mt-3 -mr-px">
+            <h2 class="font-semibold text-white text-2xl">
+              {{ series.name }}
+            </h2>
+            <h4 class="text-slate-400 font-sans font-thin uppercase tracking-wider text-sm">
+              <span class="">{{ series.meta.postsFlattened_count ?? '0' }}</span>
+              <span class="font-thin">{{ getSingularOrPlural('Lesson', series.meta.postsFlattened_count ?? 0) }}</span>
+
+              &amp;
+
+              @set('watchDisplay', secondsForDisplay(series.meta.videoSecondsSum))
+              <span class="">{{ watchDisplay.maxDisplay }}</span>
+              <span class="font-thin">{{ getSingularOrPlural(watchDisplay.maxDisplayKey, watchDisplay.maxDisplay) }}</span>
+              of fun
+            </h4>
+          </div>
+        </div>
+
+        <div class="flex space-x-3 pb-3">
+          <a href="{{ route('series.show', { slug: series.slug }) }}" class="w-full whitespace-nowrap flex justify-center items-center text-center px-6 py-2 bg-slate-900/60 hover:bg-slate-800 text-slate-300 hover:text-slate-200 backdrop-blur rounded-xl">
+            @!next.icons.solid.play({ className: 'w-5 h-5' })
+            <span class="ml-2">Start Series</span>
+          </a>
+          <a href="{{ route('series.show', { slug: series.slug }) }}" class="w-full whitespace-nowrap flex justify-center items-center text-center px-6 py-2 bg-slate-900/30 hover:bg-slate-800 text-slate-300 hover:text-slate-200 backdrop-blur rounded-xl">
+            @!next.icons.social.youtube({ className: 'w-5 h-5' })
+            <span class="ml-2">YouTube</span>
+          </a>
+        </div>
+      </div>
+    @end
+  </div>
+
   {{--  TODO: if user hasn't start the series show series info instead of lesson info  --}}
   {{--   @!lesson.hero() --}}
-  @series.hero({ item: series, nextLesson })
+  {{--  @series.hero({ item: series, nextLesson })
     @slot('top')
       @if (series.statusId === StatusEnum.OUTDATED || series.updatedVersions?.length)
         @!series.outdatedBanner({ updates: series.updatedVersions })
       @endif
     @endslot
-  @end
+  @end  --}}
 
 @endsection
 
@@ -29,13 +83,14 @@
   {{--  Series Lessons  --}}
   {{--  TODO: need to display modules somehow  --}}
   <div class="flex flex-wrap -mx-2 -mt-6  rounded-t-lg relative bg-white dark:bg-gray-950 z-10 overflow-hidden">
-    @each ((post, i) in series.postsFlattened)
-      @!lesson.card({
-        item: post,
-        index: i,
-        className: 'rounded-lg',
-        getRoute:  (post) => route('series.lesson', { slug: series.slug, index: i + 1 }),
-        lazy: i > 4,
+    @each ((lesson, i) in series.postsFlattened)
+      @!next.lessons.listItem({
+        item: lesson, 
+        flexFlow: 'flex-col', 
+        size: 'base', 
+        px: 'px-0', 
+        lineClamp: 'line-clamp-3',  
+        className: 'w-full md:w-1/3 lg:w-1/4 px-3 mb-3 pt-3',
         showProgress: true
       })
     @endeach

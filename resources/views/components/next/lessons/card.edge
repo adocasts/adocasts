@@ -1,0 +1,31 @@
+@set('className', className ?? 'w-full md:w-1/2 lg:w-1/4 px-1.5')
+
+<div class="{{ className }}">
+  <a 
+    href="{{ routePost(item, { slug: item.slug }) }}" 
+    class="relative group overview-hidden w-full h-full flex items-center bg-slate-100 duration-150 rounded-xl overflow-hidden p-6">
+    @!next.lessons.backdropImage({ item, size: 'sm' })
+
+    <div class="flex flex-col relative z-10">
+      @if (item.thumbnails?.length || item.covers?.length)
+        @set('img', item.thumbnails?.length ? item.thumbnails[0] : item.covers[0])
+        @!picture({
+          ratio: 'aspect-video',
+          className: 'mb-8 rounded-xl overflow-hidden group-hover:shadow-xl duration-150',
+          filename: img.filename,
+          altText: img.altText
+        })
+      @endif
+
+      @!next.lessons.barSeries({ item, on: 'dark' })
+
+      <h4 class="font-sans font-semibold 2xl:text-lg leading-tight text-slate-900 group-hover:text-slate-200 duration-150 mt-0 mb-2">
+        {{ item.title }}
+      </h4>
+
+      <p class="text-slate-600 group-hover:text-slate-700 duration-150 line-clamp-4 font-thin text-xs">
+        {{ item.description }}
+      </p>
+    </div>
+  </a>
+</div>

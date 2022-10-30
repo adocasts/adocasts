@@ -1,20 +1,20 @@
-@set('onClass', on === 'dark' ? 'text-slate-500 group-hover:text-slate-400' : 'text-slate-600 group-hover:text-slate-800')
+@set('onClass', on === 'dark' ? 'text-slate-500 group-hover:text-slate-400' : 'text-slate-600 group-hover:text-slate-800 dark:text-slate-500 dark:group-hover:text-slate-400')
 
 @if (item.series.length)
   @set('series', item.series[0])
   <object>
-    <h5 class="uppercase inline-flex items-center text-accent-800 tracking-wide font-sans font-medium text-xs">
+    <h5 class="uppercase inline-flex items-center text-accent-800 tracking-wide font-sans font-thin text-xs">
       <a href="{{ route('series.show', { slug: series.slug }) }}" class="anchor">
         {{ series.name }}
       </a>
-      <span class="{{ onClass }} duration-150 font-normal ml-2">
+      <span class="{{ onClass }} duration-150 font-thin ml-2">
         #{{ item.lessonIndexDisplay }}
       </span>
     </h5>
   </object>
 @elseif (item.postTypeId === PostTypeEnum.NEWS)
   <object>
-    <h5 class="uppercase inline-flex items-center text-accent-800 tracking-wide font-sans text-xs">
+    <h5 class="uppercase inline-flex items-center text-accent-800 tracking-wide font-thin font-sans text-xs">
       <a href="{{ route('news.index') }}" class="anchor">
         NEWS
       </a>
@@ -22,7 +22,7 @@
   </object>
 @elseif (item.postTypeId === PostTypeEnum.LIVESTREAM)
   <object>
-    <h5 class="uppercase inline-flex items-center text-accent-800 tracking-wide font-sans text-xs">
+    <h5 class="uppercase inline-flex items-center text-accent-800 tracking-wide font-thin font-sans text-xs">
       <a href="{{ route('livestreams.index') }}" class="anchor">
         LIVESTREAM
       </a>
@@ -30,7 +30,7 @@
   </object>
 @elseif (item.postTypeId === PostTypeEnum.BLOG)
   <object>
-    <h5 class="uppercase inline-flex items-center text-accent-800 tracking-wide font-sans text-xs">
+    <h5 class="uppercase inline-flex items-center text-accent-800 tracking-wide font-thin font-sans text-xs">
       <a href="{{ route('blogs.index') }}" class="anchor">
         BLOG
       </a>

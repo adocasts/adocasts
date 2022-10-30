@@ -5,7 +5,7 @@
     <a href="{{ route('series.show', { slug: item.slug }) }}" class="inline-flex items-center pb-3">
       <div class="aspect-square">
         @if (item.asset)
-          <img src="/img/{{ item.asset.filename }}" class="rounded-full w-16 mb-3" />
+          <img src="/img/{{ item.asset.filename }}" class="rounded-full w-16 h-16 mb-3" />
         @else
           <div class="w-16 h-16 text-2xl font-semibold flex items-center justify-center mb-3 rounded-full bg-brand-300 text-brand-800 dark:bg-brand-900 dark:bg-opacity-30 dark:text-brand-300">
             {{ getAbbrev(item.name) }}
@@ -13,10 +13,10 @@
         @endif
       </div>
       <div class="flex-1 ml-6 -mt-3 -mr-px">
-        <h4 class="text-slate-400 font-sans uppercase tracking-wider text-sm">
+        <h4 class="text-slate-400 font-sans font-thin uppercase tracking-wider text-sm">
           Featured Series
         </h4>
-        <h2 class="font-normal text-white text-2xl">
+        <h2 class="font-semibold text-white text-2xl">
           {{ item.name }}
         </h2>
       </div>

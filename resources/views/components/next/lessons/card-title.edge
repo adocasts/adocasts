@@ -1,4 +1,6 @@
-<div class="w-full md:w-1/2 lg:w-1/4 px-1.5">
+@set('className', className ?? 'w-full md:w-1/2 lg:w-1/4 px-1.5')
+
+<div class="{{ className }}">
   <a 
     href="{{ routePost(item, { slug: item.slug }) }}" 
     class="relative group overview-hidden w-full flex items-center bg-slate-900 duration-150 rounded-xl p-6">
@@ -7,11 +9,11 @@
     <div class="flex flex-col relative z-10">
       @!next.lessons.barSeries({ item, on: 'dark' })
 
-      <h4 class="font-sans font-semibold 2xl:text-lg leading-tight text-slate-300 group-hover:text-slate-200 duration-150 mt-0 mb-2">
+      <h4 class="font-sans 2xl:text-lg leading-tight text-slate-300 group-hover:text-slate-200 duration-150 mt-0 mb-2">
         {{ item.title }}
       </h4>
 
-      <p class="text-slate-400 group-hover:text-slate-300 duration-150 line-clamp-2 text-xs">
+      <p class="text-slate-400 group-hover:text-slate-300 duration-150 line-clamp-2 text-xs font-thin">
         {{ item.description }}
       </p>
     </div>

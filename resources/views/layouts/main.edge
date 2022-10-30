@@ -17,7 +17,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Vollkorn:wght@400;500;700&display=swap" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"> 
   <script defer>
     const url = new URL(window.location.href)
     const urlParams = new URLSearchParams(url.search)
@@ -52,7 +52,7 @@
       })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
   </script>
 </head>
-<body class="dark:bg-gray-950 dark:text-gray-200 h-full subpixel-antialiased">
+<body class="dark:bg-slate-900 dark:text-slate-300 h-full subpixel-antialiased">
   <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>
   
   @!toast.base()

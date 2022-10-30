@@ -1,24 +1,26 @@
 @set('withImage', withImage ?? true)
 @set('img', item.thumbnails?.length ? item.thumbnails[0] : item.covers?.length ? item.covers[0] : null)
 @set('useImage', withImage && img)
+@set('showProgress', showProgress ?? false)
 @set('description', description ?? true)
 @set('rounded', rounded ?? true)
-@set('hoverBg', hoverBg ?? 'hover:bg-gray-50')
+@set('hoverBg', hoverBg ?? 'hover:bg-slate-100 dark:hover:bg-slate-800/50')
 @set('flexFlow', flexFlow ?? 'flex-row')
+@set('isCol', flexFlow === 'flex-col')
 @set('px', px ?? 'px-6')
 @set('size', size ?? 'sm')
 @set('sizeClassMap', {
   xs: {
     title: 'text-lg',
-    description: 'line-clamp-2'
+    description: lineClamp ?? 'line-clamp-2'
   },
   sm: {
     title: 'text-lg',
-    description: 'line-clamp-2'
+    description: lineClamp ?? 'line-clamp-2'
   },
   base: {
     title: 'text-lg',
-    description: 'line-clamp-3'
+    description: lineClamp ?? 'line-clamp-3'
   }
 })
 @set('width', flexFlow == 'flex-col' 
@@ -30,7 +32,7 @@
 
 <a href="{{ routePost(item, { slug: item.slug }) }}" class="flex {{ flexFlow }} items-center group {{ hoverBg }} {{ rounded ? 'rounded-lg overflow-hidden' : '' }} duration-150 {{ className }}">
   @if (useImage)
-    <div class="{{ width }} relative duration-300 {{ rounded ? 'rounded-lg overflow-hidden' : '' }} {{ imgClassName }}">
+    <div class="{{ width }} relative duration-300 {{ rounded ? 'rounded-lg overflow-hidden' : '' }} {{ isCol && 'mb-3' }} {{ imgClassName }}">
       @!picture({ 
         filename: img.filename, 
         altText: img.altText,
@@ -40,18 +42,22 @@
         ratio: 'aspect-video',
         lazy: lazyItem 
       })
+
+      @if (showProgress)
+        @!ui.progression({ progressionHistory: item.progressionHistory })
+      @endif
     </div>
   @endif
 
   <div class="{{ width }} {{ px }} {{ contentClassName }}">
     @!next.lessons.barSeries({ on: 'light', item })
 
-    <h3 class="{{ sizeClassMap[size].title }} line-clamp-3 font-sans font-semibold leading-6 max-w-xl">
+    <h3 class="{{ sizeClassMap[size].title }} line-clamp-3 font-sans leading-6 max-w-xl">
       {{ item.title }}
     </h3>
 
     @if (description && item.description)
-      <p class="mb-2 max-w-xl mt-3 text-sm text-gray-700 group-hover:text-gray-800 duration-150 {{ sizeClassMap[size].description }}">
+      <p class="mb-2 max-w-xl mt-3 text-sm font-thin text-slate-600 dark:text-slate-600 group-hover:text-slate-700 dark:group-hover:text-slate-400 duration-150 {{ sizeClassMap[size].description }}">
         {{ item.description }}
       </p>
     @endif

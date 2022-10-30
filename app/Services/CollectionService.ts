@@ -57,6 +57,45 @@ export default class CollectionService {
       .first()
   }
 
+  public static async getFeaturedSeries() {
+    return Collection.series()
+      .apply(scope => scope.withPostLatestPublished())
+      .withCount('postsFlattened', query => query.apply(scope => scope.published()))
+      .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
+      .whereHas('postsFlattened', query => query.apply(scope => scope.published()))
+      .preload('postsFlattened', query => query
+        .apply(scope => scope.forCollectionDisplay({ orderBy: 'pivot_root_sort_order', direction: 'desc' }))
+        .groupLimit(5)
+      )
+      .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
+      .preload('asset')
+      .wherePublic()
+      .where('isFeatured', true)
+      .whereNull('parentId')
+      .orderBy('latest_publish_at', 'desc')
+      .select(['collections.*', Collection.postCountSubQuery])
+      .first()
+  }
+
+  public static async getLatestUpdatedSeries() {
+    return Collection.series()
+      .apply(scope => scope.withPostLatestPublished())
+      .withCount('postsFlattened', query => query.apply(scope => scope.published()))
+      .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
+      .whereHas('postsFlattened', query => query.apply(scope => scope.published()))
+      .preload('postsFlattened', query => query
+        .apply(scope => scope.forCollectionDisplay({ orderBy: 'pivot_root_sort_order', direction: 'desc' }))
+        .groupLimit(5)
+      )
+      .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
+      .preload('asset')
+      .wherePublic()
+      .whereNull('parentId')
+      .orderBy('latest_publish_at', 'desc')
+      .select(['collections.*', Collection.postCountSubQuery])
+      .first()
+  }
+
   // TODO: finish
   public static async getPostCounts(collections: Collection[]) {
     const ids = collections.map(c => c.id)
