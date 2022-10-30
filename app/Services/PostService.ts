@@ -1,8 +1,9 @@
 import Asset from "App/Models/Asset";
 import Post from "App/Models/Post";
 import StorageService from "./StorageService";
-// import CacheService from 'App/Services/CacheService'
+import CacheService from 'App/Services/CacheService'
 import PostType from 'App/Enums/PostType'
+import DiscordLogger from "@ioc:Logger/Discord";
 
 export default class PostService {
   public static async getFeatureSingle(excludeIds: number[] = []) {
@@ -72,9 +73,14 @@ export default class PostService {
   }
 
   public static async checkLive() {
-    // if (await CacheService.has('isLive')) {
-    //   return CacheService.getParsed('isLive')
-    // }
+    try {
+      if (await CacheService.has('isLive')) {
+        return CacheService.getParsed('isLive')
+      }
+    } catch (e) {
+      await CacheService.destroy('isLive')
+      await DiscordLogger.error('PostService.checkLive', e.message)
+    }
 
     const live = await Post.query()
       .whereTrue('isLive')
@@ -83,7 +89,7 @@ export default class PostService {
       .orderBy('publishAt', 'desc')
       .first()
 
-    // await CacheService.setSerialized('isLive', live, CacheService.fiveMinutes)
+    await CacheService.setSerialized('isLive', live?.serialize(), CacheService.fiveMinutes)
 
     return live
   }
