@@ -9,7 +9,7 @@ window.initVideo = function ({ el = 'ytEmbed', videoId, httpMethod = 'post', htt
     player = new YT.Player(el, {
       videoId: videoId,
       playerVars: {
-        autoplay: true,
+        autoplay: false,
         modestbranding: 1,
         rel: 0,
         showinfo: 0,
@@ -23,6 +23,5 @@ window.initVideo = function ({ el = 'ytEmbed', videoId, httpMethod = 'post', htt
 
   function onPlayerReady(event) {
     window.player = player
-    event.target.mute()
   }
 }

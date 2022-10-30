@@ -1,8 +1,8 @@
 let isYtVideoPlaying = false
-window.initVideo = function ({ el = 'ytEmbed', videoId, httpMethod = 'post', httpUrl, httpPayload = {}, watchSeconds = 0, isLive = false, autoplay = false } = {}) {
+window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMethod = 'post', httpUrl, httpPayload = {}, watchSeconds = 0, isLive = false, autoplay = false } = {}) {
   const startMuted = isLive || autoplay
   const bodyContent = document.querySelector('.body-content')
-
+  
   if (isLive) {
     autoplay = true
   }
@@ -14,6 +14,10 @@ window.initVideo = function ({ el = 'ytEmbed', videoId, httpMethod = 'post', htt
   if (autoplay) {
     onInitVideo(true, watchSeconds)
     return
+  }
+  
+  if (autoEmbed) {
+    onInitVideo(false, watchSeconds)
   }
 
   const element = document.getElementById(el)
@@ -62,7 +66,7 @@ window.initVideo = function ({ el = 'ytEmbed', videoId, httpMethod = 'post', htt
 
     window.onYouTubeIframeAPIReady = function () {
       const playerVars = {
-        autoplay: playOnReady,
+        autoplay: false, // playOnReady - TODO double-check, may not be working
         modestbranding: 1,
         rel: 0,
         showinfo: 0,
@@ -87,9 +91,9 @@ window.initVideo = function ({ el = 'ytEmbed', videoId, httpMethod = 'post', htt
     function onPlayerReady(event) {
       // setTimeout(() => player.pauseVideo(), 500)
       // setTimeout(() => player.seekTo(300), 500)
-      if (startMuted) {
-        event.target.mute()
-      }
+      // if (startMuted) {
+      //   event.target.mute()
+      // }
     }
 
     function onPlayerStateChange(event) {
