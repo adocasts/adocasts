@@ -13,7 +13,13 @@
 
   <div class="mr-4 relative z-10">
     @if (item.asset?.filename)
-      @!picture({ filename: item.asset.filename, className: 'rounded-lg w-12 h-12 bg-gray-100 h-full', width: 42, ratio: 'aspect-square', imgClassName: 'object-fit object-center' })
+      @!picture({ 
+        filename: item.asset.filename, 
+        className: 'rounded-lg w-12 h-12 bg-slate-100 dark:bg-slate-200 h-full', 
+        width: 42, 
+        ratio: 'aspect-square', 
+        imgClassName: 'object-fit object-center' 
+      })
     @else
       <div class="w-12 h-12 text-base lg:text-xl font-semibold flex items-center justify-center rounded-xl bg-gray-200 text-brand-800 dark:bg-brand-900 dark:bg-opacity-30 dark:text-brand-300">
         {{ getAbbrev(item.name) }}
@@ -22,7 +28,7 @@
   </div>
 
   <div class="flex flex-col relative z-10">
-    <h4 class="font-sans mb-1 text-sm 2xl:text-base truncate leading-tight">
+    <h4 class="font-sans mb-1 text-sm 2xl:text-base dark:text-slate-200 dark:group-hover:text-slate-100 duration-150 truncate leading-tight">
       {{ item.name }}
     </h4>
 

@@ -1,7 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Taxonomy from 'App/Models/Taxonomy'
 import CollectionTypes from 'App/Enums/CollectionTypes'
-import UtilityService from 'App/Services/UtilityService'
 import { inject } from '@adonisjs/fold'
 import HistoryService from 'App/Services/Http/HistoryService'
 import States from 'App/Enums/States'
@@ -13,17 +12,7 @@ export default class TopicsController {
   constructor(protected historyService: HistoryService) {}
 
   public async index({ view }: HttpContextContract) {
-    const { featuredItems, topics } = await CacheService.try(CacheKeys.TOPICS, async () => {
-      const featuredItems = await Taxonomy.query()
-        .apply(scope => scope.hasContent())
-        .preload('parent', query => query.preload('asset'))
-        .where('isFeatured', true)
-        .preload('asset')
-        .withCount('posts')
-        .withCount('collections')
-        .orderBy('name')
-        .limit(5)
-
+    const { topics } = await CacheService.try(CacheKeys.TOPICS, async () => {
       const topics = await Taxonomy.query()
         .apply(scope => scope.hasContent())
         .preload('parent', query => query.preload('asset'))
@@ -34,14 +23,19 @@ export default class TopicsController {
           .whereHas('posts', query => query.apply(scope => scope.published()))
           .orWhereHas('collections', query => query.whereHas('postsFlattened', query => query.apply(scope => scope.published())))
         )
-        .orderBy('name')
+        .preload('posts', query => query
+          .apply(scope => scope.forDisplay())
+          .groupLimit(3)
+        )
+        .orderBy([
+          { column: 'isFeatured', order: 'desc' }, 
+          { column: 'name', order: 'asc' }
+        ])
 
-      return { featuredItems, topics }
+      return { topics }
     })
 
-    const featured = UtilityService.shuffle(featuredItems)
-
-    return view.render('topics/index', { featured, topics })
+    return view.render('topics/index', { topics })
   }
 
   public async show({ view, params }: HttpContextContract) {

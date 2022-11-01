@@ -1,0 +1,52 @@
+@set('className', className ?? 'w-full lg:w-1/2 xl:w-1/4 px-3 mb-6')
+
+<a href="{{ route('topics.show', { slug: item.slug }) }}" class="{{ className }}">
+  <div class="group h-full flex flex-col bg-slate-900 text-center p-6 rounded-xl overflow-hidden relative">
+    <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-transparent via-slate-900/60 to-slate-900 z-10"></div>
+    
+    @if (item.asset)
+      <div class="absolute w-full h-full top-0 left-0 opacity-60 group-hover:opacity-80 duration-150">
+        <img 
+          src="/img/{{ item.asset.filename }}" 
+          class="rounded-full w-full h-full object-cover object-center scale-[175%] group-hover:scale-[140%] blur-xl group-hover:blur-none mb-3 duration-150" 
+        />
+      </div>
+    @endif
+
+    <div class="flex flex-col h-full justify-between relative z-20">
+      <div class="flex flex-col">
+        <div class="flex justify-center">
+          @!next.series.icon({ item, width: 'w-24', height: 'h-24', className: 'shadow-xl' })
+        </div>
+        <div class="mt-1">
+          <h3 class="text-slate-200 text-lg 2xl:text-xl mb-1">
+            {{ item.name }}
+          </h3>
+          <p class="font-thin text-slate-400 group-hover:text-slate-200 duration-150 text-xs 2xl:text-sm line-clamp-4">
+            {{ item.description }}
+          </p>
+        </div>
+      </div>
+
+      <div class="w-full text-slate-400 text-xs py-6 px-6 flex justify-around items-center relative z-10">
+        <div class="flex flex-col justify-center text-center uppercase tracking-wider px-3">
+          <span class="text-base">{{ item.meta?.collections_count ?? 0 }}</span>
+          <span class="text-xs font-thin">{{ getSingularOrPlural('Series', item.meta?.collections_count ?? 0) }}</span>
+        </div>
+
+        <div class="h-10 border-l border-slate-700/60"></div>
+
+        <div class="flex flex-col justify-center text-center uppercase tracking-wider px-3">
+          <span class="text-base">{{ item.meta?.posts_count ?? 0 }}</span>
+          <span class="text-xs font-thin">{{ getSingularOrPlural('Lesson', item.meta?.posts_count ?? 0) }}</span>
+        </div>
+      </div>
+
+      <object class="w-full">
+        <a href="{{ route('topics.show', { slug: item.slug }) }}" class="w-full flex justify-center items-center text-center px-3 py-2 bg-slate-100/10 hover:bg-slate-100/20 text-slate-300 group-hover:text-slate-200 backdrop-blur rounded-xl">
+          View Topic
+        </a>
+      </object>
+    </div>
+  </div>
+</a>

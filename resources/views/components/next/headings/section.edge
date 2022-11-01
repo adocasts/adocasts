@@ -1,11 +1,22 @@
 @set('slot', await $slots.main())
+@set('on', on ?? 'light')
+@set('onClass', {
+  light: {
+    title: 'text-slate-900',
+    subtitle: 'text-slate-600'
+  },
+  dark: {
+    title: 'text-slate-100',
+    subtitle: 'text-slate-400'
+  }
+})
 
 <div class="{{ className }}">
-  <h2 class="text-4xl font-semibold mb-2">
+  <h2 class="text-4xl font-semibold mb-2 {{ onClass[on].title }}">
     {{ title }}
   </h2>
   @if (slot || subtitle)
-    <p class="text-lg font-thin">
+    <p class="text-lg font-thin {{ onClass[on].subtitle }}">
       @if (slot)
         {{{ slot }}}
       @else
