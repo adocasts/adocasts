@@ -449,7 +449,7 @@ progress[value]::-webkit-progress-value {
   border-radius: var(--progress-border-radius);
 }
 
-.prose .timestamp {
+.prose p.timestamp {
   @apply text-xs text-gray-700 tracking-wide font-bold;
   margin-bottom: -2em;
 }
@@ -463,12 +463,13 @@ progress[value]::-webkit-progress-value {
   color: theme('colors.indigo.500') !important;
 }
 
-.prose.post-type-5 .timestamp + p:not(.timestamp) {
+.prose.post-type-5 .timestamp + p:not(.timestamp),
+.prose .timestamp.transcript + p:not(.timestamp) {
   margin-top: -1.75rem;
   padding-left: 55px;
 }
 
-.prose.post-type-1 .timestamp:after {
+.prose.post-type-1 p.timestamp:not(.transcript):after {
   content: "- Jump to this section in video";
   color: theme('colors.gray.700');
   font-weight: 300;
