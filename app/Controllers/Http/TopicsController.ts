@@ -41,6 +41,7 @@ export default class TopicsController {
   public async show({ view, params }: HttpContextContract) {
     const { topic, children, posts, series } = await CacheService.try(CacheService.getTaxonomyKey(params.slug), async () => {
       const topic = await Taxonomy.query()
+        .preload('asset')
         .preload('parent')
         .where({ slug: params.slug })
         .firstOrFail()

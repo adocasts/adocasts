@@ -21,6 +21,7 @@
           src="/img/{{ series.asset.filename }}" 
           class="rounded-full w-full h-full object-cover object-center scale-[175%] group-hover:scale-[140%] blur-xl group-hover:blur-none mb-3 duration-150" 
         />
+        <div class="absolute top-2/3 left-0 w-full h-80 bg-gradient-to-b from-transparent to-white dark:to-slate-900 z-10 pointer-events-none"></div>
       </div>
     @endif
 
@@ -37,9 +38,9 @@
             @endif
           </div>
           <div class="flex-1 ml-6 -mr-px">
-            <h2 class="font-semibold text-white text-2xl">
+            <h1 class="font-semibold text-white text-2xl">
               {{ series.name }}
-            </h2>
+            </h1>
             <h4 class="text-slate-400 font-sans font-thin uppercase tracking-wider text-sm">
               <span class="">{{ series.meta.postsFlattened_count ?? '0' }}</span>
               <span class="font-thin">{{ getSingularOrPlural('Lesson', series.meta.postsFlattened_count ?? 0) }}</span>

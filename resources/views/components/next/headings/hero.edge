@@ -1,0 +1,31 @@
+<div class="relative dark">
+    <div class="absolute top-0 left-0 w-full h-[50%] lg:h-full bg-slate-900 dark:shadow-lg rounded-b-[10%]"></div>
+    @container({ className: 'relative z-10' })
+      <div class="py-6">
+        @next.headings.section({
+          subtitle,
+          className: ad ? 'mb-6' : 'mb-3',
+          on: 'dark'
+        })
+          @slot('title')
+            @if ($slots.title)
+              {{{ await $slots.title() }}}
+            @else
+              {{ title }}
+            @endif
+          @endslot
+        @end
+
+        {{{ await $slots.main() }}}
+      </div>
+
+      @if (ad)
+        <div class="relative -mt-12 top-12">
+          <div class="bg-slate-100 rounded-xl">
+            @!ads.leaderboard()
+          </div>
+        </div>
+      @endif
+    @end
+  </div>
+  <div class="pb-12"></div>

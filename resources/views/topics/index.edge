@@ -12,34 +12,19 @@
 
 @section('hero')
 
-  <div class="relative">
-    <div class="absolute top-0 left-0 w-full h-[50%] lg:h-full bg-slate-900 dark:shadow-lg rounded-b-[10%]"></div>
-    @container({ className: 'relative z-10' })
-      <div class="py-6">
-        @!next.headings.section({
-          title: 'Covered Topics',
-          subtitle: `Each Adocasts topic contains groupings of series, lessons, news, and livestreams.`,
-          className: 'mb-6',
-          on: 'dark'
-        })
-
-        <div class="flex flex-wrap md:-mx-3">
-          @each(item in topics)
-            <div class="w-full md:w-1/4 lg:w-1/5 md:px-3 pb-6 dark">
-              @!next.topics.card({ item, className: 'w-full' })
-            </div>
-          @endeach
+  @next.headings.hero({
+    title: 'Covered Topics',
+    subtitle: `Each Adocasts topic constains groupings of series, lessons, news, and livestreams.`,
+    ad: true
+  })
+    <div class="flex flex-wrap md:-mx-3">
+      @each(item in topics)
+        <div class="w-full md:w-1/4 lg:w-1/5 md:px-3 pb-6 dark">
+          @!next.topics.card({ item, className: 'w-full' })
         </div>
-      </div>
-
-      <div class="relative -mt-12 top-12">
-        <div class="bg-slate-100 rounded-xl">
-          @!ads.leaderboard()
-        </div>
-      </div>
-    @end
-  </div>
-  <div class="pb-12"></div>
+      @endeach
+    </div>
+  @end
 
 @endsection
 

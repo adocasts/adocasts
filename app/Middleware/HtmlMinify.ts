@@ -2,6 +2,11 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 const minify = require('html-minifier').minify;
 
 export default class HtmlMinify {
+  /**
+   * Minify the HTML prior to sending it as the response body
+   * @param param0 
+   * @param next 
+   */
   public async handle({ response, request }: HttpContextContract, next: () => Promise<void>) {
     // code for middleware goes here. ABOVE THE NEXT CALL
     await next()
