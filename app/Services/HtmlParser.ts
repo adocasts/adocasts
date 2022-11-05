@@ -71,13 +71,28 @@ export default class HtmlParser {
 
     // add timestamp class to timestamp paragraphs
     if (paragraphs.length) {
-      const timestampTemplates = ['X:XX', 'XX:XX', 'X:XX:XX', 'XX:XX:XX']
-      const timestamps = paragraphs.filter(el => {
-        const timestampReValue = el.textContent.replaceAll(/[0-9]/g, 'X').trim()
-        const isMatch = timestampTemplates.includes(timestampReValue)
-        return isMatch
-      })
-      timestamps.map(el => el.setAttribute('class', 'timestamp'))
+      const regexWholeString = /^([0-9]{1,2}:)?[0-9]{1,2}:[0-9]{1,2}$/i
+      const regex = /([0-9]{1,2}:)?[0-9]{1,2}:[0-9]{1,2}/gim
+      
+      paragraphs
+        .filter(el => el.textContent.match(regex))
+        .map(el => {
+          if (el.textContent.trim().match(regexWholeString)) {
+            el.setAttribute('class', 'timestamp')
+            return
+          } 
+
+          el.setAttribute('class', 'chapters')
+          el.innerHTML = el.innerHTML.replaceAll(regex, '<span class="timestamp">$&</span>')
+        })
+
+      // find & set transcript paragraph timestamps
+      const transcriptIndex = paragraphs.findIndex(el => el.textContent.includes('Transcript:'))
+      if (transcriptIndex > -1) {
+        paragraphs.slice(transcriptIndex + 1)
+          .filter(el => el.textContent.match(regex))
+          .map(el => el.setAttribute('class', 'timestamp transcript'))
+      }
     }
 
     if (preBlocks?.length) {
