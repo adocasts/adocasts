@@ -1,5 +1,5 @@
 @set('seriesTitle', series && !title.startsWith(series.name) ? `${series.name}: ${title}` : title)
-@set('asset', asset ?? { filename: 'brand/brand-thumbnail.png' })
+@set('asset', asset ?? { filename: 'brand/og-2022.png' })
 
 <title>
   @if (title)
@@ -19,7 +19,7 @@
 <meta property="og:url" content="{{ url }}" />
 <meta property="og:site_name" content="adocasts.com" />
 @if (asset)
-  <meta property="og:image" content="https://adocasts.com/img/{{ asset.filename }}?w=600" />
+  <meta property="og:image" content="https://adocasts.com/img/{{ asset.filename }}?w=900" />
 @endif
 
 {{-- Twitter --}}
@@ -30,7 +30,7 @@
 <meta name="twitter:creator" content="@tomgobich">
 @if (asset)
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://adocasts.com/img/{{ asset.filename }}?w=600">
+  <meta name="twitter:image" content="https://adocasts.com/img/{{ asset.filename }}?w=900">
 @endif
 
 {{-- Robots --}}
