@@ -1,0 +1,23 @@
+@if (post.livestreamUrl)
+  <div class="break">
+    <div class="bg-gray-950">
+      <div class="container flex flex-col md:flex-row md:justify-end relative mx-auto">
+        <div class="w-full py-6 px-3 lg:pr-6 bg-gray-950 {{ !series && 'mx-auto' }}">
+          <div class="flex items-center">
+            <div class="pt-3 flex flex-col mb-6">
+              @!streams.liveIndicator()
+              <h2 class="text-3xl font-extrabold text-gray-100 tracking-tight mb-2">
+                <a href="{{ post.livestreamUrl }}">
+                  {{ post.title }}
+                </a>
+              </h2>
+            </div>
+          </div>
+          <div class="aspect-video bg-gradient-to-br from-brand-900 to-brand-800 relative rounded-xl overflow-hidden">
+            <div id="lessonVideoEmbed" class="absolute top-0 left-0 w-full h-full"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+@endif

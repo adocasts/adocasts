@@ -66,7 +66,7 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
 
     window.onYouTubeIframeAPIReady = function () {
       const playerVars = {
-        autoplay: false, // playOnReady - TODO double-check, may not be working
+        autoplay: playOnReady,
         modestbranding: 1,
         rel: 0,
         showinfo: 0,
@@ -91,9 +91,9 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
     function onPlayerReady(event) {
       // setTimeout(() => player.pauseVideo(), 500)
       // setTimeout(() => player.seekTo(300), 500)
-      // if (startMuted) {
-      //   event.target.mute()
-      // }
+      if (startMuted) {
+        event.target.mute()
+      }
     }
 
     function onPlayerStateChange(event) {

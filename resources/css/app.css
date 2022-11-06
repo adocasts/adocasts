@@ -74,6 +74,14 @@ div[role="progressbar"].circle {
   color: var(--fg);
 }
 
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
 
 .anchor,
 .anchor-inv,

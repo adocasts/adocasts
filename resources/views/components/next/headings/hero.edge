@@ -10,7 +10,7 @@
           @slot('title')
             @if ($slots.title)
               {{{ await $slots.title() }}}
-            @else
+            @elseif (title)
               {{ title }}
             @endif
           @endslot
