@@ -11,9 +11,15 @@
 
     <div class="w-1/2 px-3">
       <h5 class="uppercase inline-flex items-center text-accent-800 tracking-wide text-xs">
-        <span class="text-gray-700">
-          Lesson {{ item.lessonIndexDisplay }}
-        </span>
+        @if (series)
+          <span class="text-gray-700">
+            Lesson {{ item.getIndexDisplay(series) }}
+          </span>
+        @else
+          <span class="text-gray-700">
+            Lesson {{ item.lessonIndexDisplay }}
+          </span>
+        @endif
       </h5>
 
       <h4 class="text-sm lg:text-base leading-tight lg:leading-normal">

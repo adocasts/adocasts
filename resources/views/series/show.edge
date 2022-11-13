@@ -33,6 +33,7 @@
       @!lesson.card({
         item: post,
         index: i,
+        series: series,
         className: 'rounded-lg',
         getRoute:  (post) => route('series.lesson', { slug: series.slug, index: i + 1 }),
         lazy: i > 4,
