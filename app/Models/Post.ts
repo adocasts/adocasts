@@ -382,6 +382,18 @@ export default class Post extends AppBaseModel {
     return `${series.sortOrder + 1}.${series.$extras.pivot_sort_order}`
   }
 
+  public getIndexDisplay(series: Collection | undefined) {
+    const postSeries = this.series?.find(s => s.id === series?.id)
+
+    if (!postSeries) return ''
+
+    if (!postSeries.parentId) {
+      return `${postSeries.$extras.pivot_sort_order + 1}.0`
+    }
+
+    return `${postSeries.sortOrder + 1}.${postSeries.$extras.pivot_sort_order}`
+  }
+
   public static lessons() {
     return this.query().where('postTypeId', PostType.LESSON)
   }
