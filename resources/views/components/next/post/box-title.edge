@@ -1,0 +1,23 @@
+<div class="flex flex-wrap justify-between bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 dark:text-slate-100 pb-3 mb-6 rounded-xl p-6">
+  <div>
+    <div>
+      @if (series)
+        <h2 class="font-bold uppercase text-sm tracking-wider text-slate-600 dark:text-slate-400">
+          {{ series.name }}
+          <span class="inline-block ml-1 font-normal">
+            #{{ post.lessonIndexDisplay }}
+          </span>
+        </h2>
+      @endif
+      <h1 class="text-2xl md:text-3xl mb-3">
+        {{ post.title }}
+      </h1>
+    </div>
+
+    <p class="text-slate-600 dark:text-slate-400 text-sm max-w-prose mb-3">
+      {{ post.description }}
+    </p>
+  </div>
+
+  @!next.post.actions({ post })
+</div>

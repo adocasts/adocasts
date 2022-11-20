@@ -1,9 +1,12 @@
 import Env from '@ioc:Adonis/Core/Env'
 import axios from 'axios'
+import { DateTime } from 'luxon'
 import CacheService from './CacheService'
 
 export default class AnalyticsService {
-  private static apiEndpoint = 'https://analytics.adocasts.com/api/v1/stats/breakdown?site_id=adocasts.com'
+  private static breakdownEndpoint = 'https://analytics.adocasts.com/api/v1/stats/breakdown?site_id=adocasts.com'
+  private static aggregateEndpoint = 'https://analytics.adocasts.com/api/v1/stats/aggregate?site_id=adocasts.com'
+  private static defaultStartDte = DateTime.now().set({ year: 2000, month: 1, day: 1 })
 
   public static async getPastMonthsPopularContentSlugs(limit = 8) {
     return await CacheService.try('ANALYTICS_PAST_MONTH_POPULAR_CONTENT', async () => {
@@ -19,8 +22,15 @@ export default class AnalyticsService {
     }, CacheService.oneDay, true)
   }
 
+  public static async getPageViews(path: string, startDte: DateTime = this.defaultStartDte, endDte = DateTime.now()) {
+    const start = startDte.toFormat('yyyy-MM-dd')
+    const end = endDte.toFormat('yyyy-MM-dd')
+    const { data } = await this.apiGet(`${this.aggregateEndpoint}&metrics=pageviews&period=custom&date=${start},${end}&filters=event:page%3D%3D${path}`)
+    return data.results.pageviews.value
+  }
+
   public static async getPast30dViews() {
-    const { data } = await this.apiGet(`${this.apiEndpoint}&period=30d&property=event:page`)
+    const { data } = await this.apiGet(`${this.breakdownEndpoint}&period=30d&property=event:page`)
     return data.results
   }
 

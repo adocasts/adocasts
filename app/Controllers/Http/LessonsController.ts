@@ -8,6 +8,7 @@ import Role from 'App/Enums/Roles'
 import { Exception } from '@adonisjs/core/build/standalone'
 import CollectionService from 'App/Services/CollectionService'
 import CacheService from 'App/Services/CacheService'
+import AnalyticsService from 'App/Services/AnalyticsService'
 
 @inject([HistoryService])
 export default class LessonsController {
@@ -25,7 +26,7 @@ export default class LessonsController {
     return view.render('lessons/index', { items })
   }
 
-  public async show({ view, params, auth }: HttpContextContract) {
+  public async show({ view, params, auth, request }: HttpContextContract) {
     const post = await CacheService.try(CacheService.getPostKey(params.slug), async () => {
       return Post.lessons()
         .apply(scope => scope.forDisplay(true))
@@ -43,10 +44,11 @@ export default class LessonsController {
     }
 
     const comments = await CommentService.getForPost(postModel!)
+    const views = await AnalyticsService.getPageViews(request.url())
 
     this.historyService.recordPostView(post.id)
     const userProgression = await this.historyService.getPostProgression(postModel!)
 
-    return view.render('lessons/show', { post, series, comments, userProgression })
+    return view.render('lessons/show', { post, series, comments, userProgression, views })
   }
 }

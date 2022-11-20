@@ -242,3 +242,12 @@ postAnchorLinks.map(heading => {
   heading.classList.add('group')
   heading.appendChild(anchor)
 })
+
+const transcriptBtn = document.getElementById('transcriptCutoffBtn')
+const transcriptCutoff = Array.from(document.querySelectorAll('.prose .transcript.cutoff'))
+if (transcriptBtn && transcriptCutoff.length) {
+  transcriptBtn.addEventListener('click', (event) => {
+    transcriptBtn.parentElement.classList.toggle('active')
+    transcriptCutoff.map(el => el.classList.toggle('active'))
+  })
+}

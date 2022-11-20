@@ -1,0 +1,49 @@
+@if(post.postTypeId !== PostTypeEnum.NEWS)
+  <div class="flex flex-col md:items-center w-full lg:w-auto xl:min-w-[325px] px-3 md:px-6 rounded-xl relative -bottom-px -mx-3 md:-mx-6 text-xs md:text-sm space-y-2">
+    <div id="appCompleted" class="w-full" x-cloak x-data="appCompleted('{{ route('api.histories.progression.toggle') }}', { postId: {{ post.id }}, collectionId: {{ series?.id }}, route: '{{ request.ctx.route?.name }}' }, {{ userProgression?.isCompleted }})" @completed="changeCompleted">
+      <button x-show="!isCompleted" @click="toggle" type="button" class="w-full group flex items-center bg-slate-100 dark:bg-opacity-10 hover:bg-slate-900 hover:text-white transition duration-300 rounded-full py-1 pl-1 pr-6">
+        <div class="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center group-hover:bg-white group-hover:text-slate-900 transition duraton-300 justify-center mr-2">
+          @!svg.check({ className: 'w-4 h-4' })
+        </div>
+        Mark Complete
+      </button>
+      <button x-show="isCompleted" @click="toggle" type="button" class="w-full group flex items-center bg-slate-900 text-white hover:bg-slate-900 transition duration-300 rounded-full py-1 pl-1 pr-6">
+        <div class="w-6 h-6 rounded-full bg-white text-black flex items-center transition duraton-300 justify-center mr-2">
+          @!svg.check({ className: 'w-4 h-4' })
+        </div>
+        Completed
+      </button>
+    </div>
+    
+    <div class="w-full" x-cloak x-data="appWatchlist('{{ route('api.watchlist.toggle') }}', { postId: {{ post.id }} }, {{ post.isInWatchlist }})">
+      <button x-show="!isInWatchlist" @click="toggle" title="Add to watchlist" type="button" class="w-full group flex items-center bg-slate-100 dark:bg-opacity-10 hover:bg-slate-900 hover:text-white transition duration-300 rounded-full py-1 pl-1 pr-6">
+        <div class="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center group-hover:bg-white group-hover:text-slate-900 transition duraton-300 justify-center mr-2">
+          @!svg.plus({ className: 'w-4 h-4' })
+        </div>
+        Add To Watchlist
+      </button>
+      <button x-show="isInWatchlist" @click="toggle" title="Remove from watchlist" type="button" class="w-full group flex items-center bg-slate-900 text-white hover:bg-slate-900 transition duration-300 rounded-full py-1 pl-1 pr-6">
+        <div class="w-6 h-6 rounded-full bg-white text-slate-900 flex items-center transition duraton-300 justify-center mr-2">
+          @!svg.plus({ className: 'w-4 h-4' })
+        </div>
+        In Watchlist
+      </button>
+    </div>
+    @if (post.videoUrl)
+      <a target="_blank" rel="noopener noreferrer nofollow" href="{{ post.videoUrl }}" class="group w-full flex items-center bg-slate-100 dark:bg-opacity-10 hover:bg-slate-900 hover:text-white transition duration-300 rounded-full py-1 pl-1 pr-6">
+        <div class="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center group-hover:bg-white group-hover:text-slate-900 transition duraton-300 justify-center mr-2">
+          @!svg.youtube({ className: 'w-4' })
+        </div>
+        Watch on YouTube
+      </a>
+    @endif
+    @if (post.repositoryUrl)
+      <a target="_blank" rel="noopener noreferrer nofollow" href="{{ post.repositoryUrl }}" class="group w-full flex items-center bg-slate-100 dark:bg-opacity-10 hover:bg-slate-900 hover:text-white transition duration-300 rounded-full py-1 pl-1 pr-6">
+        <div class="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center group-hover:bg-white group-hover:text-slate-900 transition duraton-300 justify-center mr-2">
+          @!svg.github({ className: 'w-4' })
+        </div>
+        View Repository
+      </a>
+    @endif
+  </div>
+@endif
