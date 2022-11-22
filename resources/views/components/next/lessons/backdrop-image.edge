@@ -20,10 +20,11 @@
   <div class="absolute w-full h-full top-0 left-0">
     @!picture({ 
       className: 'w-full h-full rounded-xl overflow-hidden',
-      imgClassName: 'group-hover:grayscale-0 opacity-20 group-hover:opacity-30 blur-2xl group-hover:blur-none scale-150 group-hover:scale-100 duration-150',
+      imgClassName: 'group-hover:grayscale-0 opacity-20 group-hover:opacity-30 blur-2xl group-hover:blur-sm scale-150 group-hover:scale-100 duration-150',
       filename: img.filename, 
       altText: img.altText,
-      fit: 'object-cover object-center'
+      fit: 'object-cover object-center',
+      width: 50
     })
   </div>
 @endif

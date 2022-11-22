@@ -2,7 +2,7 @@
   @next.containers.page({ className: 'relative' })
     @set('watchDisplay', secondsForDisplay(item.meta.videoSecondsSum))
 
-    <a href="{{ route('series.show', { slug: item.slug }) }}" class="inline-flex items-center pb-3">
+    <a href="{{ route('series.show', { slug: item.slug }) }}" class="inline-flex items-center pb-3 px-6">
       <div class="aspect-square">
         @if (item.asset)
           <img src="/img/{{ item.asset.filename }}" class="rounded-full w-16 h-16 mb-3" />
@@ -22,7 +22,7 @@
       </div>
     </a>
 
-    <div x-show="seriesId === {{ item.id }}" class="flex flex-wrap">
+    <div x-show="seriesId === {{ item.id }}" class="flex flex-wrap px-6">
       @set('primaryLesson', item.postsFlattened[0])
       
       @!next.lessons.cardHero({ item: primaryLesson })

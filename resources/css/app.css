@@ -442,6 +442,10 @@ progress[value]::-webkit-progress-value {
   line-height: 2;
 }
 
+.prose img {
+  border-radius: theme('borderRadius.xl');
+}
+
 pre > code {
   display: flex;
   flex-flow: column;
@@ -475,12 +479,12 @@ code .line:before {
 .dark .prose h4,
 .dark .prose h5,
 .dark .prose h6 {
-  color: theme('colors.slate.800');
+  color: theme('colors.slate.200');
 }
 
 .dark .prose a,
 .dark .prose * {
-  color: theme('colors.slate.800');
+  color: theme('colors.slate.300');
 }
 
 .dark .prose code {

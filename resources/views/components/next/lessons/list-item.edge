@@ -30,7 +30,7 @@
     : 'w-full'
 )
 
-<a href="{{ routePost(item, { slug: item.slug }) }}" class="flex {{ flexFlow }} items-center pt-3 group {{ hoverBg }} {{ rounded ? 'rounded-xl overflow-hidden' : '' }} duration-150 {{ className }}">
+<a href="{{ routePost(item, { slug: item.slug }) }}" class="flex {{ flexFlow }} items-center py-3 group {{ hoverBg }} {{ rounded ? 'rounded-xl overflow-hidden' : '' }} duration-150 {{ className }}">
   @if (useImage)
     <div class="{{ width }} relative duration-300 {{ rounded ? 'rounded-xl overflow-hidden' : '' }} {{ isCol && 'mb-3' }} {{ imgClassName }}">
       @!picture({ 

@@ -99,12 +99,12 @@
     <div class="px-3">
       @!next.headings.panel({ title: 'More Recently Released' })
     </div>
-    <div class="grid xl:grid-cols-2 gap-3 w-full px-3">
+    <div class="grid xl:grid-cols-2 gap-3 w-full">
       @each ((item, i) in latestLessons)
         @if (i === 1)
           @!ads.article()
         @endif
-        @!next.lessons.listItem({ item, className: 'mb-6' })
+        @!next.lessons.listItem({ item, className: 'pl-3' })
       @endeach
     </div>
   @end
@@ -130,12 +130,12 @@
     <div class="px-3">
       @!next.headings.panel({ title: 'More Recently Released' })
     </div>
-    <div class="grid xl:grid-cols-2 gap-3 w-full px-3">
+    <div class="grid xl:grid-cols-2 gap-3 w-full">
       @each ((item, i) in latestLessons)
         @if (i === 1)
           @!ads.article()
         @endif
-        @!next.lessons.listItem({ item, className: 'mb-6' })
+        @!next.lessons.listItem({ item, className: 'pl-3' })
       @endeach
     </div>
   @end

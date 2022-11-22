@@ -37,7 +37,7 @@
 @endsection
 
 @section('content')
-  <div class="grid-post-content -mx-3 mt-8">
+  <div class="grid-post-content -mx-3">
     <div class="w-full px-3 title">
       @!next.post.boxTitle({ post, views, series })
     </div>
@@ -45,8 +45,8 @@
     <aside class="w-full post-aside actions top px-3 mb-6">
       @!next.post.author({ post, views })
 
-      <div>
-        aside
+      <div class="mt-6">
+        @!ads.vertical()
       </div>
     </aside>
     
@@ -67,7 +67,7 @@
         </div>
       </div>  --}}
 
-      <div class="prose no-max flex-1 xl:p-6 dark:text-slate-400 post-type-{{ post.postTypeId }}">
+      <div class="prose no-max flex-1 xl:p-6 post-type-{{ post.postTypeId }}">
         {{{ post.body }}}
       </div>
 
