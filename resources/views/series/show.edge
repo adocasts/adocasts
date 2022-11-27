@@ -41,18 +41,18 @@
             <h1 class="font-semibold text-white text-2xl">
               {{ series.name }}
             </h1>
-            <h4 class="text-slate-400 font-sans font-thin uppercase tracking-wider text-sm">
+            <h4 class="text-slate-400 font-sans  uppercase tracking-wider text-sm">
               <span class="">{{ series.meta.postsFlattened_count ?? '0' }}</span>
-              <span class="font-thin">{{ getSingularOrPlural('Lesson', series.meta.postsFlattened_count ?? 0) }}</span>
+              <span class="">{{ getSingularOrPlural('Lesson', series.meta.postsFlattened_count ?? 0) }}</span>
 
               &amp;
 
               @set('watchDisplay', secondsForDisplay(series.meta.videoSecondsSum))
               <span class="">{{ watchDisplay.maxDisplay }}</span>
-              <span class="font-thin">{{ getSingularOrPlural(watchDisplay.maxDisplayKey, watchDisplay.maxDisplay) }}</span>
+              <span class="">{{ getSingularOrPlural(watchDisplay.maxDisplayKey, watchDisplay.maxDisplay) }}</span>
               of fun
             </h4>
-            <p class="text-slate-400 text-sm font-thin max-w-prose mt-3">
+            <p class="text-slate-400 text-sm  max-w-prose mt-3">
               {{ series.description }}
             </p>
           </div>

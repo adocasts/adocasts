@@ -1,0 +1,23 @@
+@set('size', size ?? 'md')
+
+@if (size === 'xs')
+  @next.buttons.base({ href, attrs, block, type, form, className: `inline-flex items-center rounded border border-transparent bg-slate-900 px-2.5 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 ${className ?? ''}` })
+    {{{ await $slots.main() }}}
+  @end
+@elseif (size === 'sm')
+  @next.buttons.base({ href, attrs, block, type, form, className: `inline-flex items-center rounded-md border border-transparent bg-slate-900 px-3 py-2 text-sm font-medium leading-4 text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 ${className ?? ''}` })
+    {{{ await $slots.main() }}}
+  @end
+@elseif (size === 'md')
+  @next.buttons.base({ href, attrs, block, type, form, className: `inline-flex items-center rounded-md border border-transparent bg-slate-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 ${className ?? ''}` })
+    {{{ await $slots.main() }}}
+  @end
+@elseif (size === 'lg')
+  @next.buttons.base({ href, attrs, block, type, form, className: `inline-flex items-center rounded-md border border-transparent bg-slate-900 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 ${className ?? ''}` })
+    {{{ await $slots.main() }}}
+  @end
+@elseif (size === 'xl')
+  @next.buttons.base({ href, attrs, block, type, form, className: `inline-flex items-center rounded-md border border-transparent bg-slate-900 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 ${className ?? ''}` })
+    {{{ await $slots.main() }}}
+  @end
+@endif

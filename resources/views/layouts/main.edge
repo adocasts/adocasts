@@ -11,11 +11,14 @@
     <title>{{ env('APP_BRAND') }}</title>
   @endsection
 
+  <script src="https://unpkg.com/unpoly@2.7.1/unpoly.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/unpoly@2.7.1/unpoly.min.css">
+
   @entryPointStyles('app')
   @entryPointScripts('app')
   @!scripts.theme()
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  {{--  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"> 
   <script defer>
@@ -38,36 +41,28 @@
     gtag('config', 'G-MS9CV96KLH');
   </script>
 
-  <script defer data-domain="adocasts.com" src="https://analytics.adocasts.com/js/plausible.js"></script>
-
-  <!-- Hotjar Tracking Code for https://adocasts.com -->
-  <script>
-      (function(h,o,t,j,a,r){
-          h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-          h._hjSettings={hjid:3216521,hjsv:6};
-          a=o.getElementsByTagName('head')[0];
-          r=o.createElement('script');r.async=1;
-          r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-          a.appendChild(r);
-      })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-  </script>
+  <script defer data-domain="adocasts.com" src="https://analytics.adocasts.com/js/plausible.js"></script>  --}}
 </head>
-<body class="dark:bg-slate-900 dark:text-slate-300 h-full subpixel-antialiased">
+<body class="dark:bg-slate-900 dark:text-slate-300 h-full subpixel-antialiased" layout-root>
   <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>
-  
-  @!toast.base()
 
   @if (live && !request.matchesRoute(route('livestreams.index')) && request.url() !== routePost(live, { slug: live.slug }))
-    @!streams.banner({ post: live })
+    <div up-hungry>
+      @!streams.banner({ post: live })
+    </div>
   @endif
 
   @!next.headers.base()
 
-  @!section('hero')
+  <div up-main>
+    @!toast.base()
 
-  <main class="container mx-auto px-4 sm:px-6">
-    @!section('content')
-  </main>
+    @!section('hero')
+
+    <main class="container mx-auto px-4 sm:px-6">
+      @!section('content')
+    </main>
+  </div>
 
   {{--  <div class="flex justify-center items-center mt-6">
     @!ads.leaderboard()
@@ -76,7 +71,6 @@
   {{--  @!include('partials/footer')  --}}
 
   @!section('scripts')
-  <script src="//unpkg.com/alpinejs" defer></script>
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <script defer>
     (function() {

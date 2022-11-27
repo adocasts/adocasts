@@ -3,12 +3,12 @@
     <div class="flex items-center">
       @!next.headers.panelMenu()
 
-      <a href="/" class="flex ml-3 mr-6 lg:mr-8">
+      <a href="/" up-follow class="flex ml-3 mr-6 lg:mr-8">
         <span class="sr-only">Adocasts</span>
         <img class="h-8 w-auto sm:h-8" width="146px" height="28px" src="{{ env('APP_LOGO') }}" alt="Adocasts">
       </a>
 
-      <nav class="hidden md:flex space-x-3">
+      <nav class="hidden md:flex space-x-3" up-hungry>
         @next.headers.links.nav({ href: route('series.index') })
           Series
         @end

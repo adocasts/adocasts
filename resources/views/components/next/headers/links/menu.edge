@@ -1,5 +1,5 @@
 @set('isActive', request.matchesRoute(href))
 
-<a href="{{ href }}" class="text-sm lg:text-base duration-150 px-1 lg:px-3 py-3 rounded hover:bg-gray-100 -mx-3 {{ isActive ? 'bg-theme-900 text-white' : 'text-gray-950' }}">
+<a href="{{ href }}" up-follow class="text-sm lg:text-base duration-150 px-1 lg:px-3 py-3 rounded hover:bg-gray-100 -mx-3 {{ isActive ? 'bg-theme-900 text-white' : 'text-gray-950' }}">
   {{ await $slots.main() }}
 </a>

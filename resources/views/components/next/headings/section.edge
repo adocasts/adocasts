@@ -12,7 +12,7 @@
       @endif
     </{{ as }}>
     @if (slot || subtitle)
-      <p class="text-lg font-thin text-slate-600 dark:text-slate-400 max-w-prose {{ className?.includes('text-center') && 'mx-auto' }}">
+      <p class="text-lg  text-slate-600 dark:text-slate-400 max-w-prose {{ className?.includes('text-center') && 'mx-auto' }}">
         @if (slot)
           {{{ slot }}}
         @else

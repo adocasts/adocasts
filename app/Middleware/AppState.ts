@@ -12,6 +12,11 @@ export default class AppState {
    * @param next 
    */
   public async handle (ctx: HttpContextContract, next: () => Promise<void>) {
+    if (ctx.route?.pattern.startsWith('/img')) {
+      await next()
+      return
+    }
+
     const settings = (new SettingsService()).build()
     const httpIdentityService = new HttpIdentityService()
 

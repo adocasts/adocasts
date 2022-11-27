@@ -1,5 +1,5 @@
 @next.containers.page()
-  <div class="w-full flex justify-between items-center pb-1 border-b border-slate-800 border-opacity-30">
+  <div class="w-full flex justify-between items-center pb-1 border-b border-slate-800 border-opacity-30" up-hungry>
     <div class="flex space-x-3 md:space-x-6">
       @next.headers.links.social({ href: 'https://twitter.com/adocasts' })
           <span class="sr-only">Twitter</span>
@@ -28,27 +28,22 @@
         @!next.headers.theme.selector()
       </div>
 
-      @if (auth.user)
-        <button 
-          @click="toggleNotifications" 
-          class="flex h-7 w-7 items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 fill-slate-400 ring-black/5 bg-gray-800"
-          :class="[unreadNotifications.length ? 'fill-slate-200' : 'fill-slate-600']">
-          <div x-cloak x-show="unreadNotifications.length" class="w-2 h-2 rounded-full bg-accent-800 absolute top-0 right-0.5"></div>
-          @!svg.bell({ className: 'h-4 w-4 fill-inherit transition duration-150 cursor-pointer' })
-        </button>
-      @endif
-
       @if (!auth.user)
-        <div class="flex">
-          <a href="{{ route('auth.signin.show') }}" class="text-slate-200 hover:bg-brand-800 hover:text-white duration-150 text-sm px-6 py-2 mr-2 rounded-b">
+        <div class="flex my-1">
+          <a href="{{ route('auth.signin.show') }}" up-layer="new modal" class="text-slate-200 hover:bg-brand-800 hover:text-white duration-150 text-xs px-6 py-2 mr-2 rounded-lg">
             Sign In
           </a>
-          <a href="{{ route('auth.signup.show') }}" class="bg-brand-900 text-brand-200 hover:bg-brand-800 hover:text-white duration-150 text-sm px-6 py-2 rounded-b">
+          <a href="{{ route('auth.signup.show') }}" up-layer="new modal" class="bg-brand-900 text-brand-200 hover:bg-brand-800 hover:text-white duration-150 text-xs px-6 py-2 rounded-lg">
             Join Adocasts
           </a>
         </div>
       @else
-        @!next.headers.auth.dropdown()
+        <a href="/user/menu" up-follow up-layer="new drawer" up-class="user-menu-drawer" up-position="right" class="relative">
+          @if (notifications.unread.length)
+            <div class="w-2 h-2 rounded-full bg-accent-800 absolute top-0.5 right-0"></div>
+          @endif
+          <img class="my-1 h-7 w-7 rounded-lg shadow-md shadow-black/5 ring-1 fill-brand-400 dark:fill-gray-800 ring-black/5 bg-brand-900 dark:bg-gray-50 dark:bg-opacity-10 dark:ring-inset dark:ring-white/5" src="{{ auth.user.avatar }}" />
+        </a>
       @endif
     </div>
   </div>

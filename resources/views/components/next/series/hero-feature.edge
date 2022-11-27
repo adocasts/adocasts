@@ -13,7 +13,7 @@
         @endif
       </div>
       <div class="flex-1 ml-6 -mt-3 -mr-px">
-        <h4 class="text-slate-400 font-sans font-thin uppercase tracking-wider text-sm">
+        <h4 class="text-slate-400 font-sans  uppercase tracking-wider text-sm">
           Featured Series
         </h4>
         <h2 class="font-semibold text-white text-2xl">
@@ -22,7 +22,7 @@
       </div>
     </a>
 
-    <div x-show="seriesId === {{ item.id }}" class="flex flex-wrap px-6">
+    <div class="flex flex-wrap px-6">
       @set('primaryLesson', item.postsFlattened[0])
       
       @!next.lessons.cardHero({ item: primaryLesson })

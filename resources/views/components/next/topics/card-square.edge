@@ -22,7 +22,7 @@
           <h3 class="text-slate-200 text-lg 2xl:text-xl mb-1">
             {{ item.name }}
           </h3>
-          <p class="font-thin text-slate-400 group-hover:text-slate-200 duration-150 text-xs 2xl:text-sm line-clamp-4">
+          <p class=" text-slate-400 group-hover:text-slate-200 duration-150 text-xs 2xl:text-sm line-clamp-4">
             {{ item.description }}
           </p>
         </div>
@@ -31,14 +31,14 @@
       <div class="w-full text-slate-400 text-xs py-6 px-6 flex justify-around items-center relative z-10">
         <div class="flex flex-col justify-center text-center uppercase tracking-wider px-3">
           <span class="text-base">{{ item.meta?.collections_count ?? 0 }}</span>
-          <span class="text-xs font-thin">{{ getSingularOrPlural('Series', item.meta?.collections_count ?? 0) }}</span>
+          <span class="text-xs ">{{ getSingularOrPlural('Series', item.meta?.collections_count ?? 0) }}</span>
         </div>
 
         <div class="h-10 border-l border-slate-700/60"></div>
 
         <div class="flex flex-col justify-center text-center uppercase tracking-wider px-3">
           <span class="text-base">{{ item.meta?.posts_count ?? 0 }}</span>
-          <span class="text-xs font-thin">{{ getSingularOrPlural('Lesson', item.meta?.posts_count ?? 0) }}</span>
+          <span class="text-xs ">{{ getSingularOrPlural('Lesson', item.meta?.posts_count ?? 0) }}</span>
         </div>
       </div>
 

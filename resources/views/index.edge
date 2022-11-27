@@ -38,46 +38,45 @@
   </div>
 
   <div class="pb-8 pt-3 mb-12 relative">
-      <div class="absolute top-0 left-0 w-full h-[50%] lg:h-full bg-slate-900 dark:shadow-lg rounded-b-[10%]"></div>
-      @next.containers.page({ className: 'flex flex-wrap lg:flex-nowrap lg:space-x-6 -mb-20 relative z-10' })
-        <div class="w-full lg:w-1/3 bg-white dark:bg-slate-800 rounded-xl shadow-xl p-6 mb-3">
-          <div class="sm:text-center mb-4">
-            <h4 class="text-xl font-semibold">
-              Want our monthly newsletter?
-            </h4>
-          </div>
-          <form action="https://www.getrevue.co/profile/adocasts/add_subscriber" method="post" id="revue-form" name="revue-form"  target="_blank" class="mb-4 sm:mx-auto sm:max-w-lg sm:flex">
-            <div class="min-w-0 flex-1">
-              <label for="member_email" class="sr-only">Email address</label>
-              <input id="member_email" type="email" name="member[email]" class="block w-full border border-transparent rounded-md px-5 py-2 text-sm text-gray-900 placeholder-gray-700 bg-gray-100 dark:bg-slate-900 dark:text-slate-400 shadow-sm focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-brand-600" placeholder="Enter your email">
-            </div>
-            <div class="mt-4 sm:mt-0 sm:ml-3">
-              <button type="submit" class="transition duration-300 block w-full rounded-md border border-transparent px-3 py-3 bg-brand-800 text-xs font-medium text-white shadow hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-brand-600 sm:px-6">
-                Subscribe
-              </button>
-            </div>
-          </form>
-          <div class="sm:text-center">
-            <p class="text-xs opacity-80">
-              By signing up for our roundup newsletter, you'll recieve our latest lessons and content from the month.
-            </p>
-          </div>
-        </div>
-
-        <div class="w-full lg:w-2/3 bg-white relative shadow-xl p-6 flex flex-col items-center justify-center text-center dark:bg-slate-800 rounded-xl overflow-hidden mb-3">
-          <h4 class="text-2xl font-semibold">
-            New Lessons Weekly
+    <div class="absolute top-0 left-0 w-full h-[50%] lg:h-full bg-slate-900 dark:shadow-lg rounded-b-[10%]"></div>
+    @next.containers.page({ className: 'flex flex-wrap lg:flex-nowrap lg:space-x-6 -mb-20 relative z-10' })
+      <div class="w-full lg:w-1/3 bg-white dark:bg-slate-800 rounded-xl shadow-xl p-6 mb-3">
+        <div class="sm:text-center mb-4">
+          <h4 class="text-xl font-semibold">
+            Want our monthly newsletter?
           </h4>
-          <p class="text-sm opacity-80">
-            Come back every week, at Sunday 9AM EST, for a new lesson!
-          </p>
-
-          <div class="absolute bottom-0 right-0 bg-gray-100 rounded-tl-lg px-3 py-1 text-xs text-slate-500 dark:bg-slate-700 dark:text-slate-400">
-            <strong class="font-medium">This could be your ad!</strong> Click to learn more.
-          </div>
         </div>
-      @end
-    </div>
+        <form action="https://www.getrevue.co/profile/adocasts/add_subscriber" method="post" id="revue-form" name="revue-form"  target="_blank" class="mb-4 sm:mx-auto sm:max-w-lg sm:flex">
+          <div class="min-w-0 flex-1">
+            <label for="member_email" class="sr-only">Email address</label>
+            <input id="member_email" type="email" name="member[email]" class="block w-full border border-transparent rounded-md px-5 py-2 text-sm text-gray-900 placeholder-gray-700 bg-gray-100 dark:bg-slate-900 dark:text-slate-400 shadow-sm focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-brand-600" placeholder="Enter your email">
+          </div>
+          <div class="mt-4 sm:mt-0 sm:ml-3">
+            <button type="submit" class="transition duration-300 block w-full rounded-md border border-transparent px-3 py-3 bg-brand-800 text-xs font-medium text-white shadow hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-brand-600 sm:px-6">
+              Subscribe
+            </button>
+          </div>
+        </form>
+        <div class="sm:text-center">
+          <p class="text-xs opacity-80">
+            By signing up for our roundup newsletter, you'll recieve our latest lessons and content from the month.
+          </p>
+        </div>
+      </div>
+
+      <div class="w-full lg:w-2/3 bg-white relative shadow-xl p-6 flex flex-col items-center justify-center text-center dark:bg-slate-800 rounded-xl overflow-hidden mb-3">
+        <h4 class="text-2xl font-semibold">
+          New Lessons Weekly
+        </h4>
+        <p class="text-sm opacity-80">
+          Come back every week, at Sunday 9AM EST, for a new lesson!
+        </p>
+
+        <div class="absolute bottom-0 right-0 bg-gray-100 rounded-tl-lg px-3 py-1 text-xs text-slate-500 dark:bg-slate-700 dark:text-slate-400">
+          <strong class="font-medium">This could be your ad!</strong> Click to learn more.
+        </div>
+      </div>
+    @end
   </div>
 
   <div class="bg-slate-50 dark:bg-gradient-to-br from-slate-800 to-slate-900 pt-[260px] -mt-[200px]">

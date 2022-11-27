@@ -1,5 +1,9 @@
 import '../css/app.css'
+// import htmx from 'htmx.org'
 import 'babel-polyfill'
+import Alpine from 'alpinejs'
+import mask from '@alpinejs/mask'
+// window.htmx = htmx
 
 // import * as Sentry from '@sentry/browser'
 // import { BrowserTracing } from '@sentry/tracing'
@@ -60,3 +64,32 @@ window.hideBanner = async function(target) {
   document.getElementById(target).remove()
   await axios.post('/api/session/set', { target, value: false })
 }
+
+Alpine.data('modal', function () {
+  return {
+    closeModal(modal) {
+      modal.classList.add('closing')
+      modal.addEventListener('animationend', () => modal.remove(), { once: true })
+    }
+  }
+})
+
+Alpine.plugin(mask)
+Alpine.start()
+window.Alpine = Alpine
+
+// up.on('up:fragment:inserted', function (event, fragment) {
+//   up.emit('htmx:load', { detail: { elt: fragment } })
+// })
+
+// htmx.on('htmx:afterSwap', (e) => {
+//   console.log({ e })
+// })
+
+// htmx.on('htmx:beforeSwap', (e) => {
+//   console.log({ xhr: e.detail.xhr })
+//   // const responseUrl = new URL(e.detail.xhr.responseUrl)
+//   // if (e.detail.target.classList.contains('modal') && ) {
+//   //   e.detail.target.dispatchEvent(new CustomEvent('close'))
+//   // }
+// })

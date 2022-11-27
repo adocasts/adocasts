@@ -31,6 +31,7 @@ export default class SignUpValidator extends BaseValidator {
     username: usernameValidation,
     email: schema.string({ trim: true }, [rules.email(), rules.unique({ table: 'users', column: 'email' })]),
     password: schema.string({ trim: true }, [rules.minLength(8)]),
+    forward: schema.string.optional()
   })
 
   /**

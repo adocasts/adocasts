@@ -98,6 +98,8 @@ Route.delete('/comments/:id', 'CommentsController.destroy').as('comments.destroy
 Route.get('/watchlist',       'WatchlistsController.index').as('watchlist.index')
 Route.get('/progress',        'HistoriesController.progress').as('histories.progress')
 
+Route.get('/user/menu', 'UsersController.menu').as('user.menu').middleware(['auth'])
+
 // STUDIO
 Route.group(() => {
 
@@ -211,6 +213,14 @@ Route.group(() => {
   Route.get('/post/:postId/comment/:commentId', 'GoController.comment').as('comment')
 
 }).prefix('/go').as('go')
+
+// FRAGMENTS
+Route.group(() => {
+
+  Route.on('/auth/signin').fragment('auth/modals/signin')
+  Route.on('/auth/signup').fragment('auth/modals/signup')
+
+}).prefix('fragments')
 
 Route.get('/ping', async ({ response }) => {
   return response.status(200).json({ pong: true })

@@ -1,0 +1,16 @@
+@set('block', block ?? false)
+@set('className', className ?? '')
+
+@if (block)
+  @set('className', className.replace('inline-flex', '') + ' flex w-full justify-center')
+@endif
+
+@if (href)
+  <a href="{{ href }}" class="{{ className }}" {{{ attrs }}}>
+    {{{ await $slots.main() }}}
+  </a>
+@else
+  <button type="{{ type ?? 'button' }}" class="{{ className }}" {{{ form ? `form="${form}"` : '' }}} {{{ attrs }}}>
+    {{{ await $slots.main() }}}
+  </button>
+@endif

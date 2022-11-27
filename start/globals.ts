@@ -19,6 +19,7 @@ import Themes from 'App/Enums/Themes'
 import * as timeago from 'timeago.js'
 import IdentityService from 'App/Services/IdentityService'
 import AssetTypes from 'App/Enums/AssetTypes'
+import { parse } from 'node-html-parser'
 
 if (Env.get('NODE_ENV') === 'test') {
   View.global('csrfField', () => '')
@@ -123,6 +124,10 @@ View.global('timeago', (date: string | DateTime | null) => {
 
 View.global('ipLocate', async (ip) => {
   return IdentityService.getLocation(ip)
+})
+
+View.global('stripHTML', (html: string) => {
+  return parse(html).textContent
 })
 
 View.global('GA_PROPERTY', Env.get('GA_PROPERTY'))

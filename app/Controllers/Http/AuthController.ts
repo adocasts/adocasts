@@ -3,6 +3,7 @@ import User from 'App/Models/User'
 import AuthAttemptService from 'App/Services/AuthAttemptService'
 import SignUpValidator from 'App/Validators/SignUpValidator'
 import SignInValidator from 'App/Validators/SignInValidator'
+import InvalidException from 'App/Exceptions/InvalidException'
 
 export default class AuthController {
   public async signupShow({ view, response, session, auth }: HttpContextContract) {
@@ -23,7 +24,7 @@ export default class AuthController {
 
     session.flash('success', 'Welcome to Adocasts!')
 
-    return response.redirect('/')
+    return response.redirect().toPath('/')
   }
 
   public async signinShow({ view, response, session, auth }: HttpContextContract) {
@@ -51,12 +52,12 @@ export default class AuthController {
       await AuthAttemptService.recordLoginAttempt(uid)
 
       session.flash('errors', { form: 'The provided username/email or password is incorrect' })
-      return response.redirect().back()
+      throw new InvalidException('The provided username/email or password is incorrect')
     }
 
     session.flash('success', `Welcome back, ${auth.user!.username}!`)
-
-    return response.redirect('/')
+    
+    return response.redirect().toPath('/')
   }
 
   public async signout({ response, auth, session }: HttpContextContract) {

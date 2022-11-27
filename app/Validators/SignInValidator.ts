@@ -29,7 +29,8 @@ export default class SignInValidator extends BaseValidator {
   public schema = schema.create({
     uid: schema.string(),
     password: schema.string(),
-    remember_me: schema.boolean.optional()
+    remember_me: schema.boolean.optional(),
+    forward: schema.string.optional()
   })
 
   /**

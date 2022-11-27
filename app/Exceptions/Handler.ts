@@ -34,6 +34,17 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 
   public async handle(error: any, ctx: HttpContextContract) {
     // Sentry.captureException(error)
+
+    if (error.code === 'E_VALIDATION_FAILURE') {
+      await super.handle(error, ctx)
+      ctx.up.setTarget(ctx.up.getFailTarget())
+      ctx.up.setStatus(400)
+      return ctx.response.redirect().back()
+    }
+
+    if (!error.status || this.expandedStatusPages[error.status]) {
+      ctx.up.fullReload()
+    }
     
     if (error.code === 'E_BAD_CSRF_TOKEN') {
       return this.handleExpiredCsrf(ctx)
