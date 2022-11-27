@@ -720,7 +720,7 @@ up-modal-box {
 	animation-timing-function: ease;
 
   @screen lg {
-    --min-width: 65vw;
+    --min-width: 675px;
   }
 }
 

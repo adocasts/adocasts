@@ -1,13 +1,14 @@
-@set('width', '6rem')
+@set('width', width ?? '6rem')
 @set('height', height ?? 'h-10')
 @set('bottom', bottom ?? 'bottom-1')
 @set('left', left ?? 'left-3')
 @set('right', right ?? 'right-3')
 @set('bg', bg ?? 'bg-gray-950')
+@set('thickness', thickness ?? '6px')
 
 <div
   role="progressbar"
-  style="--value: {{ percent }}; --size: {{ width }}; --thickness: 6px;"
+  style="--value: {{ percent }}; --size: {{ width }}; --thickness: {{ thickness }};"
   class="radial-progress text-accent-700 {{ className }}"
   aria-valuenow="{{ percent }}"
   aria-valuemin="0"

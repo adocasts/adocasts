@@ -1,0 +1,38 @@
+@set('collection', item.collection)
+@set('lessonQueue', collection.postsFlattened)
+@set('percent', collection.meta.postCompletedCount / collection.meta.postCount * 100) 
+@set('className', className ?? 'inline-block mb-3')
+
+<a href="{{ route('series.show', { slug: collection.slug }) }}" class="{{ className }}">
+  <div class="group h-full flex flex-col bg-slate-900 text-center py-3 pl-3 pr-8 rounded-xl overflow-hidden relative">
+    <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-transparent via-slate-900/60 to-slate-900 z-10"></div>
+    
+    @if (collection.asset)
+      <div class="absolute w-full h-full top-0 left-0 opacity-60 group-hover:opacity-30 duration-150">
+        <img 
+          src="/img/{{ collection.asset.filename }}" 
+          class="rounded-full w-full h-full object-cover object-center scale-[175%] group-hover:scale-[140%] blur-xl group-hover:blur-none mb-3 duration-150" 
+        />
+      </div>
+    @endif
+
+    <div class="flex flex-col h-full justify-between relative z-20">
+      <div class="flex items-center">
+        <div class="flex justify-center mr-3">
+          <div class="relative">
+            @!next.series.icon({ item: collection, width: 'w-16', height: 'h-16', className: 'shadow-xl' })
+            @!ui.progressionCirclePercentage({ percent, width: '4rem', thickness: '4px', className: 'z-20' })
+          </div>
+        </div>
+        <div class="text-left">
+          <h3 class="text-slate-200 font-semibold">
+            {{ collection.name }}
+          </h3>
+          <h5 class="text-slate-400 text-sm">
+            {{ Math.floor(percent) }}% Completed
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</a>

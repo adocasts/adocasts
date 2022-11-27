@@ -11,8 +11,8 @@
 ])
 
 @section('content')
-  <div class="{{ up.isPage ? '' : 'dark' }}">
-    <div class="flex items-center bg-slate-100 dark:bg-slate-900 rounded-xl p-3 my-6">
+  <div class="{{ up.isPage ? 'mt-6' : 'dark' }}">
+    <div class="flex items-center bg-slate-100 dark:bg-slate-900 rounded-xl p-3 mb-6">
       <img class="mr-3 h-14 w-14 rounded-lg shadow-md shadow-black/5 ring-1 fill-brand-400 dark:fill-gray-800 ring-black/5 bg-brand-900 dark:bg-gray-50 dark:bg-opacity-10 dark:ring-inset dark:ring-white/5" src="{{ auth.user.avatar }}" />
       <div>
         <h3 class="text-lg font-semibold leading-none">{{ auth.user.username }}</h3>
@@ -20,7 +20,7 @@
       </div>
     </div>
     <div class="flex items-start">
-      <nav class="flex flex-col pr-6 xl:pr-16 mr-6 border-r border-slate-200 dark:border-slate-900 sticky top-0">
+      <nav class="flex flex-col sticky top-0">
         @each (route in studioRoutes)
           @can(route.show)
             <a href="{{ route.href }}" class="anchor my-1">
@@ -30,57 +30,61 @@
         @endeach
       </nav>
 
-      <div class="w-[450px] hidden md:flex flex-col pr-6 mr-6 border-r border-slate-200 dark:border-slate-900">
-        <div class="mb-6">
-          <h3 class="pb-2 px-4 pt-2 text-lg font-semibold">
-            Series Progression
-          </h3>
-          <ol class="list-none flex flex-col">
-            @each (item in seriesProgress)
-              @!next.series.progression({ item })
-            @endeach
-          </ol>
-          <a href="{{ route('histories.progress') }}" class="w-full flex justify-center items-center text-center px-3 py-2 bg-slate-900/10 hover:bg-slate-900/20 text-slate-800 group-hover:text-slate-900 backdrop-blur rounded-xl">
-            View All Progression
-          </a>
-        </div>
-      </div>
-
-      <div class="flex-1 flex flex-col">
-        @if (notifications.unread.length)
+      <div class="flex flex-col overflow-hidden ml-6 xl:ml-16 pl-6 border-l border-slate-200 dark:border-slate-900">
+        <div class="hidden lg:flex flex-col">
           <div class="mb-6">
-            <h3 class="pb-2 px-4 pt-2 text-lg font-semibold">
-              Unread Notifications
-            </h3>
-            <ol class="list-none flex flex-col">
-              @each ((item, i) in notifications.unread)
-                @!next.notifications.item({ item, last: i === notifications.unread.length - 1 })
+            <div class="flex items-center justify-between">
+              <h3 class="pb-2 pt-2 text-lg font-semibold">
+                Series Progression
+              </h3>
+              <a href="{{ route('histories.progress') }}" class="anchor link-alt text-sm">
+                View All Progression
+              </a>
+            </div>
+            <ol class="list-none w-full whitespace-nowrap overflow-x-auto">
+              @each (item in seriesProgress)
+                @!next.series.progressionSmall({ item })
               @endeach
             </ol>
           </div>
-        @endif
+        </div>
 
-        @if (notifications.read.length)
-          <div class="opacity-60 hover:opacity-100 duration-150">
-            <h3 class="pb-2 px-4 pt-2 text-lg font-semibold">
-              Latest Notifications
-            </h3>
-            <ol class="list-none flex flex-col">
-              @each ((item, i) in notifications.read)
-                @!next.notifications.item({ item, last: i === notifications.read.length - 1 })
-              @endeach
-            </ol>
-          </div>
-        @endif
+        <div class="flex flex-col">
+          @if (notifications.unread.length)
+            <div class="mb-6">
+              <h3 class="pb-2 px-4 pt-2 text-lg font-semibold">
+                Unread Notifications
+              </h3>
+              <ol class="list-none flex flex-col">
+                @each ((item, i) in notifications.unread)
+                  @!next.notifications.item({ item, last: i === notifications.unread.length - 1 })
+                @endeach
+              </ol>
+            </div>
+          @endif
 
-        @if (!notifications.unread.length && !notifications.read.length)
-          <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">
-            <strong>No Notifications</strong>
-            <p class="text-xs text-gray-700">
-              You're all set! Start a discussion by leaving a comment on a lesson or replying to an existing comment.
-            </p>
-          </div>
-        @endif
+          @if (notifications.read.length)
+            <div class="opacity-60 hover:opacity-100 duration-150">
+              <h3 class="pb-2 px-4 pt-2 text-lg font-semibold">
+                Latest Notifications
+              </h3>
+              <ol class="list-none flex flex-col">
+                @each ((item, i) in notifications.read)
+                  @!next.notifications.item({ item, last: i === notifications.read.length - 1 })
+                @endeach
+              </ol>
+            </div>
+          @endif
+
+          @if (!notifications.unread.length && !notifications.read.length)
+            <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">
+              <strong>No Notifications</strong>
+              <p class="text-xs text-gray-700">
+                You're all set! Start a discussion by leaving a comment on a lesson or replying to an existing comment.
+              </p>
+            </div>
+          @endif
+        </div>
       </div>
     </div>
   </div>
