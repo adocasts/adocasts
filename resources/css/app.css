@@ -222,8 +222,8 @@ div[role="progressbar"].circle-transparent {
 }
 
 .btn-hover-fill.active .btn-filled {
+  @apply text-red-600 dark:text-red-500;
   opacity: 1;
-  color: theme('colors.red.700');
 }
 
 .btn-hover-fill:hover .btn-filled {
@@ -231,7 +231,7 @@ div[role="progressbar"].circle-transparent {
 }
 
 .btn-hover-fill.active .btn-outline {
-  color: theme('colors.red.700');
+  @apply text-red-600 dark:text-red-500;
 }
 
 .affiliate {
@@ -315,6 +315,33 @@ div[role="progressbar"].circle-transparent {
   float: left;
   height: 0;
   pointer-events: none;
+}
+
+.prose-comment .ProseMirror {
+  @apply rounded-xl border-slate-300 dark:border-slate-700 pt-3 pb-16;
+  min-height: 150px;
+}
+
+.comment-form.with-bio .prose-comment .ProseMirror {
+  @apply pt-16;
+}
+
+.prose-comment-bio {
+  @apply bg-slate-100 dark:bg-slate-800 flex items-center py-2 px-2 rounded-xl absolute top-1 left-1 z-10;
+  width: calc(100% - .5rem);
+}
+
+.prose-comment-actions {
+  @apply absolute bottom-1 right-1 flex items-center z-10;
+}
+
+.btn-comment-submit,
+.btn-comment-cancel {
+  @apply inline-flex items-center rounded-xl border border-transparent bg-slate-100 hover:bg-slate-700 dark:bg-slate-800 hover:text-slate-100 dark:text-slate-400 px-3 py-2 text-sm font-medium leading-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 duration-150;
+}
+
+.comment-form:hover .btn-comment-submit {
+  @apply bg-slate-900 text-white hover:bg-slate-700 dark:bg-slate-600 dark:hover:bg-slate-500;
 }
 
 progress {
@@ -412,6 +439,10 @@ progress[value]::-webkit-progress-value {
   bottom: 0;
   left: 0;
   transition: all 300ms ease;
+}
+
+.dark .transcript-cutoff {
+  background-image: linear-gradient(to bottom, transparent, theme('colors.slate.900') 90%);
 }
 
 .transcript-cutoff.active {

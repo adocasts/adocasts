@@ -26,6 +26,12 @@ export default class CommentService {
       .highlightAll()
   }
 
+  public static async getCountForPost(post: Post) {
+    return post.related('comments').query()
+      .wherePublic()
+      .getCount()
+  }
+
   public static async store(user: User | undefined, identity: string, requestBody: { [x: string]: any }) {
     const _schema = schema.create({
       postId: schema.number([rules.exists({ table: 'posts', column: 'id' }) ]),

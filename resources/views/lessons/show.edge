@@ -28,7 +28,7 @@
             @!streams.liveIndicator()
           </div>
         @endif
-        <div class="aspect-video relative rounded-xl overflow-hidden">
+        <div class="aspect-video relative rounded-xl overflow-hidden" data-post-id="{{ post.id }}" up-keep=".aspect-video[data-post-id='{{ post.id }}']">
           <div id="lessonVideoEmbed" class="absolute top-0 left-0 w-full h-full"></div>
         </div>
       @end
@@ -51,27 +51,11 @@
     </aside>
     
     <main class="w-full px-3">
-      {{--  <div class="flex flex-wrap justify-between border-b border-slate-300 pb-3 mb-6">
-        <div class="flex items-center">
-          <div class="mr-3">
-            <img class="rounded-full w-14 h-14 bg-slate-100 dark:bg-slate-800" src="{{ post.authors[0].avatar }}" />
-          </div>
-          <div>
-            <h4 class="text-lg lg:text-2xl">
-              Tom Gobich
-            </h4>
-            <p class=" -mt-1 text-slate-900">
-              Published {{ post.timeago }}
-            </p>
-          </div>
-        </div>
-      </div>  --}}
-
       <div class="prose no-max flex-1 xl:p-6 post-type-{{ post.postTypeId }}">
         {{{ post.body }}}
       </div>
 
-      @!comment.base({ postId: post.id, comments })
+      @!next.comments.base({ postId: post.id, comments, commentCount })
     </main>
   </div>
 
@@ -106,16 +90,16 @@
       })
 
       @if (!post.isLive)
-        initProgression({
-          storeProgression: {{ !!auth.user }},
-          httpUrl: '{{ route('api.histories.progression', { id: userProgression?.id }) }}',
-          httpPayload: {
-            postId: {{ post.id }},
-            collectionId: {{ series?.id }},
-            userId: {{ auth.user?.id }},
-            route: '{{ request.ctx.route?.name }}'
-          }
-        })
+        // initProgression({
+        //   storeProgression: {{ !!auth.user }},
+        //   httpUrl: '{{ route('api.histories.progression', { id: userProgression?.id }) }}',
+        //   httpPayload: {
+        //     postId: {{ post.id }},
+        //     collectionId: {{ series?.id }},
+        //     userId: {{ auth.user?.id }},
+        //     route: '{{ request.ctx.route?.name }}'
+        //   }
+        // })
       @endif
     </script>
   @endif

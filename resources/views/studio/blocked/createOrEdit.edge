@@ -2,20 +2,12 @@
 
 @section('heading')
   @studio.heading({
-    heading: collection?.id ? 'Update Collection' : 'Create New Collection',
+    heading: block?.id ? 'Update Block' : 'Block New Identity',
     wrapSlot: true
   })
     <div class="space-x-3">
       @button({ onClick: `saveAs(${states.PUBLIC})`, id: 'btnPublish' })
         Save
-      @end
-
-      @button({ onClick: `saveAs(${states.UNLISTED})`, variant: 'baseSecondary' })
-        Save As Unlisted
-      @end
-
-      @button({ onClick: `saveAs(${states.PRIVATE})`, variant: 'baseSecondary' })
-        Save As Private
       @end
     </div>
   @end

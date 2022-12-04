@@ -44,11 +44,12 @@ export default class LessonsController {
     }
 
     const comments = await CommentService.getForPost(postModel!)
+    const commentCount = await CommentService.getCountForPost(postModel!)
     const views = await AnalyticsService.getPageViews(request.url())
 
     this.historyService.recordPostView(post.id)
     const userProgression = await this.historyService.getPostProgression(postModel!)
 
-    return view.render('lessons/show', { post, series, comments, userProgression, views })
+    return view.render('lessons/show', { post, series, comments, commentCount, userProgression, views })
   }
 }

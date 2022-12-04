@@ -11,6 +11,9 @@
     <title>{{ env('APP_BRAND') }}</title>
   @endsection
 
+  <script src="https://unpkg.com/unpoly@2.7.1/unpoly.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/unpoly@2.7.1/unpoly.min.css">
+
   @entryPointStyles('app')
   @entryPointScripts('app')
   @!scripts.theme()
@@ -52,16 +55,18 @@
       })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
   </script>
 </head>
-<body class="dark:bg-slate-900 dark:text-slate-300 h-full subpixel-antialiased">
+<body class="dark:bg-slate-900 dark:text-slate-300 h-full subpixel-antialiased" layout-root>
   <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>
-  
-  @!toast.base()
 
   @if (live && !request.matchesRoute(route('livestreams.index')) && request.url() !== routePost(live, { slug: live.slug }))
-    @!streams.banner({ post: live })
+    <div up-hungry>
+      @!streams.banner({ post: live })
+    </div>
   @endif
 
-  <div class="lesson-wrapper">
+  <div class="lesson-wrapper" up-main>
+    @!toast.base()
+
     <div class="page-contents">
       @!next.headers.base()
 
@@ -82,7 +87,6 @@
   {{--  @!include('partials/footer')  --}}
 
   @!section('scripts')
-  <script src="//unpkg.com/alpinejs" defer></script>
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <script defer>
     (function() {

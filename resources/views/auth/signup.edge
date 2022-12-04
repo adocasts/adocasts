@@ -19,8 +19,8 @@
     @next.form.post({ action: route('auth.signup'), attrs: 'form-signup up-submit up-layer="root" up-scroll="restore" up-fail-scroll="restore" up-fail-target="[form-signup]"' })
       @!component('honeypot')
 
-      @if (session.has('forward'))
-        <input type="hidden" name="forward" value="{{ session.get('forward') }}" />
+      @if (referrer)
+        <input type="hidden" name="forward" value="{{ referrer }}" />
       @endif
 
       @if (flashMessages.get('errors.form'))

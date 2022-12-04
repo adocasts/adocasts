@@ -28,6 +28,10 @@
             </a>
           @endcan
         @endeach
+
+        <a href="{{ route('auth.signout') }}" class="anchor my-1" up-follow up-layer="root">
+          Sign Out
+        </a>
       </nav>
 
       <div class="flex flex-col overflow-hidden ml-6 xl:ml-16 pl-6 border-l border-slate-200 dark:border-slate-900">
@@ -41,7 +45,7 @@
                 View All Progression
               </a>
             </div>
-            <ol class="list-none w-full whitespace-nowrap overflow-x-auto">
+            <ol class="list-none w-full whitespace-nowrap overflow-x-auto hide-scrollbar">
               @each (item in seriesProgress)
                 @!next.series.progressionSmall({ item })
               @endeach
@@ -52,10 +56,10 @@
         <div class="flex flex-col">
           @if (notifications.unread.length)
             <div class="mb-6">
-              <h3 class="pb-2 px-4 pt-2 text-lg font-semibold">
+              <h3 class="pb-2 pt-2 text-lg font-semibold">
                 Unread Notifications
               </h3>
-              <ol class="list-none flex flex-col">
+              <ol class="list-none flex flex-col -mx-4">
                 @each ((item, i) in notifications.unread)
                   @!next.notifications.item({ item, last: i === notifications.unread.length - 1 })
                 @endeach
@@ -65,10 +69,10 @@
 
           @if (notifications.read.length)
             <div class="opacity-60 hover:opacity-100 duration-150">
-              <h3 class="pb-2 px-4 pt-2 text-lg font-semibold">
+              <h3 class="pb-2 pt-2 text-lg font-semibold">
                 Latest Notifications
               </h3>
-              <ol class="list-none flex flex-col">
+              <ol class="list-none flex flex-col -mx-4">
                 @each ((item, i) in notifications.read)
                   @!next.notifications.item({ item, last: i === notifications.read.length - 1 })
                 @endeach

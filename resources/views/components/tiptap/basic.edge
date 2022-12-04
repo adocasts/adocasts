@@ -1,3 +1,5 @@
+@set('showBio', auth.user && !update)
+
 <div x-data="setupEditor(`{{ value ?? '' }}`)" x-init="() => init($refs.element)">
   <div class="bubble-menu bg-gray-900 text-gray-400 text-sm py-1 px-2 rounded-md">
     <template x-if="typeof isInitialized === 'boolean'">
@@ -24,8 +26,31 @@
     </template>
   </div>
 
-  <div x-ref="element" class="{{ className ?? 'prose dark:text-gray-400 mt-3 mb-6' }}"></div>
+  <div class="flex-1 relative comment-form {{ showBio && 'with-bio' }}" :class="[isFocused && 'focused' ]">
+    @if (showBio)
+      <div class="prose-comment-bio">
+        <figure>
+          <img class="mr-3 h-8 w-8 rounded-xl shadow-md shadow-black/5 ring-1 fill-brand-400 dark:fill-gray-800 ring-black/5 bg-brand-900 dark:bg-gray-50 dark:bg-opacity-10 dark:ring-inset dark:ring-white/5" src="{{ auth.user.avatar }}" />
+        </figure>
+        <h4>{{ auth.user.username }}</h4>
+      </div>
+    @endif
+    <div class="prose-comment-actions">
+      @if (cancelable)
+        @next.buttons.base({ type: 'button', className: 'btn-comment-cancel mr-3', attrs: onCancel ? `@click="${onCancel}"` : '' })
+          Cancel
+        @end
+      @endif
+
+      @next.buttons.base({ type: 'submit', className: 'btn-comment-submit' })
+        {{ update ? 'Update' : 'Create' }} Comment
+      @end
+    </div>
+    <div x-ref="element" class="{{ className ?? 'prose prose-comment !max-w-full flex-1 mb-6' }}"></div>
+  </div>
   <input type="hidden" name="{{ name ?? 'body' }}" :value="content">
 </div>
 
-<script src="{{ asset('assets/tiptap_basic.js') }}"></script>
+@if (includeScript && !request.header('X-Up-Target'))
+  <script src="{{ asset('assets/tiptap_basic.js') }}"></script>
+@endif

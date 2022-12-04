@@ -22,7 +22,7 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
 
   const element = document.getElementById(el)
 
-  bodyContent.addEventListener('click', (event) => {
+  bodyContent?.addEventListener('click', (event) => {
     const isTarget = event.target.classList.contains('timestamp')
     const containsTarget = event.target.closest('.timestamp')
     
@@ -142,93 +142,93 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
 //   inline: 'start'
 // })
 
-window.initProgression = function ({ storeProgression = false, httpMethod = 'post', httpUrl, httpPayload }) {
-  const post = document.querySelector(".body-content .prose")
-  const progress = document.getElementById("reading-progress")
-  const appCompleted = document.getElementById('appCompleted')
-  let inViewport = false
-  let intersectionY = 0
+// window.initProgression = function ({ storeProgression = false, httpMethod = 'post', httpUrl, httpPayload }) {
+//   const post = document.querySelector(".body-content .prose")
+//   const progress = document.getElementById("reading-progress")
+//   const appCompleted = document.getElementById('appCompleted')
+//   let inViewport = false
+//   let intersectionY = 0
 
-  let observer = new IntersectionObserver(handler)
+//   let observer = new IntersectionObserver(handler)
 
-  observer.observe(post)
+//   observer.observe(post)
 
-  function handler(entries, observer) {
-    for (entry of entries) {
-      intersectionY = entry.boundingClientRect.y
+//   function handler(entries, observer) {
+//     for (entry of entries) {
+//       intersectionY = entry.boundingClientRect.y
 
-      if (entry.isIntersecting) {
-        inViewport = true
-      } else {
-        inViewport = false
-      }
-    }
-  }
+//       if (entry.isIntersecting) {
+//         inViewport = true
+//       } else {
+//         inViewport = false
+//       }
+//     }
+//   }
 
-  /* Get the percentage scrolled of an element. It does not change if its not in view.*/
-  function getScrollProgress(el) {
-    let progressPercentage = 0
+//   /* Get the percentage scrolled of an element. It does not change if its not in view.*/
+//   function getScrollProgress(el) {
+//     let progressPercentage = 0
 
-    if (inViewport || intersectionY < 0) {
-      let coords = el.getBoundingClientRect()
-      let height = coords.height
+//     if (inViewport || intersectionY < 0) {
+//       let coords = el.getBoundingClientRect()
+//       let height = coords.height
 
-      if(coords.top < 0){
-        progressPercentage = (Math.abs(coords.top) / height) * 100
-      }
-    }
+//       if(coords.top < 0){
+//         progressPercentage = (Math.abs(coords.top) / height) * 100
+//       }
+//     }
 
-    return progressPercentage
-  }
+//     return progressPercentage
+//   }
 
-  /* Set the reading aside using the value attribute*/
-  function showReadingProgress() {
-    const scrollProgress = getScrollProgress(post)
+//   /* Set the reading aside using the value attribute*/
+//   function showReadingProgress() {
+//     const scrollProgress = getScrollProgress(post)
 
-    progress.setAttribute("value", scrollProgress)
+//     progress.setAttribute("value", scrollProgress)
 
-    scrollProgress > 0
-      ? progress.classList.remove('hidden')
-      : progress.classList.add('hidden')
+//     scrollProgress > 0
+//       ? progress.classList.remove('hidden')
+//       : progress.classList.add('hidden')
 
-    scrollProgress >= 93
-      ? progress.classList.add('is-complete')
-      : progress.classList.remove('is-complete')
+//     scrollProgress >= 93
+//       ? progress.classList.add('is-complete')
+//       : progress.classList.remove('is-complete')
 
-    return scrollProgress
-  }
+//     return scrollProgress
+//   }
 
-  async function storeReadingProgression(scrollProgress) {
-    if (!storeProgression) return
-    const readPercent = Math.floor(scrollProgress)
-    const { data } = await axios[httpMethod](httpUrl, { ...httpPayload, readPercent })
-    const isCompleted = data.progression.isCompleted
-    const event = new CustomEvent('completed', { detail: { isCompleted } })
-    appCompleted.dispatchEvent(event)
-  }
+//   async function storeReadingProgression(scrollProgress) {
+//     if (!storeProgression) return
+//     const readPercent = Math.floor(scrollProgress)
+//     const { data } = await axios[httpMethod](httpUrl, { ...httpPayload, readPercent })
+//     const isCompleted = data.progression.isCompleted
+//     const event = new CustomEvent('completed', { detail: { isCompleted } })
+//     appCompleted.dispatchEvent(event)
+//   }
 
-  /* Use requestAnimationFrame*/
-  var timeout
-  var saveTimeout
-  var lastScrollProgress = 0
+//   /* Use requestAnimationFrame*/
+//   var timeout
+//   var saveTimeout
+//   var lastScrollProgress = 0
 
-  window.onscroll = function () {
-    if (timeout) {
-      window.cancelAnimationFrame(timeout)
-    }
+//   window.onscroll = function () {
+//     if (timeout) {
+//       window.cancelAnimationFrame(timeout)
+//     }
 
-    if (saveTimeout) {
-      clearTimeout(saveTimeout)
-    }
+//     if (saveTimeout) {
+//       clearTimeout(saveTimeout)
+//     }
 
-    timeout = window.requestAnimationFrame(function () {
-      // Run our scroll functions
-      lastScrollProgress = showReadingProgress()
-    });
+//     timeout = window.requestAnimationFrame(function () {
+//       // Run our scroll functions
+//       lastScrollProgress = showReadingProgress()
+//     });
 
-    saveTimeout = setTimeout(() => storeReadingProgression(lastScrollProgress), 1500)
-  }
-}
+//     saveTimeout = setTimeout(() => storeReadingProgression(lastScrollProgress), 1500)
+//   }
+// }
 
 const postAnchorLinks = Array.from(document.querySelectorAll('.body-content > .prose h1[id], .body-content > .prose h2[id], .body-content > .prose h3[id], .body-content > .prose h4[id], .body-content > .prose h5[id], .body-content > .prose h6[id]'))
 postAnchorLinks.map(heading => {

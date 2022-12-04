@@ -69,7 +69,7 @@ export default class CommentsController {
     return response.redirect().back()
   }
 
-  public async like({ response, auth, params }: HttpContextContract) {
+  public async like({ request, response, auth, params }: HttpContextContract) {
     const user = auth.user!
     const vote = await user.related('commentVotes').query().where('comments.id', params.id).first()
     
@@ -79,6 +79,10 @@ export default class CommentsController {
       await user.related('commentVotes').attach([params.id])
     }
 
+    if (request.accepts(['html'])) {
+      return response.redirect().back()
+    }
+    
     return response.status(200).json({ wasRemoved: !!vote })
   }
 }

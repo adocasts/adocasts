@@ -107,8 +107,11 @@ export default class AuthSocialService extends BaseHttpService {
    * @param {string} username [description]
    */
   private async getUniqueUsername(username: string) {
+    if (typeof username !== 'string') {
+      username = username + ''
+    }
     username = slugify(username, { lower: true })
     const occurances = await Database.from('users').where('username', 'LIKE', `${username}%`)
-    return occurances.length ? `${username}-${occurances.length}` : username
+    return occurances.length ? `${username}-${occurances.length + 1}` : username
   }
 }

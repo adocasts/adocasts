@@ -6,17 +6,19 @@ import SignInValidator from 'App/Validators/SignInValidator'
 import InvalidException from 'App/Exceptions/InvalidException'
 
 export default class AuthController {
-  public async signupShow({ view, response, session, auth }: HttpContextContract) {
+  public async signupShow({ view, request, response, session, auth }: HttpContextContract) {
     if (auth.user) {
       session.flash('warn', "You're already logged in.")
       return response.redirect().toRoute('home')
     }
 
-    return view.render('auth/signup')
+    const referrer = request.header('referrer')
+
+    return view.render('auth/signup', { referrer })
   }
 
   public async signup({ request, response, auth, session }: HttpContextContract) {
-    const data = await request.validate(SignUpValidator)
+    const { forward, ...data } = await request.validate(SignUpValidator)
     const user = await User.create(data)
 
     await user.related('profile').create({})
@@ -24,20 +26,24 @@ export default class AuthController {
 
     session.flash('success', 'Welcome to Adocasts!')
 
-    return response.redirect().toPath('/')
+    return forward
+      ? response.redirect().toPath(forward)
+      : response.redirect().toPath('/')
   }
 
-  public async signinShow({ view, response, session, auth }: HttpContextContract) {
+  public async signinShow({ view, request, response, session, auth }: HttpContextContract) {
     if (auth.user) {
       session.flash('warn', "You're already logged in.")
       return response.redirect().toRoute('home')
     }
 
-    return view.render('auth/signin')
+    const referrer = request.header('referrer')
+
+    return view.render('auth/signin', { referrer })
   }
 
   public async signin({ request, response, auth, session }: HttpContextContract) {
-    const { uid, password, remember_me } = await request.validate(SignInValidator)
+    const { uid, password, remember_me, forward } = await request.validate(SignInValidator)
 
     const loginAttemptsRemaining = await AuthAttemptService.getRemainingAttempts(uid)
     if (loginAttemptsRemaining <= 0) {
@@ -57,7 +63,9 @@ export default class AuthController {
 
     session.flash('success', `Welcome back, ${auth.user!.username}!`)
     
-    return response.redirect().toPath('/')
+    return forward
+      ? response.redirect().toPath(forward)
+      : response.redirect().toPath('/')
   }
 
   public async signout({ response, auth, session }: HttpContextContract) {

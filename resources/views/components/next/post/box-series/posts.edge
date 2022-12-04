@@ -3,7 +3,7 @@
   @set('isActive', request.routeParams.slug == item.slug || request.routeParams.index - 1 === item.meta.pivot_root_sort_order)
 
   <li>
-    <a href="{{ href }}" class="flex items-center p-3 rounded-xl transition duration-150 group {{ isActive ? 'active bg-accent-800 text-accent-200' : 'hover:bg-slate-700' }}">
+    <a href="{{ href }}" up-follow class="flex items-center p-3 rounded-xl transition duration-150 group {{ isActive ? 'active bg-accent-800 text-accent-200' : 'hover:bg-slate-700' }}">
       <div class="relative mr-3 -my-3">
         @if (!isActive)
           <div class="absolute -top-1 -left-1 opacity-0 group-hover:opacity-100 transition duration-150 z-20">

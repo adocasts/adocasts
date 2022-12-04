@@ -59,22 +59,13 @@
         </form>
         <div class="sm:text-center">
           <p class="text-xs opacity-80">
-            By signing up for our roundup newsletter, you'll recieve our latest lessons and content from the month.
+            By signing up for our roundup newsletter, you'll receive our latest lessons and content from the month.
           </p>
         </div>
       </div>
 
       <div class="w-full lg:w-2/3 bg-white relative shadow-xl p-6 flex flex-col items-center justify-center text-center dark:bg-slate-800 rounded-xl overflow-hidden mb-3">
-        <h4 class="text-2xl font-semibold">
-          New Lessons Weekly
-        </h4>
-        <p class="text-sm opacity-80">
-          Come back every week, at Sunday 9AM EST, for a new lesson!
-        </p>
-
-        <div class="absolute bottom-0 right-0 bg-gray-100 rounded-tl-lg px-3 py-1 text-xs text-slate-500 dark:bg-slate-700 dark:text-slate-400">
-          <strong class="font-medium">This could be your ad!</strong> Click to learn more.
-        </div>
+        @!ads.leaderboard()
       </div>
     @end
   </div>
