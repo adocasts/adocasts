@@ -1,4 +1,5 @@
 let isYtVideoPlaying = false
+let isInitialLoad = true
 window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMethod = 'post', httpUrl, httpPayload = {}, watchSeconds = 0, isLive = false, autoplay = false } = {}) {
   const startMuted = isLive || autoplay
   const bodyContent = document.querySelector('.body-content')
@@ -57,13 +58,6 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
   })
 
   function onInitVideo(playOnReady, skipToSeconds = watchSeconds) {
-    const tag = document.createElement('script')
-    const appCompleted = document.getElementById('appCompleted')
-
-    let playerInterval
-    tag.src = "https://www.youtube.com/iframe_api"
-    document.body.appendChild(tag)
-
     window.onYouTubeIframeAPIReady = function () {
       const playerVars = {
         autoplay: playOnReady,
@@ -86,6 +80,18 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
           'onStateChange': onPlayerStateChange
         }
       })
+    }
+
+    if (isInitialLoad) {
+      const tag = document.createElement('script')
+      const appCompleted = document.getElementById('appCompleted')
+
+      let playerInterval
+      tag.src = "https://www.youtube.com/iframe_api"
+      document.body.appendChild(tag)
+      isInitialLoad = false
+    } else {
+      window.onYouTubeIframeAPIReady() 
     }
 
     function onPlayerReady(event) {
@@ -133,6 +139,111 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
       appCompleted.dispatchEvent(event)
     }
   }
+}
+
+let lessonVideoIntersection
+let lessonVideoResize
+let wasIntersecting = undefined
+
+up.compiler('#lessonVideoEmbed', function(element) {
+  const data = element.dataset
+  
+  // re-position to primary position when re-initialized
+  positionVideoPlaceholder()
+
+  // kick-off video initialization
+  initVideo({
+    el: 'lessonVideoEmbed',
+    isLive: !!data.isLive && data.isLive !== 'null',
+    videoId: data.videoId,
+    watchSeconds: parseInt(data.watchSeconds || '0'),
+    httpUrl: data.httpUrl,
+    httpPayload: {
+      postId: data.payloadPostId,
+      collectionId: data.payloadCollectionId,
+      userId: data.payloadUserId,
+      route: data.payloadRoute
+    }
+  })
+
+  if (!!window.ResizeObserver) {
+    let observer = new ResizeObserver((entries) => {
+      if (typeof wasIntersecting !== 'undefined') {
+        positionVideoPlaceholder(!wasIntersecting)
+      }
+    })
+
+    observer.observe(document.body)
+    lessonVideoResize = () => observer.unobserve(document.body)
+  }
+})
+
+up.compiler('#videoPlayerPosition', position => {
+  if (typeof lessonVideoIntersection == 'function') {
+    lessonVideoIntersection()
+  }
+
+  // move to small position when primary position is out of view
+  if(!!window.IntersectionObserver) {
+    let observer = new IntersectionObserver((entries) => { 
+      entries.forEach(entry => {
+        wasIntersecting = entry.isIntersecting
+        positionVideoPlaceholder(!entry.isIntersecting)
+      });
+    }, { rootMargin: "0px" });
+
+    observer.observe(position)
+    lessonVideoIntersection = () => observer.unobserve(position)
+  }
+})
+
+// change to small player if the page doesn't contain it's positioning element
+up.on('up:fragment:loaded', event => {
+  const isSmallPlayer = !event.response.text.includes('id="videoPlayerPosition"')
+  positionVideoPlaceholder(isSmallPlayer)
+})
+
+function positionVideoPlaceholder(isSmallPlayer = false) {
+  const placeholder = document.getElementById('videoPlayerPlaceholder')
+  const videoPath = placeholder.dataset.path
+  const isVideoPath = videoPath == location.pathname
+  
+  if (isSmallPlayer) {
+    isVideoPath
+      ? placeholder.classList.add('video-noactions')
+      : placeholder.classList.remove('video-noactions')
+
+    placeholder.classList.add('video-small')
+    placeholder.classList.remove('aspect-video')
+    placeholder.removeAttribute('style')
+    
+    return    
+  }
+
+  const position = document.getElementById('videoPlayerPosition')
+  const rect = offset(position)
+
+  if (!rect) return
+
+  placeholder.classList.add('aspect-video')
+  placeholder.classList.remove('video-small', 'video-noactions')
+  placeholder.style.position = 'absolute'
+  placeholder.style.padding = 0
+  placeholder.style.width = rect.width + 'px'
+  placeholder.style.hight = rect.height + 'px'
+  placeholder.style.left = rect.left + 'px'
+  placeholder.style.top = rect.top + 'px'
+}
+
+function offset(el) {
+  if (!el) return
+  const rect = el.getBoundingClientRect();
+  return {
+    top: rect.top + window.scrollY,
+    left: rect.left + window.scrollX,
+    width: rect.width,
+    height: rect.height
+  };
 }
 
 // scroll active series item into view

@@ -26,7 +26,7 @@ export default class LessonsController {
     return view.render('lessons/index', { items })
   }
 
-  public async show({ view, params, auth, request }: HttpContextContract) {
+  public async show({ view, params, auth, session, request, up }: HttpContextContract) {
     const post = await CacheService.try(CacheService.getPostKey(params.slug), async () => {
       return Post.lessons()
         .apply(scope => scope.forDisplay(true))
@@ -49,7 +49,10 @@ export default class LessonsController {
 
     this.historyService.recordPostView(post.id)
     const userProgression = await this.historyService.getPostProgression(postModel!)
+    const skipVideoPlayer = session.get('videoPlayerId') == post.id && up.isUnpolyRequest
 
-    return view.render('lessons/show', { post, series, comments, commentCount, userProgression, views })
+    session.put('videoPlayerId', post.id)
+
+    return view.render('lessons/show', { post, series, comments, commentCount, userProgression, views, skipVideoPlayer })
   }
 }

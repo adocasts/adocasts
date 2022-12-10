@@ -50,7 +50,3 @@
   </div>
   <input type="hidden" name="{{ name ?? 'body' }}" :value="content">
 </div>
-
-@if (includeScript && !request.header('X-Up-Target'))
-  <script src="{{ asset('assets/tiptap_basic.js') }}"></script>
-@endif

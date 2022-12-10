@@ -1,5 +1,5 @@
-<div class="lesson-list-placeholder bg-black"></div>
-<div x-cloak x-data="{ show: false }" class="lesson-list border-l border-slate-800 border-opacity-80 shadow-xl z-10">
+<div class="lesson-list-placeholder bg-black" up-hungry></div>
+<div x-cloak x-data="{ show: false }" class="lesson-list border-l border-slate-800 border-opacity-80 shadow-xl z-10" up-hungry>
   <div @click="show = !show" class="flex justify-between items-center pt-3 pb-3 md:pb-0 md:sticky top-0 z-30 bg-slate-900 backdrop-blur-lg">
     <div>
       @if (series.statusId === StatusEnum.OUTDATED)

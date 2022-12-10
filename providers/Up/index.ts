@@ -105,6 +105,10 @@ export default class Up {
     return this.getMode() === 'root'
   }
 
+  public get isUnpolyRequest() {
+    return !!this.getContext()
+  }
+
   public getLayer() {
     return this.getProperty('X-Up-Accept-Layer')
   }

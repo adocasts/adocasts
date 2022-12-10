@@ -652,17 +652,20 @@ code .line:before {
 }
 
 @screen lg {
+  :root {
+    --lesson-list-width: 250px;
+  }
+
   .lesson-wrapper {
-    --list-width: 250px;
     display: flex;
   }
 
   .lesson-wrapper .lesson-list-placeholder {
-    width: var(--list-width);
+    width: var(--lesson-list-width);
   }
 
   .lesson-wrapper .lesson-list {
-    width: var(--list-width);    
+    width: var(--lesson-list-width);    
     height: 100%;
     color: theme('colors.slate.300');
     overflow-y: auto;
@@ -673,13 +676,13 @@ code .line:before {
   }
 
   .lesson-wrapper .page-contents {
-    width: calc(100% - var(--list-width));
+    width: calc(100% - var(--lesson-list-width));
   }
 }
 
 @screen xl {
-  .lesson-wrapper {
-    --list-width: 300px;
+  :root {
+    --lesson-list-width: 300px;
   }
 }
 
@@ -753,6 +756,34 @@ up-modal-box {
   @screen lg {
     --min-width: 675px;
   }
+}
+
+#videoPlayerPlaceholder:empty {
+  display: none;
+}
+
+#videoPlayerPlaceholder:not(.video-small) {
+  background-color: transparent !important;
+}
+
+.video-small-details {
+  display: none;
+}
+
+.video-small .video-small-details {
+  display: flex;
+}
+
+.video-small {
+  width: 325px !important;
+}
+
+.video-noactions .video-small-actions {
+  display: none;
+}
+
+.lesson-wrapper + .video-small {
+  right: calc(var(--lesson-list-width) + 1.5rem) !important;
 }
 
 @keyframes fadeIn {

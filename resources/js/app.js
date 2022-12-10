@@ -3,6 +3,8 @@ import '../css/app.css'
 import 'babel-polyfill'
 import Alpine from 'alpinejs'
 import mask from '@alpinejs/mask'
+import axios from 'axios'
+import './tiptap/basic.js'
 // window.htmx = htmx
 
 // import * as Sentry from '@sentry/browser'
@@ -74,13 +76,48 @@ Alpine.data('modal', function () {
   }
 })
 
+Alpine.data('videoPlaceholder', () => {
+  return {
+    close() {
+      window.player?.stopVideo()
+      document.getElementById('videoPlayerPlaceholder').classList.add('hidden')
+    }
+  }
+})
+
 Alpine.plugin(mask)
 Alpine.start()
 window.Alpine = Alpine
 
-// up.on('up:fragment:inserted', function (event, fragment) {
-//   up.emit('htmx:load', { detail: { elt: fragment } })
-// })
+const upMain = document.querySelector('[up-main]')
+const header = document.querySelector('[up-header]')
+
+up.on('up:fragment:inserted', function (event, fragment) {
+  up.emit('htmx:load', { detail: { elt: fragment } })
+
+  console.log({ fragment })
+
+  // sync lesson-wrapper class with header
+  if (fragment.hasAttribute('up-main')) {
+    const isWrapped = fragment.classList.contains('lesson-wrapper')
+    
+    isWrapped
+      ? header.classList.add('lesson-wrapper')
+      : header.classList.remove('lesson-wrapper')
+  }
+})
+
+up.on('up:request:loaded', (event) => {
+  const html = document.body.parentElement
+
+  if (event.response.text.includes('data-theme="dark"')) {
+    html.classList.add('dark')
+    html.dataset.theme = "dark"
+  } else {
+    html.classList.remove('dark')
+    html.dataset.theme = ""
+  }
+})
 
 // htmx.on('htmx:afterSwap', (e) => {
 //   console.log({ e })
