@@ -95,8 +95,6 @@ const header = document.querySelector('[up-header]')
 up.on('up:fragment:inserted', function (event, fragment) {
   up.emit('htmx:load', { detail: { elt: fragment } })
 
-  console.log({ fragment })
-
   // sync lesson-wrapper class with header
   if (fragment.hasAttribute('up-main')) {
     const isWrapped = fragment.classList.contains('lesson-wrapper')
@@ -109,15 +107,33 @@ up.on('up:fragment:inserted', function (event, fragment) {
 
 up.on('up:request:loaded', (event) => {
   const html = document.body.parentElement
+  const theme = getNewTheme(event.response.text)
 
-  if (event.response.text.includes('data-theme="dark"')) {
+  if (theme === 'dark') {
     html.classList.add('dark')
     html.dataset.theme = "dark"
-  } else {
+  } else if (theme === 'light') {
     html.classList.remove('dark')
     html.dataset.theme = ""
+  } else {
+    html.classList.remove('dark')
+    html.dataset.theme = "system"
+    
+    const systemTheme = getSystemTheme()
+    if (systemTheme === 'dark') {
+      html.classList.add('dark')
+    }
   }
 })
+
+function getNewTheme(text) {
+  if (text.includes('data-theme="dark"'))
+    return 'dark'
+  else if (text.includes('data-theme="light"'))
+    return 'light'
+  else
+    return 'system'
+}
 
 // htmx.on('htmx:afterSwap', (e) => {
 //   console.log({ e })
