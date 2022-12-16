@@ -580,3 +580,7 @@ code .line:before {
 .dark .prose code {
   color: theme('colors.brand.500');
 }
+
+.formkit-center form.formkit-form {
+  margin: 0 auto;
+}
