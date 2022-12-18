@@ -216,5 +216,6 @@ Route.get('/ping', async ({ response }) => {
   return response.status(200).json({ pong: true })
 })
 
-Route.on('/r/mastodon').redirect('https://fosstodon.org/@adocasts')
-Route.on('/r/tom/mastodon').redirect('https://fosstodon.org/@tomgobich')
+
+Route.get('/r/mastodon', ({ response }) => response.redirect().toPath('https://fosstodon.org/@adocasts'))
+Route.get('/r/tom/mastodon', ({ response }) => response.redirect().toPath('https://fosstodon.org/@tomgobich'))
