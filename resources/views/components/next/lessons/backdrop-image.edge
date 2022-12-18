@@ -14,13 +14,13 @@
   }
 })
 
-<div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-transparent {{ sizeMap[size].via }} to-slate-900/60 duration-150 z-10"></div>
+<div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-transparent {{ sizeMap[size].via }} to-slate-900/60 duration-300 z-10"></div>
 
 @if (img)
   <div class="absolute w-full h-full top-0 left-0">
     @!picture({ 
-      className: 'w-full h-full rounded-xl overflow-hidden',
-      imgClassName: 'group-hover:grayscale-0 opacity-20 group-hover:opacity-30 blur-2xl group-hover:blur-sm scale-150 group-hover:scale-100 duration-150',
+      className: 'w-full h-full bg-slate-800 rounded-xl overflow-hidden',
+      imgClassName: 'group-hover:grayscale-0 opacity-10 group-hover:opacity-30 blur-2xl group-hover:blur-none scale-150 group-hover:scale-100 duration-300',
       filename: img.filename, 
       altText: img.altText,
       fit: 'object-cover object-center',
