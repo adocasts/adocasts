@@ -217,5 +217,10 @@ Route.get('/ping', async ({ response }) => {
 })
 
 
-Route.get('/r/mastodon', ({ response }) => response.redirect().toPath('https://fosstodon.org/@adocasts'))
-Route.get('/r/tom/mastodon', ({ response }) => response.redirect().toPath('https://fosstodon.org/@tomgobich'))
+Route.get('/mastodon', ({ view }) => {
+  return view.render('redirect', { go: 'https://fosstodon.org/@adocasts' })
+})
+
+Route.get('/mastodon/tom', ({ view }) => {
+  return view.render('redirect', { go: 'https://fosstodon.org/@tomgobich' })
+})
