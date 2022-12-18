@@ -215,3 +215,6 @@ Route.group(() => {
 Route.get('/ping', async ({ response }) => {
   return response.status(200).json({ pong: true })
 })
+
+Route.on('/r/mastodon').redirect('https://fosstodon.org/@adocasts')
+Route.on('/r/tom/mastodon').redirect('https://fosstodon.org/@tomgobich')
