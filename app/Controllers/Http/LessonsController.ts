@@ -49,10 +49,17 @@ export default class LessonsController {
 
     this.historyService.recordPostView(post.id)
     const userProgression = await this.historyService.getPostProgression(postModel!)
-    const skipVideoPlayer = session.get('videoPlayerId') == post.id && up.isUnpolyRequest
-
+    const skipVideoPlayer = session.get('videoPlayerId') == post.id && up.isUnpolyRequest && !up.isLayoutUpdate
     session.put('videoPlayerId', post.id)
 
-    return view.render('lessons/show', { post, series, comments, commentCount, userProgression, views, skipVideoPlayer })
+    return view.render('lessons/show', { 
+      post, 
+      series, 
+      comments, 
+      commentCount, 
+      userProgression, 
+      views, 
+      skipVideoPlayer
+    })
   }
 }

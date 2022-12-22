@@ -12,19 +12,22 @@
 }" class="contents">
   <button 
     @click="toggle" 
-    class="flex h-8 w-8 -mt-1 items-center justify-center rounded-lg shadow-md fill-gray-600 dark:fill-gray-400 text-gray-600 hover:text-gray-200 duration-150 ring-black/5 bg-transparent dark:ring-inset dark:ring-white/5">
+    class="flex h-8 w-8 -mt-1 items-center justify-center rounded-lg shadow-md fill-slate-600 dark:fill-slate-400 text-slate-600 hover:text-slate-200 duration-150 ring-black/5 bg-transparent dark:ring-inset dark:ring-white/5">
     @!next.icons.solid.menuAltTwo({ className: 'w-6 h-6' })
   </button>
 
-  @next.panel({ variable: 'show', closeHandler: 'toggle' })
+  @next.panel({ variable: 'show', closeHandler: 'toggle', className: 'dark' })
     <div class="flex flex-col">
-      <a href="/" class="flex bg-gray-100 -mx-4 sm:-mx-6 -mt-6 px-4 sm:px-6 pt-6 pb-3 mb-3">
+      <a href="/" class="flex bg-slate-100 dark:bg-slate-800 -mx-4 sm:-mx-6 -mt-6 px-4 sm:px-6 pt-6 pb-3 mb-3">
         <span class="sr-only">Adocasts</span>
-        <img class="h-6 w-auto sm:h-10" width="146px" height="28px" src="{{ env('APP_LOGO_INV') }}" alt="Adocasts">
+        <img class="h-6 w-auto sm:h-10" width="146px" height="28px" src="{{ env('APP_LOGO') }}" alt="Adocasts">
       </a>
 
       <nav class="flex flex-col space-y-3">
-        <div class="flex flex-col space-y-1 border-b border-gray-100 pb-3">
+        <div class="flex flex-col space-y-1 border-b border-slate-100 dark:border-slate-800 pb-3">
+          @next.headers.links.menu({ href: '/' })
+            Home
+          @end
           @next.headers.links.menu({ href: route('series.index') })
             Series
           @end
@@ -42,29 +45,29 @@
           @end
         </div>
 
-        <a href="{{ route('questions.index') }}" class="-m-3 p-3 block rounded-md hover:bg-gray-50 dark:hover:bg-opacity-10">
-          <p class="text-base font-medium text-gray-950 dark:text-gray-200">
+        <a href="{{ route('questions.index') }}" class="-m-3 p-3 block rounded-md hover:bg-slate-100 dark:hover:bg-slate-800">
+          <p class="text-base font-medium text-slate-950 dark:text-slate-300">
             Frequently Asked Questions
           </p>
-          <p class="mt-1 text-sm text-gray-900 dark:text-gray-600">
+          <p class="mt-1 text-sm text-slate-900 dark:text-slate-400">
             Find answers to frequently asked questions, or submit a question.
           </p>
         </a>
 
-        <a href="{{ route('resources') }}" class="-m-3 p-3 block rounded-md hover:bg-gray-50 dark:hover:bg-gray-900 dark:hover:bg-opacity-10">
-          <p class="text-base font-medium text-gray-950 dark:text-gray-200">
+        <a href="{{ route('resources') }}" class="-m-3 p-3 block rounded-md hover:bg-slate-100 dark:hover:bg-slate-800">
+          <p class="text-base font-medium text-slate-950 dark:text-slate-300">
             Resources
           </p>
-          <p class="mt-1 text-sm text-gray-900 dark:text-gray-600">
+          <p class="mt-1 text-sm text-slate-900 dark:text-slate-400">
             Resources we found helpful when doing common or oddball tasks as developers.
           </p>
         </a>
 
-        <a href="{{ route('uses') }}" class="-m-3 p-3 block rounded-md hover:bg-gray-50 dark:hover:bg-gray-900 dark:hover:bg-opacity-10">
-          <p class="text-base font-medium text-gray-950 dark:text-gray-200">
+        <a href="{{ route('uses') }}" class="-m-3 p-3 block rounded-md hover:bg-slate-100 dark:hover:bg-slate-800">
+          <p class="text-base font-medium text-slate-950 dark:text-slate-300">
             Uses
           </p>
-          <p class="mt-1 text-sm text-gray-900 dark:text-gray-600">
+          <p class="mt-1 text-sm text-slate-900 dark:text-slate-400">
             Learn about tech and software we rely on in daily life and for Adocasts.
           </p>
         </a>

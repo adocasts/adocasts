@@ -199,15 +199,17 @@ up.compiler('#videoPlayerPosition', position => {
 
 // change to small player if the page doesn't contain it's positioning element
 up.on('up:fragment:loaded', event => {
+  const isLayer = ['modal', 'drawer'].includes(event.request.mode)
   const isSmallPlayer = !event.response.text.includes('id="videoPlayerPosition"')
-  positionVideoPlaceholder(isSmallPlayer)
+  positionVideoPlaceholder(isSmallPlayer && !isLayer)
 })
 
 function positionVideoPlaceholder(isSmallPlayer = false) {
   const placeholder = document.getElementById('videoPlayerPlaceholder')
+  if (!placeholder) return 
   const videoPath = placeholder.dataset.path
   const isVideoPath = videoPath == location.pathname
-  
+  console.log({ isVideoPath })
   if (isSmallPlayer) {
     isVideoPath
       ? placeholder.classList.add('video-noactions')

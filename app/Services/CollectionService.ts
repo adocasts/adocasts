@@ -4,15 +4,15 @@ import Post from 'App/Models/Post'
 import CacheService from 'App/Services/CacheService'
 
 export default class CollectionService {
-  public static async getLastUpdated(limit: number = 4, excludeIds: number[] = []) {
+  public static async getLastUpdated(limit: number = 4, excludeIds: number[] = [], withPosts: boolean = true, postLimit: number = 4) {
     return Collection.series()
       .apply(scope => scope.withPostLatestPublished())
       .if(excludeIds.length, query => query.whereNotIn('id', excludeIds))
+      .if(withPosts, query => query.preload('postsFlattened', query => query.apply(scope => scope.forCollectionDisplay()).groupLimit(postLimit)))
       .withCount('postsFlattened', query => query.apply(scope => scope.published()))
       .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
       .whereHas('postsFlattened', query => query.apply(scope => scope.published()))
       .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
-      .preload('postsFlattened', query => query.apply(scope => scope.forCollectionDisplay()).groupLimit(4))
       .preload('asset')
       .wherePublic()
       .whereNull('parentId')

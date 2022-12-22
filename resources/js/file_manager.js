@@ -55,7 +55,6 @@ function imageUploader({ postId, images = [] } = {}) {
       
       if (postId) {
         formData.append("postId", postId)
-        console.log({ formData })
       }
 
       formData.append("image", file)

@@ -15,11 +15,11 @@
   <div class="bg-slate-900 dark">
     @next.containers.page({ className: 'py-6' })
       <div class="flex flex-wrap">
-        @!next.lessons.cardHero({ item: testLesson })
+        @!next.lessons.cardHero({ item: latestHero })
 
         <div class="flex flex-wrap items-start w-full lg:w-1/2">
-          @each (i in [...new Array(4)])
-            @!next.lessons.cardHeroSmall({ item: testLesson })
+          @each (item in latestOne)
+            @!next.lessons.cardHeroSmall({ item })
           @endeach
         </div>
       </div>
@@ -30,8 +30,8 @@
     @next.containers.page({ className: 'pb-8' })
       @!next.headings.panel({ title: 'Popular This Month', on: 'dark' })
       <div class="flex flex-wrap -mx-3">
-        @each (i in [...new Array(4)])
-          @!next.lessons.cardTitle({ item: testLesson })
+        @each (item in trendingLessons)
+          @!next.lessons.cardTitle({ item })
         @endeach
       </div>
     @end
@@ -90,10 +90,10 @@
       @!next.headings.panel({ title: 'More Recently Released' })
     </div>
     <div class="grid xl:grid-cols-2 gap-3 w-full">
-      @each ((item, i) in latestLessons)
-        @if (i === 1)
+      @each ((item, i) in latestTwo)
+        {{--  @if (i === 1)
           @!ads.article()
-        @endif
+        @endif  --}}
         @!next.lessons.listItem({ item, className: 'pl-3' })
       @endeach
     </div>
@@ -121,21 +121,23 @@
       @!next.headings.panel({ title: 'More Recently Released' })
     </div>
     <div class="grid xl:grid-cols-2 gap-3 w-full">
-      @each ((item, i) in latestLessons)
-        @if (i === 1)
+      @each ((item, i) in latestThree)
+        {{--  @if (i === 1)
           @!ads.article()
-        @endif
+        @endif  --}}
         @!next.lessons.listItem({ item, className: 'pl-3' })
       @endeach
     </div>
   @end
 
-  <div class="py-10 lg:mr-6 relative mb-6">
-    <div class="absolute top-0 left-0 h-full w-full bg-slate-900 dark:bg-gradient-to-br dark:from-slate-900 dark:to-slate-800/40 dark:shadow-lg rounded-r-3xl"></div>
-    <div class="px-3">
-      @!next.series.heroFeature({ item: series[0] })
+  @if (seriesFeature?.length)
+    <div class="py-10 lg:mr-6 relative mb-6">
+      <div class="absolute top-0 left-0 h-full w-full bg-slate-900 dark:bg-gradient-to-br dark:from-slate-900 dark:to-slate-800/40 dark:shadow-lg rounded-r-3xl"></div>
+      <div class="px-3">
+        @!next.series.heroFeature({ item: seriesFeature[0] })
+      </div>
     </div>
-  </div>
+  @endif
 
 @endsection
 

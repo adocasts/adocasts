@@ -18,6 +18,13 @@ export default class AppState {
     }
 
     const settings = (new SettingsService()).build()
+    ctx.settings = settings
+
+    if (ctx.request.method() !== 'GET') {
+      await next()
+      return
+    }
+
     const httpIdentityService = new HttpIdentityService()
 
     // stub notification (empty state)
@@ -28,13 +35,13 @@ export default class AppState {
       notifications = await NotificationService.getForDisplay(ctx.auth.user)
     }
 
-    ctx.settings = settings
-
     // get global view properties
-    View.global('settings', settings)
-    View.global('identity', await httpIdentityService.getRequestIdentity())
-    View.global('notifications', notifications)
-    View.global('live', await PostService.checkLive())
+    ctx.view.share({ 
+      settings: settings,
+      identity: await httpIdentityService.getRequestIdentity(),
+      live: await PostService.checkLive(),
+      notifications
+    })
 
     // code for middleware goes here. ABOVE THE NEXT CALL
     await next()

@@ -1,7 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import CommentService from 'App/Services/CommentService'
 import Collection from 'App/Models/Collection'
-import UtilityService from 'App/Services/UtilityService'
 import { inject } from '@adonisjs/fold'
 import HistoryService from 'App/Services/Http/HistoryService'
 import CacheService from 'App/Services/CacheService'
@@ -17,7 +16,7 @@ export default class SeriesController {
       let featuredItem = await CollectionService.getFeaturedSeries()
 
       if (!featuredItem) {
-        featuredItem = await CollectionService.getLatestUpdatedSeries()
+        featuredItem = (await CollectionService.getLastUpdated(1, [], true, 5))[0]
       }
 
       const series = await Collection.series()

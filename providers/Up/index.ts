@@ -105,6 +105,10 @@ export default class Up {
     return this.getMode() === 'root'
   }
 
+  public get isLayoutUpdate() {
+    return this.getTarget() === 'body'
+  }
+
   public get isUnpolyRequest() {
     return !!this.getContext()
   }

@@ -59,6 +59,7 @@
             </a>
           </h3>
 
+          {{--  light variants  --}}
           <div class="flex dark:hidden video-small-actions items-center space-x-3 mt-6">
             @next.buttons.primary.inverse({ href: route('lessons.show', { slug: post.slug }), attrs: 'up-follow', block: true, size: 'xs' })
               @!next.icons.solid.externalLink({ className: 'w-4 h-4 rotate-50 mr-1' })
@@ -71,6 +72,7 @@
             @end
           </div>
 
+          {{--  dark variants  --}}
           <div class="hidden dark:flex video-small-actions items-center space-x-3 mt-6">
             @next.buttons.primary.base({ href: route('lessons.show', { slug: post.slug }), attrs: 'up-follow', block: true, size: 'xs' })
               @!next.icons.solid.externalLink({ className: 'w-4 h-4 rotate-50 mr-1' })
