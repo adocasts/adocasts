@@ -31,7 +31,7 @@
           @each ((item, i) in items)
             @!next.lessons.listItem({ item, className: 'mb-6' })
           @endeach
-          @!pagination({ data: items })
+          @!next.pagination({ data: items })
         </div>
         <div class="w-full md:w-1/3 px-6">
           @!ads.multiplex()

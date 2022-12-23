@@ -1,6 +1,5 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import SettingsService from 'App/Services/Http/SettingsService'
-import View from '@ioc:Adonis/Core/View'
 import HttpIdentityService from 'App/Services/Http/HttpIdentityService'
 import NotificationService from 'App/Services/NotificationService'
 import PostService from 'App/Services/PostService'

@@ -51,6 +51,10 @@
     {
       "pattern": "resources/views/**/*.edge",
       "reloadServer": false
+    },
+    {
+      "pattern": "certs/**",
+      "reloadServer": false
     }
   ],
   "aceProviders": [

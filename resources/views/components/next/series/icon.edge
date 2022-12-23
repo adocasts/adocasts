@@ -3,7 +3,7 @@
 
 <div class="aspect-square">
   @if (item.asset)
-    <img src="/img/{{ item.asset.filename }}" class="rounded-full {{ width }} {{ height }} mb-3 {{ className }}" />
+    <img src="/img/{{ item.asset.filename }}" class="rounded-full object-contain object-center {{ width }} {{ height }} mb-3 {{ className }}" />
   @else
     <div class="{{ width }} {{ height }} text-2xl font-semibold flex items-center justify-center mb-3 rounded-full bg-brand-300 text-brand-800 dark:bg-brand-900 dark:bg-opacity-30 dark:text-brand-300 {{ className }}">
       {{ getAbbrev(item.name) }}

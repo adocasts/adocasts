@@ -1,6 +1,6 @@
 @set('className', className ?? 'w-full lg:w-1/2 xl:w-1/4 px-3 mb-6')
 
-<a href="{{ route('series.show', { slug: item.slug }) }}" class="{{ className }}">
+<a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="{{ className }}">
   <div class="group h-full flex flex-col bg-slate-900 text-center p-6 rounded-xl overflow-hidden relative">
     <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-transparent via-slate-900/60 to-slate-900 z-10"></div>
     
@@ -44,7 +44,7 @@
       </div>
 
       <object class="w-full">
-        <a href="{{ route('series.show', { slug: item.slug }) }}" class="w-full flex justify-center items-center text-center px-3 py-2 bg-slate-100/10 hover:bg-slate-100/20 text-slate-300 group-hover:text-slate-200 backdrop-blur rounded-xl">
+        <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="w-full flex justify-center items-center text-center px-3 py-2 bg-slate-100/10 hover:bg-slate-100/20 text-slate-300 group-hover:text-slate-200 backdrop-blur rounded-xl">
           View Series
         </a>
       </object>

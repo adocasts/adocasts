@@ -2,7 +2,7 @@
   @next.containers.page({ className: 'relative' })
     @set('watchDisplay', secondsForDisplay(item.meta.videoSecondsSum))
 
-    <a href="{{ route('series.show', { slug: item.slug }) }}" class="inline-flex items-center pb-3">
+    <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="inline-flex items-center pb-3">
       <div class="aspect-square">
         @if (item.asset)
           <img src="/img/{{ item.asset.filename }}" class="rounded-full w-16 h-16 mb-3" />
