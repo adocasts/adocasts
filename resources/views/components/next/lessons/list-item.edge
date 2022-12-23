@@ -5,32 +5,32 @@
 @set('description', description ?? true)
 @set('rounded', rounded ?? true)
 @set('hoverBg', hoverBg ?? 'hover:bg-slate-100 dark:hover:bg-slate-800/50')
-@set('flexFlow', flexFlow ?? 'flex-row')
+@set('flexFlow', flexFlow ?? 'flex-col md:flex-row')
 @set('isCol', flexFlow === 'flex-col')
-@set('px', px ?? 'px-6')
+@set('px', px ?? 'md:px-6')
 @set('size', size ?? 'sm')
 @set('sizeClassMap', {
   xs: {
     title: 'text-lg',
-    description: lineClamp ?? 'line-clamp-2'
+    description: lineClamp ?? 'md:line-clamp-2'
   },
   sm: {
     title: 'text-lg',
-    description: lineClamp ?? 'line-clamp-2'
+    description: lineClamp ?? 'md:line-clamp-2'
   },
   base: {
     title: 'text-lg',
-    description: lineClamp ?? 'line-clamp-3'
+    description: lineClamp ?? 'md:line-clamp-3'
   }
 })
-@set('width', flexFlow == 'flex-col' 
+@set('width', width ? width : flexFlow == 'flex-col' 
   ? 'w-full' 
   : useImage 
-    ? 'w-1/2' 
+    ? 'md:w-1/2' 
     : 'w-full'
 )
 
-<a href="{{ routePost(item, { slug: item.slug }) }}" class="flex {{ flexFlow }} items-center py-3 group {{ hoverBg }} {{ rounded ? 'rounded-xl overflow-hidden' : '' }} duration-150 {{ className }}">
+<a href="{{ routePost(item, { slug: item.slug }) }}" class="flex {{ flexFlow }} md:items-center py-3 group {{ hoverBg }} {{ rounded ? 'rounded-xl overflow-hidden' : '' }} duration-150 {{ className }}">
   @if (useImage)
     <div class="{{ width }} relative duration-300 {{ rounded ? 'rounded-xl overflow-hidden' : '' }} {{ isCol && 'mb-3' }} {{ imgClassName }}">
       @!picture({ 
@@ -52,12 +52,12 @@
   <div class="{{ width }} {{ px }} {{ contentClassName }}">
     @!next.lessons.barSeries({ on: 'light', item })
 
-    <h3 class="{{ sizeClassMap[size].title }} line-clamp-3 font-sans leading-6 max-w-xl">
-      {{ item.title }}
+    <h3 class="{{ sizeClassMap[size].title }} {{ titleClassName }} line-clamp-3 font-sans leading-6 max-w-xl">
+      {{ item.title }} 
     </h3>
 
     @if (description && item.description)
-      <p class="mb-2 max-w-xl mt-3 text-sm  text-slate-600 dark:text-slate-600 group-hover:text-slate-700 dark:group-hover:text-slate-400 duration-150 {{ sizeClassMap[size].description }}">
+      <p class="hidden md:inline-block {{ descClassName }} mb-2 max-w-xl mt-3 text-sm text-slate-600 dark:text-slate-600 group-hover:text-slate-700 dark:group-hover:text-slate-400 duration-150 {{ sizeClassMap[size].description }}">
         {{ item.description }}
       </p>
     @endif

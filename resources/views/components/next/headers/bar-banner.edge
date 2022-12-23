@@ -1,14 +1,19 @@
 @next.containers.page()
   <div class="w-full flex justify-between items-center pb-1 border-b border-slate-800 border-opacity-30" up-hungry>
     <div class="flex space-x-3 md:space-x-6">
+      @next.headers.links.social({ href: 'https://youtube.com/adocasts' })
+          <span class="sr-only">YouTube</span>
+          @!next.icons.social.youtube()
+      @end
+
       @next.headers.links.social({ href: 'https://twitter.com/adocasts' })
           <span class="sr-only">Twitter</span>
           @!next.icons.social.twitter()
       @end
       
-      @next.headers.links.social({ href: 'https://youtube.com/adocasts' })
-          <span class="sr-only">YouTube</span>
-          @!next.icons.social.youtube()
+      @next.headers.links.social({ href: 'https://fosstodon.org/@adocasts' })
+          <span class="sr-only">Mastodon</span>
+          @!next.icons.social.mastodon()
       @end
       
       @next.headers.links.social({ href: 'https://github.com/adocasts' })

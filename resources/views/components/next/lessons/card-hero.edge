@@ -1,4 +1,4 @@
-<a href="{{ routePost(item, { slug: item.slug }) }}" class="group flex w-full lg:w-1/2 bg-slate-900 duration-150 relative p-3 pb-8 rounded-xl overflow-hidden mb-3">
+<a href="{{ routePost(item, { slug: item.slug }) }}" class="group flex w-full lg:w-1/2 bg-slate-900 duration-150 relative p-4 pb-8 rounded-xl overflow-hidden mb-3">
   @!next.lessons.backdropImage({ item })
 
   <div class="flex flex-col relative z-20">
@@ -6,21 +6,21 @@
       @set('img', item.thumbnails?.length ? item.thumbnails[0] : item.covers[0])
       @!picture({
         ratio: 'aspect-video',
-        className: 'mb-8 rounded-xl overflow-hidden group-hover:shadow-xl duration-150',
+        className: 'mb-3 md:mb-8 rounded-xl overflow-hidden group-hover:shadow-xl duration-150',
         filename: img.filename,
         altText: img.altText
       })
     @endif
 
-    <div class="flex flex-col pb-3">
+    <div class="flex flex-col md:pb-3">
       @!next.lessons.barSeries({ item, on: 'dark' })
 
-      <h2 class="text-xl md:text-2xl lg:text-3xl 2xl:text-4xl text-slate-300 group-hover:text-slate-200 mt-0 mb-3 2xl:mb-5 duration-150">
+      <h2 class="text-lg md:text-2xl lg:text-3xl 2xl:text-4xl text-slate-300 group-hover:text-slate-200 mt-0 mb-3 2xl:mb-5 duration-150">
         {{ item.title }}
       </h2>
 
       @if (item.description)
-        <p class="text-slate-400 group-hover:text-slate-300 line-clamp-4 text-sm 2xl:text-base  duration-150">
+        <p class="text-slate-400 group-hover:text-slate-300 line-clamp-4 text-xs md:text-sm 2xl:text-base  duration-150">
           {{ item.description }}
         </p>
       @endif

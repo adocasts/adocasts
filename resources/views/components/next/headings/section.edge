@@ -4,7 +4,7 @@
 
 @if (slot || slotTitle || title || subtitle)
   <div class="{{ className }}">
-    <{{ as }} class="text-3xl font-semibold mb-1 text-slate-900 dark:text-slate-100">
+    <{{ as }} class="text-2xl md:text-3xl font-semibold mb-1 text-slate-900 dark:text-slate-100">
       @if (slotTitle)
         {{{ slotTitle }}}
       @else
@@ -12,7 +12,7 @@
       @endif
     </{{ as }}>
     @if (slot || subtitle)
-      <p class="text-lg  text-slate-600 dark:text-slate-400 max-w-prose {{ className?.includes('text-center') && 'mx-auto' }}">
+      <p class="text-sm md:text-base text-slate-600 dark:text-slate-400 max-w-prose {{ className?.includes('text-center') && 'mx-auto' }}">
         @if (slot)
           {{{ slot }}}
         @else

@@ -225,3 +225,20 @@ Route.group(() => {
 Route.get('/ping', async ({ response }) => {
   return response.status(200).json({ pong: true })
 })
+
+
+Route.get('/mastodon', ({ view }) => {
+  return view.render('redirect', { 
+    title: "Mastodon Redirect, Thanks Twitter!",
+    desc: "We'll redirect you to our Mastodon account via this page, we're using our site as a middleman to comply with Twitter's weird new rules",
+    go: 'https://fosstodon.org/@adocasts' 
+  })
+})
+
+Route.get('/mastodon/tom', ({ view }) => {
+  return view.render('redirect', { 
+    title: "Mastodon Redirect, Thanks Twitter!",
+    desc: "We'll redirect you to our Mastodon account via this page, we're using our site as a middleman to comply with Twitter's weird new rules",
+    go: 'https://fosstodon.org/@tomgobich' 
+  })
+})

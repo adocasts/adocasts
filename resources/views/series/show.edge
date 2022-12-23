@@ -13,7 +13,7 @@
 @section('hero')
 
   <div class="relative">
-    <div class="absolute top-0 left-0 w-full h-[50%] lg:h-full bg-slate-900 dark:shadow-lg rounded-b-[10%] dark:hidden"></div>
+    <div class="absolute top-0 left-0 w-full h-full bg-slate-900 dark:shadow-lg rounded-b-[3%] lg:rounded-b-[10%] dark:hidden"></div>
     
     @if (series.asset)
       <div class="absolute w-full h-full top-0 left-0 opacity-20 group-hover:opacity-80 duration-150 pointer-events-none">
@@ -26,9 +26,9 @@
     @endif
 
     @next.containers.page({ className: 'relative z-10' })
-      <div class="flex justify-between items-center pt-6 pb-10">
-        <div class="inline-flex pb-3">
-          <div class="aspect-square">
+      <div class="flex flex-col lg:flex-row md:justify-between md:items-center pt-6 pb-10">
+        <div class="w-full lg:w-auto inline-flex flex-col sm:flex-row pb-6 lg:pb-3">
+          <div class="aspect-square w-16 mb-3 ml-3 sm:mb-0 sm:ml-0">
             @if (series.asset)
               <img src="/img/{{ series.asset.filename }}" class="rounded-full w-16 h-16 mb-3" />
             @else
@@ -37,7 +37,7 @@
               </div>
             @endif
           </div>
-          <div class="flex-1 ml-6 -mr-px">
+          <div class="flex-1 ml-3 md:ml-6 -mr-px">
             <h1 class="font-semibold text-white text-2xl">
               {{ series.name }}
             </h1>
@@ -58,7 +58,7 @@
           </div>
         </div>
 
-        <div class="w-full md:w-1/5 lg:w-1/6 flex flex-col space-y-3 pb-6">
+        <div class="w-full lg:w-1/6 flex flex-col space-y-3 pb-6">
           <a href="{{ route('series.show', { slug: series.slug }) }}" class="w-full whitespace-nowrap flex justify-center items-center text-sm px-6 py-2 bg-brand-800/40 hover:bg-brand-800 text-slate-300 hover:text-slate-200 backdrop-blur rounded-xl duration-150">
             @!next.icons.solid.play({ className: 'w-5 h-5' })
             <span class="ml-2">Start Series</span>

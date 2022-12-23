@@ -2,7 +2,7 @@
   @next.containers.page({ className: 'relative' })
     @set('watchDisplay', secondsForDisplay(item.meta.videoSecondsSum))
 
-    <a href="{{ route('series.show', { slug: item.slug }) }}" class="inline-flex items-center pb-3 px-6">
+    <a href="{{ route('series.show', { slug: item.slug }) }}" class="inline-flex items-center pb-3">
       <div class="aspect-square">
         @if (item.asset)
           <img src="/img/{{ item.asset.filename }}" class="rounded-full w-16 h-16 mb-3" />
@@ -12,22 +12,22 @@
           </div>
         @endif
       </div>
-      <div class="flex-1 ml-6 -mt-3 -mr-px">
-        <h4 class="text-slate-400 font-sans  uppercase tracking-wider text-sm">
+      <div class="flex-1 ml-3 md:ml-6 md:-mt-3 -mr-px">
+        <h4 class="text-slate-600 dark:text-slate-400 font-sans uppercase tracking-wider text-sm">
           Featured Series
         </h4>
-        <h2 class="font-semibold text-white text-2xl">
+        <h2 class="font-semibold dark:text-white text-xl md:text-2xl">
           {{ item.name }}
         </h2>
       </div>
     </a>
 
-    <div class="flex flex-wrap px-6">
+    <div class="flex flex-wrap">
       @set('primaryLesson', item.postsFlattened[0])
       
       @!next.lessons.cardHero({ item: primaryLesson })
 
-      <div class="flex flex-wrap items-start w-full lg:w-1/2">
+      <div class="flex flex-wrap items-start w-full lg:w-1/2 md:-mx-1.5 lg:ml-1.5">
         @each ((item, i) in item.postsFlattened.slice(1, 5))
           @!next.lessons.cardHeroSmall({ item })
         @endeach

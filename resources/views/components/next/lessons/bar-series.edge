@@ -3,11 +3,11 @@
 @if (item.series.length)
   @set('series', item.series[0])
   <object>
-    <h5 class="uppercase inline-flex items-center text-accent-800 tracking-wide font-sans  text-xs">
-      <a href="{{ route('series.show', { slug: series.slug }) }}" class="anchor">
+    <h5 class="uppercase flex items-center text-accent-800 tracking-wide font-sans text-xs">
+      <a href="{{ route('series.show', { slug: series.slug }) }}" class="anchor truncate">
         {{ series.name }}
       </a>
-      <span class="{{ onClass }} duration-150  ml-2">
+      <span class="{{ onClass }} duration-150 ml-2">
         #{{ item.lessonIndexDisplay }}
       </span>
     </h5>

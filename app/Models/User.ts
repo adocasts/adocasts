@@ -137,8 +137,6 @@ class User extends AppBaseModel {
 
   @hasMany(() => Question)
   public questions: HasMany<typeof Question>
-
-  @hasMany(() => Block)
 }
 
 User['findForAuth'] = function (uids: string[], uidValue: string) {
