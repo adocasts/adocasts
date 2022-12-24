@@ -167,9 +167,9 @@ Route.group(() => {
 // API
 Route.group(() => {
 
-  Route.post('/studio/assets', 'AssetsController.store').as('studio.assets.store')
-  Route.delete('/studio/assets/:id', 'AssetsController.destroy').as('studio.assets.destroy')
-  Route.post('/studio/editor/assets', 'AssetsController.store').as('studio.editor.asset')//.middleware(['admin'])
+  Route.post('/studio/assets', 'AssetsController.store').as('studio.assets.store').middleware(['role:admin'])
+  Route.delete('/studio/assets/:id', 'AssetsController.destroy').as('studio.assets.destroy').middleware(['role:admin'])
+  Route.post('/studio/editor/assets', 'AssetsController.store').as('studio.editor.asset').middleware(['role:admin'])
 
   Route.post('/watchlist',         'WatchlistsController.store').as('watchlist.store')
   Route.post('/watchlist/toggle',  'WatchlistsController.toggle').as('watchlist.toggle')
@@ -189,7 +189,7 @@ Route.group(() => {
 
     Route.post('/collections/stub', 'CollectionsController.stub').as('collections.stub')
 
-  }).prefix('/studio').as('studio').namespace('App/Controllers/Http/Studio')
+  }).prefix('/studio').as('studio').namespace('App/Controllers/Http/Studio').middleware(['role:admin'])
 
 }).prefix('/api').as('api').middleware(['auth'])
 
