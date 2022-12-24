@@ -1,6 +1,6 @@
 @set('action', action.includes('?') ? `${action}&_method=PUT` : `${action}?_method=PUT`)
 
-<form method="POST" action="{{ action }}" {{{ attrs }}}>
+<form method="POST" action="{{ action }}" {{{ id ? `id="${id}"` : '' }}} {{{ attrs }}}>
   {{ csrfField() }}
   {{{ await $slots.main() }}}
 </form>

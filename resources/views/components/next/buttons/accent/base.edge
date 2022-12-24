@@ -1,23 +1,24 @@
 @set('size', size ?? 'md')
+@set('theme', 'border border-transparent bg-accent-700 text-white shadow-sm hover:bg-accent-800 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2')
 
 @if (size === 'xs')
-  @next.buttons.base({ href, attrs, block, type, form, className: `inline-flex items-center rounded border border-transparent bg-accent-700 px-2.5 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-accent-800 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 ${className ?? ''}` })
+  @next.buttons.base({ href, attrs, block, type, form, className: `inline-flex items-center rounded px-2.5 py-1.5 text-xs font-medium ${theme} ${className ?? ''}` })
     {{{ await $slots.main() }}}
   @end
 @elseif (size === 'sm')
-  @next.buttons.base({ href, attrs, block, type, form, className: `inline-flex items-center rounded-md border border-transparent bg-accent-700 px-3 py-2 text-sm font-medium leading-4 text-white shadow-sm hover:bg-accent-800 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 ${className ?? ''}` })
+  @next.buttons.base({ href, attrs, block, type, form, className: `inline-flex items-center rounded-md px-3 py-2 text-sm font-medium leading-4 ${theme} ${className ?? ''}` })
     {{{ await $slots.main() }}}
   @end
 @elseif (size === 'md')
-  @next.buttons.base({ href, attrs, block, type, form, className: `inline-flex items-center rounded-md border border-transparent bg-accent-700 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-accent-800 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 ${className ?? ''}` })
+  @next.buttons.base({ href, attrs, block, type, form, className: `inline-flex items-center rounded-md px-4 py-2 text-sm font-medium ${theme} ${className ?? ''}` })
     {{{ await $slots.main() }}}
   @end
 @elseif (size === 'lg')
-  @next.buttons.base({ href, attrs, block, type, form, className: `inline-flex items-center rounded-md border border-transparent bg-accent-700 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-accent-800 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 ${className ?? ''}` })
+  @next.buttons.base({ href, attrs, block, type, form, className: `inline-flex items-center rounded-md px-4 py-2 text-base font-medium ${theme} ${className ?? ''}` })
     {{{ await $slots.main() }}}
   @end
 @elseif (size === 'xl')
-  @next.buttons.base({ href, attrs, block, type, form, className: `inline-flex items-center rounded-md border border-transparent bg-accent-700 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-accent-800 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 ${className ?? ''}` })
+  @next.buttons.base({ href, attrs, block, type, form, className: `inline-flex items-center rounded-md px-6 py-3 text-base font-medium ${theme} ${className ?? ''}` })
     {{{ await $slots.main() }}}
   @end
 @endif

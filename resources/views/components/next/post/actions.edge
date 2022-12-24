@@ -1,5 +1,55 @@
 @if(post.postTypeId !== PostTypeEnum.NEWS)
-  <div class="flex flex-col md:items-center w-full lg:w-auto xl:min-w-[325px] px-3 md:px-6 rounded-xl relative -bottom-px -mx-3 md:-mx-6 text-xs md:text-sm space-y-2">
+  <div class="flex flex-row flex-wrap xl:flex-col justify-between xl:justify-center xl:min-w-[325px] px-3 md:px-6 rounded-xl relative -mx-3 md:-mx-6 space-x-2 xl:space-x-0 xl:space-y-2">
+    @if (userProgression?.isCompleted)
+      @next.buttons.accent({ form: 'completedForm', type: 'submit', block: true })
+        @!next.icons.solid.check()
+        Completed
+      @end
+    @else
+      @next.buttons.primary({ theme: 'inverse', form: 'completedForm', type: 'submit', block: true })
+        @!next.icons.solid.check()
+        Mark Complete
+      @end
+    @endif
+
+    @if (post.isInWatchlist)
+      @next.buttons.accent({ form: 'watchlistForm', type: 'submit', block: true })
+        @!next.icons.solid.plus()
+        In Your Watchlist
+      @end
+    @else
+      @next.buttons.primary({ form: 'watchlistForm', theme: 'inverse', type: 'submit', block: true })
+        @!next.icons.solid.plus()
+        Add to Watchlist
+      @end
+    @endif
+    
+    @if (post.videoUrl)
+      @next.buttons.primary({ theme: 'inverse', href: post.videoUrl, attrs: 'target="_blank"', block: true })
+        @!next.icons.social.youtube()
+        Watch on YouTube
+      @end
+    @endif
+
+    @if (post.repositoryUrl)
+      @next.buttons.primary({ theme: 'inverse', href: post.repositoryUrl, attrs: 'target="_blank"', block: true })
+        @!next.icons.social.github()
+        Browse Code
+      @end
+    @endif
+  </div>
+
+  @next.form.post({ id: 'completedForm', action: route('api.histories.progression.toggle'), attrs: 'up-submit up-scroll="preserve"' })
+    <input type="hidden" name="postId" value="{{ post.id }}" />
+    <input type="hidden" name="collectionId" value="{{ series?.id }}" />
+    <input type="hidden" name="route" value="{{ request.ctx.route?.name }}" />
+  @end
+
+  @next.form.post({ id: 'watchlistForm', action: route('api.watchlist.toggle'), attrs: 'up-submit up-scroll="preserve"' })
+    <input type="hidden" name="postId" value="{{ post.id }}" />
+  @end
+
+  {{--  <div class="flex flex-col md:items-center w-full lg:w-auto xl:min-w-[325px] px-3 md:px-6 rounded-xl relative -bottom-px -mx-3 md:-mx-6 text-xs md:text-sm space-y-2">
     <div id="appCompleted" class="w-full" x-cloak x-data="appCompleted('{{ route('api.histories.progression.toggle') }}', { postId: {{ post.id }}, collectionId: {{ series?.id }}, route: '{{ request.ctx.route?.name }}' }, {{ userProgression?.isCompleted }})" @completed="changeCompleted">
       <button x-show="!isCompleted" @click="toggle" type="button" class="w-full group flex items-center bg-slate-100 dark:bg-opacity-10 hover:bg-slate-900 hover:text-white transition duration-300 rounded-full py-1 pl-1 pr-6">
         <div class="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center group-hover:bg-white group-hover:text-slate-900 transition duraton-300 justify-center mr-2">
@@ -45,5 +95,5 @@
         View Repository
       </a>
     @endif
-  </div>
+  </div>  --}}
 @endif

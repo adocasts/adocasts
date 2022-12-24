@@ -1,5 +1,9 @@
 @set('size', size ?? 'md')
-@set('theme', 'border border-transparent bg-slate-100 text-slate-700 hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2')
+@set('themeInverseColor', 'bg-brand-100 dark:bg-brand-900 text-brand-700 dark:text-brand-400 hover:bg-brand-200 dark:hover:bg-brand-800')
+@set('themeBaseColor', 'bg-brand-700 dark:bg-brand-600 text-white hover:bg-brand-800 hover:dark:bg-brand-700')
+@set('themeInverse', `border border-transparent ${themeInverseColor} focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2`)
+@set('themeBase', `border border-transparent ${themeBaseColor} shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2`)
+@set('theme', theme && theme === 'inverse' ? themeInverse : themeBase)
 
 @if (size === 'xs')
   @next.buttons.base({ href, attrs, block, type, form, className: `inline-flex items-center rounded px-2.5 py-1.5 text-xs font-medium ${theme} ${className ?? ''}` })

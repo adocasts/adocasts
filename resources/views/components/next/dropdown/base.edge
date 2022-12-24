@@ -3,7 +3,7 @@
 @set('width', width || 'w-48')
 @set('shadow', shadow || 'shadow-xs')
 
-<div @click.away="open = false" class="relative flex-shrink-0" x-data="{ 
+<div @click.away="open = false" class="relative flex-shrink-0 {{ className }}" x-data="{ 
   open: false, 
   onOpen() {
     this.open = !this.open

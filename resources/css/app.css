@@ -898,4 +898,8 @@ up-modal-box {
   @apply absolute top-2/3 left-0 w-full h-80 bg-gradient-to-b from-transparent to-white dark:to-slate-900 z-10;
 }
 
+.btn > svg {
+  margin-right: .5rem;
+}
+
 /* END NEXT */

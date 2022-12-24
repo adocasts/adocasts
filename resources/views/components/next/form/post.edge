@@ -1,4 +1,4 @@
-<form method="POST" action="{{ action }}" {{{ attrs }}}>
+<form method="POST" action="{{ action }}" {{{ id ? `id="${id}"` : '' }}} {{{ attrs }}}>
   {{ csrfField() }}
   {{{ await $slots.main() }}}
 </form>

@@ -29,6 +29,7 @@ import History from 'App/Models/History'
 import HistoryTypes from 'App/Enums/HistoryTypes'
 import Route from '@ioc:Adonis/Core/Route'
 import AssetTypes from 'App/Enums/AssetTypes'
+import { HttpContext } from '@adonisjs/core/build/standalone'
 
 export default class Post extends AppBaseModel {
   public serializeExtras = true
@@ -425,8 +426,10 @@ export default class Post extends AppBaseModel {
   })
 
   public static forDisplay = scope<typeof Post>((query, skipPublishCheck: boolean = false) => {
+    const ctx = HttpContext.getOrFail()
     query
       .if(!skipPublishCheck, query => query.apply(scope => scope.published()))
+      .if(ctx.auth.user, query => query.withCount('watchlist', query => query.where('userId', ctx.auth.user!.id)))
       .preload('thumbnails')
       .preload('covers')
       .preload('taxonomies')

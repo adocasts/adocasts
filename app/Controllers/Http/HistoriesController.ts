@@ -22,8 +22,12 @@ export default class HistoriesController {
     return response.json({ success: true, progression })
   }
 
-  public async progressionToggle({ response }: HttpContextContract) {
+  public async progressionToggle({ request, response }: HttpContextContract) {
     const progression = await this.historyService.toggleCompleted()
+
+    if (request.accepts(['html'])) {
+      return response.redirect().back()
+    }
 
     return response.json({ success: true, progression })
   }

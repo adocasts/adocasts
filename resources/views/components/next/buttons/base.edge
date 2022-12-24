@@ -6,11 +6,11 @@
 @endif
 
 @if (href)
-  <a href="{{ href }}" class="{{ className }}" {{{ attrs }}}>
+  <a href="{{ href }}" class="btn duration-150 {{ className }}" {{{ attrs }}}>
     {{{ await $slots.main() }}}
   </a>
 @else
-  <button type="{{ type ?? 'button' }}" class="{{ className }}" {{{ form ? `form="${form}"` : '' }}} {{{ attrs }}}>
+  <button type="{{ type ?? 'button' }}" class="btn duration-150 {{ className }}" {{{ form ? `form="${form}"` : '' }}} {{{ attrs }}}>
     {{{ await $slots.main() }}}
   </button>
 @endif

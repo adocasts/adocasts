@@ -30,11 +30,11 @@ export default class WatchlistsController {
 
     const [watchlist, wasDeleted] = await WatchlistService.toggle(auth.user!.id, data)
 
-    if (request.accepts(['json'])) {
-      return response.json({ success: true, watchlist, wasDeleted })
+    if (request.accepts(['html'])) {
+      return response.redirect().back()
     }
-
-    return response.redirect().back()
+    
+    return response.json({ success: true, watchlist, wasDeleted })
   }
 
   public async show({}: HttpContextContract) {}
