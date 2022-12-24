@@ -26,6 +26,31 @@
       @end
     </div>
   @endif
+
+  @if (series)
+    @next.containers.page()
+      <div class="flex my-6 space-x-3">
+        @next.buttons.primary({ theme: 'inverse' })
+          @!next.icons.solid.chevronLeft({ className: 'w-6 h-6 icon-only' })
+        @end
+
+        @next.buttons.primary({ 
+          block: true, 
+          theme: 'inverse', 
+          size: 'xl', 
+          attrs: `x-data @click="document.getElementById('boxSeries').dispatchEvent(new CustomEvent('toggle'))"` 
+        })
+          @!next.icons.solid.menuAltThree()
+          Series Details
+        @end
+
+        @next.buttons.primary({ theme: 'inverse' })
+          @!next.icons.solid.chevronRight({ className: 'w-6 h-6 icon-only' })
+        @end
+      </div>
+    @end
+  @endif
+
 @endsection
 
 @section('content')

@@ -19,8 +19,8 @@
         <p class="text-sm">Forever Plan</p>
       </div>
     </div>
-    <div class="flex items-start">
-      <nav class="flex flex-col sticky top-0">
+    <div class="flex flex-col sm:flex-row items-start">
+      <nav class="flex flex-col sm:sticky top-0">
         @each (route in studioRoutes)
           @can(route.show)
             <a href="{{ route.href }}" class="anchor my-1">
@@ -34,7 +34,7 @@
         </a>
       </nav>
 
-      <div class="flex flex-col overflow-hidden ml-6 xl:ml-16 pl-6 border-l border-slate-200 dark:border-slate-900">
+      <div class="flex flex-col overflow-hidden pt-8 sm:pt-0 sm:ml-6 xl:ml-16 sm:pl-6 sm:border-l border-slate-200 dark:border-slate-900">
         <div class="hidden lg:flex flex-col">
           <div class="mb-6">
             <div class="flex items-center justify-between">

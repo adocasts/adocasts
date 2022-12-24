@@ -37,7 +37,7 @@ export default class PostService {
   }
 
   public static async getPlayerData(postId: number | null = null, user: User | null = null) {
-    if (!postId) return {}
+    if (!postId) return
 
     const post = await Post.lessons()
         .apply(scope => scope.published())
@@ -46,7 +46,7 @@ export default class PostService {
         .where({ id: postId })
         .first()
 
-    if (!post) return {}
+    if (!post) return
 
     const series = await CollectionService.getSeriesForPost(post, user?.id)
 

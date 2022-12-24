@@ -651,6 +651,46 @@ code .line:before {
   }
 }
 
+body.box-series-show {
+  overflow: hidden;
+}
+
+.lesson-wrapper .lesson-list-placeholder,
+.lesson-wrapper .lesson-list {
+  display: none;
+}
+
+.lesson-wrapper .lesson-list-placeholder.show {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.25);
+  backdrop-filter: blur(6px);
+  display: block;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.lesson-wrapper .lesson-list {
+  width: calc(100% - 2.5rem);
+  height: calc(100% + 1px);
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 110;
+  transition: all 300ms ease;
+}
+
+.lesson-wrapper .lesson-list.show {
+  display: block;
+}
+
+.lesson-wrapper .lesson-list {
+  color: theme('colors.slate.300');
+}
+
 @screen lg {
   :root {
     --lesson-list-width: 250px;
@@ -662,17 +702,13 @@ code .line:before {
 
   .lesson-wrapper .lesson-list-placeholder {
     width: var(--lesson-list-width);
+    display: block;
+    position: static;
   }
 
   .lesson-wrapper .lesson-list {
-    width: var(--lesson-list-width);    
-    height: 100%;
-    color: theme('colors.slate.300');
-    overflow-y: auto;
-    position: fixed;
-    top: 0;
-    right: 0;
-    transition: all 300ms ease;
+    width: calc(var(--lesson-list-width) + 1px);
+    display: block;
   }
 
   .lesson-wrapper .page-contents {
@@ -780,11 +816,11 @@ up-modal-box {
   padding: .5rem;
 
   .aspect-video {
-    width: 50%;
+    width: 30%;
   }
 
   .video-small-details {
-    width: 50%;
+    width: 70%;
   }
 
   @screen md {
@@ -898,7 +934,7 @@ up-modal-box {
   @apply absolute top-2/3 left-0 w-full h-80 bg-gradient-to-b from-transparent to-white dark:to-slate-900 z-10;
 }
 
-.btn > svg {
+.btn > svg:not(.icon-only) {
   margin-right: .5rem;
 }
 

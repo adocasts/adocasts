@@ -1,6 +1,6 @@
 @next.containers.page()
-  <div class="w-full flex justify-between items-center pb-1 border-b border-slate-800 border-opacity-30" up-hungry>
-    <div class="flex space-x-3 md:space-x-4">
+  <div class="w-full flex {{ auth.user ? 'justify-between' : 'justify-end' }} sm:justify-between items-center pb-1 border-b border-slate-800 border-opacity-30" up-hungry>
+    <div class="{{ auth.user ? 'flex' : 'hidden sm:flex' }} space-x-3 md:space-x-4">
       @next.headers.links.social({ href: 'https://youtube.com/adocasts' })
           <span class="sr-only">YouTube</span>
           @!next.icons.social.youtube()

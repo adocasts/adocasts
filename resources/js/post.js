@@ -1,6 +1,6 @@
 let isYtVideoPlaying = false
 let isInitialLoad = true
-console.log('post.js')
+
 window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMethod = 'post', httpUrl, httpPayload = {}, watchSeconds = 0, isLive = false, autoplay = false } = {}) {
   const startMuted = isLive || autoplay
   const bodyContent = document.querySelector('.body-content')
@@ -85,7 +85,6 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
 
     if (isInitialLoad) {
       const tag = document.createElement('script')
-      const appCompleted = document.getElementById('appCompleted')
 
       let playerInterval
       tag.src = "https://www.youtube.com/iframe_api"
@@ -147,7 +146,8 @@ let lessonVideoResize
 let wasIntersecting = undefined
 
 up.compiler('#lessonVideoEmbed', function(element) {
-  console.log('compiler #lessonVideoEmbed')
+  if (!document.getElementById('videoPlayerPosition')) return
+  
   const data = element.dataset
   
   // re-position to primary position when re-initialized
