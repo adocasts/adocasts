@@ -624,7 +624,7 @@ code .line:before {
   order: 3;
 }
 
-@screen lg {
+@screen xl {
   .grid-post-content {
     --post-aside-width: 350px;
   }
@@ -676,7 +676,7 @@ code .line:before {
   }
 
   .lesson-wrapper .page-contents {
-    width: calc(100% - var(--lesson-list-width));
+    width: calc(100% - var(--lesson-list-width) + 1px);
   }
 }
 
@@ -798,6 +798,18 @@ up-modal-box {
   }
 
   @screen lg {
+    width: calc(100% - var(--lesson-list-width)) !important;
+
+    .aspect-video {
+      width: 25%;
+    }
+
+    .video-small-details {
+      width: 75%;
+    }
+  }
+
+  @screen xl {
     width: 325px !important;
     padding: 0;
 
@@ -817,7 +829,11 @@ up-modal-box {
 
 .lesson-wrapper + .video-small,
 .lesson-wrapper + [up-player] .video-small {
-  right: calc(var(--lesson-list-width) + 1.5rem) !important;
+  right: var(--lesson-list-width) !important;
+
+  @screen xl {
+    right: calc(var(--lesson-list-width) + 1.5rem) !important;
+  }
 }
 
 @keyframes fadeIn {
