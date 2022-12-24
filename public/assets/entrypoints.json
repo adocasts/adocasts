@@ -16,11 +16,6 @@
         "http://localhost:8080/assets/studio.js"
       ]
     },
-    "post": {
-      "js": [
-        "http://localhost:8080/assets/post.js"
-      ]
-    },
     "stream": {
       "js": [
         "http://localhost:8080/assets/stream.js"

@@ -72,9 +72,14 @@
 
     @!section('list')
     @!section('up-scripts')
+    
   </div>
 
-  @!section('keep')
+  <div up-player>
+    @if (player)
+      @!next.lessons.player(player)
+    @endif
+  </div>
 
   {{--  <div class="flex justify-center items-center mt-6">
     @!ads.leaderboard()

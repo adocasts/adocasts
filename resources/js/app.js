@@ -5,6 +5,7 @@ import Alpine from 'alpinejs'
 import mask from '@alpinejs/mask'
 import axios from 'axios'
 import './tiptap/basic.js'
+import './post'
 // window.htmx = htmx
 
 // import * as Sentry from '@sentry/browser'
@@ -80,7 +81,7 @@ Alpine.data('videoPlaceholder', () => {
   return {
     close() {
       window.player?.stopVideo()
-      document.getElementById('videoPlayerPlaceholder').classList.add('hidden')
+      document.querySelector('[video-placeholder]').classList.add('hidden')
     }
   }
 })

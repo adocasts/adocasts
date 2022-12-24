@@ -1,5 +1,6 @@
 let isYtVideoPlaying = false
 let isInitialLoad = true
+console.log('post.js')
 window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMethod = 'post', httpUrl, httpPayload = {}, watchSeconds = 0, isLive = false, autoplay = false } = {}) {
   const startMuted = isLive || autoplay
   const bodyContent = document.querySelector('.body-content')
@@ -146,6 +147,7 @@ let lessonVideoResize
 let wasIntersecting = undefined
 
 up.compiler('#lessonVideoEmbed', function(element) {
+  console.log('compiler #lessonVideoEmbed')
   const data = element.dataset
   
   // re-position to primary position when re-initialized
@@ -205,11 +207,11 @@ up.on('up:fragment:loaded', event => {
 })
 
 function positionVideoPlaceholder(isSmallPlayer = false) {
-  const placeholder = document.getElementById('videoPlayerPlaceholder')
+  const placeholder = document.querySelector('[video-placeholder]')
   if (!placeholder) return 
   const videoPath = placeholder.dataset.path
   const isVideoPath = videoPath == location.pathname
-  console.log({ isVideoPath })
+
   if (isSmallPlayer) {
     isVideoPath
       ? placeholder.classList.add('video-noactions')

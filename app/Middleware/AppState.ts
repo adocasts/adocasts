@@ -30,16 +30,20 @@ export default class AppState {
     let notifications = await NotificationService.getForDisplay(ctx.auth.user, true)
 
     // if GET request, get auth user's notifications
-    if (ctx.request.method() === 'GET' && ctx.auth.user) {
+    if (ctx.auth.user) {
       notifications = await NotificationService.getForDisplay(ctx.auth.user)
     }
+
+    const postId = ctx.session.get('videoPlayerId')
+    const player = await PostService.getPlayerData(postId, ctx.auth.user)
 
     // get global view properties
     ctx.view.share({ 
       settings: settings,
       identity: await httpIdentityService.getRequestIdentity(),
       live: await PostService.checkLive(),
-      notifications
+      notifications,
+      player
     })
 
     // code for middleware goes here. ABOVE THE NEXT CALL

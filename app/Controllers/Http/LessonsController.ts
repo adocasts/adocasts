@@ -49,8 +49,17 @@ export default class LessonsController {
 
     this.historyService.recordPostView(post.id)
     const userProgression = await this.historyService.getPostProgression(postModel!)
-    const skipVideoPlayer = session.get('videoPlayerId') == post.id && up.isUnpolyRequest && !up.isLayoutUpdate
+
+    // if not going to same lesson, update the player
+    if (session.has('videoPlayerId') && session.get('videoPlayerId') !== post.id) {
+      up.setTarget('[up-main], [up-player]')
+    }
+
     session.put('videoPlayerId', post.id)
+
+    view.share({
+      player: { post, series }
+    })
 
     return view.render('lessons/show', { 
       post, 
@@ -59,7 +68,7 @@ export default class LessonsController {
       commentCount, 
       userProgression, 
       views, 
-      skipVideoPlayer
+      // skipVideoPlayer
     })
   }
 }

@@ -4,6 +4,8 @@ import StorageService from "./StorageService";
 import CacheService from 'App/Services/CacheService'
 import PostType from 'App/Enums/PostType'
 import DiscordLogger from "@ioc:Logger/Discord";
+import User from "App/Models/User";
+import CollectionService from "./CollectionService";
 
 export default class PostService {
   public static async getFeatureSingle(excludeIds: number[] = []) {
@@ -32,6 +34,23 @@ export default class PostService {
       .apply(scope => scope.forDisplay())
       .whereIn('slug', slugs)
       .orderBy('publishAt', 'desc')
+  }
+
+  public static async getPlayerData(postId: number | null = null, user: User | null = null) {
+    if (!postId) return {}
+
+    const post = await Post.lessons()
+        .apply(scope => scope.published())
+        .preload('rootSeries')
+        .preload('series')
+        .where({ id: postId })
+        .first()
+
+    if (!post) return {}
+
+    const series = await CollectionService.getSeriesForPost(post, user?.id)
+
+    return { post, series }
   }
 
   public static async search(term: string, limit: number = 100) {

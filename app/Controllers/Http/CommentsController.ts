@@ -53,6 +53,7 @@ export default class CommentsController {
 
       await comment.save()
     } else {
+      await comment.related('userVotes').query().delete()
       await comment.delete()
       await NotificationService.onDelete(Comment.table, comment.id)
     }
