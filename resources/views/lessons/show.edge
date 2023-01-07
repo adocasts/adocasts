@@ -19,6 +19,7 @@
 
 @section('hero')
   <progress id="reading-progress" class="hidden" max="100" value="0"></progress>
+  
   @if (hasVideo)
     <div id="videoPlayerContainer" class="bg-slate-900 pb-8 pt-4">
       @next.containers.page()
@@ -28,8 +29,8 @@
   @endif
 
   @if (series)
-    @next.containers.page()
-      <div class="flex my-6 space-x-3">
+    @next.containers.page({ className: 'lg:hidden' })
+      <div class="flex mb-6 space-x-3">
         @next.buttons.primary({ theme: 'inverse' })
           @!next.icons.solid.chevronLeft({ className: 'w-6 h-6 icon-only' })
         @end

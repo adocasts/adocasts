@@ -87,7 +87,7 @@ class User extends AppBaseModel {
 
   @beforeSave()
   public static async hashPassword (user: User) {
-    if (user.$dirty.password) {
+    if (user.$dirty.password && !user.$extras.rehash) {
       user.password = await Hash.make(user.password)
     }
   }

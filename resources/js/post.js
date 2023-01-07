@@ -1,5 +1,9 @@
+import axios from 'axios'
+
 let isYtVideoPlaying = false
 let isInitialLoad = true
+let playerInterval = null
+let keepPlayerPostId = null
 
 window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMethod = 'post', httpUrl, httpPayload = {}, watchSeconds = 0, isLive = false, autoplay = false } = {}) {
   const startMuted = isLive || autoplay
@@ -22,6 +26,7 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
     onInitVideo(false, watchSeconds)
   }
 
+  const placeholder = document.querySelector('[video-placeholder]')
   const element = document.getElementById(el)
 
   bodyContent?.addEventListener('click', (event) => {
@@ -59,6 +64,8 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
   })
 
   function onInitVideo(playOnReady, skipToSeconds = watchSeconds) {
+    keepPlayerPostId = httpPayload.postId
+
     window.onYouTubeIframeAPIReady = function () {
       const playerVars = {
         autoplay: playOnReady,
@@ -105,6 +112,12 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
     function onPlayerStateChange(event) {
       isYtVideoPlaying = event.data == YT.PlayerState.PLAYING
 
+      // only update keepPlayer when on video's designated page
+      if (location.pathname === placeholder.dataset.path) {
+        element.dataset.keepPlayer = isYtVideoPlaying
+        keepPlayerPostId = httpPayload.postId
+      }
+
       if (isLive) return
 
       if (isYtVideoPlaying) {
@@ -147,7 +160,7 @@ let wasIntersecting = undefined
 
 up.compiler('#lessonVideoEmbed', function(element) {
   if (!document.getElementById('videoPlayerPosition')) return
-  
+
   const data = element.dataset
   
   // re-position to primary position when re-initialized
@@ -208,9 +221,26 @@ up.on('up:fragment:loaded', event => {
 
 function positionVideoPlaceholder(isSmallPlayer = false) {
   const placeholder = document.querySelector('[video-placeholder]')
+  const element = document.getElementById('lessonVideoEmbed')
+
   if (!placeholder) return 
+  
   const videoPath = placeholder.dataset.path
   const isVideoPath = videoPath == location.pathname
+  const isSamePost = !keepPlayerPostId || keepPlayerPostId == placeholder.dataset.postId
+  
+  console.log({ isVideoPath, isSamePost, keepPlayerPostId, postId: placeholder.dataset.postId })
+
+  // if not playing and not on video's designated page, close player
+  if (!element.dataset.keepPlayer && !isVideoPath && isSamePost) {
+    console.log('closing player')
+    placeholder.dispatchEvent(new CustomEvent('close'))
+    return
+  }
+
+  if (isVideoPath || !isSamePost) {
+    placeholder.dispatchEvent(new CustomEvent('open'))
+  }
 
   if (isSmallPlayer) {
     isVideoPath

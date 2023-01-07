@@ -1,7 +1,7 @@
 @set('hasVideo', post.videoUrl || post.livestreamUrl)
 
 @if (hasVideo)
-  <div id="videoPlayerPlaceholder{{ post.id }}" video-placeholder x-data="videoPlaceholder" data-path="{{ request.url() }}" class="bg-slate-200 dark:bg-slate-800 rounded-t-xl lg:rounded-none xl:rounded-t-xl shadow-xl w-64 fixed bottom-0 right-3 z-50" data-post-id="{{ post.id }}" up-keep>
+  <div id="videoPlayerPlaceholder{{ post.id }}" video-placeholder x-data="videoPlaceholder" data-path="{{ request.url() }}" class="bg-slate-200 dark:bg-slate-800 rounded-t-xl lg:rounded-none xl:rounded-t-xl shadow-xl w-64 fixed bottom-0 right-3 z-50" data-post-id="{{ post.id }}" @close="close" @open="open" up-keep>
     <div id="videoContents" class="flex flex-row xl:flex-col">
       @if (post.livestreamUrl && post.isLive)
         <div class="mb-3">

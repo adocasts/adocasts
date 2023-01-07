@@ -37,6 +37,7 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 
     if (error.code === 'E_VALIDATION_FAILURE') {
       await super.handle(error, ctx)
+      console.log({ error })
       ctx.up.setTarget(ctx.up.getFailTarget())
       ctx.up.setStatus(400)
       return ctx.response.redirect().back()

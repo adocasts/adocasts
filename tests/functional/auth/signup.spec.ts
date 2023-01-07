@@ -19,21 +19,21 @@ test.group('Auth - Sign Up', (group) => {
     const response = await client.get(Route.makeUrl('auth.signup.show'))
 
     response.assertStatus(200)
-    response.assertTextIncludes('Create your account')
+    response.assertTextIncludes('Join Adocasts')
   })
 
   test('an authenticated user gets redirected to home page', async ({ client, assert }) => {
     const user = await UserFactory.create()
     const response = await client.get(Route.makeUrl('auth.signup.show')).loginAs(user)
-
+    
     response.assertStatus(200)
     assert.equal(response.redirects()[0], `${appUrl}/`)
   })
 
   test('a user can sign up', async ({ client }) => {
     const response = await client.post(Route.makeUrl('auth.signup')).form({
-      username: 'testuser1',
-      email: 'testuser1@gmail.com',
+      username: 'signuptest',
+      email: 'signuptest@gmail.com',
       password: 'Password!01'
     }).redirects(0)
 
@@ -56,7 +56,7 @@ test.group('Auth - Sign Up', (group) => {
   test('email must be unique', async ({ client }) => {
     const user = await UserFactory.create()
     const response = await client.post(Route.makeUrl('auth.signup')).form({
-      username: 'testuser1',
+      username: 'somenonexistantusername',
       email: user.email,
       password: 'Password!01'
     }).redirects(0)
@@ -67,7 +67,7 @@ test.group('Auth - Sign Up', (group) => {
 
   test('email must be a valid email', async ({ client }) => {
     const response = await client.post(Route.makeUrl('auth.signup')).form({
-      username: 'testuser1',
+      username: 'somenonexistantusername',
       email: 'testuser',
       password: 'Password!01'
     }).redirects(0)
@@ -78,7 +78,7 @@ test.group('Auth - Sign Up', (group) => {
 
   test('password must be at least 8 characters long', async ({ client }) => {
     const response = await client.post(Route.makeUrl('auth.signup')).form({
-      username: 'testuser1',
+      username: 'somenonexistantusername',
       email: 'testuser1@gmail.com',
       password: 'S!haer'
     }).redirects(0)

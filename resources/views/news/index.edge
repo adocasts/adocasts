@@ -29,7 +29,7 @@
       <div class="flex flex-wrap -mx-6">
         <div class="w-full md:w-2/3 px-6">
           @each ((item, i) in items)
-            @!next.lessons.listItem({ item, className: 'mb-6' })
+            @!next.lessons.listItem({ item, className: 'mb-6', lineClamp: 'md:line-clamp-5' })
           @endeach
           @!next.pagination({ data: items })
         </div>

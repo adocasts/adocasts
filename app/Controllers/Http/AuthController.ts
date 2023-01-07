@@ -4,6 +4,7 @@ import AuthAttemptService from 'App/Services/AuthAttemptService'
 import SignUpValidator from 'App/Validators/SignUpValidator'
 import SignInValidator from 'App/Validators/SignInValidator'
 import InvalidException from 'App/Exceptions/InvalidException'
+import Hash from '@ioc:Adonis/Core/Hash'
 
 export default class AuthController {
   public async signupShow({ view, request, response, session, auth }: HttpContextContract) {
@@ -54,6 +55,13 @@ export default class AuthController {
     try {
       await auth.attempt(uid, password, remember_me)
       await AuthAttemptService.deleteBadAttempts(uid)
+      
+      // if (Hash.needsReHash(password)) {
+      //   const user = auth.user!
+      //   user.password = await Hash.make(password)
+      //   user.$extras.rehash = true
+      //   await user.save()
+      // }
     } catch (error) {
       await AuthAttemptService.recordLoginAttempt(uid)
 

@@ -79,6 +79,10 @@ Alpine.data('modal', function () {
 
 Alpine.data('videoPlaceholder', () => {
   return {
+    open() {
+      document.querySelector('[video-placeholder]').classList.remove('hidden')
+    },
+
     close() {
       window.player?.stopVideo()
       document.querySelector('[video-placeholder]').classList.add('hidden')
