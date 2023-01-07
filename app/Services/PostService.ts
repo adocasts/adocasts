@@ -6,6 +6,7 @@ import PostType from 'App/Enums/PostType'
 import DiscordLogger from "@ioc:Logger/Discord";
 import User from "App/Models/User";
 import CollectionService from "./CollectionService";
+import { PlayerData } from "@ioc:Adocasts/Player";
 
 export default class PostService {
   public static async getFeatureSingle(excludeIds: number[] = []) {
@@ -36,7 +37,7 @@ export default class PostService {
       .orderBy('publishAt', 'desc')
   }
 
-  public static async getPlayerData(postId: number | null = null, user: User | null = null) {
+  public static async getPlayerData(postId: number | null = null, user: User | null = null): Promise<PlayerData | undefined> {
     if (!postId) return
 
     const post = await Post.lessons()

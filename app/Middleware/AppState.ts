@@ -3,6 +3,7 @@ import SettingsService from 'App/Services/Http/SettingsService'
 import HttpIdentityService from 'App/Services/Http/HttpIdentityService'
 import NotificationService from 'App/Services/NotificationService'
 import PostService from 'App/Services/PostService'
+import { PlayerData } from '@ioc:Adocasts/Player'
 
 export default class AppState {
   /**
@@ -34,8 +35,18 @@ export default class AppState {
       notifications = await NotificationService.getForDisplay(ctx.auth.user)
     }
 
+    // if handling non-unpoly GET request, clear stored playerId so it will re-render
+    if (!ctx.up.isUnpolyRequest) {
+      ctx.session.forget('videoPlayerId')
+    }
+
     const postId = ctx.session.get('videoPlayerId')
-    const player = await PostService.getPlayerData(postId, ctx.auth.user)
+    
+    // only populate player when traversing pages with unpoly
+    let player: PlayerData | undefined
+    if (ctx.up.isUnpolyRequest) {
+      player = await PostService.getPlayerData(postId, ctx.auth.user)
+    }
 
     // get global view properties
     ctx.view.share({ 

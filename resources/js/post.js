@@ -159,7 +159,11 @@ let lessonVideoResize
 let wasIntersecting = undefined
 
 up.compiler('#lessonVideoEmbed', function(element) {
-  if (!document.getElementById('videoPlayerPosition')) return
+  const isInitialized = element.tagname === 'IFRAME'
+  const isPostPage = !!document.getElementById('videoPlayerPosition')
+
+  // if not post page and player is already initialized, do nothing
+  if (!isPostPage && isInitialized) return
 
   const data = element.dataset
   
@@ -198,6 +202,10 @@ up.compiler('#videoPlayerPosition', position => {
     lessonVideoIntersection()
   }
 
+  // ensure the player gets opened back up
+  const placeholder = document.querySelector('[video-placeholder]')
+  placeholder.dispatchEvent(new CustomEvent('open'))
+
   // move to small position when primary position is out of view
   if(!!window.IntersectionObserver) {
     let observer = new IntersectionObserver((entries) => { 
@@ -212,6 +220,30 @@ up.compiler('#videoPlayerPosition', position => {
   }
 })
 
+up.on('up:location:changed', function(event) {
+  const placeholder = document.querySelector('[video-placeholder]')
+  const element = document.getElementById('lessonVideoEmbed')
+
+  // if video hasn't loaded yet - don't do anything
+  if (element.tagname !== 'IFRAME') return
+
+  const videoPath = placeholder.dataset.path
+  const isVideoPath = videoPath == location.pathname
+  const isSamePost = !keepPlayerPostId || keepPlayerPostId == placeholder.dataset.postId
+
+  console.log({
+    keepPlayer: element.dataset.keepPlayer,
+    isVideoPath,
+    isSamePost
+  })
+
+  if (!element.dataset.keepPlayer && !isVideoPath && isSamePost) {
+    console.log('closing player')
+    placeholder.dispatchEvent(new CustomEvent('close'))
+    return
+  }
+})
+
 // change to small player if the page doesn't contain it's positioning element
 up.on('up:fragment:loaded', event => {
   const isLayer = ['modal', 'drawer'].includes(event.request.mode)
@@ -221,26 +253,11 @@ up.on('up:fragment:loaded', event => {
 
 function positionVideoPlaceholder(isSmallPlayer = false) {
   const placeholder = document.querySelector('[video-placeholder]')
-  const element = document.getElementById('lessonVideoEmbed')
 
   if (!placeholder) return 
   
   const videoPath = placeholder.dataset.path
   const isVideoPath = videoPath == location.pathname
-  const isSamePost = !keepPlayerPostId || keepPlayerPostId == placeholder.dataset.postId
-  
-  console.log({ isVideoPath, isSamePost, keepPlayerPostId, postId: placeholder.dataset.postId })
-
-  // if not playing and not on video's designated page, close player
-  if (!element.dataset.keepPlayer && !isVideoPath && isSamePost) {
-    console.log('closing player')
-    placeholder.dispatchEvent(new CustomEvent('close'))
-    return
-  }
-
-  if (isVideoPath || !isSamePost) {
-    placeholder.dispatchEvent(new CustomEvent('open'))
-  }
 
   if (isSmallPlayer) {
     isVideoPath

@@ -50,8 +50,9 @@ export default class LessonsController {
     this.historyService.recordPostView(post.id)
     const userProgression = await this.historyService.getPostProgression(postModel!)
 
-    // if not going to same lesson, update the player
-    if (session.has('videoPlayerId') && session.get('videoPlayerId') !== post.id) {
+    // if not going to same lesson or no stored lesson, update the player
+    const hasPlayerId = session.has('videoPlayerId')
+    if (!hasPlayerId || (hasPlayerId && session.get('videoPlayerId') !== post.id)) {
       up.setTarget('[up-main], [up-player]')
     }
 
