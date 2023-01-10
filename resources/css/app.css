@@ -860,7 +860,7 @@ up-modal-box {
 }
 
 .video-noactions .video-small-actions {
-  display: none;
+  display: none !important;
 }
 
 .lesson-wrapper + .video-small,

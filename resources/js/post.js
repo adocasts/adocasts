@@ -16,7 +16,7 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
   if (!autoplay) {
     autoplay = window.$params.autoplay ?? 0
   }
-
+  
   if (autoplay) {
     onInitVideo(true, watchSeconds)
     return
@@ -111,13 +111,15 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
 
     function onPlayerStateChange(event) {
       isYtVideoPlaying = event.data == YT.PlayerState.PLAYING
-
+      console.log({ pathname: location.pathname, path: placeholder.dataset.path })
       // only update keepPlayer when on video's designated page
       if (location.pathname === placeholder.dataset.path) {
         element.dataset.keepPlayer = isYtVideoPlaying
         keepPlayerPostId = httpPayload.postId
       }
-
+      console.log({
+        keepPlayer: element.dataset.keepPlayer
+      })
       if (isLive) return
 
       if (isYtVideoPlaying) {
@@ -159,7 +161,7 @@ let lessonVideoResize
 let wasIntersecting = undefined
 
 up.compiler('#lessonVideoEmbed', function(element) {
-  const isInitialized = element.tagname === 'IFRAME'
+  const isInitialized = element.nodeName === 'IFRAME'
   const isPostPage = !!document.getElementById('videoPlayerPosition')
 
   // if not post page and player is already initialized, do nothing
@@ -173,7 +175,7 @@ up.compiler('#lessonVideoEmbed', function(element) {
   // kick-off video initialization
   initVideo({
     el: 'lessonVideoEmbed',
-    isLive: !!data.isLive && data.isLive !== 'null',
+    isLive: data.isLive == "true",
     videoId: data.videoId,
     watchSeconds: parseInt(data.watchSeconds || '0'),
     httpUrl: data.httpUrl,
@@ -204,7 +206,14 @@ up.compiler('#videoPlayerPosition', position => {
 
   // ensure the player gets opened back up
   const placeholder = document.querySelector('[video-placeholder]')
-  placeholder.dispatchEvent(new CustomEvent('open'))
+  placeholder?.dispatchEvent(new CustomEvent('open'))
+
+  // if (!isYtVideoPlaying) {
+  //   const embed = document.getElementById('lessonVideoEmbed')
+  //   if (embed) {
+  //     embed.dataset.keepPlayer = false
+  //   }
+  // }
 
   // move to small position when primary position is out of view
   if(!!window.IntersectionObserver) {
@@ -225,20 +234,13 @@ up.on('up:location:changed', function(event) {
   const element = document.getElementById('lessonVideoEmbed')
 
   // if video hasn't loaded yet - don't do anything
-  if (element.tagname !== 'IFRAME') return
+  if (!element || element.nodeName !== 'IFRAME') return
 
   const videoPath = placeholder.dataset.path
   const isVideoPath = videoPath == location.pathname
   const isSamePost = !keepPlayerPostId || keepPlayerPostId == placeholder.dataset.postId
 
-  console.log({
-    keepPlayer: element.dataset.keepPlayer,
-    isVideoPath,
-    isSamePost
-  })
-
   if (!element.dataset.keepPlayer && !isVideoPath && isSamePost) {
-    console.log('closing player')
     placeholder.dispatchEvent(new CustomEvent('close'))
     return
   }

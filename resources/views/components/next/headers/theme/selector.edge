@@ -1,9 +1,9 @@
 @set('btnSize', 'w-7 h-7')
 @set('iconSize', 'w-4 h-4')
 
-@next.dropdown.base({ className: 'z-[60]' })
+@next.dropdown.base({ className: 'dark z-[60]' })
   @slot('trigger')
-    <div class="flex {{ btnSize }} items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 ring-black/5 bg-gray-800">
+    <div class="flex {{ btnSize }} items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 ring-black/5 bg-slate-800 hover:bg-slate-700 duration-150">
       <svg aria-hidden="true" viewBox="0 0 16 16" class="hidden {{ iconSize }} fill-sky-300 [[data-theme=light]_&]:block"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 1a1 1 0 0 1 2 0v1a1 1 0 1 1-2 0V1Zm4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm2.657-5.657a1 1 0 0 0-1.414 0l-.707.707a1 1 0 0 0 1.414 1.414l.707-.707a1 1 0 0 0 0-1.414Zm-1.415 11.313-.707-.707a1 1 0 0 1 1.415-1.415l.707.708a1 1 0 0 1-1.415 1.414ZM16 7.999a1 1 0 0 0-1-1h-1a1 1 0 1 0 0 2h1a1 1 0 0 0 1-1ZM7 14a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1Zm-2.536-2.464a1 1 0 0 0-1.414 0l-.707.707a1 1 0 0 0 1.414 1.414l.707-.707a1 1 0 0 0 0-1.414Zm0-8.486A1 1 0 0 1 3.05 4.464l-.707-.707a1 1 0 0 1 1.414-1.414l.707.707ZM3 8a1 1 0 0 0-1-1H1a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Z"></path></svg>
       <svg aria-hidden="true" viewBox="0 0 16 16" class="hidden {{ iconSize }} fill-violet-500 [[data-theme=dark]_&]:block"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.23 3.333C7.757 2.905 7.68 2 7 2a6 6 0 1 0 0 12c.68 0 .758-.905.23-1.332A5.989 5.989 0 0 1 5 8c0-1.885.87-3.568 2.23-4.668ZM12 5a1 1 0 0 1 1 1 1 1 0 0 0 1 1 1 1 0 1 1 0 2 1 1 0 0 0-1 1 1 1 0 1 1-2 0 1 1 0 0 0-1-1 1 1 0 1 1 0-2 1 1 0 0 0 1-1 1 1 0 0 1 1-1Z"></path></svg>
       <svg aria-hidden="true" viewBox="0 0 16 16" class="hidden {{ iconSize }} fill-violet-500 [:not(.dark)[data-theme=system]_&]:block"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 1a1 1 0 0 1 2 0v1a1 1 0 1 1-2 0V1Zm4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm2.657-5.657a1 1 0 0 0-1.414 0l-.707.707a1 1 0 0 0 1.414 1.414l.707-.707a1 1 0 0 0 0-1.414Zm-1.415 11.313-.707-.707a1 1 0 0 1 1.415-1.415l.707.708a1 1 0 0 1-1.415 1.414ZM16 7.999a1 1 0 0 0-1-1h-1a1 1 0 1 0 0 2h1a1 1 0 0 0 1-1ZM7 14a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1Zm-2.536-2.464a1 1 0 0 0-1.414 0l-.707.707a1 1 0 0 0 1.414 1.414l.707-.707a1 1 0 0 0 0-1.414Zm0-8.486A1 1 0 0 1 3.05 4.464l-.707-.707a1 1 0 0 1 1.414-1.414l.707.707ZM3 8a1 1 0 0 0-1-1H1a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Z"></path></svg>
@@ -11,28 +11,28 @@
     </div>
   @endslot
 
-  @next.dropdown.item({ type: 'button', onClick: 'setTheme("light")', className: '[[data-theme=light]_&]:bg-gray-50 [[data-theme=light]_&]:bg-opacity-10' })
+  @next.dropdown.item({ type: 'button', onClick: 'setTheme("light")', className: '[[data-theme=light]_&]:bg-slate-700' })
     <div class="flex items-center space-x-3">
-      <div class="flex h-6 w-6 items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 ring-black/5 dark:bg-gray-50 dark:bg-opacity-10 dark:ring-inset dark:ring-white/5">
-        <svg aria-hidden="true" viewBox="0 0 16 16" class="h-4 w-4 dark:fill-gray-800"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 1a1 1 0 0 1 2 0v1a1 1 0 1 1-2 0V1Zm4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm2.657-5.657a1 1 0 0 0-1.414 0l-.707.707a1 1 0 0 0 1.414 1.414l.707-.707a1 1 0 0 0 0-1.414Zm-1.415 11.313-.707-.707a1 1 0 0 1 1.415-1.415l.707.708a1 1 0 0 1-1.415 1.414ZM16 7.999a1 1 0 0 0-1-1h-1a1 1 0 1 0 0 2h1a1 1 0 0 0 1-1ZM7 14a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1Zm-2.536-2.464a1 1 0 0 0-1.414 0l-.707.707a1 1 0 0 0 1.414 1.414l.707-.707a1 1 0 0 0 0-1.414Zm0-8.486A1 1 0 0 1 3.05 4.464l-.707-.707a1 1 0 0 1 1.414-1.414l.707.707ZM3 8a1 1 0 0 0-1-1H1a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Z"></path></svg>
+      <div class="flex h-6 w-6 items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 ring-black/5 dark:bg-slate-100 dark:bg-opacity-10 dark:ring-inset dark:ring-white/5">
+        <svg aria-hidden="true" viewBox="0 0 16 16" class="h-4 w-4 dark:fill-slate-400"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 1a1 1 0 0 1 2 0v1a1 1 0 1 1-2 0V1Zm4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm2.657-5.657a1 1 0 0 0-1.414 0l-.707.707a1 1 0 0 0 1.414 1.414l.707-.707a1 1 0 0 0 0-1.414Zm-1.415 11.313-.707-.707a1 1 0 0 1 1.415-1.415l.707.708a1 1 0 0 1-1.415 1.414ZM16 7.999a1 1 0 0 0-1-1h-1a1 1 0 1 0 0 2h1a1 1 0 0 0 1-1ZM7 14a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1Zm-2.536-2.464a1 1 0 0 0-1.414 0l-.707.707a1 1 0 0 0 1.414 1.414l.707-.707a1 1 0 0 0 0-1.414Zm0-8.486A1 1 0 0 1 3.05 4.464l-.707-.707a1 1 0 0 1 1.414-1.414l.707.707ZM3 8a1 1 0 0 0-1-1H1a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Z"></path></svg>
       </div>
       <span>Light</span>
     </div>
   @end
 
-  @next.dropdown.item({ type: 'button', onClick: 'setTheme("dark")', className: '[[data-theme=dark]_&]:bg-gray-50 [[data-theme=dark]_&]:bg-opacity-10' })
+  @next.dropdown.item({ type: 'button', onClick: 'setTheme("dark")', className: '[[data-theme=dark]_&]:bg-slate-700' })
     <div class="flex items-center space-x-3">
-      <div class="flex h-6 w-6 items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 ring-black/5 dark:bg-gray-50 dark:bg-opacity-10 dark:ring-inset dark:ring-white/5">
-        <svg aria-hidden="true" viewBox="0 0 16 16" class="h-4 w-4 dark:fill-gray-800"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.23 3.333C7.757 2.905 7.68 2 7 2a6 6 0 1 0 0 12c.68 0 .758-.905.23-1.332A5.989 5.989 0 0 1 5 8c0-1.885.87-3.568 2.23-4.668ZM12 5a1 1 0 0 1 1 1 1 1 0 0 0 1 1 1 1 0 1 1 0 2 1 1 0 0 0-1 1 1 1 0 1 1-2 0 1 1 0 0 0-1-1 1 1 0 1 1 0-2 1 1 0 0 0 1-1 1 1 0 0 1 1-1Z"></path></svg>
+      <div class="flex h-6 w-6 items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 ring-black/5 dark:bg-slate-100 dark:bg-opacity-10 dark:ring-inset dark:ring-white/5">
+        <svg aria-hidden="true" viewBox="0 0 16 16" class="h-4 w-4 dark:fill-slate-400"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.23 3.333C7.757 2.905 7.68 2 7 2a6 6 0 1 0 0 12c.68 0 .758-.905.23-1.332A5.989 5.989 0 0 1 5 8c0-1.885.87-3.568 2.23-4.668ZM12 5a1 1 0 0 1 1 1 1 1 0 0 0 1 1 1 1 0 1 1 0 2 1 1 0 0 0-1 1 1 1 0 1 1-2 0 1 1 0 0 0-1-1 1 1 0 1 1 0-2 1 1 0 0 0 1-1 1 1 0 0 1 1-1Z"></path></svg>
       </div>
       <span>Dark</span>
     </div>
   @end
 
-  @next.dropdown.item({ type: 'button', onClick: 'setTheme("system")', className: '[[data-theme=system]_&]:bg-gray-50 [[data-theme=system]_&]:bg-opacity-10' })
+  @next.dropdown.item({ type: 'button', onClick: 'setTheme("system")', className: '[[data-theme=system]_&]:bg-slate-700' })
     <div class="flex items-center space-x-3">
-      <div class="flex h-6 w-6 items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 ring-black/5 dark:bg-gray-50 dark:bg-opacity-10 dark:ring-inset dark:ring-white/5">
-        <svg aria-hidden="true" viewBox="0 0 16 16" class="h-4 w-4 dark:fill-gray-800"><path fill-rule="evenodd" clip-rule="evenodd" d="M1 4a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4a3 3 0 0 1-3 3h-1.5l.31 1.242c.084.333.36.573.63.808.091.08.182.158.264.24A1 1 0 0 1 11 15H5a1 1 0 0 1-.704-1.71c.082-.082.173-.16.264-.24.27-.235.546-.475.63-.808L5.5 11H4a3 3 0 0 1-3-3V4Zm3-1a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4Z"></path></svg>
+      <div class="flex h-6 w-6 items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 ring-black/5 dark:bg-slate-100 dark:bg-opacity-10 dark:ring-inset dark:ring-white/5">
+        <svg aria-hidden="true" viewBox="0 0 16 16" class="h-4 w-4 dark:fill-slate-400"><path fill-rule="evenodd" clip-rule="evenodd" d="M1 4a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4a3 3 0 0 1-3 3h-1.5l.31 1.242c.084.333.36.573.63.808.091.08.182.158.264.24A1 1 0 0 1 11 15H5a1 1 0 0 1-.704-1.71c.082-.082.173-.16.264-.24.27-.235.546-.475.63-.808L5.5 11H4a3 3 0 0 1-3-3V4Zm3-1a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4Z"></path></svg>
       </div>
       <span>System</span>
     </div>

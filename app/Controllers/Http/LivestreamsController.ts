@@ -8,6 +8,7 @@ import { Exception } from '@adonisjs/core/build/standalone'
 import CommentService from 'App/Services/CommentService'
 import CollectionService from 'App/Services/CollectionService'
 import CacheService from 'App/Services/CacheService'
+import AnalyticsService from 'App/Services/AnalyticsService'
 
 @inject()
 export default class LivestreamsController {
@@ -33,7 +34,7 @@ export default class LivestreamsController {
     return view.render('livestreams/index', { live, items })
   }
 
-  public async show({ view, params, auth }: HttpContextContract) {
+  public async show({ request, view, session, params, auth, up }: HttpContextContract) {
     const post = await CacheService.try(CacheService.getPostKey(params.slug), async () => {
       return Post.livestreams()
         .apply(scope => scope.forDisplay(true))
@@ -51,10 +52,24 @@ export default class LivestreamsController {
     }
 
     const comments = await CommentService.getForPost(postModel)
+    const commentCount = await CommentService.getCountForPost(postModel!)
+    const views = await AnalyticsService.getPageViews(request.url())
 
     this.historyService.recordPostView(post.id)
     const userProgression = await this.historyService.getPostProgression(postModel)
 
-    return view.render('lessons/show', { post, comments, series, userProgression })
+    // if not going to same lesson or no stored lesson, update the player
+    const hasPlayerId = session.has('videoPlayerId')
+    if (!hasPlayerId || (hasPlayerId && session.get('videoPlayerId') !== post.id)) {
+      up.setTarget('[up-main], [up-player]')
+    }
+
+    session.put('videoPlayerId', post.id)
+
+    view.share({
+      player: { post, series }
+    })
+
+    return view.render('lessons/show', { post, comments, series, userProgression, commentCount, views })
   }
 }
