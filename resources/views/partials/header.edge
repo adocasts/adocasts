@@ -1,4 +1,4 @@
-<div x-data="{ show: true }">
+<div x-data="{ show: false }">
   <header class="w-full bg-slate-50/10 text-slate-900 mb-6" up-header>
     <div class="app-container flex justify-between items-center py-3 md:py-1">
       <a href="/" up-follow>
@@ -44,11 +44,11 @@
           </div>
         @endif
 
-        <div class="items-center {{ auth.user ? 'hidden md:flex' : 'flex' }}">
+        <div class="items-center flex md:hidden">
           <div class="h-6 border-r border-slate-200 space-x-3 mr-3 pr-3"></div>
         </div>
 
-        @buttons.primary.base({ square: true, atClick: 'show = true' })
+        @buttons.primary.base({ square: true, atClick: 'show = true', className: 'md:hidden' })
           @!icons.menuTwo()
         @end
       </div>
@@ -59,7 +59,7 @@
     </div>
   </header>
 
-  <div class="relative z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+  <div class="relative md:hidden z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
     <!-- Background backdrop, show/hide based on slide-over state. -->
     <div x-show="show" class="fixed inset-0"></div>
 
