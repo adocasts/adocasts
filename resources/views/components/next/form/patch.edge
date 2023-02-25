@@ -1,6 +1,0 @@
-@set('action', action.includes('?') ? `${action}&_method=PATCH` : `${action}?_method=PATCH`)
-
-<form method="POST" action="{{ action }}" {{{ id ? `id="${id}"` : '' }}} {{{ attrs }}}>
-  {{ csrfField() }}
-  {{{ await $slots.main() }}}
-</form>

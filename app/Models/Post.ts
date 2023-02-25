@@ -17,7 +17,7 @@ import Taxonomy from "App/Models/Taxonomy"
 import ReadService from 'App/Services/ReadService'
 import BodyTypes from 'App/Enums/BodyTypes'
 import EditorBlockParser from 'App/Services/EditorBlockParser'
-import PostType from 'App/Enums/PostType'
+import PostType from 'App/Enums/PostTypes'
 import Comment from './Comment'
 import AppBaseModel from 'App/Models/AppBaseModel'
 import States from 'App/Enums/States'
@@ -356,8 +356,8 @@ export default class Post extends AppBaseModel {
   @beforeSave()
   public static async setReadTimeValues(post: Post) {
     if (post.$dirty.bodyBlocks) {
-      post.bodyTypeId = BodyTypes.JSON
-      await EditorBlockParser.parse(post)
+      // post.bodyTypeId = BodyTypes.JSON
+      // await EditorBlockParser.parse(post)
     } else if (post.$dirty.body) {
       post.bodyTypeId = BodyTypes.HTML
     }
@@ -426,10 +426,11 @@ export default class Post extends AppBaseModel {
   })
 
   public static forDisplay = scope<typeof Post>((query, skipPublishCheck: boolean = false) => {
-    const ctx = HttpContext.getOrFail()
+    const ctx = HttpContext.get()
+
     query
       .if(!skipPublishCheck, query => query.apply(scope => scope.published()))
-      .if(ctx.auth.user, query => query.withCount('watchlist', query => query.where('userId', ctx.auth.user!.id)))
+      .if(ctx?.auth.user, query => query.withCount('watchlist', query => query.where('userId', ctx!.auth.user!.id)))
       .preload('thumbnails')
       .preload('covers')
       .preload('taxonomies')

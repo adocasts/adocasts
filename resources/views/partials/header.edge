@@ -1,0 +1,184 @@
+<div x-data="{ show: true }">
+  <header class="w-full bg-slate-50/10 text-slate-900 mb-6" up-header>
+    <div class="app-container flex justify-between items-center py-3 md:py-1">
+      <a href="/" up-follow>
+        <img class="logo-white w-auto h-7" src="/imgs/logo-white.svg" alt="Adocasts" width="146px" height="28px" />
+        <img class="logo-black w-auto h-7" src="/imgs/logo-black.svg" alt="Adocasts" width="146px" height="28px" />
+      </a>
+
+      <nav class="hidden md:flex flex-1 space-x-3 ml-6 xl:ml-12">
+        @!header.navLink({ text: 'Series', href: route('series.index'), upFollow: true })
+        @!header.navLink({ text: 'Topics', href: route('topics.index'), upFollow: true })
+        @!header.navLink({ text: 'Lessons', href: route('lessons.index'), upFollow: true })
+        @!header.navLink({ text: 'Streams', href: route('streams.index'), upFollow: true })
+        @!header.navLink({ text: 'News', href: route('news.index'), upFollow: true })
+      </nav>
+
+      <div class="flex">
+        <div class="flex items-center gap-1">
+          @buttons.primary.base({ square: true })
+            @!icons.search()
+          @end
+
+          @!header.theme.selector()
+        </div>
+
+        <div class="items-center {{ !auth.user ? 'hidden md:flex' : 'flex' }}">
+          <div class="h-6 border-r border-slate-200 space-x-3 mr-3 pr-3"></div>
+        </div>
+
+        
+        @if (auth.user)
+          @buttons.primary.base({ type: 'button', square: true, className: '!p-0', href: route('users.menu'), attrs: 'up-layer="new drawer" up-size="large" up-position="right"' })
+            <img class="h-8 w-8" src="{{ auth.user.avatar }}" />
+          @end
+        @else
+          <div class="hidden md:flex items-center space-x-3">
+            @buttons.primary.base({ href: route('auth.signin'), attrs: 'up-layer="new modal" up-size="grow"' })
+              Sign In
+            @end
+
+            @buttons.brand.base({ href: route('auth.signup'), attrs: 'up-layer="new modal" up-size="grow"' })
+              Sign Up
+            @end
+          </div>
+        @endif
+
+        <div class="items-center {{ auth.user ? 'hidden md:flex' : 'flex' }}">
+          <div class="h-6 border-r border-slate-200 space-x-3 mr-3 pr-3"></div>
+        </div>
+
+        @buttons.primary.base({ square: true, atClick: 'show = true' })
+          @!icons.menuTwo()
+        @end
+      </div>
+    </div>
+
+    <div class="app-container">
+      <div class="border-b border-slate-200/50"></div>
+    </div>
+  </header>
+
+  <div class="relative z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+    <!-- Background backdrop, show/hide based on slide-over state. -->
+    <div x-show="show" class="fixed inset-0"></div>
+
+    <div x-show="show" class="fixed inset-0 overflow-hidden">
+      <div class="absolute inset-0 overflow-hidden">
+        <div class="pointer-events-none fixed inset-y-0 right-0 flex w-full">
+          <!--
+            Slide-over panel, show/hide based on slide-over state.
+
+            Entering: "transform transition ease-in-out duration-500 sm:duration-700"
+              From: "translate-x-full"
+              To: "translate-x-0"
+            Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
+              From: "translate-x-0"
+              To: "translate-x-full"
+          -->
+          <div 
+            x-show="show"
+            x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
+            x-transition:enter-start="translate-x-full"
+            x-transition:enter-end="translate-x-0"
+            x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
+            x-transition:leave-start="translate-x-0"
+            x-transition:leave-end="translate-x-full"
+            class="pointer-events-auto w-screen">
+            <div class="flex h-full flex-col overflow-y-scroll bg-gradient-to-br from-slate-50 to-slate-100 py-6 shadow-xl">
+              <div class="px-4 sm:px-6">
+                <div class="flex items-start justify-end">
+                  <div class="ml-3 flex h-7 items-center">
+                    @buttons.primary.base({ atClick: 'show = false'})
+                      @!icons.x({ className: 'w-6 h-6', square: true })
+                      <span class="sr-only">Close menu</span>
+                    @end
+                  </div>
+                </div>
+              </div>
+              <div class="relative mt-6 flex-1 px-4 sm:px-6">
+                <nav class="flex flex-col flex-1 space-y-3 border-b border-slate-200 mb-6 pb-6">
+                  <a href="{{ route('series.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl">
+                    @!icons.playlist({ className: 'w-6 h-6' })
+                    Series
+                  </a>
+                  <a href="{{ route('topics.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl">
+                    @!icons.hash({ className: 'w-6 h-6' })
+                    Topics
+                  </a>
+                  <a href="{{ route('lessons.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl">
+                    @!icons.school({ className: 'w-6 h-6' })
+                    Lessons
+                  </a>
+                  <a href="{{ route('streams.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl">
+                    @!icons.accessPoint({ className: 'w-6 h-6' })
+                    Streams
+                  </a>
+                  <a href="{{ route('news.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl">
+                    @!icons.news({ className: 'w-6 h-6' })
+                    News
+                  </a>
+                </nav>
+
+                <div class="flex flex-col gap-3 mb-6 pb-6 border-b border-slate-200">
+                  @buttons.primary.inverse({ href: route('auth.signin'), attrs: 'up-layer="new modal" up-size="grow"', block: true, size: 'xl' })
+                    Sign In
+                  @end
+
+                  @buttons.brand.base({ href: route('auth.signup'), attrs: 'up-layer="new modal" up-size="grow"', block: true, size: 'xl' })
+                    Sign Up
+                  @end
+                </div>
+
+                <div class="grid grid-cols-2 gap-8 xl:col-span-2">
+                  <div class="md:grid md:grid-cols-2 md:gap-8">
+                    <div>
+                      <h3 class="text-sm font-semibold text-slate-700 tracking-wider uppercase">
+                        Help
+                      </h3>
+                      <ul class="mt-4 space-y-4">
+                        @footer.link({ href: '' })
+                          Lesson Requests
+                        @end
+                        @footer.link({ href: '/contact' })
+                          Contact Us
+                        @end
+                        @footer.link({ href: '' })
+                          FAQs
+                        @end
+                        @footer.link({ href: '' })
+                          Resources
+                        @end
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="md:grid md:grid-cols-2 md:gap-8">
+                    <div>
+                      <h3 class="text-sm font-semibold text-slate-700 tracking-wider uppercase">
+                        Company
+                      </h3>
+                      <ul class="mt-4 space-y-4">
+                        @footer.link({ href: '/uses' })
+                          Uses
+                        @end
+                        @footer.link({ href: '/guidelines' })
+                          Guidelines
+                        @end
+                        @footer.link({ href: '' })
+                          Analytics
+                        @end
+                        @footer.link({ href: '/sitemap' })
+                          Sitemap
+                        @end
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

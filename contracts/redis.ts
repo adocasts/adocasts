@@ -5,12 +5,9 @@
  * file.
  */
 
-declare module '@ioc:Adonis/Addons/Redis' {
-  interface RedisConnectionsList {
-    local: RedisConnectionConfig,
-  }
+import { InferConnectionsFromConfig } from '@adonisjs/redis/build/config'
+import redisConfig from '../config/redis'
 
-  interface RedisConfig {
-    enabled: boolean
-  }
+declare module '@ioc:Adonis/Addons/Redis' {
+  interface RedisConnectionsList extends InferConnectionsFromConfig<typeof redisConfig> {}
 }

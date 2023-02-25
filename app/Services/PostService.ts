@@ -1,24 +1,20 @@
-import Asset from "App/Models/Asset";
-import Post from "App/Models/Post";
-import StorageService from "./StorageService";
-import CacheService from 'App/Services/CacheService'
-import PostType from 'App/Enums/PostType'
-import DiscordLogger from "@ioc:Logger/Discord";
-import User from "App/Models/User";
-import CollectionService from "./CollectionService";
-import { PlayerData } from "@ioc:Adocasts/Player";
+import PostTypes from "App/Enums/PostTypes"
+import Post from "App/Models/Post"
+import Route from '@ioc:Adonis/Core/Route'
+import AnalyticsService from "./AnalyticsService"
+import { ModelPaginatorContract } from "@ioc:Adonis/Lucid/Orm"
+import { AuthContract } from "@ioc:Adonis/Addons/Auth"
+import States from "App/Enums/States"
 
 export default class PostService {
-  public static async getFeatureSingle(excludeIds: number[] = []) {
-    return Post.lessons()
-      .apply(scope => scope.forDisplay())
-      .if(excludeIds.length, query => query.whereNotIn('id', excludeIds))
-      .whereHas('assets', query => query)
-      .orderBy('publishAt', 'desc')
-      .first()
-  }
-
-  public static async getLatest(limit: number = 10, excludeIds: number[] = [], postTypeIds: number | number[] = PostType.LESSON) {
+  /**
+   * returns latest published posts in designated post types
+   * @param limit 
+   * @param excludeIds 
+   * @param postTypeIds 
+   * @returns 
+   */
+  public static async getLatest(limit: number = 10, excludeIds: number[] = [], postTypeIds: PostTypes[] = [PostTypes.LESSON, PostTypes.NEWS, PostTypes.LIVESTREAM, PostTypes.BLOG]): Promise<Post[]> {
     return Post.query()
       .apply(scope => scope.forDisplay())
       .if(Array.isArray(postTypeIds),
@@ -30,94 +26,141 @@ export default class PostService {
       .limit(limit)
   }
 
-  public static async getBySlugs(slugs: string[]) {
+  /**
+   * return most viewed posts from the past month
+   * @param limit 
+   * @returns 
+   */
+  public static async getTrending(limit: number = 10): Promise<Post[]> {
+    const slugs = await AnalyticsService.getPastMonthsPopularContentSlugs(limit)
     return Post.query()
       .apply(scope => scope.forDisplay())
       .whereIn('slug', slugs)
       .orderBy('publishAt', 'desc')
   }
 
-  public static async getPlayerData(postId: number | null = null, user: User | null = null): Promise<PlayerData | undefined> {
-    if (!postId) return
-
-    const post = await Post.lessons()
-        .apply(scope => scope.published())
-        .preload('rootSeries')
-        .preload('series')
-        .where({ id: postId })
-        .first()
-
-    if (!post) return
-
-    const series = await CollectionService.getSeriesForPost(post, user?.id)
-
-    return { post, series }
+  /**
+   * returns post with the given slug
+   * @param slug 
+   * @param postTypeId 
+   * @returns 
+   */
+  public static async getBySlug(slug: string, postTypeId: PostTypes): Promise<Post> {
+    return Post.query()
+        .if(postTypeId, query => query.where({ postTypeId }))
+        .apply(scope => scope.forDisplay(true))
+        .where({ slug })
+        .highlightOrFail()
   }
 
-  public static async search(term: string, limit: number = 100) {
-    return Post.lessons()
+  /**
+   * 
+   * @param page 
+   * @param limit 
+   * @param sortBy 
+   * @param sortDir 
+   * @param postTypeId 
+   * @param baseUrl 
+   * @returns 
+   */
+  public static async getPaginated(page: number, limit: number, sortBy: string, sortDir: 'asc'|'desc', postTypeId: PostTypes = PostTypes.LESSON, baseUrl: string): Promise<ModelPaginatorContract<Post>> {
+    const items = await Post.query()
+      .where({ postTypeId })
       .apply(scope => scope.forDisplay())
-      .if(term, query => query
-        .where('title', 'ILIKE', `%${term}%`)
-        .orWhere('description', 'ILIKE', `%${term}%`)
-        .orWhere('body', 'ILIKE', `${term}`)
-      )
-      .orderBy('publishAt', 'desc')
-      .limit(limit)
+      .orderBy(sortBy, sortDir)
+      .paginate(page, limit)
+
+    items.baseUrl(baseUrl)
+
+    return items
   }
 
-  public static async syncAssets(post: Post, assetIds: number[] = []) {
-    const assetData = assetIds.reduce((prev, currentId, i) => ({
-      ...prev,
-      [currentId]: {
-        sort_order: i
-      }
-    }), {})
-
-    await post.related('assets').sync(assetData)
-  }
-
-  public static async destroyAssets(post: Post) {
-    const assets = await post.related('assets').query().select(['id', 'filename'])
-    const assetIds = assets.map(a => a.id)
-    const assetFilenames = assets.map(a => a.filename)
-
-    await post.related('assets').detach()
-    await Asset.query().whereIn('id', assetIds).delete()
-
-    StorageService.destroyAll(assetFilenames)
-  }
-
-  public static async syncTaxonomies(post: Post, taxonomyIds: number[] = []) {
-    const taxonomyData = taxonomyIds.reduce((prev, currentId, i) => ({
-      ...prev,
-      [currentId]: {
-        sort_order: i
-      }
-    }), {})
-
-    await post.related('taxonomies').sync(taxonomyData)
-  }
-
-  public static async checkLive() {
-    try {
-      if (await CacheService.has('isLive')) {
-        return CacheService.getParsed('isLive')
-      }
-    } catch (e) {
-      await CacheService.destroy('isLive')
-      await DiscordLogger.error('PostService.checkLive', e.message)
-    }
-
-    const live = await Post.query()
+  /**
+   * returns the lastest published active livestream (if there is one)
+   * @returns 
+   */
+  public static async getActiveStream(): Promise<Post | null> {
+    return await Post.livestreams()
+      .apply(scope => scope.forDisplay())
       .whereTrue('isLive')
       .whereNotNull('livestreamUrl')
-      .apply(s => s.published())
       .orderBy('publishAt', 'desc')
       .first()
+  }
 
-    await CacheService.setSerialized('isLive', live?.serialize(), CacheService.fiveMinutes)
+  /**
+   * returns related root series for post
+   * @param auth 
+   * @param post 
+   * @returns 
+   */
+  public static async getSeries(auth: AuthContract, post: Post) {
+    return post.related('rootSeries').query()
+      .wherePublic()
+      .preload('posts', query => query
+        .apply(scope => scope.forCollectionDisplay())
+        .if(auth.user, query => query.preload('progressionHistory', query => query.where({ userId: auth.user!.id }).orderBy('updated_at', 'desc'))))
+      .preload('children', query => query
+        .wherePublic()
+        .preload('posts', query => query
+          .apply(scope => scope.forCollectionDisplay())
+          .if(auth.user, query => query.preload('progressionHistory', query => query.where({ userId: auth.user!.id }).orderBy('updated_at', 'desc')))
+        )
+      )
+      .preload('updatedVersions', query => query
+        .wherePublic()
+        .whereHas('postsFlattened', query => query.apply(s => s.published()))
+      )
+      .first()
+  }
 
-    return live
+  /**
+   * returns comments for post
+   * @param auth 
+   * @param post 
+   * @returns 
+   */
+  public static async getComments(post: Post) {
+    return post.related('comments').query()
+      .where(query => query.wherePublic().orWhere('stateId', States.ARCHIVED))
+      .preload('user')
+      .preload('userVotes', query => query.select(['id']))
+      .orderBy('createdAt', 'desc')
+      .highlightAll()
+  }
+
+  /**
+   * returns a count of the comments tied to the post
+   * @param post 
+   * @returns 
+   */
+  public static async getCommentsCount(post: Post) {
+    return post.related('comments').query()
+      .wherePublic()
+      .getCount()
+  }
+
+  /**
+   * returns correct path url for the provided post's post type
+   * @param post 
+   * @param params 
+   * @param options 
+   * @returns 
+   */
+  public static getPostPath(post: Post, params: { [x: string]: any }, options: { [x: string]: any }) {
+    params = { ...params, slug: post.slug }
+  
+    switch(post.postTypeId) {
+      case PostTypes.LESSON:
+        return Route.makeUrl('lessons.show', params, options)
+      case PostTypes.BLOG:
+        return Route.makeUrl('posts.show', params, options)
+      case PostTypes.NEWS:
+        return Route.makeUrl('news.show', params, options)
+      case PostTypes.LIVESTREAM:
+        return Route.makeUrl('streams.show', params, options)
+      case PostTypes.LINK:
+        return post.redirectUrl
+    }
   }
 }

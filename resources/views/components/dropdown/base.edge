@@ -3,17 +3,21 @@
 @set('width', width || 'w-48')
 @set('shadow', shadow || 'shadow-xs')
 
-<div @click.away="open = false" class="ml-4 relative flex-shrink-0" x-data="{ 
+<div @click.away="open = false" class="relative flex-shrink-0 {{ className }}" x-data="{ 
   open: false, 
   onOpen() {
     this.open = !this.open
     if (this.open) {{onOpen && `${onOpen}({{ JSON.stringify(onOpenData) }})` }} 
   }
-}">
+}" {{{ attrs }}}>
   <div>
-    <button type="button" @click.prevent.stop="onOpen" aria-haspopup="true" x-bind:aria-expanded="open" class="flex">
-      {{{ await $slots.trigger() }}}
-    </button>
+    @if ($slots.triggerManual)
+      {{{ await $slots.triggerManual({ handler: 'onOpen' }) }}}
+    @else
+      <button type="button" @click.prevent.stop="onOpen" aria-haspopup="true" x-bind:aria-expanded="open" class="flex">
+        {{{ await $slots.trigger() }}}
+      </button>
+    @endif
   </div>
   <div x-show="open"
     x-transition:enter="transition ease-out duration-100"
@@ -24,7 +28,7 @@
     x-transition:leave-end="transform opacity-0 scale-95"
     class="origin-{{ origin }} absolute {{ direction }} mt-2 {{ width }} rounded-md {{ shadow }} z-50"
     style="display: none;">
-    <div class="py-1 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden bg-white dark:bg-gray-950 dark:border dark:border-gray-900 dark:border-opacity-30 px-2 py-2" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+    <div class="rounded-lg shadow-lg ring-1 ring-brand-500 ring-opacity-5 overflow-hidden bg-slate-50 px-2 py-2" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
       {{{ await $slots.main() }}}
     </div>
   </div>

@@ -1,0 +1,96 @@
+@layout('layouts/app')
+
+@section('content')
+
+  <div class="flex gap-x-6 p-6">
+    <nav class="flex flex-col sticky top-6">
+      <p class="font-semibold text-xs uppercase tracking-wider text-slate-500 px-2">Studio</p>
+
+      @header.navLink({ href: '' })
+        Dashboard
+      @end
+
+      @header.navLink({ href: '' })
+        Posts
+      @end
+
+      @header.navLink({ href: '' })
+        Collections
+      @end
+
+      @header.navLink({ href: '' })
+        Taxonomies
+      @end
+
+      @header.navLink({ href: '' })
+        Comments
+      @end
+
+      @header.navLink({ href: '' })
+        Settings
+      @end
+
+      @form.post({ action: route('auth.signout'), upSubmit: 'signout' })
+        @if (request.header('referrer'))
+          <input type="hidden" name="forward" value="{{ request.header('referrer') }}" />
+        @endif
+
+        @header.navLink({ type: 'submit' })
+          Sign out
+        @end
+      @end
+    </nav>
+
+    <div class="border-r border-slate-200"></div>
+
+    <section class="flex flex-col gap-y-3">
+      <div class="flex items-center gap-x-3">
+        <figure>
+          <img class="w-12 h-12 rounded shadow-md" src="{{ auth.user.avatar }}" />
+        </figure>
+        <div>
+          <h3>{{ auth.user.username }}</h3>
+          <p class="text-sm text-slate-700">Forever Plan</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        @if (notifications.unread.length)
+          <div class="mb-6">
+            <h3 class="pb-2 pt-2 text-lg font-semibold">
+              Unread Notifications
+            </h3>
+            <ol class="list-none flex flex-col -mx-4">
+              @each ((item, i) in notifications.unread)
+                @!notifications.item({ item, last: i === notifications.unread.length - 1 })
+              @endeach
+            </ol>
+          </div>
+        @endif
+
+        @if (notifications.read.length)
+          <div class="opacity-60 hover:opacity-100 duration-150">
+            <h3 class="pb-2 pt-2 text-lg font-semibold">
+              Latest Notifications
+            </h3>
+            <ol class="list-none flex flex-col -mx-4">
+              @each ((item, i) in notifications.read)
+                @!notifications.item({ item, last: i === notifications.read.length - 1 })
+              @endeach
+            </ol>
+          </div>
+        @endif
+
+        @if (!notifications.unread.length && !notifications.read.length)
+          <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">
+            <strong>No Notifications</strong>
+            <p class="text-xs text-gray-700">
+              You're all set! Start a discussion by leaving a comment on a lesson or replying to an existing comment.
+            </p>
+          </div>
+        @endif
+      </div>
+    </section>
+  </div>
+
+@endsection

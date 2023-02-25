@@ -1,0 +1,8 @@
+<form hx-put="{{ route('api.user.theme') }}" hx-target="html" hx-swap="outerHTML">
+  @dropdown.item({ type: 'button', onClick: `document.body.parentElement.classList.remove('light', 'dark', 'system'); document.body.parentElement.classList.add('${value}')` })
+    <input type="hidden" name="theme" value="{{ value }}" />
+    <div class="flex items-center gap-x-3">
+      {{{ await $slots.main() }}}
+    </div>
+  @end
+</form>

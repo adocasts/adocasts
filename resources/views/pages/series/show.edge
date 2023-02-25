@@ -1,0 +1,131 @@
+@layout('layouts/app')
+
+@section('hero')
+
+  {{--  @!collections.heroShow({ series })  --}}
+
+  <div class="relative">
+    @if (series.asset)
+      <div class="absolute w-full h-[300px] top-0 left-0 opacity-20 group-hover:opacity-80 duration-150 pointer-events-none">
+        <img 
+          src="/img/{{ series.asset.filename }}" 
+          class="rounded-full w-full h-full object-cover object-center scale-[175%] group-hover:scale-[140%] blur-xl group-hover:blur-none mb-3 duration-150" 
+        />
+        <div class="hero-backdrop-fade"></div>
+      </div>
+    @endif
+  </div>
+
+@endsection
+
+@section('content')
+
+  <div class="flex flex-wrap lg:flex-nowrap gap-6">
+    <div class="w-full lg:w-1/4">
+      <div class="flex flex-col pb-10 sticky top-6">
+        <div class="w-full lg:w-auto inline-flex flex-col pb-3">
+          <div class="w-32 lg:w-full flex justify-center items-center p-3 bg-slate-50 rounded-xl mb-6 relative overflow-hidden shadow-xl">
+            @if (series.asset)
+              <img src="/img/{{ series.asset.filename }}" class="absolute w-full h-full object-cover object-center scale-150 lg:scale-125 blur-md opacity-50" />
+            @endif
+
+            <div class="aspect-square w-24 lg:w-36 relative z-10">
+              @if (series.asset)
+                <img src="/img/{{ series.asset.filename }}" class="rounded-full w-24 h-24 lg:w-36 lg:h-36 shadow-lg border-2 border-slate-900/25" />
+              @else
+                <div class="w-16 h-16 lg:w-20 lg:h-20 text-2xl font-semibold flex items-center justify-center rounded-full bg-brand-300 text-brand-800">
+                  {{ getAbbrev(series.name) }}
+                </div>
+              @endif
+            </div>
+          </div>
+          <div class="flex-1">
+            <h1 class="font-semibold text-slate-900 text-2xl xl:text-3xl mb-3">
+              {{ series.name }}
+            </h1>
+            <div class="text-xs xl:text-sm text-slate-600 uppercase tracking-wider mb-3">
+              @set('watchDisplay', secondsForDisplay(series.meta.videoSecondsSum))
+
+              <p class="flex items-center gap-3">
+                @!icons.school()
+                {{ series.meta.postsFlattened_count ?? '0' }} 
+                {{ getSingularOrPlural('Lesson', series.meta.postsFlattened_count ?? 0) }}
+              </p>
+              
+              <p class="flex items-center gap-3">
+                @!icons.clock()
+                {{ watchDisplay.maxDisplay }} 
+                {{ getSingularOrPlural(watchDisplay.maxDisplayKey, watchDisplay.maxDisplay) }}
+              </p>
+            </div>
+            <p class="text-slate-600 text-sm xl:text-base max-w-prose mb-3">
+              {{ series.description }}
+            </p>
+          </div>
+        </div>
+
+        <div class="w-full flex flex-col space-y-3 lg:pb-6">
+          @buttons.brand.base({ href: '', block: true })
+            @!icons.playerPlay({ className: 'w-5 h-5' })
+            <span class="ml-2">Start Series</span>
+          @end
+          @buttons.primary.inverse({ href: '', block: true })
+            @!icons.brandGithub({ className: 'w-5 h-5' })
+            <span class="ml-2">View Repository</span>
+          @end
+          @buttons.primary.inverse({ href: '', block: true })
+            @!icons.brandYoutube({ className: 'w-5 h-5' })
+            <span class="ml-2">View Playlist</span>
+          @end
+        </div>
+
+        <div class="text-sm xl:text-base hidden lg:block">
+          <h5>Series Modules</h5>
+
+          <ol class="flex flex-col mt-3 -mx-3">
+            @each (module in series.children)
+              <li>
+                <a href="#module{{module.moduleNumber}}" class="flex items-center flex-wrap text-slate-600 gap-x-3 px-3 py-2 rounded-xl hover:bg-slate-50">
+                  <span class="uppercase tracking-wider hidden md:block bg-slate-300/50 rounded-lg py-1 px-2 text-xs">
+                    Module {{ module.moduleNumber }}
+                  </span> 
+                  <span>
+                    {{ module.name }}
+                  </span>
+                </a>
+              </li>
+            @endeach
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-full lg:w-3/4">
+      @each ((module, x) in series.children)
+        <div id="module{{module.moduleNumber }}" class="bg-slate-50/50 rounded-xl p-3 mb-3">
+          <div class="mx-3 mb-3 py-3 border-b border-slate-200/50">
+            <h3 class="flex items-center flex-wrap text-lg lg:text-xl text-slate-600 gap-x-3">
+              <span class="uppercase tracking-wider hidden md:block bg-slate-300/50 rounded-lg py-1 px-2 text-xs">
+                Module {{ module.moduleNumber }}
+              </span> 
+              <span class="font-semibold">
+                {{ module.name }}
+              </span>
+            </h3>
+          </div>
+          
+          @each ((item, y) in module.posts)
+            @!lessons.listItem({ 
+              item, 
+              className: 'pl-3', 
+              descClassName: '!inline-block',
+              lineClamp: 'md:line-clamp-5', 
+              showProgress: true 
+            })
+          @endeach
+        </div>
+      @endeach
+    </div>
+  </div>
+
+@endsection

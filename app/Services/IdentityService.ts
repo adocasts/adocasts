@@ -1,5 +1,6 @@
 import Database from "@ioc:Adonis/Lucid/Database";
 import CacheService from 'App/Services/CacheService';
+import { RequestContract } from '@ioc:Adonis/Core/Request';
 import { uniqueNamesGenerator, NumberDictionary, animals, colors, names, starWars } from 'unique-names-generator';
 import crypto from 'crypto';
 import ipLocate from 'node-iplocate'
@@ -9,6 +10,12 @@ class IdentityService {
 
   public async getLocation(ip: string) {
     return ipLocate(ip)
+  }
+
+  public async getRequestIdentity(request: RequestContract) {
+    const ip = request.ip()
+    const agent = request.header('user-agent')
+    return this.create(ip, agent)
   }
 
   public async getByIdentity(table: string, identity: string, identityKey: string = 'name'): Promise<string> {

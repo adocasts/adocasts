@@ -1,5 +1,4 @@
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
-import * as Sentry from '@sentry/node'
 
 /*
 |--------------------------------------------------------------------------
@@ -33,14 +32,6 @@ export default class LogProvider {
 
   public async boot() {
     // All bindings are ready, feel free to use them
-    Sentry.init({
-      dsn: "https://dd03b1044e25432db7c0d237b8a722ec@o1256915.ingest.sentry.io/6426366",
-    
-      // Set tracesSampleRate to 1.0 to capture 100%
-      // of transactions for performance monitoring.
-      // We recommend adjusting this value in production
-      tracesSampleRate: 0,
-    });
   }
 
   public async ready() {

@@ -15,6 +15,8 @@ import Question from 'App/Models/Question'
 import History from './History'
 import Notification from './Notification'
 import Themes from 'App/Enums/Themes'
+import LessonRequest from './LessonRequest'
+import Roles from 'App/Enums/Roles'
 
 class User extends AppBaseModel {
   @column({ isPrimary: true })
@@ -85,6 +87,11 @@ class User extends AppBaseModel {
     return gravatar.url(this.email, { s: '40' })
   }
 
+  @computed()
+  public get isAdmin() {
+    return this.roleId === Roles.ADMIN
+  }
+
   @beforeSave()
   public static async hashPassword (user: User) {
     if (user.$dirty.password && !user.$extras.rehash) {
@@ -136,6 +143,9 @@ class User extends AppBaseModel {
 
   @hasMany(() => Question)
   public questions: HasMany<typeof Question>
+
+  @hasMany(() => LessonRequest)
+  public lessonRequests: HasMany<typeof LessonRequest>
 }
 
 User['findForAuth'] = function (uids: string[], uidValue: string) {

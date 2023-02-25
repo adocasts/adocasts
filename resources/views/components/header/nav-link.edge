@@ -1,0 +1,17 @@
+@if (href)
+  <a href="{{ href }}" class="text-slate-600 hover:text-slate-900 px-2 py-3" {{ upFollow ? 'up-follow' : '' }} {{{ attrs }}}>
+    @if ($slots.main())
+      {{{ await $slots.main() }}}
+    @else
+      {{ text }}
+    @endif
+  </a>
+@else
+  <button type="{{ type ?? 'button' }}" class="text-slate-600 hover:text-slate-900 text-left px-2 py-3" {{{ attrs }}}>
+    @if ($slots.main())
+      {{{ await $slots.main() }}}
+    @else
+      {{ text }}
+    @endif
+  </button>
+@endif

@@ -16,15 +16,15 @@
     "Contracts": "contracts"
   },
   "preloads": [
-    "./routes/index",
+    "./start/routes",
     "./start/kernel",
     "./start/bouncer",
-    "./start/events",
     "./start/globals"
   ],
   "providers": [
     "./providers/AppProvider",
     "./providers/Up/Provider",
+    "./providers/QueryBuilderExtensions/Provider",
     "./providers/LogProvider",
     "@adonisjs/core",
     "@adonisjs/session",
@@ -32,16 +32,13 @@
     "@adonisjs/shield",
     "@adonisjs/lucid",
     "@adonisjs/auth",
-    "@adonisjs/lucid-slugify",
-    "@adonisjs/ally",
     "@adonisjs/mail",
-    "@adonisjs/redis",
-    "@adonisjs/bouncer",
-    "./providers/QueryBuilderProvider",
-    "@adonisjs/attachment-lite",
+    "@adonisjs/lucid-slugify",
     "@adonisjs/drive-gcs",
-    "@japa/preset-adonis/TestsProvider",
-    "@adocasts.com/adonisjs-honeypot"
+    "@adocasts.com/adonisjs-honeypot",
+    "@adonisjs/bouncer",
+    "@adonisjs/redis",
+    "@adonisjs/ally"
   ],
   "metaFiles": [
     {
@@ -50,10 +47,6 @@
     },
     {
       "pattern": "resources/views/**/*.edge",
-      "reloadServer": false
-    },
-    {
-      "pattern": "certs/**",
       "reloadServer": false
     }
   ],
@@ -70,5 +63,8 @@
         "timeout": 60000
       }
     ]
-  }
+  },
+  "testProviders": [
+    "@japa/preset-adonis/TestsProvider"
+  ]
 }

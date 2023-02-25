@@ -5,7 +5,7 @@
  * file.
  */
 
-import { BodyParserConfig } from '@ioc:Adonis/Core/BodyParser'
+import type { BodyParserConfig } from '@ioc:Adonis/Core/BodyParser'
 
 const bodyParserConfig: BodyParserConfig = {
   /*
@@ -135,7 +135,7 @@ const bodyParserConfig: BodyParserConfig = {
     | projects/:id/file
     | ```
     */
-    processManually: ['/api/studio/assets', '/api/studio/editor/assets'],
+    processManually: [],
 
     /*
     |--------------------------------------------------------------------------

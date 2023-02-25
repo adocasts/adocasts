@@ -1,0 +1,62 @@
+<div class="py-6 relative z-10">
+  <div class="app-container relative">
+    <div class="flex justify-between items-center">
+      <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="inline-flex items-center pb-3">
+        <div class="aspect-square">
+          @if (item.asset)
+            <img src="/img/{{ item.asset.filename }}" class="rounded-full w-16 h-16 lg:w-20 lg:h-20 mb-3" />
+          @else
+            <div class="w-16 h-16 lg:w-20 lg:h-20 text-2xl font-semibold flex items-center justify-center mb-3 rounded-full bg-brand-300 text-brand-800">
+              {{ getAbbrev(item.name) }}
+            </div>
+          @endif
+        </div>
+        <div class="flex-1 ml-3 md:ml-6 md:-mt-3 -mr-px">
+          <h4 class="text-slate-500 font-sans uppercase tracking-wider text-sm">
+            Featured Series
+          </h4>
+          
+          <h2 class="font-semibold text-xl md:text-2xl lg:text-3xl">
+            {{ item.name }}
+          </h2>
+          
+          <div class="w-full text-slate-500 text-xs flex items-center relative z-10 gap-3 mt-2">
+            <div class="flex flex-col justify-center tracking-wider">
+              {{ item.meta.postsFlattened_count ?? '0' }}
+              {{ getSingularOrPlural('Lesson', item.meta.postsFlattened_count ?? 0) }}
+            </div>
+
+            <div class="h-3 border-l border-slate-300"></div>
+
+            @set('watchDisplay', secondsForDisplay(item.meta.videoSecondsSum))
+            <div class="flex flex-col justify-center tracking-wider">
+              {{ watchDisplay.maxDisplay }}
+              {{ getSingularOrPlural(watchDisplay.maxDisplayKey, watchDisplay.maxDisplay) }}
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <div class="w-full lg:w-1/5 space-y-1">
+        @buttons.primary.inverse({ href: '', className: 'gap-3', block: true })
+          @!icons.playerPlay()
+          Start Series
+        @end
+        @buttons.primary.inverse({ href: '', className: 'gap-3', block: true })
+          @!icons.folder()
+          View Series
+        @end
+      </div>
+    </div>
+
+    <div class="flex flex-wrap md:flex-nowrap md:gap-8 -mx-3">
+      @!lessons.featureHalfTall({ item: item.postsFlattened.at(0) })
+
+      <div class="flex flex-wrap items-start lg:w-1/2">
+        @each (item in item.postsFlattened.slice(1, 5))
+          @!lessons.featureHalfList({ item })
+        @endeach
+      </div>
+    </div>
+  </div>
+</div>

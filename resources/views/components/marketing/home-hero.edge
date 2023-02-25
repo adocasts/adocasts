@@ -1,0 +1,38 @@
+<div class="isolate -mt-6 border-b border-slate-200">
+  <main>
+    <div class="pt-10 sm:pt-16 lg:overflow-hidden lg:pt-8 lg:pb-14">
+      <div class="app-container">
+        <div class="lg:grid lg:grid-cols-2 lg:gap-8">
+          <div class="mx-auto max-w-md px-6 sm:max-w-3xl sm:text-center lg:flex lg:items-center lg:px-0 lg:text-left xl:relative xl:left-24">
+            <div class="lg:py-14">
+              <h1 class="mt-4 text-4xl font-bold tracking-tight text-slate-900 sm:mt-5 sm:text-6xl lg:mt-6 xl:text-6xl">
+                <span class="block">Advance your skills</span>
+                <span class="block bg-gradient-to-r from-brand-600 to-brand-400 bg-clip-text pb-3 text-transparent sm:pb-5">Become an AdonisJS pro!</span>
+              </h1>
+              <p class="text-base text-slate-700 sm:text-xl lg:text-lg xl:text-xl">
+                Join our community of developers and get ahead in your coding skills with our expert-led AdonisJS tutorials and hands-on exercises.
+              </p>
+              <div class="mt-10 sm:mt-12 flex items-center gap-x-6 sm:justify-center lg:justify-start">
+                @buttons.brand.base({ href: route('auth.signup'), attrs: 'up-layer="new modal" up-size="grow"' })
+                  Sign Up for FREE!
+                @end
+
+                @buttons.primary.base({ href: route('auth.signin'), className: 'gap-x-3', attrs: 'up-layer="new modal" up-size="grow"' })
+                  Sign In
+                  @!icons.arrowNarrowRight()
+                @end
+              </div>
+            </div>
+          </div>
+          <div class="hidden lg:block lg:relative lg:m-0">
+            <div class="mx-auto max-w-md px-6 sm:max-w-3xl lg:max-w-none lg:px-0">
+              <div class="w-full lg:absolute lg:top-8 lg:h-full lg:w-full lg:max-w-none flex justify-center">
+                @!illustrations.codeBlocks({ className: 'w-full xl:scale-[135%] text-slate-800' })
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

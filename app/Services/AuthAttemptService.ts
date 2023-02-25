@@ -1,4 +1,4 @@
-import AuthAttemptPurpose from "App/Enums/AuthAttemptPurpose"
+import AuthAttemptPurposes from "App/Enums/AuthAttemptPurposes"
 import AuthAttempt from "App/Models/AuthAttempt"
 import { DateTime } from "luxon"
 
@@ -31,6 +31,16 @@ export default class AuthAttemptService {
   }
 
   /**
+   * Get whether user has remaining auth attempts
+   * @param uid 
+   * @returns 
+   */
+  public static async hasRemainingAttempts(uid: string): Promise<boolean> {
+    const attemptRemaining = await this.getRemainingAttempts(uid)
+    return attemptRemaining >= 0
+  }
+
+  /**
    * Removes bad authentication attempts for the user
    * @param  {string}        uid [description]
    * @return {Promise<void>}     [description]
@@ -50,7 +60,7 @@ export default class AuthAttemptService {
   public static async recordLoginAttempt(uid: string): Promise<void> {
     await AuthAttempt.create({
       uid,
-      purposeId: AuthAttemptPurpose.LOGIN
+      purposeId: AuthAttemptPurposes.LOGIN
     })
   }
 
@@ -62,7 +72,7 @@ export default class AuthAttemptService {
   public static async recordChangeEmailAttempt(email: string): Promise<void> {
     await AuthAttempt.create({
       uid: email,
-      purposeId: AuthAttemptPurpose.CHANGE_EMAIL
+      purposeId: AuthAttemptPurposes.CHANGE_EMAIL
     })
   }
 }

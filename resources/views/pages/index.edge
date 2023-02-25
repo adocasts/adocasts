@@ -1,0 +1,77 @@
+@layout('layouts/app')
+
+@section('hero')
+
+  <div class="mb-16">
+    @if (!auth.user)
+      @!marketing.homeHero()
+    @else
+      <div class="app-container">
+        <div class="flex flex-wrap md:flex-nowrap md:gap-8">
+          @!lessons.featureHalfTall({ item: posts.at(0) })
+
+          <div class="flex flex-wrap items-start lg:w-1/2">
+            @each (item in posts.slice(1, 5))
+              @!lessons.featureHalfList({ item })
+            @endeach
+          </div>
+        </div>
+      </div>
+    @endif
+  </div>
+
+@endsection
+
+@section('content')
+
+  <div class="space-y-24">
+    <section>
+      @!headings.section({
+        title: 'Discover Our Latest Updated Series',
+        subtitle: 'Unlock your full potential with our educational series, designed to step you through your learning journey to the next level.',
+        className: 'text-center'
+      })
+      <div class="w-full max-w-screen-xl mx-auto flex flex-wrap justify-center pt-6">
+        @each (item in series)
+          @!collections.cardTall({ item })
+        @endeach
+      </div>
+    </section>
+
+    <section>
+      @!headings.panel({ title: 'Recently Released' })
+      <div class="grid xl:grid-cols-2 gap-3 w-full">
+        @each (item in posts.slice(5, 13))
+          @!lessons.listItem({ item })
+        @endeach
+      </div>
+    </section>
+
+    <section>
+      @!headings.section({
+        title: 'Covered Topics',
+        subtitle: `Each Adocasts topic contains groupings of series, lessons, news, and livestreams.`,
+        className: 'text-center'
+      })
+      <div class="w-full flex flex-wrap justify-center items-center py-6 -mx-3">
+        @each (item in topics)
+          <div class="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 2xl:w-1/6 px-1.5 mb-3">
+            @!taxonomies.card({ item })
+          </div>
+        @endeach
+      </div>
+    </section>
+
+    <section class="break ">
+      <div class="app-container">
+        @!headings.section({
+          title: 'Explore Our Trending Lessons',
+          subtitle: 'From popular topics to emerging trends, our lessons cover a variety of subjects to keep you informed. Browse our most popular lessons from the past month.',
+          className: 'text-center mb-6'
+        })
+        @!lessons.imageCardGrid({ posts: trending })
+      </div>
+    </section>
+  </div>
+
+@endsection

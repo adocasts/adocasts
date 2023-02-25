@@ -1,0 +1,33 @@
+@set('rootComments', comments.filter(c => !c.replyTo))
+
+<div x-cloak x-data="comments">
+  @if (auth.user)
+    <h4 class="font-semibold mt-12 text-xl mb-6 p-6 flex rounded-xl bg-slate-50 border border-slate-200">
+      Join The Discussion 
+      <span class="text-slate-600 dark:text-slate-400 ml-2 font-normal">
+        ({{ commentsCount }} Comments)
+      </span>
+    </h4>
+
+    @!comments.form({ postId, includeScript: true })
+  @else
+    <div class="bg-slate-50 border border-slate-200 rounded-xl p-6 mt-6">
+      <h4 class="font-semibold text-lg mb-2">Join The Discussion!</h4>
+      <p>
+        Please
+        <a href="{{ route('auth.signin') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+          sign in
+        </a>
+        or 
+        <a href="{{ route('auth.signup') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+          sign up for free
+        </a>
+        to join in on the dicussion.
+      </p>
+    </div>
+  @endif
+
+  <div class="-ml-8 mt-6">
+    @!comments.list({ postId, comments, nodeComments: rootComments })
+  </div>
+</div>

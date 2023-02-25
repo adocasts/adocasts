@@ -1,5 +1,5 @@
 {
-  "extends": "./node_modules/adonis-preset-ts/tsconfig",
+  "extends": "adonis-preset-ts/tsconfig.json",
   "include": [
     "**/*"
   ],
@@ -11,7 +11,6 @@
     "outDir": "build",
     "rootDir": "./",
     "sourceMap": true,
-    "lib": ["es2021"],
     "paths": {
       "App/*": [
         "./app/*"
@@ -32,17 +31,16 @@
       "@adonisjs/session",
       "@adonisjs/view",
       "@adonisjs/shield",
+      "@japa/preset-adonis/build/adonis-typings",
       "@adonisjs/lucid",
       "@adonisjs/auth",
-      "@adonisjs/lucid-slugify",
-      "@adonisjs/ally",
       "@adonisjs/mail",
-      "@adonisjs/redis",
-      "@adonisjs/bouncer",
-      "@adonisjs/attachment-lite",
+      "@adonisjs/lucid-slugify",
       "@adonisjs/drive-gcs",
-      "@japa/preset-adonis/build/adonis-typings",
-      "@adocasts.com/adonisjs-honeypot"
+      "@adocasts.com/adonisjs-honeypot",
+      "@adonisjs/bouncer",
+      "@adonisjs/redis",
+      "@adonisjs/ally"
     ]
   }
 }

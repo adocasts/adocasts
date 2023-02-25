@@ -6,7 +6,7 @@
  */
 
 import Env from '@ioc:Adonis/Core/Env'
-import { RedisConfig } from '@ioc:Adonis/Addons/Redis'
+import { redisConfig } from '@adonisjs/redis/build/config'
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +21,7 @@ import { RedisConfig } from '@ioc:Adonis/Addons/Redis'
 |
 | Make sure to check `contracts/redis.ts` file for defining extra connections
 */
-const redisConfig: RedisConfig = {
+export default redisConfig({
   enabled: false, // toggle caching on/off
   connection: Env.get('REDIS_CONNECTION'),
 
@@ -44,6 +44,4 @@ const redisConfig: RedisConfig = {
       keyPrefix: '',
     },
   },
-}
-
-export default redisConfig
+})

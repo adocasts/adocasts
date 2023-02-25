@@ -1,124 +1,127 @@
-<footer class="bg-white dark:bg-gray-950" aria-labelledby="footer-heading">
-    <h2 id="footer-heading" class="sr-only">Footer</h2>
-    @container({ className: 'py-12 lg:py-16' })
-      <div class="xl:grid xl:grid-cols-3 xl:gap-8">
-        <div class="grid grid-cols-2 gap-8 xl:col-span-2">
-          <div class="md:grid md:grid-cols-2 md:gap-8">
-            <div>
-              <h3 class="text-sm font-semibold text-gray-700 tracking-wider uppercase">
-                Content
-              </h3>
-              <ul class="mt-4 space-y-4">
-                @footer.link({ href: '/' })
-                  Home
-                @end
-                @footer.link({ href: '/series' })
-                  Series
-                @end
-                @footer.link({ href: '/topics' })
-                  Topics
-                @end
-                @footer.link({ href: '/lessons' })
-                  Lessons
-                @end
-              </ul>
-            </div>
-            <div class="mt-12 md:mt-0">
-              <h3 class="text-sm font-semibold text-gray-600 tracking-wider uppercase hidden md:block">
-                &nbsp;
-              </h3>
-              <ul class="mt-4 space-y-4">
-                @footer.link({ href: route('news.index') })
-                  News
-                @end
-                @footer.link({ href: route('livestreams.index') })
-                  Streams
-                @end
-                @footer.link({ href: route('questions.index') })
-                  FAQs
-                @end
-                @footer.link({ href: route('resources') })
-                  Resources
-                @end
-              </ul>
-            </div>
+<footer class="bg-slate-50 mt-16">
+  <div class="app-container pt-8">
+    <div class="xl:grid xl:grid-cols-3 xl:gap-8">
+      <div class="grid grid-cols-2 gap-8 xl:col-span-2">
+        <div class="md:grid md:grid-cols-2 md:gap-8">
+          <div>
+            <h3 class="text-sm font-semibold text-slate-700 tracking-wider uppercase">
+              Content
+            </h3>
+            <ul class="mt-4 space-y-4">
+              @footer.link({ href: '/' })
+                Home
+              @end
+              @footer.link({ href: '/series' })
+                Series
+              @end
+              @footer.link({ href: '/topics' })
+                Topics
+              @end
+              @footer.link({ href: '/lessons' })
+                Lessons
+              @end
+            </ul>
           </div>
-          <div class="md:grid md:grid-cols-2 md:gap-8">
-            <div>
-              <h3 class="text-sm font-semibold text-gray-700 tracking-wider uppercase">
-                Company
-              </h3>
-              <ul class="mt-4 space-y-4">
-                @footer.link({ href: '/guidelines' })
-                  Guidelines
-                @end
-                @footer.link({ href: '/contact' })
-                  Contact Us
-                @end
-                @footer.link({ href: route('analytics') })
-                  Analytics
-                @end
-                @footer.link({ href: '/sitemap' })
-                  Sitemap
-                @end
-              </ul>
-            </div>
-            <div class="mt-12 md:mt-0">
-              <h3 class="text-sm font-semibold text-gray-700 tracking-wider uppercase">
-                Legal
-              </h3>
-              <ul class="mt-4 space-y-4">
-                @footer.link({ href: '/cookies' })
-                  Cookies
-                @end
-                @footer.link({ href: '/privacy' })
-                  Privacy
-                @end
-                @footer.link({ href: '/terms' })
-                  Terms
-                @end
-              </ul>
-            </div>
+          <div class="mt-12 md:mt-0">
+            <h3 class="text-sm font-semibold text-slate-600 tracking-wider uppercase hidden md:block">
+              &nbsp;
+            </h3>
+            <ul class="mt-4 space-y-4">
+              @footer.link({ href: '' })
+                News
+              @end
+              @footer.link({ href: '' })
+                Streams
+              @end
+              @footer.link({ href: '' })
+                FAQs
+              @end
+              @footer.link({ href: '' })
+                Resources
+              @end
+            </ul>
           </div>
         </div>
-        <div class="mt-8 xl:mt-0">
-          <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-700 tracking-wider uppercase">
-            Subscribe to our newsletter
-          </h3>
-          <p class="text-base text-gray-700 dark:text-gray-800">
-            It contains the a monthly roundup of our latest lessons.
-          </p>
-          <div class="mt-3">
-            @!newsletter.formBrandLight()
+        <div class="md:grid md:grid-cols-2 md:gap-8">
+          <div>
+            <h3 class="text-sm font-semibold text-slate-700 tracking-wider uppercase">
+              Company
+            </h3>
+            <ul class="mt-4 space-y-4">
+              @footer.link({ href: '/guidelines' })
+                Guidelines
+              @end
+              @footer.link({ href: '/contact' })
+                Contact Us
+              @end
+              @footer.link({ href: '' })
+                Analytics
+              @end
+              @footer.link({ href: '/sitemap' })
+                Sitemap
+              @end
+            </ul>
+          </div>
+          <div class="mt-12 md:mt-0">
+            <h3 class="text-sm font-semibold text-slate-700 tracking-wider uppercase">
+              Legal
+            </h3>
+            <ul class="mt-4 space-y-4">
+              @footer.link({ href: '/cookies' })
+                Cookies
+              @end
+              @footer.link({ href: '/privacy' })
+                Privacy
+              @end
+              @footer.link({ href: '/terms' })
+                Terms
+              @end
+            </ul>
           </div>
         </div>
       </div>
-      <div class="mt-8 border-t border-gray-300 dark:border-gray-50 dark:border-opacity-10 pt-8 md:flex md:items-center md:justify-between">
-        <div class="flex space-x-6 md:order-2">
-            <a href="https://twitter.com/adocasts" class="ml-6 text-gray-700 hover:text-gray-800 transition duration-300 ease-in-out" target="_blank">
-                <span class="sr-only">Twitter</span>
-                @!svg.twitter({ className: 'w-6 h-6' })
-            </a>
-            <a href="https://youtube.com/adocasts" class="ml-6 text-gray-700 hover:text-gray-800 transition duration-300 ease-in-out" target="_blank">
-                <span class="sr-only">YouTube</span>
-                @!svg.youtube({ className: 'w-6 h-6' })
-            </a>
-            <a href="https://github.com/adocasts" class="ml-6 text-gray-700 hover:text-gray-800 transition duration-300 ease-in-out" target="_blank">
-                <span class="sr-only">GitHub</span>
-                @!svg.github({ className: 'w-6 h-6' })
-            </a>
-            <a rel="me" href="https://fosstodon.org/@adocasts" class="ml-6 text-gray-700 hover:text-gray-800 transition duration-300 ease-in-out" target="_blank">
-                <span class="sr-only">Mastodon</span>
-                @!svg.mastodon({ className: 'w-6 h-6' })
-            </a>
-            <a href="{{ route('rss') }}" class="ml-6 text-gray-700 hover:text-gray-800 transition duration-300 ease-in-out" target="_blank">
-              <span class="sr-only">RSS Feed</span>
-              @!svg.rss({ className: 'w-6 h-6' })
-          </a>
-        </div>
-        <p class="mt-8 text-base text-gray-700 md:mt-0 md:order-1">
-            &copy; {{ DateTime.local().year }} {{ env('APP_BRAND') }}. All rights reserved.
+      <div class="mt-8 xl:mt-0">
+        <h3 class="text-sm font-semibold text-slate-800 tracking-wider uppercase">
+          Subscribe to our newsletter
+        </h3>
+        <p class="text-sm text-slate-500">
+          It contains the a monthly roundup of our latest lessons.
         </p>
+        <div class="mt-3">
+          @!newsletter.formBrand()
+        </div>
       </div>
-    @end
-  </footer>
+    </div>
+    <hr class="my-6 border-slate-200 sm:mx-auto lg:my-6" />
+    <div class="sm:flex sm:items-center sm:justify-between pb-6">
+      <a href="/" class="flex items-center">
+        <img class="logo-white h-6 w-auto mr-3 sm:h-8" src="/imgs/logo-white.svg" alt="Adocasts" width="146px" height="28px" />
+        <img class="logo-black h-6 w-auto mr-3 sm:h-8" src="/imgs/logo-black.svg" alt="Adocasts" width="146px" height="28px" />
+        <span class="sr-only">Adocasts</span>
+      </a>
+      <span class="text-sm text-slate-500 sm:text-center">&copy; {{ DateTime.now().year }} <a href="/" class="hover:underline">Adocasts</a>. All Rights Reserved.</span>
+      <div class="flex items-center mt-4 space-x-6 sm:justify-center sm:mt-0">
+        <a href="#" class="text-slate-500 hover:text-slate-900 dark:hover:text-white">
+          @!icons.brandTwitter({ className: 'w-5 h-5' })
+          <span class="sr-only">Twitter page</span>
+        </a>
+        <a href="#" class="text-slate-500 hover:text-slate-900 dark:hover:text-white">
+          @!icons.brandYoutube({ className: 'w-5 h-5' })
+          <span class="sr-only">YouTube account</span>
+        </a>
+        <a href="#" class="text-slate-500 hover:text-slate-900 dark:hover:text-white">
+          @!icons.brandGithub({ className: 'w-5 h-5' })
+          <span class="sr-only">GitHub account</span>
+        </a>
+        <a href="#" class="text-slate-500 hover:text-slate-900 dark:hover:text-white">
+          @!icons.brandMastodon({ className: 'w-5 h-5' })
+          <span class="sr-only">Mastodon account</span>
+        </a>
+        <a href="#" class="text-slate-500 hover:text-slate-900 dark:hover:text-white">
+          @!icons.rss({ className: 'w-5 h-5' })
+          <span class="sr-only">RSS feed</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

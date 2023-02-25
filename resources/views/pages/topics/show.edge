@@ -1,0 +1,104 @@
+@layout('layouts/app')
+
+@section('hero')
+
+  <div class="relative">
+    <div class="hero-backdrop-container">
+      @if (topic.asset)
+        <div class="hero-backdrop-inner">
+          <img 
+            src="/img/{{ topic.asset.filename }}" 
+            class="hero-backdrop-image" 
+          />
+          <div class="hero-backdrop-fade"></div>
+        </div>
+      @endif
+    </div>
+
+    <div class="app-container relative z-10">
+      <div class="pt-12 pb-6 dark">
+        <div class="flex flex-col md:flex-row py-3 dark">
+          <div class="aspect-square w-16 mb-3 ml-3 md:mb-0 md:ml-0">
+            @if (topic.asset)
+              <img src="/img/{{ topic.asset.filename }}" class="rounded-xl object-contain object-center w-16 h-16 mb-3" />
+            @else
+              <div class="w-16 h-16 text-2xl font-semibold flex items-center justify-center mb-3 rounded-full bg-brand-300 text-brand-800">
+                {{ getAbbrev(topic.name) }}
+              </div>
+            @endif
+          </div>
+          <div class="flex-1 md:ml-6 mb-3 -mr-px">
+            <h1 class="text-4xl font-semibold mb-2 text-slate-900">
+              @if (topic.parent)
+                <a href="{{ route('topics.show', { slug: topic.parent.slug }) }}" class="anchor font-normal">{{ topic.parent.name }}</a>
+                <span class="font-normal">/</span>
+              @endif
+              {{ topic.name }}
+            </h1>
+            <p class="text-lg text-slate-600 max-w-prose">
+              {{ topic.description }}
+            </p>
+          </div>
+        </div>
+
+        @if (children?.length)
+          <div class="mt-6 text-slate-100">
+            <div class="dark">
+              @!headings.panel({ title: `${topic.name} Sub-Topics` })
+            </div>
+            <div class="flex flex-wrap -mx-6 px-3">
+              @each(item in children)
+                <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 px-3 pb-3 lg:pb-6">
+                  @!taxonomies.card({ item, className: 'w-full' })
+                </div>
+              @endeach
+            </div>
+          </div>
+        @endif
+      </div>
+    </div>
+  </div>
+
+@endsection
+
+@section('content')
+
+  <div class="w-full flex flex-col py-8 -mx-3">
+    <div class="px-3">
+      @!headings.panel({ title: `${topic.name} Series` })
+    </div>
+    <div class="flex w-full flex-wrap mb-6">
+      @each (item in series)
+        @!collections.card({ item, className: 'w-full md:w-1/2 lg:w-1/4 px-3 mb-6' })
+      @endeach
+    </div>
+
+    @each (item in topics)
+      <div class="flex w-full mb-6">
+        @!taxonomies.cardSquare({ item, className: 'w-full md:w-1/2 lg:w-1/4 px-3' })
+        <div class="flex flex-wrap w-full md:w-1/2 lg:w-3/4">
+          @each (lesson in item.posts)
+            @!lessons.listItem({ 
+              item: lesson, 
+              flexFlow: 'flex-col', 
+              size: 'base', 
+              px: 'px-0', 
+              lineClamp: 'line-clamp-4',  
+              className: 'w-full md:w-1/2 lg:w-1/3 px-3' 
+            })
+          @endeach
+        </div>
+      </div>
+    @endeach
+  </div>
+
+  <div class="px-3">
+    @!headings.panel({ title: `Recently Released on ${topic.name}` })
+  </div>
+  <div class="grid xl:grid-cols-2 gap-3 w-full px-3">
+    @each ((item, i) in posts)
+      @!lessons.listItem({ item, className: 'mb-6' })
+    @endeach
+  </div>
+
+@endsection

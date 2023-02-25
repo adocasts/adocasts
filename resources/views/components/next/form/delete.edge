@@ -1,6 +1,0 @@
-@set('action', action.includes('?') ? `${action}&_method=DELETE` : `${action}?_method=DELETE`)
-
-<form method="POST" action="{{ action }}" {{{ id ? `id="${id}"` : '' }}} {{{ attrs }}}>
-  {{ csrfField() }}
-  {{{ await $slots.main() }}}
-</form>

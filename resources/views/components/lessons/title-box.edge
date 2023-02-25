@@ -1,0 +1,37 @@
+<div class="flex flex-wrap justify-between bg-slate-50 mb-6 rounded-xl p-6">
+  <div class="max-w-3xl">
+    <div>
+      @if (series)
+        <h2 class="font-bold uppercase text-sm tracking-wider text-slate-600 hover:text-accent-800 duration-150 mb-1">
+          <a href="{{ route('series.show', { slug: series.slug }) }}" up-follow>
+            {{ series.name }}
+            <span class="inline-block ml-1 font-normal">
+              #{{ post.lessonIndexDisplay }}
+            </span>
+          </a>
+        </h2>
+      @endif
+      <h1 class="text-2xl md:text-3xl font-semibold mb-3">
+        {{ post.title }}
+      </h1>
+    </div>
+
+    <p class="text-slate-600 max-w-prose mb-3">
+      {{ post.description }}
+    </p>
+
+    <ul class="list-plain flex flex-wrap space-x-3">
+      @each (topic in post.taxonomies)
+        <li>
+          <a href="{{ route('topics.show', { slug: topic.slug }) }}" up-follow class="text-brand-600 hover:text-brand-500 duration-150">
+            #{{ topic.slug }}
+          </a>
+        </li>
+      @endeach
+    </ul>
+  </div>
+
+  <div class="xl:border-l border-slate-200 xl:flex xl:items-center xl:pl-6 mt-3 xl:mt-0">
+    @!lessons.actions({ post, series, userProgression })
+  </div>
+</div>

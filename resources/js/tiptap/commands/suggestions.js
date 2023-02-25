@@ -74,13 +74,13 @@ export const getSuggestions = ({ isBasic = true }) => ({
         }
 
         const component = `
-          <div class="items flex flex-col bg-white border border-gray-300 dark:bg-gray-950 dark:text-gray-400 rounded-lg p-2">
+          <div class="items flex flex-col bg-slate-50 border border-slate-200 shadow-xl rounded-lg p-2">
             <template x-for="(item, index) in state.tiptapCommand.items" :key="index">
-              <button class="item w-full pl-3 pr-12 rounded-lg text-left" :class="{ 'bg-gray-300 dark:bg-gray-900': state.tiptapCommand.selectedIndex === index }" @click="state.tiptapCommand.onClick(index)" class="block py-1">
+              <button class="item w-full pl-3 pr-12 rounded-lg text-left" :class="{ 'bg-brand-400': state.tiptapCommand.selectedIndex === index }" @click="state.tiptapCommand.onClick(index)" class="block py-1">
                 <div class="title" class="text-left" x-text="item.title"></div>
               </button>
             </template>
-            <div x-show="!state.tiptapCommand.items.length" class="text-gray-700">
+            <div x-show="!state.tiptapCommand.items.length" class="text-slate-600">
               No results found
             </div>
           </div>

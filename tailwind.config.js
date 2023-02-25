@@ -1,53 +1,175 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
-const colors = require('@radix-ui/colors')
+const colors = require('tailwindcss/colors')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'class',
   content: ['./resources/**/*.{edge,js,ts,vue,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
-        brand: {
-          '0': colors.violet.violet1,
-          '50': colors.violet.violet2,
-          '100': colors.violet.violet3,
-          '200': colors.violet.violet4,
-          '300': colors.violet.violet5,
-          '400': colors.violet.violet6,
-          '500': colors.violet.violet7,
-          '600': colors.violet.violet8,
-          '700': colors.violet.violet9,
-          '800': colors.violet.violet10,
-          '900': colors.violet.violet11,
-          '950': colors.violet.violet12,
+        white: 'rgb(var(--white) / <alpha-value>)',
+        black: 'rgb(var(--black) / <alpha-value>)',
+
+        ['slate-base']: {
+          50: 'rgb(var(--slate-base-50) / <alpha-value>)',
+          100: 'rgb(var(--slate-base-100) / <alpha-value>)',
+          200: 'rgb(var(--slate-base-200) / <alpha-value>)',
+          300: 'rgb(var(--slate-base-300) / <alpha-value>)',
+          400: 'rgb(var(--slate-base-400) / <alpha-value>)',
+          500: 'rgb(var(--slate-base-500) / <alpha-value>)',
+          600: 'rgb(var(--slate-base-600) / <alpha-value>)',
+          700: 'rgb(var(--slate-base-700) / <alpha-value>)',
+          800: 'rgb(var(--slate-base-800) / <alpha-value>)',
+          900: 'rgb(var(--slate-base-900) / <alpha-value>)',
         },
-        accent: {
-          '0': colors.crimson.crimson1,
-          '50': colors.crimson.crimson2,
-          '100': colors.crimson.crimson3,
-          '200': colors.crimson.crimson4,
-          '300': colors.crimson.crimson5,
-          '400': colors.crimson.crimson6,
-          '500': colors.crimson.crimson7,
-          '600': colors.crimson.crimson8,
-          '700': colors.crimson.crimson9,
-          '800': colors.crimson.crimson10,
-          '900': colors.crimson.crimson11,
-          '950': colors.crimson.crimson12,
+
+        ['brand-base']: {
+          50: 'rgb(var(--brand-base-50) / <alpha-value>)',
+          100: 'rgb(var(--brand-base-100) / <alpha-value>)',
+          200: 'rgb(var(--brand-base-200) / <alpha-value>)',
+          300: 'rgb(var(--brand-base-300) / <alpha-value>)',
+          400: 'rgb(var(--brand-base-400) / <alpha-value>)',
+          500: 'rgb(var(--brand-base-500) / <alpha-value>)',
+          600: 'rgb(var(--brand-base-600) / <alpha-value>)',
+          700: 'rgb(var(--brand-base-700) / <alpha-value>)',
+          800: 'rgb(var(--brand-base-800) / <alpha-value>)',
+          900: 'rgb(var(--brand-base-900) / <alpha-value>)',
+        },
+
+        ['green-base']: {
+          50: 'rgb(var(--green-base-50) / <alpha-value>)',
+          100: 'rgb(var(--green-base-100) / <alpha-value>)',
+          200: 'rgb(var(--green-base-200) / <alpha-value>)',
+          300: 'rgb(var(--green-base-300) / <alpha-value>)',
+          400: 'rgb(var(--green-base-400) / <alpha-value>)',
+          500: 'rgb(var(--green-base-500) / <alpha-value>)',
+          600: 'rgb(var(--green-base-600) / <alpha-value>)',
+          700: 'rgb(var(--green-base-700) / <alpha-value>)',
+          800: 'rgb(var(--green-base-800) / <alpha-value>)',
+          900: 'rgb(var(--green-base-900) / <alpha-value>)',
+        },
+
+        ['red-base']: {
+          50: 'rgb(var(--red-base-50) / <alpha-value>)',
+          100: 'rgb(var(--red-base-100) / <alpha-value>)',
+          200: 'rgb(var(--red-base-200) / <alpha-value>)',
+          300: 'rgb(var(--red-base-300) / <alpha-value>)',
+          400: 'rgb(var(--red-base-400) / <alpha-value>)',
+          500: 'rgb(var(--red-base-500) / <alpha-value>)',
+          600: 'rgb(var(--red-base-600) / <alpha-value>)',
+          700: 'rgb(var(--red-base-700) / <alpha-value>)',
+          800: 'rgb(var(--red-base-800) / <alpha-value>)',
+          900: 'rgb(var(--red-base-900) / <alpha-value>)',
+        },
+
+        ['blue-base']: {
+          50: 'rgb(var(--blue-base-50) / <alpha-value>)',
+          100: 'rgb(var(--blue-base-100) / <alpha-value>)',
+          200: 'rgb(var(--blue-base-200) / <alpha-value>)',
+          300: 'rgb(var(--blue-base-300) / <alpha-value>)',
+          400: 'rgb(var(--blue-base-400) / <alpha-value>)',
+          500: 'rgb(var(--blue-base-500) / <alpha-value>)',
+          600: 'rgb(var(--blue-base-600) / <alpha-value>)',
+          700: 'rgb(var(--blue-base-700) / <alpha-value>)',
+          800: 'rgb(var(--blue-base-800) / <alpha-value>)',
+          900: 'rgb(var(--blue-base-900) / <alpha-value>)',
+        },
+
+        ['orange-base']: {
+          50: 'rgb(var(--orange-base-50) / <alpha-value>)',
+          100: 'rgb(var(--orange-base-100) / <alpha-value>)',
+          200: 'rgb(var(--orange-base-200) / <alpha-value>)',
+          300: 'rgb(var(--orange-base-300) / <alpha-value>)',
+          400: 'rgb(var(--orange-base-400) / <alpha-value>)',
+          500: 'rgb(var(--orange-base-500) / <alpha-value>)',
+          600: 'rgb(var(--orange-base-600) / <alpha-value>)',
+          700: 'rgb(var(--orange-base-700) / <alpha-value>)',
+          800: 'rgb(var(--orange-base-800) / <alpha-value>)',
+          900: 'rgb(var(--orange-base-900) / <alpha-value>)',
+        },
+
+        slate: {
+          50: 'rgb(var(--slate-50) / <alpha-value>)',
+          100: 'rgb(var(--slate-100) / <alpha-value>)',
+          200: 'rgb(var(--slate-200) / <alpha-value>)',
+          300: 'rgb(var(--slate-300) / <alpha-value>)',
+          400: 'rgb(var(--slate-400) / <alpha-value>)',
+          500: 'rgb(var(--slate-500) / <alpha-value>)',
+          600: 'rgb(var(--slate-600) / <alpha-value>)',
+          700: 'rgb(var(--slate-700) / <alpha-value>)',
+          800: 'rgb(var(--slate-800) / <alpha-value>)',
+          900: 'rgb(var(--slate-900) / <alpha-value>)',
+        },
+
+        brand: {
+          50: 'rgb(var(--brand-50) / <alpha-value>)',
+          100: 'rgb(var(--brand-100) / <alpha-value>)',
+          200: 'rgb(var(--brand-200) / <alpha-value>)',
+          300: 'rgb(var(--brand-300) / <alpha-value>)',
+          400: 'rgb(var(--brand-400) / <alpha-value>)',
+          500: 'rgb(var(--brand-500) / <alpha-value>)',
+          600: 'rgb(var(--brand-600) / <alpha-value>)',
+          700: 'rgb(var(--brand-700) / <alpha-value>)',
+          800: 'rgb(var(--brand-800) / <alpha-value>)',
+          900: 'rgb(var(--brand-900) / <alpha-value>)',
+        },
+
+        green: {
+          50: 'rgb(var(--green-50) / <alpha-value>)',
+          100: 'rgb(var(--green-100) / <alpha-value>)',
+          200: 'rgb(var(--green-200) / <alpha-value>)',
+          300: 'rgb(var(--green-300) / <alpha-value>)',
+          400: 'rgb(var(--green-400) / <alpha-value>)',
+          500: 'rgb(var(--green-500) / <alpha-value>)',
+          600: 'rgb(var(--green-600) / <alpha-value>)',
+          700: 'rgb(var(--green-700) / <alpha-value>)',
+          800: 'rgb(var(--green-800) / <alpha-value>)',
+          900: 'rgb(var(--green-900) / <alpha-value>)',
+        },
+
+        red: {
+          50: 'rgb(var(--red-50) / <alpha-value>)',
+          100: 'rgb(var(--red-100) / <alpha-value>)',
+          200: 'rgb(var(--red-200) / <alpha-value>)',
+          300: 'rgb(var(--red-300) / <alpha-value>)',
+          400: 'rgb(var(--red-400) / <alpha-value>)',
+          500: 'rgb(var(--red-500) / <alpha-value>)',
+          600: 'rgb(var(--red-600) / <alpha-value>)',
+          700: 'rgb(var(--red-700) / <alpha-value>)',
+          800: 'rgb(var(--red-800) / <alpha-value>)',
+          900: 'rgb(var(--red-900) / <alpha-value>)',
+        },
+
+        blue: {
+          50: 'rgb(var(--blue-50) / <alpha-value>)',
+          100: 'rgb(var(--blue-100) / <alpha-value>)',
+          200: 'rgb(var(--blue-200) / <alpha-value>)',
+          300: 'rgb(var(--blue-300) / <alpha-value>)',
+          400: 'rgb(var(--blue-400) / <alpha-value>)',
+          500: 'rgb(var(--blue-500) / <alpha-value>)',
+          600: 'rgb(var(--blue-600) / <alpha-value>)',
+          700: 'rgb(var(--blue-700) / <alpha-value>)',
+          800: 'rgb(var(--blue-800) / <alpha-value>)',
+          900: 'rgb(var(--blue-900) / <alpha-value>)',
+        },
+
+        orange: {
+          50: 'rgb(var(--orange-50) / <alpha-value>)',
+          100: 'rgb(var(--orange-100) / <alpha-value>)',
+          200: 'rgb(var(--orange-200) / <alpha-value>)',
+          300: 'rgb(var(--orange-300) / <alpha-value>)',
+          400: 'rgb(var(--orange-400) / <alpha-value>)',
+          500: 'rgb(var(--orange-500) / <alpha-value>)',
+          600: 'rgb(var(--orange-600) / <alpha-value>)',
+          700: 'rgb(var(--orange-700) / <alpha-value>)',
+          800: 'rgb(var(--orange-800) / <alpha-value>)',
+          900: 'rgb(var(--orange-900) / <alpha-value>)',
         },
       },
       fontFamily: {
-        heading: ['var(--font-heading)', ...defaultTheme.fontFamily.sans],
-        body: ['var(--font-body)', ...defaultTheme.fontFamily.sans],
-        serif: [...defaultTheme.fontFamily.serif],
-        sans: ['Poppins', ...defaultTheme.fontFamily.sans],
-        mono: ['Dank Mono', ...defaultTheme.fontFamily.mono]
-      },
+        heading: ['var(--font-heading)'],
+        body: ['var(--font-body)'],
+      }
     },
-  },
-  corePlugins: {
-    preflight: true
   },
   plugins: [
     require('@tailwindcss/forms'),

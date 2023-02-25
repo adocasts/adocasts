@@ -1,10 +1,17 @@
-import Collection from 'App/Models/Collection'
-import Database from '@ioc:Adonis/Lucid/Database'
-import Post from 'App/Models/Post'
-import CacheService from 'App/Services/CacheService'
+import { AuthContract } from "@ioc:Adonis/Addons/Auth";
+import { ModelQueryBuilderContract } from "@ioc:Adonis/Lucid/Orm";
+import Collection from "App/Models/Collection";
 
 export default class CollectionService {
-  public static async getLastUpdated(limit: number = 4, excludeIds: number[] = [], withPosts: boolean = true, postLimit: number = 4) {
+  /**
+   * returns query used to get the latest updated series collections
+   * @param limit 
+   * @param excludeIds 
+   * @param withPosts 
+   * @param postLimit 
+   * @returns 
+   */
+  private static queryGetLastUpdated(withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 5): ModelQueryBuilderContract<typeof Collection, Collection> {
     return Collection.series()
       .apply(scope => scope.withPostLatestPublished())
       .if(excludeIds.length, query => query.whereNotIn('id', excludeIds))
@@ -18,204 +25,98 @@ export default class CollectionService {
       .whereNull('parentId')
       .orderBy('latest_publish_at', 'desc')
       .select(['collections.*'])
-      .limit(limit)
   }
 
-  public static async search(term: string, limit: number = 10) {
-    return Collection.series()
-      .apply(scope => scope.withPostLatestPublished())
-      .withCount('postsFlattened', query => query.apply(scope => scope.published()))
-      .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
-      .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
-      .preload('asset')
+  /**
+   * gets the latest updated series collections
+   * @param limit 
+   * @param excludeIds 
+   * @param withPosts 
+   * @param postLimit 
+   * @returns 
+   */
+  public static async getLastUpdated(limit: number = 4, withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 5): Promise<Collection[]> {
+    return this.queryGetLastUpdated(withPosts, excludeIds, postLimit).limit(limit)
+  }
+
+  /**
+   * gets the latest updated series collection
+   * @param excludeIds 
+   * @param withPosts 
+   * @param postLimit 
+   * @returns 
+   */
+  public static async getFirstLastUpdated(withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 5): Promise<Collection> {
+    return this.queryGetLastUpdated(withPosts, excludeIds, postLimit).firstOrFail()
+  }
+
+  /**
+   * returns a list of all root series collections and 3 of their latest published posts
+   * @returns 
+   */
+  public static async getList() {
+    return await Collection.series()
+        .apply(scope => scope.withPostLatestPublished())
+        .select(['collections.*'])
+        .wherePublic()
+        .whereNull('parentId')
+        .preload('asset')
+        .preload('postsFlattened', query => query
+          .apply(scope => scope.forCollectionDisplay({ orderBy: 'pivot_root_sort_order', direction: 'desc' }))
+          .groupLimit(3)
+        )
+        .withCount('postsFlattened', query => query.apply(scope => scope.published()))
+        .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
+        .whereHas('postsFlattened', query => query.apply(scope => scope.published()))
+        .orderBy('latest_publish_at', 'desc')
+  }
+
+  /**
+   * returns a root series matching the provided slug
+   * @param auth 
+   * @param slug 
+   * @returns 
+   */
+  public static async getBySlug(auth: AuthContract, slug: string) {
+    return await Collection.series()
+      .if(auth.user, query => query.withWatchlist(auth.user!.id))
+      .apply(scope => scope.withPublishedPostCount())
+      .apply(scope => scope.withPublishedPostDuration())
       .wherePublic()
+      .where({ slug })
       .whereNull('parentId')
-      .where(query => query
-        .where('collections.name', 'ILIKE', `%${term}%`)
-        .orWhere('collections.description', 'ILIKE', `%${term}%`)
+      .preload('asset')
+      .preload('postsFlattened', query => query
+        .apply(scope => scope.forCollectionDisplay({ orderBy: 'pivot_root_sort_order' }))
+        .if(auth.user, query => query.preload('progressionHistory', query => query.where('userId', auth.user!.id)))
       )
-      .orderBy('latest_publish_at', 'desc')
-      .select(['collections.*'])
-      .limit(limit)
-  }
-
-  public static async getSeriesForPost(post: Post, userId: number | null = null) {
-    return post.related('rootSeries').query()
-      .wherePublic()
-      .preload('posts', query => query.apply(scope => scope.forCollectionDisplay()))
       .preload('children', query => query
         .wherePublic()
         .preload('posts', query => query
           .apply(scope => scope.forCollectionDisplay())
-          .if(userId, query => query.preload('progressionHistory', query => query.where({ userId })))
+          .if(auth.user, query => query.preload('progressionHistory', query => query.where({ userId: auth.user!.id }).orderBy('updated_at', 'desc')))
         )
       )
       .preload('updatedVersions', query => query
         .wherePublic()
         .whereHas('postsFlattened', query => query.apply(s => s.published()))
       )
-      .first()
-  }
-
-  public static async getFeaturedSeries() {
-    return Collection.series()
-      .apply(scope => scope.withPostLatestPublished())
-      .withCount('postsFlattened', query => query.apply(scope => scope.published()))
-      .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
-      .whereHas('postsFlattened', query => query.apply(scope => scope.published()))
-      .preload('postsFlattened', query => query
-        .apply(scope => scope.forCollectionDisplay({ orderBy: 'pivot_root_sort_order', direction: 'desc' }))
-        .groupLimit(5)
-      )
-      .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
-      .preload('asset')
-      .wherePublic()
-      .where('isFeatured', true)
-      .whereNull('parentId')
-      .orderBy('latest_publish_at', 'desc')
-      .select(['collections.*', Collection.postCountSubQuery])
-      .first()
-  }
-
-  public static async getLatestUpdatedSeries() {
-    return Collection.series()
-      .apply(scope => scope.withPostLatestPublished())
-      .withCount('postsFlattened', query => query.apply(scope => scope.published()))
-      .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
-      .whereHas('postsFlattened', query => query.apply(scope => scope.published()))
-      .preload('postsFlattened', query => query
-        .apply(scope => scope.forCollectionDisplay({ orderBy: 'pivot_root_sort_order', direction: 'desc' }))
-        .groupLimit(5)
-      )
-      .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
-      .preload('asset')
-      .wherePublic()
-      .whereNull('parentId')
-      .orderBy('latest_publish_at', 'desc')
-      .select(['collections.*', Collection.postCountSubQuery])
-      .first()
-  }
-
-  // TODO: finish
-  public static async getPostCounts(collections: Collection[]) {
-    const ids = collections.map(c => c.id)
-    const subCollections = await Collection.query()
-      .whereIn('parentId', ids)
-      .orWhereIn('id', ids)
-      .withCount('posts')
-      .select('id')
-
-    return subCollections
-  }
-
-  // TODO: finish
-  public static async getPostCount(collection: Collection) {
-    const subCollections = await Collection.query()
-      .where('parentId', collection.id)
-      .withCount('posts')
-      .select('id')
-
-    return subCollections
-  }
-
-  public static async updateOrCreate(collectionId: number | undefined, { postIds, taxonomyIds, subcollectionCollectionIds = [], subcollectionCollectionNames = [], subcollectionPostIds = [], ...data }: { [x: string]: any }) {
-    const collection = await Collection.firstOrNewById(collectionId)
-
-    await collection.merge(data).save()
-
-    await CollectionService.syncPosts(collection, postIds, { root_collection_id: collection.id })
-    await CollectionService.syncTaxonomies(collection, taxonomyIds)
-
-    if (subcollectionPostIds) {
-      await this.syncSubcollectionPosts(collection, subcollectionCollectionIds, subcollectionPostIds, subcollectionCollectionNames)
-    }
-
-    await CacheService.clearForCollection(collection.slug)
-
-    return collection
-  }
-
-  public static async stub(userId: number, data: { parentId: number }) {
-    return Collection.create({
-      ...data,
-      name: 'Your new collection',
-      ownerId: userId
-    })
-  }
-
-  public static async delete(collectionId: number) {
-    const collection = await Collection.query()
-      .where('id', collectionId)
-      .preload('children', query => query.select('id'))
       .firstOrFail()
-
-    const collectionIds = [...collection.children.map(c => c.id), collection.id]
-    await Database.from('collection_posts').whereIn('collection_id', collectionIds).delete()
-    await Database.from('collection_taxonomies').whereIn('collection_id', collectionIds).delete()
-    await Collection.query().whereIn('id', collectionIds).delete()
-    await CacheService.clearForCollection(collection.slug)
-
-    return collection
   }
 
-  public static async syncPosts(collection: Collection, postIds: number[] = [], intermediaryData: { [x: string]: any } = {}) {
-    const syncData = this.getPostSyncData(postIds, intermediaryData)
+  /**
+   * returns the next lesson for the user based off progression history
+   * @param auth 
+   * @param series 
+   * @returns 
+   */
+  public static async findNextLesson(auth: AuthContract, series: Collection) {
+    let nextLesson = auth.user
+      ? series.postsFlattened.find(p => !p.progressionHistory.length || p.progressionHistory.some(h => !h.isCompleted))
+      : null
 
-    return collection.related('posts').sync(syncData)
-  }
+    if (!nextLesson) nextLesson = series.postsFlattened[0]
 
-  public static async syncTaxonomies(collection: Collection, taxonomyIds: number[] = []) {
-    const taxonomyData = taxonomyIds.reduce((prev, currentId, i) => ({
-      ...prev,
-      [currentId]: {
-        sort_order: i
-      }
-    }), {})
-
-    await collection.related('taxonomies').sync(taxonomyData)
-  }
-
-  public static getPostSyncData(postIds: number[] = [], intermediaryData: { [x: string]: any } = {}) {
-    return postIds.reduce((prev, curr, i) => ({
-      ...prev,
-      [curr]: {
-        ...intermediaryData,
-        sort_order: i,
-        root_sort_order: i
-      }
-    }), {})
-  }
-
-  public static async syncSubcollectionPosts(rootCollection: Collection, subcollectionCollectionIds: number[], subcollectionPostIds: number[][], subcollectionCollectionNames: string[]) {
-    let rootSortOrder = -1
-
-    const promises = subcollectionCollectionIds.map((collectionId, i) => {
-      return new Promise(async (resolve) => {
-        const postIds = subcollectionPostIds[i] ?? []
-        const collectionName = subcollectionCollectionNames[i]
-        const postSyncData = postIds.reduce((prev, curr, i) => ({
-          ...prev,
-          [curr]: {
-            sort_order: i,
-            root_sort_order: ++rootSortOrder,
-            root_collection_id: rootCollection.id
-          }
-        }), {})
-
-        const collection = await Collection.findOrFail(collectionId)
-
-        await collection.merge({
-          name: collectionName,
-          collectionTypeId: rootCollection.collectionTypeId,
-          sortOrder: i
-        }).save()
-
-        await collection.related('posts').sync(postSyncData)
-
-        resolve(true)
-      })
-    })
-
-    await Promise.all(promises)
+    return nextLesson
   }
 }

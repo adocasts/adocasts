@@ -1,73 +1,111 @@
-import NotificationType from 'App/Enums/NotificationType'
+import { TransactionClientContract } from "@ioc:Adonis/Lucid/Database"
+import Notification from "App/Models/Notification"
+import User from "App/Models/User"
+import UtilityService from "./UtilityService"
 import Comment from 'App/Models/Comment'
-import Notification from 'App/Models/Notification'
-import Post from 'App/Models/Post'
-import User from 'App/Models/User'
-import Logger from '@ioc:Logger/Discord'
-import { DateTime } from 'luxon'
+import NotificationTypes from "App/Enums/NotificationTypes"
+import Logger from "@ioc:Logger/Discord"
+import Post from "App/Models/Post"
 
 export default class NotificationService {
-  public static async getForDisplay(user: User | undefined, stub: boolean = false) {
+  /**
+   * Get notifications for a user (or stub for unauthenticated users)
+   * @param user 
+   * @param stub 
+   * @returns 
+   */
+  public static async getForUser(user: User | undefined, stub: boolean = false) {
     if (!user || stub) return {
       unread: [],
       read: []
     }
 
     return {
-      unread: await this.getUnread(user.id),
-      read: await this.getLatestRead(user.id)
+      unread: await this.getUnreadByUserId(user.id),
+      read: await this.getReadByUserId(user.id)
     }
+  } 
+
+  /**
+   * Get unread notifications for a user
+   * @param userId 
+   * @returns 
+   */
+  public static async getUnreadByUserId(userId: number) {
+    return Notification.query()
+      .where({ userId })
+      .whereNull('readAt')
+      .orderBy('createdAt', 'desc')
   }
 
-  public static async getUnread(userId: number) {
-    return Notification.query().where({ userId }).whereNull('readAt').orderBy('createdAt', 'desc')
+  /**
+   * Get read notifications for a user
+   * @param userId 
+   * @param limit 
+   * @returns 
+   */
+  public static async getReadByUserId(userId: number, limit: number = 25) {
+    return Notification.query()
+      .where({ userId })
+      .whereNotNull('readAt')
+      .orderBy('createdAt', 'desc')
+      .limit(limit)
   }
 
-  public static async getLatestRead(userId: number) {
-    return Notification.query().where({  userId }).whereNotNull('readAt').orderBy('createdAt', 'desc')
+  /**
+   * updates an already existing notification body content
+   * @param table 
+   * @param tableId 
+   * @param body 
+   * @param trx 
+   * @returns 
+   */
+  public static async onUpdate(table: string, tableId: number, body: string, trx: TransactionClientContract | null = null) {
+    const query = trx ? Notification.query({ client: trx }) : Notification.query()
+    return query.where({ table, tableId }).update({ body: UtilityService.truncate(body) })
   }
 
-  public static async onRead(notification_id: number) {
-    try {
-      const notification = await Notification.findOrFail(notification_id)
-
-      notification.readAt = DateTime.utc()
-      await notification.save()
-
-      return notification
-    } catch (error) {
-      await Logger.error('Failed to mark notification as read', {
-        notification_id,
-      })
-    }
+  /**
+   * deletes notification matching table and it's id
+   * @param table 
+   * @param tableId 
+   * @param trx 
+   * @returns 
+   */
+  public static async onDelete(table: string, tableId: number, trx: TransactionClientContract | null = null) {
+    const query = trx ? Notification.query({ client: trx }) : Notification.query()
+    return query.where({ table, tableId }).delete()
   }
 
-  public static async onUpdate(table: string, tableId: number, body: string) {
-    await Notification.query().where({ table, tableId }).update({
-      body: this.truncate(body)
-    })
-  }
-
-  public static async onDelete(table: string, tableId: number) {
-    await Notification.query().where({ table, tableId }).delete()
-  }
-
-  public static async onComment(comment: Comment, user?: User) {
+  /**
+   * creates comment notification
+   * @param comment 
+   * @param user 
+   */
+  public static async onCommentCreate(comment: Comment, user?: User, trx: TransactionClientContract | null = null) {
     try {
       const post = await Post.findOrFail(comment.postId)
       await post.load('authors')
 
       for (let i = 0; i < post.authors.length; i++) {
-        await Notification.create({
+        const notification = new Notification()
+
+        if (trx) {
+          notification.useTransaction(trx)
+        }
+
+        notification.merge({
           userId: post.authors[i].id,
           initiatorUserId: user?.id,
-          notificationTypeId: NotificationType.COMMENT,
+          notificationTypeId: NotificationTypes.COMMENT,
           table: Comment.table,
           tableId: comment.id,
           title: user ? `${user.username} commented` : "Someone commented",
-          body: this.truncate(comment.body),
+          body: UtilityService.truncate(comment.body),
           href: this.getGoPath(comment)
         })
+
+        await notification.save()
       }
     } catch (error) {
       await Logger.error('Failed to create comment notification', {
@@ -77,7 +115,14 @@ export default class NotificationService {
     }
   }
 
-  public static async onCommentReply(comment: Comment, user?: User) {
+  /**
+   * creates comment reply notification
+   * @param comment 
+   * @param user 
+   * @param trx 
+   * @returns 
+   */
+  public static async onCommentReply(comment: Comment, user?: User, trx: TransactionClientContract | null = null) {
     try {
       const parentComment = await Comment.findOrFail(comment.replyTo)
       const userId = parentComment.userId
@@ -86,16 +131,24 @@ export default class NotificationService {
         return
       }
 
-      await Notification.create({
+      const notification = new Notification()
+
+      if (trx) {
+        notification.useTransaction(trx)
+      }
+
+      notification.merge({
         userId,
         initiatorUserId: user?.id,
-        notificationTypeId: NotificationType.COMMENT_REPLY,
+        notificationTypeId: NotificationTypes.COMMENT_REPLY,
         table: Comment.table,
         tableId: comment.id,
         title: user ? `${user.username} replied to your comment` : "Someone replied to your comment",
-        body: this.truncate(comment.body),
+        body: UtilityService.truncate(comment.body),
         href: this.getGoPath(comment)
       })
+
+      await notification.save()
     } catch (error) {
       await Logger.error('Failed to create comment reply notification', {
         comment: JSON.stringify(comment),
@@ -104,11 +157,12 @@ export default class NotificationService {
     }
   }
 
+  /**
+   * returns go path url for comment
+   * @param comment 
+   * @returns 
+   */
   public static getGoPath(comment: Comment) {
     return `/go/post/${comment.postId}/comment/${comment.id}`
-  }
-
-  private static truncate(string: string) {
-    return string.length > 255 ? string.slice(0, 255) + "..." : string
   }
 }

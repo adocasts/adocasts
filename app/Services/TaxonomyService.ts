@@ -1,83 +1,104 @@
+import { ModelQueryBuilderContract } from "@ioc:Adonis/Lucid/Orm";
+import CollectionTypes from "App/Enums/CollectionTypes";
 import Taxonomy from "App/Models/Taxonomy";
-import States from 'App/Enums/States'
-import CollectionTypes from 'App/Enums/CollectionTypes'
 
 export default class TaxonomyService {
-    public static async getLastUpdated(limit: number = 10, excludeIds: number[] = []) {
-      return Taxonomy.query()
-        .apply(scope => scope.withPostLatestPublished())
-        .if(excludeIds.length, query => query.whereNotIn('id', excludeIds))
-        .preload('parent', query => query.preload('asset'))
-        .preload('asset')
-        .withCount('posts', query => query.apply(scope => scope.published()))
-        .withCount('collections', query => query.where('collectionTypeId', CollectionTypes.SERIES).where('stateId', States.PUBLIC))
-        .orderBy('latest_publish_at', 'desc')
-        .select('taxonomies.*')
-        .limit(limit)
-    }
-
-    public static async getList() {
-      return await Taxonomy.query()
-        .apply(scope => scope.hasContent())
-        .preload('parent', query => query.preload('asset'))
-        .preload('asset')
-        .withCount('posts')
-        .withCount('collections')
-        .where(query => query
-          .whereHas('posts', query => query.apply(scope => scope.published()))
-          .orWhereHas('collections', query => query.whereHas('postsFlattened', query => query.apply(scope => scope.published())))
-        )
-        .orderBy('name')
-    }
-
-    public static async search(term: string, limit: number = 10) {
-      return Taxonomy.query()
-        .apply(scope => scope.withPostLatestPublished())
-        .preload('parent', query => query.preload('asset'))
-        .preload('asset')
-        .withCount('posts', query => query.apply(scope => scope.published()))
-        .withCount('collections', query => query.where('collectionTypeId', CollectionTypes.SERIES).where('stateId', States.PUBLIC))
-        .where(query => query
-          .where('taxonomies.name', 'ILIKE', `%${term}%`)
-          .orWhere('taxonomies.description', 'ILIKE', `%${term}%`)
-        )
-        .orderBy('latest_publish_at', 'desc')
-        .select('taxonomies.*')
-        .limit(limit)
-    }
-
-    public static async getAllForTree() {
-      return Taxonomy.query().select(['id', 'name', 'parentId'])
-    }
-
-    public static async getFlatChildren(parentId: number, children: Taxonomy[] = []) {
-      const levelChildren = await Taxonomy.query().where({ parentId })
-
-      if (!levelChildren.length) {
-        return children
-      }
-
-      children = [...children, ...levelChildren]
-
-      levelChildren.map(async (c) => {
-        children = await this.getFlatChildren(c.id, children)
-      })
-
-      return children
-    }
-
-    public static async syncPosts(taxonomy: Taxonomy, postIds: number[] = []) {
-      const syncData = this.getPostSyncData(postIds)
-
-      return taxonomy.related('posts').sync(syncData)
-    }
-
-    public static getPostSyncData(postIds: number[] = []) {
-      return postIds.reduce((prev, curr, i) => ({
-        ...prev,
-        [curr]: {
-          sort_order: i
-        }
-      }), {})
-    }
+  private static queryGetList(): ModelQueryBuilderContract<typeof Taxonomy, Taxonomy> {
+    return Taxonomy.query()
+      .apply(scope => scope.hasContent())
+      .preload('parent', query => query.preload('asset'))
+      .preload('asset')
+      .withCount('posts')
+      .withCount('collections')
+      .where(query => query
+        .whereHas('posts', query => query.apply(scope => scope.published()))
+        .orWhereHas('collections', query => query.whereHas('postsFlattened', query => query.apply(scope => scope.published())))
+      )
+      .orderBy('name')
   }
+
+  /**
+   * returns list of taxonomies and their children
+   * @returns 
+   */
+  public static async getList(postLimit: number = 0) {
+    if (!postLimit) {
+      return this.queryGetList()
+    }
+
+    return this.queryGetList()
+      .preload('posts', query => query
+        .apply(scope => scope.forDisplay())
+        .groupLimit(3)
+      )
+      .orderBy([
+        { column: 'isFeatured', order: 'desc' }, 
+        { column: 'name', order: 'asc' }
+      ])
+  }
+
+  /**
+   * returns taxonomy matching slug
+   * @param slug 
+   * @returns 
+   */
+  public static async getBySlug(slug: string) {
+    return Taxonomy.query()
+      .preload('asset')
+      .preload('parent')
+      .where({ slug })
+      .firstOrFail()
+  }
+
+  /**
+   * returns child taxonomies for provided taxonomy
+   * @param taxonomy 
+   * @returns 
+   */
+  public static async getChildren(taxonomy: Taxonomy) {
+    return taxonomy.related('children').query()
+      .apply(scope => scope.hasContent())
+      .preload('parent', query => query.preload('asset'))
+      .preload('asset')
+      .withCount('posts')
+      .withCount('collections', query => query.where('collectionTypeId', CollectionTypes.SERIES).wherePublic())
+      .where(query => query
+        .whereHas('posts', query => query.apply(scope => scope.published()))
+        .orWhereHas('collections', query => query.whereHas('postsFlattened', query => query.apply(scope => scope.published())))
+      )
+      .orderBy('name')
+  }
+
+  /**
+   * returns posts tied to provided taxonomy
+   * @param taxonomy 
+   * @param limit 
+   * @returns 
+   */
+  public static async getPosts(taxonomy: Taxonomy, limit?: number) {
+    return taxonomy.related('posts').query()
+        .orderBy('publishAt', 'desc')
+        .apply(scope => scope.forDisplay())
+        .if(limit, query => query.limit(limit!))
+  }
+
+  /**
+   * returns collections tied to provided taxonomy
+   * @param taxonomy 
+   * @param collectionTypes 
+   * @param limit 
+   * @returns 
+   */
+  public static async getCollections(taxonomy: Taxonomy, collectionTypes: CollectionTypes[] = [CollectionTypes.SERIES], limit?: number) {
+    return taxonomy.related('collections').query()
+        .wherePublic()
+        .whereIn('collectionTypeId', collectionTypes)
+        .withCount('postsFlattened', query => query.apply(scope => scope.published()))
+        .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
+        .whereHas('postsFlattened', query => query.apply(scope => scope.published()))
+        .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
+        .preload('asset')
+        .orderBy('name')
+        .if(limit, query => query.limit(limit!))
+  }
+}

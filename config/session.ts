@@ -7,9 +7,9 @@
 
 import Env from '@ioc:Adonis/Core/Env'
 import Application from '@ioc:Adonis/Core/Application'
-import { SessionConfig } from '@ioc:Adonis/Addons/Session'
+import { sessionConfig } from '@adonisjs/session/build/config'
 
-const sessionConfig: SessionConfig = {
+export default sessionConfig({
   /*
   |--------------------------------------------------------------------------
   | Enable/Disable sessions
@@ -113,6 +113,4 @@ const sessionConfig: SessionConfig = {
   |
   */
   redisConnection: 'local',
-}
-
-export default sessionConfig
+})

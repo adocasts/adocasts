@@ -1,0 +1,35 @@
+@layout('layouts/app')
+@set('showStream', live && items.currentPage === 1)
+@set('subtitle', `Watch us build things using AdonisJS in our live and on-demand livestreams.`)
+
+@section('hero')
+
+  @if (showStream)
+    @headings.hero()
+      @!lessons.playerLivestream({ post: live })
+    @end
+  @else
+    @headings.hero({ subtitle })
+      @slot('title')
+        Livestreams <span class="font-normal">&mdash; Page {{ items.currentPage }}</span>
+      @endslot
+    @end
+  @endif
+
+@endsection
+
+@section('content')
+
+  <div class="flex flex-wrap -mx-6">
+    <div class="w-full md:w-2/3 px-6 -ml-3">
+      @each ((item, i) in items)
+        @!lessons.listItem({ item, className: 'pl-3 mb-6', lineClamp: 'md:line-clamp-5' })
+      @endeach
+      @!pagination({ data: items })
+    </div>
+    <div class="w-full md:w-1/3 px-6">
+      @!ads.multiplex()
+    </div>
+  </div>
+
+@endsection

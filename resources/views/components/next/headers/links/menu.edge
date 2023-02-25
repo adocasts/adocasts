@@ -1,5 +1,0 @@
-@set('isActive', request.matchesRoute(href))
-
-<a href="{{ href }}" up-follow class="text-sm lg:text-base duration-150 px-1 lg:px-3 py-3 rounded hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100 -mx-3 {{ isActive ? 'bg-slate-200 text-slate-900 dark:bg-slate-700 dark:text-slate-100' : 'text-slate-900 dark:text-slate-100' }}">
-  {{ await $slots.main() }}
-</a>

@@ -1,3 +1,4 @@
+root = true
 
 [*]
 indent_style = space
@@ -8,7 +9,7 @@ trim_trailing_whitespace = true
 insert_final_newline = true
 
 [*.json]
-insert_final_newline = ignore
+insert_final_newline = false
 
 [*.md]
 trim_trailing_whitespace = false

@@ -1,56 +1,32 @@
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Post from 'App/Models/Post'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import PostTypes from 'App/Enums/PostTypes'
+import PostService from 'App/Services/PostService'
 import Route from '@ioc:Adonis/Core/Route'
-import CommentService from 'App/Services/CommentService'
-import { inject } from '@adonisjs/fold'
-import HistoryService from 'App/Services/Http/HistoryService'
-import Role from 'App/Enums/Roles'
 import { Exception } from '@adonisjs/core/build/standalone'
-import CollectionService from 'App/Services/CollectionService'
-import CacheService from 'App/Services/CacheService'
 import AnalyticsService from 'App/Services/AnalyticsService'
 
-@inject([HistoryService])
 export default class LessonsController {
-  constructor(protected historyService: HistoryService) {}
-
-  public async index({ view, request }: HttpContextContract) {
+  public async index({ request, view }: HttpContextContract) {
     const { page = 1, sortBy = 'publishAt', sort = 'desc' } = request.qs()
-    const items = await Post.lessons()
-      .apply(scope => scope.forDisplay())
-      .orderBy(sortBy, sort)
-      .paginate(page, 12)
+    const items = await PostService.getPaginated(page, 12, sortBy, sort, PostTypes.LESSON, Route.makeUrl('lessons.index'))
 
-    items.baseUrl(Route.makeUrl('lessons.index'))
-
-    return view.render('lessons/index', { items })
+    return view.render('pages/lessons/index', { items })
   }
 
-  public async show({ view, params, auth, session, request, up }: HttpContextContract) {
-    const post = await CacheService.try(CacheService.getPostKey(params.slug), async () => {
-      return Post.lessons()
-        .apply(scope => scope.forDisplay(true))
-        .where({ slug: params.slug })
-        .highlightOrFail()
-    })
+  public async show({ request, params, view, auth, session, up }: HttpContextContract) {
+    const post = await PostService.getBySlug(params.slug, PostTypes.LESSON)
+    const series = await PostService.getSeries(auth, post)
 
-    const postModel = Post.$createFromAdapterResult(post)
-    const series = await CollectionService.getSeriesForPost(postModel!, auth.user?.id)
-    
-    if (post.isNotViewable && auth.user?.roleId !== Role.ADMIN) {
+    if (post.isNotViewable && !auth.user?.isAdmin) {
       throw new Exception('This post is not currently available to the public', 404)
-    } else if (!post.isViewable && auth.user?.roleId !== Role.ADMIN) {
-      return view.render('lessons/soon', { post, series })
+    } else if (!post.isViewable && !auth.user?.isAdmin) {
+      return view.render('pages/lessons/soon', { post, series })
     }
 
-    const comments = await CommentService.getForPost(postModel!)
-    const commentCount = await CommentService.getCountForPost(postModel!)
+    const comments = await PostService.getComments(post)
+    const commentsCount = await PostService.getCommentsCount(post)
     const views = await AnalyticsService.getPageViews(request.url())
 
-    this.historyService.recordPostView(post.id)
-    const userProgression = await this.historyService.getPostProgression(postModel!)
-
-    // if not going to same lesson or no stored lesson, update the player
     const hasPlayerId = session.has('videoPlayerId')
     if (!hasPlayerId || (hasPlayerId && session.get('videoPlayerId') !== post.id)) {
       up.setTarget('[up-main], [up-player]')
@@ -62,14 +38,6 @@ export default class LessonsController {
       player: { post, series }
     })
 
-    return view.render('lessons/show', { 
-      post, 
-      series, 
-      comments, 
-      commentCount, 
-      userProgression, 
-      views, 
-      // skipVideoPlayer
-    })
+    return view.render('pages/lessons/show', { post, series, comments, commentsCount, views })
   }
 }

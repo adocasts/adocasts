@@ -1,0 +1,84 @@
+@set('author', post.authors[0])
+
+<div class="bg-slate-50 rounded-xl relative overflow-hidden p-6">
+  <div class="relative z-20">
+    <div class="flex flex-wrap">
+      <div class="inline-flex items-center mr-3">
+        <div class="mr-3">
+          <img class="rounded-xl w-16 h-16 border-2 border-slate-900 border-opacity-20 bg-slate-100" src="{{ author.avatar }}" />
+        </div>
+        <div>
+          <div class="text-xs opacity-60">Published By</div>
+          <div class="font-semibold">Tom Gobich </div>
+          <div class="text-xs opacity-80">
+            {{ post.timeago }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="opacity-80 text-sm mt-3 mb-6">
+      {{ author.profile.biography }}
+    </p>
+
+    <ul class="flex space-x-2 columns-2 mb-6 text-sm md:text-base">
+      @if (author.profile.company)
+        <li class="flex items-center text-sm leading-5 pr-3">
+          <div class="bg-slate-700 text-white p-1 rounded-full transition duration-300">
+            @!icons.building()
+          </div>
+          <div class="ml-2">
+            {{ author.profile.company }}
+          </div>
+        </li>
+      @endif
+
+      @if (author.profile.youtubeUrl)
+        <li class="flex items-center text-sm leading-5">
+          <a href="{{ author.profile.youtubeUrl }}" rel="noopener nofollow" target="_blank" class="bg-slate-700 hover:bg-brand-800 text-white p-1 rounded-full transition duration-300">
+            @!icons.brandYoutube()
+          </a>
+        </li>
+      @endif
+      @if (author.profile.githubUrl)
+        <li class="flex items-center text-sm leading-5">
+          <a href="{{ author.profile.githubUrl }}" rel="noopener nofollow" target="_blank" class="bg-slate-700 hover:bg-brand-800 text-white p-1 rounded-full transition duration-300">
+            @!icons.brandGithub()
+          </a>
+        </li>
+      @endif
+      @if (author.profile.twitterUrl)
+        <li class="flex items-center text-sm leading-5">
+          <a href="{{ author.profile.twitterUrl }}" rel="noopener nofollow" target="_blank" class="bg-slate-700 hover:bg-brand-800 text-white p-1 rounded-full transition duration-300">
+            @!icons.brandTwitter()
+          </a>
+        </li>
+      @endif
+      @if (author.profile.facebookUrl)
+        <li class="flex items-center text-sm leading-5">
+          <a href="{{ author.profile.facebookUrl }}" rel="noopener nofollow" target="_blank" class="bg-slate-700 hover:bg-brand-800 text-white p-1 rounded-full transition duration-300">
+            @!icons.brandFacebook()
+          </a>
+        </li>
+      @endif
+      @if (author.profile.instagramUrl)
+        <li class="flex items-center text-sm leading-5">
+          <a href="{{ author.profile.instagramUrl }}" rel="noopener nofollow" target="_blank" class="bg-slate-700 hover:bg-brand-800 text-white p-1 rounded-full transition duration-300">
+            @!icons.brandInstagram()
+          </a>
+        </li>
+      @endif
+      @if (author.profile.linkedinUrl)
+        <li class="flex items-center text-sm leading-5">
+          <a href="{{ author.profile.linkedinUrl }}" rel="noopener nofollow" target="_blank" class="bg-slate-700 hover:bg-brand-800 text-white p-1 rounded-full transition duration-300">
+            @!icons.brandLinkedin()
+          </a>
+        </li>
+      @endif
+    </ul>
+
+    @buttons.primary.inverse({ href: author.profile.website, block: true })
+      Visit Website
+    @end
+  </div>
+</div>

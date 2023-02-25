@@ -1,7 +1,0 @@
-<form method="{{ method ?? 'POST' }}" action="{{ action }}">
-  {{ csrfField() }}
-
-  @if ($slots.main)
-    {{{ await $slots.main() }}}
-  @endif
-</form>

@@ -27,10 +27,11 @@ export const honeypotConfig: HoneypotConfig = {
   |--------------------------------------------------------------------------
   |
   | List of fields that will be added to your form when using the
-  | honeypot component.
+  | honeypot component. The more realistic the field name, the more
+  | likely it is to work.
   |
   */
-  fields: ['my_twitter_handle', 'my_website'],
+  fields: ['ohbother', 'ohpiglet', 'ohpoo', 'firstName', 'lastName'],
 
   /*
   |--------------------------------------------------------------------------
