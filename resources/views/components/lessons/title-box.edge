@@ -1,5 +1,5 @@
 <div class="flex flex-wrap justify-between bg-slate-50 mb-6 rounded-xl p-6">
-  <div class="max-w-3xl">
+  <div class="max-w-3xl xl:flex-1">
     <div>
       @if (series)
         <h2 class="font-bold uppercase text-sm tracking-wider text-slate-600 hover:text-accent-800 duration-150 mb-1">
@@ -31,7 +31,7 @@
     </ul>
   </div>
 
-  <div class="xl:border-l border-slate-200 xl:flex xl:items-center xl:pl-6 mt-3 xl:mt-0">
+  <div class="w-full xl:w-auto xl:border-l border-slate-200 xl:flex xl:items-center xl:pl-6 mt-3 xl:mt-0">
     @!lessons.actions({ post, series, userProgression })
   </div>
 </div>

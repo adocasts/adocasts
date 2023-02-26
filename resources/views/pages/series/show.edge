@@ -79,24 +79,26 @@
           @end
         </div>
 
-        <div class="text-sm xl:text-base hidden lg:block">
-          <h5>Series Modules</h5>
+        @if (series.children?.length)
+          <div class="text-sm xl:text-base hidden lg:block">
+            <h5>Series Modules</h5>
 
-          <ol class="flex flex-col mt-3 -mx-3">
-            @each (module in series.children)
-              <li>
-                <a href="#module{{module.moduleNumber}}" class="flex items-center flex-wrap text-slate-600 gap-x-3 px-3 py-2 rounded-xl hover:bg-slate-50">
-                  <span class="uppercase tracking-wider hidden md:block bg-slate-300/50 rounded-lg py-1 px-2 text-xs">
-                    Module {{ module.moduleNumber }}
-                  </span> 
-                  <span>
-                    {{ module.name }}
-                  </span>
-                </a>
-              </li>
-            @endeach
-          </ol>
-        </div>
+            <ol class="flex flex-col mt-3 -mx-3">
+              @each (module in series.children)
+                <li>
+                  <a href="#module{{module.moduleNumber}}" class="flex items-center flex-wrap text-slate-600 gap-x-3 px-3 py-2 rounded-xl hover:bg-slate-50">
+                    <span class="uppercase tracking-wider hidden md:block bg-slate-300/50 rounded-lg py-1 px-2 text-xs">
+                      Module {{ module.moduleNumber }}
+                    </span> 
+                    <span>
+                      {{ module.name }}
+                    </span>
+                  </a>
+                </li>
+              @endeach
+            </ol>
+          </div>
+        @endif
       </div>
     </div>
 
@@ -125,6 +127,18 @@
           @endeach
         </div>
       @endeach
+
+      <div class="bg-slate-50/50 rounded-xl p-3 mb-3">
+        @each (item in series.posts)
+          @!lessons.listItem({ 
+            item, 
+            className: 'pl-3', 
+            descClassName: '!inline-block',
+            lineClamp: 'md:line-clamp-5', 
+            showProgress: true 
+          })
+        @endeach
+      </div>
     </div>
   </div>
 

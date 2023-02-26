@@ -23,7 +23,7 @@
           @!header.theme.selector()
         </div>
 
-        <div class="items-center {{ !auth.user ? 'hidden md:flex' : 'flex' }}">
+        <div class="items-center {{ !auth.user ? 'hidden lg:flex' : 'flex' }}">
           <div class="h-6 border-r border-slate-200 space-x-3 mr-3 pr-3"></div>
         </div>
 
@@ -33,7 +33,7 @@
             <img class="h-8 w-8" src="{{ auth.user.avatar }}" />
           @end
         @else
-          <div class="hidden md:flex items-center space-x-3">
+          <div class="hidden lg:flex items-center space-x-3">
             @buttons.primary.base({ href: route('auth.signin'), attrs: 'up-layer="new modal" up-size="grow"' })
               Sign In
             @end
@@ -44,11 +44,11 @@
           </div>
         @endif
 
-        <div class="items-center flex md:hidden">
+        <div class="items-center flex lg:hidden">
           <div class="h-6 border-r border-slate-200 space-x-3 mr-3 pr-3"></div>
         </div>
 
-        @buttons.primary.base({ square: true, atClick: 'show = true', className: 'md:hidden' })
+        @buttons.primary.base({ square: true, atClick: 'show = true', className: 'lg:hidden' })
           @!icons.menuTwo()
         @end
       </div>
@@ -59,7 +59,7 @@
     </div>
   </header>
 
-  <div class="relative md:hidden z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+  <div class="relative lg:hidden z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
     <!-- Background backdrop, show/hide based on slide-over state. -->
     <div x-show="show" class="fixed inset-0"></div>
 

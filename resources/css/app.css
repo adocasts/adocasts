@@ -10,7 +10,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* purgecss ignore */
+/* purgecss start ignore */
 pre.shiki.github-dark {
   background-color: theme('colors.slate.50') !important;
+
+  [style="color: #E1E4E8"] {
+    color: theme('colors.slate.800') !important;
+  }
+
+  [style="color: #6A737D"] {
+    color: theme('colors.slate.400') !important;
+  }
 }
+/* purgecss end ignore */

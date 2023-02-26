@@ -168,13 +168,21 @@ code .line:before {
   content: counter(step);
   counter-increment: step;
   width: 1rem;
-  background-color: black;
+  background-color: theme('colors.slate.100');
   opacity: 40%;
   margin-right: .5rem;
   margin-left: -1.3333333em;
   padding-left: 1.3333333em;
   padding-right: 1.5rem;
   display: inline-block;
+}
+
+code .line:first-of-type:before {
+  @apply rounded-tr-lg;
+}
+
+code .line:last-of-type:before {
+  @apply rounded-br-lg;
 }
 
 .cdx-block.ce-code {

@@ -47,11 +47,11 @@
 @section('content')
 
   <div class="grid-post-content -mx-3">
-    <div class="w-full px-3 title">
+    <div class="w-full title">
       @!lessons.titleBox({ post, views, series, userProgression })
     </div>
 
-    <aside class="w-full post-aside actions top px-3 mb-6">
+    <aside class="w-full post-aside actions top mb-6">
       @!lessons.author({ post, views })
 
       <div class="mt-6 hidden xl:block">
@@ -59,7 +59,7 @@
       </div>
     </aside>
     
-    <main class="w-full px-3">
+    <main class="w-full">
       <div class="prose no-max flex-1 xl:p-6 post-type-{{ post.postTypeId }} text-slate-900">
         {{{ post.body }}}
       </div>

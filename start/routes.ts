@@ -71,8 +71,8 @@ Route.delete('/comments/:id', 'CommentsController.destroy').as('comments.destroy
  * fragments, modals, drawers
  */
 Route.get('/users/menu', 'UsersController.menu').as('users.menu')
-
-
+Route.patch('/histories/progression/toggle', 'ProgressionsController.toggle').as('histories.progression.toggle')
+Route.patch('/watchlist/:table/toggle', 'WatchlistsController.toggle').as('watchlists.toggle')
 
 /**
  * api

@@ -1,26 +1,8 @@
 @if(post.postTypeId !== PostTypes.NEWS)
   <div class="flex flex-row flex-wrap xl:flex-col justify-between xl:justify-center xl:min-w-[325px] px-3 md:px-6 rounded-xl relative -mx-3 md:-mx-6 space-y-2">
     @if (auth.user)
-      @buttons.brand.base({ form: 'completedForm', type: 'submit', block: true, className: userProgression?.isCompleted ? 'gap-3' : 'hidden gap-3', attrs: 'btn-completed' })
-        @!icons.check()
-        Completed
-      @end
-      @buttons.primary.inverse({ form: 'completedForm', type: 'submit', block: true, className: userProgression?.isCompleted ? 'hidden gap-3' : 'gap-3', attrs:'btn-not-completed' })
-        @!icons.check()
-        Mark Complete
-      @end
-
-      @if (post.isInWatchlist)
-        @buttons.brand.base({ form: 'watchlistForm', type: 'submit', className: 'gap-3', block: true })
-          @!icons.plus()
-          In Your Watchlist
-        @end
-      @else
-        @buttons.primary.inverse({ form: 'watchlistForm', type: 'submit', className: 'gap-3', block: true })
-          @!icons.plus()
-          Add to Watchlist
-        @end
-      @endif
+      @!fragments.complete({ userProgression })
+      @!fragments.watchlist({ isInWatchlist: post.isInWatchlist })
     @else
       @buttons.primary.inverse({ href: route('auth.signup'), attrs: 'up-layer="new modal" up-size="grow"', className: 'gap-3', block: true })
         @!icons.user()
@@ -48,13 +30,13 @@
     @endif
   </div>
 
-  {{--  @form.post({ id: 'completedForm', action: route('api.histories.progression.toggle'), attrs: 'up-submit up-scroll="preserve"' })
+  @form.patch({ id: 'completedForm', attrs: `hx-patch="${route('histories.progression.toggle')}" hx-target="[hx-complete]"` })
     <input type="hidden" name="postId" value="{{ post.id }}" />
     <input type="hidden" name="collectionId" value="{{ series?.id }}" />
     <input type="hidden" name="route" value="{{ request.ctx.route?.name }}" />
   @end
 
-  @form.post({ id: 'watchlistForm', action: route('api.watchlist.toggle'), attrs: 'up-submit up-scroll="preserve"' })
+  @form.post({ id: 'watchlistForm', attrs: `hx-patch="${route('watchlists.toggle', { table: 'posts' })}" hx-target="[hx-watchlist]"` })
     <input type="hidden" name="postId" value="{{ post.id }}" />
-  @end  --}}
+  @end
 @endif

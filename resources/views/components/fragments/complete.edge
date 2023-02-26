@@ -1,0 +1,13 @@
+<div hx-complete>
+  @if (userProgression?.isCompleted)
+    @buttons.brand.base({ form: 'completedForm', type: 'submit', block: true, className: 'gap-3', attrs: 'btn-completed' })
+      @!icons.check()
+      Completed
+    @end
+  @else
+    @buttons.primary.inverse({ form: 'completedForm', type: 'submit', block: true, className: 'gap-3', attrs:'btn-not-completed' })
+      @!icons.check()
+      Mark Complete
+    @end
+  @endif
+</div>

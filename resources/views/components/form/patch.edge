@@ -1,10 +1,10 @@
-@set('action', action.includes('?') ? `${action}&_method=PATCH` : `${action}?_method=PATCH`)
+@set('action', !action ? null : action.includes('?') ? `${action}&_method=PATCH` : `${action}?_method=PATCH`)
 @set('upLayer', upLayer ?? 'root')
 @set('upScroll', upScroll ?? 'preserve')
 
 <form 
   method="POST" 
-  action="{{ action }}" 
+  {{{ action ? `action="${ action }" ` : '' }}}
   {{{ id ? `id="${id}"` : '' }}} 
   {{{ upSubmit ? `form-${upSubmit} up-submit up-layer="${upLayer}" up-scroll="${upScroll}" up-fail-scroll="${upScroll}" up-fail-target="[form-${upSubmit}]"` : '' }}}
   {{{ attrs }}}>

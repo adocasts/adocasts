@@ -4,6 +4,7 @@ import PostService from 'App/Services/PostService'
 import Route from '@ioc:Adonis/Core/Route'
 import { Exception } from '@adonisjs/core/build/standalone'
 import AnalyticsService from 'App/Services/AnalyticsService'
+import HistoryService from 'App/Services/HistoryService'
 
 export default class LessonsController {
   public async index({ request, view }: HttpContextContract) {
@@ -23,6 +24,7 @@ export default class LessonsController {
       return view.render('pages/lessons/soon', { post, series })
     }
 
+    const userProgression = await HistoryService.getPostProgression(auth, post)
     const comments = await PostService.getComments(post)
     const commentsCount = await PostService.getCommentsCount(post)
     const views = await AnalyticsService.getPageViews(request.url())
@@ -38,6 +40,6 @@ export default class LessonsController {
       player: { post, series }
     })
 
-    return view.render('pages/lessons/show', { post, series, comments, commentsCount, views })
+    return view.render('pages/lessons/show', { post, series, comments, commentsCount, userProgression, views })
   }
 }
