@@ -11,7 +11,8 @@
 @tailwind utilities;
 
 /* purgecss start ignore */
-pre.shiki.github-dark {
+pre.shiki.github-dark,
+.code-block pre {
   background-color: theme('colors.slate.50') !important;
 
   [style="color: #E1E4E8"] {
@@ -21,5 +22,10 @@ pre.shiki.github-dark {
   [style="color: #6A737D"] {
     color: theme('colors.slate.400') !important;
   }
+}
+
+.bg-slate-50 pre.shiki.github-dark,
+.code-block pre {
+  background-color: theme('colors.slate.100') !important;
 }
 /* purgecss end ignore */

@@ -11,13 +11,9 @@ export default class LessonRequestsController {
   }
 
   public async show({ params, view }: HttpContextContract) {
-    const lessonRequest = await LessonRequest.findOrFail(params.id)
+    const lessonRequest = await LessonRequestService.get(params.id)
     const comments = await LessonRequestService.getComments(lessonRequest)
     const commentsCount = await LessonRequestService.getCommentsCount(lessonRequest)
-
-    await lessonRequest.load('user')
-    await lessonRequest.load('votes', query => query.selectIds())
-    await lessonRequest.loadCount('votes')
 
     return view.render('pages/requests/lessons/show', { lessonRequest, comments, commentsCount })
   }

@@ -232,6 +232,7 @@ code .line:last-of-type:before {
   pointer-events: none;
 }
 
+/* purgecss start ignore */
 .prose-comment .ProseMirror {
   @apply rounded-xl bg-slate-50 border-slate-200 pt-3 pb-16;
   min-height: 150px;
@@ -239,6 +240,14 @@ code .line:last-of-type:before {
 
 .comment-form.with-bio .prose-comment .ProseMirror {
   @apply pt-16;
+}
+
+.comment-form.with-bg .prose-comment .ProseMirror {
+  @apply bg-slate-100;
+
+  .is-empty:before {
+    @apply text-slate-400;
+  }
 }
 
 .prose-comment-bio {
@@ -259,6 +268,7 @@ code .line:last-of-type:before {
 .comment-form:focus-within .btn-comment-submit {
   @apply bg-brand-600 text-white hover:bg-brand-500;
 }
+/* purgecss end ignore */
 
 progress {
   --progress-width: 100%;

@@ -1,4 +1,4 @@
-<p class="mt-2 flex items-center text-sm text-slate-500 {{ className }}">
+<p class="flex items-center text-sm text-slate-500 {{ className }}">
   @if (lessonRequest.stateId === States.IN_REVIEW)
     @!icons.circleMinus({ className: 'mr-1.5 h-5 w-5 flex-shrink-0 text-orange-400' })
   @elseif (lessonRequest.stateId === States.DECLINED)

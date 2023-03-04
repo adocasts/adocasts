@@ -18,9 +18,9 @@ declare module '@ioc:Adonis/Lucid/Orm' {
     selectId(idColumn?: string): Promise<number>
     selectIdOrFail(idColumn?: string): Promise<number>
     selectColumn(columnName: string): Promise<string[]>
-    highlight(columnName?: string, targetColumnName?: string): Promise<Post>
-    highlightOrFail(columnName?: string, targetColumnName?: string): Promise<Post>
-    highlightAll(columnName?: string, targetColumnName?: string): Promise<Post[]>
-    makeAllSharable(columnName?: string, targetColumnName?: string): Promise<Post[]>
+    highlight(columnName?: string, targetColumnName?: string): Promise<Result>
+    highlightOrFail(columnName?: string, targetColumnName?: string): Promise<Result>
+    highlightAll(columnName?: string, targetColumnName?: string): Promise<Result[]>
+    makeAllSharable(columnName?: string, targetColumnName?: string): Promise<Result[]>
   }
 }

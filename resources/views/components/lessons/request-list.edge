@@ -13,7 +13,7 @@
                     {{ lessonRequest.name }}
                   </a>
                 </p>
-                <p class="mt-2 flex items-center text-sm text-slate-600">
+                <p class="mt-2 flex items-center text-sm text-slate-500">
                   <span class="truncate">Requested by {{ lessonRequest.user.username }}</span>&nbsp;
                   <time datetime="{{ lessonRequest.createdAt.toString() }}">{{ timeago(lessonRequest.createdAt) }}</time>
                 </p>
@@ -24,7 +24,14 @@
                     Last Updated
                     <time datetime="{{ lessonRequest.updatedAt.toString() }}">{{ timeago(lessonRequest.updatedAt) }}</time>
                   </p>
-                  @!fragments.requestStatus({ lessonRequest })
+                  <div class="pt-2 flex items-center gap-6">
+                    @!fragments.requestStatus({ lessonRequest })
+
+                    <div class="flex items-center gap-1 text-slate-500 text-sm">
+                      @!icons.messageTwo()
+                      <span>{{ lessonRequest.$extras.comments_count }}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

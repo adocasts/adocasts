@@ -53,36 +53,40 @@
     </svg>
   </div>
 
-  <div class="{{ !!post ? 'lesson-wrapper' : '' }} relative z-[75]" up-main-header>
-    <div class="page-contents header">
-      @include('partials/header')
+  <div class="h-full flex flex-col justify-between">
+    <div>
+      <div class="{{ !!post ? 'lesson-wrapper' : '' }} relative z-[75]" up-main-header>
+        <div class="page-contents header">
+          @include('partials/header')
+        </div>
+      </div>
+
+      <div class="{{ !!post ? 'lesson-wrapper' : '' }}" up-main>
+        <div class="page-contents main">
+          {{--  @!toast.base()  --}}
+
+          @!section('hero')
+
+          <main class="{{ up.isPage ? 'app-container' : '' }}">
+            @!section('content')
+          </main>
+        </div>
+
+        @!section('list')
+        @!section('up-scripts')
+      </div>
+
+      <div up-player>
+        @if (player)
+          @!lessons.player(player)
+        @endif
+      </div>
     </div>
-  </div>
 
-  <div class="{{ !!post ? 'lesson-wrapper' : '' }}" up-main>
-    <div class="page-contents main">
-      {{--  @!toast.base()  --}}
-
-      @!section('hero')
-
-      <main class="{{ up.isPage ? 'app-container' : '' }}">
-        @!section('content')
-      </main>
-    </div>
-
-    @!section('list')
-    @!section('up-scripts')
-  </div>
-
-  <div up-player>
-    @if (player)
-      @!lessons.player(player)
-    @endif
-  </div>
-
-  <div class="{{ !!post ? 'lesson-wrapper' : '' }}" up-main-footer>
-    <div class="page-contents">
-      @include('partials/footer')
+    <div class="{{ !!post ? 'lesson-wrapper' : '' }}" up-main-footer>
+      <div class="page-contents">
+        @include('partials/footer')
+      </div>
     </div>
   </div>
 

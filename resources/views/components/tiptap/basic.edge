@@ -27,7 +27,7 @@
     </template>
   </div>
 
-  <div class="flex-1 relative comment-form {{ showBio && 'with-bio' }}" :class="[isFocused && 'focused' ]">
+  <div class="flex-1 relative comment-form {{ showBio && 'with-bio' }} {{ withBg && 'with-bg' }}" :class="[isFocused && 'focused' ]">
     @if (showBio)
       <div class="prose-comment-bio">
         <figure>

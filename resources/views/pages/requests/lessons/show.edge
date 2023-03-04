@@ -2,9 +2,18 @@
 
 @section('hero')
 
+  <div class="app-container relative z-10 mb-6">
+    <a href="{{ route('requests.lessons.index') }}" class="anchor" up-follow>
+      <span class="inline-flex items-center gap-1.5">
+        @!icons.arrowNarrowLeft()
+        Return to requests
+      </span>
+    </a>
+  </div>
+
   @headings.hero({ title: lessonRequest.name })
     <div class="flex items-center gap-3">
-      @!fragments.requestStatus({ lessonRequest, className: 'bg-slate-50 px-3 py-2 rounded-full !mt-0' })
+      @!fragments.requestStatus({ lessonRequest, className: 'bg-slate-50 text-slate-900 px-3 py-2 rounded-full !mt-0' })
 
       <p class="text-slate-500">
         <span class="truncate">Requested by {{ lessonRequest.user.username }}</span>&nbsp;

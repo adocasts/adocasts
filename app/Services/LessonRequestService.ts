@@ -18,6 +18,20 @@ export default class LessonRequestService {
   }
 
   /**
+   * returns lesson request matching given id
+   * @param id 
+   * @returns 
+   */
+  public static async get(id: number) {
+    return LessonRequest.query()
+      .where({ id })
+      .preload('user')
+      .preload('votes', query => query.selectIds())
+      .withCount('votes')
+      .highlightOrFail()
+  }
+
+  /**
    * returns comments for post
    * @param auth 
    * @param post 
