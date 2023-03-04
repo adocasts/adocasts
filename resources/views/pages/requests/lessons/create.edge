@@ -1,0 +1,54 @@
+@layout('layouts/app')
+
+@section('content')
+
+  <div class="sm:mx-auto sm:w-full sm:max-w-md relative z-10 py-8 px-6 {{ up.isPage && 'bg-slate-50 border border-slate-200 rounded-xl shadow-xl' }}">
+    <div class="py-6">
+      <h1 class="text-xl lg:text-2xl xl:text-3xl font-semibold text-center mb-1">
+        Request A Lesson
+      </h1>
+    </div>
+
+    @form.post({ action: route('requests.lessons.store'), attrs: 'form-lesson-request up-submit up-layer="root" up-scroll="preserve" up-fail-scroll="preserve" up-fail-target="[form-lesson-request]"' })
+      @!component('honeypot')
+
+      @if (flashMessages.get('errors.form'))
+        <div role="alert" class="bg-red-100 text-red-800 text-sm rounded p-3 mb-4">
+          {{ flashMessages.get('errors.form') }}
+        </div>
+      @endif
+
+      @!form.input({
+        label: 'Request Title',
+        type: 'text',
+        name: 'name',
+        placeholder: 'Title',
+        required: true
+      })
+
+      @form.input({
+        label: 'Request Details',
+        type: 'group',
+        name: 'body'
+      })
+        @slot('input')
+          @!tiptap.basic({ value: flashMessages.get('body') || '', submittable: false, withBg: true })
+        @endslot
+      @end
+
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <input id="non_duplicate" name="nonDuplicate" type="checkbox" class="h-4 w-4 text-slate-900 focus:ring-slate-500 border-slate-300 rounded" required>
+          <label for="non_duplicate" class="ml-2 block text-sm text-slate-900">
+            I have verified this request has not already been requested.
+          </label>
+        </div>
+      </div>
+
+      @buttons.brand.base({ type: 'submit', className: 'w-full flex justify-center mt-2' })
+        Submit Request
+      @end
+    @end
+  </div>
+
+@endsection

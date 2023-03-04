@@ -1,0 +1,24 @@
+@layout('layouts/app')
+
+@section('hero')
+
+  @headings.hero({
+    title: 'Lesson Requests',
+    subtitle: 'Track, submit, and vote for lesson requests to see a topic covered on Adocasts.'
+  })
+    @slot('action')
+      <div class="flex flex-col justify-center">
+        @buttons.brand.base({ href: route('requests.lessons.create'), attrs: 'up-layer="new modal" up-size="grow"' })
+          Request Lesson
+        @end
+      </div>
+    @endslot
+  @end
+
+@endsection
+
+@section('content')
+
+  @!lessons.requestList({ lessonRequests })
+
+@endsection

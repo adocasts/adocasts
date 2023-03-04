@@ -118,6 +118,11 @@ export default class QueryBuilderProvider {
       })
       return Promise.all(promises)
     })
+
+    ModelQueryBuilder.macro('any', async function(primaryKey: string = 'id') {
+      const results = await this.select(primaryKey)
+      return results.length > 0
+    })
   }
 
   public async ready() {

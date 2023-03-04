@@ -11,6 +11,7 @@ declare module '@ioc:Adonis/Lucid/Orm' {
     wherePublic(): this
     whereState(stateId: States): this
     withWatchlist(userId: number | undefined): this
+    any(primaryKey?: string): boolean
     firstOr<T = undefined>(orFunction: () => T): Promise<Result> | T
     getCount(): Promise<BigInt>
     selectIds(idColumn?: string): Promise<number>

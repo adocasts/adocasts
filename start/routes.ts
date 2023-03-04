@@ -64,7 +64,11 @@ Route.post('/comments', 'CommentsController.store').as('comments.store')
 Route.put('/comments/:id', 'CommentsController.update').as('comments.update')
 Route.patch('/comments/:id/like', 'CommentsController.like').as('comments.like')
 Route.delete('/comments/:id', 'CommentsController.destroy').as('comments.destroy')
-
+Route.get('/requests/lessons', 'LessonRequestsController.index').as('requests.lessons.index')
+Route.get('/requests/lessons/create', 'LessonRequestsController.create').as('requests.lessons.create')
+Route.get('/requests/lessons/:id', 'LessonRequestsController.show').as('requests.lessons.show')
+Route.post('/requests/lessons', 'LessonRequestsController.store').as('requests.lessons.store')
+Route.patch('/requests/lessons/:id/vote', 'LessonRequestsController.vote').as('requests.lessons.vote')
 
 
 /**

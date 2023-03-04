@@ -15,6 +15,7 @@ export default class HistoryService {
    * @returns 
    */
   public static async getPostProgression(auth: AuthContract, post: Post) {
+    if (!auth.user) return
     return post.related('progressionHistory').query().where('userId', auth.user!.id).orderBy('updatedAt', 'desc').first()
   }
 

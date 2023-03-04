@@ -36,6 +36,15 @@
     @apply text-slate-500 group-hover:text-slate-800 duration-150;
   }
 
+  .expand-link:after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
   .break {
     left: 50%;
     margin-left: -50vw;
