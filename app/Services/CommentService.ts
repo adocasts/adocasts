@@ -10,6 +10,7 @@ import sanitizeHtml from 'sanitize-html'
 import Logger from "@ioc:Logger/Discord";
 import UtilityService from "./UtilityService";
 import IdentityService from "./IdentityService";
+import CommentTypes from "App/Enums/CommentTypes";
 
 export default class CommentService {
   public static async store(request: RequestContract, auth: AuthContract, { body, ...data }: CommentValidator['schema']['props']) {
@@ -23,6 +24,7 @@ export default class CommentService {
 
     comment.merge({
       ...data,
+      commentTypeId: data.lessonRequestId ? CommentTypes.LESSON_REQUEST : CommentTypes.POST,
       identity,
       body: sanitizeHtml(body),
       userId: auth.user.id,

@@ -13,7 +13,34 @@ export default class LessonRequestService {
       .preload('user')
       .preload('votes', query => query.selectIds())
       .withCount('votes')
+      .withCount('comments')
       .orderBy('createdAt', 'desc')
+  }
+
+  /**
+   * returns comments for post
+   * @param auth 
+   * @param post 
+   * @returns 
+   */
+  public static async getComments(lessonRequest: LessonRequest) {
+    return lessonRequest.related('comments').query()
+      .where(query => query.wherePublic().orWhere('stateId', States.ARCHIVED))
+      .preload('user')
+      .preload('userVotes', query => query.select(['id']))
+      .orderBy('createdAt', 'desc')
+      .highlightAll()
+  }
+
+  /**
+   * returns a count of the comments tied to the post
+   * @param post 
+   * @returns 
+   */
+  public static async getCommentsCount(lessonRequest: LessonRequest) {
+    return lessonRequest.related('comments').query()
+      .wherePublic()
+      .getCount()
   }
 
   /**

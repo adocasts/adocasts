@@ -16,25 +16,42 @@
 @endsection
 
 @section('content')
+  <div class="grid-post-content -mx-3">
+    <aside class="w-full post-aside actions top mb-6 px-3">
+      <div class="mt-6 hidden xl:block">
+        @!ads.vertical()
+      </div>
+    </aside>
+    
+    <main class="w-full px-3">
+      <div class="bg-slate-50 rounded-xl p-3 sm:p-6 mb-6 group border border-slate-200">
+        <div class="mb-3 flex items-center">
+          <img src="{{ lessonRequest.user.avatar }}" class="w-10 h-10 rounded-xl mr-3" />
+          <div class="flex flex-col">
+            <h6 class="text-base font-semibold">
+              <span class="inline-block mr-3">{{ lessonRequest.user.username }}</span>
+              <span class="text-slate-500 font-normal">
+                <time datetime="{{ lessonRequest.createdAt.toString() }}">{{ timeago(lessonRequest.createdAt) }}</time>
+              </span>
+            </h6>
+          </div>
+        </div>
+        <div class="prose no-max">
+          {{{ lessonRequest.body }}}
+        </div>
+        <div class="flex items-center gap-3 mt-6">
+          @!fragments.requestVote({ lessonRequest })
+        </div>
+      </div>
 
-<div class="bg-slate-50 rounded-xl max-w-4xl p-3 sm:p-6 mb-6 group border border-slate-200">
-  <div class="mb-3 flex items-center">
-    <img src="{{ lessonRequest.user.avatar }}" class="w-10 h-10 rounded-xl mr-3" />
-    <div class="flex flex-col">
-      <h6 class="text-base font-semibold">
-        <span class="inline-block mr-3">{{ lessonRequest.user.username }}</span>
-        <span class="text-slate-500 font-normal">
-          <time datetime="{{ lessonRequest.createdAt.toString() }}">{{ timeago(lessonRequest.createdAt) }}</time>
-        </span>
-      </h6>
-    </div>
+      @!comments.base({ 
+        cta: 'Have something to add? Let us know!',
+        descriptor: 'Reply',
+        lessonRequestId: lessonRequest.id, 
+        comments, 
+        commentsCount 
+      })
+    </main>
   </div>
-  <div class="prose no-max">
-    {{{ lessonRequest.body }}}
-  </div>
-  <div class="flex items-center gap-3 mt-6">
-    @!fragments.requestVote({ lessonRequest })
-  </div>
-</div>
 
 @endsection

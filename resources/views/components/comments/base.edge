@@ -1,21 +1,26 @@
 @set('rootComments', comments.filter(c => !c.replyTo))
+@set('cta', cta ?? 'Join The Discussion')
+@set('descriptor', descriptor ?? 'Comment')
 
 <div x-cloak x-data="comments">
   @if (auth.user)
-    <h4 class="font-semibold mt-12 text-xl mb-6 p-6 flex rounded-xl bg-slate-50 border border-slate-200">
-      Join The Discussion 
+    @set('className', lessonRequestId ? 'text-base text-slate-600' : 'text-xl')
+    <h4 class="font-semibold mt-12 mb-6 p-6 flex rounded-xl bg-slate-50 border border-slate-200 {{ className }}">
+      {{ cta }}
       <span class="text-slate-600 dark:text-slate-400 ml-2 font-normal">
-        ({{ commentsCount }} Comments)
+        ({{ commentsCount }} {{ getSingularOrPlural(descriptor, commentsCount) }})
       </span>
     </h4>
 
-    @!comments.form({ postId, includeScript: true })
+    @if (postId)
+      @!comments.form({ postId, lessonRequestId, includeScript: true })
+    @endif
   @else
     <div class="bg-slate-50 border border-slate-200 rounded-xl p-6 mt-6">
       <h4 class="font-semibold text-lg mb-2">
         Join The Discussion!
         <span class="text-slate-600 dark:text-slate-400 ml-2 font-normal">
-          ({{ commentsCount }} Comments)
+          ({{ commentsCount }} getSingularOrPlural(descriptor, commentsCount))
         </span>
       </h4>
       <p>
@@ -33,6 +38,10 @@
   @endif
 
   <div class="-ml-8 mt-6">
-    @!comments.list({ postId, comments, nodeComments: rootComments })
+    @!comments.list({ postId, lessonRequestId, comments, nodeComments: rootComments })
   </div>
+
+  @if (auth.user && lessonRequestId)
+    @!comments.form({ postId, lessonRequestId, includeScript: true })
+  @endif
 </div>

@@ -24,7 +24,14 @@ export default class CommentValidator {
    *    ```
    */
   public schema = schema.create({
-    postId: schema.number([rules.exists({ table: 'posts', column: 'id' }) ]),
+    postId: schema.number.optional([
+      rules.exists({ table: 'posts', column: 'id' }),
+      rules.requiredIfNotExists('lessonRequestId')
+    ]),
+    lessonRequestId: schema.number.optional([
+      rules.exists({ table: 'lesson_requests', column: 'id' }),
+      rules.requiredIfNotExists('postId')
+    ]),
     rootParentId: schema.number.optional([rules.exists({ table: 'comments', column: 'id' }) ]),
     replyTo: schema.number.optional([rules.exists({ table: 'comments', column: 'id' })]),
     body: schema.string({ trim: true }),

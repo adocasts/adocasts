@@ -5,6 +5,8 @@ import Post from './Post'
 import State from 'App/Enums/States'
 import AppBaseModel from 'App/Models/AppBaseModel'
 import * as timeago from 'timeago.js'
+import CommentTypes from 'App/Enums/CommentTypes'
+import LessonRequest from './LessonRequest'
 
 export default class Comment extends AppBaseModel {
   @column({ isPrimary: true })
@@ -14,13 +16,19 @@ export default class Comment extends AppBaseModel {
   public userId: number | null
 
   @column()
-  public postId: number
+  public postId: number | null
+
+  @column()
+  public lessonRequestId: number | null
 
   @column()
   public replyTo: number | null
 
   @column()
   public rootParentId: number
+
+  @column()
+  public commentTypeId: CommentTypes
 
   @column()
   public stateId: number
@@ -53,6 +61,9 @@ export default class Comment extends AppBaseModel {
 
   @belongsTo(() => Post)
   public post: BelongsTo<typeof Post>
+
+  @belongsTo(() => LessonRequest)
+  public lessonRequest: BelongsTo<typeof LessonRequest>
 
   @hasMany(() => Comment, { foreignKey: 'replyTo' })
   public responses: HasMany<typeof Comment>

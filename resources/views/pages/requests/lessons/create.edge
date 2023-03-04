@@ -1,13 +1,26 @@
 @layout('layouts/app')
 
+@section('hero')
+
+  @headings.hero({ title: 'Request A lesson' })
+  @end
+
+@endsection
+
 @section('content')
 
-  <div class="sm:mx-auto sm:w-full sm:max-w-md relative z-10 py-8 px-6 {{ up.isPage && 'bg-slate-50 border border-slate-200 rounded-xl shadow-xl' }}">
-    <div class="py-6">
-      <h1 class="text-xl lg:text-2xl xl:text-3xl font-semibold text-center mb-1">
-        Request A Lesson
-      </h1>
-    </div>
+  <div class="bg-slate-50 border border-slate-200 p-6 rounded-xl max-w-4xl">
+    <p class="mb-3">
+      Please describe your idea for an Adocasts lesson below, keeping the following in mind:
+    </p>
+
+    <ul class="list-disc pl-6">
+      <li>Please be descriptive.</li>
+      <li>Try to break the request into a single 15 minute or less topic</li>
+      <li>Topics we're unfamiliar with will be declined (we can't help when we don't know)</li>
+    </ul>
+
+    <div class="w-full border-t border-slate-200 my-6"></div>
 
     @form.post({ action: route('requests.lessons.store'), attrs: 'form-lesson-request up-submit up-layer="root" up-scroll="preserve" up-fail-scroll="preserve" up-fail-target="[form-lesson-request]"' })
       @!component('honeypot')
@@ -36,11 +49,11 @@
         @endslot
       @end
 
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between mb-3 -mt-3">
         <div class="flex items-center">
-          <input id="non_duplicate" name="nonDuplicate" type="checkbox" class="h-4 w-4 text-slate-900 focus:ring-slate-500 border-slate-300 rounded" required>
+          <input id="non_duplicate" name="nonDuplicate" type="checkbox" class="h-4 w-4 text-brand-600 bg-slate-100 focus:ring-slate-500 border-slate-300 rounded" required>
           <label for="non_duplicate" class="ml-2 block text-sm text-slate-900">
-            I have verified this request has not already been requested.
+            I have verified my request has not already been requested.
           </label>
         </div>
       </div>

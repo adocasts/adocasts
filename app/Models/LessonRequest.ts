@@ -1,8 +1,9 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column, computed, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, computed, HasMany, hasMany, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import RequestPriorities from 'App/Enums/RequestPriorities'
 import { StateDesc } from 'App/Enums/States'
+import Comment from './Comment'
 
 export default class LessonRequest extends BaseModel {
   @column({ isPrimary: true })
@@ -31,6 +32,9 @@ export default class LessonRequest extends BaseModel {
 
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
+
+  @hasMany(() => Comment)
+  public comments: HasMany<typeof Comment>
 
   @manyToMany(() => User, {
     pivotTable: 'request_votes',
