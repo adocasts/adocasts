@@ -6,6 +6,8 @@ import Comment from 'App/Models/Comment'
 import NotificationTypes from "App/Enums/NotificationTypes"
 import Logger from "@ioc:Logger/Discord"
 import Post from "App/Models/Post"
+import LessonRequest from "App/Models/LessonRequest"
+import NotImplementedException from "App/Exceptions/NotImplementedException"
 
 export default class NotificationService {
   /**
@@ -83,6 +85,21 @@ export default class NotificationService {
    * @param user 
    */
   public static async onCommentCreate(comment: Comment, user?: User, trx: TransactionClientContract | null = null) {
+    if (comment.lessonRequestId) {
+      return this.onLessonRequestCommentCreate(comment, user, trx)
+    } else if (comment.postId) {
+      return this.onPostCommentCreate(comment, user, trx)
+    }
+
+    throw new NotImplementedException('Unsupported comment type submitted')
+  }
+
+  /**
+   * creates comment notification for a post
+   * @param comment 
+   * @param user 
+   */
+  public static async onPostCommentCreate(comment: Comment, user?: User, trx: TransactionClientContract | null = null) {
     try {
       const post = await Post.findOrFail(comment.postId)
       await post.load('authors')
@@ -100,7 +117,7 @@ export default class NotificationService {
           notificationTypeId: NotificationTypes.COMMENT,
           table: Comment.table,
           tableId: comment.id,
-          title: user ? `${user.username} commented` : "Someone commented",
+          title: user ? `${user.username} commented on your post` : "Someone commented on your post",
           body: UtilityService.truncate(comment.body),
           href: this.getGoPath(comment)
         })
@@ -108,7 +125,36 @@ export default class NotificationService {
         await notification.save()
       }
     } catch (error) {
-      await Logger.error('Failed to create comment notification', {
+      await Logger.error('Failed to create post comment notification', {
+        comment: JSON.stringify(comment),
+        error
+      })
+    }
+  }
+
+  public static async onLessonRequestCommentCreate(comment: Comment, user?: User, trx: TransactionClientContract | null = null) {
+    try {
+      const lessonRequest = await LessonRequest.findOrFail(comment.lessonRequestId)
+      const notification = new Notification()
+
+      if (trx) {
+        notification.useTransaction(trx)
+      }
+
+      notification.merge({
+        userId: lessonRequest.userId,
+        initiatorUserId: user?.id,
+        notificationTypeId: NotificationTypes.COMMENT,
+        table: Comment.table,
+        tableId: comment.id,
+        title: user ? `${user.username} commented on your request` : 'Someone commented on your request',
+        body: UtilityService.truncate(comment.body),
+        href: this.getGoPath(comment)
+      })
+
+      await notification.save()
+    } catch (error) {
+      await Logger.error('Failed to create lesson request comment notification', {
         comment: JSON.stringify(comment),
         error
       })
@@ -163,6 +209,10 @@ export default class NotificationService {
    * @returns 
    */
   public static getGoPath(comment: Comment) {
+    if (comment.lessonRequestId) {
+      return `/go/requests/lessons/${comment.lessonRequestId}/comment/${comment.id}`
+    }
+    
     return `/go/post/${comment.postId}/comment/${comment.id}`
   }
 }

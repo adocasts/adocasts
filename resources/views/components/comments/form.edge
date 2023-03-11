@@ -9,8 +9,8 @@
   {{ csrfField() }}
   @!component('honeypot')
 
-  @if (lessonRequestId)
-    <input type="hidden" name="lessonRequestId" value="{{ lessonRequestId }}" />
+  @if (lessonRequest)
+    <input type="hidden" name="lessonRequestId" value="{{ lessonRequest.id }}" />
   @else
     <input type="hidden" name="postId" value="{{ postId }}" />
   @endif

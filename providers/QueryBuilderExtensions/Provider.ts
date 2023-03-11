@@ -67,7 +67,6 @@ export default class QueryBuilderProvider {
       return result
     })
 
-    // @ts-ignore
     ModelQueryBuilder.macro('selectIds', async function(idColumn: string = 'id') {
       const results = await this.select(idColumn)
       return results.map(r => r[idColumn])

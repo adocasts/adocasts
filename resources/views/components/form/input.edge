@@ -16,7 +16,7 @@
       {{ help }}
     </div>
   @endif
-  
+
   <div class="mt-1 relative" style="{{ groupStyle ?? '' }}">
     @if(type === 'textarea')
       <textarea
@@ -25,13 +25,13 @@
         rows="{{ rows || 3 }}"
         class="
           {{ rightGutter }}
-          block w-full focus:outline-none sm:text-sm rounded-md placeholder-slate-300
+          block w-full focus:outline-none sm:text-sm rounded-md placeholder-slate-300 bg-slate-100
           {{ error
             ? 'border-red-300 text-red-600 placeholder-red-300 focus:ring-red-500 focus:border-red-500'
-            : 'focus:ring-brand-500 focus:border-brand-500 border-slate-700' }}
+            : 'focus:ring-brand-500 focus:border-brand-500 border-slate-200' }}
         "
         placeholder="{{ placeholder || '' }}"
-        x-model="value"
+{{--         x-model="value" --}}
         style="{{ style }}"
         aria-invalid="{{ error ? true : false }}"
         aria-describedby="{{ name }}-error"
@@ -39,6 +39,7 @@
         {{ min && `minlength=${min}` }}
         @focus="focused = true"
         @blur="focused = false"
+        {{{ attrs }}}
       ></textarea>
     @elseif(type === 'group')
       @if($slots.input)
@@ -55,7 +56,8 @@
         {{ required ? 'required=required' : '' }}
         {{ autofocus ? 'autofocus' : '' }}
         @focus="focused = true"
-        @blur="focused = false">
+        @blur="focused = false"
+        {{{ attrs }}}>
         {{{ await $slots.main() }}}
       </select>
     @else
@@ -80,6 +82,7 @@
         {{ min ? `minlength=${min}` : '' }}
         {{ required ? 'required=required' : '' }}
         {{ autofocus ? 'autofocus' : '' }}
+        {{{ attrs }}}
         @focus="focused = true"
         @blur="focused = false">
     @endif

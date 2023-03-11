@@ -65,10 +65,15 @@ Route.put('/comments/:id', 'CommentsController.update').as('comments.update')
 Route.patch('/comments/:id/like', 'CommentsController.like').as('comments.like')
 Route.delete('/comments/:id', 'CommentsController.destroy').as('comments.destroy')
 Route.get('/requests/lessons', 'LessonRequestsController.index').as('requests.lessons.index')
-Route.get('/requests/lessons/create', 'LessonRequestsController.create').as('requests.lessons.create')
+Route.get('/requests/lessons/create', 'LessonRequestsController.create').as('requests.lessons.create').middleware('auth')
 Route.get('/requests/lessons/:id', 'LessonRequestsController.show').as('requests.lessons.show')
-Route.post('/requests/lessons', 'LessonRequestsController.store').as('requests.lessons.store')
-Route.patch('/requests/lessons/:id/vote', 'LessonRequestsController.vote').as('requests.lessons.vote')
+Route.post('/requests/lessons', 'LessonRequestsController.store').as('requests.lessons.store').middleware('auth')
+Route.post('/requests/lessons/search', 'LessonRequestsController.search').as('requests.lessons.search')
+Route.patch('/requests/lessons/:id/vote', 'LessonRequestsController.vote').as('requests.lessons.vote').middleware('auth')
+Route.patch('/requests/lessons/:id/approve', 'LessonRequestsController.approve').as('requests.lessons.approve').middleware('auth')
+Route.patch('/requests/lessons/:id/reject', 'LessonRequestsController.reject').as('requests.lessons.reject').middleware('auth')
+Route.patch('/requests/lessons/:id/complete', 'LessonRequestsController.complete').as('requests.lessons.complete').middleware('auth')
+
 
 
 /**
@@ -77,8 +82,19 @@ Route.patch('/requests/lessons/:id/vote', 'LessonRequestsController.vote').as('r
 Route.get('/users/menu', 'UsersController.menu').as('users.menu')
 Route.patch('/histories/progression/toggle', 'ProgressionsController.toggle').as('histories.progression.toggle')
 Route.patch('/watchlist/:table/toggle', 'WatchlistsController.toggle').as('watchlists.toggle')
+Route.get('/fragments/requests/lessons/:id/:fragment', 'LessonRequestsController.fragment').as('requests.lessons.fragment')
+Route.get('/fragments/:fragment', 'FragmentsController.index').as('fragments.index')
+Route.get('/fragments/:fragment/:id', 'FragmentsController.show').as('fragments.show')
 
 /**
  * api
  */
 Route.put('/api/user/theme', 'ThemesController.update').as('api.user.theme')
+
+
+
+/**
+ * go
+ */
+Route.get('/go/posts/:id/comment/:commentId', 'GoController.postComment').as('go.posts.comment')
+Route.get('/go/requests/lessons/:id/comment/:commentId', 'GoController.lessonRequestComment').as('go.requests.lessons.comment')

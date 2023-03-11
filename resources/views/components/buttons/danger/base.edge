@@ -1,5 +1,5 @@
 @set('size', size ?? 'md')
-@set('theme', 'border border-transparent bg-brand-100 text-brand-900 hover:bg-brand-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2')
+@set('theme', 'border border-transparent bg-red-600 text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2')
 
 @if (size === 'xs')
   @buttons.base({ href, attrs, size, square, upFollow, atClick, block, type, form, className: `inline-flex items-center ${theme} ${className ?? ''}` })

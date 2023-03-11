@@ -16,7 +16,6 @@ import State from 'App/Enums/States'
 import Taxonomy from "App/Models/Taxonomy"
 import ReadService from 'App/Services/ReadService'
 import BodyTypes from 'App/Enums/BodyTypes'
-import EditorBlockParser from 'App/Services/EditorBlockParser'
 import PostType from 'App/Enums/PostTypes'
 import Comment from './Comment'
 import AppBaseModel from 'App/Models/AppBaseModel'
@@ -439,7 +438,7 @@ export default class Post extends AppBaseModel {
       .preload('authors', query => query.preload('profile'))
   })
 
-  public static forCollectionDisplay = scope<typeof Post>((query, { orderBy, direction }: { orderBy: 'pivot_sort_order'|'pivot_root_sort_order', direction: 'asc'|'desc' } = { orderBy: 'pivot_sort_order', direction: 'asc' }) => {
+  public static forCollectionDisplay = scope<typeof Post>((query, { orderBy, direction }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order', direction: 'asc' | 'desc' } = { orderBy: 'pivot_sort_order', direction: 'asc' }) => {
     query
       .apply(scope => scope.forDisplay())
       .orderBy(orderBy, direction)

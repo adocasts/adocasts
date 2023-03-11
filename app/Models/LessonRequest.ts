@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column, computed, HasMany, hasMany, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import RequestPriorities from 'App/Enums/RequestPriorities'
-import { StateDesc } from 'App/Enums/States'
+import States, { StateDesc } from 'App/Enums/States'
 import Comment from './Comment'
 
 export default class LessonRequest extends BaseModel {
@@ -14,6 +14,15 @@ export default class LessonRequest extends BaseModel {
 
   @column()
   public stateId: number
+
+  @column()
+  public approveCommentId: number | null
+
+  @column()
+  public rejectCommentId: number | null
+
+  @column()
+  public completeCommentId: number | null
 
   @column()
   public name: string
@@ -33,6 +42,15 @@ export default class LessonRequest extends BaseModel {
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
 
+  @belongsTo(() => Comment)
+  public approveComment: BelongsTo<typeof Comment>
+
+  @belongsTo(() => Comment)
+  public rejectComment: BelongsTo<typeof Comment>
+
+  @belongsTo(() => Comment)
+  public completeComment: BelongsTo<typeof Comment>
+
   @hasMany(() => Comment)
   public comments: HasMany<typeof Comment>
 
@@ -43,6 +61,10 @@ export default class LessonRequest extends BaseModel {
 
   @computed()
   public get state() {
+    if (this.stateId === States.PUBLIC) {
+      return "Completed"
+    }
+    
     return StateDesc[this.stateId]
   }
 }

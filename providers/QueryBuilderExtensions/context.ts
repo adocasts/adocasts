@@ -1,6 +1,5 @@
 declare module '@ioc:Adonis/Lucid/Orm' {
   import States from 'App/Enums/States'
-  import Post from 'App/Models/Post'
 
   interface ModelQueryBuilderContract<
     Model extends LucidModel,
@@ -11,7 +10,7 @@ declare module '@ioc:Adonis/Lucid/Orm' {
     wherePublic(): this
     whereState(stateId: States): this
     withWatchlist(userId: number | undefined): this
-    any(primaryKey?: string): boolean
+    any(primaryKey?: string): Promise<boolean>
     firstOr<T = undefined>(orFunction: () => T): Promise<Result> | T
     getCount(): Promise<BigInt>
     selectIds(idColumn?: string): Promise<number>
