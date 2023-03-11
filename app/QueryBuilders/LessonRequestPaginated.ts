@@ -3,7 +3,7 @@ import Route from '@ioc:Adonis/Core/Route'
 import LessonRequestQueryBuilder from "./LessonRequest"
 
 export default class LessonRequestPaginatedQueryBuilder extends LessonRequestQueryBuilder {
-  private perPage = 3
+  private perPage = 20
   private page: number = 1
   private baseUrl: string
 

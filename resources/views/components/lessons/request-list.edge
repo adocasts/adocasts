@@ -9,29 +9,22 @@
             <div class="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
               <div>
                 <p class="truncate text-sm font-medium text-brand-600">
-                  <a href="{{ route('requests.lessons.show', { id: lessonRequest.id }) }}" class="expand-link" up-follow>
+                  <a href="{{ route('requests.lessons.show', { id: lessonRequest.id }) }}" class="expand-link font-semibold" up-follow>
                     {{ lessonRequest.name }}
                   </a>
                 </p>
-                <p class="mt-2 flex items-center text-sm text-slate-500">
+                <p class="mt-1 flex items-center text-sm text-slate-500">
                   <span class="truncate">Requested by {{ lessonRequest.user.username }}</span>&nbsp;
                   <time datetime="{{ lessonRequest.createdAt.toString() }}">{{ timeago(lessonRequest.createdAt) }}</time>
                 </p>
               </div>
-              <div class="hidden md:block">
-                <div>
-                  <p class="text-sm text-slate-900">
-                    Last Updated
-                    <time datetime="{{ lessonRequest.updatedAt.toString() }}">{{ timeago(lessonRequest.updatedAt) }}</time>
-                  </p>
-                  <div class="pt-2 flex items-center gap-6">
-                    @!fragments.requestStatus({ lessonRequest })
+              <div class="flex items-center md:flex-col md:justify-center md:items-start gap-x-6 gap-y-1 mt-2 md:mt-0">
+                @!fragments.requestStatus({ lessonRequest })
 
-                    <div class="flex items-center gap-1 text-slate-500 text-sm">
-                      @!icons.messageTwo()
-                      <span>{{ lessonRequest.$extras.comments_count }}</span>
-                    </div>
-                  </div>
+                <div class="flex items-center gap-1 text-slate-500 text-sm">
+                  @!icons.messageTwo()
+                  <span>{{ lessonRequest.$extras.comments_count }}</span>
+                  <span>{{ getSingularOrPlural('comment', lessonRequest.$extras.comments_count) }}</span>
                 </div>
               </div>
             </div>
