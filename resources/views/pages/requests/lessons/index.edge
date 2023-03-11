@@ -8,22 +8,6 @@
   })
     @slot('action')
       <div class="flex items-center gap-6">
-        @form.post({ attrs: `hx-post="${route('requests.lessons.search')}" hx-target="[hx-request-list] hx-swap="outerHTML"` })
-          @!form.input({
-            type: 'search',
-            name: 'pattern',
-            placeholder: 'Search requests',
-            pb: false,
-            groupClass: '',
-            attrs: `
-              hx-post="${route('requests.lessons.search')}"
-              hx-target="[hx-request-list]"
-              hx-swap="outerHTML"
-              hx-trigger="keyup changed delay:500ms"
-            `
-          })
-        @end
-
         @can('LessonRequestPolicy.store')
           <div class="flex flex-col justify-center">
             @buttons.brand.base({ href: route('requests.lessons.create'), attrs: 'up-follow' })
@@ -33,6 +17,40 @@
         @endcan
       </div>
     @endslot
+
+    @form.post({ 
+      attrs: `
+        hx-post="${route('requests.lessons.search')}" 
+        hx-target="[hx-request-list]"
+        hx-swap="outerHTML"
+        hx-trigger="input delay:500ms"
+      ` 
+    })
+      <div class="flex items-center gap-6 mt-6">
+        @!form.input({
+          type: 'search',
+          label: 'Search requests',
+          name: 'pattern',
+          placeholder: 'Search requests',
+          groupClass: 'w-full md:w-1/2'
+        })
+
+        @form.input({ type: 'select', label: 'Filter state', name: 'state', groupClass: '' })
+          <option value="">All</option>
+          <option value="{{ States.PUBLIC }}">Complete</option>
+          <option value="{{ States.IN_PROGRESS }}">In Progress</option>
+          <option value="{{ States.IN_REVIEW }}">In Review</option>
+          <option value="{{ States.DECLINED }}">Declined</option>
+        @end
+
+        @form.input({ type: 'select', label: 'Sort by', name: 'sortBy', groupClass: '' })
+          <option value="updatedAt_desc">Latest activity</option>
+          <option value="createdAt_desc">Newest</option>
+          <option value="createdAt_asc">Oldest</option>
+          <option value="name_asc">Title</option>
+        @end
+      </div>
+    @end
 
     @cannot('LessonRequestPolicy.store')
       <p class="inline-flex items-center gap-3 bg-slate-50 text-slate-500 px-6 py-3 rounded-xl text-sm my-3">

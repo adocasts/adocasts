@@ -1,5 +1,7 @@
 import { schema, rules, CustomMessages } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import States from 'App/Enums/States'
+import LessonRequestSorts from 'App/Enums/LessonRequestSorts'
 
 export default class LessonRequestSearchValidator {
   constructor(protected ctx: HttpContextContract) {}
@@ -24,7 +26,9 @@ export default class LessonRequestSearchValidator {
    *    ```
    */
   public schema = schema.create({
-    pattern: schema.string.optional([rules.trim()])
+    pattern: schema.string.optional([rules.trim()]),
+    state: schema.enum.optional(Object.values(States).map(s => s.toString())),
+    sortBy: schema.enum.optional(Object.values(LessonRequestSorts))
   })
 
   /**

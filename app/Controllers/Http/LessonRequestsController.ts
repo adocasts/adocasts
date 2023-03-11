@@ -3,11 +3,11 @@ import LessonRequest from 'App/Models/LessonRequest'
 import LessonRequestService from 'App/Services/LessonRequestService'
 import LessonRequestSearchValidator from 'App/Validators/LessonRequestSearchValidator'
 import LessonRequestStoreValidator from 'App/Validators/LessonRequestStoreValidator'
-import LessonRequestUpdateStateValidator from 'App/Validators/LessonRequestUpdateStateValidator'
+import Route from '@ioc:Adonis/Core/Route'
 
 export default class LessonRequestsController {
-  public async index({ view }: HttpContextContract) {
-    const lessonRequests = await LessonRequestService.getList()
+  public async index({ view, request }: HttpContextContract) {
+    const lessonRequests = await LessonRequestService.getPaginatedList(request.qs())
 
     return view.render('pages/requests/lessons/index', { lessonRequests })
   }
@@ -35,9 +35,12 @@ export default class LessonRequestsController {
     return response.redirect().toRoute('requests.lessons.show', { id: lessonRequest.id })
   }
 
-  public async search({ view, request }: HttpContextContract) {
+  public async search({ view, request, response }: HttpContextContract) {
     const data = await request.validate(LessonRequestSearchValidator)
     const lessonRequests = await LessonRequestService.search(data)
+    const newPath = Route.makeUrl('requests.lessons.index', {}, { qs: data })
+
+    response.header('HX-Push-Url', newPath)
     
     return view.render('components/lessons/request-list', { lessonRequests })
   }

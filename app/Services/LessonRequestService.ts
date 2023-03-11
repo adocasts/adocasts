@@ -12,8 +12,12 @@ import sanitizeHtml from 'sanitize-html'
 import CommentTypes from 'App/Enums/CommentTypes'
 import NotImplementedException from 'App/Exceptions/NotImplementedException'
 import LessonRequestSearchValidator from 'App/Validators/LessonRequestSearchValidator'
+import LessonRequestQueryBuilder from 'App/QueryBuilders/LessonRequest'
+import LessonRequestPaginatedQueryBuilder from 'App/QueryBuilders/LessonRequestPaginated'
 
 export default class LessonRequestService {
+  public static perPage = 3
+
   private static getDisplayBaseQuery() {
     return LessonRequest.query()
       .preload('user')
@@ -25,9 +29,12 @@ export default class LessonRequestService {
 
   /**
    * returns list of lesson requests
+   * @param limit 
+   * @returns 
    */
-  public static async getList() {
-    return this.getDisplayBaseQuery()
+  public static async getList(limit = 20) {
+    const query = new LessonRequestQueryBuilder()
+    return query.setLimit(limit).build()
   }
 
   /**
@@ -42,22 +49,35 @@ export default class LessonRequestService {
   }
 
   /**
+   * returns paginated list of lesson requests
+   */
+  public static async getPaginatedList(records: Record<string, any>, baseUrl?: string) {
+    const { page = 1, pattern = '', sortBy = 'updatedAt_desc', state = null } = records
+    const query = new LessonRequestPaginatedQueryBuilder(baseUrl)
+
+    return query
+      .setPage(page)
+      .setSort(sortBy)
+      .wherePattern(pattern)
+      .whereState(state)
+      .preloadRelations()
+      .build()
+  }
+
+  /**
    * returns lesson requests matching search payload
    * @param param0 
    * @returns 
    */
-  public static async search({ pattern }: LessonRequestSearchValidator['schema']['props']) {
-    const baseQuery = this.getDisplayBaseQuery()
-    
-    if (!pattern) {
-      return baseQuery
-    }
+  public static async search({ pattern, sortBy, state }: LessonRequestSearchValidator['schema']['props'], baseUrl?: string) {
+    const query = new LessonRequestPaginatedQueryBuilder(baseUrl)
 
-    const words = pattern.split(' ')
-
-    return baseQuery.where(query => {
-      words.map(word => query.orWhereILike('name', `%${word}%`).orWhereILike('body', `%${word}%`))
-    })
+    return query
+      .setSort(sortBy)
+      .wherePattern(pattern)
+      .whereState(state)
+      .preloadRelations()
+      .build()
   }
 
   /**
