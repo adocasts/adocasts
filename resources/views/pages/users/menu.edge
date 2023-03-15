@@ -30,7 +30,7 @@
         Settings
       @end
 
-      @form.post({ action: route('auth.signout'), upSubmit: 'signout' })
+      @form.post({ action: route('auth.signout') })
         @if (request.header('referrer'))
           <input type="hidden" name="forward" value="{{ request.header('referrer') }}" />
         @endif

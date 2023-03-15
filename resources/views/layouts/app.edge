@@ -55,16 +55,16 @@
 
   <div class="h-full flex flex-col justify-between">
     <div>
-      <div class="{{ !!post ? 'lesson-wrapper' : '' }} relative z-[75]" up-main-header>
+      <div class="{{ !!post ? 'lesson-wrapper' : '' }} relative" style="z-index: 75;" up-main-header>
         <div class="page-contents header">
           @include('partials/header')
         </div>
       </div>
 
       <div class="{{ !!post ? 'lesson-wrapper' : '' }}" up-main>
-        <div class="page-contents main">
-          {{--  @!toast.base()  --}}
+        @!toasts.flash()
 
+        <div class="page-contents main">
           @!section('hero')
 
           <main class="{{ up.isPage ? 'app-container' : '' }}">
