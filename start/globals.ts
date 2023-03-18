@@ -3,6 +3,7 @@ import PostTypes from 'App/Enums/PostTypes'
 import Roles from 'App/Enums/Roles'
 import States from 'App/Enums/States'
 import Status from 'App/Enums/Status'
+import NotificationService from 'App/Services/NotificationService'
 import PostService from 'App/Services/PostService'
 import UtilityService from 'App/Services/UtilityService'
 import { DateTime } from 'luxon'
@@ -12,6 +13,8 @@ View.global('Roles', Roles)
 View.global('PostTypes', PostTypes)
 View.global('States', States)
 View.global('Status', Status)
+
+View.global('NotificationService', NotificationService)
 
 View.global('stripHTML', UtilityService.stripHTML)
 View.global('getSingularOrPlural', UtilityService.getSingularOrPlural)

@@ -22,7 +22,7 @@
 @endif
 
 @if (href)
-  <a href="{{ href }}" class="btn duration-150 shadow-sm {{ sizeClassMap[size] }} {{ className }}" {{ upFollow ? 'up-follow' : '' }} {{{ attrs }}}>
+  <a href="{{ href }}" class="btn duration-150 shadow-sm {{ sizeClassMap[size] }} {{ className }}" {{ upFollow ? 'up-follow' : '' }} {{{ atClick ? `@click="${atClick}"` : '' }}} {{{ attrs }}}>
     {{{ await $slots.main() }}}
   </a>
 @else

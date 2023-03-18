@@ -29,9 +29,16 @@
 
         
         @if (auth.user)
-          @buttons.primary.base({ type: 'button', square: true, className: '!p-0', href: route('users.menu'), attrs: 'up-layer="new drawer" up-size="large" up-position="right"' })
-            <img class="h-8 w-8" src="{{ auth.user.avatar }}" />
-          @end
+          @set('unreadNotificationCount', await NotificationService.getUnreadCount(auth.user.id))
+          <div x-data="{ showCount: {{ unreadNotificationsCount == '0' ? 'false' : 'true' }} }" class="relative">
+            <div x-show="showCount" class="pointer-events-none rounded-full w-4 h-4 text-xs bg-brand-500 text-brand-900 flex items-center justify-center absolute -right-2 -top-2" up-hungry>
+              {{ unreadNotificationCount }}
+            </div>
+
+            @buttons.primary.base({ type: 'button', square: true, className: '!p-0', href: route('users.menu'), atClick: 'showCount = false', attrs: 'up-layer="new drawer" up-size="large" up-position="right"' })
+              <img class="h-8 w-8" src="{{ auth.user.avatar }}" />
+            @end
+          </div>
         @else
           <div class="hidden lg:flex items-center space-x-3">
             @buttons.primary.base({ href: route('auth.signin'), attrs: 'up-layer="new modal" up-size="grow"' })

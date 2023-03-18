@@ -8,6 +8,7 @@ import Logger from "@ioc:Logger/Discord"
 import Post from "App/Models/Post"
 import LessonRequest from "App/Models/LessonRequest"
 import NotImplementedException from "App/Exceptions/NotImplementedException"
+import { DateTime } from "luxon"
 
 export default class NotificationService {
   /**
@@ -38,6 +39,32 @@ export default class NotificationService {
       .where({ userId })
       .whereNull('readAt')
       .orderBy('createdAt', 'desc')
+  }
+
+  /**
+   * Gets the number of unread notifications for the user
+   * @param userId 
+   * @returns 
+   */
+  public static async getUnreadCount(userId: number) {
+    return Notification.query()
+      .where({ userId })
+      .whereNull('readAt')
+      .getCount()
+  }
+
+  /**
+   * Marks the provided unread notifications as read
+   * @param unread 
+   */
+  public static async markAsRead(unread: Notification[] | Notification) {
+    if (!Array.isArray(unread)) {
+      unread = [unread]
+    }
+    
+    await Notification.query()
+      .whereIn('id', unread.map(item => item.id))
+      .update({ readAt: DateTime.now() })
   }
 
   /**
