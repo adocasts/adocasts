@@ -19,7 +19,8 @@
     "./start/routes",
     "./start/kernel",
     "./start/bouncer",
-    "./start/globals"
+    "./start/globals",
+    "./start/events/verification"
   ],
   "providers": [
     "./providers/AppProvider",

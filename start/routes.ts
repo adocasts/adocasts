@@ -39,6 +39,14 @@ Route.get('/:provider/callback', 'AuthSocialController.callback').as('auth.socia
 
 
 /**
+ * email verification
+ */
+Route.post('/verification/email/send', 'EmailVerificationController.send').as('verification.email.send').middleware(['auth'])
+Route.get('/verification/email/:email', 'EmailVerificationController.verify').as('verification.email.verify')
+
+
+
+/**
  * images
  */
 Route.get('/img/:userId/:filename', 'AssetsController.show').as('userimg');

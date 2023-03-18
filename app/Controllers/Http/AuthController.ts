@@ -10,8 +10,9 @@ export default class AuthController {
    * @param param0 
    * @returns 
    */
-  public async signin({ view }: HttpContextContract) {
-    return view.render('pages/auth/signin')
+  public async signin({ view, request }: HttpContextContract) {
+    const { action } = request.qs()
+    return view.render('pages/auth/signin', { action })
   }
 
   /**
@@ -20,7 +21,7 @@ export default class AuthController {
    * @returns 
    */
   public async authenticate({ request, response, auth, session, up }: HttpContextContract) {
-    const { uid, password, rememberMe, forward } = await request.validate(SignInValidator)
+    let { uid, password, rememberMe, forward, action } = await request.validate(SignInValidator)
 
     if (!await AuthAttemptService.hasRemainingAttempts(uid)) {
       session.flash('error', 'Your account has been locked due to repeated bad login attempts. Please reset your password.')
@@ -35,6 +36,12 @@ export default class AuthController {
 
       session.flash('errors', { form: 'The provided username/email or password is incorrect' })
       return response.redirect().back()
+    }
+
+    switch (action) {
+      case 'email_verification':
+        forward = session.get('email_verification')
+        break
     }
 
     session.flash('success', `Welcome back, ${auth.user!.username}!`)

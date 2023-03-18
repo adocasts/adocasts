@@ -62,6 +62,7 @@
       </div>
 
       <div class="{{ !!post ? 'lesson-wrapper' : '' }}" up-main>
+        @!banners.verifyEmail()
         @!toasts.flash()
 
         <div class="page-contents main">

@@ -27,7 +27,8 @@ export default class SignInValidator {
     uid: schema.string(),
     password: schema.string(),
     rememberMe: schema.boolean.optional(),
-    forward: schema.string.optional()
+    forward: schema.string.optional(),
+    action: schema.string.optional()
   })
 
   /**
