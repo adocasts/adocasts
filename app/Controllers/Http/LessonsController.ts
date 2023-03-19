@@ -14,7 +14,7 @@ export default class LessonsController {
     return view.render('pages/lessons/index', { items })
   }
 
-  public async show({ request, params, view, auth, session, up }: HttpContextContract) {
+  public async show({ request, params, view, auth, session, route, up }: HttpContextContract) {
     const post = await PostService.getBySlug(params.slug, PostTypes.LESSON)
     const series = await PostService.getSeries(auth, post)
 
@@ -34,8 +34,9 @@ export default class LessonsController {
       up.setTarget('[up-main], [up-player]')
     }
 
-    session.put('videoPlayerId', post.id)
+    await HistoryService.recordView(auth.user, post, route?.name)
 
+    session.put('videoPlayerId', post.id)
     view.share({
       player: { post, series }
     })

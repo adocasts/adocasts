@@ -1,4 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import HistoryService from 'App/Services/HistoryService'
 import TaxonomyService from 'App/Services/TaxonomyService'
 
 export default class TopicsController {
@@ -8,11 +9,13 @@ export default class TopicsController {
     return view.render('pages/topics/index', { topics })
   }
 
-  public async show({ params, view }: HttpContextContract) {
+  public async show({ params, view, auth, route }: HttpContextContract) {
     const topic = await TaxonomyService.getBySlug(params.slug)
     const children = await TaxonomyService.getChildren(topic)
     const posts = await TaxonomyService.getPosts(topic)
     const series = await TaxonomyService.getCollections(topic)
+
+    await HistoryService.recordView(auth.user, topic, route?.name)
 
     return view.render('pages/topics/show', { topic, children, posts, series })
   }
