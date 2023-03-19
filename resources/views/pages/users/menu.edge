@@ -4,31 +4,47 @@
 
   <div class="flex gap-x-6 p-6">
     <nav class="flex flex-col sticky top-6">
-      <p class="font-semibold text-xs uppercase tracking-wider text-slate-500 px-2">Studio</p>
+      <p class="font-semibold text-xs uppercase tracking-wider text-slate-500 px-2">Settings</p>
 
-      @header.navLink({ href: '' })
-        Dashboard
+      @header.navLink({ href: route('users.settings.index'), upFollow: true })
+        General
       @end
 
       @header.navLink({ href: '' })
-        Posts
+        Security
       @end
 
       @header.navLink({ href: '' })
-        Collections
+        Preferences
       @end
 
-      @header.navLink({ href: '' })
-        Taxonomies
-      @end
+      @if (auth.user?.isAdmin)
+        <p class="font-semibold text-xs uppercase tracking-wider text-slate-500 px-2 mt-8">Studio</p>
 
-      @header.navLink({ href: '' })
-        Comments
-      @end
+        @header.navLink({ href: '' })
+          Dashboard
+        @end
 
-      @header.navLink({ href: '' })
-        Settings
-      @end
+        @header.navLink({ href: '' })
+          Posts
+        @end
+
+        @header.navLink({ href: '' })
+          Collections
+        @end
+
+        @header.navLink({ href: '' })
+          Taxonomies
+        @end
+
+        @header.navLink({ href: '' })
+          Comments
+        @end
+
+        @header.navLink({ href: '' })
+          Settings
+        @end
+      @endif
 
       @form.post({ action: route('auth.signout') })
         @if (request.header('referrer'))

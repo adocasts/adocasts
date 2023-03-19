@@ -47,6 +47,14 @@ Route.get('/verification/email/:email', 'EmailVerificationController.verify').as
 
 
 /**
+ * user settings
+ */
+Route.get('/users/settings', 'UserSettingsController.index').as('users.settings.index').middleware(['auth'])
+Route.patch('/users/update/username', 'UserSettingsController.updateUsername').as('users.update.username').middleware(['auth'])
+
+
+
+/**
  * images
  */
 Route.get('/img/:userId/:filename', 'AssetsController.show').as('userimg');
@@ -93,6 +101,8 @@ Route.patch('/watchlist/:table/toggle', 'WatchlistsController.toggle').as('watch
 Route.get('/fragments/requests/lessons/:id/:fragment', 'LessonRequestsController.fragment').as('requests.lessons.fragment')
 Route.get('/fragments/:fragment', 'FragmentsController.index').as('fragments.index')
 Route.get('/fragments/:fragment/:id', 'FragmentsController.show').as('fragments.show')
+
+
 
 /**
  * api
