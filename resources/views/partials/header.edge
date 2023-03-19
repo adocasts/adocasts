@@ -30,7 +30,7 @@
         
         @if (auth.user)
           @set('unreadNotificationCount', await NotificationService.getUnreadCount(auth.user.id))
-          <div x-data="{ showCount: {{ unreadNotificationsCount == '0' ? 'false' : 'true' }} }" class="relative">
+          <div x-data="{ showCount: {{ parseInt(unreadNotificationsCount) ? 'true' : 'false' }} }" class="relative">
             <div x-show="showCount" class="pointer-events-none rounded-full w-4 h-4 text-xs bg-brand-500 text-brand-900 flex items-center justify-center absolute -right-2 -top-2" up-hungry>
               {{ unreadNotificationCount }}
             </div>
