@@ -30,11 +30,23 @@ Route.post('/signup', 'AuthController.register').as('auth.register')
 Route.post('/signout', 'AuthController.signout').as('auth.signout')
 
 
+
 /**
  * auth social
  */
 Route.get('/:provider/redirect', 'AuthSocialController.redirect').as('auth.social.redirect')
 Route.get('/:provider/callback', 'AuthSocialController.callback').as('auth.social.callback')
+
+
+
+/**
+ * password reset
+ */
+Route.get('/forgot-password', 'PasswordResetController.forgotPassword').as('auth.password.forgot');
+Route.get('/forgot-password/sent', 'PasswordResetController.forgotPasswordSent').as('auth.password.forgot.sent');
+Route.post('/forgot-password', 'PasswordResetController.forgotPasswordSend').as('auth.password.forgot.send')
+Route.get('/reset-password/:email', 'PasswordResetController.resetPassword').as('auth.password.reset');
+Route.post('/reset-password', 'PasswordResetController.resetPasswordStore').as('auth.password.reset.store');
 
 
 
@@ -51,6 +63,8 @@ Route.get('/verification/email/:email', 'EmailVerificationController.verify').as
  */
 Route.get('/users/settings', 'UserSettingsController.index').as('users.settings.index').middleware(['auth'])
 Route.patch('/users/update/username', 'UserSettingsController.updateUsername').as('users.update.username').middleware(['auth'])
+Route.put('/users/update/email', 'UserSettingsController.updateEmail').as('users.update.email').middleware(['auth'])
+Route.get('/users/revert/:id/:oldEmail/:newEmail', 'UserSettingsController.revertEmail').as('users.revert.email')
 
 
 

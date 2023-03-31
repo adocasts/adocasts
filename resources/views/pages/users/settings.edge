@@ -25,7 +25,7 @@
     @end
 
     @form.section({ title: 'Update Email', description: 'Update your account\'s email address' })
-      @form.put({ action: '' })
+      @form.put({ action: route('users.update.email') })
         @!form.input({
           type: 'email',
           label: 'Email',

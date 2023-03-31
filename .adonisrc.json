@@ -20,7 +20,8 @@
     "./start/kernel",
     "./start/bouncer",
     "./start/globals",
-    "./start/events/verification"
+    "./start/events/verification",
+    "./start/events/email-changed"
   ],
   "providers": [
     "./providers/AppProvider",

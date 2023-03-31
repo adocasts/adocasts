@@ -1,0 +1,46 @@
+@layout('layouts/app')
+
+@section('content')
+
+  <div class="w-full h-full flex flex-col justify-center items-center">
+    <div class="w-full max-w-md md:w-[32rem] bg-white border border-slate-200 rounded-xl shadow-xl p-6">
+      <div class="mb-6">
+        <h1 class="text-lg sm:text-xl xl:text-2xl font-semibold">
+          Reset your password
+        </h1>
+      </div>
+
+      @if (isSignatureValid)
+        @form.post({ action: route('auth.password.reset.store'), upSubmit: 'resetPassword' })
+          <input type="hidden" name="email" value="{{ email }}">
+          <input type="hidden" name="token" value="{{ token }}">
+            
+          @if (flashMessages.get('errors.form'))
+            <div role="alert" class="bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100 text-sm rounded p-3 mb-4">
+              {{ flashMessages.get('errors.form') }}
+            </div>
+          @endif
+
+          @!form.input({
+            label: 'Password',
+            type: 'password',
+            name: 'password',
+            placeholder: 'Enter a new and secure password',
+            required: true,
+            autofocus: true
+          })
+
+          @buttons.brand.base({ type: 'submit', block: true })
+            Reset password
+          @end
+        @end
+      @else
+        <p>Your password reset link is invalid or expired</p>.
+        @buttons.primary.base({ href: route('auth.password.forgot'), block: true })
+          Try again
+        @end
+      @endif
+    </div>
+  </div>  
+
+@endsection

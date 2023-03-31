@@ -1,0 +1,41 @@
+@layout('layouts/app')
+
+@section('content')
+
+  <div class="w-full h-full flex flex-col justify-center items-center">
+    <div class="w-full max-w-md md:w-[32rem] bg-white border border-slate-200 rounded-xl shadow-xl p-6">
+      <div class="mb-6">
+        <h1 class="text-lg sm:text-xl xl:text-2xl font-semibold">
+          Reset your password
+        </h1>
+        <p class="text-slate-700 text-sm">
+          Remember your credentials?
+          <a href="{{ route('auth.signin') }}" class="link" up-follow>Sign in here</a>
+        </p>
+      </div>
+
+      @form.post({ action: route('auth.password.forgot.send'), upSubmit: 'forgotPassword' })
+        @if (flashMessages.get('errors.form'))
+          <div role="alert" class="bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100 text-sm rounded p-3 mb-4">
+            {{ flashMessages.get('errors.form') }}
+          </div>
+        @endif
+
+        @!form.input({
+          label: 'Email',
+          type: 'email',
+          name: 'email',
+          placeholder: 'Enter the email associated with your account',
+          autocomplete: 'email',
+          required: true,
+          autofocus: true
+        })
+
+        @buttons.brand.base({ type: 'submit', block: true })
+          Reset password
+        @end
+      @end
+    </div>
+  </div>  
+
+@endsection
