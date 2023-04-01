@@ -36,6 +36,7 @@ Route.post('/signout', 'AuthController.signout').as('auth.signout')
  */
 Route.get('/:provider/redirect', 'AuthSocialController.redirect').as('auth.social.redirect')
 Route.get('/:provider/callback', 'AuthSocialController.callback').as('auth.social.callback')
+Route.get('/:provider/unlink', 'AuthSocialController.unlink').as('auth.social.unlink').middleware(['auth'])
 
 
 
@@ -65,6 +66,8 @@ Route.get('/users/settings', 'UserSettingsController.index').as('users.settings.
 Route.patch('/users/update/username', 'UserSettingsController.updateUsername').as('users.update.username').middleware(['auth'])
 Route.put('/users/update/email', 'UserSettingsController.updateEmail').as('users.update.email').middleware(['auth'])
 Route.get('/users/revert/:id/:oldEmail/:newEmail', 'UserSettingsController.revertEmail').as('users.revert.email')
+Route.put('/users/notifications/email', 'UserSettingsController.updateNotificationEmails').as('users.notifications.email')
+Route.delete('/users/delete', 'UserSettingsController.deleteAccount').as('users.destroy')
 
 
 

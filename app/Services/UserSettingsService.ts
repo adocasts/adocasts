@@ -6,6 +6,8 @@ import { validator, rules, schema } from '@ioc:Adonis/Core/Validator'
 import { usernameValidation } from "App/Validators/shared/validations";
 import AuthAttemptService from "./AuthAttemptService";
 import { AuthContract } from "@ioc:Adonis/Addons/Auth";
+import Profile from "App/Models/Profile";
+import EmailNotificationValidator from "App/Validators/EmailNotificationValidator";
 
 export default class UserSettingsService extends BaseService {
   /**
@@ -100,5 +102,22 @@ export default class UserSettingsService extends BaseService {
       success: true,
       message: 'Your email has been successfully changed'
     }
+  }
+
+  /**
+   * Update user's email notification settings
+   * @param user
+   * @param data
+   */
+  public static async updateEmailNotifications(user: User | undefined, data: EmailNotificationValidator['schema']['props']) {
+    const profile = await Profile.findByOrFail('userId', user?.id)
+
+    profile.emailOnComment = data.emailOnComment ?? false
+    profile.emailOnCommentReply = data.emailOnCommentReply ?? false
+    profile.emailOnAchievement = data.emailOnAchievement ?? false
+
+    await profile.save()
+
+    return profile
   }
 }

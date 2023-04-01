@@ -1,5 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Profile from 'App/Models/Profile'
+import Route from '@ioc:Adonis/Core/Route'
 import AuthSocialService from 'App/Services/AuthSocialService'
 
 export default class AuthSocialController {
@@ -23,5 +24,23 @@ export default class AuthSocialController {
     }
 
     return response.redirect('/')
+  }
+
+  public async unlink ({ response, auth, params, session }: HttpContextContract) {
+    if (!auth.user!.password) {
+      const signedUrl = Route.makeSignedUrl('auth.password.reset', {
+        params: { email: auth.user!.email },
+        expiresIn: '1h'
+      });
+
+      session.flash('error', `Please create a password for your account by following the password reset flow before unlinking ${params.provider}`)
+      return response.redirect(signedUrl)
+    }
+
+    await AuthSocialService.unlink(auth.user!, params.provider)
+
+    session.flash('success', `Your ${params.provider} account was unlinked from your account`)
+
+    return response.redirect().toRoute('studio.settings.index')
   }
 }

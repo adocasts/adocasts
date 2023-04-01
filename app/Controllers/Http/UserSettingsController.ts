@@ -4,6 +4,10 @@ import User from 'App/Models/User'
 import UserSettingsService from 'App/Services/UserSettingsService'
 import Route from '@ioc:Adonis/Core/Route'
 import Event from '@ioc:Adonis/Core/Event'
+import EmailNotificationValidator from 'App/Validators/EmailNotificationValidator'
+import States from 'App/Enums/States'
+import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import UserService from 'App/Services/UserService'
 
 export default class UserSettingsController {
   public async index({ view, auth }: HttpContextContract) {
@@ -69,5 +73,40 @@ export default class UserSettingsController {
     return signedUrl
       ? response.redirect(signedUrl)
       : response.redirect().toRoute('auth.password.forgot')
+  }
+
+  public async updateNotificationEmails({ request, response, auth, session }: HttpContextContract) {
+    const data = await request.validate(EmailNotificationValidator)
+
+    await UserSettingsService.updateEmailNotifications(auth.user, data)
+
+    session.flash('success', "Your email notification settings have been updated")
+
+    return response.redirect().back()
+  }
+
+  public async deleteAccount({ request, response, auth, session }: HttpContextContract) {
+    const _schema = schema.create({
+      user_username: schema.string({ trim: true }, [rules.confirmed('username')])
+    })
+
+    const messages = {
+      'username.confirmed': "The username provided does not match your username"
+    }
+
+    await request.validate({ schema: _schema, messages });
+    
+    const success = await UserService.destroy(auth.user!)
+
+    if (!success) {
+      session.flash('error', 'Apologies, but something went wrong. Please email tom@adocasts.com if this persists.')
+      return response.redirect().back()
+    }
+    
+    await auth.logout()
+
+    session.flash('success', "Your account has been successfully deleted.")
+
+    return response.redirect().toPath('/')
   }
 }

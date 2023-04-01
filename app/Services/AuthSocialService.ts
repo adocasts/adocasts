@@ -28,7 +28,7 @@ export default class AuthSocialService {
    * @param user 
    * @param provider 
    */
-  public async unlink(user: User, provider: keyof SocialProviders) {
+  public static async unlink(user: User, provider: keyof SocialProviders) {
     const userIdKey = `${provider}Id`
     const userEmailKey = `${provider}Email`
     const tokenKey = `${provider}AccessToken`

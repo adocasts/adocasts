@@ -71,10 +71,10 @@ export default class AuthController {
 
   public async signout({ request, response, auth, session, up }: HttpContextContract) {
     const { forward } = request.only(['forward'])
-
+    
     await auth.logout()
 
-    session.flash('success', 'You have been logged out. Cya next time!')
+    session.flash('success', 'You have been signed out. Cya next time!')
 
     up.setTarget('[up-main], [up-header]')
 

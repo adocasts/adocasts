@@ -17,6 +17,7 @@ import Notification from './Notification'
 import Themes from 'App/Enums/Themes'
 import LessonRequest from './LessonRequest'
 import Roles from 'App/Enums/Roles'
+import RequestVote from './RequestVote'
 
 class User extends AppBaseModel {
   @column({ isPrimary: true })
@@ -163,6 +164,14 @@ class User extends AppBaseModel {
 
   @hasMany(() => LessonRequest)
   public lessonRequests: HasMany<typeof LessonRequest>
+
+  @hasMany(() => RequestVote)
+  public requestVotes: HasMany<typeof RequestVote>
+
+  @hasMany(() => RequestVote, {
+    onQuery: query => query.whereNotNull('lessonRequestId')
+  })
+  public lessonRequestVotes: HasMany<typeof RequestVote>
 }
 
 User['findForAuth'] = function (uids: string[], uidValue: string) {
