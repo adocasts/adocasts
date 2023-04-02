@@ -1,0 +1,20 @@
+@form.section({ title: 'Delete Account', description: 'Permanently delete your account and all data associated with it.', borderBottom })
+  @form.delete({ action: route('users.destroy') })
+    <input type="hidden" name="user_username" value="{{ auth.user.username }}" />
+
+    @!form.input({
+      label: 'Username',
+      name: 'username',
+      value: flashMessages.get('username') ?? '',
+      errors: flashMessages.get('errors.username') ?? flashMessages.get('errors.user_username'),
+      autocomplete: 'username',
+      help: `Please enter your username "${auth.user.username}" to confirm account deletion`,
+      required: true,
+      groupStyle: 'max-width: 45ch'
+    })
+
+    @buttons.primary.inverse({ type: 'submit', className: 'mt-3' })
+      Delete Account
+    @end
+  @end
+@end
