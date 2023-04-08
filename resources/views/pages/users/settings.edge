@@ -3,20 +3,32 @@
 @section('content')
 
   <div class="flex flex-col lg:flex-row gap-3 lg:gap-6">
-    <div class="w-full lg:w-1/4 flex flex-col gap-1.5">
-      <a href="#account" class="px-3 py-1.5 rounded-lg bg-slate-50/50 hover:bg-slate-50">
-        Update Your Account
+    <div class="w-full h-full lg:w-1/4 flex flex-col gap-3 lg:sticky top-3">
+      <a href="#account" class="px-3 py-1.5 rounded-lg bg-slate-50/75 hover:bg-slate-50 flex items-center gap-3">
+        @!icons.user()
+        <div class="flex flex-col flex-1">
+          <span class="font-bold">Update Your Account</span>
+          <span class="text-slate-500 text-xs">Username, email, linked social login providers</span>
+        </div>
       </a>
-      <a href="#notifications" class="px-3 py-1.5 rounded-lg bg-slate-50/50 hover:bg-slate-50">
-        Manage Your Notifications
+      <a href="#notifications" class="px-3 py-1.5 rounded-lg bg-slate-50/75 hover:bg-slate-50 flex items-center gap-3">
+        @!icons.notification()
+        <div class="flex flex-col flex-1">
+          <span class="font-bold">Manage Your Notifications</span>
+          <span class="text-slate-500 text-xs">In app and email notifications</span>
+        </div>
       </a>
-      <a href="#data" class="px-3 py-1.5 rounded-lg bg-slate-50/50 hover:bg-slate-50">
-        Manage Your Data
+      <a href="#data" class="px-3 py-1.5 rounded-lg bg-slate-50/75 hover:bg-slate-50 flex items-center gap-3">
+        @!icons.database()
+        <div class="flex flex-col flex-1">
+          <span class="font-bold">Manage Your Data</span>
+          <span class="text-slate-500 text-xs">Account deletion</span>
+        </div>
       </a>
     </div>
 
     <div class="w-full lg:w-3/4">
-      <div id="account" class="bg-slate-50/50 p-6 rounded-xl mb-3">
+      <div id="account" class="bg-slate-50/75 p-6 rounded-xl mb-3">
         <h3 class="border-b border-slate-200 text-lg font-bold pb-6 mb-6">
           Update Your Account
         </h3>
@@ -25,14 +37,14 @@
         @!settings.manageSocialAuth({ borderBottom: false })
       </div>
 
-      <div id="notifications" class="bg-slate-50/50 p-6 rounded-xl mb-3">
+      <div id="notifications" class="bg-slate-50/75 p-6 rounded-xl mb-3">
         <h3 class="border-b border-slate-200 text-lg font-bold pb-6 mb-6">
           Manage Your Notifications
         </h3>
         @!settings.manageNotificationEmails({ profile, borderBottom: false })
       </div>
 
-      <div id="data" class="bg-slate-50/50 p-6 rounded-xl mb-3">
+      <div id="data" class="bg-slate-50/75 p-6 rounded-xl mb-3">
         <h3 class="border-b border-slate-200 text-lg font-bold pb-6 mb-6">
           Manage Your Data
         </h3>

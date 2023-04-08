@@ -9,7 +9,7 @@ let keepPlayer = false
 window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMethod = 'post', httpUrl, httpPayload = {}, watchSeconds = 0, isLive = false, autoplay = false } = {}) {
   const startMuted = isLive || autoplay
   const bodyContent = document.querySelector('.body-content')
-  
+
   if (isLive) {
     autoplay = true
   }
@@ -17,12 +17,12 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
   if (!autoplay) {
     autoplay = window.$params.autoplay ?? 0
   }
-  
+
   if (autoplay) {
     onInitVideo(true, watchSeconds)
     return
   }
-  
+
   if (autoEmbed) {
     onInitVideo(false, watchSeconds)
   }
@@ -33,7 +33,7 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
   bodyContent?.addEventListener('click', (event) => {
     const isTarget = event.target.classList.contains('timestamp')
     const containsTarget = event.target.closest('.timestamp')
-    
+
     if (isTarget || containsTarget) {
       const target = isTarget ? event.target : event.target.closest('.timestamp')
       const displayDuration = target.textContent
@@ -100,7 +100,7 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
       document.body.appendChild(tag)
       isInitialLoad = false
     } else {
-      window.onYouTubeIframeAPIReady() 
+      window.onYouTubeIframeAPIReady()
     }
 
     function onPlayerReady(event) {
@@ -113,13 +113,13 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
 
     function onPlayerStateChange(event) {
       isYtVideoPlaying = event.data == YT.PlayerState.PLAYING
-      
+
       // only update keepPlayer when on video's designated page
       if (location.pathname === placeholder.dataset.path) {
         keepPlayer = isYtVideoPlaying
         keepPlayerPostId = httpPayload.postId
       }
-      
+
       if (isLive) return
 
       if (isYtVideoPlaying) {
@@ -154,7 +154,7 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
       const btnNotCompleted = document.querySelector('[btn-not-completed]')
 
       if (!btnCompleted || !btnNotCompleted) return
-      
+
       if (isCompleted) {
         btnCompleted.classList.remove('hidden')
         btnNotCompleted.classList.add('hidden')
@@ -178,7 +178,7 @@ up.compiler('#lessonVideoEmbed', function(element) {
   if (!isPostPage && isInitialized) return
 
   const data = element.dataset
-  
+
   // re-position to primary position when re-initialized
   positionVideoPlaceholder()
 
@@ -227,7 +227,7 @@ up.compiler('#videoPlayerPosition', position => {
 
   // move to small position when primary position is out of view
   if(!!window.IntersectionObserver) {
-    let observer = new IntersectionObserver((entries) => { 
+    let observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         wasIntersecting = entry.isIntersecting
         positionVideoPlaceholder(!entry.isIntersecting)
@@ -264,7 +264,7 @@ up.on('up:fragment:loaded', event => {
   setTimeout(() => {
     const main = document.querySelector('[up-main]')
     const mains = Array.from(document.querySelectorAll('[up-main-header], [up-main-footer]'))
-    
+
     if (main.classList.contains('lesson-wrapper')) {
       mains.map(m => m.classList.add('lesson-wrapper'))
     } else {
@@ -277,11 +277,26 @@ up.on('up:fragment:loaded', event => {
   positionVideoPlaceholder(isSmallPlayer && !isLayer)
 })
 
+const footer = document.querySelector('footer')
+window.addEventListener('scroll', () => {
+  const placeholder = document.querySelector('[video-placeholder]')
+  const scrollBottom = document.documentElement.scrollTop + document.documentElement.clientHeight
+  const footerTop = footer.offsetTop
+
+  if (scrollBottom >= footer.offsetTop) {
+    placeholder.style.bottom = `${scrollBottom - footerTop}px`
+    placeholder.style.transition = "unset"
+  } else {
+    placeholder.style.bottom = null
+    placeholder.style.transition = null
+  }
+})
+
 function positionVideoPlaceholder(isSmallPlayer = false) {
   const placeholder = document.querySelector('[video-placeholder]')
 
-  if (!placeholder) return 
-  
+  if (!placeholder) return
+
   const videoPath = placeholder.dataset.path
   const isVideoPath = videoPath == location.pathname
 
@@ -293,8 +308,8 @@ function positionVideoPlaceholder(isSmallPlayer = false) {
     placeholder.classList.add('video-small')
     placeholder.classList.remove('aspect-video')
     placeholder.removeAttribute('style')
-    
-    return    
+
+    return
   }
 
   const position = document.getElementById('videoPlayerPosition')

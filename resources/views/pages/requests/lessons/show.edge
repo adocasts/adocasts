@@ -1,5 +1,7 @@
 @layout('layouts/app')
 
+@set('skipAccent', true)
+
 @section('hero')
 
   <div class="app-container relative z-10 mb-6">
@@ -49,7 +51,7 @@
         @!ads.vertical()
       </div>
     </aside>
-    
+
     <main class="w-full px-3">
       <div class="bg-slate-50 rounded-xl p-3 sm:p-6 mb-6 group border border-slate-200">
         <div class="mb-3 flex items-center">
@@ -71,12 +73,12 @@
         </div>
       </div>
 
-      @!comments.base({ 
+      @!comments.base({
         cta: 'Have something to add? Let us know below!',
         descriptor: 'Reply',
-        lessonRequest: lessonRequest, 
-        comments, 
-        commentsCount 
+        lessonRequest: lessonRequest,
+        comments,
+        commentsCount
       })
     </main>
   </div>

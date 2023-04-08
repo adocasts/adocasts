@@ -23,13 +23,13 @@
     description: lineClamp ?? 'md:line-clamp-3'
   }
 })
-@set('imgWidth', imgWidth ? imgWidth : flexFlow == 'flex-col' 
-  ? 'w-full' 
-  : useImage 
-    ? 'mb-3 md:mb-0 md:w-1/2 lg:w-2/5' 
+@set('imgWidth', imgWidth ? imgWidth : flexFlow.includes('flex-col')
+  ? 'w-full'
+  : useImage
+    ? 'mb-3 md:mb-0 md:w-1/2 lg:w-2/5'
     : 'w-full'
 )
-@set('detailWidth', detailWidth ? detailWidth : flexFlow == 'flex-col'
+@set('detailWidth', detailWidth ? detailWidth : flexFlow.includes('flex-col')
   ? 'w-full'
   : useImage
     ? 'md:w-1/2 lg:w-3/5'
@@ -39,14 +39,14 @@
 <a href="{{ routePost(item) }}" up-follow class="flex {{ flexFlow }} md:items-center py-3 group {{ hoverBg }} {{ rounded ? 'rounded-xl overflow-hidden' : '' }} duration-150 {{ className }}">
   @if (useImage)
     <div class="{{ imgWidth }} relative duration-300 {{ rounded ? 'rounded-xl overflow-hidden' : '' }} {{ isCol && 'mb-3' }} {{ imgClassName }}">
-      @!picture({ 
-        filename: img.filename, 
+      @!picture({
+        filename: img.filename,
         altText: img.altText,
-        className: 'h-full duration-150', 
+        className: 'h-full duration-150',
         pictureClassName: 'block',
         imgClassName: 'h-full object-contain object-center',
         ratio: 'aspect-video',
-        lazy: lazyItem 
+        lazy: lazyItem
       })
 
       @if (showProgress)
@@ -59,7 +59,7 @@
     @!lessons.barSeries({ item })
 
     <h3 class="{{ sizeClassMap[size].title }} {{ titleClassName }} font-semibold line-clamp-3 font-sans leading-6 max-w-xl">
-      {{ item.title }} 
+      {{ item.title }}
     </h3>
 
     @if (description && item.description)

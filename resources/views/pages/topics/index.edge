@@ -7,7 +7,7 @@
     subtitle: `Each Adocasts topic constains groupings of series, lessons, news, and livestreams.`,
     className: 'mb-6'
   })
-  <div class="flex flex-wrap sm:-mx-3 dark text-slate-100">
+  <div class="flex flex-wrap sm:-mx-3 text-slate-100">
     @each(item in topics)
       <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 sm:px-3 pb-3 lg:pb-6">
         @!taxonomies.card({ item })
@@ -28,13 +28,13 @@
             Latest Lessons
           </h4>
           @each (lesson in item.posts)
-            @!lessons.listItem({ 
-              item: lesson, 
-              flexFlow: 'lg:flex-col', 
-              size: 'base', 
-              px: 'px-0', 
+            @!lessons.listItem({
+              item: lesson,
+              flexFlow: 'lg:flex-col',
+              size: 'base',
+              px: 'px-0',
               width: 'w-1/2 lg:w-full',
-              lineClamp: 'lg:line-clamp-4',  
+              lineClamp: 'lg:line-clamp-4',
               className: 'w-full lg:w-1/3 px-3',
               contentClassName: 'ml-3 lg:ml-0 lg:mt-3',
               titleClassName: 'text-sm lg:text-lg',

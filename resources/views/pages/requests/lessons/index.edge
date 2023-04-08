@@ -1,5 +1,7 @@
 @layout('layouts/app')
 
+@set('skipAccent', true)
+
 @section('hero')
 
   @headings.hero({
@@ -18,13 +20,13 @@
       </div>
     @endslot
 
-    @form.post({ 
+    @form.post({
       attrs: `
-        hx-post="${route('requests.lessons.search')}" 
+        hx-post="${route('requests.lessons.search')}"
         hx-target="[hx-request-list]"
         hx-swap="outerHTML"
         hx-trigger="input delay:500ms"
-      ` 
+      `
     })
       <div class="flex items-center gap-6 mt-6">
         @!form.input({
@@ -60,7 +62,7 @@
           <a href="{{ route('auth.signin') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
             sign in
           </a>
-          or 
+          or
           <a href="{{ route('auth.signup') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
             sign up for free
           </a>

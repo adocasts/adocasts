@@ -12,6 +12,7 @@
         @!header.navLink({ text: 'Lessons', href: route('lessons.index'), upFollow: true })
         @!header.navLink({ text: 'Streams', href: route('streams.index'), upFollow: true })
         @!header.navLink({ text: 'News', href: route('news.index'), upFollow: true })
+        @!header.navLink({ text: 'Requests', href: route('requests.lessons.index'), upFollow: true })
       </nav>
 
       <div class="flex">
@@ -27,7 +28,7 @@
           <div class="h-6 border-r border-slate-200 space-x-3 mr-3 pr-3"></div>
         </div>
 
-        
+
         @if (auth.user)
           @set('unreadNotificationCount', await NotificationService.getUnreadCount(auth.user.id))
           <div x-data="{ showCount: {{ parseInt(unreadNotificationsCount) ? 'true' : 'false' }} }" class="relative">
@@ -83,7 +84,7 @@
               From: "translate-x-0"
               To: "translate-x-full"
           -->
-          <div 
+          <div
             x-show="show"
             x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
             x-transition:enter-start="translate-x-full"
@@ -124,6 +125,10 @@
                   <a href="{{ route('news.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl">
                     @!icons.news({ className: 'w-6 h-6' })
                     News
+                  </a>
+                  <a href="{{ route('requests.lessons.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl">
+                    @!icons.news({ className: 'w-6 h-6' })
+                    Requests
                   </a>
                 </nav>
 
