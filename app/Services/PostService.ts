@@ -9,10 +9,10 @@ import States from "App/Enums/States"
 export default class PostService {
   /**
    * returns latest published posts in designated post types
-   * @param limit 
-   * @param excludeIds 
-   * @param postTypeIds 
-   * @returns 
+   * @param limit
+   * @param excludeIds
+   * @param postTypeIds
+   * @returns
    */
   public static async getLatest(limit: number = 10, excludeIds: number[] = [], postTypeIds: PostTypes[] = [PostTypes.LESSON, PostTypes.NEWS, PostTypes.LIVESTREAM, PostTypes.BLOG]): Promise<Post[]> {
     return Post.query()
@@ -28,8 +28,8 @@ export default class PostService {
 
   /**
    * return most viewed posts from the past month
-   * @param limit 
-   * @returns 
+   * @param limit
+   * @returns
    */
   public static async getTrending(limit: number = 10): Promise<Post[]> {
     const slugs = await AnalyticsService.getPastMonthsPopularContentSlugs(limit)
@@ -41,9 +41,9 @@ export default class PostService {
 
   /**
    * returns post with the given slug
-   * @param slug 
-   * @param postTypeId 
-   * @returns 
+   * @param slug
+   * @param postTypeId
+   * @returns
    */
   public static async getBySlug(slug: string, postTypeId: PostTypes): Promise<Post> {
     return Post.query()
@@ -54,14 +54,14 @@ export default class PostService {
   }
 
   /**
-   * 
-   * @param page 
-   * @param limit 
-   * @param sortBy 
-   * @param sortDir 
-   * @param postTypeId 
-   * @param baseUrl 
-   * @returns 
+   *
+   * @param page
+   * @param limit
+   * @param sortBy
+   * @param sortDir
+   * @param postTypeId
+   * @param baseUrl
+   * @returns
    */
   public static async getPaginated(page: number, limit: number, sortBy: string, sortDir: 'asc'|'desc', postTypeId: PostTypes = PostTypes.LESSON, baseUrl: string): Promise<ModelPaginatorContract<Post>> {
     const items = await Post.query()
@@ -77,7 +77,7 @@ export default class PostService {
 
   /**
    * returns the lastest published active livestream (if there is one)
-   * @returns 
+   * @returns
    */
   public static async getActiveStream(): Promise<Post | null> {
     return await Post.livestreams()
@@ -90,9 +90,9 @@ export default class PostService {
 
   /**
    * returns related root series for post
-   * @param auth 
-   * @param post 
-   * @returns 
+   * @param auth
+   * @param post
+   * @returns
    */
   public static async getSeries(auth: AuthContract, post: Post) {
     return post.related('rootSeries').query()
@@ -116,9 +116,9 @@ export default class PostService {
 
   /**
    * returns comments for post
-   * @param auth 
-   * @param post 
-   * @returns 
+   * @param auth
+   * @param post
+   * @returns
    */
   public static async getComments(post: Post) {
     return post.related('comments').query()
@@ -131,8 +131,8 @@ export default class PostService {
 
   /**
    * returns a count of the comments tied to the post
-   * @param post 
-   * @returns 
+   * @param post
+   * @returns
    */
   public static async getCommentsCount(post: Post) {
     return post.related('comments').query()
@@ -142,14 +142,14 @@ export default class PostService {
 
   /**
    * returns correct path url for the provided post's post type
-   * @param post 
-   * @param params 
-   * @param options 
-   * @returns 
+   * @param post
+   * @param params
+   * @param options
+   * @returns
    */
   public static getPostPath(post: Post, params: { [x: string]: any }, options: { [x: string]: any }) {
     params = { ...params, slug: post.slug }
-  
+
     switch(post.postTypeId) {
       case PostTypes.LESSON:
         return Route.makeUrl('lessons.show', params, options)
@@ -162,5 +162,24 @@ export default class PostService {
       case PostTypes.LINK:
         return post.redirectUrl
     }
+  }
+
+  /**
+   * search all posts by pattern
+   * @param term
+   * @param limit
+   */
+  public static async search(term: string, limit: number = 100) {
+    if (!term) return
+    return Post.query()
+      .apply(scope => scope.published())
+      .apply(scope => scope.forDisplay())
+      .if(term, query => query
+        .where('title', 'ILIKE', `%${term}%`)
+        .orWhere('description', 'ILIKE', `%${term}%`)
+        .orWhere('body', 'ILIKE', `${term}`)
+      )
+      .orderBy('publishAt', 'desc')
+      .limit(limit)
   }
 }

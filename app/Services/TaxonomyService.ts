@@ -1,6 +1,7 @@
 import { ModelQueryBuilderContract } from "@ioc:Adonis/Lucid/Orm";
 import CollectionTypes from "App/Enums/CollectionTypes";
 import Taxonomy from "App/Models/Taxonomy";
+import States from "App/Enums/States";
 
 export default class TaxonomyService {
   private static queryGetList(): ModelQueryBuilderContract<typeof Taxonomy, Taxonomy> {
@@ -19,7 +20,7 @@ export default class TaxonomyService {
 
   /**
    * returns list of taxonomies and their children
-   * @returns 
+   * @returns
    */
   public static async getList(postLimit: number = 0) {
     if (!postLimit) {
@@ -32,15 +33,15 @@ export default class TaxonomyService {
         .groupLimit(3)
       )
       .orderBy([
-        { column: 'isFeatured', order: 'desc' }, 
+        { column: 'isFeatured', order: 'desc' },
         { column: 'name', order: 'asc' }
       ])
   }
 
   /**
    * returns taxonomy matching slug
-   * @param slug 
-   * @returns 
+   * @param slug
+   * @returns
    */
   public static async getBySlug(slug: string) {
     return Taxonomy.query()
@@ -52,8 +53,8 @@ export default class TaxonomyService {
 
   /**
    * returns child taxonomies for provided taxonomy
-   * @param taxonomy 
-   * @returns 
+   * @param taxonomy
+   * @returns
    */
   public static async getChildren(taxonomy: Taxonomy) {
     return taxonomy.related('children').query()
@@ -71,9 +72,9 @@ export default class TaxonomyService {
 
   /**
    * returns posts tied to provided taxonomy
-   * @param taxonomy 
-   * @param limit 
-   * @returns 
+   * @param taxonomy
+   * @param limit
+   * @returns
    */
   public static async getPosts(taxonomy: Taxonomy, limit?: number) {
     return taxonomy.related('posts').query()
@@ -84,10 +85,10 @@ export default class TaxonomyService {
 
   /**
    * returns collections tied to provided taxonomy
-   * @param taxonomy 
-   * @param collectionTypes 
-   * @param limit 
-   * @returns 
+   * @param taxonomy
+   * @param collectionTypes
+   * @param limit
+   * @returns
    */
   public static async getCollections(taxonomy: Taxonomy, collectionTypes: CollectionTypes[] = [CollectionTypes.SERIES], limit?: number) {
     return taxonomy.related('collections').query()
@@ -100,5 +101,27 @@ export default class TaxonomyService {
         .preload('asset')
         .orderBy('name')
         .if(limit, query => query.limit(limit!))
+  }
+
+  /**
+   * search all taxonomies by pattern
+   * @param term
+   * @param limit
+   */
+  public static async search(term: string, limit: number = 10) {
+    if (!term) return
+    return Taxonomy.query()
+      .apply(scope => scope.withPostLatestPublished())
+      .preload('parent', query => query.preload('asset'))
+      .preload('asset')
+      .withCount('posts', query => query.apply(scope => scope.published()))
+      .withCount('collections', query => query.where('collectionTypeId', CollectionTypes.SERIES).where('stateId', States.PUBLIC))
+      .where(query => query
+        .where('taxonomies.name', 'ILIKE', `%${term}%`)
+        .orWhere('taxonomies.description', 'ILIKE', `%${term}%`)
+      )
+      .orderBy('latest_publish_at', 'desc')
+      .select('taxonomies.*')
+      .limit(limit)
   }
 }

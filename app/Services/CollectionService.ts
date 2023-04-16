@@ -5,11 +5,11 @@ import Collection from "App/Models/Collection";
 export default class CollectionService {
   /**
    * returns query used to get the latest updated series collections
-   * @param limit 
-   * @param excludeIds 
-   * @param withPosts 
-   * @param postLimit 
-   * @returns 
+   * @param limit
+   * @param excludeIds
+   * @param withPosts
+   * @param postLimit
+   * @returns
    */
   private static queryGetLastUpdated(withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 5): ModelQueryBuilderContract<typeof Collection, Collection> {
     return Collection.series()
@@ -29,11 +29,11 @@ export default class CollectionService {
 
   /**
    * gets the latest updated series collections
-   * @param limit 
-   * @param excludeIds 
-   * @param withPosts 
-   * @param postLimit 
-   * @returns 
+   * @param limit
+   * @param excludeIds
+   * @param withPosts
+   * @param postLimit
+   * @returns
    */
   public static async getLastUpdated(limit: number = 4, withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 5): Promise<Collection[]> {
     return this.queryGetLastUpdated(withPosts, excludeIds, postLimit).limit(limit)
@@ -41,10 +41,10 @@ export default class CollectionService {
 
   /**
    * gets the latest updated series collection
-   * @param excludeIds 
-   * @param withPosts 
-   * @param postLimit 
-   * @returns 
+   * @param excludeIds
+   * @param withPosts
+   * @param postLimit
+   * @returns
    */
   public static async getFirstLastUpdated(withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 5): Promise<Collection> {
     return this.queryGetLastUpdated(withPosts, excludeIds, postLimit).firstOrFail()
@@ -52,7 +52,7 @@ export default class CollectionService {
 
   /**
    * returns a list of all root series collections and 3 of their latest published posts
-   * @returns 
+   * @returns
    */
   public static async getList() {
     return await Collection.series()
@@ -73,9 +73,9 @@ export default class CollectionService {
 
   /**
    * returns a root series matching the provided slug
-   * @param auth 
-   * @param slug 
-   * @returns 
+   * @param auth
+   * @param slug
+   * @returns
    */
   public static async getBySlug(auth: AuthContract, slug: string) {
     return await Collection.series()
@@ -110,9 +110,9 @@ export default class CollectionService {
 
   /**
    * returns the next lesson for the user based off progression history
-   * @param auth 
-   * @param series 
-   * @returns 
+   * @param auth
+   * @param series
+   * @returns
    */
   public static async findNextLesson(auth: AuthContract, series: Collection) {
     let nextLesson = auth.user
@@ -122,5 +122,29 @@ export default class CollectionService {
     if (!nextLesson) nextLesson = series.postsFlattened[0]
 
     return nextLesson
+  }
+
+  /**
+   * seach all root series by term
+   * @param term
+   * @param limit
+   */
+  public static async search(term: string, limit: number = 10) {
+    if (!term) return
+    return Collection.series()
+      .apply(scope => scope.withPostLatestPublished())
+      .withCount('postsFlattened', query => query.apply(scope => scope.published()))
+      .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
+      .preload('taxonomies', query => query.groupOrderBy('sort_order', 'asc').groupLimit(3))
+      .preload('asset')
+      .wherePublic()
+      .whereNull('parentId')
+      .where(query => query
+        .where('collections.name', 'ILIKE', `%${term}%`)
+        .orWhere('collections.description', 'ILIKE', `%${term}%`)
+      )
+      .orderBy('latest_publish_at', 'desc')
+      .select(['collections.*'])
+      .limit(limit)
   }
 }

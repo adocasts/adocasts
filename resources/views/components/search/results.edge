@@ -1,0 +1,52 @@
+<div class="mt-6" hx-search-results>
+  @if (pattern)
+    @headings.section({
+      subtitle: ``
+    })
+      @slot('title')
+        Searching <span class="font-normal">"{{ pattern }}"</span>
+      @endslot
+    @end
+  @endif
+
+  <div class="mt-3">
+    <div class="-mx-3">
+      @if (series?.length)
+        <div class="px-3">
+          @!headings.panel({ title: `Series` })
+        </div>
+        <div class="flex flex-wrap mb-8">
+          @each(item in series)
+            @!collections.card({ item })
+          @endeach
+        </div>
+      </div>
+    @endif
+
+    @if (topics?.length)
+      <div class="-mx-3">
+        <div class="px-3">
+          @!headings.panel({ title: `Topics` })
+        </div>
+        <div class="flex flex-wrap mb-8">
+          @each(item in topics)
+            @!taxonomies.cardSquare({ item })
+          @endeach
+        </div>
+      </div>
+    @endif
+
+    @if (posts?.length)
+      <div class="-mx-3">
+        <div class="px-3">
+          @!headings.panel({ title: `Posts (lessons, news, and blogs)` })
+        </div>
+        <div class="grid xl:grid-cols-2 gap-3 w-full px-3">
+          @each ((item, i) in posts)
+          @!lessons.listItem({ item, className: 'mb-6' })
+          @endeach
+        </div>
+      </div>
+    @endif
+  </div>
+</div>

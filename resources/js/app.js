@@ -1,5 +1,5 @@
 import '../css/app.css'
-import 'htmx.org'
+import htmx from 'htmx.org/dist/htmx'
 import './tiptap/basic'
 import './_alpine'
 import './_unpoly'
@@ -10,3 +10,7 @@ window.hideBanner = async function(target) {
   document.getElementById(target).remove()
   await axios.post('/api/session/set', { target, value: false })
 }
+
+up.on('up:fragment:inserted', function (event, fragment) {
+  htmx.process(fragment)
+})

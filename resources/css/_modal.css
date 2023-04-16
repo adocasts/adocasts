@@ -3,8 +3,8 @@
 up-modal-box {
   @apply bg-white border border-slate-200 rounded-xl p-0 shadow-xl;
 	margin-top:4vh;
-	width:80%;
-	max-width:600px;
+	/*width:80%;*/
+	/*max-width:600px;*/
 	animation-name:zoomIn;
 	animation-duration:150ms;
 	animation-timing-function: ease;

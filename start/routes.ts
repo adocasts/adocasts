@@ -83,6 +83,8 @@ Route.get('/img/*', 'AssetsController.show').where('path', /.*/).as('img');
  * main pages
  */
 Route.get('/', 'HomeController.index').as('home.index')
+Route.get('/search', 'SearchController.index').as('search.index')
+Route.post('/search', 'SearchController.search').as('search.search')
 Route.get('/series', 'SeriesController.index').as('series.index')
 Route.get('/series/:slug', 'SeriesController.show').as('series.show')
 Route.get('/topics', 'TopicsController.index').as('topics.index')
@@ -106,6 +108,10 @@ Route.patch('/requests/lessons/:id/vote', 'LessonRequestsController.vote').as('r
 Route.patch('/requests/lessons/:id/approve', 'LessonRequestsController.approve').as('requests.lessons.approve').middleware('auth')
 Route.patch('/requests/lessons/:id/reject', 'LessonRequestsController.reject').as('requests.lessons.reject').middleware('auth')
 Route.patch('/requests/lessons/:id/complete', 'LessonRequestsController.complete').as('requests.lessons.complete').middleware('auth')
+Route.get('/cookies', 'LegalsController.cookies').as('legals.cookies')
+Route.get('/privacy', 'LegalsController.privacy').as('legals.privacy')
+Route.get('/terms', 'LegalsController.terms').as('legals.terms')
+Route.get('/guidelines', 'LegalsController.guidelines').as('legals.guidelines')
 
 
 
