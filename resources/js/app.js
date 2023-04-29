@@ -11,6 +11,7 @@ window.hideBanner = async function(target) {
   await axios.post('/api/session/set', { target, value: false })
 }
 
-up.on('up:fragment:inserted', function (event, fragment) {
+up.on('up:fragment:inserted', function (_event, fragment) {
   htmx.process(fragment)
 })
+

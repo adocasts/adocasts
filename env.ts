@@ -54,5 +54,8 @@ export default Env.rules({
 	GITHUB_CLIENT_ID: Env.schema.string(),
 	GITHUB_CLIENT_SECRET: Env.schema.string(),
 
-	DISCORD_WEBHOOK: Env.schema.string()
+	DISCORD_WEBHOOK: Env.schema.string(),
+
+  TURNSTILE_SITE_KEY: Env.schema.string(),
+  TURNSTILE_SECRET_KEY: Env.schema.string()
 })

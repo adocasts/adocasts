@@ -14,7 +14,7 @@
   @else
     <input type="hidden" name="postId" value="{{ postId }}" />
   @endif
-  
+
   <input type="hidden" name="levelIndex" value="{{ levelIndex ?? 0 }}" />
 
   @if (rootParentId)
@@ -24,6 +24,6 @@
   @if (replyTo)
     <input type="hidden" name="replyTo" value="{{ replyTo }}" />
   @endif
-  
+
   @!tiptap.basic({ value: body, update: !!id, cancelable, onCancel, includeScript: includeScript ?? false })
 </form>

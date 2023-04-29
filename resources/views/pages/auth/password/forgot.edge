@@ -14,7 +14,7 @@
         </p>
       </div>
 
-      @form.post({ action: route('auth.password.forgot.send'), upSubmit: 'forgotPassword' })
+      @form.post({ action: route('auth.password.forgot.send'), upSubmit: 'forgotPassword', honeypot: true })
         @if (flashMessages.get('errors.form'))
           <div role="alert" class="bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100 text-sm rounded p-3 mb-4">
             {{ flashMessages.get('errors.form') }}

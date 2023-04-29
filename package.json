@@ -29,7 +29,7 @@
     "youch-terminal": "^2.2.0"
   },
   "dependencies": {
-    "@adocasts.com/adonisjs-honeypot": "^1.0.10",
+    "@adocasts.com/adonisjs-honeypot": "^1.0.12",
     "@adonisjs/ally": "^4.1.5",
     "@adonisjs/attachment-lite": "^1.0.7",
     "@adonisjs/auth": "^8.2.3",

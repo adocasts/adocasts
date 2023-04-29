@@ -31,7 +31,8 @@ export const honeypotConfig: HoneypotConfig = {
   | likely it is to work.
   |
   */
-  fields: ['ohbother', 'ohpiglet', 'ohpoo', 'firstName', 'lastName'],
+  fields: ['phone', 'company', 'address', 'url', 'fax'],
+  disableAutocomplete: true,
 
   /*
   |--------------------------------------------------------------------------

@@ -1,38 +1,36 @@
-<div class="isolate -mt-6 border-b border-slate-200">
-  <main>
-    <div class="pt-10 sm:pt-16 lg:overflow-hidden lg:pt-8 lg:pb-14">
-      <div class="app-container">
-        <div class="lg:grid lg:grid-cols-2 lg:gap-8">
-          <div class="mx-auto max-w-md px-6 sm:max-w-3xl sm:text-center lg:flex lg:items-center lg:px-0 lg:text-left xl:relative xl:left-24">
-            <div class="lg:py-14">
-              <h1 class="mt-4 text-4xl font-bold tracking-tight text-slate-900 sm:mt-5 sm:text-6xl lg:mt-6 xl:text-6xl">
-                <span class="block">Advance your skills</span>
-                <span class="block bg-gradient-to-r from-brand-600 to-brand-400 bg-clip-text pb-3 text-transparent sm:pb-5">Become an AdonisJS pro!</span>
-              </h1>
-              <p class="text-base text-slate-700 sm:text-xl lg:text-lg xl:text-xl">
-                Join our community of developers and get ahead in your coding skills with our expert-led AdonisJS tutorials and hands-on exercises.
-              </p>
-              <div class="mt-10 sm:mt-12 flex items-center gap-x-6 sm:justify-center lg:justify-start">
-                @buttons.brand.base({ href: route('auth.signup'), attrs: 'up-layer="new modal" up-size="grow"' })
-                  Sign Up for FREE!
-                @end
-
-                @buttons.primary.base({ href: route('auth.signin'), className: 'gap-x-3', attrs: 'up-layer="new modal" up-size="grow"' })
-                  Sign In
-                  @!icons.arrowNarrowRight()
-                @end
-              </div>
-            </div>
-          </div>
-          <div class="hidden lg:block lg:relative lg:m-0">
-            <div class="mx-auto max-w-md px-6 sm:max-w-3xl lg:max-w-none lg:px-0">
-              <div class="w-full lg:absolute lg:top-8 lg:h-full lg:w-full lg:max-w-none flex justify-center">
-                @!illustrations.codeBlocks({ className: 'w-full xl:scale-[135%] text-slate-800' })
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<div class="relative isolate overflow-hidden bg-slate-base-900 py-24 sm:py-32 -mt-6">
+  <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2850&q=80&blend=111827&blend-mode=multiply&sat=-100&exp=15" alt="" class="absolute inset-0 -z-10 h-full w-full object-cover">
+  <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="absolute -bottom-8 -left-96 -z-10 transform-gpu blur-3xl sm:-bottom-64 sm:-left-40 lg:-bottom-32 lg:left-8 xl:-left-10" aria-hidden="true">
+      <div class="aspect-[1266/975] w-[79.125rem] bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
     </div>
-  </main>
+    <div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
+      <h2 class="text-base font-semibold leading-8 text-indigo-400">Our track record</h2>
+      <p class="mt-2 text-3xl font-bold tracking-tight text-slate-base-100 sm:text-4xl">Advance your AdonisJS skills!</p>
+      <p class="mt-6 text-lg leading-8 text-slate-base-400">
+        Join our community of developers and get ahead in your coding skills with our expert-led AdonisJS tutorials and hands-on exercises.
+      </p>
+      @buttons.brand.base({ href: route('auth.signup'), attrs: 'up-layer="new modal" up-size="grow"', className: 'mt-6' })
+        Sign Up for FREE!
+      @end
+    </div>
+    <dl class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-10 text-slate-base-100 sm:mt-20 sm:grid-cols-2 sm:gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-4">
+      <div class="flex flex-col gap-y-3 border-l border-slate-base-100/30 pl-6">
+        <dt class="text-sm leading-6">Hours worth of content</dt>
+        <dd class="order-first text-3xl font-semibold tracking-tight">{{ secondsToTimestring(stats.postSeconds.$extras.sum) }}</dd>
+      </div>
+      <div class="flex flex-col gap-y-3 border-l border-slate-base-100/30 pl-6">
+        <dt class="text-sm leading-6">Lessons published</dt>
+        <dd class="order-first text-3xl font-semibold tracking-tight">{{ formatNumber(stats.postCount) }}</dd>
+      </div>
+      <div class="flex flex-col gap-y-3 border-l border-slate-base-100/30 pl-6">
+        <dt class="text-sm leading-6">Series completed or in-progress</dt>
+        <dd class="order-first text-3xl font-semibold tracking-tight">{{ formatNumber(stats.seriesCount) }}</dd>
+      </div>
+      <div class="flex flex-col gap-y-3 border-l border-slate-base-100/30 pl-6">
+        <dt class="text-sm leading-6">Topics covered</dt>
+        <dd class="order-first text-3xl font-semibold tracking-tight">{{ formatNumber(stats.topicCount) }}</dd>
+      </div>
+    </dl>
+  </div>
 </div>

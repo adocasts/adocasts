@@ -6,15 +6,15 @@
     <div class="w-full max-w-md md:w-[32rem] bg-white border border-slate-200 rounded-xl shadow-xl p-6">
       <div class="mb-6">
         <h1 class="text-lg sm:text-xl xl:text-2xl font-semibold">
-          Sign in to Adocasts
+          Sign in
         </h1>
         <p class="text-slate-700 text-sm">
-          Need an account? 
+          Need an account?
           <a href="{{ route('auth.signup') }}" class="link" up-follow>Sign up here</a>
         </p>
       </div>
 
-      @form.post({ action: route('auth.authenticate'), upSubmit: 'signin' })
+      @form.post({ action: route('auth.authenticate'), upSubmit: 'signin', honeypot: true })
         @if (action)
           <input type="hidden" name="action" value="{{ action }}" />
         @endif
@@ -99,6 +99,6 @@
         </div>
       @end
     </div>
-  </div>  
+  </div>
 
 @endsection

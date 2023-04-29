@@ -54,4 +54,15 @@ Alpine.data('comments', function () {
   }
 })
 
+Alpine.data('turnstile', function () {
+  return {
+    onRender(sitekey) {
+      turnstile.render(this.$el, {
+        sitekey,
+        callback: function(token) {},
+      })
+    }
+  }
+})
+
 Alpine.start()

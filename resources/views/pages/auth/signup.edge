@@ -9,12 +9,12 @@
           Sign up for free
         </h1>
         <p class="text-slate-700 text-sm">
-          Have an account? 
+          Have an account?
           <a href="{{ route('auth.signin') }}" class="link" up-follow>Sign in here</a>
         </p>
       </div>
 
-      @form.post({ action: route('auth.register'), upSubmit: 'signup' })
+      @form.post({ action: route('auth.register'), upSubmit: 'signup', honeypot: true })
         @if (request.header('referrer'))
           <input type="hidden" name="forward" value="{{ request.header('referrer') }}" />
         @endif
@@ -89,10 +89,10 @@
         </div>
 
         <p class="text-xs text-slate-400">
-          By registering you're agreeing to our terms of use, content guidelines, privacy and cookie policies. 
+          By registering you're agreeing to our terms of use, content guidelines, privacy and cookie policies.
         </p>
       @end
     </div>
-  </div>  
+  </div>
 
 @endsection

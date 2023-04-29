@@ -24,9 +24,9 @@ import Route from '@ioc:Adonis/Core/Route'
  * auth
  */
 Route.get('/signin', 'AuthController.signin').as('auth.signin')
-Route.post('/signin', 'AuthController.authenticate').as('auth.authenticate')
+Route.post('/signin', 'AuthController.authenticate').as('auth.authenticate').middleware(['honeypot'])
 Route.get('/signup', 'AuthController.signup').as('auth.signup')
-Route.post('/signup', 'AuthController.register').as('auth.register')
+Route.post('/signup', 'AuthController.register').as('auth.register').middleware('honeypot')
 Route.post('/signout', 'AuthController.signout').as('auth.signout')
 
 
@@ -44,10 +44,10 @@ Route.get('/:provider/unlink', 'AuthSocialController.unlink').as('auth.social.un
  * password reset
  */
 Route.get('/forgot-password', 'PasswordResetController.forgotPassword').as('auth.password.forgot');
-Route.get('/forgot-password/sent', 'PasswordResetController.forgotPasswordSent').as('auth.password.forgot.sent');
-Route.post('/forgot-password', 'PasswordResetController.forgotPasswordSend').as('auth.password.forgot.send')
+Route.get('/forgot-password/sent', 'PasswordResetController.forgotPasswordSent').as('auth.password.forgot.sent')
+Route.post('/forgot-password', 'PasswordResetController.forgotPasswordSend').as('auth.password.forgot.send').middleware('honeypot')
 Route.get('/reset-password/:email', 'PasswordResetController.resetPassword').as('auth.password.reset');
-Route.post('/reset-password', 'PasswordResetController.resetPasswordStore').as('auth.password.reset.store');
+Route.post('/reset-password', 'PasswordResetController.resetPasswordStore').as('auth.password.reset.store').middleware('honeypot')
 
 
 

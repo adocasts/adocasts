@@ -7,10 +7,10 @@ export default class CommentsController {
   public async store({ request, response, auth }: HttpContextContract) {
     const data = await request.validate(CommentValidator)
     const referrer = request.header('referrer')
-    
+
     const comment = await CommentService.store(request, auth, data)
 
-    return referrer 
+    return referrer
       ? response.redirect(`${referrer}#comment${comment.id}`)
       : response.redirect().back()
   }
@@ -36,7 +36,7 @@ export default class CommentsController {
 
   public async destroy({ response, params, bouncer }: HttpContextContract) {
     const comment = await Comment.findOrFail(params.id)
-    
+
     await bouncer.with('CommentPolicy').authorize('delete', comment)
 
     await CommentService.destroy(comment)

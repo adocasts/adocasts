@@ -2,7 +2,7 @@
   @set('series', item.rootSeries.at(0))
   <object>
     <h5 class="uppercase flex items-center text-brand-500 hover:text-brand-600 tracking-wide font-sans text-xs mb-1">
-      <a href="{{ route('series.show', { slug: series.slug }) }}" up-follow class="anchor truncate">
+      <a href="{{ route('series.show', { slug: series.slug }) }}" up-follow class="anchor truncate" {{{ upAttrs }}}>
         {{ series.name }}
       </a>
       <span class="text-slate-500 group-hover:text-slate-800 duration-150 ml-2">
@@ -13,7 +13,7 @@
 @elseif (item.postTypeId === PostTypes.NEWS)
   <object>
     <h5 class="uppercase inline-flex items-center text-brand-500 hover:text-brand-600 tracking-wide  font-sans text-xs mb-1">
-      <a href="" up-follow class="anchor">
+      <a href="" up-follow class="anchor" {{{ upAttrs }}}>
         NEWS
       </a>
     </h5>
@@ -21,7 +21,7 @@
 @elseif (item.postTypeId === PostTypes.LIVESTREAM)
   <object>
     <h5 class="uppercase inline-flex items-center text-brand-500 hover:text-brand-600 tracking-wide  font-sans text-xs mb-1">
-      <a href="" up-follow class="anchor">
+      <a href="" up-follow class="anchor" {{{ upAttrs }}}>
         LIVESTREAM
       </a>
     </h5>
@@ -29,7 +29,7 @@
 @elseif (item.postTypeId === PostTypes.BLOG)
   <object>
     <h5 class="uppercase inline-flex items-center text-brand-500 hover:text-brand-600 tracking-wide  font-sans text-xs mb-1">
-      <a href="" up-follow class="anchor">
+      <a href="" up-follow class="anchor" {{{ upAttrs }}}>
         BLOG
       </a>
     </h5>

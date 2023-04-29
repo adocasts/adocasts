@@ -40,7 +40,8 @@
     "@adocasts.com/adonisjs-honeypot",
     "@adonisjs/bouncer",
     "@adonisjs/redis",
-    "@adonisjs/ally"
+    "@adonisjs/ally",
+    "./providers/Turnstile/Provider"
   ],
   "metaFiles": [
     {

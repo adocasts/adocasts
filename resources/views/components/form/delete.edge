@@ -2,12 +2,21 @@
 @set('upLayer', upLayer ?? 'root')
 @set('upScroll', upScroll ?? 'preserve')
 
-<form 
-  method="POST" 
-  action="{{ action }}" 
-  {{{ id ? `id="${id}"` : '' }}} 
+<form
+  method="POST"
+  action="{{ action }}"
+  {{{ id ? `id="${id}"` : '' }}}
   {{{ upSubmit ? `form-${upSubmit} up-submit up-layer="${upLayer}" up-scroll="${upScroll}" up-fail-scroll="${upScroll}" up-fail-target="[form-${upSubmit}]"` : '' }}}
   {{{ attrs }}}>
   {{ csrfField() }}
   {{{ await $slots.main() }}}
+
+  @if (turnstile)
+    @!turnstile()
+  @endif
+
+  @if (honeypot)
+    @!component('honeypot')
+  @endif
+
 </form>

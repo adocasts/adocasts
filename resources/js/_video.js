@@ -283,6 +283,8 @@ window.addEventListener('scroll', () => {
   const scrollBottom = document.documentElement.scrollTop + document.documentElement.clientHeight
   const footerTop = footer.offsetTop
 
+  if (!placeholder) return
+
   if (scrollBottom >= footer.offsetTop) {
     placeholder.style.bottom = `${scrollBottom - footerTop}px`
     placeholder.style.transition = "unset"

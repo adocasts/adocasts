@@ -2,7 +2,7 @@
 
 @section('content')
 
-  <div class="p-6 w-full min-w-full md:min-w-[600px] lg:min-w-[900px] xl:min-w-[1100px] max-w-2xl">
+  <div class="p-6 w-full {{ up.isPage ? '' : 'md:max-w-[600px] lg:min-w-[900px] max-w-2xl' }}">
     @form.post({
       attrs: `
         hx-post="${route('search.search')}"
@@ -17,13 +17,13 @@
         label: 'Search Adocasts',
         name: 'pattern',
         placeholder: 'Search series, topics, lessons, and more',
-        groupClass: up.isPage ? 'w-full md:w-1/2' : '',
+        groupClass: up.isPage ? 'w-full md:w-1/2 lg:w-2/3' : '',
         autofocus: true
       })
 
     @end
 
-    @!search.results({ pattern, posts, series, topics })
+    @!search.results({ pattern, posts, series, topics, isPage: up.isPage })
   </div>
 
 @endsection

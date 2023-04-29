@@ -4,7 +4,7 @@
 
   <div class="mb-16">
     @if (!auth.user)
-      @!marketing.homeHero()
+      @!marketing.homeHero({ stats })
     @else
       <div class="app-container">
         <div class="flex flex-wrap md:flex-nowrap md:gap-8">

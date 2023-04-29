@@ -37,7 +37,7 @@
             </div>
 
             @buttons.primary.base({ type: 'button', square: true, className: '!p-0', href: route('users.menu'), atClick: 'showCount = false', attrs: 'up-layer="new drawer" up-size="large" up-position="right"' })
-              <img class="h-8 w-8" src="{{ auth.user.avatar }}" />
+              <img class="h-8 w-8 rounded-md" src="{{ auth.user.avatar }}" />
             @end
           </div>
         @else

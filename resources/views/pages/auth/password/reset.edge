@@ -11,7 +11,7 @@
       </div>
 
       @if (isSignatureValid)
-        @form.post({ action: route('auth.password.reset.store'), upSubmit: 'resetPassword' })
+        @form.post({ action: route('auth.password.reset.store'), upSubmit: 'resetPassword', honeypot: true })
           <input type="hidden" name="email" value="{{ email }}">
           <input type="hidden" name="token" value="{{ token }}">
             
