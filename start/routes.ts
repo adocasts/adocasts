@@ -112,6 +112,8 @@ Route.get('/cookies', 'LegalsController.cookies').as('legals.cookies')
 Route.get('/privacy', 'LegalsController.privacy').as('legals.privacy')
 Route.get('/terms', 'LegalsController.terms').as('legals.terms')
 Route.get('/guidelines', 'LegalsController.guidelines').as('legals.guidelines')
+Route.get('/users/watchlist', 'UsersController.watchlist').as('users.watchlist').middleware(['auth'])
+Route.get('/users/history', 'UsersController.history').as('users.history').middleware(['auth'])
 
 
 

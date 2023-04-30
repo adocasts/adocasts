@@ -1,0 +1,81 @@
+@set('className', className ?? 'w-full lg:w-1/2 xl:w-1/4 px-3 mb-6')
+@set('item', progression.collection)
+@set('lessonQueue', item.postsFlattened)
+
+<a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="{{ className }}" {{{ upAttrs }}}>
+  <div class="group h-full flex flex-col bg-slate-50 text-center p-6 rounded-xl overflow-hidden relative">
+    <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-transparent via-slate-50/60 to-slate-50 z-10"></div>
+    
+    @if (item.asset)
+      <div class="absolute w-full h-full top-0 left-0 opacity-60 group-hover:opacity-80 duration-150">
+        <img 
+          src="/img/{{ item.asset.filename }}" 
+          class="rounded-full w-full h-full object-cover object-center scale-[175%] group-hover:scale-[140%] blur-xl group-hover:blur-none mb-3 duration-150" 
+        />
+      </div>
+    @endif
+
+    <div class="flex flex-col h-full justify-between relative z-20">
+      <div class="flex flex-col">
+        <div class="flex justify-center">
+          @!collections.icon({ item, width: 'w-24', height: 'h-24', className: 'shadow-xl' })
+        </div>
+        <div class="mt-3">
+          <h3 class="text-slate-900 font-semibold text-lg 2xl:text-xl mb-1">
+            {{ item.name }}
+          </h3>
+        </div>
+      </div>
+
+      <div class="w-full text-slate-500 text-xs py-6 px-6 flex justify-around items-center relative z-10">
+        <div class="flex flex-col justify-center text-center uppercase tracking-wider px-3">
+          <span class="text-base">{{ Math.floor((item.meta.postCompletedCount / item.meta.postCount) * 100) }}%</span>
+          <span class="text-xs ">Completed</span>
+        </div>
+
+        <div class="h-10 border-l border-slate-700/60"></div>
+
+        @set('watchDisplay', secondsForDisplay(item.meta.videoSecondsSum))
+        <div class="flex flex-col justify-center text-center uppercase tracking-wider px-3">
+          <span class="text-base">{{ item.meta.postCount }}</span>
+          <span class="text-xs ">{{ getSingularOrPlural('lesson', item.meta.postCount) }}</span>
+        </div>
+      </div>
+
+      @if (lessonQueue.length)
+        @each (item in lessonQueue)
+          @set('currentLesson', item)
+          @set('thumbnail', currentLesson.assets && currentLesson.assets[0])
+          @set('lessonInProgress', currentLesson.progressionHistory.length > 0)
+
+          <object class="flex flex-col relative z-10 mb-2">
+            <h6 class="text-xs text-left font-bold tracking-wide px-3 pt-3">
+              {{ lessonInProgress ? 'Continue Your Next Lesson' : 'Start Your Next Lesson' }}
+            </h6>
+            <a href="{{ routePost(currentLesson, { slug: currentLesson.slug }) }}" up-follow {{{ upAttrs }}} class="w-full flex flex-wrap p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-opacity-5 transition">
+              @if (thumbnail)
+                <div class="w-full md:w-2/5 md:pr-2">
+                  @!picture({ filename: thumbnail.filename, className: 'rounded-lg overflow-hidden', lazy: lazyItem })
+                </div>
+              @endif
+              <div class="w-full md:w-3/5 flex flex-col items-start text-left md:pl-2">
+                <h5 class="uppercase inline-block text-accent-800 text-xs leading-none mb-2">
+                  Lesson {{ currentLesson.lessonIndexDisplay }}
+                </h5>
+                <h3 class="font-semibold leading-snug text-xs line-clamp-2">
+                  {{ currentLesson.title }}
+                </h3>
+              </div>
+            </a>
+          </object>
+        @endeach
+      @endif
+
+      <object class="w-full">
+        <a href="{{ route('series.show', { slug: item.slug }) }}" {{{ upAttrs }}} up-follow class="w-full flex justify-center items-center text-center px-3 py-2 bg-slate-900/10 hover:bg-slate-900/20 text-slate-800 group-hover:text-slate-900 backdrop-blur rounded-xl">
+          View Series
+        </a>
+      </object>
+    </div>
+  </div>
+</a>

@@ -7,6 +7,7 @@ import Post from "App/Models/Post";
 import Collection from "App/Models/Collection";
 import Taxonomy from "App/Models/Taxonomy";
 import NotImplementedException from "App/Exceptions/NotImplementedException";
+import States from "App/Enums/States";
 
 export default class HistoryService {
   protected static completedPercentThreshold = 90
@@ -109,5 +110,71 @@ export default class HistoryService {
       route: routeName,
       historyTypeId: HistoryTypes.PROGRESSION
     })
+  }
+
+  public static async getLatestSeriesProgress(user: User, limit: number | undefined = undefined) {
+    return History.query()
+      .distinctOn('collectionId')
+      .where('historyTypeId', HistoryTypes.PROGRESSION)
+      .where('userId', user.id)
+      .whereNotNull('collectionId')
+      .where(query => query
+        .where('isCompleted', false)
+        .orWhereHas('collection', query => query
+          .whereHas('postsFlattened', query => query
+            .whereDoesntHave('progressionHistory', query => query
+              .where('userId', user.id)
+              .where('isCompleted', true)
+            )
+          )
+        )
+      )
+      .preload('collection', query => query
+        .preload('asset')
+        .withCount('postsFlattened', query => query.apply(scope => scope.published()).as('postCount'))
+        .withCount('progressionHistory', query => query.where('userId', user.id).where('isCompleted', true).as('postCompletedCount'))
+        .preload('postsFlattened', query => query
+          .preload('assets')
+          .preload('series', query => query
+            .where('stateId', States.PUBLIC)
+            .groupLimit(1)
+          )
+          .preload('progressionHistory', query => query
+            .where('userId', user.id)
+            .orderBy('updatedAt', 'desc')
+            .groupLimit(1)
+          )
+          .whereDoesntHave('progressionHistory', query => query
+            .where('userId', user.id)
+            .where('isCompleted', true)
+          )
+          .groupOrderBy('root_sort_order', 'asc')
+          .groupLimit(1)
+        )
+      )
+      .if(limit, query => query.limit(limit!))
+  }
+
+  public static async getLatestPostProgress(user: User, limit: number | undefined = undefined) {
+    return History.query()
+      .distinctOn('postId')
+      .where('historyTypeId', HistoryTypes.PROGRESSION)
+      .where('userId', user.id)
+      .whereNotNull('postId')
+      .where(query => query.where('isCompleted', false))
+      .where(query => query.whereNotNull('watchPercent').orWhereNotNull('readPercent'))
+      .where(query => query.where('watchPercent', '>', 0).orWhere('readPercent', '>', 0))
+      .preload('post', query => query
+        .apply(scope => scope.forDisplay())
+        .preload('progressionHistory', query => query
+          .where('userId', user.id)
+          .where('isCompleted', false)
+          .where(query => query.whereNotNull('watchPercent').orWhereNotNull('readPercent'))
+          .where(query => query.where('watchPercent', '>', 0).orWhere('readPercent', '>', 0))
+          .orderBy('updatedAt', 'desc')
+          .groupLimit(1)
+        )
+      )
+      .if(limit, query => query.limit(limit!))
   }
 }

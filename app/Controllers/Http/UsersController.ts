@@ -1,5 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import HistoryService from 'App/Services/HistoryService'
 import NotificationService from 'App/Services/NotificationService'
+import WatchlistService from 'App/Services/WatchlistService'
 
 export default class UsersController {
   public async menu({ response, view, auth }: HttpContextContract) {
@@ -12,6 +14,20 @@ export default class UsersController {
     }
 
     return view.render('pages/users/menu', { notifications })
+  }
+
+  public async watchlist({ view, auth }: HttpContextContract) {
+    const posts = await WatchlistService.getLatestPosts(auth.user!)
+    const collections = await WatchlistService.getLatestCollections(auth.user!)
+
+    return view.render('pages/users/watchlist', { posts, collections })
+  }
+
+  public async history({ view, auth }: HttpContextContract) {
+    const posts = await HistoryService.getLatestPostProgress(auth.user!)
+    const collections = await HistoryService.getLatestSeriesProgress(auth.user!)
+
+    return view.render('pages/users/history', { posts, collections })
   }
 
   public async check({ auth }: HttpContextContract) {

@@ -10,7 +10,7 @@ export default class WatchlistService {
    * @param excludeIds 
    * @returns 
    */
-  public static async getLatestPosts(user: User|undefined, limit: number = 3, excludeIds: number[] = []) {
+  public static async getLatestPosts(user: User|undefined, limit: number | undefined = undefined, excludeIds: number[] = []) {
     if (!user) return []
 
     const results = await user.related('watchlist').query()
@@ -18,7 +18,7 @@ export default class WatchlistService {
       .if(excludeIds.length, query => query.whereNotIn('postId', excludeIds))
       .preload('post', query => query.apply(scope => scope.forDisplay()))
       .orderBy('createdAt', 'desc')
-      .if(limit, query => query.limit(limit))
+      .if(limit, query => query.limit(limit!))
 
     return results.map(r => r.post)
   }
@@ -30,7 +30,7 @@ export default class WatchlistService {
    * @param excludeIds 
    * @returns 
    */
-  public static async getLatestCollections(user: User|undefined, limit: number = 3, excludeIds: number[] = []) {
+  public static async getLatestCollections(user: User|undefined, limit: number | undefined = undefined, excludeIds: number[] = []) {
     if (!user) return []
 
     const results = await user.related('watchlist').query()
@@ -43,7 +43,7 @@ export default class WatchlistService {
         .wherePublic()
       )
       .orderBy('createdAt', 'desc')
-      .if(limit, query => query.limit(limit))
+      .if(limit, query => query.limit(limit!))
 
     return results.map(r => r.collection)
   }
