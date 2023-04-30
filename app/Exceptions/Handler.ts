@@ -32,6 +32,7 @@ export default class ExceptionHandler extends HttpExceptionHandler {
   }
 
   public async handle(error: any, ctx: HttpContextContract) {
+    console.log({ error })
     if (error.code === 'E_VALIDATION_FAILURE') {
       await super.handle(error, ctx)
       console.log({ error })

@@ -118,7 +118,7 @@ Route.get('/guidelines', 'LegalsController.guidelines').as('legals.guidelines')
 /**
  * fragments, modals, drawers
  */
-Route.get('/users/menu', 'UsersController.menu').as('users.menu')
+Route.get('/users/menu', 'UsersController.menu').as('users.menu').middleware(['auth'])
 Route.patch('/histories/progression/toggle', 'ProgressionsController.toggle').as('histories.progression.toggle')
 Route.patch('/watchlist/:table/toggle', 'WatchlistsController.toggle').as('watchlists.toggle')
 Route.get('/fragments/requests/lessons/:id/:fragment', 'LessonRequestsController.fragment').as('requests.lessons.fragment')
@@ -131,6 +131,7 @@ Route.get('/fragments/:fragment/:id', 'FragmentsController.show').as('fragments.
  * api
  */
 Route.put('/api/user/theme', 'ThemesController.update').as('api.user.theme')
+Route.get('/api/user/check', 'UsersController.check').as('api.user.check')
 
 
 
@@ -139,3 +140,4 @@ Route.put('/api/user/theme', 'ThemesController.update').as('api.user.theme')
  */
 Route.get('/go/posts/:id/comment/:commentId', 'GoController.postComment').as('go.posts.comment')
 Route.get('/go/requests/lessons/:id/comment/:commentId', 'GoController.lessonRequestComment').as('go.requests.lessons.comment')
+Route.get('/go/auth/reset', 'GoController.authReset').as('go.auth.reset')

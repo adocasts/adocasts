@@ -43,4 +43,9 @@ export default class GoController {
 
     return response.redirect(`/requests/lessons/${lessonRequest.id}#comment${commentId}`)
   }
+
+  public async authReset({ response, session }: HttpContextContract) {
+    session.flash('warning', 'Your session has expired.')
+    return response.redirect().back()
+  }
 }

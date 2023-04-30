@@ -13,4 +13,8 @@ export default class UsersController {
 
     return view.render('pages/users/menu', { notifications })
   }
+
+  public async check({ auth }: HttpContextContract) {
+    return !!auth.user
+  }
 }
