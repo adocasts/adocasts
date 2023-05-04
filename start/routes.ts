@@ -83,6 +83,7 @@ Route.get('/img/*', 'AssetsController.show').where('path', /.*/).as('img');
  * main pages
  */
 Route.get('/', 'HomeController.index').as('home.index')
+Route.get('/analytics', 'HomeController.analytics').as('analytics')
 Route.get('/search', 'SearchController.index').as('search.index')
 Route.post('/search', 'SearchController.search').as('search.search')
 Route.get('/series', 'SeriesController.index').as('series.index')

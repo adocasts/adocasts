@@ -10,7 +10,7 @@
   @if (progress.isCompleted)
     @set('progressPercent', 100)
   @endif
-{{ progress.watchPercent }} - - {{ progress.readPercent }}
+
   <div class="absolute {{ left }} {{ bottom }} {{ right }} {{ bg }} bg-opacity-30 h-2 rounded-full">
     <div class="bg-gradient-to-br from-brand-600 via-brand-700 to-brand-800 h-2 rounded-full" style="width: {{ progressPercent }}%"></div>
   </div>
