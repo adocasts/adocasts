@@ -43,6 +43,11 @@ export default class LessonRequestQueryBuilder {
     return this
   }
 
+  public whereNotState(stateId: States) {
+    this.query = this.query.whereNot({ stateId })
+    return this
+  }
+
   public wherePattern(pattern: string | undefined) {
     if (!pattern) return this
 

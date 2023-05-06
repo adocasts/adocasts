@@ -1,3 +1,5 @@
+@set('canComment', typeof canComment == 'boolean' ? canComment : true)
+
 <ol class="ml-8">
   @each(comment in nodeComments)
     @set('childComments', comments.filter(c => c.replyTo === comment.id))
@@ -96,14 +98,16 @@
             @endif
 
             @can('CommentPolicy.reply', comment)
-              <button type="button" @click="create( {{ comment.id }} )"
-                class="text-slate-900 hover:text-slate-950 transition flex items-center gap-3 text-sm bg-slate-100 rounded-lg py-1 px-3 opacity-0 group-hover:opacity-100">
-                @!icons.messageTwo()
-                Reply
-              </button> 
+              @if (canComment)
+                <button type="button" @click="create( {{ comment.id }} )"
+                  class="text-slate-900 hover:text-slate-950 transition flex items-center gap-3 text-sm bg-slate-100 rounded-lg py-1 px-3 opacity-0 group-hover:opacity-100">
+                  @!icons.messageTwo()
+                  Reply
+                </button> 
+              @endif
             @endcan
 
-            @if (!auth.user)
+            @if (!auth.user && canComment)
               <p class="opacity-0 group-hover:opacity-100 text-sm duration-150 ml-6">
                 Please
                 <a href="{{ route('auth.signin') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">

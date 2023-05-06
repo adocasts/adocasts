@@ -18,7 +18,7 @@
       @!fragments.requestStatus({ lessonRequest, className: 'bg-slate-50 text-slate-900 px-3 py-2 rounded-full !mt-0' })
 
       <p class="text-slate-500">
-        <span class="truncate">Requested by {{ lessonRequest.user.username }}</span>&nbsp;
+        <span class="truncate">Requested by {{ lessonRequest.stateId == States.ARCHIVED ? '[deleted]' : lessonRequest.user.username }}</span>&nbsp;
         <time datetime="{{ lessonRequest.createdAt.toString() }}">{{ timeago(lessonRequest.createdAt) }}</time>
       </p>
     </div>
@@ -29,23 +29,27 @@
 @section('content')
   <div class="grid-post-content -mx-3">
     <aside class="w-full post-aside actions top mb-6 px-3 flex flex-col gap-y-3">
-      @!fragments.requestAdminActions({ lessonRequest })
+      @if (lessonRequest.stateId !== States.ARCHIVED)
+        @!fragments.requestAdminActions({ lessonRequest })
 
-      @can('LessonRequestPolicy.update', lessonRequest)
-        @buttons.primary.inverse({ href: '', attrs: 'up-follow', block: true, className: 'gap-3' })
-          @!icons.edit()
-          Edit Request
-        @end
-      @endcan
+        @can('LessonRequestPolicy.update', lessonRequest)
+          @buttons.primary.inverse({ href: route('requests.lessons.edit', { id: lessonRequest.id }), attrs: 'up-follow', block: true, className: 'gap-3' })
+            @!icons.edit()
+            Edit Request
+          @end
+        @endcan
 
-      @can('LessonRequestPolicy.delete', lessonRequest)
-        @buttons.danger.inverse({ href: '', attrs: 'up-follow', block: true, className: 'gap-3' })
-          @!icons.trash()
-          Delete Request
-        @end
+        @can('LessonRequestPolicy.delete', lessonRequest)
+          @form.delete({ action: route('requests.lessons.destroy', { id: lessonRequest.id }), attrs: 'up-submit up-confirm="Are you sure you want to delete this request?"' })
+            @buttons.danger.inverse({ type: 'submit', block: true, className: 'gap-3' })
+              @!icons.trash()
+              Delete Request
+            @end
+          @end
 
-        <div class="border-b border-slate-200 my-6"></div>
-      @endcan
+          <div class="border-b border-slate-200 my-6"></div>
+        @endcan
+      @endif
 
       <div class="hidden xl:block">
         @!ads.vertical()
@@ -55,10 +59,12 @@
     <main class="w-full px-3">
       <div class="bg-slate-50 rounded-xl p-3 sm:p-6 mb-6 group border border-slate-200">
         <div class="mb-3 flex items-center">
-          <img src="{{ lessonRequest.user.avatar }}" class="w-10 h-10 rounded-xl mr-3" />
+          @if (lessonRequest.stateId !== States.ARCHIVED)
+            <img src="{{ lessonRequest.user.avatar }}" class="w-10 h-10 rounded-xl mr-3" />
+          @endif
           <div class="flex flex-col">
             <h6 class="text-base font-semibold">
-              <span class="inline-block mr-3">{{ lessonRequest.user.username }}</span>
+              <span class="inline-block mr-3">{{ lessonRequest.stateId == States.ARCHIVED ? '[deleted]' : lessonRequest.user.username }}</span>
               <span class="text-slate-500 font-normal">
                 <time datetime="{{ lessonRequest.createdAt.toString() }}">{{ timeago(lessonRequest.createdAt) }}</time>
               </span>
@@ -77,6 +83,7 @@
         cta: 'Have something to add? Let us know below!',
         descriptor: 'Reply',
         lessonRequest: lessonRequest,
+        canComment: lessonRequest.stateId !== States.ARCHIVED,
         comments,
         commentsCount
       })

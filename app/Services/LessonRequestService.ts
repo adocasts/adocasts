@@ -60,6 +60,7 @@ export default class LessonRequestService {
       .setSort(sortBy)
       .wherePattern(pattern)
       .whereState(state)
+      .whereNotState(States.ARCHIVED)
       .preloadRelations()
       .build()
   }

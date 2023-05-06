@@ -1,6 +1,7 @@
 import Status from "App/Enums/Status"
 import Route from '@ioc:Adonis/Core/Route'
 import LessonRequestQueryBuilder from "./LessonRequest"
+import States from "App/Enums/States"
 
 export default class LessonRequestPaginatedQueryBuilder extends LessonRequestQueryBuilder {
   private perPage = 20
@@ -19,6 +20,11 @@ export default class LessonRequestPaginatedQueryBuilder extends LessonRequestQue
 
   public whereStatus(statusId: Status) {
     this.query = this.query.where({ statusId })
+    return this
+  }
+
+  public whereNotState(stateId: States) {
+    this.query = this.query.whereNot({ stateId })
     return this
   }
 

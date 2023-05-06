@@ -1,9 +1,10 @@
 @set('rootComments', comments.filter(c => !c.replyTo))
 @set('cta', cta ?? 'Join The Discussion')
 @set('descriptor', descriptor ?? 'Comment')
+@set('canComment', typeof canComment == 'boolean' ? canComment : true)
 
 <div x-cloak x-data="comments">
-  @if (auth.user)
+  @if (auth.user && canComment)
     @set('className', lessonRequestId ? 'text-base text-slate-600' : 'text-xl')
     <h4 class="font-semibold mt-12 mb-6 p-6 flex rounded-xl bg-slate-50 border border-slate-200 {{ className }}">
       {{ cta }}
@@ -15,7 +16,7 @@
     @if (postId)
       @!comments.form({ postId, lessonRequest, includeScript: true })
     @endif
-  @else
+  @elseif (canComment)
     <div class="bg-slate-50 border border-slate-200 rounded-xl p-6 mt-6">
       <h4 class="font-semibold text-lg mb-2">
         Join The Discussion!
@@ -38,10 +39,10 @@
   @endif
 
   <div class="-ml-8 mt-6">
-    @!comments.list({ postId, lessonRequest, comments, nodeComments: rootComments })
+    @!comments.list({ postId, lessonRequest, comments, nodeComments: rootComments, canComment })
   </div>
 
-  @if (auth.user && lessonRequest)
+  @if (auth.user && lessonRequest && canComment)
     @!comments.form({ postId, lessonRequest, includeScript: true })
   @endif
 </div>

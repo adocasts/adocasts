@@ -1,3 +1,4 @@
+import States from "App/Enums/States";
 import LessonRequest from "App/Models/LessonRequest";
 import User from "App/Models/User";
 import BasePolicy from "./BasePolicy";
@@ -28,11 +29,13 @@ export default class LessonRequestPolicy extends BasePolicy {
   }
 
   public async update(user: User, lessonRequest: LessonRequest) {
+    if (lessonRequest.stateId === States.ARCHIVED) return false
     const isOwner = lessonRequest.userId === user.id
     return isOwner
   }
 
   public async delete(user: User, lessonRequest: LessonRequest) {
+    if (lessonRequest.stateId === States.ARCHIVED) return false
     const isOwner = lessonRequest.userId === user.id
     return isOwner
   }
