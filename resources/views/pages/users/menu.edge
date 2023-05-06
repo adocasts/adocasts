@@ -18,12 +18,16 @@
         General
       @end
 
-      @header.navLink({ href: '' })
-        Security
+      @header.navLink({ href: '/users/settings#account' })
+        Account
       @end
 
-      @header.navLink({ href: '' })
-        Preferences
+      @header.navLink({ href: '/users/settings#notifications' })
+        Notifications
+      @end
+
+      @header.navLink({ href: '/users/settings#data' })
+        Data
       @end
 
       @if (auth.user?.isAdmin)

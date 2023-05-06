@@ -6,12 +6,12 @@ export default class TurnstileService {
   constructor(protected ctx: HttpContextContract) {}
 
   public async check() {
-    // if (this.ctx.session.get('TURNSTILE_STATUS') == true) {
-    //   return true
-    // }
-
+    if (this.ctx.session.get('TURNSTILE_STATUS') == true) {
+      return true
+    }
+    
     const token = this.ctx.request.input('cf-turnstile-response')
-    const ip = this.ctx.request.ip()
+    const ip = this.ctx.request.header('CF-Connecting-IP')
 
     const { data } = await axios.post('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       secret: Env.get('TURNSTILE_SECRET_KEY'),
@@ -25,8 +25,6 @@ export default class TurnstileService {
     if (!data.success) {
       this.ctx.session.flash('error', 'Your request has been flagged by Cloudflare and has not been processed')
     }
-
-    console.log({ data })
 
     return data.success
   }

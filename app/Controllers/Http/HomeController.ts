@@ -44,4 +44,8 @@ export default class HomeController {
   public async analytics({ view }: HttpContextContract) {
     return view.render('pages/analytics')
   }
+
+  public async uses({ view }: HttpContextContract) {
+    return view.render('pages/uses')
+  }
 }

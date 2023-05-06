@@ -117,6 +117,10 @@ Route.get('/users/watchlist', 'UsersController.watchlist').as('users.watchlist')
 Route.get('/users/history', 'UsersController.history').as('users.history').middleware(['auth'])
 Route.get('/contact', 'ContactController.index').as('contact.index')
 Route.post('/contact', 'ContactController.store').as('contact.store').middleware(['turnstile'])
+Route.get('/sitemap',     'SyndicationController.sitemap').as('sitemap')
+Route.get('/sitemap.xml', 'SyndicationController.xml').as('sitemap.xml')
+Route.get('/rss',         'SyndicationController.feed').as('rss')
+Route.get('/uses', 'HomeController.uses').as('uses')
 
 
 

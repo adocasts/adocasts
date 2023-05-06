@@ -6,7 +6,7 @@ export default class Turnstile {
     if (!await turnstile.check()) {
       return response.redirect().back()
     }
-console.log('here')
+
     await next()
   }
 }
