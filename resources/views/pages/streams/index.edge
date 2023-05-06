@@ -4,11 +4,7 @@
 
 @section('hero')
 
-  @if (showStream)
-    @headings.hero()
-      @!lessons.playerLivestream({ post: live })
-    @end
-  @else
+  @if (!showStream)
     @headings.hero({ subtitle })
       @slot('title')
         Livestreams <span class="font-normal">&mdash; Page {{ items.currentPage }}</span>
@@ -22,6 +18,10 @@
 
   <div class="flex flex-wrap -mx-6">
     <div class="w-full md:w-2/3 px-6 -ml-3">
+      @if (showStream)
+          @!lessons.playerLivestream({ post: live })
+      @endif
+
       @each ((item, i) in items)
         @!lessons.listItem({
           item,
