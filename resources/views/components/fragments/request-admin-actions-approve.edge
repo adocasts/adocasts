@@ -1,5 +1,5 @@
 @can('LessonRequestPolicy.approve', lessonRequest)
-  <div hx-admin-actions class="flex flex-col gap-y-3">
+  <div up-admin-actions class="flex flex-col gap-y-3">
     @form.patch({ action: route('requests.lessons.approve', { id: lessonRequest.id }), attrs: 'up-submit' })
       <div class="flex items-center gap-3">
         @buttons.brand.inverse({ type: 'submit', block: true, className: 'gap-3 flex-1' })
@@ -7,7 +7,7 @@
           Confirm &amp; Approve
         @end
 
-        @buttons.primary.inverse({ href: '', attrs: `hx-get="${route('requests.lessons.fragment', { id: lessonRequest.id, fragment: 'request-admin-actions' })}" hx-target="[hx-admin-actions]" hx-swap="outerHTML"`, className: 'gap-3' })
+        @buttons.primary.inverse({ href: route('requests.lessons.fragment', { id: lessonRequest.id, fragment: 'request-admin-actions' }), attrs: `up-follow" up-target="[up-admin-actions]"`, className: 'gap-3' })
           @!icons.x()
           Cancel
         @end

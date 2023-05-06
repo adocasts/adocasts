@@ -21,11 +21,11 @@
     @endslot
 
     @form.post({
+      action: route('requests.lessons.search'),
       attrs: `
-        hx-post="${route('requests.lessons.search')}"
-        hx-target="[hx-request-list]"
-        hx-swap="outerHTML"
-        hx-trigger="input delay:500ms"
+        up-autosubmit
+        up-target="[up-request-list]"
+        up-delay="500"
       `
     })
       <div class="flex items-center gap-6 mt-6">

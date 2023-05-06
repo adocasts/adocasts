@@ -30,19 +30,13 @@
     @endif
   </div>
 
-{{--  @form.patch({ id: 'completedForm', attrs: `hx-patch="${route('histories.progression.toggle')}" hx-target="[hx-complete]"` })--}}
-{{--    <input type="hidden" name="postId" value="{{ post.id }}" />--}}
-{{--    <input type="hidden" name="collectionId" value="{{ series?.id }}" />--}}
-{{--    <input type="hidden" name="route" value="{{ request.ctx.route?.name }}" />--}}
-{{--  @end--}}
-
-  @form.patch({ id: 'completedForm', action: route('histories.progression.toggle'), attrs: `up-submit up-target="[hx-complete]"` })
+  @form.patch({ id: 'completedForm', action: route('histories.progression.toggle'), attrs: `up-submit up-target="[up-complete]"` })
     <input type="hidden" name="postId" value="{{ post.id }}" />
     <input type="hidden" name="collectionId" value="{{ series?.id }}" />
     <input type="hidden" name="route" value="{{ request.ctx.route?.name }}" />
   @end
 
-  @form.post({ id: 'watchlistForm', attrs: `hx-patch="${route('watchlists.toggle', { table: 'posts' })}" hx-target="[hx-watchlist]"` })
+  @form.patch({ id: 'watchlistForm', action: route('watchlists.toggle', { table: 'posts' }), attrs: `up-submit up-target="[up-watchlist]"` })
     <input type="hidden" name="postId" value="{{ post.id }}" />
   @end
 @endif

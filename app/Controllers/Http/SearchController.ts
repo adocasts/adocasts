@@ -26,7 +26,7 @@ export default class SearchController {
     const topics = await TaxonomyService.search(pattern)
     const newPath = Route.makeUrl('search.index', {}, { qs: { pattern } })
 
-    response.header('HX-Push-Url', newPath)
+    response.header('X-Up-Location', newPath)
 
     return view.render('components/search/results', {
       pattern,

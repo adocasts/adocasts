@@ -1,4 +1,4 @@
-<form hx-put="{{ route('api.user.theme') }}" hx-target="html" hx-swap="outerHTML">
+<form action="{{ route('api.user.theme', {}, { _method: 'PUT' }) }}" up-submit up-target="html">
   {{ csrfField() }}
   
   @dropdown.item({ type: 'button', onClick: `document.body.parentElement.classList.remove('light', 'dark', 'system'); document.body.parentElement.classList.add('${value}')` })

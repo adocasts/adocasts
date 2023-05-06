@@ -40,7 +40,7 @@ export default class LessonRequestsController {
     const lessonRequests = await LessonRequestService.search(data)
     const newPath = Route.makeUrl('requests.lessons.index', {}, { qs: data })
 
-    response.header('HX-Push-Url', newPath)
+    response.header('X-Up-Location', newPath)
     
     return view.render('components/lessons/request-list', { lessonRequests })
   }
