@@ -1,5 +1,15 @@
 @layout('layouts/app')
 
+@section('meta')
+  @!meta.tags({
+    url: route('topics.show', { slug: topic.slug }),
+    title: topic.name,
+    desc: excerpt(topic.description),
+    asset: topic.asset,
+    index: true
+  })
+@endsection
+
 @section('hero')
 
   <div class="relative">

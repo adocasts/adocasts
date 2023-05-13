@@ -1,5 +1,15 @@
 @layout('layouts/app')
 
+@section('meta')
+  @!meta.tags({
+    url: route('lessons.index'),
+    title: 'Latest Lessons',
+    desc: "Browse our latest lessons below. Most of our lessons can be viewed in both written and screencast format.",
+    asset: null,
+    index: true
+  })
+@endsection
+
 @section('hero')
 
   @headings.hero({

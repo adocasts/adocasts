@@ -45,7 +45,7 @@ export default class GoController {
   }
 
   public async authReset({ response, session }: HttpContextContract) {
-    session.flash('warning', 'Your session has expired.')
+    session.flash('warning', 'Your session has expired')
     return response.redirect().back()
   }
 }

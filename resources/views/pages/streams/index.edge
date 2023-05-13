@@ -2,6 +2,16 @@
 @set('showStream', live && items.currentPage === 1)
 @set('subtitle', `Watch us build things using AdonisJS in our live and on-demand livestreams.`)
 
+@section('meta')
+  @!meta.tags({
+    url: route('streams.index'),
+    title: 'Livestreams',
+    desc: "Watch us build things using AdonisJS in our live and on-demand livestreams.",
+    asset: null,
+    index: true
+  })
+@endsection
+
 @section('hero')
 
   @if (!showStream)

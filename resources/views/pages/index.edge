@@ -1,6 +1,16 @@
 @layout('layouts/app')
 @set('postSkip', 0)
 
+@section('meta')
+  @!meta.tags({
+    url: '/',
+    title: "Your Ultimate Resource for AdonisJS Lessons and Videos",
+    desc: `Take your AdonisJS skills to the next level with Adocasts. Our comprehensive video lessons cover everything from the basics to advanced topics. Join our community today and start learning!`,
+    asset: null,
+    index: true
+  })
+@endsection
+
 @section('hero')
 
   <div class="mb-16">

@@ -1,5 +1,15 @@
 @layout('layouts/app')
 
+@section('meta')
+  @!meta.tags({
+    url: route('search', {}, { qs: { term } }),
+    title: 'Search',
+    desc: 'Search all Adocasts lessons, series, and topics',
+    asset: null,
+    index: false
+  })
+@endsection
+
 @section('content')
 
   <div class="p-6 w-full {{ up.isPage ? '' : 'md:max-w-[600px] lg:min-w-[900px] max-w-2xl' }}">

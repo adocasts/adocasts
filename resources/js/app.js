@@ -11,9 +11,9 @@ window.hideBanner = async function(target) {
   await axios.post('/api/session/set', { target, value: false })
 }
 
-window.onfocus = async function () {
+window.onfocus = async function() {
   const { data: isAuthenticated } = await axios.get('/api/user/check')
-  
+
   if (window.isAuthenticated && !isAuthenticated) {
     window.location = '/go/auth/reset'
   }

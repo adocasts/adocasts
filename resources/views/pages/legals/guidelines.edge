@@ -1,5 +1,17 @@
 @layout('layouts/app')
 
+@section('meta')
+
+@!meta.tags({
+  url: route('guidelines'),
+  title: "Content Guidelines",
+  desc: "Content contribution guidelines for the Adocasts platform.",
+  asset: null,
+  index: true
+})
+
+@endsection
+
 @section('hero')
 
   @!headings.hero({

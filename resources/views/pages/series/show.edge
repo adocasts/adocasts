@@ -1,5 +1,15 @@
 @layout('layouts/app')
 
+@section('meta')
+  @!meta.tags({
+    url: route('series.show', { slug: series.slug }),
+    title: series.name,
+    desc: excerpt(series.description, 180),
+    asset: series.assets,
+    index: true
+  })
+@endsection
+
 @section('hero')
 
   {{--  @!collections.heroShow({ series })  --}}

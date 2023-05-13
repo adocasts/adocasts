@@ -1,5 +1,17 @@
 @layout('layouts/app')
 
+@section('meta')
+
+@!meta.tags({
+  url: route('contact.index'),
+  title: "Contact Us",
+  desc: "Have an issue, question, or other inquiry? Find our contact information here or reach out directly via our form.",
+  asset: null,
+  index: true
+})
+
+@endsection
+
 @section('content')
   <div class="relative isolate">
     <div class="mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2">

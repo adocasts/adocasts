@@ -146,7 +146,6 @@ Route.put('/api/user/theme', 'ThemesController.update').as('api.user.theme')
 Route.get('/api/user/check', 'UsersController.check').as('api.user.check')
 
 
-
 /**
  * go
  */

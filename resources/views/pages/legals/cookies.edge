@@ -1,5 +1,17 @@
 @layout('layouts/app')
 
+@section('meta')
+
+@!meta.tags({
+  url: route('cookies'),
+  title: "Cookie Policy",
+  desc: "Cookie policy for the Adocasts platform.",
+  asset: null,
+  index: true
+})
+
+@endsection
+
 @section('hero')
 
   @!headings.hero({

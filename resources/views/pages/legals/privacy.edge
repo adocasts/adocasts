@@ -1,5 +1,17 @@
 @layout('layouts/app')
 
+@section('meta')
+
+@!meta.tags({
+  url: route('privacy'),
+  title: "Privacy Policy",
+  desc: "Details of Adocasts' privacy policy",
+  asset: null,
+  index: true
+})
+
+@endsection
+
 @section('hero')
 
   @!headings.hero({

@@ -1,0 +1,41 @@
+@set('seriesTitle', series && !title.startsWith(series.name) ? `${series.name}: ${title}` : title)
+@set('asset', asset ?? { filename: 'brand/og-2022.png' })
+
+<title>
+  @if (title)
+    {{ seriesTitle }} - {{ env('APP_BRAND') }}
+  @else
+    {{ titleFallback }}
+  @endif
+</title>
+
+<meta name="description" content="{{ desc }}" />
+<link rel="canonical" href="https://adocasts.com{{ canonical || url }}" />
+
+{{-- OG --}}
+<meta property="og:type" content="article" />
+<meta property="og:title" content="{{ seriesTitle }}" />
+<meta property="og:description" content="{{ desc }}" />
+<meta property="og:url" content="{{ url }}" />
+<meta property="og:site_name" content="adocasts.com" />
+@if (asset)
+  <meta property="og:image" content="https://adocasts.com/img/{{ asset.filename }}?w=900" />
+@endif
+
+{{-- Twitter --}}
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ seriesTitle }}">
+<meta name="twitter:description" content="{{ desc }}">
+<meta name="twitter:site" content="@adocasts">
+<meta name="twitter:creator" content="@tomgobich">
+@if (asset)
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://adocasts.com/img/{{ asset.filename }}?w=900">
+@endif
+
+{{-- Robots --}}
+@if (index)
+  <meta name="robots" content="index, follow" />
+@elseif (index === false)
+  <meta name="robots" content="noindex, nofollow" />
+@endif
