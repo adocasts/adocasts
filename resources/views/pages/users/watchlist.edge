@@ -1,5 +1,15 @@
 @layout('layouts/app')
 
+@section('meta')
+  @!meta.tags({
+    url: '/',
+    title: "Your Watchlist",
+    desc: `Browse all the lessons, posts, and series you've added to your watchlist.`,
+    asset: null,
+    index: true
+  })
+@endsection
+
 @section('hero')
 
   @!headings.hero({

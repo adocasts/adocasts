@@ -1,6 +1,15 @@
 @layout('layouts/app')
-
 @set('skipAccent', true)
+
+@section('meta')
+  @!meta.tags({
+    url: route('requests.lessons.index'),
+    title: lessonRequest.name,
+    desc: stripHTML(excerpt(lessonRequest.body, 200)),
+    asset: null,
+    index: true
+  })
+@endsection
 
 @section('hero')
 

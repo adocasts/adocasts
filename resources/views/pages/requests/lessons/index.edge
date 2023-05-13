@@ -1,6 +1,15 @@
 @layout('layouts/app')
-
 @set('skipAccent', true)
+
+@section('meta')
+  @!meta.tags({
+    url: route('requests.lessons.index'),
+    title: "Lesson Requests",
+    desc: `Track, submit, and vote for lesson requests to see a topic covered on Adocasts`,
+    asset: null,
+    index: true
+  })
+@endsection
 
 @section('hero')
 

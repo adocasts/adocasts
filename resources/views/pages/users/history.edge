@@ -1,5 +1,15 @@
 @layout('layouts/app')
 
+@section('meta')
+  @!meta.tags({
+    url: '/',
+    title: "Your Progression History",
+    desc: `Browse the series, lessons, and posts you've recently watched`,
+    asset: null,
+    index: true
+  })
+@endsection
+
 @section('hero')
 
   @!headings.hero({

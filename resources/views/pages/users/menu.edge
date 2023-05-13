@@ -1,5 +1,15 @@
 @layout('layouts/app')
 
+@section('meta')
+  @!meta.tags({
+    url: '/',
+    title: "Your Menu",
+    desc: `View your latest notifications and just to pages specifically for you`,
+    asset: null,
+    index: true
+  })
+@endsection
+
 @section('content')
 
   <div class="flex gap-x-6 p-6">

@@ -1,6 +1,14 @@
 @layout('layouts/app')
-
 @set('skipAccent', true)
+
+@section('meta')
+  @!meta.tags({
+    url: route('requests.lessons.create'),
+    title: "Submit A Lesson Requests",
+    asset: null,
+    index: true
+  })
+@endsection
 
 @section('hero')
 
