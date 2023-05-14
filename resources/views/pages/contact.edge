@@ -31,17 +31,17 @@
             </div>
             <div class="flex gap-x-4">
               <dt class="flex-none">
-                <span class="sr-only">Telephone</span>
+                <span class="sr-only">Timezone</span>
                 @!component('components/icons/clock-hour-4', { className: 'w-6 h-7 text-slate-400' })
               </dt>
-              <dd><a class="hover:text-slate-900" href="tel:+1 (555) 234-5678">+1 (555) 234-5678</a></dd>
+              <dd>Eastern Daylight Time ({{ DateTime.now().setZone('America/New_York').toFormat('HH:mm:ss') }})</dd>
             </div>
             <div class="flex gap-x-4">
               <dt class="flex-none">
                 <span class="sr-only">Email</span>
                 @!icons.mail({ className: 'w-6 h-7 text-slate-400' })
               </dt>
-              <dd><a class="hover:text-slate-900" href="mailto:hello@example.com">hello@example.com</a></dd>
+              <dd><a class="hover:text-slate-900" href="mailto:contact@adocasts.com">contact@adocasts.com</a></dd>
             </div>
           </dl>
         </div>

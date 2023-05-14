@@ -74,7 +74,7 @@
     item('Tailwind CSS Intellisense', 'Intellisense for Tailwind', 'https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss')
   ])
 
-  <div class="-mx-4 sm:-mx-6 border-t border-gray-300 relative -top-6 pt-8 mt-3">
+  <div class="-mx-4 sm:-mx-6 border-t border-slate-300 relative -top-6 pt-8 mt-3">
     @!headings.hero({
       title: 'Uses',
       subtitle: `A collection of tech and software used at ${ env('APP_BRAND') } that we deem vital to our lives as developers and content creators. Some items may be referrals.`
@@ -87,8 +87,8 @@
             @each (item in hardware)
               <li class="flex flex-wrap mb-2">
                 <a href="{{ item.href }}" target="_blank" class="font-semibold">{{ item.name }}</a>
-                <span class="px-2 text-gray-900 dark:text-gray-700">&mdash;</span>
-                <span class="text-gray-900 dark:text-gray-700">{{ item.desc }}</span>
+                <span class="px-2 text-slate-600">&mdash;</span>
+                <span class="text-slate-600">{{ item.desc }}</span>
               </li>
             @endeach
           </ul>
@@ -106,8 +106,8 @@
             @each (item in frameworks)
               <li class="flex flex-wrap mb-2">
                 <a href="{{ item.href }}" target="_blank" class="font-semibold">{{ item.name }}</a>
-                <span class="px-2 text-gray-900 dark:text-gray-700">&mdash;</span>
-                <span class="text-gray-900 dark:text-gray-700">{{ item.desc }}</span>
+                <span class="px-2 text-slate-600">&mdash;</span>
+                <span class="text-slate-600">{{ item.desc }}</span>
               </li>
             @endeach
           </ul>
@@ -119,8 +119,8 @@
             @each (item in hosting)
               <li class="flex flex-wrap mb-2">
                 <a href="{{ item.href }}" target="_blank" class="font-semibold">{{ item.name }}</a>
-                <span class="px-2 text-gray-900 dark:text-gray-700">&mdash;</span>
-                <span class="text-gray-900 dark:text-gray-700">{{ item.desc }}</span>
+                <span class="px-2 text-slate-600">&mdash;</span>
+                <span class="text-slate-600">{{ item.desc }}</span>
               </li>
             @endeach
           </ul>
@@ -134,8 +134,8 @@
             @each (item in software)
               <li class="flex flex-wrap mb-2">
                 <a href="{{ item.href }}" class="font-semibold">{{ item.name }}</a>
-                <span class="px-2 text-gray-900 dark:text-gray-700">&mdash;</span>
-                <span class="text-gray-900 dark:text-gray-700">{{ item.desc }}</span>
+                <span class="px-2 text-slate-600">&mdash;</span>
+                <span class="text-slate-600">{{ item.desc }}</span>
               </li>
             @endeach
           </ul>
@@ -147,8 +147,8 @@
             @each (item in ide)
               <li class="flex flex-wrap mb-2">
                 <a href="{{ item.href }}" class="font-semibold">{{ item.name }}</a>
-                <span class="px-2 text-gray-900 dark:text-gray-700">&mdash;</span>
-                <span class="text-gray-900 dark:text-gray-700">{{ item.desc }}</span>
+                <span class="px-2 text-slate-600">&mdash;</span>
+                <span class="text-slate-600">{{ item.desc }}</span>
               </li>
             @endeach
           </ul>

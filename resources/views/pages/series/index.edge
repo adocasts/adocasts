@@ -10,16 +10,6 @@
   })
 @endsection
 
-@section('meta')
-  @!meta.tags({
-    url: route('search', {}, { qs: { term } }),
-    title: 'Search',
-    desc: 'Search all Adocasts lessons, series, and topics',
-    asset: null,
-    index: false
-  })
-@endsection
-
 @section('hero')
 
   <div class="mb-12">

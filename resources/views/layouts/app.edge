@@ -1,4 +1,5 @@
 @set('theme', auth.user?.theme || session.get('theme'))
+@set('isPostOnDeck', !!post && post.postTypeId !== PostTypes.NEWS)
 <!DOCTYPE html>
 <html lang="en" class="{{ theme ?? 'system' }} h-full">
 <head>
@@ -52,13 +53,13 @@
 
   <div class="h-full flex flex-col justify-between">
     <div>
-      <div class="{{ !!post ? 'lesson-wrapper' : '' }} relative" style="z-index: 75;" up-main-header>
+      <div class="{{ isPostOnDeck ? 'lesson-wrapper' : '' }} relative" style="z-index: 75;" up-main-header>
         <div class="page-contents header">
           @include('partials/header')
         </div>
       </div>
 
-      <div class="{{ !!post ? 'lesson-wrapper' : '' }}" x-data="{}" x-init="window.isAuthenticated = {{ !!auth.user }}" up-main>
+      <div class="{{ isPostOnDeck ? 'lesson-wrapper' : '' }}" x-data="{}" x-init="window.isAuthenticated = {{ !!auth.user }}" up-main>
         @if (live && !request.matchesRoute(route('streams.index')) && request.url() !== routePost(live, { slug: live.slug }))
           <div up-hungry>
             @!streams.banner({ post: live })
@@ -86,7 +87,7 @@
       </div>
     </div>
 
-    <div class="{{ !!post ? 'lesson-wrapper' : '' }}" up-main-footer>
+    <div class="{{ isPostOnDeck ? 'lesson-wrapper' : '' }}" up-main-footer>
       <div class="page-contents">
         @include('partials/footer')
       </div>
