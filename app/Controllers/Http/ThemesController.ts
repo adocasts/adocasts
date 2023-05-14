@@ -13,6 +13,6 @@ export default class ThemesController {
 
     await ThemeService.update(auth, session, theme)
 
-    return response.noContent()
+    return response.redirect().back()
   }
 }
