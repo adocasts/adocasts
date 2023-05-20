@@ -242,15 +242,15 @@ up.compiler('#videoPlayerPosition', position => {
 })
 
 up.on('up:location:changed', function(event) {
+  const exitPaths = ['/user/menu', '/signin', '/signup', '/histories/', '/watchlist/']
   const placeholder = document.querySelector('[video-placeholder]')
   const element = document.getElementById('lessonVideoEmbed')
 
   // if video hasn't loaded yet - don't do anything
   if (!element || element.nodeName !== 'IFRAME') return
 
-  // if opening user menu, don't do anything
-  if (event.url === '/users/menu') return
-  if (event.url === '/signin' || event.url === '/signup') return
+  // if opening one of the exit paths, don't do anything
+  if (exitPaths.some(path => event.url.toLowerCase().includes(path))) return
 
   const videoPath = placeholder.dataset.path
   const isVideoPath = videoPath == location.pathname
@@ -274,6 +274,10 @@ up.on('up:fragment:loaded', event => {
       mains.map(m => m.classList.remove('lesson-wrapper'))
     }
   }, 300)
+
+  const exitPaths = ['/user/menu', '/signin', '/signup', '/histories/', '/watchlist/']
+  const requestUrl = event.request.url.toLowerCase()
+  if (exitPaths.some(path => requestUrl.includes(path))) return
 
   const isLayer = ['modal', 'drawer'].includes(event.request.mode)
   const isSmallPlayer = !event.response.text.includes('id="videoPlayerPosition"')
