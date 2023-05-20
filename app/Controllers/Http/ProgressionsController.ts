@@ -9,4 +9,11 @@ export default class ProgressionsController {
 
     return view.render('components/fragments/complete', { userProgression })
   }
+
+  public async record({ request, response, route, auth }) {
+    const data = await request.validate(HistoryValidator)
+    const progression = await HistoryService.recordProgression(auth.user!, route.routeName, data)
+    
+    return response.json({ success: true, progression })
+  }
 }

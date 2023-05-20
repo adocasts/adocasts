@@ -142,6 +142,8 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
     }
 
     async function storeWatchingProgression(currentTime, duration) {
+      if (!window.isAuthenticated) return
+
       const watchPercent = Math.floor(currentTime / duration * 100)
       const { data } = await axios[httpMethod](httpUrl, {
         ...httpPayload,
@@ -218,12 +220,12 @@ up.compiler('#videoPlayerPosition', position => {
   const placeholder = document.querySelector('[video-placeholder]')
   placeholder?.dispatchEvent(new CustomEvent('open'))
 
-  // if (!isYtVideoPlaying) {
-  //   const embed = document.getElementById('lessonVideoEmbed')
-  //   if (embed) {
-  //     embed.dataset.keepPlayer = false
-  //   }
-  // }
+  if (!isYtVideoPlaying) {
+    const embed = document.getElementById('lessonVideoEmbed')
+    if (embed) {
+      embed.dataset.keepPlayer = false
+    }
+  }
 
   // move to small position when primary position is out of view
   if(!!window.IntersectionObserver) {
@@ -248,6 +250,7 @@ up.on('up:location:changed', function(event) {
 
   // if opening user menu, don't do anything
   if (event.url === '/users/menu') return
+  if (event.url === '/signin' || event.url === '/signup') return
 
   const videoPath = placeholder.dataset.path
   const isVideoPath = videoPath == location.pathname
@@ -277,22 +280,22 @@ up.on('up:fragment:loaded', event => {
   positionVideoPlaceholder(isSmallPlayer && !isLayer)
 })
 
-const footer = document.querySelector('footer')
-window.addEventListener('scroll', () => {
-  const placeholder = document.querySelector('[video-placeholder]')
-  const scrollBottom = document.documentElement.scrollTop + document.documentElement.clientHeight
-  const footerTop = footer.offsetTop
+// const footer = document.querySelector('footer')
+// window.addEventListener('scroll', () => {
+//   const placeholder = document.querySelector('[video-placeholder]')
+//   const scrollBottom = document.documentElement.scrollTop + document.documentElement.clientHeight
+//   const footerTop = footer.offsetTop
 
-  if (!placeholder) return
+//   if (!placeholder) return
 
-  if (scrollBottom >= footer.offsetTop) {
-    placeholder.style.bottom = `${scrollBottom - footerTop}px`
-    placeholder.style.transition = "unset"
-  } else {
-    placeholder.style.bottom = null
-    placeholder.style.transition = null
-  }
-})
+//   if (scrollBottom >= footer.offsetTop) {
+//     placeholder.style.bottom = `${scrollBottom - footerTop}px`
+//     placeholder.style.transition = "unset"
+//   } else {
+//     placeholder.style.bottom = null
+//     placeholder.style.transition = null
+//   }
+// })
 
 function positionVideoPlaceholder(isSmallPlayer = false) {
   const placeholder = document.querySelector('[video-placeholder]')

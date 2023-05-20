@@ -32,14 +32,14 @@ export default class StreamsController {
 
     const hasPlayerId = session.has('videoPlayerId')
     if (!hasPlayerId || (hasPlayerId && session.get('videoPlayerId') !== post.id)) {
-      up.setTarget('[up-main], [up-player]')
+      up.setTarget('[up-main], [up-player], [up-header]')
     }
 
     await HistoryService.recordView(auth.user, post, route?.name)
 
     session.put('videoPlayerId', post.id)
     view.share({
-      player: { post, series }
+      player: { post, series, userProgression }
     })
 
     return view.render('pages/lessons/show', { post, series, comments, commentsCount, userProgression, views })

@@ -8,10 +8,12 @@ export default class ThemesController {
    * @param param0 
    * @returns 
    */
-  public async update({ request, response, auth, session }: HttpContextContract) {
+  public async update({ request, response, auth, session, up }: HttpContextContract) {
     const { theme } = await request.validate(ThemeValidator)
 
     await ThemeService.update(auth, session, theme)
+
+    up.setTarget('[up-theme]')
 
     return response.redirect().back()
   }

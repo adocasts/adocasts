@@ -9,14 +9,13 @@
     class="bg-slate-50 rounded-t-xl lg:rounded-none xl:rounded-t-xl shadow-xl w-64 fixed bottom-0 right-3 z-50"
     data-post-id="{{ post.id }}""
     @close="close"
-    @open="open" up-keep>
+    @open="open" up-keep="{{ userProgression?.id }}">
     <div id="videoContents" class="flex flex-row xl:flex-col">
       @if (post.livestreamUrl && post.isLive)
         <div class="mb-3">
           @!lessons.liveIndicator()
         </div>
       @endif
-
       <div class="w-full aspect-video relative rounded-xl overflow-hidden">
         <div
           id="lessonVideoEmbed"
@@ -24,7 +23,7 @@
           data-is-live="{{ post.livestreamUrl && post.isLive }}"
           data-video-id="{{ post.isLive && post.livestreamUrl ? post.streamId : post.videoId }}"
           data-watch-seconds="{{ userProgression?.watchSeconds ?? 0 }}"
-          {{--  data-http-url="{{ route('api.histories.progression', { id: userProgression?.id }) }}"  --}}
+          data-http-url="{{ route('api.histories.progression', { id: userProgression?.id }) }}"
           data-payload-post-id="{{ post.id }}"
           data-payload-collection-id="{{ series?.id }}"
           data-payload-user-id="{{ auth.user?.id }}"

@@ -112,6 +112,51 @@ export default class HistoryService {
     })
   }
 
+  /**
+   * creates a new or updates the latest matching history progression record with new history event
+   * @param user 
+   * @param routeName 
+   * @param data 
+   * @returns 
+   */
+  public static async recordProgression(user: User, routeName: string | undefined, data: HistoryValidator['schema']['props']) {
+    const progression = await this.getProgressionOrNew(user, routeName, data)
+
+    // if new value is less than previously recorded value, ditch new value
+    if (typeof data.watchSeconds === 'number' && progression.watchSeconds && data.watchSeconds < progression.watchSeconds) {
+      delete data.watchPercent
+      delete data.watchSeconds
+    }
+
+    // if new value is less than previously recorded value, ditch new value
+    if (typeof data.readPercent === 'number' && progression.readPercent && data.readPercent < progression.readPercent) {
+      delete data.readPercent
+    }
+
+    progression.merge(data)
+    progression.isCompleted = this.isPercentCompleted(progression)
+
+    await progression.save()
+
+    return progression
+  }
+
+  /**
+   * returns whether the provided history record has been completed 
+   * or is close enough to be considered completed
+   * @param progression 
+   * @returns 
+   */
+  public static isPercentCompleted(progression: History) {
+    if (progression.isCompleted) return true
+
+    if (typeof progression.watchPercent === 'number' && progression.watchPercent >= this.completedPercentThreshold) {
+      return true
+    }
+
+    return typeof progression.readPercent === 'number' && progression.readPercent >= this.completedPercentThreshold
+  }
+
   public static async getLatestSeriesProgress(user: User, limit: number | undefined = undefined) {
     return History.query()
       .distinctOn('collectionId')
