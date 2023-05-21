@@ -21,24 +21,36 @@
 
 @section('content')
 
-  <div class="w-full flex flex-col py-8 -mx-3">
-    <div class="px-3">
-      @!headings.panel({ title: 'Series Progress' })
+  @if (!collections?.length && !posts?.length)
+    <div class="w-full flex flex-col">
+      <div class="border-2 border-dashed border-slate-300 p-3 rounded-md max-w-2xl">
+        @!headings.panel({ title: `No Progression Found` })
+        Looks like you haven't started watching lessons yet.<br/>
+        Are you new to AdonisJS? Our <a class="anchor" href="/series/lets-learn-adonisjs-5" up-follow>Let's Learn series</a> is a great place to start!
+      </div>
     </div>
-    <div class="flex w-full flex-wrap mb-6">
-      @each (progression in collections)
-        @!collections.progressionCard({ progression, className: 'w-full md:w-1/2 lg:w-1/4 px-3 mb-6' })
-      @endeach
+  @else
+    <div class="w-full flex flex-col py-8 -mx-3">
+      <div class="px-3">
+        @!headings.panel({ title: 'Series Progress' })
+      </div>
+      <div class="flex w-full flex-wrap mb-6">
+        @each (collection in collections)
+          @!collections.progressionCard({ collection, className: 'w-full md:w-1/2 lg:w-1/4 px-3 mb-6' })
+        @endeach
+      </div>
     </div>
-  </div>
 
-  <div class="px-3">
-    @!headings.panel({ title: `Lesson/Post Progress` })
-  </div>
-  <div class="grid xl:grid-cols-2 gap-3 w-full px-3">
-    @each ((progression, i) in posts)
-      @!lessons.listItem({ item: progression.post, className: 'mb-6', showProgress: true })
-    @endeach
-  </div>
+    <div class="w-full flex flex-col py-8 -mx-3">
+      <div class="px-3">
+        @!headings.panel({ title: `Lesson/Post Progress` })
+      </div>
+      <div class="grid xl:grid-cols-2 gap-3 w-full px-3">
+        @each ((post, i) in posts)
+          @!lessons.listItem({ item: post, className: 'mb-6', showProgress: true })
+        @endeach
+      </div>
+    </div>
+  @endif
 
 @endsection

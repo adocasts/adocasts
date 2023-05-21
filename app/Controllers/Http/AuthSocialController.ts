@@ -9,6 +9,7 @@ export default class AuthSocialController {
   }
 
   public async callback ({ response, auth, ally, params, session }: HttpContextContract) {
+    const wasAuthenticated = !!auth.user
     const { success, user, message } = await AuthSocialService.getUser(auth, ally, params.provider)
 
     if (!success) {
@@ -23,6 +24,12 @@ export default class AuthSocialController {
       await user?.related('profile').create({})
     }
 
+    if (wasAuthenticated) {
+      session.flash('success', `Your ${params.provider} account has been successfully linked`)
+      return response.redirect().toRoute('users.settings.index')
+    }
+
+    session.flash('success', hasProfile ? `Welcome back, ${auth.user!.username}` : `Welcome to Adocasts, ${auth.user!.username}`)
     return response.redirect('/')
   }
 
@@ -41,6 +48,6 @@ export default class AuthSocialController {
 
     session.flash('success', `Your ${params.provider} account was unlinked from your account`)
 
-    return response.redirect().toRoute('studio.settings.index')
+    return response.redirect().back()
   }
 }

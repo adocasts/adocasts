@@ -1,5 +1,5 @@
 @set('className', className ?? 'w-full lg:w-1/2 xl:w-1/4 px-3 mb-6')
-@set('item', progression.collection)
+@set('item', collection)
 @set('lessonQueue', item.postsFlattened)
 
 <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="{{ className }}" {{{ upAttrs }}}>

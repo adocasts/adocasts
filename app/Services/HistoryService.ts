@@ -158,8 +158,7 @@ export default class HistoryService {
   }
 
   public static async getLatestSeriesProgress(user: User, limit: number | undefined = undefined) {
-    return History.query()
-      .distinctOn('collectionId')
+    const collectionIds = await History.query()
       .where('historyTypeId', HistoryTypes.PROGRESSION)
       .where('userId', user.id)
       .whereNotNull('collectionId')
@@ -174,52 +173,71 @@ export default class HistoryService {
           )
         )
       )
-      .preload('collection', query => query
-        .preload('asset')
-        .withCount('postsFlattened', query => query.apply(scope => scope.published()).as('postCount'))
-        .withCount('progressionHistory', query => query.where('userId', user.id).where('isCompleted', true).as('postCompletedCount'))
-        .preload('postsFlattened', query => query
-          .preload('assets')
-          .preload('series', query => query
-            .where('stateId', States.PUBLIC)
-            .groupLimit(1)
-          )
-          .preload('progressionHistory', query => query
-            .where('userId', user.id)
-            .orderBy('updatedAt', 'desc')
-            .groupLimit(1)
-          )
-          .whereDoesntHave('progressionHistory', query => query
-            .where('userId', user.id)
-            .where('isCompleted', true)
-          )
-          .groupOrderBy('root_sort_order', 'asc')
+      .orderBy('updatedAt', 'desc')
+      .selectIds('collectionId')
+
+    const distinctCollectionIds = [...new Set(collectionIds)]
+    
+    const collections = await Collection.query()
+      .preload('asset')
+      .whereIn('id', distinctCollectionIds)
+      .withCount('postsFlattened', query => query.apply(scope => scope.published()).as('postCount'))
+      .withCount('progressionHistory', query => query.where('userId', user.id).where('isCompleted', true).as('postCompletedCount'))
+      .preload('postsFlattened', query => query
+        .preload('assets')
+        .preload('series', query => query
+          .where('stateId', States.PUBLIC)
           .groupLimit(1)
         )
+        .preload('progressionHistory', query => query
+          .where('userId', user.id)
+          .orderBy('updatedAt', 'desc')
+          .groupLimit(1)
+        )
+        .whereDoesntHave('progressionHistory', query => query
+          .where('userId', user.id)
+          .where('isCompleted', true)
+        )
+        .groupOrderBy('root_sort_order', 'asc')
+        .groupLimit(1)
       )
       .if(limit, query => query.limit(limit!))
+
+    return collections.reduce((arr, item) => {
+      arr[distinctCollectionIds.indexOf(item.id)] = item
+      return arr
+    }, [] as Collection[])
   }
 
   public static async getLatestPostProgress(user: User, limit: number | undefined = undefined) {
-    return History.query()
-      .distinctOn('postId')
+    const postIds = await History.query()
       .where('historyTypeId', HistoryTypes.PROGRESSION)
       .where('userId', user.id)
       .whereNotNull('postId')
       .where(query => query.where('isCompleted', false))
       .where(query => query.whereNotNull('watchPercent').orWhereNotNull('readPercent'))
       .where(query => query.where('watchPercent', '>', 0).orWhere('readPercent', '>', 0))
-      .preload('post', query => query
-        .apply(scope => scope.forDisplay())
-        .preload('progressionHistory', query => query
-          .where('userId', user.id)
-          .where('isCompleted', false)
-          .where(query => query.whereNotNull('watchPercent').orWhereNotNull('readPercent'))
-          .where(query => query.where('watchPercent', '>', 0).orWhere('readPercent', '>', 0))
-          .orderBy('updatedAt', 'desc')
-          .groupLimit(1)
-        )
+      .orderBy('updatedAt', 'desc')
+      .selectIds('postId')
+
+    const distinctPostIds = [...new Set(postIds)]
+
+    const posts = await Post.query()
+      .whereIn('id', distinctPostIds)
+      .apply(scope => scope.forDisplay())
+      .preload('progressionHistory', query => query
+        .where('userId', user.id)
+        .where('isCompleted', false)
+        .where(query => query.whereNotNull('watchPercent').orWhereNotNull('readPercent'))
+        .where(query => query.where('watchPercent', '>', 0).orWhere('readPercent', '>', 0))
+        .orderBy('updatedAt', 'desc')
+        .groupLimit(1)
       )
       .if(limit, query => query.limit(limit!))
+
+    return posts.reduce((arr, item) => {
+      arr[distinctPostIds.indexOf(item.id)] = item
+      return arr
+    }, [] as Post[])
   }
 }

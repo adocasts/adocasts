@@ -51,19 +51,22 @@
       </div>
     </section>
 
-    @if (inProgressPosts?.length)
+    @if (inProgressPosts?.length >= 2)
       <section class="w-full flex flex-col py-6 -mx-3">
         <div class="px-3 pb-3">
-          @!headings.panel({ title: 'Pick Up Where You Left Off' })
+          @!headings.panel({ title: `Your Latest In-Progress Series` })
         </div>
         <div class="flex w-full flex-wrap mb-6">
-          @each (progression in inProgressCollections)
-            @!collections.progressionCard({ progression, className: 'w-full md:w-1/2 lg:w-1/4 px-3 mb-6' })
+          @each (collection in inProgressCollections)
+            @!collections.progressionCard({ collection, className: 'w-full md:w-1/2 lg:w-1/4 px-3 mb-6' })
           @endeach
         </div>
+        <div class="px-3 pb-3">
+          @!headings.panel({ title: `Your Latest In-Progress Lessons` })
+        </div>
         <div class="grid xl:grid-cols-2 gap-3 w-full px-3">
-          @each ((progression, i) in inProgressPosts)
-            @!lessons.listItem({ item: progression.post, className: 'mb-6', showProgress: true })
+          @each ((post, i) in inProgressPosts)
+            @!lessons.listItem({ item: post, className: 'mb-6', showProgress: true })
           @endeach
         </div>
       </section>

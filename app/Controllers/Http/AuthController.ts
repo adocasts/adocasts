@@ -47,6 +47,10 @@ export default class AuthController {
     session.flash('success', `Welcome back, ${auth.user!.username}!`)
 
     up.setTarget('[up-main], [up-player], [up-header]')
+
+    if (forward?.includes('signin') || forward?.includes('signup')) {
+      forward = '/'
+    }
     
     return response.redirect().toPath(forward ?? '/')
   }
@@ -56,7 +60,7 @@ export default class AuthController {
   }
 
   public async register({ request, response, auth, session, up }: HttpContextContract) {
-    const { forward, ...data } = await request.validate(SignUpValidator)
+    let { forward, ...data } = await request.validate(SignUpValidator)
     const user = await User.create(data)
 
     await user.related('profile').create({})
@@ -65,6 +69,10 @@ export default class AuthController {
     session.flash('success', `Welcome to Adocasts, ${user.username}!`)
 
     up.setTarget('[up-main], [up-player], [up-header]')
+
+    if (forward?.includes('signin') || forward?.includes('signup')) {
+      forward = '/'
+    }
 
     return response.redirect().toPath(forward ?? '/')
   }

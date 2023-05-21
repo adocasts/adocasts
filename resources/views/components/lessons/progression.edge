@@ -1,7 +1,7 @@
 @set('bottom', bottom ?? 'bottom-1')
 @set('left', left ?? 'left-3')
 @set('right', right ?? 'right-3')
-@set('bg', bg ?? 'bg-gray-950')
+@set('bg', bg ?? 'bg-slate-base-100')
 
 @if (progressionHistory?.length)
   @set('progress', progressionHistory[0])
@@ -11,7 +11,7 @@
     @set('progressPercent', 100)
   @endif
 
-  <div class="absolute {{ left }} {{ bottom }} {{ right }} {{ bg }} bg-opacity-30 h-2 rounded-full">
-    <div class="bg-gradient-to-br from-brand-600 via-brand-700 to-brand-800 h-2 rounded-full" style="width: {{ progressPercent }}%"></div>
+  <div class="absolute {{ left }} {{ bottom }} {{ right }} {{ bg }} bg-opacity-30 backdrop-blur h-2 rounded-full">
+    <div class="bg-gradient-to-b from-slate-base-50/80 via-slate-base-100/60 to-slate-base-200/30 h-2 rounded-full" style="width: {{ progressPercent }}%"></div>
   </div>
 @endif
