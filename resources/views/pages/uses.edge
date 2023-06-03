@@ -18,13 +18,12 @@
 
   @set('hardware', [
     item('💻 2021 14" Macbook Pro', 'Primary dev, recording, and video editing laptop', 'https://www.theverge.com/22751921/apple-macbook-pro-14-16-inch-2021-m1-pro-max-review'),
-    item('🖥 2019 HP OMEN Obelisk 875', 'Gaming and editing desktop. Media Server', 'https://www.hp.com/us-en/shop/pdp/omen-by-hp-obelisk-desktop-875-1055xt'),
+    item('🖥 2008 Dell XPS 8100', 'Repurposed network and media server', 'https://www.techspot.com/products/desktop-pcs/dell-studio-xps-8100.49020/'),
     item('🖥 Z-Edge 32" 4K IPS Monitor', 'My primary and gaming monitor', 'https://www.amazon.com/dp/B09LM5TQ9T'),
-    item('⌨️ Logitech MX Keys', 'I absolutely love this keyboard', 'https://www.logitech.com/en-us/products/keyboards/mx-keys-wireless-keyboard.920-009295.html'),
-    item('🖱 Logitech MX Master 3', 'I absolutely love this mouse', 'https://www.amazon.com/Logitech-Master-Advanced-Wireless-Mouse/dp/B07XC2FWD1'),
+    item('⌨️ Keychron K2 Pro', 'I absolutely love this keyboard', 'https://www.keychron.com/products/keychron-k2-pro-qmk-via-wireless-mechanical-keyboard'),
+    item('🖱 Apple Magic Trackpad 2', 'Makes editing easier', 'https://www.apple.com/shop/product/MK2D3AM/A/magic-trackpad-white-multi-touch-surface'),
     item('📸 Sony ZV-1F', 'Camera used for webcam in newer lessons', 'https://www.amazon.com/Sony-Camera-Content-Creators-Vloggers/dp/B0BHKKHNHM'),
     item('🎙 Blue Yeti Microphone', 'Microphone I use for all my recordings', 'https://www.bluemic.com/en-us/products/yeti/'),
-    item('🗄 WD MyCloud NAS Storage', '4TB worth of network accessible storage', 'https://www.bestbuy.com/site/wd-my-cloud-home-4tb-personal-cloud-white/5990204.p?skuId=5990204'),
     item('🖊 reMarkable 2', 'My notebook and sketchbook', 'https://remarkable.com/')
   ])
 
@@ -34,14 +33,14 @@
     item('Unpoly', 'Lets monoliths behave like SPAs', 'https://unpoly.com/'),
     item('TailwindCSS', "Our CSS framework of choice", "https://tailwindcss.com"),
     item('InertiaJS', "For monoliths with heavy front-end updating", 'https://inertiajs.com/'),
-    item('VueJS', 'My go to frontend framework', 'https://vuejs.org/'),
+    item('NuxtJS', 'My go to for heavy front-ends', 'https://nuxt.com/'),
   ])
 
   @set('hosting', [
     item('GitHub', 'What I primarily use for Git', 'https://github.com'),
     item('Cleavr', "An amazingly simple server and deploy manager", "https://cleavr.io?via=adocasts"),
-    item('Vultr', "What we now use to host our sites", 'https://www.vultr.com/?ref=9100128'),
-    item('Google Cloud Storage', "What we now use for image hosting", 'https://cloud.google.com/storage'),
+    item('Vultr', "Where Adocasts is hosted", 'https://www.vultr.com/?ref=9100128'),
+    item('Google Cloud Storage', "Where all our images are hosted", 'https://cloud.google.com/storage'),
     item('Mailjet', 'What we use for transactional email', 'https://www.mailjet.com/'),
     item('ConvertKit', 'What we use for our newsletter', 'https://convertkit.com/'),
   ])
@@ -83,7 +82,7 @@
       <div class="flex flex-wrap -mx-6">
         <div class="w-full lg:w-1/2 px-6 order-2 lg:order-1">
           @!headings.section({ title: 'Hardware' })
-          <ul class="mb-12">
+          <ul class="mb-12 mt-3">
             @each (item in hardware)
               <li class="flex flex-wrap mb-2">
                 <a href="{{ item.href }}" target="_blank" class="font-semibold">{{ item.name }}</a>
@@ -102,7 +101,7 @@
       <div class="flex flex-wrap -mx-6">
         <div class="w-full lg:w-1/2 px-6">
           @!headings.section({ title: 'Frameworks & Libraries' })
-          <ul class="mb-12">
+          <ul class="mb-12 mt-3">
             @each (item in frameworks)
               <li class="flex flex-wrap mb-2">
                 <a href="{{ item.href }}" target="_blank" class="font-semibold">{{ item.name }}</a>
@@ -115,7 +114,7 @@
 
         <div class="w-full lg:w-1/2 px-6">
           @!headings.section({ title: 'Git & Hosting' })
-          <ul class="mb-12">
+          <ul class="mb-12 mt-3">
             @each (item in hosting)
               <li class="flex flex-wrap mb-2">
                 <a href="{{ item.href }}" target="_blank" class="font-semibold">{{ item.name }}</a>
@@ -130,7 +129,7 @@
       <div class="flex flex-wrap -mx-6">
         <div class="w-full lg:w-1/2 px-6">
           @!headings.section({ title: 'Software' })
-          <ul class="mb-12">
+          <ul class="mb-12 mt-3">
             @each (item in software)
               <li class="flex flex-wrap mb-2">
                 <a href="{{ item.href }}" class="font-semibold">{{ item.name }}</a>
@@ -143,7 +142,7 @@
 
         <div class="w-full lg:w-1/2 px-6">
           @!headings.section({ title: 'Editor & Extensions' })
-          <ul class="mb-12">
+          <ul class="mb-12 mt-3">
             @each (item in ide)
               <li class="flex flex-wrap mb-2">
                 <a href="{{ item.href }}" class="font-semibold">{{ item.name }}</a>

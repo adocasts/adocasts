@@ -9,33 +9,36 @@
   @endif
 </title>
 
-<meta name="description" content="{{ desc }}" />
-<link rel="canonical" href="https://adocasts.com{{ canonical || url }}" />
+<meta name="description" content="{{ desc }}" up-hungry />
+
+@if (canonical && !canonical.includes(request.url())) 
+  <link rel="canonical" href="https://adocasts.com{{ canonical || url }}"  up-hungry />
+@endif
 
 {{-- OG --}}
-<meta property="og:type" content="article" />
-<meta property="og:title" content="{{ seriesTitle }}" />
-<meta property="og:description" content="{{ desc }}" />
-<meta property="og:url" content="{{ url }}" />
-<meta property="og:site_name" content="adocasts.com" />
+<meta up-hungry property="og:type" content="article" />
+<meta up-hungry property="og:title" content="{{ seriesTitle }}" />
+<meta up-hungry property="og:description" content="{{ desc }}" />
+<meta up-hungry property="og:url" content="{{ url }}" />
+<meta up-hungry property="og:site_name" content="adocasts.com" />
 @if (asset)
-  <meta property="og:image" content="https://adocasts.com/img/{{ asset.filename }}?w=900" />
+  <meta up-hungry property="og:image" content="https://adocasts.com/img/{{ asset.filename }}?w=900" />
 @endif
 
 {{-- Twitter --}}
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="{{ seriesTitle }}">
-<meta name="twitter:description" content="{{ desc }}">
-<meta name="twitter:site" content="@adocasts">
-<meta name="twitter:creator" content="@adocasts">
+<meta up-hungry name="twitter:card" content="summary">
+<meta up-hungry name="twitter:title" content="{{ seriesTitle }}">
+<meta up-hungry name="twitter:description" content="{{ desc }}">
+<meta up-hungry name="twitter:site" content="@adocasts">
+<meta up-hungry name="twitter:creator" content="@adocasts">
 @if (asset)
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://adocasts.com/img/{{ asset.filename }}?w=900">
+  <meta up-hungry name="twitter:card" content="summary_large_image">
+  <meta up-hungry name="twitter:image" content="https://adocasts.com/img/{{ asset.filename }}?w=900">
 @endif
 
 {{-- Robots --}}
 @if (index)
-  <meta name="robots" content="index, follow" />
+  <meta up-hungry name="robots" content="index, follow" />
 @elseif (index === false)
-  <meta name="robots" content="noindex, nofollow" />
+  <meta up-hungry name="robots" content="noindex, nofollow" />
 @endif
