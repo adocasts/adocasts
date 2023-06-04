@@ -11,9 +11,11 @@ export default class ProgressionsController {
   }
 
   public async record({ request, response, route, auth }) {
+    if (!auth.user) return 
+    
     const data = await request.validate(HistoryValidator)
     const progression = await HistoryService.recordProgression(auth.user!, route.routeName, data)
-    
+
     return response.json({ success: true, progression })
   }
 }
