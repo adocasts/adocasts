@@ -1,8 +1,16 @@
 import Watchlist from 'App/Models/Watchlist'
 import User from 'App/Models/User'
+import WatchlistValidator from 'App/Validators/WatchlistValidator'
 
 export default class WatchlistService {
-  public static async getLatestPosts(user: User|undefined, limit: number = 3, excludeIds: number[] = []) {
+  /**
+   * returns latest watchlist posts for user
+   * @param user 
+   * @param limit 
+   * @param excludeIds 
+   * @returns 
+   */
+  public static async getLatestPosts(user: User|undefined, limit: number | undefined = undefined, excludeIds: number[] = []) {
     if (!user) return []
 
     const results = await user.related('watchlist').query()
@@ -10,12 +18,19 @@ export default class WatchlistService {
       .if(excludeIds.length, query => query.whereNotIn('postId', excludeIds))
       .preload('post', query => query.apply(scope => scope.forDisplay()))
       .orderBy('createdAt', 'desc')
-      .if(limit, query => query.limit(limit))
+      .if(limit, query => query.limit(limit!))
 
     return results.map(r => r.post)
   }
 
-  public static async getLatestCollections(user: User|undefined, limit: number = 3, excludeIds: number[] = []) {
+  /**
+   * returns latest watchlsit collections for user
+   * @param user 
+   * @param limit 
+   * @param excludeIds 
+   * @returns 
+   */
+  public static async getLatestCollections(user: User|undefined, limit: number | undefined = undefined, excludeIds: number[] = []) {
     if (!user) return []
 
     const results = await user.related('watchlist').query()
@@ -28,17 +43,23 @@ export default class WatchlistService {
         .wherePublic()
       )
       .orderBy('createdAt', 'desc')
-      .if(limit, query => query.limit(limit))
+      .if(limit, query => query.limit(limit!))
 
     return results.map(r => r.collection)
   }
 
-  public static async toggle(userId: number, data: { [x: string]: any }) {
-    const record = await Watchlist.query().where(data).where({ userId }).first()
+  /**
+   * toggles watchlist item for user
+   * @param user 
+   * @param data 
+   * @returns 
+   */
+  public static async toggle(user: User, data: WatchlistValidator['schema']['props']) {
+    const record = await Watchlist.query().where(data).where({ userId: user.id }).first()
 
     const watchlist = record
       ? await record.delete()
-      : await Watchlist.create({ ...data, userId })
+      : await Watchlist.create({ ...data, userId: user.id })
 
     return [watchlist, !!record]
   }

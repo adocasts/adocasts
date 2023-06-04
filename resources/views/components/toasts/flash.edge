@@ -1,0 +1,19 @@
+<div class="fixed bottom-8 right-8 pointer-events-none" style="z-index: 999;" up-hungry>
+  @if(flashMessages.has('success'))
+    @toasts.success()
+      {{ flashMessages.get('success') }}
+    @end
+  @endif
+
+  @if(flashMessages.has('error'))
+    @toasts.error()
+      {{ flashMessages.get('error') }}
+    @end
+  @endif
+
+  @if(flashMessages.has('warning'))
+    @toasts.warning()
+      {{ flashMessages.get('warning') }}
+    @end
+  @endif
+</div>

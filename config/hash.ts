@@ -6,7 +6,7 @@
  */
 
 import Env from '@ioc:Adonis/Core/Env'
-import { HashConfig } from '@ioc:Adonis/Core/Hash'
+import { hashConfig } from '@adonisjs/core/build/config'
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +17,7 @@ import { HashConfig } from '@ioc:Adonis/Core/Hash'
 | defined inside `contracts` directory.
 |
 */
-const hashConfig: HashConfig = {
+export default hashConfig({
   /*
   |--------------------------------------------------------------------------
   | Default hasher
@@ -30,6 +30,29 @@ const hashConfig: HashConfig = {
   default: Env.get('HASH_DRIVER', 'argon'),
 
   list: {
+    /*
+    |--------------------------------------------------------------------------
+    | scrypt
+    |--------------------------------------------------------------------------
+    |
+    | Scrypt mapping uses the Node.js inbuilt crypto module for creating
+    | hashes.
+    |
+    | We are using the default configuration recommended within the Node.js
+    | documentation.
+    | https://nodejs.org/api/crypto.html#cryptoscryptpassword-salt-keylen-options-callback
+    |
+    */
+    scrypt: {
+      driver: 'scrypt',
+      cost: 16384,
+      blockSize: 8,
+      parallelization: 1,
+      saltSize: 16,
+      keyLength: 64,
+      maxMemory: 32 * 1024 * 1024,
+    },
+
     /*
     |--------------------------------------------------------------------------
     | Argon
@@ -70,6 +93,4 @@ const hashConfig: HashConfig = {
       rounds: 10,
     },
   },
-}
-
-export default hashConfig
+})

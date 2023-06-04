@@ -1,11 +1,8 @@
-import { rules, schema } from '@ioc:Adonis/Core/Validator'
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import BaseValidator from './BaseValidator'
+import { schema, rules, CustomMessages } from '@ioc:Adonis/Core/Validator'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class WatchlistValidator extends BaseValidator {
-  constructor(protected ctx: HttpContextContract) {
-    super()
-  }
+export default class WatchlistValidator {
+  constructor(protected ctx: HttpContextContract) {}
 
   /*
    * Define schema to validate the "shape", "type", "formatting" and "integrity" of data.
@@ -43,7 +40,5 @@ export default class WatchlistValidator extends BaseValidator {
    * }
    *
    */
-  public messages = {
-    ...this.messages
-  }
+  public messages: CustomMessages = {}
 }

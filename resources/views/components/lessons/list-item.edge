@@ -1,0 +1,71 @@
+@set('withImage', withImage ?? true)
+@set('img', item.thumbnails?.length ? item.thumbnails[0] : item.covers?.length ? item.covers[0] : null)
+@set('useImage', withImage && img)
+@set('showProgress', showProgress ?? false)
+@set('description', description ?? true)
+@set('rounded', rounded ?? true)
+@set('hoverBg', hoverBg ?? 'hover:bg-slate-200/50')
+@set('flexFlow', flexFlow ?? 'flex-col md:flex-row')
+@set('isCol', flexFlow === 'flex-col')
+@set('px', px ?? 'md:px-6')
+@set('size', size ?? 'sm')
+@set('sizeClassMap', {
+  xs: {
+    title: 'text-lg',
+    description: lineClamp ?? 'md:line-clamp-2'
+  },
+  sm: {
+    title: 'text-lg',
+    description: lineClamp ?? 'md:line-clamp-2'
+  },
+  base: {
+    title: 'text-lg',
+    description: lineClamp ?? 'md:line-clamp-3'
+  }
+})
+@set('imgWidth', imgWidth ? imgWidth : flexFlow.includes('flex-col')
+  ? 'w-full'
+  : useImage
+    ? 'mb-3 md:mb-0 md:w-1/2 lg:w-2/5'
+    : 'w-full'
+)
+@set('detailWidth', detailWidth ? detailWidth : flexFlow.includes('flex-col')
+  ? 'w-full'
+  : useImage
+    ? 'md:w-1/2 lg:w-3/5'
+    : 'w-full')
+
+
+<a href="{{ routePost(item) }}" {{{ upAttrs }}} up-follow class="flex {{ flexFlow }} md:items-center py-3 group {{ hoverBg }} {{ rounded ? 'rounded-xl overflow-hidden' : '' }} duration-150 {{ className }}">
+  @if (useImage)
+    <div class="{{ imgWidth }} relative duration-300 {{ rounded ? 'rounded-xl overflow-hidden' : '' }} {{ isCol && 'mb-3' }} {{ imgClassName }}">
+      @!picture({
+        filename: img.filename,
+        altText: img.altText,
+        className: 'h-full duration-150',
+        pictureClassName: 'block',
+        imgClassName: 'h-full object-contain object-center',
+        ratio: 'aspect-video',
+        lazy: lazyItem
+      })
+
+      @if (showProgress)
+        @!lessons.progression({ progressionHistory: item.progressionHistory })
+      @endif
+    </div>
+  @endif
+
+  <div class="{{ detailWidth }} {{ px }} {{ contentClassName }}">
+    @!lessons.barSeries({ item, upAttrs })
+
+    <h3 class="{{ sizeClassMap[size].title }} {{ titleClassName }} font-semibold line-clamp-3 font-sans leading-6 max-w-xl">
+      {{ item.title }}
+    </h3>
+
+    @if (description && item.description)
+      <p class="hidden md:inline-block {{ descClassName }} mb-2 max-w-xl mt-3 text-sm text-slate-600 group-hover:text-slate-700 duration-150 {{ sizeClassMap[size].description }}">
+        {{ item.description }}
+      </p>
+    @endif
+  </div>
+</a>

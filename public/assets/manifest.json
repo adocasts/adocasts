@@ -1,10 +1,4 @@
 {
   "assets/app.css": "http://localhost:8080/assets/app.css",
-  "assets/app.js": "http://localhost:8080/assets/app.js",
-  "assets/post.js": "http://localhost:8080/assets/post.js",
-  "assets/stream.js": "http://localhost:8080/assets/stream.js",
-  "assets/file_manager.js": "http://localhost:8080/assets/file_manager.js",
-  "assets/tiptap_basic.js": "http://localhost:8080/assets/tiptap_basic.js",
-  "assets/studio.posts.editor.js": "http://localhost:8080/assets/studio.posts.editor.js",
-  "assets/studio.collections.js": "http://localhost:8080/assets/studio.collections.js"
+  "assets/app.js": "http://localhost:8080/assets/app.js"
 }

@@ -1,24 +1,13 @@
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Mail from '@ioc:Adonis/Addons/Mail'
-import Env from '@ioc:Adonis/Core/Env'
-import { rules, schema } from '@ioc:Adonis/Core/Validator'
-// import SecurityService from 'App/Services/SecurityService'
 
 export default class ContactController {
-  public async index({ view, auth }: HttpContextContract) {
-    const isGraylisted = auth.user ? false : true //await SecurityService.isGraylisted(request.ip(), auth.user)
-    return view.render('contact', { isGraylisted })
+  public async index({ view }: HttpContextContract) {
+    return view.render('pages/contact')
   }
 
-  public async contact({ response, request, session, auth }: HttpContextContract) {
-    const contactBlockedIps = Env.get('CONTACT_BLOCKED', '').split(',').map(ip => ip.trim())
-    
-    if (contactBlockedIps.includes(request.ip())) {
-      session.put('hideContact', true)
-      session.flash('blocked', "You've been blocked for spamming. Please refrain from spamming again in the future if your block is ever lifted.")
-      return response.redirect().back()
-    }
-
+  public async store({ request, response, session, auth }: HttpContextContract) {
     const validationSchema = schema.create({
       name: schema.string.optional(),
       email: schema.string({ trim: true }, [rules.email()]),
@@ -65,15 +54,15 @@ export default class ContactController {
           <p>
             Thank you,<br/>
             Tom Gobich<br/>
-            Adocasts, LLC
+            Adocasts
           </p>
           <p><strong>Below is your message:</strong></p>
           <p>${data.body}</p>
         `)
     })
 
-    session.flash('success', "Your message has been successfully sent. Please allow up to 48 hours for a response. A copy has been sent to your email as well");
+    session.flash('success', "Your message has been successfully sent. Please allow up to 48 hours for a response. A copy has been sent to your email as well")
 
-    return response.redirect().back();
+    return response.redirect().back()
   }
 }

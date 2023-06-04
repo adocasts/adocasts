@@ -1,0 +1,118 @@
+@layer utilities {
+  .aspect-video {
+    aspect-ratio: 16 / 9;
+  }
+
+  .aspect-square {
+    aspect-ratio: 1 / 1;
+  }
+
+  /* purgecss start ignore */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    overflow: auto;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* purgecss end ignore */
+
+  [video-placeholder]:empty {
+    display: none;
+  }
+
+  [video-placeholder]:not(.video-small) {
+    background-color: transparent !important;
+  }
+
+  .video-small-details {
+    display: none;
+  }
+
+  .video-small .video-small-details {
+    display: flex;
+  }
+
+  .video-small {
+    width: 100% !important;
+    padding: .5rem;
+
+    .aspect-video {
+      width: 30%;
+    }
+
+    .video-small-details {
+      width: 70%;
+    }
+
+    @screen md {
+      .aspect-video {
+        width: 35%;
+      }
+
+      .video-small-details {
+        width: 65%;
+      }
+    }
+
+    @screen lg {
+      width: calc(100% - var(--lesson-list-width)) !important;
+
+      .aspect-video {
+        width: 25%;
+      }
+
+      .video-small-details {
+        width: 75%;
+      }
+    }
+
+    @screen xl {
+      width: 325px !important;
+      padding: 0;
+
+      .aspect-video {
+        width: 100%;
+      }
+
+      .video-small-details {
+        width: 100%;
+      }
+    }
+  }
+
+  .video-noactions .video-small-actions {
+    display: none !important;
+  }
+
+  .lesson-wrapper + .video-small,
+  .lesson-wrapper + [up-player] .video-small {
+    right: var(--lesson-list-width) !important;
+
+    @screen xl {
+      right: calc(var(--lesson-list-width) + 1.5rem) !important;
+    }
+  }
+
+  @keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+  }
+
+  @keyframes fadeOut {
+    0% {opacity: 1;}
+    100% {opacity: 0;}
+  }
+
+  @keyframes zoomIn {
+    0% {transform: scale(0.9);}
+    100% {transform: scale(1);}
+  }
+
+  @keyframes zoomOut {
+    0% {transform: scale(1);}
+    100% {transform: scale(0.9);}
+  }
+}

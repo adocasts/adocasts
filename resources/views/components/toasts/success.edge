@@ -1,0 +1,24 @@
+<div 
+  x-cloak
+  x-data="{ show: true }" 
+  x-show="show" 
+  x-init="setTimeout(() => show = false, 6000);"
+  class="rounded-md bg-green-500 pointer-events-auto p-4 shadow-lg">
+  <div class="flex items-center">
+    <div class="flex-shrink-0">
+      @!icons.circleCheck()
+    </div>
+    <div class="mx-3">
+      <p class="text-sm leading-5 font-medium text-green-900">
+        {{{ await $slots.main() }}}
+      </p>
+    </div>
+    <div class="ml-auto pl-3">
+      <div class="-mx-1.5 -my-1.5">
+        <button @click="show = false" class="inline-flex rounded-md p-1.5 text-green-900 hover:bg-green-600 focus:outline-none focus:bg-green-600 transition ease-in-out duration-150">
+          @!icons.x()
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

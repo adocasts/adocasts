@@ -1,0 +1,12 @@
+@set('width', width ?? 'w-16')
+@set('height', height ?? 'h-16')
+
+<div class="aspect-square">
+  @if (item.asset)
+    <img src="/img/{{ item.asset.filename }}" class="rounded-full object-contain object-center {{ width }} {{ height }} mb-3 {{ className }}" />
+  @else
+    <div class="{{ width }} {{ height }} text-2xl font-semibold flex items-center justify-center mb-3 rounded-full bg-brand-300 text-brand-800 {{ className }}">
+      {{ getAbbrev(item.name) }}
+    </div>
+  @endif
+</div>

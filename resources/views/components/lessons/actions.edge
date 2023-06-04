@@ -1,0 +1,42 @@
+@if(post.postTypeId !== PostTypes.NEWS)
+  <div class="flex flex-row flex-wrap xl:flex-col justify-between xl:justify-center xl:min-w-[325px] px-3 md:px-6 rounded-xl relative -mx-3 md:-mx-6 space-y-2">
+    @if (auth.user)
+      @!fragments.complete({ userProgression })
+      @!fragments.watchlist({ isInWatchlist: post.isInWatchlist })
+    @else
+      @buttons.primary.inverse({ href: route('auth.signup'), attrs: 'up-layer="new modal" up-size="grow"', className: 'gap-3', block: true })
+        @!icons.user()
+        Sign Up for Free
+      @end
+
+      @buttons.primary.inverse({ href: route('auth.signin'), attrs: 'up-layer="new modal" up-size="grow"', className: 'gap-3', block: true })
+        @!icons.circleArrowRight()
+        Sign In to Track Progress
+      @end
+    @endif
+
+    @if (post.videoUrl)
+      @buttons.primary.inverse({ href: post.videoUrl, attrs: 'target="_blank"', className: 'gap-3', block: true })
+        @!icons.brandYoutube()
+        Watch on YouTube
+      @end
+    @endif
+
+    @if (post.repositoryUrl)
+      @buttons.primary.inverse({ href: post.repositoryUrl, attrs: 'target="_blank"', className: 'gap-3', block: true })
+        @!icons.brandGithub()
+        Browse Code
+      @end
+    @endif
+  </div>
+
+  @form.patch({ id: 'completedForm', action: route('histories.progression.toggle'), attrs: `up-submit up-target="[up-complete]"` })
+    <input type="hidden" name="postId" value="{{ post.id }}" />
+    <input type="hidden" name="collectionId" value="{{ series?.id }}" />
+    <input type="hidden" name="route" value="{{ request.ctx.route?.name }}" />
+  @end
+
+  @form.patch({ id: 'watchlistForm', action: route('watchlists.toggle', { table: 'posts' }), attrs: `up-submit up-target="[up-watchlist]"` })
+    <input type="hidden" name="postId" value="{{ post.id }}" />
+  @end
+@endif

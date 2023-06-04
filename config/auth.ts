@@ -5,7 +5,7 @@
  * file.
  */
 
-import { AuthConfig } from '@ioc:Adonis/Addons/Auth'
+import type { AuthConfig } from '@ioc:Adonis/Addons/Auth'
 
 /*
 |--------------------------------------------------------------------------
@@ -64,7 +64,7 @@ const authConfig: AuthConfig = {
         | of the mentioned columns to find their user record.
         |
         */
-        uids: ['username', 'email'],
+        uids: ['email', 'username'],
 
         /*
         |--------------------------------------------------------------------------

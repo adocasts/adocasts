@@ -1,39 +1,35 @@
-import { inject } from '@adonisjs/fold';
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Profile from 'App/Models/Profile'
-import User from 'App/Models/User'
-import AuthSocialService from 'App/Services/Http/AuthSocialService'
 import Route from '@ioc:Adonis/Core/Route'
+import AuthSocialService from 'App/Services/AuthSocialService'
 
-@inject()
 export default class AuthSocialController {
-  constructor(public authSocialService: AuthSocialService) {}
-
   public async redirect ({ ally, params }: HttpContextContract) {
     await ally.use(params.provider).redirect()
   }
 
-  public async callback ({ response, auth, params, session }: HttpContextContract) {
-    const wasLoggedIn = !!auth.user
-    const { isSuccess, user, message } = await this.authSocialService.getUser(params.provider)
+  public async callback ({ response, auth, ally, params, session }: HttpContextContract) {
+    const wasAuthenticated = !!auth.user
+    const { success, user, message } = await AuthSocialService.getUser(auth, ally, params.provider)
 
-    if (!isSuccess) {
+    if (!success) {
       session.flash('errors', { form: message })
-      return response.redirect().toRoute('auth.signin.show')
+      return response.redirect().toRoute('auth.signin')
     }
 
-    await auth.use('web').login(<User>user)
+    await auth.login(user!, true)
 
-    const hasProfile = await Profile.findBy('userId', user?.id)
+    const hasProfile = await Profile.findBy('userId', user!.id)
     if (!hasProfile) {
-      await Profile.create({ userId: user?.id })
+      await user?.related('profile').create({})
     }
 
-    if (wasLoggedIn) {
-      session.flash('success', `Your account was successfully tied to your ${params.provider} account`)
-      return response.redirect().toRoute('studio.settings.index')
+    if (wasAuthenticated) {
+      session.flash('success', `Your ${params.provider} account has been successfully linked`)
+      return response.redirect().toRoute('users.settings.index')
     }
 
+    session.flash('success', hasProfile ? `Welcome back, ${auth.user!.username}` : `Welcome to Adocasts, ${auth.user!.username}`)
     return response.redirect('/')
   }
 
@@ -48,10 +44,10 @@ export default class AuthSocialController {
       return response.redirect(signedUrl)
     }
 
-    await this.authSocialService.unlink(params.provider)
+    await AuthSocialService.unlink(auth.user!, params.provider)
 
     session.flash('success', `Your ${params.provider} account was unlinked from your account`)
 
-    return response.redirect().toRoute('studio.settings.index')
+    return response.redirect().back()
   }
 }

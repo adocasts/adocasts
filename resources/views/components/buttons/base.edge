@@ -1,0 +1,37 @@
+@set('block', block ?? false)
+@set('square', square ?? false)
+@set('className', className ?? '')
+@set('size', size ?? 'md')
+@set('sizePaddingMap', {
+  xs: square ? 'px-1.5 py-1.5' : 'px-2.5 py-1.5',
+  sm: square ? 'px-2 py-2' : 'px-3 py-2',
+  md: square ? 'px-2 py-2' : 'px-4 py-2',
+  lg: square ? 'px-2 py-2' : 'px-4 py-2',
+  xl: square ? 'px-3 py-3' : 'px-6 py-3',
+})
+@set('sizeClassMap', {
+  xs: `rounded text-xs font-medium ${sizePaddingMap[size]}`,
+  sm: `rounded-md text-sm font-medium leading-4 ${sizePaddingMap[size]}`,
+  md: `rounded-md text-sm font-medium ${sizePaddingMap[size]}`,
+  lg: `rounded-md text-base font-medium ${sizePaddingMap[size]}`,
+  xl: `rounded-md text-base font-medium ${sizePaddingMap[size]}`,
+})
+
+@if (block)
+  @set('className', className.replace('inline-flex', '') + ' flex w-full justify-center')
+@endif
+
+@if (href)
+  <a href="{{ href }}" class="btn duration-150 shadow-sm {{ sizeClassMap[size] }} {{ className }}" {{ upFollow ? 'up-follow' : '' }} {{{ atClick ? `@click="${atClick}"` : '' }}} {{{ attrs }}}>
+    {{{ await $slots.main() }}}
+  </a>
+@else
+  <button 
+    type="{{ type ?? 'button' }}" 
+    class="btn duration-150 shadow-sm {{ sizeClassMap[size] }} {{ className }}" 
+    {{{ atClick ? `@click="${atClick}"` : '' }}}
+    {{{ form ? `form="${form}"` : '' }}} 
+    {{{ attrs }}}>
+    {{{ await $slots.main() }}}
+  </button>
+@endif

@@ -1,0 +1,54 @@
+@layout('layouts/app')
+
+@section('meta')
+  @!meta.tags({
+    url: route('series.index'),
+    title: 'Series, Recently Updated',
+    desc: `Discover in-depth AdonisJS video series on Adocasts. Our series guide you through a range of topics from beginner to advanced. Whether you're just getting started with AdonisJS or looking to deepen your knowledge, our video series have got you covered. Start learning today!`,
+    asset: null,
+    index: true
+  })
+@endsection
+
+@section('hero')
+
+  <div class="mb-12">
+    @!collections.heroFeature({ item: featured })
+  </div>
+
+@endsection
+
+@section('content')
+
+  <div class="w-full flex flex-col py-8 -mx-3">
+    <div class="px-3">
+      @!headings.panel({ title: 'All Series' })
+    </div>
+
+    @each (item in series)
+      <div class="flex flex-col md:flex-row w-full mb-6">
+        @!collections.card({ item, className: 'w-full md:w-1/2 lg:w-1/4 px-3' })
+        <div class="flex flex-wrap w-full md:w-1/2 lg:w-3/4">
+          <h4 class="font-semibold uppercase text-sm text-slate-400 px-3 mb-1 mt-6 md:mt-0 lg:hidden">
+            Latest Lessons
+          </h4>
+          @each (lesson in item.postsFlattened)
+            @!lessons.listItem({ 
+              item: lesson, 
+              flexFlow: 'lg:flex-col', 
+              size: 'base', 
+              px: 'px-0', 
+              width: 'w-1/2 lg:w-full',
+              lineClamp: 'lg:line-clamp-4',  
+              className: 'w-full lg:w-1/3 px-3',
+              contentClassName: 'ml-3 lg:ml-0 lg:mt-3',
+              titleClassName: 'text-sm lg:text-lg',
+              descClassName: 'md:hidden lg:inline-block'
+            })
+          @endeach
+        </div>
+      </div>
+    @endeach
+  </div>
+
+@endsection

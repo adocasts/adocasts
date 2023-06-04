@@ -15,6 +15,9 @@ import Question from 'App/Models/Question'
 import History from './History'
 import Notification from './Notification'
 import Themes from 'App/Enums/Themes'
+import LessonRequest from './LessonRequest'
+import Roles from 'App/Enums/Roles'
+import RequestVote from './RequestVote'
 
 class User extends AppBaseModel {
   @column({ isPrimary: true })
@@ -66,6 +69,12 @@ class User extends AppBaseModel {
   @column()
   public theme: string = Themes.SYSTEM
 
+  @column()
+  public emailVerified: string | null
+
+  @column.dateTime()
+  public emailVerifiedAt: DateTime | null
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
@@ -85,9 +94,25 @@ class User extends AppBaseModel {
     return gravatar.url(this.email, { s: '40' })
   }
 
+  @computed()
+  public get isAdmin() {
+    return this.roleId === Roles.ADMIN
+  }
+
+  @computed()
+  public get isEmailVerified() {
+    // has gone through verification flow
+    if (this.emailVerified == this.email && this.emailVerifiedAt) return true
+    
+    // using third-party social auth
+    if (this.email == this.githubEmail || this.email == this.googleEmail) return true
+
+    return false
+  }
+
   @beforeSave()
   public static async hashPassword (user: User) {
-    if (user.$dirty.password) {
+    if (user.$dirty.password && !user.$extras.rehash) {
       user.password = await Hash.make(user.password)
     }
   }
@@ -136,6 +161,17 @@ class User extends AppBaseModel {
 
   @hasMany(() => Question)
   public questions: HasMany<typeof Question>
+
+  @hasMany(() => LessonRequest)
+  public lessonRequests: HasMany<typeof LessonRequest>
+
+  @hasMany(() => RequestVote)
+  public requestVotes: HasMany<typeof RequestVote>
+
+  @hasMany(() => RequestVote, {
+    onQuery: query => query.whereNotNull('lessonRequestId')
+  })
+  public lessonRequestVotes: HasMany<typeof RequestVote>
 }
 
 User['findForAuth'] = function (uids: string[], uidValue: string) {

@@ -89,9 +89,18 @@ export default class HtmlParser {
       // find & set transcript paragraph timestamps
       const transcriptIndex = paragraphs.findIndex(el => el.textContent.includes('Transcript:'))
       if (transcriptIndex > -1) {
-        paragraphs.slice(transcriptIndex + 1)
-          .filter(el => el.textContent.match(regex))
-          .map(el => el.setAttribute('class', 'timestamp transcript'))
+        const transcriptParagraphs = paragraphs.slice(transcriptIndex + 1).filter(el => el.textContent.match(regex))
+        const transcriptCutoffIndex = transcriptParagraphs.length > 12 ? 6 : 0
+        
+        if (transcriptCutoffIndex) {
+          const cutoffHTML = transcriptParagraphs[transcriptCutoffIndex].innerHTML
+          transcriptParagraphs[transcriptCutoffIndex].replaceWith(`
+            <div class="transcript-cutoff"><button role="button" id="transcriptCutoffBtn"></button></div>
+            <p class="timestamp transcript cutoff active">${cutoffHTML}</p>
+          `)
+        }
+        
+        transcriptParagraphs.map((el, i) => el.setAttribute('class', `timestamp transcript ${i >= transcriptCutoffIndex ? 'cutoff active' : ''}`))
       }
     }
 

@@ -67,6 +67,7 @@ declare module '@ioc:Adonis/Addons/Auth' {
     web: {
       implementation: SessionGuardContract<'user', 'web'>
       config: SessionGuardConfig<'user'>
+      client: SessionClientContract<'user'>
     }
   }
 }

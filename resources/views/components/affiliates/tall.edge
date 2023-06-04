@@ -1,7 +1,0 @@
-@set('affiliate', affiliate ?? affiliateService.getRandom())
-
-@if (affiliate && affiliate.tall)
-  <div class="affiliate">
-    @!component(`components/affiliates/${affiliate.name}/${affiliate.tall}`)
-  </div>
-@endif

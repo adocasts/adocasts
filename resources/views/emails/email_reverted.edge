@@ -1,0 +1,22 @@
+@set('title', 'Account Notice: Your Adocasts email has been reverted')
+
+@layout('emails/layouts/transactional')
+
+@section('content')
+
+  @emails.paragraph()
+    Hi {{ user.username }},
+  @end
+
+  @emails.paragraph()
+    We've successfully reverted the email associated with your Adocasts account. 
+    Please resecure your account by <a href="https://adocasts.com/forgot-password">resetting your password</a>. 
+  @end
+
+  @emails.button({ href: 'https://adocasts.com/forgot-password' })
+    Reset Your Password
+  @end
+  
+  @!emails.signature()
+
+@endsection

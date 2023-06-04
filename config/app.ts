@@ -8,11 +8,11 @@
 import proxyAddr from 'proxy-addr'
 import Env from '@ioc:Adonis/Core/Env'
 import Application from '@ioc:Adonis/Core/Application'
-import { ServerConfig } from '@ioc:Adonis/Core/Server'
-import { LoggerConfig } from '@ioc:Adonis/Core/Logger'
-import { ProfilerConfig } from '@ioc:Adonis/Core/Profiler'
-import { ValidatorConfig } from '@ioc:Adonis/Core/Validator'
-import { AssetsManagerConfig } from '@ioc:Adonis/Core/AssetsManager'
+import type { ServerConfig } from '@ioc:Adonis/Core/Server'
+import type { LoggerConfig } from '@ioc:Adonis/Core/Logger'
+import type { ProfilerConfig } from '@ioc:Adonis/Core/Profiler'
+import type { ValidatorConfig } from '@ioc:Adonis/Core/Validator'
+import type { AssetsManagerConfig } from '@ioc:Adonis/Core/AssetsManager'
 
 /*
 |--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ export const appKey: string = Env.get('APP_KEY')
 */
 export const http: ServerConfig = {
   useAsyncLocalStorage: true,
-  
+
   /*
   |--------------------------------------------------------------------------
   | Allow method spoofing
@@ -238,7 +238,7 @@ export const assets: AssetsManagerConfig = {
   | in the future
   |
   */
-  driver: 'encore',
+  driver: Env.get('ASSETS_DRIVER'),
 
   /*
   |--------------------------------------------------------------------------
@@ -261,8 +261,8 @@ export const assets: AssetsManagerConfig = {
   */
   script: {
     attributes: {
-      defer: true
-    }
+      defer: true,
+    },
   },
 
   /*
@@ -274,6 +274,6 @@ export const assets: AssetsManagerConfig = {
   |
   */
   style: {
-    attributes: {}
-  }
+    attributes: {},
+  },
 }

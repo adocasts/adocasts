@@ -29,7 +29,6 @@ import Bouncer from '@ioc:Adonis/Addons/Bouncer'
 | NOTE: Always export the "actions" const from this file
 |****************************************************************
 */
-
 export const { actions } = Bouncer
 
 /*
@@ -57,7 +56,5 @@ export const { actions } = Bouncer
 */
 export const { policies } = Bouncer.registerPolicies({
   CommentPolicy: () => import('App/Policies/CommentPolicy'),
-  PostPolicy: () => import('App/Policies/PostPolicy'),
-  StudioPolicy: () => import('App/Policies/StudioPolicy'),
-  TaxonomyPolicy: () => import('App/Policies/TaxonomyPolicy')
+  LessonRequestPolicy: () => import('App/Policies/LessonRequestPolicy')
 })

@@ -1,0 +1,90 @@
+@layout('layouts/app')
+@set('skipAccent', true)
+
+@section('meta')
+  @!meta.tags({
+    url: route('requests.lessons.index'),
+    title: "Lesson Requests",
+    desc: `Track, submit, and vote for lesson requests to see a topic covered on Adocasts`,
+    asset: null,
+    index: true
+  })
+@endsection
+
+@section('hero')
+
+  @headings.hero({
+    title: 'Lesson Requests',
+    subtitle: 'Track, submit, and vote for lesson requests to see a topic covered on Adocasts.'
+  })
+    @slot('action')
+      <div class="flex items-center gap-6">
+        @can('LessonRequestPolicy.store')
+          <div class="flex flex-col justify-center">
+            @buttons.brand.base({ href: route('requests.lessons.create'), attrs: 'up-follow' })
+              Request Lesson
+            @end
+          </div>
+        @endcan
+      </div>
+    @endslot
+
+    @form.post({
+      action: route('requests.lessons.search'),
+      attrs: `
+        up-autosubmit
+        up-target="[up-request-list]"
+        up-delay="500"
+      `
+    })
+      <div class="flex items-center gap-6 mt-6">
+        @!form.input({
+          type: 'search',
+          label: 'Search requests',
+          name: 'pattern',
+          placeholder: 'Search requests',
+          groupClass: 'w-full md:w-1/2'
+        })
+
+        @form.input({ type: 'select', label: 'Filter state', name: 'state', groupClass: '' })
+          <option value="">All</option>
+          <option value="{{ States.PUBLIC }}">Complete</option>
+          <option value="{{ States.IN_PROGRESS }}">In Progress</option>
+          <option value="{{ States.IN_REVIEW }}">In Review</option>
+          <option value="{{ States.DECLINED }}">Declined</option>
+        @end
+
+        @form.input({ type: 'select', label: 'Sort by', name: 'sortBy', groupClass: '' })
+          <option value="updatedAt_desc">Latest activity</option>
+          <option value="createdAt_desc">Newest</option>
+          <option value="createdAt_asc">Oldest</option>
+          <option value="name_asc">Title</option>
+        @end
+      </div>
+    @end
+
+    @cannot('LessonRequestPolicy.store')
+      <p class="inline-flex items-center gap-3 bg-slate-50 text-slate-500 px-6 py-3 rounded-xl text-sm my-3">
+        @!icons.infoCircleFilled({ className: 'w-5 h-5' })
+        <span>
+          Please
+          <a href="{{ route('auth.signin') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+            sign in
+          </a>
+          or
+          <a href="{{ route('auth.signup') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+            sign up for free
+          </a>
+          to request and vote for lessons
+        </span>
+      </p>
+    @endcannot
+  @end
+
+@endsection
+
+@section('content')
+
+  @!lessons.requestList({ lessonRequests })
+
+@endsection

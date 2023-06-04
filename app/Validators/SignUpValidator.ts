@@ -1,12 +1,9 @@
-import { rules, schema } from '@ioc:Adonis/Core/Validator'
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { usernameValidation } from 'App/Validators/shared/validations'
-import BaseValidator from './BaseValidator'
+import { schema, rules, CustomMessages } from '@ioc:Adonis/Core/Validator'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { usernameValidation } from './shared/validations'
 
-export default class SignUpValidator extends BaseValidator {
-  constructor(protected ctx: HttpContextContract) {
-    super()
-  }
+export default class SignUpValidator {
+  constructor(protected ctx: HttpContextContract) {}
 
   /*
    * Define schema to validate the "shape", "type", "formatting" and "integrity" of data.
@@ -31,6 +28,7 @@ export default class SignUpValidator extends BaseValidator {
     username: usernameValidation,
     email: schema.string({ trim: true }, [rules.email(), rules.unique({ table: 'users', column: 'email' })]),
     password: schema.string({ trim: true }, [rules.minLength(8)]),
+    forward: schema.string.optional()
   })
 
   /**
@@ -44,12 +42,8 @@ export default class SignUpValidator extends BaseValidator {
    * }
    *
    */
-  public messages = {
-    ...this.messages,
-    'username.unique': 'This username has already been taken',
-    'username.regex': 'Username must be alphanumeric with -, ., or _',
-    'email.unique': 'An account with this email already exists',
-    'email.email': 'Please enter a valid email',
-    'password.minLength': 'Password must be at least 8 characters long'
+  public messages: CustomMessages = {
+    'username.unique': 'This username is already taken',
+    'email.unique': 'This account already exists'
   }
 }

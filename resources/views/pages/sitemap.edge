@@ -1,0 +1,81 @@
+@layout('layouts/app')
+
+@section('meta')
+
+@!meta.tags({
+  url: route('sitemap'),
+  title: "Sitemap",
+  desc: "Adocasts Sitemap",
+  asset: null,
+  index: true
+})
+
+@endsection
+
+@section('content')
+
+<article class="flex flex-wrap mt-12 -mx-6 lg:-mx-12">
+  <main class="w-full prose lg:prose-lg rounded-xl px-6 pb-4 lg:px-12 lg:pb-8" style="max-width: 100%;">
+    <h1 class="text-4xl">
+      Sitemap
+    </h1>
+
+    <div class="w-full flex flex-wrap">
+      <div class="w-full lg:w-1/4">
+        <h3>Content</h3>
+        <div class="flex flex-col">
+          <a href="/">Home</a>
+          <a href="{{ route('series.index') }}">Series</a>
+          <a href="{{ route('topics.index') }}">Topics</a>
+          <a href="{{ route('lessons.index') }}">Lessons</a>
+          <a href="{{ route('news.index') }}">News</a>
+          <a href="{{ route('streams.index') }}">Streams</a>
+          <a href="{{ route('requests.lessons.index') }}">Lesson Requests</a>
+        </div>
+      </div>
+
+      <div class="w-full lg:w-1/4">
+        <h3>Series</h3>
+        <div class="flex flex-col mb-3">
+          @each (item in series)
+            <a href="{{ route('series.show', { slug: item.slug }) }}">{{ item.name }}</a>
+            @if (item.children?.length)
+              @each (subItem in item.children)
+                <a class="pl-4 border-l border-slate-300 text-base" href="{{ route('series.show', { slug: item.slug }) }}#lesson_{{ subItem.sortOrder + 1 }}.0">{{ subItem.name }}</a>
+              @endeach
+            @endif
+          @endeach
+        </div>
+      </div>
+
+      <div class="w-full lg:w-1/4">
+        <h3>Topics</h3>
+        <div class="flex flex-col">
+          @each (topic in topics)
+            <a href="{{ route('topics.show', { slug: topic.slug }) }}">{{ topic.name }}</a>
+            @if (topic.children?.length)
+              @each (subTopic in topic.children)
+                <a class="pl-4 border-l border-slate-300 text-base" href="{{ route('topics.show', { slug: subTopic.slug }) }}">{{ subTopic.name }}</a>
+              @endeach
+            @endif
+          @endeach
+        </div>
+      </div>
+
+      <div class="w-full lg:w-1/4">
+        <h3>Support &amp; Legal</h3>
+        <div class="flex flex-col">
+          <a href="/uses">What We Use</a>
+          <a href="{{ route('contact.index') }}">Contact Us</a>
+          <a href="{{ route('analytics') }}">Analytics</a>
+          <a href="{{ route('legals.cookies') }}">Cookie Policy</a>
+          <a href="{{ route('legals.privacy') }}">Privacy Policy</a>
+          <a href="{{ route('legals.terms') }}">Terms of Use</a>
+          <a href="{{ route('legals.guidelines') }}">Content Guidelines</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</article>
+
+@endsection

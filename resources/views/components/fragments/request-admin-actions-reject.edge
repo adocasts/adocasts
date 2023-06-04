@@ -1,0 +1,23 @@
+@can('LessonRequestPolicy.reject', lessonRequest)
+  <div up-admin-actions class="flex flex-col gap-y-3">
+    @form.patch({ action: route('requests.lessons.reject', { id: lessonRequest.id }), attrs: 'up-submit' })
+      <div class="flex items-center gap-3">
+        @buttons.danger.inverse({ type: 'submit', block: true, className: 'gap-3 flex-1' })
+          @!icons.thumbUp()
+          Confirm &amp; Reject
+        @end
+
+        @buttons.primary.inverse({ href: route('requests.lessons.fragment', { id: lessonRequest.id, fragment: 'request-admin-actions' }), attrs: `up-follow up-target="[up-admin-actions]"`, className: 'gap-3' })
+          @!icons.x()
+          Cancel
+        @end
+      </div>
+
+      <div>
+        @!tiptap.basic({ name: 'comment', value: flashMessages.get('comment'), submittable: false, includeScript: false })
+      </div>
+    @end
+
+    <div class="border-b border-slate-200 my-6"></div>
+  </div>
+@endcan

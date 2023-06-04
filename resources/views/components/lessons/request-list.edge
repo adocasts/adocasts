@@ -1,0 +1,70 @@
+<div class="overflow-hidden bg-slate-50 shadow-xl sm:rounded-xl" up-request-list>
+  <ul role="list" class="divide-y divide-slate-200">
+    @each (lessonRequest in lessonRequests)
+      <li class="relative block hover:bg-slate-100">
+        <div class="flex items-center px-4 py-4 sm:px-6">
+          <div class="flex min-w-0 flex-1 items-center">
+            @!fragments.requestVote({ lessonRequest })
+
+            <div class="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
+              <div>
+                <p class="truncate text-sm font-medium text-brand-600">
+                  <a href="{{ route('requests.lessons.show', { id: lessonRequest.id }) }}" class="expand-link font-semibold" up-follow>
+                    {{ lessonRequest.name }}
+                  </a>
+                </p>
+                <p class="mt-1 flex items-center text-sm text-slate-500">
+                  <span class="truncate">Requested by {{ lessonRequest.user.username }}</span>&nbsp;
+                  <time datetime="{{ lessonRequest.createdAt.toString() }}">{{ timeago(lessonRequest.createdAt) }}</time>
+                </p>
+              </div>
+              <div class="flex items-center md:flex-col md:justify-center md:items-start gap-x-6 gap-y-1 mt-2 md:mt-0">
+                @!fragments.requestStatus({ lessonRequest })
+
+                <div class="flex items-center gap-1 text-slate-500 text-sm">
+                  @!icons.messageTwo()
+                  <span>{{ lessonRequest.$extras.comments_count }}</span>
+                  <span>{{ getSingularOrPlural('comment', lessonRequest.$extras.comments_count) }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            @!icons.chevronRight({ className: 'w-5 h-5 text-slate-400' })
+          </div>
+        </div>
+      </li>
+    @endeach
+
+    @if (!lessonRequests.length)
+      <li class="p-6">
+        <h3 class="text-lg font-semibold">
+          No requests match your search
+        </h3>
+        <p class="text-slate-500">
+          Please try again with more broad or fewer keywords.
+          If you still can't find what you're looking for, 
+          @can('LessonRequestPolicy.store')
+            <a href="{{ route('requests.lessons.create') }}" class="anchor link-alt" up-follow>
+              please submit a request.
+            </a>
+          @else
+            please 
+            <a href="{{ route('auth.signin') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+              sign in
+            </a>
+            or 
+            <a href="{{ route('auth.signup') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+              sign up for free
+            </a>
+            to submit a request.
+          @endcan
+        </p>
+      </li>
+    @endif
+  </ul>
+
+  <div class="mt-3 border-t border-slate-200">
+    @!pagination({ data: lessonRequests })
+  </div>
+</div>

@@ -4,5 +4,6 @@ coverage
 .vscode
 .DS_STORE
 .env
+.idea
 google-cloud-key.json
 tmp

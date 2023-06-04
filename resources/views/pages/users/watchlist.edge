@@ -1,0 +1,54 @@
+@layout('layouts/app')
+
+@section('meta')
+  @!meta.tags({
+    url: '/',
+    title: "Your Watchlist",
+    desc: `Browse all the lessons, posts, and series you've added to your watchlist.`,
+    asset: null,
+    index: true
+  })
+@endsection
+
+@section('hero')
+
+  @!headings.hero({
+    title: 'Your Watchlist',
+    subtitle: `Browse all the lessons, posts, and series you've added to your watchlist.`
+  })
+
+@endsection
+
+@section('content')
+
+  @if (!collections?.length && !posts?.length)
+    <div class="w-full flex flex-col">
+      <div class="border-2 border-dashed border-slate-300 p-3 rounded-md max-w-2xl">
+        @!headings.panel({ title: `Watchlist Is Empty` })
+        Looks like your watchlist is empty. 
+        You can use your watchlist to bookmark lessons and series you found useful or would like to return to.
+      </div>
+    </div>
+  @else
+    <div class="w-full flex flex-col py-8 -mx-3">
+      <div class="px-3">
+        @!headings.panel({ title: 'Series In Your Watchlist' })
+      </div>
+      <div class="flex w-full flex-wrap mb-6">
+        @each (item in collections)
+          @!collections.card({ item, className: 'w-full md:w-1/2 lg:w-1/4 px-3 mb-6' })
+        @endeach
+      </div>
+    </div>
+
+    <div class="px-3">
+      @!headings.panel({ title: `Lessons/Posts In Your Watchlist` })
+    </div>
+    <div class="grid xl:grid-cols-2 gap-3 w-full px-3">
+      @each ((item, i) in posts)
+        @!lessons.listItem({ item, className: 'mb-6' })
+      @endeach
+    </div>
+  @endif
+
+@endsection

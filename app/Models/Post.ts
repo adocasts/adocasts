@@ -16,8 +16,7 @@ import State from 'App/Enums/States'
 import Taxonomy from "App/Models/Taxonomy"
 import ReadService from 'App/Services/ReadService'
 import BodyTypes from 'App/Enums/BodyTypes'
-import EditorBlockParser from 'App/Services/EditorBlockParser'
-import PostType from 'App/Enums/PostType'
+import PostType from 'App/Enums/PostTypes'
 import Comment from './Comment'
 import AppBaseModel from 'App/Models/AppBaseModel'
 import States from 'App/Enums/States'
@@ -29,6 +28,7 @@ import History from 'App/Models/History'
 import HistoryTypes from 'App/Enums/HistoryTypes'
 import Route from '@ioc:Adonis/Core/Route'
 import AssetTypes from 'App/Enums/AssetTypes'
+import { HttpContext } from '@adonisjs/core/build/standalone'
 
 export default class Post extends AppBaseModel {
   public serializeExtras = true
@@ -132,6 +132,20 @@ export default class Post extends AppBaseModel {
     pivotColumns: ['sort_order']
   })
   public assets: ManyToMany<typeof Asset>
+
+  @manyToMany(() => Asset, {
+    pivotTable: 'asset_posts',
+    pivotColumns: ['sort_order'],
+    onQuery: q => q.where('assetTypeId', AssetTypes.THUMBNAIL)
+  })
+  public thumbnails: ManyToMany<typeof Asset>
+
+  @manyToMany(() => Asset, {
+    pivotTable: 'asset_posts',
+    pivotColumns: ['sort_order'],
+    onQuery: q => q.where('assetTypeId', AssetTypes.COVER)
+  })
+  public covers: ManyToMany<typeof Asset>
 
   @hasMany(() => PostSnapshot)
   public snapshots: HasMany<typeof PostSnapshot>
@@ -341,8 +355,8 @@ export default class Post extends AppBaseModel {
   @beforeSave()
   public static async setReadTimeValues(post: Post) {
     if (post.$dirty.bodyBlocks) {
-      post.bodyTypeId = BodyTypes.JSON
-      await EditorBlockParser.parse(post)
+      // post.bodyTypeId = BodyTypes.JSON
+      // await EditorBlockParser.parse(post)
     } else if (post.$dirty.body) {
       post.bodyTypeId = BodyTypes.HTML
     }
@@ -411,16 +425,20 @@ export default class Post extends AppBaseModel {
   })
 
   public static forDisplay = scope<typeof Post>((query, skipPublishCheck: boolean = false) => {
+    const ctx = HttpContext.get()
+
     query
       .if(!skipPublishCheck, query => query.apply(scope => scope.published()))
-      .preload('assets', q => q.where('assetTypeId', AssetTypes.THUMBNAIL))
+      .if(ctx?.auth.user, query => query.withCount('watchlist', query => query.where('userId', ctx!.auth.user!.id)))
+      .preload('thumbnails')
+      .preload('covers')
       .preload('taxonomies')
       .preload('rootSeries')
       .preload('series')
       .preload('authors', query => query.preload('profile'))
   })
 
-  public static forCollectionDisplay = scope<typeof Post>((query, { orderBy, direction }: { orderBy: 'pivot_sort_order'|'pivot_root_sort_order', direction: 'asc'|'desc' } = { orderBy: 'pivot_sort_order', direction: 'asc' }) => {
+  public static forCollectionDisplay = scope<typeof Post>((query, { orderBy, direction }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order', direction: 'asc' | 'desc' } = { orderBy: 'pivot_sort_order', direction: 'asc' }) => {
     query
       .apply(scope => scope.forDisplay())
       .orderBy(orderBy, direction)

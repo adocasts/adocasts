@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/jagr.co.iml" filepath="$PROJECT_DIR$/.idea/jagr.co.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/adocasts.iml" filepath="$PROJECT_DIR$/.idea/adocasts.iml" />
     </modules>
   </component>
 </project>

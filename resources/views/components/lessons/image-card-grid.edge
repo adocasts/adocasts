@@ -1,0 +1,29 @@
+<div class="flex lg:grid grid-cols-5 gap-6 rounded-xl overflow-hidden">
+  @each (item in posts)
+    <div class="">
+      <a 
+        up-follow
+        href="{{ routePost(item) }}" 
+        class="relative group overview-hidden w-full flex items-center bg-slate-50 text-slate-100 duration-150">
+        @if (item.thumbnails?.length || item.covers?.length)
+          @set('img', item.thumbnails?.length ? item.thumbnails[0] : item.covers[0])
+          @!picture({
+            ratio: 'aspect-video',
+            className: 'overflow-hidden group-hover:shadow-xl rounded-xl duration-150',
+            filename: img.filename,
+            altText: img.altText
+          })
+        @endif
+        <div class="absolute top-0 left-0 w-full h-full">
+          <div class="w-full h-full flex flex-col z-10 p-6 bg-slate-50/75 backdrop-blur opacity-0 group-hover:opacity-100 duration-300">
+            @!lessons.barSeries({ item, on: 'dark', className: 'text-xs' })
+
+            <h4 class="font-sans text-sm font-semibold op-1 line-clamp-3 duration-150 mt-0 mb-2">
+              {{ item.title }}
+            </h4>
+          </div>
+        </div>
+      </a>
+    </div>
+  @endeach
+</div>

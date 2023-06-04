@@ -1,16 +1,36 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Themes from 'App/Enums/Themes'
+import HistoryService from 'App/Services/HistoryService'
+import NotificationService from 'App/Services/NotificationService'
+import WatchlistService from 'App/Services/WatchlistService'
 
 export default class UsersController {
-  public async theme({ response, auth, session, params }: HttpContextContract) {
-    const { theme } = params
+  public async menu({ response, view, auth }: HttpContextContract) {
+    const notifications = await NotificationService.getForUser(auth.user)
 
-    if (Object.values(Themes).includes(theme)) {
-      auth.user?.merge({ theme })
-      await auth.user?.save()
-      session.put('theme', theme)
+    await NotificationService.markAsRead(notifications.unread)
+
+    if (notifications.unread.length) {
+      response.header('X-Up-Clear-Cache', '/users/*')
     }
 
-    return response.status(204)
+    return view.render('pages/users/menu', { notifications })
+  }
+
+  public async watchlist({ view, auth }: HttpContextContract) {
+    const posts = await WatchlistService.getLatestPosts(auth.user!)
+    const collections = await WatchlistService.getLatestCollections(auth.user!)
+
+    return view.render('pages/users/watchlist', { posts, collections })
+  }
+
+  public async history({ view, auth }: HttpContextContract) {
+    const posts = await HistoryService.getLatestPostProgress(auth.user!)
+    const collections = await HistoryService.getLatestSeriesProgress(auth.user!)
+
+    return view.render('pages/users/history', { posts, collections })
+  }
+
+  public async check({ auth }: HttpContextContract) {
+    return !!auth.user
   }
 }

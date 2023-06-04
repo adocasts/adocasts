@@ -1,11 +1,8 @@
-import { schema } from '@ioc:Adonis/Core/Validator'
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import BaseValidator from './BaseValidator'
+import { schema, CustomMessages } from '@ioc:Adonis/Core/Validator'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class SignInValidator extends BaseValidator {
-  constructor(protected ctx: HttpContextContract) {
-    super()
-  }
+export default class SignInValidator {
+  constructor(protected ctx: HttpContextContract) {}
 
   /*
    * Define schema to validate the "shape", "type", "formatting" and "integrity" of data.
@@ -29,7 +26,9 @@ export default class SignInValidator extends BaseValidator {
   public schema = schema.create({
     uid: schema.string(),
     password: schema.string(),
-    remember_me: schema.boolean.optional()
+    rememberMe: schema.boolean.optional(),
+    forward: schema.string.optional(),
+    action: schema.string.optional()
   })
 
   /**
@@ -43,7 +42,5 @@ export default class SignInValidator extends BaseValidator {
    * }
    *
    */
-  public messages = {
-    ...this.messages
-  }
+  public messages: CustomMessages = {}
 }

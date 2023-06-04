@@ -74,7 +74,7 @@ export const csrf: ShieldConfig['csrf'] = {
   | Enable/Disable CSRF
   |--------------------------------------------------------------------------
   */
-  enabled: Env.get('NODE_ENV') !== 'test',
+  enabled: true,
 
   /*
   |--------------------------------------------------------------------------
@@ -230,7 +230,7 @@ export const hsts: ShieldConfig['hsts'] = {
 | files with .txt extension containing Javascript code will be executed as
 | Javascript. You can disable this behavior by setting nosniff to false.
 |
-| Learn more at https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+| Learn more at https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
 |
 */
 export const contentTypeSniffing: ShieldConfig['contentTypeSniffing'] = {

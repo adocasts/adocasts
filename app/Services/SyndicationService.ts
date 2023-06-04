@@ -49,7 +49,7 @@ export default class SyndicationService {
     childTopics.map(slug => urls = this.add(urls, this.map('topics.show', { slug }, 'weekly', 0.5)))
     lessons.map(slug => urls = this.add(urls, this.map('lessons.show', { slug }, 'weekly', 0.6)))
     news.map(slug => urls = this.add(urls, this.map('news.show', { slug }, 'weekly', 0.3)))
-    streams.map(slug => urls = this.add(urls, this.map('livestreams.show', { slug }, 'weekly', 0.3)))
+    streams.map(slug => urls = this.add(urls, this.map('streams.show', { slug }, 'weekly', 0.3)))
     blogs.map(slug => urls = this.add(urls, this.map('posts.show', { slug }, 'weekly', 0.2)))
 
     return urls

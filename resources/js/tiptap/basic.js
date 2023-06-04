@@ -19,6 +19,7 @@ window.setupEditor = function(content) {
 
   return {
     isInitialized: false,
+    isFocused: false,
     content: content,
     updatedAt: Date.now(), // force Alpine to rerender on selection change
 
@@ -119,6 +120,12 @@ window.setupEditor = function(content) {
         content: this.content,
         onUpdate: ({ editor }) => {
           this.content = editor.getHTML()
+        },
+        onFocus: () => {
+          this.isFocused = true
+        },
+        onBlur: () => {
+          this.isFocused = false
         },
         onSelectionUpdate: () => {
           this.updatedAt = Date.now()

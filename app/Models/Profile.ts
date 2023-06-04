@@ -5,6 +5,8 @@ import Asset from './Asset'
 import AppBaseModel from 'App/Models/AppBaseModel'
 
 export default class Profile extends AppBaseModel {
+  public serializeExtras: boolean = true
+
   @column({ isPrimary: true })
   public id: number
 

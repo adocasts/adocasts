@@ -1,0 +1,36 @@
+@dropdown.base()
+  @slot('triggerManual', props)
+    @buttons.primary.base({ className: 'theme-selector', atClick: props.handler, square: true })
+      <span class="theme-icon theme-icon-light">
+        @!icons.sunFilled()
+      </span>
+      <span class="theme-icon theme-icon-dark">
+        @!icons.moonFilled()
+      </span>
+      <span class="theme-icon theme-icon-system">
+        @!icons.sunMoon()
+      </span>
+    @end
+  @endslot
+
+  @header.theme.item({ value: 'light' })
+    <div class="flex items-center gap-x-3">
+      @!icons.sunFilled()
+      Light
+    </div>
+  @end
+
+  @header.theme.item({ value: 'dark' })
+    <div class="flex items-center gap-x-3">
+      @!icons.moonFilled()
+      Dark
+    </div>
+  @end
+
+  @header.theme.item({ value: 'system' })
+    <div class="flex items-center gap-x-3">
+      @!icons.sunMoon()
+      System
+    </div>
+  @end
+@end

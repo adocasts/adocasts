@@ -1,0 +1,47 @@
+<a href="{{ route('topics.show', { slug: item.slug }) }}" {{{ upAttrs }}} up-follow class="relative group overview-hidden w-full flex items-center bg-slate-50/75 hover:bg-white duration-150 rounded-xl  px-3 py-5">
+  @if (item.asset?.filename)
+    <div class="absolute w-full h-full top-0 left-0 opacity-0 group-hover:opacity-5">
+      @!picture({
+        filename: item.asset.filename,
+        className: 'rounded-xl w-full h-full bg-slate-100 h-full',
+        width: 42,
+        ratio: 'aspect-square',
+        imgClassName: 'object-fill object-center blur-xl h-full scale-125 group-hover:object-cover group-hover:scale-100 group-hover:object-contain group-hover:blur-sm duration-150'
+      })
+    </div>
+  @endif
+
+  <div class="mr-4 relative z-10">
+    @if (item.asset?.filename)
+      @!picture({
+        filename: item.asset.filename,
+        className: 'rounded-xl w-12 h-12 h-full',
+        width: 42,
+        ratio: 'aspect-square',
+        imgClassName: 'object-contain object-center'
+      })
+    @else
+      <div class="w-12 h-12 text-base lg:text-xl font-semibold flex items-center justify-center rounded-xl bg-slate-100 text-brand-800">
+        {{ getAbbrev(item.name) }}
+      </div>
+    @endif
+  </div>
+
+  <div class="flex flex-col relative z-10">
+    <h4 class="font-sans mb-1 text-sm 2xl:text-base op-1 font-semibold duration-150 truncate leading-tight">
+      {{ item.name }}
+    </h4>
+
+    <div class="w-full text-slate-400 text-xs flex justify-center items-center relative z-10 leading-tight">
+      <div class="flex items-center pr-2">
+        <span class="mr-1">{{ item.meta?.collections_count ?? 0 }}</span>
+        <span>{{ getSingularOrPlural('Series', item.meta?.collections_count ?? 0) }}</span>
+      </div>
+      <div class="h-3 border border-slate-200"></div>
+      <div class="flex items-center pl-2">
+        <span class="mr-1">{{ item.meta?.posts_count ?? 0 }}</span>
+        <span>{{ getSingularOrPlural('Lesson', item.meta?.posts_count ?? 0) }}</span>
+      </div>
+    </div>
+  </div>
+</a>

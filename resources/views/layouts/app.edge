@@ -1,0 +1,109 @@
+@set('theme', auth.user?.theme || session.get('theme'))
+@set('isPostOnDeck', !!post && post.postTypeId !== PostTypes.NEWS)
+<!DOCTYPE html>
+<html lang="en" class="{{ theme ?? 'system' }} h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  @section('meta')
+    <title>{{ env('APP_BRAND') }}</title>
+  @endsection
+
+  <script src="https://unpkg.com/unpoly@2.7.1/unpoly.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/unpoly@2.7.1/unpoly.min.css">
+
+  @entryPointStyles('app')
+  @entryPointScripts('app')
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <script defer data-domain="adocasts.com" src="https://analytics.adocasts.com/js/plausible.js"></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+
+  <script defer>
+    const url = new URL(window.location.href)
+    const urlParams = new URLSearchParams(url.search)
+    window.$params = Object.fromEntries(urlParams.entries())
+    if (url.search) {
+      urlParams.delete('autoplay')
+      url.search = urlParams.toString()
+      window.history.replaceState({}, document.title, url.toString())
+    }
+  </script>
+</head>
+<body class="h-full bg-slate-100 text-slate-900 overflow-x-hidden subpixel-antialiased" layout-root up-theme>
+  <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>
+  <div class="absolute w-full h-[450px] dark:bg-gradient-to-b system:bg-gradient-to-b from-slate-50 to-slate-100 -z-10"></div>
+
+  <div class="absolute inset-x-0 top-[-10rem] -z-10 opacity-50 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem] pointer-events-none">
+    <svg class="relative left-[calc(50%-11rem)] h-[21.1875rem] -z-10 max-w-none -translate-x-1/2 rotate-[30deg] sm:left-[calc(50%-30rem)] sm:h-[42.375rem]" viewBox="0 0 1155 678">
+      <path fill="url(#9b2541ea-d39d-499b-bd42-aeea3e93f5ff)" fill-opacity=".3" d="M317.219 518.975L203.852 678 0 438.341l317.219 80.634 204.172-286.402c1.307 132.337 45.083 346.658 209.733 145.248C936.936 126.058 882.053-94.234 1031.02 41.331c119.18 108.451 130.68 295.337 121.53 375.223L855 299l21.173 362.054-558.954-142.079z" />
+      <defs>
+        <linearGradient id="9b2541ea-d39d-499b-bd42-aeea3e93f5ff" x1="1155.49" x2="-78.208" y1=".177" y2="474.645" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#9089FC" />
+          <stop offset="1" stop-color="#FF80B5" />
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="h-full flex flex-col justify-between">
+    <div>
+      <div class="{{ isPostOnDeck ? 'lesson-wrapper' : '' }} relative" style="z-index: 75;" up-main-header>
+        <div class="page-contents header">
+          @include('partials/header')
+        </div>
+      </div>
+
+      <div class="{{ isPostOnDeck ? 'lesson-wrapper' : '' }}" x-data="{}" x-init="window.isAuthenticated = {{ !!auth.user }}" up-main>
+        @if (live && !request.matchesRoute(route('streams.index')) && request.url() !== routePost(live, { slug: live.slug }))
+          <div up-hungry>
+            @!streams.banner({ post: live })
+          </div>
+        @endif
+        @!banners.verifyEmail()
+        @!toasts.flash()
+
+        <div class="page-contents main">
+          @!section('hero')
+
+          <main class="{{ up.isPage ? 'app-container' : '' }}">
+            @!section('content')
+          </main>
+        </div>
+
+        @!section('list')
+        @!section('up-scripts')
+      </div>
+
+      <div up-player>
+        @if (player)
+          @!lessons.player(player)
+        @endif
+      </div>
+    </div>
+
+    <div class="{{ isPostOnDeck ? 'lesson-wrapper' : '' }}" up-main-footer>
+      <div class="page-contents">
+        @include('partials/footer')
+      </div>
+    </div>
+  </div>
+
+  @!section('scripts')
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <script defer>
+    (function() {
+      const script = document.createElement('script');
+      script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0874550857266190";
+      script.defer = true;
+      script.setAttribute('crossorigin', 'anonymous')
+      document.body.appendChild(script)
+    })();
+  </script>
+</body>
+</html>

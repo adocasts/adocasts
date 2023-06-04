@@ -1,0 +1,91 @@
+@layout('layouts/app')
+@set('hasVideo', post.videoUrl || post.livestreamUrl)
+
+@section('meta')
+  @!meta.tags({
+    url: route('lessons.show', request.routeParams),
+    title: post.page_title ?? post.title,
+    series: series,
+    desc: excerpt(post.meta_description ?? post.description, 180),
+    asset: post.assets && post.assets[0],
+    index: post.isPublished
+  })
+@endsection
+
+@section('list')
+
+  @if (series)
+    @!lessons.seriesList({ series })
+  @endif
+
+@endsection
+
+@section('hero')
+
+  {{--  <progress id="reading-progress" class="hidden" max="100" value="0"></progress>  --}}
+  
+  @if (hasVideo)
+    <div id="videoPlayerContainer" class="pb-8 pt-4">
+      <div class="app-container">
+        <div id="videoPlayerPosition" class="aspect-video relative rounded-xl overflow-hidden"></div>
+      </div>
+    </div>
+  @endif
+
+  @if (series)
+    <div class="app-container lg:hidden">
+      <div class="flex mb-6 space-x-3">
+        @buttons.primary.inverse()
+          @!icons.chevronLeft({ className: 'w-6 h-6' })
+        @end
+
+        @buttons.primary.inverse({ 
+          block: true, 
+          size: 'xl', 
+          attrs: `x-data @click="document.getElementById('boxSeries').dispatchEvent(new CustomEvent('toggle'))"` 
+        })
+          @!icons.layoutSidebarRight()
+          Series Details
+        @end
+
+        @buttons.primary.inverse()
+          @!icons.chevronRight({ className: 'w-6 h-6' })
+        @end
+      </div>
+    </div>
+  @endif
+
+@endsection
+
+@section('content')
+
+  <div class="grid-post-content -mx-3">
+    <div class="w-full title">
+      @!lessons.titleBox({ post, views, series, userProgression })
+    </div>
+
+    <aside class="w-full post-aside actions top mb-6">
+      @!lessons.author({ post, views })
+
+      <div class="mt-6 hidden xl:block">
+        @!ads.vertical()
+      </div>
+    </aside>
+    
+    <main class="w-full">
+      <div class="prose no-max flex-1 xl:p-6 post-type-{{ post.postTypeId }} text-slate-900">
+        {{{ post.body }}}
+      </div>
+
+      @!comments.base({ postId: post.id, comments, commentsCount })
+    </main>
+  </div>
+
+  {{--  @if (auth?.user?.roleId === Roles.ADMIN)
+    <a href="{{ route('studio.posts.edit', { id: post.id }) }}" class="bg-slate-900 bg-opacity-60 hover:bg-opacity-100 py-2 px-3 rounded-t fixed bottom-0 right-3 text-slate-100 flex items-center transition duration-300 text-sm">
+      @!svg.edit()
+      <span class="ml-2">Edit Post</span>
+    </a>
+  @endif  --}}
+
+@endsection

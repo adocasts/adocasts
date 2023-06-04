@@ -92,6 +92,11 @@ export default class Collection extends AppBaseModel {
     return Number(this.$extras.watchlist_count) > 0
   }
 
+  @computed()
+  public get moduleNumber() {
+    return this.sortOrder + 1
+  }
+
   @belongsTo(() => User)
   public owner: BelongsTo<typeof User>
 

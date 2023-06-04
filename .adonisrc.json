@@ -19,11 +19,14 @@
     "./start/routes",
     "./start/kernel",
     "./start/bouncer",
-    "./start/events",
-    "./start/globals"
+    "./start/globals",
+    "./start/events/verification",
+    "./start/events/email-changed"
   ],
   "providers": [
     "./providers/AppProvider",
+    "./providers/Up/Provider",
+    "./providers/QueryBuilderExtensions/Provider",
     "./providers/LogProvider",
     "@adonisjs/core",
     "@adonisjs/session",
@@ -31,16 +34,14 @@
     "@adonisjs/shield",
     "@adonisjs/lucid",
     "@adonisjs/auth",
-    "@adonisjs/lucid-slugify",
-    "@adonisjs/ally",
     "@adonisjs/mail",
-    "@adonisjs/redis",
-    "@adonisjs/bouncer",
-    "./providers/QueryBuilderProvider",
-    "@adonisjs/attachment-lite",
+    "@adonisjs/lucid-slugify",
     "@adonisjs/drive-gcs",
-    "@japa/preset-adonis/TestsProvider",
-    "@adocasts.com/adonisjs-honeypot"
+    "@adocasts.com/adonisjs-honeypot",
+    "@adonisjs/bouncer",
+    "@adonisjs/redis",
+    "@adonisjs/ally",
+    "./providers/Turnstile/Provider"
   ],
   "metaFiles": [
     {
@@ -65,5 +66,8 @@
         "timeout": 60000
       }
     ]
-  }
+  },
+  "testProviders": [
+    "@japa/preset-adonis/TestsProvider"
+  ]
 }

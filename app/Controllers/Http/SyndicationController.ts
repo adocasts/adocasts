@@ -21,7 +21,7 @@ export default class SyndicationController {
       .preload('children')
       .orderBy('name', 'asc')
 
-    return view.render('sitemap', { series, topics })
+    return view.render('pages/sitemap', { series, topics })
   }
 
   public async xml({ response }: HttpContextContract) {
