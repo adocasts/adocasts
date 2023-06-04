@@ -35,9 +35,11 @@
   @if (series)
     <div class="app-container lg:hidden">
       <div class="flex mb-6 space-x-3">
-        @buttons.primary.inverse()
-          @!icons.chevronLeft({ className: 'w-6 h-6' })
-        @end
+        @if (prevSeriesLesson)
+          @buttons.primary.inverse({ href: routePost(prevSeriesLesson), attrs: 'up-follow' })
+            @!icons.chevronLeft({ className: 'w-6 h-6' })
+          @end
+        @endif
 
         @buttons.primary.inverse({ 
           block: true, 
@@ -48,9 +50,11 @@
           Series Details
         @end
 
-        @buttons.primary.inverse()
-          @!icons.chevronRight({ className: 'w-6 h-6' })
-        @end
+        @if (nextSeriesLesson)
+          @buttons.primary.inverse({ href: routePost(nextSeriesLesson), attrs: 'up-follow' })
+            @!icons.chevronRight({ className: 'w-6 h-6' })
+          @end
+        @endif
       </div>
     </div>
   @endif

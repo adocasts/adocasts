@@ -1,6 +1,7 @@
 import { AuthContract } from "@ioc:Adonis/Addons/Auth";
 import { ModelQueryBuilderContract } from "@ioc:Adonis/Lucid/Orm";
 import Collection from "App/Models/Collection";
+import Post from "App/Models/Post";
 
 export default class CollectionService {
   /**
@@ -122,6 +123,34 @@ export default class CollectionService {
     if (!nextLesson) nextLesson = series.postsFlattened[0]
 
     return nextLesson
+  }
+
+  /**
+   * returns the next lesson after the provided post in the series (if there is one)
+   * @param series 
+   * @param post 
+   * @returns 
+   */
+  public static findNextSeriesLesson(series: Collection | null, post: Post) {
+    if (!series) return
+    if (!post?.rootSeries?.length || !series?.postsFlattened?.length) return
+
+    const postRootIndex = post.rootSeries[0].$extras.pivot_root_sort_order
+    return series?.postsFlattened.find(p => p.$extras.pivot_root_sort_order === postRootIndex + 1)
+  }
+
+  /**
+   * returns the previous lesson before the provided post in the series (if there is one)
+   * @param series 
+   * @param post 
+   * @returns 
+   */
+  public static findPrevSeriesLesson(series: Collection | null, post: Post) {
+    if (!series) return
+    if (!post?.rootSeries?.length || !series?.postsFlattened?.length) return
+
+    const postRootIndex = post.rootSeries[0].$extras.pivot_root_sort_order
+    return series?.postsFlattened.find(p => p.$extras.pivot_root_sort_order === postRootIndex - 1)
   }
 
   /**

@@ -107,6 +107,7 @@ export default class PostService {
           .if(auth.user, query => query.preload('progressionHistory', query => query.where({ userId: auth.user!.id }).orderBy('updated_at', 'desc')))
         )
       )
+      .preload('postsFlattened')
       .preload('updatedVersions', query => query
         .wherePublic()
         .whereHas('postsFlattened', query => query.apply(s => s.published()))
