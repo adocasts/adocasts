@@ -75,18 +75,24 @@
         </div>
 
         <div class="w-full flex flex-col space-y-3 lg:pb-6">
-          @buttons.brand.base({ href: '', block: true })
-            @!icons.playerPlay({ className: 'w-5 h-5' })
-            <span class="ml-2">Start Series</span>
-          @end
-          @buttons.primary.inverse({ href: '', block: true })
-            @!icons.brandGithub({ className: 'w-5 h-5' })
-            <span class="ml-2">View Repository</span>
-          @end
-          @buttons.primary.inverse({ href: '', block: true })
-            @!icons.brandYoutube({ className: 'w-5 h-5' })
-            <span class="ml-2">View Playlist</span>
-          @end
+          @if (series.postsFlattened.length)
+            @buttons.brand.base({ href: routePost(nextLesson), block: true, attrs: 'up-follow' })
+              @!icons.playerPlay({ className: 'w-5 h-5' })
+              <span class="ml-2">{{ nextLesson.id === series.postsFlattened[0].id ? 'Start Series' : 'Continue Series' }}</span>
+            @end
+          @endif
+          @if (series.repositoryUrl)
+            @buttons.primary.inverse({ href: series.repositoryUrl, block: true, attrs: 'target="_blank"' })
+              @!icons.brandGithub({ className: 'w-5 h-5' })
+              <span class="ml-2">View Repository</span>
+            @end
+          @endif
+          @if (series.youtubePlaylistUrl)
+            @buttons.primary.inverse({ href: series.youtubePlaylistUrl, block: true, attrs: 'target="_blank"' })
+              @!icons.brandYoutube({ className: 'w-5 h-5' })
+              <span class="ml-2">View Playlist</span>
+            @end
+          @endif
         </div>
 
         @if (series.children?.length)
