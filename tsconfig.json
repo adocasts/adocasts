@@ -11,6 +11,7 @@
     "outDir": "build",
     "rootDir": "./",
     "sourceMap": true,
+    "lib": ["ES2021"],
     "paths": {
       "App/*": [
         "./app/*"

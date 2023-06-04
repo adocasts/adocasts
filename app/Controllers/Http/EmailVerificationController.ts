@@ -1,5 +1,4 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Encryption from '@ioc:Adonis/Core/Encryption'
 import User from 'App/Models/User'
 import Event from '@ioc:Adonis/Core/Event'
 import { DateTime } from 'luxon'

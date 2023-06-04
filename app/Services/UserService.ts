@@ -1,7 +1,6 @@
 import Database from "@ioc:Adonis/Lucid/Database";
 import DiscordLogger from "@ioc:Logger/Discord";
 import States from "App/Enums/States";
-import Comment from "App/Models/Comment";
 import User from "App/Models/User";
 
 export default class UserService {

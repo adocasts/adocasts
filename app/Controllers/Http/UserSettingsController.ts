@@ -5,7 +5,6 @@ import UserSettingsService from 'App/Services/UserSettingsService'
 import Route from '@ioc:Adonis/Core/Route'
 import Event from '@ioc:Adonis/Core/Event'
 import EmailNotificationValidator from 'App/Validators/EmailNotificationValidator'
-import States from 'App/Enums/States'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import UserService from 'App/Services/UserService'
 

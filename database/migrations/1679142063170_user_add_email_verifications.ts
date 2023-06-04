@@ -12,7 +12,7 @@ export default class extends BaseSchema {
 
   public async down () {
     this.schema.alterTable(this.tableName, (table) => {
-      table.dropColumns(['email_verified', 'email_verified_at'])
+      table.dropColumns('email_verified', 'email_verified_at')
     })
   }
 }
