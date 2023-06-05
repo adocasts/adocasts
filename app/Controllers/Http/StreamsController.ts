@@ -5,6 +5,7 @@ import Route from '@ioc:Adonis/Core/Route'
 import { Exception } from '@adonisjs/core/build/standalone'
 import HistoryService from 'App/Services/HistoryService'
 import AnalyticsService from 'App/Services/AnalyticsService'
+import CollectionService from 'App/Services/CollectionService'
 
 export default class StreamsController {
   public async index({ request, view }: HttpContextContract) {
@@ -29,6 +30,8 @@ export default class StreamsController {
     const comments = await PostService.getComments(post)
     const commentsCount = await PostService.getCommentsCount(post)
     const views = await AnalyticsService.getPageViews(request.url())
+    const nextSeriesLesson = CollectionService.findNextSeriesLesson(series, post)
+    const prevSeriesLesson = CollectionService.findPrevSeriesLesson(series, post)
 
     const hasPlayerId = session.has('videoPlayerId')
     if (!hasPlayerId || (hasPlayerId && session.get('videoPlayerId') !== post.id)) {
@@ -42,6 +45,6 @@ export default class StreamsController {
       player: { post, series, userProgression }
     })
 
-    return view.render('pages/lessons/show', { post, series, comments, commentsCount, userProgression, views })
+    return view.render('pages/lessons/show', { post, series, comments, commentsCount, userProgression, views, nextSeriesLesson, prevSeriesLesson })
   }
 }

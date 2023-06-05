@@ -6,6 +6,7 @@
     <a
       href="{{ href }}"
       up-follow
+      x-data @click="document.getElementById('boxSeries').dispatchEvent(new CustomEvent('toggle'))"
       class="flex items-center p-3 rounded-xl transition duration-150 group
       {{ isActive ? 'active bg-brand-600 text-brand-50' : 'hover:bg-slate-200' }}"
       {{{ isActive && 'x-init="$el.scrollIntoView()"' }}}>

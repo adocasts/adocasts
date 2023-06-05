@@ -106,81 +106,65 @@
               </div>
               <div class="relative mt-6 flex-1 px-4 sm:px-6">
                 <nav class="flex flex-col flex-1 space-y-3 border-b border-slate-200 mb-6 pb-6">
-                  <a href="{{ route('series.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl">
+                  <a href="{{ route('series.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl" @click="show = false">
                     @!icons.playlist({ className: 'w-6 h-6' })
                     Series
                   </a>
-                  <a href="{{ route('topics.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl">
+                  <a href="{{ route('topics.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl" @click="show = false">
                     @!icons.hash({ className: 'w-6 h-6' })
                     Topics
                   </a>
-                  <a href="{{ route('lessons.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl">
+                  <a href="{{ route('lessons.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl" @click="show = false">
                     @!icons.school({ className: 'w-6 h-6' })
                     Lessons
                   </a>
-                  <a href="{{ route('streams.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl">
+                  <a href="{{ route('streams.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl" @click="show = false">
                     @!icons.accessPoint({ className: 'w-6 h-6' })
                     Streams
                   </a>
-                  <a href="{{ route('news.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl">
+                  <a href="{{ route('news.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl" @click="show = false">
                     @!icons.news({ className: 'w-6 h-6' })
                     News
                   </a>
-                  <a href="{{ route('requests.lessons.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl">
+                  <a href="{{ route('requests.lessons.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl" @click="show = false">
                     @!icons.news({ className: 'w-6 h-6' })
                     Requests
                   </a>
                 </nav>
 
-                <div class="flex flex-col gap-3 mb-6 pb-6 border-b border-slate-200">
-                  @buttons.primary.inverse({ href: route('auth.signin'), attrs: 'up-layer="new modal" up-size="grow"', block: true, size: 'xl' })
-                    Sign In
-                  @end
+                @if (!auth.user)
+                  <div class="flex flex-col gap-3 mb-6 pb-6 border-b border-slate-200">
+                    @buttons.primary.inverse({ href: route('auth.signin'), attrs: 'up-layer="new modal" up-size="grow" @click="show = false"', block: true, size: 'xl' })
+                      Sign In
+                    @end
 
-                  @buttons.brand.base({ href: route('auth.signup'), attrs: 'up-layer="new modal" up-size="grow"', block: true, size: 'xl' })
-                    Sign Up
-                  @end
-                </div>
+                    @buttons.brand.base({ href: route('auth.signup'), attrs: 'up-layer="new modal" up-size="grow" @click="show = false"', block: true, size: 'xl' })
+                      Sign Up
+                    @end
+                  </div>
+                @endif
 
                 <div class="grid grid-cols-2 gap-8 xl:col-span-2">
                   <div class="md:grid md:grid-cols-2 md:gap-8">
+                    <h3 class="text-sm font-semibold text-slate-700 tracking-wider uppercase">
+                      Company
+                    </h3>
                     <div>
-                      <h3 class="text-sm font-semibold text-slate-700 tracking-wider uppercase">
-                        Help
-                      </h3>
                       <ul class="mt-4 space-y-4">
-                        @footer.link({ href: '' })
-                          Lesson Requests
+                        @footer.link({ href: '/uses', attrs: 'up-follow  @click="show = false"' })
+                          What We Use
                         @end
-                        @footer.link({ href: '/contact' })
+                        @footer.link({ href: '/contact', attrs: 'up-follow  @click="show = false"' })
                           Contact Us
                         @end
-                        @footer.link({ href: '' })
-                          FAQs
-                        @end
-                        @footer.link({ href: '' })
-                          Resources
-                        @end
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="md:grid md:grid-cols-2 md:gap-8">
-                    <div>
-                      <h3 class="text-sm font-semibold text-slate-700 tracking-wider uppercase">
-                        Company
-                      </h3>
-                      <ul class="mt-4 space-y-4">
-                        @footer.link({ href: '/uses' })
-                          Uses
-                        @end
-                        @footer.link({ href: '/guidelines' })
-                          Guidelines
-                        @end
-                        @footer.link({ href: '' })
+                        @footer.link({ href: '/analytics', attrs: 'up-follow  @click="show = false"' })
                           Analytics
                         @end
-                        @footer.link({ href: '/sitemap' })
+                        @footer.link({ href: '/sitemap', attrs: 'up-follow  @click="show = false"' })
                           Sitemap
+                        @end
+                        @footer.link({ href: '/guidelines', attrs: 'up-follow  @click="show = false"' })
+                          Guidelines
                         @end
                       </ul>
                     </div>
