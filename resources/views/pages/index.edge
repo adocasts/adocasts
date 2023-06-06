@@ -13,7 +13,7 @@
 
 @section('hero')
 
-  <div class="mb-16">
+  <div class="mb-16 -mx-3">
     @if (!auth.user)
       @!marketing.homeHero({ stats })
     @else
@@ -22,7 +22,7 @@
           @!lessons.featureHalfTall({ item: posts.at(0) })
           @set('postSkip', postSkip + 1)
 
-          <div class="flex flex-wrap items-start lg:w-1/2">
+          <div class="flex flex-wrap items-start w-full lg:w-1/2">
             @each (item in posts.slice(postSkip, postSkip + 4))
               @!lessons.featureHalfList({ item })
               @set('postSkip', postSkip + 1)

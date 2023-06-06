@@ -48,7 +48,7 @@
           @set('thumbnail', currentLesson.assets && currentLesson.assets[0])
           @set('lessonInProgress', currentLesson.progressionHistory.length > 0)
 
-          <object class="flex flex-col relative z-10 mb-2">
+          <object class="flex flex-col relative z-10 mb-2 -mx-3">
             <h6 class="text-xs text-left font-bold tracking-wide px-3 pt-3">
               {{ lessonInProgress ? 'Continue Your Next Lesson' : 'Start Your Next Lesson' }}
             </h6>
@@ -58,7 +58,7 @@
                   @!picture({ filename: thumbnail.filename, className: 'rounded-lg overflow-hidden', lazy: lazyItem })
                 </div>
               @endif
-              <div class="w-full md:w-3/5 flex flex-col items-start text-left md:pl-2">
+              <div class="w-full md:w-3/5 flex flex-col items-start text-left md:pl-2 mt-2">
                 <h5 class="uppercase inline-block text-accent-800 text-xs leading-none mb-2">
                   Lesson {{ currentLesson.lessonIndexDisplay }}
                 </h5>
