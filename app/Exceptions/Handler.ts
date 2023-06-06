@@ -17,6 +17,7 @@ import Logger from '@ioc:Adonis/Core/Logger'
 import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import DiscordLogger from '@ioc:Logger/Discord'
+import { honeypotConfig } from 'Config/honeypot'
 
 export default class ExceptionHandler extends HttpExceptionHandler {
   protected disableStatusPagesInDevelopment = true
@@ -58,6 +59,15 @@ export default class ExceptionHandler extends HttpExceptionHandler {
     if (error.code === 'E_HONEYPOT_FAILURE' && ctx.request.url() === '/contact') return
     if (error.code === 'E_CANNOT_READ_FILE' && ctx.request.url() === '/img/178/VSCode_1614756076826.png') return
     if (error.code === 'E_BAD_CSRF_TOKEN') return
+
+    if (error.code === 'E_HONEYPOT_FAILURE') {
+      const { phone, ...honeyFields } = ctx.request.only(honeypotConfig.fields)
+      await DiscordLogger.error(error.message, {
+        requestUrl: ctx.request.url(true),
+        ...honeyFields
+      })
+      return
+    }
     
     await DiscordLogger.error(error.message, {
       method: ctx.request.method,
