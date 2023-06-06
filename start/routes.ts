@@ -165,5 +165,3 @@ Route.get('/go/auth/reset', 'GoController.authReset').as('go.auth.reset')
 Route.on('/topics/adonisjs-5').redirectToPath('/topics/adonisjs')
 Route.on('/topics/adonis-5').redirectToPath('/topics/adonisjs')
 Route.on('/series/lets-learn-adonis-5').redirectToPath('/series/lets-learn-adonisjs-5')
-
-Route.on('not-found').render('errors/not-found')
