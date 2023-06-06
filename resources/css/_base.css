@@ -157,7 +157,7 @@
   }
   
   .hero-backdrop-image {
-    @apply rounded-full w-full h-full min-h-[450px] lg:min-h-[600px] object-cover object-center scale-[175%] group-hover:scale-[140%] blur-xl group-hover:blur-none mb-3 duration-150;
+    @apply rounded-full w-full h-full min-h-[450px] lg:min-h-[600px] object-cover object-center scale-[1.75] group-hover:scale-[1.4] blur-xl group-hover:blur-none mb-3 duration-150;
   
     /* mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0)); */
   }

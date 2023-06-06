@@ -31,7 +31,7 @@ export default class LessonsController {
     const views = await AnalyticsService.getPageViews(request.url())
     const nextSeriesLesson = CollectionService.findNextSeriesLesson(series, post)
     const prevSeriesLesson = CollectionService.findPrevSeriesLesson(series, post)
-    console.log({ nextSeriesLesson, prevSeriesLesson })
+    
     const hasPlayerId = session.has('videoPlayerId')
     if (!up.isUnpolyRequest || !hasPlayerId || (hasPlayerId && session.get('videoPlayerId') !== post.id)) {
       up.setTarget('[up-main], [up-player], [up-header]')

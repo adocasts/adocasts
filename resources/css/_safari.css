@@ -1,0 +1,9 @@
+.up-focusable-content:focus {
+  outline: none;
+}
+
+.flicker-fix {
+  -webkit-transform-style: preserve-3d;
+  will-change: transform;
+  /* -webkit-backface-visibility: hidden; */
+}

@@ -1,4 +1,4 @@
-<a href="{{ route('topics.show', { slug: item.slug }) }}" {{{ upAttrs }}} up-follow class="relative group overview-hidden w-full flex items-center bg-slate-50/75 hover:bg-white duration-150 rounded-xl  px-3 py-5">
+<a href="{{ route('topics.show', { slug: item.slug }) }}" {{{ upAttrs }}} up-follow class="relative group overview-hidden w-full flex items-center bg-slate-50/75 hover:bg-white duration-150 rounded-xl  px-3 py-5 flicker-fix">
   @if (item.asset?.filename)
     <div class="absolute w-full h-full top-0 left-0 opacity-0 group-hover:opacity-5">
       @!picture({

@@ -5,6 +5,7 @@
 @import '_player.css';
 @import '_prose.css';
 @import '_lesson.css';
+@import '_safari.css';
 
 @tailwind base;
 @tailwind components;
