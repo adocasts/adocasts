@@ -1,7 +1,7 @@
 <div x-data="{ show: false }">
   <header class="w-full bg-slate-50/10 text-slate-900 mb-6" up-header>
     <div class="app-container flex justify-between items-center py-3 md:py-1">
-      <a href="/" up-follow>
+      <a href="/" class="mr-4 flex-1 md:flex-none md:mr-0" up-follow>
         <img class="logo-white w-auto h-7" src="/imgs/logo-white.svg" alt="Adocasts" width="146px" height="28px" />
         <img class="logo-black w-auto h-7" src="/imgs/logo-black.svg" alt="Adocasts" width="146px" height="28px" />
       </a>
@@ -15,7 +15,7 @@
         @!header.navLink({ text: 'Requests', href: route('requests.lessons.index'), upFollow: true })
       </nav>
 
-      <div class="flex">
+      <div class="flex gap-1">
         <div class="flex items-center gap-1">
           @buttons.primary.base({ square: true, href: route('search.index'), attrs: 'up-layer="new modal" up-size="grow"' })
             @!icons.search()
@@ -24,8 +24,8 @@
           @!header.theme.selector()
         </div>
 
-        <div class="items-center {{ !auth.user ? 'hidden lg:flex' : 'flex' }}">
-          <div class="h-6 border-r border-slate-200 space-x-3 mr-3 pr-3"></div>
+        <div class="hidden items-center {{ !auth.user ? 'lg:flex' : 'lg:flex' }}">
+          <div class="h-6 border-r border-slate-200 md:space-x-3 mr-3 pr-3"></div>
         </div>
 
 
@@ -36,7 +36,7 @@
               {{ unreadNotificationCount }}
             </div>
 
-            @buttons.primary.base({ type: 'button', square: true, className: '!p-0', href: route('users.menu'), atClick: 'showCount = false', attrs: 'up-layer="new drawer" up-size="large" up-position="right"' })
+            @buttons.primary.base({ type: 'button', square: true, className: '!p-0 relative top-0.5', href: route('users.menu'), atClick: 'showCount = false', attrs: 'up-layer="new drawer" up-size="large" up-position="right"' })
               <img class="h-8 w-8 rounded-md" src="{{ auth.user.avatar }}" />
             @end
           </div>
@@ -52,11 +52,7 @@
           </div>
         @endif
 
-        <div class="items-center flex lg:hidden">
-          <div class="h-6 border-r border-slate-200 space-x-3 mr-3 pr-3"></div>
-        </div>
-
-        @buttons.primary.base({ square: true, atClick: 'show = true', className: 'lg:hidden' })
+        @buttons.primary.base({ atClick: 'show = true', className: 'lg:hidden !w-9 !h-9', size: 'xs' })
           @!icons.menuTwo()
         @end
       </div>

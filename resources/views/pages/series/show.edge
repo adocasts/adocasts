@@ -120,7 +120,7 @@
 
     <div class="w-full lg:w-3/4">
       @each ((module, x) in series.children)
-        <div id="module{{module.moduleNumber }}" class="bg-slate-50 rounded-xl p-3 mb-3">
+        <div id="module{{module.moduleNumber }}" class="bg-slate-50 rounded-xl md:p-3 mb-3">
           <div class="mx-3 mb-3 py-3 border-b border-slate-200">
             <h3 class="flex items-center flex-wrap text-lg lg:text-xl text-slate-600 gap-x-3">
               <span class="uppercase tracking-wider hidden md:block bg-slate-300/50 rounded-lg py-1 px-2 text-xs">
@@ -135,7 +135,6 @@
           @each ((item, y) in module.posts)
             @!lessons.listItem({
               item,
-              className: 'pl-3',
               imgWidth: 'mb-3 md:mb-0 md:w-1/2 lg:w-2/5 xl:w-1/3',
               detailWidth: 'md:w-1/2 lg:w-3/5 xl:w-2/3',
               descClassName: '!inline-block',
