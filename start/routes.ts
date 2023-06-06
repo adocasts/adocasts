@@ -94,11 +94,11 @@ Route.group(() => {
   Route.get('/topics', 'TopicsController.index').as('topics.index')
   Route.get('/topcis/:slug', 'TopicsController.show').as('topics.show')
   Route.get('/lessons', 'LessonsController.index').as('lessons.index')
-  Route.get('/lessons/:slug', 'LessonsController.show').as('lessons.show')
+  Route.get('/lessons/:slug', 'LessonsController.show').as('lessons.show').middleware(['postTypeCheck'])
   Route.get('/streams', 'StreamsController.index').as('streams.index')
-  Route.get('/streams/:slug', 'StreamsController.show').as('streams.show')
+  Route.get('/streams/:slug', 'StreamsController.show').as('streams.show').middleware(['postTypeCheck'])
   Route.get('/news', 'NewsController.index').as('news.index')
-  Route.get('/news/:slug', 'NewsController.show').as('news.show')
+  Route.get('/news/:slug', 'NewsController.show').as('news.show').middleware(['postTypeCheck'])
   Route.post('/comments', 'CommentsController.store').as('comments.store')
   Route.put('/comments/:id', 'CommentsController.update').as('comments.update')
   Route.patch('/comments/:id/like', 'CommentsController.like').as('comments.like')
@@ -158,3 +158,12 @@ Route.post('/api/history/progression/:id?', 'ProgressionsController.record').as(
 Route.get('/go/posts/:id/comment/:commentId', 'GoController.postComment').as('go.posts.comment')
 Route.get('/go/requests/lessons/:id/comment/:commentId', 'GoController.lessonRequestComment').as('go.requests.lessons.comment')
 Route.get('/go/auth/reset', 'GoController.authReset').as('go.auth.reset')
+
+
+
+// PUBLIC -- Redirects from old
+Route.on('/topics/adonisjs-5').redirectToPath('/topics/adonisjs')
+Route.on('/topics/adonis-5').redirectToPath('/topics/adonisjs')
+Route.on('/series/lets-learn-adonis-5').redirectToPath('/series/lets-learn-adonisjs-5')
+
+Route.on('not-found').render('errors/not-found')

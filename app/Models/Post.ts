@@ -346,7 +346,7 @@ export default class Post extends AppBaseModel {
       case PostType.NEWS:
         return Route.makeUrl('news.show', { slug: this.slug })
       case PostType.LIVESTREAM:
-        return Route.makeUrl('livestreams.show', { slug: this.slug })
+        return Route.makeUrl('streams.show', { slug: this.slug })
       default:
         return Route.makeUrl('lessons.show', { slug: this.slug })
     }
