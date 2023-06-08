@@ -92,7 +92,7 @@ Route.group(() => {
   Route.get('/series/:slug', 'SeriesController.show').as('series.show')
   Route.get('/series/:slug/lesson/:index',  'SeriesController.lesson').as('series.lesson')
   Route.get('/topics', 'TopicsController.index').as('topics.index')
-  Route.get('/topcis/:slug', 'TopicsController.show').as('topics.show')
+  Route.get('/topics/:slug', 'TopicsController.show').as('topics.show')
   Route.get('/lessons', 'LessonsController.index').as('lessons.index')
   Route.get('/lessons/:slug', 'LessonsController.show').as('lessons.show').middleware(['postTypeCheck'])
   Route.get('/streams', 'StreamsController.index').as('streams.index')
