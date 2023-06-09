@@ -29,6 +29,13 @@ Route.get('/img/*', 'AssetsController.show').where('path', /.*/).as('img')
 
 
 Route.group(() => {
+  // PUBLIC -- Redirects from old
+  Route.on('/topics/adonisjs-5').redirectToPath('/topics/adonisjs')
+  Route.on('/topics/adonis-5').redirectToPath('/topics/adonisjs')
+  Route.on('/series/lets-learn-adonis-5').redirectToPath('/series/lets-learn-adonisjs-5')
+
+
+
   /**
    * auth
    */
@@ -158,10 +165,3 @@ Route.post('/api/history/progression/:id?', 'ProgressionsController.record').as(
 Route.get('/go/posts/:id/comment/:commentId', 'GoController.postComment').as('go.posts.comment')
 Route.get('/go/requests/lessons/:id/comment/:commentId', 'GoController.lessonRequestComment').as('go.requests.lessons.comment')
 Route.get('/go/auth/reset', 'GoController.authReset').as('go.auth.reset')
-
-
-
-// PUBLIC -- Redirects from old
-Route.on('/topics/adonisjs-5').redirectToPath('/topics/adonisjs')
-Route.on('/topics/adonis-5').redirectToPath('/topics/adonisjs')
-Route.on('/series/lets-learn-adonis-5').redirectToPath('/series/lets-learn-adonisjs-5')
