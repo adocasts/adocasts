@@ -168,8 +168,8 @@ code .line:before {
   content: counter(step);
   counter-increment: step;
   width: 1rem;
-  background-color: theme('colors.slate.100');
-  opacity: 40%;
+  background-color: theme('colors.slate-base.900');
+  opacity: 50%;
   margin-right: .5rem;
   margin-left: -1.3333333em;
   padding-left: 1.3333333em;

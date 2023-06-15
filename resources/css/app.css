@@ -14,19 +14,19 @@
 /* purgecss start ignore */
 pre.shiki.github-dark,
 .code-block pre {
-  background-color: theme('colors.slate.50') !important;
+  background-color: theme('colors.slate-base.900') !important;
 
   [style="color: #E1E4E8"] {
-    color: theme('colors.slate.800') !important;
+    color: theme('colors.slate-base.300') !important;
   }
 
   [style="color: #6A737D"] {
-    color: theme('colors.slate.400') !important;
+    color: theme('colors.slate-base.500') !important;
   }
 }
 
 .bg-slate-50 pre.shiki.github-dark,
 .code-block pre {
-  background-color: theme('colors.slate.100') !important;
+  background-color: theme('colors.slate-base.900') !important;
 }
 /* purgecss end ignore */
