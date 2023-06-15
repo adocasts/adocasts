@@ -1,4 +1,4 @@
-<div id="boxSeries" x-cloak x-data="{ show: false }" @toggle="show = !show; document.body.classList.toggle('box-series-show')" up-hungry>
+<div id="boxSeries" x-cloak x-data="{ show: false }" @toggle="show = !show; document.body.classList.toggle('box-series-show')" @hide="show = false; document.body.classList.remove('box-series-show')" up-hungry>
   <div class="lesson-list-placeholder bg-slate-50" @click="show = false; document.body.classList.remove('box-series-show')" :class="{ show }"></div>
   <div class="lesson-list bg-slate-100 border-l border-slate-200/50 shadow-xl z-10" :class="{ show }">
     <div class="flex justify-between items-center pt-3 pb-3 md:pb-0 md:sticky top-0 z-30 bg-slate-50 backdrop-blur-lg">
