@@ -18,7 +18,7 @@
         </p>
       </div>
 
-      @form.post({ action: route('auth.authenticate'), upSubmit: 'signin', honeypot: true })
+      @form.post({ action: route('auth.authenticate'), upSubmit: 'signin' })
         @if (action)
           <input type="hidden" name="action" value="{{ action }}" />
         @endif

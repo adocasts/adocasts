@@ -18,7 +18,7 @@
         </p>
       </div>
 
-      @form.post({ action: route('auth.register'), upSubmit: 'signup', honeypot: true })
+      @form.post({ action: route('auth.register'), upSubmit: 'signup', turnstile: true })
         @if (request.header('referrer'))
           <input type="hidden" name="forward" value="{{ request.header('referrer') }}" />
         @endif
