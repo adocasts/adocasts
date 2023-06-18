@@ -21,7 +21,8 @@
     "./start/bouncer",
     "./start/globals",
     "./start/events/verification",
-    "./start/events/email-changed"
+    "./start/events/email-changed",
+    "./start/events/notifications"
   ],
   "providers": [
     "./providers/AppProvider",

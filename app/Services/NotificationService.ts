@@ -150,6 +150,7 @@ export default class NotificationService {
         })
 
         await notification.save()
+        await notification.trySendEmail(post.authors[i].id, trx)
       }
     } catch (error) {
       await Logger.error('Failed to create post comment notification', {
@@ -180,6 +181,7 @@ export default class NotificationService {
       })
 
       await notification.save()
+      await notification.trySendEmail(lessonRequest.userId, trx)
     } catch (error) {
       await Logger.error('Failed to create lesson request comment notification', {
         comment: JSON.stringify(comment),
@@ -222,6 +224,7 @@ export default class NotificationService {
       })
 
       await notification.save()
+      await notification.trySendEmail(userId, trx)
     } catch (error) {
       await Logger.error('Failed to create comment reply notification', {
         comment: JSON.stringify(comment),

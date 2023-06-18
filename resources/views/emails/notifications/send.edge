@@ -1,0 +1,30 @@
+@set('title', notification.title)
+
+@layout('emails/layouts/transactional')
+
+@section('content')
+
+  @emails.paragraph()
+    Hi {{ user.username }},
+  @end
+
+  @emails.paragraph({ className: 'capitalize' })
+    {{ notification.title }}
+  @end
+
+  @emails.paragraph()
+    <strong>Comment:</strong><br/>
+    {{ stripHTML(notification.body) }}
+  @end
+
+  @emails.button({ href })
+    View Comment
+  @end
+  
+  @!emails.signature()
+
+  @emails.paragraph()
+    <a href="{{ href }}">{{ href }}</a>
+  @end
+
+@endsection

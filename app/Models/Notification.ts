@@ -2,6 +2,11 @@ import { DateTime } from 'luxon'
 import { BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import AppBaseModel from 'App/Models/AppBaseModel'
+import NotificationTypes from 'App/Enums/NotificationTypes'
+import NotImplementedException from 'App/Exceptions/NotImplementedException'
+import Event from '@ioc:Adonis/Core/Event'
+import Profile from './Profile'
+import { TransactionClientContract } from '@ioc:Adonis/Lucid/Database'
 
 export default class Notification extends AppBaseModel {
   @column({ isPrimary: true })
@@ -48,4 +53,24 @@ export default class Notification extends AppBaseModel {
 
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
+
+  public isEmailEnabled(profile: Profile) {
+    switch (this.notificationTypeId) {
+      case NotificationTypes.COMMENT:
+        return profile.emailOnComment
+      case NotificationTypes.COMMENT_REPLY:
+        return profile.emailOnCommentReply
+      default:
+        throw new NotImplementedException(`Email handler for type ${this.notificationTypeId} has not been defined`)
+    }
+  }
+
+  public async trySendEmail(userId: number, trx: TransactionClientContract | undefined | null = undefined) {
+    const user = await User.query().where({ id: userId }).preload('profile').firstOrFail()
+    
+    if (!this.isEmailEnabled(user.profile)) return
+    if (!trx) return Event.emit('notification:send', { notification: this, user })
+
+    trx.on('commit', () => Event.emit('notification:send', { notification: this, user }))
+  }
 }
