@@ -17,6 +17,9 @@ export default class Profile extends AppBaseModel {
   public avatarAssetId: number | null
 
   @column()
+  public name: string | null
+
+  @column()
   public biography: string | null
 
   @column()

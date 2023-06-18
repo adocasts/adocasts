@@ -9,7 +9,7 @@
         </div>
         <div>
           <div class="text-xs opacity-60">Published By</div>
-          <div class="font-semibold">Tom Gobich </div>
+          <div class="font-semibold">{{ author.profile.name ?? author.username }}</div>
           <div class="text-xs opacity-80">
             {{ post.timeago }}
           </div>

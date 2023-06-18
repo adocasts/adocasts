@@ -57,6 +57,11 @@ export default class QueryBuilderProvider {
       return BigInt(result[0].$extras.total)
     })
 
+    ModelQueryBuilder.macro('getSum', async function (column: string) {
+      const result = await this.sum(column)
+      return Number(result[0].$extras.sum)
+    })
+
     ModelQueryBuilder.macro('firstOr', async function<T = undefined>(orFunction: () => Promise<T>) {
       const result = await this.first()
 

@@ -70,6 +70,7 @@
     "html-minifier": "^4.0.0",
     "htmx.org": "^1.8.5",
     "luxon": "^3.2.1",
+    "mathjs": "^11.8.1",
     "node-discord-logger": "^1.2.2",
     "node-html-parser": "^6.1.4",
     "node-iplocate": "^1.0.3",

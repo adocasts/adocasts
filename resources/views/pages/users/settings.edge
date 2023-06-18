@@ -15,10 +15,17 @@
   <div class="flex flex-col lg:flex-row gap-3 lg:gap-6">
     <div class="w-full h-full lg:w-1/4 flex flex-col gap-3 lg:sticky top-3">
       <a href="#account" class="px-3 py-1.5 rounded-lg bg-slate-50/75 hover:bg-slate-50 flex items-center gap-3">
-        @!icons.user()
+        @!icons.key()
         <div class="flex flex-col flex-1">
           <span class="font-bold">Update Your Account</span>
           <span class="text-slate-500 text-xs">Username, email, linked social login providers</span>
+        </div>
+      </a>
+      <a href="#profile" class="px-3 py-1.5 rounded-lg bg-slate-50/75 hover:bg-slate-50 flex items-center gap-3">
+        @!icons.user()
+        <div class="flex flex-col flex-1">
+          <span class="font-bold">Update Your Profile</span>
+          <span class="text-slate-500 text-xs">Name, bio, social accounts</span>
         </div>
       </a>
       <a href="#notifications" class="px-3 py-1.5 rounded-lg bg-slate-50/75 hover:bg-slate-50 flex items-center gap-3">
@@ -45,6 +52,14 @@
         @!settings.updateUsername()
         @!settings.updateEmail()
         @!settings.manageSocialAuth({ borderBottom: false })
+      </div>
+
+      <div id="profile" class="bg-slate-50/75 p-6 rounded-xl mb-3">
+        <h3 class="border-b border-slate-200 text-lg font-bold pb-6 mb-6">
+          Update Your Profile
+        </h3>
+        @!settings.updateProfile({ profile })
+        @!settings.updateSocial({ profile, borderBottom: false })
       </div>
 
       <div id="notifications" class="bg-slate-50/75 p-6 rounded-xl mb-3">

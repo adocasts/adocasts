@@ -13,6 +13,7 @@ declare module '@ioc:Adonis/Lucid/Orm' {
     any(primaryKey?: string): Promise<boolean>
     firstOr<T = undefined>(orFunction: () => T): Promise<Result> | T
     getCount(): Promise<BigInt>
+    getSum(column: string): Promise<number>
     selectIds(idColumn?: string): Promise<number[]>
     selectId(idColumn?: string): Promise<number>
     selectIdOrFail(idColumn?: string): Promise<number>

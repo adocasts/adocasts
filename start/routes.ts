@@ -84,12 +84,14 @@ Route.group(() => {
   Route.get('/users/revert/:id/:oldEmail/:newEmail', 'UserSettingsController.revertEmail').as('users.revert.email')
   Route.put('/users/notifications/email', 'UserSettingsController.updateNotificationEmails').as('users.notifications.email')
   Route.delete('/users/delete', 'UserSettingsController.deleteAccount').as('users.destroy')
+  Route.put('/users/profile', 'ProfilesController.update').as('users.profiles.update').middleware(['auth'])
 
 
 
   /**
    * main pages
    */
+  Route.get('/:username', 'ProfilesController.show').as('profiles.show').where('username', /^@/)
   Route.get('/', 'HomeController.index').as('home.index')
   Route.get('/analytics', 'HomeController.analytics').as('analytics')
   Route.get('/search', 'SearchController.index').as('search.index')
@@ -163,5 +165,6 @@ Route.post('/api/history/progression/:id?', 'ProgressionsController.record').as(
  * go
  */
 Route.get('/go/posts/:id/comment/:commentId', 'GoController.postComment').as('go.posts.comment')
+Route.get('/go/post/:id/comment/:commentId', 'GoController.postComment').as('go.post.comment')
 Route.get('/go/requests/lessons/:id/comment/:commentId', 'GoController.lessonRequestComment').as('go.requests.lessons.comment')
 Route.get('/go/auth/reset', 'GoController.authReset').as('go.auth.reset')

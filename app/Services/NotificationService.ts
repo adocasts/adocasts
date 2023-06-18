@@ -240,6 +240,6 @@ export default class NotificationService {
       return `/go/requests/lessons/${comment.lessonRequestId}/comment/${comment.id}`
     }
     
-    return `/go/post/${comment.postId}/comment/${comment.id}`
+    return `/go/posts/${comment.postId}/comment/${comment.id}`
   }
 }

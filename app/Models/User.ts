@@ -18,6 +18,7 @@ import Themes from 'App/Enums/Themes'
 import LessonRequest from './LessonRequest'
 import Roles from 'App/Enums/Roles'
 import RequestVote from './RequestVote'
+import HistoryTypes from 'App/Enums/HistoryTypes'
 
 class User extends AppBaseModel {
   @column({ isPrimary: true })
@@ -150,6 +151,16 @@ class User extends AppBaseModel {
 
   @hasMany(() => History)
   public histories: HasMany<typeof History>
+
+  @hasMany(() => History, {
+    onQuery: query => query.where('historyTypeId', HistoryTypes.PROGRESSION).whereNotNull('postId').where('watchSeconds', '>', 0)
+  })
+  public watchedPosts: HasMany<typeof History>
+
+  @hasMany(() => History, {
+    onQuery: query => query.where('historyTypeId', HistoryTypes.PROGRESSION).whereNotNull('postId').where('isCompleted', true)
+  })
+  public completedPosts: HasMany<typeof History>
 
   @hasMany(() => Notification)
   public notifications: HasMany<typeof Notification>

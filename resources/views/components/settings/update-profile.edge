@@ -1,0 +1,53 @@
+@form.section({ title: 'About You', description: 'Update your publicly shared info', borderBottom })
+  @form.put({ action: route('users.profiles.update'), attrs: 'up-submit up-target="[up-main]" up-fail-target="[up-main]" up-scroll="restore"' })
+    @!form.input({
+      label: 'Name',
+      name: 'name',
+      value: flashMessages.get('name') ?? profile.name,
+      errors: flashMessages.get('errors.name'),
+      autocomplete: 'name',
+      placeholder: 'Can be your real name or an alias',
+      min: 2,
+      max: 75
+    })
+
+    @!form.input({
+      type: 'textarea',
+      label: 'Biography',
+      name: 'biography',
+      value: flashMessages.get('biography') ?? profile.biography,
+      errors: flashMessages.get('errors.biography'),
+      placeholder: 'Tell us about yourself',
+      max: 300
+    })
+
+    @!form.input({
+      label: 'Location',
+      name: 'location',
+      value: flashMessages.get('location') ?? profile.location,
+      errors: flashMessages.get('errors.location'),
+      placeholder: 'General area you live (ex: Cincinnati, OH)',
+    })
+
+    @!form.input({
+      type: 'url',
+      label: 'Website',
+      name: 'website',
+      value: flashMessages.get('website') ?? profile.website,
+      errors: flashMessages.get('errors.website'),
+      placeholder: 'https://example.com',
+    })
+
+    @!form.input({
+      label: 'Company',
+      name: 'company',
+      value: flashMessages.get('company') ?? profile.company,
+      errors: flashMessages.get('errors.company'),
+      placeholder: 'Abstergo Inc.',
+    })
+
+    @buttons.primary.inverse({ type: 'submit', className: 'mt-3' })
+      Update Details
+    @end
+  @end
+@end

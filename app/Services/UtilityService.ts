@@ -127,4 +127,8 @@ export default class UtilityService {
   public static formatNumber(number: number) {
     return number.toLocaleString()
   }
+
+  public static displaySocialUrl(url: string) {
+    return url.replace('https://', '').replace('http://', '')
+  }
 }
