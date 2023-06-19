@@ -76,7 +76,7 @@
 
           <div x-show="editId !== {{ comment.id }}" class="flex items-center space-x-2 group">
             @if (auth.user && comment.stateId !== States.ARCHIVED)
-              @form.post({ action: route('comments.like', { id: comment.id }), attrs: 'up-submit up-scroll="preserve"' })
+              @form.patch({ action: route('comments.like', { id: comment.id }), attrs: 'up-submit up-scroll="preserve"' })
                 <button 
                   type="submit" 
                   class="btn-hover-fill text-slate-900 hover:text-slate-950 transition flex items-center text-sm bg-slate-100 rounded-lg py-1 px-3 {{ userLiked && 'active' }}" 
