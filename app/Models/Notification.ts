@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BelongsTo, belongsTo, column, computed } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import AppBaseModel from 'App/Models/AppBaseModel'
 import NotificationTypes from 'App/Enums/NotificationTypes'
@@ -53,6 +53,30 @@ export default class Notification extends AppBaseModel {
 
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
+
+  @computed()
+  public get settingsField() {
+    switch (this.notificationTypeId) {
+      case NotificationTypes.COMMENT:
+        return 'emailOnComment'
+      case NotificationTypes.COMMENT_REPLY:
+        return 'emailOnCommentReply'
+      default:
+        throw new NotImplementedException(`Settings field for type ${this.notificationTypeId} has not been defined`)
+    }
+  }
+
+  @computed()
+  public get settingsDescriptor() {
+    switch (this.notificationTypeId) {
+      case NotificationTypes.COMMENT:
+        return 'comments on your content'
+      case NotificationTypes.COMMENT_REPLY:
+        return 'replies to one of your comments'
+      default:
+        throw new NotImplementedException(`Settings field for type ${this.notificationTypeId} has not been defined`)
+    }
+  }
 
   public isEmailEnabled(profile: Profile) {
     switch (this.notificationTypeId) {

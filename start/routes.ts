@@ -83,6 +83,8 @@ Route.group(() => {
   Route.put('/users/update/email', 'UserSettingsController.updateEmail').as('users.update.email').middleware(['auth'])
   Route.get('/users/revert/:id/:oldEmail/:newEmail', 'UserSettingsController.revertEmail').as('users.revert.email')
   Route.put('/users/notifications/email', 'UserSettingsController.updateNotificationEmails').as('users.notifications.email')
+  Route.get('/users/:userId/notifications/:field/off', 'UserSettingsController.disableNotificationField').as('users.notifications.disable.field')
+  Route.get('/users/:userId/notifications/off', 'UserSettingsController.disableNotifications').as('users.notifications.disable')
   Route.delete('/users/delete', 'UserSettingsController.deleteAccount').as('users.destroy')
   Route.put('/users/profile', 'ProfilesController.update').as('users.profiles.update').middleware(['auth'])
 

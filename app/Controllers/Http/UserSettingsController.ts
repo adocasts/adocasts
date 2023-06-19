@@ -84,6 +84,57 @@ export default class UserSettingsController {
     return response.redirect().back()
   }
 
+  public async disableNotificationField({ request, response, params, auth, session }: HttpContextContract) {
+    const forwardTo = auth.user ? 'users.settings.index' : 'home.index'
+
+    if (!request.hasValidSignature() || (auth.user && params.userId != auth.user.id)) {
+      session.flash('error', 'Link signature is expired or invalid')
+      return response.redirect().toRoute(forwardTo)
+    }
+
+    const profile = await Profile.findByOrFail('userId', params.userId)
+    const notificationFields = [
+      { field: 'emailOnComment', message: `You'll no longer recieve emails when someone comments on your content` }, 
+      { field: 'emailOnCommentReply', message: `You'll no longer recieve emails when someone replies to your comments` }, 
+      { field: 'emailOnAchievement', message: `You'll no longer recieve emails when you unlock achievements` }
+    ]
+    const field = notificationFields.find(({ field }) => field === params.field)
+
+    if (!field) {
+      session.flash('error', 'Provided field is invalid, please try again.')
+      return response.redirect().toRoute(forwardTo)
+    }
+
+    profile[params.field] = false
+
+    await profile.save()
+
+    session.flash('success', field.message)
+
+    return response.redirect().toRoute(forwardTo)
+  }
+
+  public async disableNotifications({ request, response, params, auth, session }: HttpContextContract) {
+    const forwardTo = auth.user ? 'users.settings.index' : 'home.index'
+
+    if (!request.hasValidSignature() || (auth.user && params.userId != auth.user.id)) {
+      session.flash('error', 'Link signature is expired or invalid')
+      return response.redirect().toRoute(forwardTo)
+    }
+
+    const profile = await Profile.findByOrFail('userId', params.userId)
+
+    profile.emailOnAchievement = false
+    profile.emailOnComment = false
+    profile.emailOnCommentReply = false
+
+    await profile.save()
+
+    session.flash('success', `All activity based emails have been disabled.`)
+
+    return response.redirect().toRoute(forwardTo)
+  }
+
   public async deleteAccount({ request, response, auth, session }: HttpContextContract) {
     const _schema = schema.create({
       user_username: schema.string({ trim: true }, [rules.confirmed('username')])
