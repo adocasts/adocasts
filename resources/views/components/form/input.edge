@@ -40,7 +40,7 @@
         @focus="focused = true"
         @blur="focused = false"
         {{{ attrs }}}
-      ></textarea>
+      >{{ value }}</textarea>
     @elseif(type === 'group')
       @if($slots.input)
         {{{ await $slots.input()  }}}
