@@ -174,13 +174,13 @@ export default class Collection extends AppBaseModel {
           posts as p inner join collection_posts
             on p.id = collection_posts.post_id
             where
-                  collections.id = collection_posts.collection_id
+                  collections.id = collection_posts.root_collection_id
               and p.state_id = ?
               and p.is_personal = false
               and p.publish_at <= ?
             order by p.publish_at desc
             limit 1
-      ) as latest_publish_at`, [States.PUBLIC, DateTime.local().toSQL()])
+      ) as latest_publish_at`, [States.PUBLIC, DateTime.now().toSQL()])
     )
   })
 
