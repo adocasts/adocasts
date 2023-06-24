@@ -3,18 +3,20 @@
     @each (lessonRequest in lessonRequests)
       <li class="relative block hover:bg-slate-100">
         <div class="flex items-center px-4 py-4 sm:px-6">
-          <div class="flex min-w-0 flex-1 items-center">
-            @!fragments.requestVote({ lessonRequest })
+          <div class="flex min-w-0 flex-1 items-center flex-wrap">
+            <div class="order-2 md:order-1 mx-3 md:mx-0 mt-4 md:mt-0">
+              @!fragments.requestVote({ lessonRequest })
+            </div>
 
-            <div class="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
+            <div class="order-1 md:order-2 min-w-0 w-full md:flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
               <div>
                 <p class="truncate text-sm font-medium text-brand-600">
                   <a href="{{ route('requests.lessons.show', { id: lessonRequest.id }) }}" class="expand-link font-semibold" up-follow>
                     {{ lessonRequest.name }}
                   </a>
                 </p>
-                <p class="mt-1 flex items-center text-sm text-slate-500">
-                  <span class="truncate">Requested by {{ lessonRequest.user.username }}</span>&nbsp;
+                <p class="mt-1 flex flex-wrap items-center text-sm text-slate-500 gap-1">
+                  <span class="truncate">Requested by {{ lessonRequest.user.username }}</span>
                   <time datetime="{{ lessonRequest.createdAt.toString() }}">{{ timeago(lessonRequest.createdAt) }}</time>
                 </p>
               </div>

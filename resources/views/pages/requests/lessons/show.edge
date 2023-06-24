@@ -23,10 +23,10 @@
   </div>
 
   @headings.hero({ title: lessonRequest.name })
-    <div class="flex items-center gap-3">
-      @!fragments.requestStatus({ lessonRequest, className: 'bg-slate-50 text-slate-900 px-3 py-2 rounded-full !mt-0' })
+    <div class="flex flex-wrap items-center gap-3">
+      @!fragments.requestStatus({ lessonRequest, className: 'order-2 md:order-1 bg-slate-50 text-slate-900 px-3 py-2 rounded-full !mt-0' })
 
-      <p class="text-slate-500">
+      <p class="order-1 md:order-2 text-slate-500">
         <span class="truncate">Requested by {{ lessonRequest.stateId == States.ARCHIVED ? '[deleted]' : lessonRequest.user.username }}</span>&nbsp;
         <time datetime="{{ lessonRequest.createdAt.toString() }}">{{ timeago(lessonRequest.createdAt) }}</time>
       </p>

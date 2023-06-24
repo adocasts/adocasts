@@ -1,10 +1,10 @@
 <div class="relative">
   <div class="app-container relative z-10">
     <div class="pb-6">
-      <div class="flex justify-between">
+      <div class="flex flex-wrap justify-between">
         @headings.section({
           subtitle,
-          className: ad ? 'flex-1 mb-6' : 'flex-1 mb-3'
+          className: ad ? 'w-full md:flex-1 mb-6' : 'w-full md:flex-1 mb-3'
         })
           @slot('title')
             @if ($slots.title)
