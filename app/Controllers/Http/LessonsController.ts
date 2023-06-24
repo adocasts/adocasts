@@ -6,6 +6,7 @@ import { Exception } from '@adonisjs/core/build/standalone'
 import AnalyticsService from 'App/Services/AnalyticsService'
 import HistoryService from 'App/Services/HistoryService'
 import CollectionService from 'App/Services/CollectionService'
+import Event from '@ioc:Adonis/Core/Event'
 
 export default class LessonsController {
   public async index({ request, view }: HttpContextContract) {
@@ -43,6 +44,8 @@ export default class LessonsController {
     view.share({
       player: { post, series, userProgression }
     })
+
+    Event.emit('post:sync', { post, views })
 
     return view.render('pages/lessons/show', { post, series, comments, commentsCount, userProgression, views, nextSeriesLesson, prevSeriesLesson })
   }

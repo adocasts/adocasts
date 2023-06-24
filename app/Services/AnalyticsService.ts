@@ -35,10 +35,12 @@ export default class AnalyticsService {
    * @returns 
    */
   public static async getPageViews(path: string, startDte: DateTime = this.defaultStartDte, endDte = DateTime.now()) {
-    const start = startDte.toFormat('yyyy-MM-dd')
-    const end = endDte.toFormat('yyyy-MM-dd')
-    const { data } = await this.apiGet(`${this.aggregateEndpoint}&metrics=pageviews&period=custom&date=${start},${end}&filters=event:page%3D%3D${path}`)
-    return data.results.pageviews.value
+    return await CacheService.try(`ANALYTICS_PATH_${path}`, async () => {
+      const start = startDte.toFormat('yyyy-MM-dd')
+      const end = endDte.toFormat('yyyy-MM-dd')
+      const { data } = await this.apiGet(`${this.aggregateEndpoint}&metrics=pageviews&period=custom&date=${start},${end}&filters=event:page%3D%3D${path}`)
+      return data.results.pageviews.value
+    }, CacheService.oneDay, true)
   }
 
   /**

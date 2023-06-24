@@ -42,6 +42,10 @@ export default class ExceptionHandler extends HttpExceptionHandler {
       return ctx.response.redirect().back()
     }
 
+    if (error.code === 'E_BAD_CSRF_TOKEN') {
+      return this.handleExpiredCsrf(ctx)
+    }
+
     if (!error.status || this.expandedStatusPages[error.status]) {
       ctx.up.fullReload()
     }
@@ -73,5 +77,15 @@ export default class ExceptionHandler extends HttpExceptionHandler {
       method: ctx.request.method,
       url: ctx.request.url(true)
     })
+  }
+
+  public async handleExpiredCsrf(ctx: HttpContextContract) {
+    if (!ctx.request.accepts(['json'])) {
+      ctx.session.reflashExcept(['password'])
+      ctx.session.flash('warn', "Your session was expired. We've refresh your session, please try again.")
+      return ctx.response.redirect().withQs().back()
+    }
+
+    return ctx.response.status(419)
   }
 }

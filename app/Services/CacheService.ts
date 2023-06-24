@@ -65,6 +65,10 @@ export default class CacheService {
   public static async try(key: string, callback: () => Promise<any>, ttl: number | null = null, forceCache: boolean = false) {
     if (!forceCache && !RedisConfig.enabled) return callback()
 
+    if (await this.has(key)) {
+      return this.getParsed(key)
+    }
+
     const data = await callback()
     await this.destroyExpiry(key)
     await this.setSerialized(key, data, ttl)

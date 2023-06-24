@@ -22,7 +22,8 @@
     "./start/globals",
     "./start/events/verification",
     "./start/events/email-changed",
-    "./start/events/notifications"
+    "./start/events/notifications",
+    "./start/events/post-stats"
   ],
   "providers": [
     "./providers/AppProvider",

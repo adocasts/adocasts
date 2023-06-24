@@ -7,7 +7,7 @@
     title: post.page_title ?? post.title,
     series: series,
     desc: excerpt(post.meta_description ?? post.description, 180),
-    asset: post.assets && post.assets[0],
+    asset: post.thumbnails && post.thumbnails[0],
     index: post.isPublished
   })
 @endsection
@@ -23,7 +23,7 @@
 @section('hero')
 
   {{--  <progress id="reading-progress" class="hidden" max="100" value="0"></progress>  --}}
-  
+
   @if (hasVideo)
     <div id="videoPlayerContainer" class="pb-8 pt-4">
       <div class="app-container">
