@@ -1,5 +1,4 @@
 up.compiler('#proseBody', function (el) {
-  console.log('here', el)
   const postAnchorLinks = Array.from(el.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]'))
   postAnchorLinks.map(heading => {
     const anchor = document.createElement('a')
