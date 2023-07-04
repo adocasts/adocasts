@@ -58,7 +58,8 @@
 
 .transcript-cutoff.active {
   background-image: none;
-  bottom: -1ch;
+  bottom: 0;
+  z-index: 10;
 }
 
 .transcript-cutoff button {
@@ -84,6 +85,10 @@
 
 .transcript-cutoff.active button:before {
   content: "👆 Hide Transcript";
+}
+
+.transcript-cutoff.active + .transcript-cutoff button {
+  display:none;
 }
 
 .prose pre code .line.del {
