@@ -95,7 +95,7 @@ export default class HtmlParser {
         if (transcriptCutoffIndex) {
           const cutoffHTML = transcriptParagraphs[transcriptCutoffIndex].innerHTML
           transcriptParagraphs[transcriptCutoffIndex].replaceWith(`
-            <div class="transcript-cutoff"><button role="button" id="transcriptCutoffBtn"></button></div>
+            <div class="transcript-cutoff"><button type="button" id="transcriptCutoffBtn" @click="onTranscriptToggle"></button></div>
             <p class="timestamp transcript cutoff active">${cutoffHTML}</p>
           `)
         }

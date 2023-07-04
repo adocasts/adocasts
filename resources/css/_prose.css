@@ -150,7 +150,7 @@
   border-radius: theme('borderRadius.xl');
 }
 
-pre > code {
+.prose pre > code {
   display: flex;
   flex-flow: column;
 }
