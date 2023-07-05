@@ -138,6 +138,8 @@ Route.group(() => {
   Route.get('/sitemap.xml', 'SyndicationController.xml').as('sitemap.xml')
   Route.get('/rss',         'SyndicationController.feed').as('rss')
   Route.get('/uses', 'HomeController.uses').as('uses')
+  Route.get('/schedule', 'SchedulesController.index').as('schedule')
+  Route.get('/schedule/:id', 'SchedulesController.show').as('schedule.show')
 
 
 

@@ -57,5 +57,8 @@ export default Env.rules({
 	DISCORD_WEBHOOK: Env.schema.string(),
 
   TURNSTILE_SITE_KEY: Env.schema.string(),
-  TURNSTILE_SECRET_KEY: Env.schema.string()
+  TURNSTILE_SECRET_KEY: Env.schema.string(),
+
+	NOTION_SECRET: Env.schema.string(),
+	NOTION_VERSION: Env.schema.string(),
 })

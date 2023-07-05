@@ -123,8 +123,12 @@
                     News
                   </a>
                   <a href="{{ route('requests.lessons.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl" @click="show = false">
-                    @!icons.news({ className: 'w-6 h-6' })
+                    @!icons.heartHandshake({ className: 'w-6 h-6' })
                     Requests
+                  </a>
+                  <a href="{{ route('schedule') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl" @click="show = false">
+                    @!icons.calendarEvent({ className: 'w-6 h-6' })
+                    Schedule
                   </a>
                 </nav>
 
