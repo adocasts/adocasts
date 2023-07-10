@@ -11,6 +11,10 @@
     <title>{{ env('APP_BRAND') }}</title>
   @endsection
 
+  @if (app.inDev)
+    <script type="text/javascript">google_adtest="on";</script>
+  @endif
+
   <script src="https://unpkg.com/unpoly@2.7.1/unpoly.min.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/unpoly@2.7.1/unpoly.min.css">
 
@@ -23,6 +27,7 @@
 
   <script defer data-domain="adocasts.com" src="https://analytics.adocasts.com/js/plausible.js"></script>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0874550857266190" crossorigin="anonymous"></script>
 
   <script defer>
     const url = new URL(window.location.href)
@@ -96,14 +101,5 @@
 
   @!section('scripts')
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-  <script defer>
-    (function() {
-      const script = document.createElement('script');
-      script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0874550857266190";
-      script.defer = true;
-      script.setAttribute('crossorigin', 'anonymous')
-      document.body.appendChild(script)
-    })();
-  </script>
 </body>
 </html>

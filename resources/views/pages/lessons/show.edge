@@ -68,7 +68,7 @@
       @!lessons.titleBox({ post, views, series, userProgression })
     </div>
 
-    <aside class="w-full post-aside actions top mb-6">
+    <aside class="w-full post-aside actions top mb-6 xl:pl-6">
       @!lessons.author({ post, views })
 
       <div class="mt-6 hidden xl:block ml-3">
@@ -77,6 +77,9 @@
     </aside>
     
     <main class="w-full">
+      <div class="bg-slate-50 rounded-xl p-2 flex justify-center items-center">
+        @!ads.leaderboard()
+      </div>
       <div id="proseBody" class="body-content prose no-max flex-1 xl:p-6 post-type-{{ post.postTypeId }} text-slate-900">
         {{{ post.body }}}
       </div>
