@@ -13,7 +13,7 @@
 
 /* purgecss start ignore */
 .header-ad ins.leaderboard:not(:empty) {
-  margin: .25rem;
+  margin: .25rem auto;
 }
 
 .header-ad ins.leaderboard:empty {
