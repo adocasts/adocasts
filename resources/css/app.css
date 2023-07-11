@@ -12,6 +12,10 @@
 @tailwind utilities;
 
 /* purgecss start ignore */
+.header-ad ins.leaderboard:not(:empty) {
+  padding: .25rem;
+}
+
 pre.shiki.github-dark,
 .code-block pre {
   background-color: theme('colors.slate-base.900') !important;
