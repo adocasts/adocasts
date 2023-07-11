@@ -8,7 +8,7 @@ import PostService from 'App/Services/PostService'
 
 export default class SnippetsController {
   public async index({ view }: HttpContextContract) {
-    const snippets = await Post.snippets().apply(s => s.forDisplay())
+    const snippets = await Post.snippets().apply(s => s.forDisplay()).orderBy('publishAt', 'desc')
 
     return view.render('pages/snippets/index', { snippets })
   }

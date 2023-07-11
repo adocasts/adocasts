@@ -31,7 +31,7 @@
                 {{ item.publishAt.toFormat('MMM dd, yyyy') }}
               </time>
               @each (topic in item.taxonomies)
-                <a href="#" class="relative z-10 font-medium text-slate-600">
+                <a href="{{ route('topics.show', { slug: topic.slug }) }}" class="relative z-10 font-medium text-slate-600" up-follow>
                   #{{ topic.slug }}
                 </a>
               @endeach
