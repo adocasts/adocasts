@@ -160,6 +160,8 @@ export default class PostService {
         return Route.makeUrl('news.show', params, options)
       case PostTypes.LIVESTREAM:
         return Route.makeUrl('streams.show', params, options)
+      case PostTypes.SNIPPET:
+        return Route.makeUrl('snippets.show', params, options)
       case PostTypes.LINK:
         return post.redirectUrl
     }

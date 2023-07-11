@@ -110,6 +110,8 @@ Route.group(() => {
   Route.get('/streams/:slug', 'StreamsController.show').as('streams.show').middleware(['postTypeCheck'])
   Route.get('/news', 'NewsController.index').as('news.index')
   Route.get('/news/:slug', 'NewsController.show').as('news.show').middleware(['postTypeCheck'])
+  Route.get('/snippets', 'SnippetsController.index').as('snippets.index')
+  Route.get('/snippets/:slug', 'SnippetsController.show').as('snippets.show').middleware(['postTypeCheck'])
   Route.post('/comments', 'CommentsController.store').as('comments.store')
   Route.put('/comments/:id', 'CommentsController.update').as('comments.update')
   Route.patch('/comments/:id/like', 'CommentsController.like').as('comments.like')

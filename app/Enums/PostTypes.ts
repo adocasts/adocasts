@@ -3,7 +3,8 @@ enum PostTypes {
   BLOG = 2,
   LINK = 3,
   NEWS = 4,
-  LIVESTREAM = 5
+  LIVESTREAM = 5,
+  SNIPPET = 6,
 }
 
 export const PostTypeDesc = {
@@ -11,7 +12,8 @@ export const PostTypeDesc = {
   2: 'Blog Post',
   3: 'Link',
   4: 'News',
-  5: 'Livestream'
+  5: 'Livestream',
+  6: 'Snippet'
 }
 
 export default PostTypes

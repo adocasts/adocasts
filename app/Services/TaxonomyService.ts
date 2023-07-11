@@ -2,6 +2,7 @@ import { ModelQueryBuilderContract } from "@ioc:Adonis/Lucid/Orm";
 import CollectionTypes from "App/Enums/CollectionTypes";
 import Taxonomy from "App/Models/Taxonomy";
 import States from "App/Enums/States";
+import PostTypes from "App/Enums/PostTypes";
 
 export default class TaxonomyService {
   private static queryGetList(): ModelQueryBuilderContract<typeof Taxonomy, Taxonomy> {
@@ -78,6 +79,7 @@ export default class TaxonomyService {
    */
   public static async getPosts(taxonomy: Taxonomy, limit?: number) {
     return taxonomy.related('posts').query()
+        .whereIn('postTypeId', [PostTypes.LESSON, PostTypes.LIVESTREAM, PostTypes.NEWS, PostTypes.BLOG])
         .orderBy('publishAt', 'desc')
         .apply(scope => scope.forDisplay())
         .if(limit, query => query.limit(limit!))

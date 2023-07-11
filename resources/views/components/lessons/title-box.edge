@@ -31,7 +31,7 @@
     </ul>
   </div>
 
-  @if(post.postTypeId !== PostTypes.NEWS)
+  @if(post.postTypeId !== PostTypes.NEWS && post.postTypeId !== PostTypes.SNIPPET)
     <div class="w-full xl:w-auto xl:border-l border-slate-200 xl:flex xl:items-center xl:pl-6 mt-3 xl:mt-0">
       @!lessons.actions({ post, series, userProgression })
     </div>

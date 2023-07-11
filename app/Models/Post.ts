@@ -347,6 +347,8 @@ export default class Post extends AppBaseModel {
         return Route.makeUrl('news.show', { slug: this.slug })
       case PostType.LIVESTREAM:
         return Route.makeUrl('streams.show', { slug: this.slug })
+      case PostType.SNIPPET:
+        return Route.makeUrl('snippets.show', { slug: this.slug })
       default:
         return Route.makeUrl('lessons.show', { slug: this.slug })
     }
@@ -412,6 +414,10 @@ export default class Post extends AppBaseModel {
 
   public static links() {
     return this.query().where('postTypeId', PostType.LINK)
+  }
+
+  public static snippets() {
+    return this.query().where('postTypeId', PostType.SNIPPET)
   }
 
   public static loadForDisplay() {
