@@ -1,4 +1,4 @@
-<div class="flex flex-wrap justify-between bg-slate-50 mb-6 rounded-xl p-6">
+<div class="flex flex-wrap justify-between bg-slate-50 border border-slate-200/75 mb-6 rounded-xl p-6">
   <div class="max-w-3xl xl:flex-1">
     <div>
       @if (series)
@@ -32,7 +32,7 @@
   </div>
 
   @if(post.postTypeId !== PostTypes.NEWS && post.postTypeId !== PostTypes.SNIPPET)
-    <div class="w-full xl:w-auto xl:border-l border-slate-200 xl:flex xl:items-center xl:pl-6 mt-3 xl:mt-0">
+    <div class="w-full xl:w-auto xl:border-l border-slate-200/75 xl:flex xl:items-center xl:pl-6 mt-3 xl:mt-0">
       @!lessons.actions({ post, series, userProgression })
     </div>
   @endif

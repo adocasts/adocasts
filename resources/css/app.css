@@ -35,6 +35,6 @@ pre.shiki.github-dark,
 
 .bg-slate-50 pre.shiki.github-dark,
 .code-block pre {
-  background-color: theme('colors.slate-base.900') !important;
+  background-color: theme('colors.slate-base.800') !important;
 }
 /* purgecss end ignore */

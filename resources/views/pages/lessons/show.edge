@@ -69,22 +69,26 @@
     </div>
 
     <aside class="w-full post-aside actions top mb-6 xl:pl-6">
-      @!lessons.author({ post, views })
+      <div class="xl:bg-slate-50 rounded-xl xl:p-6 xl:border border-slate-200/75">
+        @!lessons.author({ post, views })
 
-      <div class="mt-6 xl:ml-3 space-y-6">
-        @!ads.vertical()
-        <div class="hidden xl:block">
+        <div class="mt-6 xl:ml-3 space-y-6">
           @!ads.vertical()
+          <div class="hidden xl:block">
+            @!ads.vertical()
+          </div>
         </div>
       </div>
     </aside>
     
     <main class="w-full">
-      <div>
-        @!ads.leaderboard()
-      </div>
-      <div id="proseBody" class="body-content prose no-max !max-w-3xl flex-1 xl:py-6 post-type-{{ post.postTypeId }} text-slate-900">
-        {{{ post.body }}}
+      <div class="body-content bg-slate-50 rounded-xl p-6 border border-slate-200/75">
+        <div class="rounded-b-xl -m-6 mb-6 px-6 py-3 border-b border-slate-200/75">
+          @!ads.leaderboard()
+        </div>
+        <article id="proseBody" class="prose no-max !max-w-3xl flex-1 xl:py-6 post-type-{{ post.postTypeId }} text-slate-900">
+          {{{ post.body }}}
+        </article>
       </div>
 
       @!comments.base({ postId: post.id, comments, commentsCount })

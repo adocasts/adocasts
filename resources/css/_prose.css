@@ -239,7 +239,7 @@ code .line:last-of-type:before {
 
 /* purgecss start ignore */
 .prose-comment .ProseMirror {
-  @apply rounded-xl bg-slate-50 border-slate-200 pt-3 pb-16;
+  @apply rounded-xl bg-slate-50 border-slate-200/75 pt-3 pb-16;
   min-height: 150px;
 }
 
