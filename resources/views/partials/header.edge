@@ -1,4 +1,4 @@
-<div class="header-ad lex justify-center items-center bg-slate-50" up-hungry>
+<div class="header-ad justify-center items-center bg-slate-50 hidden md:flex relative" style="z-index: -1;" up-hungry>
   <div class="w-full flex justify-center items-center">
     @!ads.leaderboard()
   </div>
@@ -56,7 +56,7 @@
           </div>
         @endif
 
-        @buttons.primary.base({ atClick: 'show = true', className: 'lg:hidden !w-9 !h-9', size: 'xs' })
+        @buttons.primary.base({ atClick: 'show = true', className: 'md:hidden !w-9 !h-9', size: 'xs' })
           @!icons.menuTwo()
         @end
       </div>
