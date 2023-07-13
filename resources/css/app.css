@@ -21,6 +21,11 @@
   height: 98px;
 }
 
+.header-ad {
+  overflow: hidden;
+  max-width: 100%;
+}
+
 pre.shiki.github-dark,
 .code-block pre {
   background-color: theme('colors.slate-base.900') !important;
