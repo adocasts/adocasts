@@ -14,6 +14,7 @@
 @section('hero')
 
   <div class="mb-16 -mx-3">
+    
     @if (!auth.user)
       @!marketing.homeHero({ stats })
     @else
