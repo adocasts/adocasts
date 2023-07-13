@@ -12,19 +12,18 @@
 
 @section('hero')
 
-  {{--  @!collections.heroShow({ series })  --}}
-
   <div class="relative">
-    @if (series.asset)
-      <div class="absolute w-full h-[300px] top-0 left-0 opacity-20 group-hover:opacity-80 duration-150 pointer-events-none">
-        <img
-          src="/img/{{ series.asset.filename }}"
-          class="rounded-full w-full h-full object-cover object-center scale-[1.75] group-hover:scale-[1.4] blur-xl group-hover:blur-none mb-3 duration-150"
-        />
-        <div class="hero-backdrop-fade"></div>
-      </div>
-    @endif
-  </div>
+    <div class="hero-backdrop-container">
+      @if (series.asset)
+        <div class="hero-backdrop-inner">
+          <img 
+            src="/img/{{ series.asset.filename }}"
+            class="hero-backdrop-image" 
+          />
+          <div class="hero-backdrop-fade"></div>
+        </div>
+      @endif
+    </div>
 
 @endsection
 
