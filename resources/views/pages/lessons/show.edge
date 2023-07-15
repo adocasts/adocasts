@@ -16,7 +16,7 @@
 
   @if (series)
     @!lessons.seriesList({ series })
-  @elseif (similarLessons.length)
+  @elseif (similarLessons?.length)
     @!lessons.similarList({ similarLessons })
   @endif
 
