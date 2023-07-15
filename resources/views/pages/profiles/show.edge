@@ -88,6 +88,12 @@
                   {{ displaySocialUrl(user.profile.instagramUrl) }}
                 </a>
               @endif
+              @if (user.profile.threadsUrl)
+                <a href="{{ user.profile.threadsUrl }}" target="_blank" class="flex items-center gap-3 truncate">
+                  @!icons.brandThreads()
+                  {{ displaySocialUrl(user.profile.threadsUrl) }}
+                </a>
+              @endif
             </div>
           </div>
         </div>

@@ -115,6 +115,25 @@ export default class PostService {
       .first()
   }
 
+  public static async getSimilarPosts(post: Post, limit: number = 15) {
+    const taxonomyIds = post.taxonomies.map(t => t.id)
+    let query = Post.query()
+    
+    query = query
+      .where('postTypeId', post.postTypeId)
+      .whereNot('id', post.id)
+    
+    if (taxonomyIds.length) {
+      query = query
+        .withAggregate('taxonomies', query => query.whereIn('taxonomies.id', taxonomyIds).count('*').as('taxonomy_matches'))
+        .orderBy('taxonomy_matches', 'desc')
+    } else {
+      query = query.orderBy('publishAt', 'desc')
+    }
+
+    return query.apply(scope => scope.forDisplay()).limit(limit)
+  }
+
   /**
    * returns comments for post
    * @param auth

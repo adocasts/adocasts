@@ -34,6 +34,7 @@ export default class ProfileValidator {
     youtubeUrl: schema.string.optional([rules.trim(), rules.url({ allowedHosts: ['youtube.com'] }), rules.normalizeUrl(), rules.maxLength(255)]),
     facebookUrl: schema.string.optional([rules.trim(), rules.url({ allowedHosts: ['facebook.com'] }), rules.normalizeUrl(), rules.maxLength(255)]),
     instagramUrl: schema.string.optional([rules.trim(), rules.url({ allowedHosts: ['instagram.com'] }), rules.normalizeUrl(), rules.maxLength(255)]),
+    threadsUrl: schema.string.optional([rules.trim(), rules.url({ allowedHosts: ['threads.net'] }), rules.normalizeUrl(), rules.maxLength(255)])
   })
 
   /**

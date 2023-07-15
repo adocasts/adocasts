@@ -26,6 +26,11 @@ export default class LessonsController {
       return view.render('pages/lessons/soon', { post, series })
     }
 
+    if (!series) {
+      const similarLessons = await PostService.getSimilarPosts(post)
+      view.share({ similarLessons })
+    }
+
     const userProgression = await HistoryService.getPostProgression(auth, post)
     const comments = await PostService.getComments(post)
     const commentsCount = await PostService.getCommentsCount(post)

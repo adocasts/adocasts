@@ -105,9 +105,9 @@
   <div class="px-3">
     @!headings.panel({ title: `Recently Released on ${topic.name}` })
   </div>
-  <div class="grid xl:grid-cols-2 gap-3 w-full px-3">
+  <div class="grid xl:grid-cols-2 gap-3 w-full">
     @each ((item, i) in posts)
-      @!lessons.listItem({ item, className: 'mb-6' })
+      @!lessons.listItem({ item, className: 'mb-6 px-3' })
     @endeach
   </div>
 

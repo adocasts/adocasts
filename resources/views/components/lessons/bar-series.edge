@@ -1,7 +1,9 @@
+@set('fontSize', fontSize ?? 'text-xs')
+
 @if (item.series.length)
   @set('series', item.rootSeries.at(0))
   <object>
-    <h5 class="uppercase flex items-center text-brand-500 hover:text-brand-600 tracking-wide font-sans text-xs mb-1">
+    <h5 class="uppercase flex items-center text-brand-500 hover:text-brand-600 tracking-wide font-sans {{ fontSize }} mb-1">
       <a href="{{ route('series.show', { slug: series.slug }) }}" up-follow class="anchor truncate" {{{ upAttrs }}}>
         {{ series.name }}
       </a>
@@ -12,7 +14,7 @@
   </object>
 @elseif (item.postTypeId === PostTypes.NEWS)
   <object>
-    <h5 class="uppercase inline-flex items-center text-brand-500 hover:text-brand-600 tracking-wide  font-sans text-xs mb-1">
+    <h5 class="uppercase inline-flex items-center text-brand-500 hover:text-brand-600 tracking-wide  font-sans {{ fontSize }} mb-1">
       <a href="" up-follow class="anchor" {{{ upAttrs }}}>
         NEWS
       </a>
@@ -20,7 +22,7 @@
   </object>
 @elseif (item.postTypeId === PostTypes.LIVESTREAM)
   <object>
-    <h5 class="uppercase inline-flex items-center text-brand-500 hover:text-brand-600 tracking-wide  font-sans text-xs mb-1">
+    <h5 class="uppercase inline-flex items-center text-brand-500 hover:text-brand-600 tracking-wide  font-sans {{ fontSize }} mb-1">
       <a href="" up-follow class="anchor" {{{ upAttrs }}}>
         LIVESTREAM
       </a>
@@ -28,7 +30,7 @@
   </object>
 @elseif (item.postTypeId === PostTypes.BLOG)
   <object>
-    <h5 class="uppercase inline-flex items-center text-brand-500 hover:text-brand-600 tracking-wide  font-sans text-xs mb-1">
+    <h5 class="uppercase inline-flex items-center text-brand-500 hover:text-brand-600 tracking-wide  font-sans {{ fontSize }} mb-1">
       <a href="" up-follow class="anchor" {{{ upAttrs }}}>
         BLOG
       </a>

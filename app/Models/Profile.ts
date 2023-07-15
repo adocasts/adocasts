@@ -50,6 +50,9 @@ export default class Profile extends AppBaseModel {
   public githubUrl: string | null
 
   @column()
+  public threadsUrl: string | null
+
+  @column()
   public emailOnComment: boolean
 
   @column()

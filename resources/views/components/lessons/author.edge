@@ -1,6 +1,6 @@
 @set('author', post.authors[0])
 
-<div class="bg-slate-50 rounded-xl relative overflow-hidden p-6 border border-slate-200/75 xl:border-0 xl:p-0">
+<div class="bg-slate-50 rounded-xl relative overflow-hidden xl:overflow-visible p-6 border border-slate-200/75 xl:border-0 xl:p-0">
   <div class="relative z-20">
     <div class="flex flex-wrap">
       <div class="inline-flex items-center mr-3">
@@ -21,64 +21,64 @@
       {{ author.profile.biography }}
     </p>
 
-    <ul class="flex space-x-2 columns-2 mb-6 text-sm md:text-base">
+    <div class="text-sm text-slate-600 tracking-wider mb-3 flex flex-col gap-1">
       @if (author.profile.company)
-        <li class="flex items-center text-sm leading-5 pr-3">
-          <div class="bg-slate-700 text-white p-1 rounded-full transition duration-300">
-            @!icons.building()
-          </div>
-          <div class="ml-2">
-            {{ author.profile.company }}
-          </div>
-        </li>
+        <p class="flex items-center gap-3 truncate">
+          @!icons.building()
+          {{ author.profile.company }}
+        </p>
       @endif
-
-      @if (author.profile.youtubeUrl)
-        <li class="flex items-center text-sm leading-5">
-          <a href="{{ author.profile.youtubeUrl }}" rel="noopener nofollow" target="_blank" class="bg-slate-700 hover:bg-brand-800 text-white p-1 rounded-full transition duration-300">
-            @!icons.brandYoutube()
-          </a>
-        </li>
+      @if (author.profile.location)
+        <p class="flex items-center gap-3 truncate">
+          @!icons.mapPin()
+          {{ author.profile.location }}
+        </p>
       @endif
       @if (author.profile.githubUrl)
-        <li class="flex items-center text-sm leading-5">
-          <a href="{{ author.profile.githubUrl }}" rel="noopener nofollow" target="_blank" class="bg-slate-700 hover:bg-brand-800 text-white p-1 rounded-full transition duration-300">
-            @!icons.brandGithub()
-          </a>
-        </li>
+        <a href="{{ author.profile.githubUrl }}" target="_blank" class="flex items-center gap-3 truncate">
+          @!icons.brandGithub()
+          {{ displaySocialUrl(author.profile.githubUrl) }}
+        </a>
+      @endif
+      @if (author.profile.youtubeUrl)
+        <a href="{{ author.profile.youtubeUrl }}" target="_blank" class="flex items-center gap-3 truncate">
+          @!icons.brandYoutube()
+          {{ displaySocialUrl(author.profile.youtubeUrl) }}
+        </a>
       @endif
       @if (author.profile.twitterUrl)
-        <li class="flex items-center text-sm leading-5">
-          <a href="{{ author.profile.twitterUrl }}" rel="noopener nofollow" target="_blank" class="bg-slate-700 hover:bg-brand-800 text-white p-1 rounded-full transition duration-300">
-            @!icons.brandTwitter()
-          </a>
-        </li>
+        <a href="{{ author.profile.twitterUrl }}" target="_blank" class="flex items-center gap-3 truncate">
+          @!icons.brandTwitter()
+          {{ displaySocialUrl(author.profile.twitterUrl) }}
+        </a>
       @endif
       @if (author.profile.facebookUrl)
-        <li class="flex items-center text-sm leading-5">
-          <a href="{{ author.profile.facebookUrl }}" rel="noopener nofollow" target="_blank" class="bg-slate-700 hover:bg-brand-800 text-white p-1 rounded-full transition duration-300">
-            @!icons.brandFacebook()
-          </a>
-        </li>
+        <a href="{{ author.profile.facebookUrl }}" target="_blank" class="flex items-center gap-3 truncate">
+          @!icons.brandFacebook()
+          {{ displaySocialUrl(author.profile.facebookUrl) }}
+        </a>
       @endif
       @if (author.profile.instagramUrl)
-        <li class="flex items-center text-sm leading-5">
-          <a href="{{ author.profile.instagramUrl }}" rel="noopener nofollow" target="_blank" class="bg-slate-700 hover:bg-brand-800 text-white p-1 rounded-full transition duration-300">
-            @!icons.brandInstagram()
-          </a>
-        </li>
+        <a href="{{ author.profile.instagramUrl }}" target="_blank" class="flex items-center gap-3 truncate">
+          @!icons.brandInstagram()
+          {{ displaySocialUrl(author.profile.instagramUrl) }}
+        </a>
       @endif
-      @if (author.profile.linkedinUrl)
-        <li class="flex items-center text-sm leading-5">
-          <a href="{{ author.profile.linkedinUrl }}" rel="noopener nofollow" target="_blank" class="bg-slate-700 hover:bg-brand-800 text-white p-1 rounded-full transition duration-300">
-            @!icons.brandLinkedin()
-          </a>
-        </li>
+      @if (author.profile.threadsUrl)
+        <a href="{{ author.profile.threadsUrl }}" target="_blank" class="flex items-center gap-3 truncate">
+          @!icons.brandThreads()
+          {{ displaySocialUrl(author.profile.threadsUrl) }}
+        </a>
       @endif
-    </ul>
+    </div>
 
-    @buttons.primary.inverse({ href: author.profile.website, block: true })
-      Visit Website
-    @end
+    @if (author.profile.website)
+      <div class="mt-6">
+        @buttons.brand.base({ className: 'flex flex-col', href: author.profile.website, block: true, attrs: 'target="_blank"' })
+          <span class="text-base -mb-1">Visit Website</span>
+          <span class="text-xs truncate">({{ displaySocialUrl(author.profile.website) }})</span>
+        @end
+      </div>
+    @endif
   </div>
 </div>

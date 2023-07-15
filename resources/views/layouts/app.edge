@@ -1,5 +1,5 @@
 @set('theme', auth.user?.theme || session.get('theme'))
-@set('isPostOnDeck', !!post && !!series && post.postTypeId !== PostTypes.NEWS)
+@set('isPostOnDeck', !!post && (!!series || similarLessons.length) && post.postTypeId !== PostTypes.NEWS)
 <!DOCTYPE html>
 <html lang="en" class="{{ theme ?? 'system' }} h-full">
 <head>

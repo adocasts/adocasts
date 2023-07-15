@@ -38,6 +38,15 @@
 
     @!form.input({
       type: 'url',
+      label: 'Threads URL',
+      name: 'threadsUrl',
+      value: flashMessages.get('threadsUrl') ?? profile.threadsUrl,
+      errors: flashMessages.get('errors.threadsUrl'),
+      placeholder: 'https://threads.net/@username'
+    })
+
+    @!form.input({
+      type: 'url',
       label: 'Twitter URL',
       name: 'twitterUrl',
       value: flashMessages.get('twitterUrl') ?? profile.twitterUrl,
