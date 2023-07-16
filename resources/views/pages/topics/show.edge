@@ -74,14 +74,17 @@
 @section('content')
 
   <div class="w-full flex flex-col py-8 -mx-3">
-    <div class="px-3">
-      @!headings.panel({ title: `${topic.name} Series` })
-    </div>
-    <div class="flex w-full flex-wrap mb-6">
-      @each (item in series)
-        @!collections.card({ item, className: 'w-full md:w-1/2 lg:w-1/4 px-3 mb-6' })
-      @endeach
-    </div>
+
+    @if (series?.length)
+      <div class="px-3">
+        @!headings.panel({ title: `${topic.name} Series` })
+      </div>
+      <div class="flex w-full flex-wrap mb-6">
+        @each (item in series)
+          @!collections.card({ item, className: 'w-full md:w-1/2 lg:w-1/4 px-3 mb-6' })
+        @endeach
+      </div>
+    @endif
 
     @each (item in topics)
       <div class="flex w-full mb-6">
@@ -102,13 +105,15 @@
     @endeach
   </div>
 
-  <div class="px-3">
-    @!headings.panel({ title: `Recently Released on ${topic.name}` })
-  </div>
-  <div class="grid xl:grid-cols-2 gap-3 w-full">
-    @each ((item, i) in posts)
-      @!lessons.listItem({ item, className: 'mb-6 px-3' })
-    @endeach
-  </div>
+  @if (posts?.length)
+    <div class="px-3">
+      @!headings.panel({ title: `Recently Released on ${topic.name}` })
+    </div>
+    <div class="grid xl:grid-cols-2 gap-3 w-full">
+      @each ((item, i) in posts)
+        @!lessons.listItem({ item, className: 'mb-6 px-3' })
+      @endeach
+    </div>
+  @endif
 
 @endsection

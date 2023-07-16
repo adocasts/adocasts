@@ -2,7 +2,7 @@
 @set('pageTitle', page.properties['Name'].title.map(x => x.text.content).join(', '))
 @set('pageDate', DateTime.fromFormat(page.properties['Date'].date.start, 'yyyy-MM-dd'))
 @set('pageStatus', page.properties['Status'].status.name)
-@set('pageSeries', page.properties['Series'].select.name)
+@set('pageSeries', page.properties['Series'].select?.name || 'N/A')
 @set('pageRequestedBy', page.properties['Requested By'].rich_text.map(x => x.text.content).join(', '))
 
 @section('meta')

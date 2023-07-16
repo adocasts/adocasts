@@ -27,7 +27,7 @@
     @each (item in schedule.results)
       @set('dte', DateTime.fromFormat(item.properties['Date'].date.start, 'yyyy-MM-dd'))
       @set('status', item.properties['Status'].status.name)
-      @set('series', item.properties['Series'].select.name)
+      @set('series', item.properties['Series'].select?.name)
 
       <li class="flex items-center justify-between gap-x-6 py-5">
         <div class="flex items-center">
@@ -74,7 +74,7 @@
               @if (series)
                 <p class="hidden lg:block whitespace-nowrap">{{ series }}</p>
               @endif
-              <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current">
+              <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current {{ !series ? 'lg:hidden' : '' }}">
                 <circle cx="1" cy="1" r="1" />
               </svg>
               <p class="truncate">Requested by {{ item.properties['Requested By'].rich_text.map(x => x.text.content).join(', ') }}</p>
