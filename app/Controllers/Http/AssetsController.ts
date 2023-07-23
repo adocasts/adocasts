@@ -77,11 +77,11 @@ export default class AssetsController {
       const options = AssetService.getImageOptions(query, path);
       const tempName = `${tempDirectory}/${path}/${options.name}`;
       const isCached = await CacheService.has(tempName);
-      const isSVG = path.endsWith('.svg');
+      const isSkipResize = path.endsWith('.svg') || path.endsWith('.gif');
 
       let image: Buffer|undefined;
 
-      if (!isCached && !isSVG) {
+      if (!isCached && !isSkipResize) {
         const exists = await Drive.exists(tempName)
         // const exists = await StorageService.exists(tempName);
 
@@ -97,7 +97,7 @@ export default class AssetsController {
       }
 
       if (!image) {
-        image = await Drive.get(isSVG ? path : tempName)
+        image = await Drive.get(isSkipResize ? path : tempName)
         // image = await StorageService.getBuffer(isSVG ? path : tempName);
       }
 
