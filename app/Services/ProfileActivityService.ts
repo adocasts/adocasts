@@ -1,3 +1,4 @@
+import CommentVote from "App/Models/CommentVote";
 import User from "App/Models/User";
 import ActivityVM from "App/ViewModels/Activity";
 import { DateTime } from "luxon";
@@ -13,15 +14,19 @@ export default class ProfileActivityService {
     const account = await this.getAccountActivity()
     const posts = await this.getPostActivity()
     const comments = await this.getCommentActivity()
+    const commentVotes = await this.getCommentUpvotes()
     const completedLessons = await this.getCompletedLessons()
     const requestedLessons = await this.getRequestedLessons()
+    const requestedLessonVotes = await this.getRequestedLessonUpvotes()
     
     return [
       ...account,
       ...posts,
       ...comments,
+      ...commentVotes,
       ...completedLessons,
-      ...requestedLessons
+      ...requestedLessons,
+      ...requestedLessonVotes,
     ].sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis())
   }
 
@@ -62,6 +67,15 @@ export default class ProfileActivityService {
     return comments.map(comment => new ActivityVM({ comment }))
   }
 
+  public async getCommentUpvotes() {
+    const votes = await CommentVote.query()
+      .where('userId', this.user.id)
+      .where('createdAt', '>=', this.startSql)
+      .preload('comment', query => query.preload('post').preload('lessonRequest'))
+    
+    return votes.map(commentVote => new ActivityVM({ commentVote }))
+  }
+
   public async getCompletedLessons() {
     const histories = await this.user.related('completedPosts').query()
       .where('createdAt', '>=', this.startSql)
@@ -75,5 +89,13 @@ export default class ProfileActivityService {
       .where('createdAt', '>=', this.startSql)
 
     return requests.map(lessonRequest => new ActivityVM({ lessonRequest }))
+  }
+
+  public async getRequestedLessonUpvotes() {
+    const upvotes = await this.user.related('lessonRequestVotes').query()
+      .where('createdAt', '>=', this.startSql)
+      .preload('lessonRequest')
+
+    return upvotes.map(requestVote => new ActivityVM({ requestVote }))
   }
 }

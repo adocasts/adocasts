@@ -14,6 +14,7 @@ import NotImplementedException from 'App/Exceptions/NotImplementedException'
 import LessonRequestSearchValidator from 'App/Validators/LessonRequestSearchValidator'
 import LessonRequestQueryBuilder from 'App/QueryBuilders/LessonRequest'
 import LessonRequestPaginatedQueryBuilder from 'App/QueryBuilders/LessonRequestPaginated'
+import { DateTime } from 'luxon'
 
 export default class LessonRequestService {
   public static perPage = 3
@@ -134,7 +135,12 @@ export default class LessonRequestService {
 
     hasVoted
       ? await lessonRequest.related('votes').detach([user.id])
-      : await lessonRequest.related('votes').attach([user.id])
+      : await lessonRequest.related('votes').attach({
+        [user.id]: {
+          created_at: DateTime.now().toSQL(),
+          updated_at: DateTime.now().toSQL()
+        }
+      })
       
     await lessonRequest.load('votes', query => query.selectIds())
     await lessonRequest.loadCount('votes')

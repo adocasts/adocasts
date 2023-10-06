@@ -11,6 +11,8 @@ import Logger from "@ioc:Logger/Discord";
 import UtilityService from "./UtilityService";
 import IdentityService from "./IdentityService";
 import CommentTypes from "App/Enums/CommentTypes";
+import CommentVote from "App/Models/CommentVote";
+import { DateTime } from "luxon";
 
 export default class CommentService {
   public static async store(request: RequestContract, auth: AuthContract, { body, ...data }: CommentValidator['schema']['props']) {
@@ -83,7 +85,12 @@ export default class CommentService {
 
     return vote 
       ? user.related('commentVotes').detach([id])
-      : user.related('commentVotes').attach([id])
+      : user.related('commentVotes').attach({
+        [id]: {
+          created_at: DateTime.now().toSQL(),
+          updated_at: DateTime.now().toSQL()
+        }
+      })
   }
 
   /**

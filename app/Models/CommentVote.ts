@@ -1,17 +1,17 @@
 import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
-import LessonRequest from './LessonRequest'
+import Comment from './Comment'
 
-export default class RequestVote extends BaseModel {
+export default class CommentVote extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
   @column()
-  public userId: number | null
+  public userId: number
 
   @column()
-  public lessonRequestId: number | null
+  public commentId: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -22,6 +22,6 @@ export default class RequestVote extends BaseModel {
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
 
-  @belongsTo(() => LessonRequest)
-  public lessonRequest: BelongsTo<typeof LessonRequest>
+  @belongsTo(() => Comment)
+  public comment: BelongsTo<typeof Comment>
 }

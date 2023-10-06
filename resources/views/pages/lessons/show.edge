@@ -31,7 +31,7 @@
     <div id="videoPlayerContainer" class="pb-6">
       <div class="app-container !px-0">
         @cannot('PostPolicy.view', post)
-          <div class="no-access relative aspect-video bg-slate-100 bg-gradient-to-br from-accent-base-800/25 to-brand-base-900/25 p-12 flex items-center justify-center w-full h-full">
+          <div class="no-access relative aspect-video bg-slate-base-900 text-slate-base-100 bg-gradient-to-br from-accent-base-800/25 to-brand-base-900/25 p-12 flex items-center justify-center w-full h-full">
             <img class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full object-cover opacity-10" src="/img/brand/bg-texture-1.jpg" />
 
             @!plus.postCta({ 
@@ -120,11 +120,8 @@
             @can('PostPolicy.view', post)
               {{{ post.body }}}
             @else
-              <div class="relative">
-                {{{ await getBodyPreview(post.body) }}}
-                <div class="w-full absolute bottom-0 left-0 h-full bg-gradient-to-b from-slate-100/0 via-slate-100/75 to-slate-100 z-10"></div>
-              </div>
-
+              {{{ await getBodyPreview(post.body) }}}
+              <div class="w-full absolute bottom-0 left-0 h-full bg-gradient-to-b from-slate-100/0 via-slate-100/75 to-slate-100 z-10"></div>
               <div class="bg-slate-200 rounded-xl p-6 shadow-xl -mt-16 relative z-20">
                 @!plus.postCta({ post, plusMonthly })
               </div>

@@ -1,16 +1,4 @@
-<a href="{{ route('topics.show', { slug: item.slug }) }}" {{{ upAttrs }}} up-follow class="relative group overview-hidden w-full flex items-center bg-slate-100 hover:bg-slate-200 duration-150 rounded-xl p-3 flicker-fix">
-  @if (item.asset?.filename)
-    <div class="absolute w-full h-full top-0 left-0 opacity-0 group-hover:opacity-5">
-      @!picture({
-        filename: item.asset.filename,
-        className: 'rounded-xl w-full h-full bg-slate-100 h-full',
-        width: 42,
-        ratio: 'aspect-square',
-        imgClassName: 'object-fill object-center blur-xl h-full scale-125 group-hover:object-cover group-hover:scale-100 group-hover:object-contain group-hover:blur-sm duration-150'
-      })
-    </div>
-  @endif
-
+<a href="{{ route('topics.show', { slug: item.slug }) }}" {{{ upAttrs }}} up-follow class="relative group overview-hidden w-full flex items-center bg-slate-100 hover:bg-slate-200 duration-150 rounded-xl p-3 flicker-fix overflow-hidden">
   <div class="mr-4 relative z-10">
     @if (item.asset?.filename)
       @!picture({

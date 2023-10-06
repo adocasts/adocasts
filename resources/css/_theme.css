@@ -167,7 +167,7 @@
     --orange-900: var(--orange-base-900);
 
     --plyr-color-main: rgb(var(--accent-base-500));
-    --body-bg: var(--slate-base-100);
+    --body-bg: 251 253 255;
   }
 
   .dark {

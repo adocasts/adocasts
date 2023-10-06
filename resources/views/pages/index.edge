@@ -160,7 +160,7 @@
 
     @if (!auth.user?.planId || auth.user?.planId === Plans.FREE)
       <section class="break">
-        @!pricing()
+        @!pricing({ faqLink: true })
       </section>
     @endif
   </div>

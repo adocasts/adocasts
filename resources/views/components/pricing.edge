@@ -138,9 +138,19 @@
     </div>
   </div>
 
-  <div class="mt-12 flex justify-center">
-    @buttons.primary.outline({ href: route('auth.signup'), attrs: 'up-layer="new modal" up-size="grow"' })
-      Not ready? No worries, sign up for free to watch our library of free content
-    @end
+  <div class="mt-12 flex flex-col items-center gap-6">
+    <div>
+      @buttons.primary.outline({ href: route('auth.signup'), attrs: 'up-layer="new modal" up-size="grow"' })
+        Not ready? No worries, sign up for free to watch our library of free content
+      @end
+    </div>
+    
+    @if (faqLink)
+      <div>
+        <a class="anchor anchor-inv" href="/pricing#faq" up-follow>
+          Frequently Asked Questions
+        </a>
+      </div>
+    @endif
   </div>
 </div>

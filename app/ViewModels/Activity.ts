@@ -9,17 +9,21 @@ import { DateTime } from "luxon";
 import User from "App/Models/User";
 import Post from "App/Models/Post";
 import PostTypes, { PostTypeDesc } from "App/Enums/PostTypes";
+import RequestVote from "App/Models/RequestVote";
+import CommentVote from "App/Models/CommentVote";
 
 interface ActivityModel {
   post?: Post
   comment?: Comment
+  commentVote?: CommentVote
   history?: History
   lessonRequest?: LessonRequest
+  requestVote?: RequestVote
   user?: User
 }
 
 export default class ActivityVM {
-  public type: 'comment'|'reply'|'lessonRequest'|'lessonCompleted'|'accountCreated'|'post'|'anniversary'
+  public type: 'comment'|'reply'|'lessonRequest'|'lessonCompleted'|'accountCreated'|'post'|'anniversary'|'vote'
   public titleDescriptor: string
   public title: string
   public href: string
@@ -33,10 +37,14 @@ export default class ActivityVM {
       this.buildForPost(activity.post)
     } else if (activity?.comment) {
       this.buildForComment(activity.comment)
+    } else if (activity?.commentVote) {
+      this.buildForVoteCommentVote(activity.commentVote)
     } else if (activity?.history) {
       this.buildForHistory(activity.history)
     } else if (activity?.lessonRequest) {
       this.buildForLessonRequest(activity.lessonRequest)
+    } else if (activity?.requestVote) {
+      this.buildForRequestVote(activity.requestVote)
     }
   }
 
@@ -121,6 +129,24 @@ export default class ActivityVM {
     this.href = Route.makeUrl('requests.lessons.show', { id: request.id })
     this.createdAt = request.createdAt
     this.icon = 'heart-handshake'
+  }
+
+  private buildForRequestVote(vote: RequestVote) {
+    this.type = 'vote'
+    this.titleDescriptor = 'Upvoted lesson request'
+    this.title = vote.lessonRequest.name
+    this.href = Route.makeUrl('requests.lessons.show', { id: vote.lessonRequestId })
+    this.createdAt = vote.createdAt
+    this.icon = 'heart'
+  }
+
+  private buildForVoteCommentVote(vote: CommentVote) {
+    this.type = 'vote'
+    this.titleDescriptor = 'Upvoted comment'
+    this.title = string.excerpt(UtilityService.stripHTML(vote.comment.body), 75, { completeWords: true })
+    this.href = NotificationService.getGoPath(vote.comment)
+    this.createdAt = vote.createdAt
+    this.icon = 'heart'
   }
 
   public static getForUserCreated(user: User) {
