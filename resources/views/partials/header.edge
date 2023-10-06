@@ -1,34 +1,85 @@
-<div class="header-ad justify-center items-center bg-slate-50 hidden md:flex relative" style="z-index: -1;" up-hungry>
-  <div class="w-full flex justify-center items-center">
-    @!ads.leaderboard()
-  </div>
-</div>
 <div x-data="{ show: false }">
-  <header class="w-full bg-slate-50/10 text-slate-900 mb-6" up-header>
-    <div class="app-container flex justify-between items-center py-3 md:py-3">
-      <a href="/" class="mr-4 flex-1 md:flex-none md:mr-0" up-follow>
+  <header class="app-container w-full mb-6" up-header>
+    <div class="px-6 py-3 bg-slate-100 text-slate-900 rounded-md mt-3 flex justify-between items-center">
+      @dropdown.base({ 
+        width: 'w-72', 
+        origin: 'top-left', 
+        direction: '-left-6 top-[calc(100% + 2rem)]',
+        className: 'mr-2 md:mr-6', 
+        triggerClass: 'p-5 -m-5',
+        onHover: true 
+      })
+        @slot('trigger')
+          @!icons.menuTwo({ className: 'w-6 h-6 text-slate-600 group-hover:text-slate-900' })
+        @endslot
+        
+        <nav class="flex flex-col flex-1 space-y-1">
+          <a href="{{ route('series.show', { slug: 'lets-learn-adonisjs-5' }) }}" up-follow class="hover:bg-slate-300 text-slate-600 hover:text-slate-900 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="close">
+            <div class="w-10 h-10 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center">
+              @!icons.arrowGuide({ className: 'w-6 h-6 relative' })
+            </div>
+            Learning Path
+          </a>
+          <a href="{{ route('series.index') }}" up-follow class="hover:bg-slate-300 text-slate-600 hover:text-slate-900 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="close">
+            <div class="w-10 h-10 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center">
+              @!icons.playlist({ className: 'w-6 h-6 top-[2px] relative' })
+            </div>
+            Series
+          </a>
+          <a href="{{ route('topics.index') }}" up-follow class="hover:bg-slate-300 text-slate-600 hover:text-slate-900 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="close">
+            <div class="w-10 h-10 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center">
+              @!icons.hash({ className: 'w-6 h-6 relative' })
+            </div>
+            Topics
+          </a>
+          <a href="{{ route('lessons.index') }}" up-follow class="hover:bg-slate-300 text-slate-600 hover:text-slate-900 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="close">
+            <div class="w-10 h-10 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center">
+              @!icons.school({ className: 'w-6 h-6 relative' })
+            </div>
+            Lessons
+          </a>
+          <a href="{{ route('streams.index') }}" up-follow class="hover:bg-slate-300 text-slate-600 hover:text-slate-900 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="close">
+            <div class="w-10 h-10 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center">
+              @!icons.accessPoint({ className: 'w-6 h-6 relative' })
+            </div>
+            Streams
+          </a>
+          <a href="{{ route('snippets.index') }}" up-follow class="hover:bg-slate-300 text-slate-600 hover:text-slate-900 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="close">
+            <div class="w-10 h-10 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center">
+              @!icons.code({ className: 'w-6 h-6 relative' })
+            </div>
+            Snippets
+          </a>
+          <a href="{{ route('news.index') }}" up-follow class="hover:bg-slate-300 text-slate-600 hover:text-slate-900 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="close">
+            <div class="w-10 h-10 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center">
+              @!icons.news({ className: 'w-6 h-6 top-[1px] relative' })
+            </div>
+            News
+          </a>
+        </nav>
+      @end
+
+      <a href="/" class="mr-4 flex-1 md:flex-none md:mr-0 hover:opacity-80" up-follow>
         <img class="logo-white w-auto h-7" src="/imgs/logo-white.svg" alt="Adocasts" width="146px" height="28px" />
         <img class="logo-black w-auto h-7" src="/imgs/logo-black.svg" alt="Adocasts" width="146px" height="28px" />
       </a>
 
-      <nav class="hidden md:flex flex-1 space-x-3 ml-6 xl:ml-12">
+      <nav class="hidden md:flex flex-1 space-x-3 ml-6">
+        @!header.navLink({ text: 'Start Here', href: route('series.show', { slug: 'lets-learn-adonisjs-5' }), upFollow: true })
         @!header.navLink({ text: 'Series', href: route('series.index'), upFollow: true })
         @!header.navLink({ text: 'Topics', href: route('topics.index'), upFollow: true })
-        @!header.navLink({ text: 'Lessons', href: route('lessons.index'), upFollow: true })
-        @!header.navLink({ text: 'Streams', href: route('streams.index'), upFollow: true })
-        @!header.navLink({ text: 'Requests', href: route('requests.lessons.index'), upFollow: true })
       </nav>
 
       <div class="flex gap-1">
         <div class="flex items-center gap-1">
-          @buttons.primary.base({ square: true, href: route('search.index'), attrs: 'up-layer="new modal" up-size="grow"' })
-            @!icons.search()
+          @buttons.primary.inverse({ square: true, href: route('search.index'), attrs: 'up-layer="new modal" up-size="grow"' })
+            @!icons.search({ className: 'w-4 h-4 text-slate-600 group-hover:text-slate-900' })
           @end
 
           @!header.theme.selector()
         </div>
 
-        <div class="hidden items-center {{ !auth.user ? 'lg:flex' : 'lg:flex' }}">
+        <div class="flex items-center">
           <div class="h-6 border-r border-slate-200 md:space-x-3 mr-3 pr-3"></div>
         </div>
 
@@ -46,32 +97,24 @@
           </div>
         @else
           <div class="hidden lg:flex items-center space-x-3">
-            @buttons.primary.base({ href: route('auth.signin'), attrs: 'up-layer="new modal" up-size="grow"' })
+            @buttons.primary.outline({ href: route('auth.signin', {}, { qs: request.qs() }), attrs: 'up-layer="new modal" up-size="grow"' })
               Sign In
             @end
 
-            @buttons.brand.base({ href: route('auth.signup'), attrs: 'up-layer="new modal" up-size="grow"' })
+            @buttons.brand.base({ href: route('auth.signup', {}, { qs: request.qs() }), attrs: 'up-layer="new modal" up-size="grow"' })
               Sign Up
             @end
           </div>
         @endif
-
-        @buttons.primary.base({ atClick: 'show = true', className: 'md:hidden !w-9 !h-9', size: 'xs' })
-          @!icons.menuTwo()
-        @end
       </div>
-    </div>
-
-    <div class="app-container">
-      <div class="border-b border-slate-200/50"></div>
     </div>
   </header>
 
-  <div class="relative lg:hidden z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+  <div class="relative z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
     <!-- Background backdrop, show/hide based on slide-over state. -->
-    <div x-show="show" class="fixed inset-0"></div>
+    <div x-cloak x-show="show" class="fixed inset-0"></div>
 
-    <div x-show="show" class="fixed inset-0 overflow-hidden">
+    <div x-cloak x-show="show" class="fixed inset-0 overflow-hidden">
       <div class="absolute inset-0 overflow-hidden">
         <div class="pointer-events-none fixed inset-y-0 right-0 flex w-full">
           <!--
@@ -106,31 +149,31 @@
               </div>
               <div class="relative mt-6 flex-1 px-4 sm:px-6">
                 <nav class="flex flex-col flex-1 space-y-3 border-b border-slate-200 mb-6 pb-6">
-                  <a href="{{ route('series.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl" @click="show = false">
+                  <a href="{{ route('series.index') }}" up-follow class="hover:bg-slate-300 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="show = false">
                     @!icons.playlist({ className: 'w-6 h-6' })
                     Series
                   </a>
-                  <a href="{{ route('topics.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl" @click="show = false">
+                  <a href="{{ route('topics.index') }}" up-follow class="hover:bg-slate-300 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="show = false">
                     @!icons.hash({ className: 'w-6 h-6' })
                     Topics
                   </a>
-                  <a href="{{ route('lessons.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl" @click="show = false">
+                  <a href="{{ route('lessons.index') }}" up-follow class="hover:bg-slate-300 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="show = false">
                     @!icons.school({ className: 'w-6 h-6' })
                     Lessons
                   </a>
-                  <a href="{{ route('streams.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl" @click="show = false">
+                  <a href="{{ route('streams.index') }}" up-follow class="hover:bg-slate-300 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="show = false">
                     @!icons.accessPoint({ className: 'w-6 h-6' })
                     Streams
                   </a>
-                  <a href="{{ route('news.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl" @click="show = false">
+                  <a href="{{ route('news.index') }}" up-follow class="hover:bg-slate-300 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="show = false">
                     @!icons.news({ className: 'w-6 h-6' })
                     News
                   </a>
-                  <a href="{{ route('requests.lessons.index') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl" @click="show = false">
+                  <a href="{{ route('requests.lessons.index') }}" up-follow class="hover:bg-slate-300 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="show = false">
                     @!icons.heartHandshake({ className: 'w-6 h-6' })
                     Requests
                   </a>
-                  <a href="{{ route('schedule') }}" up-follow class="text-lg flex items-center gap-3 py-3 px-6 bg-slate-200/50 rounded-xl" @click="show = false">
+                  <a href="{{ route('schedule') }}" up-follow class="hover:bg-slate-300 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="show = false">
                     @!icons.calendarEvent({ className: 'w-6 h-6' })
                     Schedule
                   </a>

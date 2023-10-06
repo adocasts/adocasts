@@ -47,10 +47,24 @@ export default class PostService {
    */
   public static async getBySlug(slug: string, postTypeId: PostTypes): Promise<Post> {
     return Post.query()
-        .if(postTypeId, query => query.where({ postTypeId }))
-        .apply(scope => scope.forDisplay(true))
-        .where({ slug })
-        .highlightOrFail()
+      .if(postTypeId, query => query.where({ postTypeId }))
+      .apply(scope => scope.forDisplay(true))
+      .where({ slug })
+      .highlightOrFail()
+  }
+
+  /**
+   * returns post with the given slug
+   * @param slug
+   * @param postTypeId
+   * @returns
+   */
+  public static async getBySlugForPath(slug: string, postTypeId: PostTypes): Promise<Post> {
+    return Post.query()
+      .if(postTypeId, query => query.where({ postTypeId }))
+      .apply(scope => scope.forPathDisplay(true))
+      .where({ slug })
+      .highlightOrFail()
   }
 
   /**
@@ -94,9 +108,10 @@ export default class PostService {
    * @param post
    * @returns
    */
-  public static async getSeries(auth: AuthContract, post: Post) {
+  public static async getSeries(auth: AuthContract, post: Post, collectionSlug?: string) {
     return post.related('rootSeries').query()
       .wherePublic()
+      .if(collectionSlug, query => query.where('slug', collectionSlug!))
       .preload('posts', query => query
         .apply(scope => scope.forCollectionDisplay())
         .if(auth.user, query => query.preload('progressionHistory', query => query.where({ userId: auth.user!.id }).orderBy('updated_at', 'desc'))))
@@ -107,7 +122,41 @@ export default class PostService {
           .if(auth.user, query => query.preload('progressionHistory', query => query.where({ userId: auth.user!.id }).orderBy('updated_at', 'desc')))
         )
       )
-      .preload('postsFlattened')
+      .preload('postsFlattened', query => query
+        .apply(scope => scope.forCollectionDisplay())
+        .if(auth.user, query => query.preload('progressionHistory', query => query.where({ userId: auth.user!.id }).orderBy('updated_at', 'desc')))
+      )
+      .preload('updatedVersions', query => query
+        .wherePublic()
+        .whereHas('postsFlattened', query => query.apply(s => s.published()))
+      )
+      .first()
+  }
+
+  /**
+   * returns related root path for post
+   * @param auth
+   * @param post
+   * @returns
+   */
+  public static async getPath(auth: AuthContract, post: Post, collectionSlug?: string) {
+    return post.related('rootPaths').query()
+      .wherePublic()
+      .if(collectionSlug, query => query.where('slug', collectionSlug!))
+      .preload('posts', query => query
+        .apply(scope => scope.forCollectionPathDisplay())
+        .if(auth.user, query => query.preload('progressionHistory', query => query.where({ userId: auth.user!.id }).orderBy('updated_at', 'desc'))))
+      .preload('children', query => query
+        .wherePublic()
+        .preload('posts', query => query
+          .apply(scope => scope.forCollectionPathDisplay())
+          .if(auth.user, query => query.preload('progressionHistory', query => query.where({ userId: auth.user!.id }).orderBy('updated_at', 'desc')))
+        )
+      )
+      .preload('postsFlattened', query => query
+        .apply(scope => scope.forCollectionPathDisplay())
+        .if(auth.user, query => query.preload('progressionHistory', query => query.where({ userId: auth.user!.id }).orderBy('updated_at', 'desc')))
+      )
       .preload('updatedVersions', query => query
         .wherePublic()
         .whereHas('postsFlattened', query => query.apply(s => s.published()))

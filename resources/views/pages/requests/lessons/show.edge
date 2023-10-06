@@ -24,9 +24,9 @@
 
   @headings.hero({ title: lessonRequest.name })
     <div class="flex flex-wrap items-center gap-3">
-      @!fragments.requestStatus({ lessonRequest, className: 'order-2 md:order-1 bg-slate-50 text-slate-900 px-3 py-2 rounded-full !mt-0' })
+      @!fragments.requestStatus({ lessonRequest, className: 'order-2 md:order-1 bg-slate-100 text-slate-900 px-3 py-2 rounded-full !mt-0' })
 
-      <p class="order-1 md:order-2 text-slate-500">
+      <p class="order-1 md:order-2 text-slate-600">
         <span class="truncate">Requested by {{ lessonRequest.stateId == States.ARCHIVED ? '[deleted]' : lessonRequest.user.username }}</span>&nbsp;
         <time datetime="{{ lessonRequest.createdAt.toString() }}">{{ timeago(lessonRequest.createdAt) }}</time>
       </p>
@@ -66,7 +66,7 @@
     </aside>
 
     <main class="w-full px-3">
-      <div class="bg-slate-50 rounded-xl p-3 sm:p-6 mb-6 group border border-slate-200">
+      <div class="bg-slate-100 rounded-xl p-3 sm:p-6 mb-6 group border border-slate-200">
         <div class="mb-3 flex items-center">
           @if (lessonRequest.stateId !== States.ARCHIVED)
             <img src="{{ lessonRequest.user.avatar }}" class="w-10 h-10 rounded-xl mr-3" />
@@ -74,7 +74,7 @@
           <div class="flex flex-col">
             <h6 class="text-base font-semibold">
               <span class="inline-block mr-3">{{ lessonRequest.stateId == States.ARCHIVED ? '[deleted]' : lessonRequest.user.username }}</span>
-              <span class="text-slate-500 font-normal">
+              <span class="text-slate-600 font-normal">
                 <time datetime="{{ lessonRequest.createdAt.toString() }}">{{ timeago(lessonRequest.createdAt) }}</time>
               </span>
             </h6>

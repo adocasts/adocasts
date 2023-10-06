@@ -2,9 +2,14 @@
   <div class="app-container relative">
     <div class="flex flex-wrap justify-between items-center mb-3 md:mb-0">
       <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="inline-flex items-center md:w-3/5 lg:w-4/5 pb-3">
-        <div class="aspect-square">
+        <div class="aspect-square relative -top-1">
           @if (item.asset)
-            <img src="/img/{{ item.asset.filename }}" class="rounded-full w-16 h-16 lg:w-20 lg:h-20 mb-3" />
+            <img 
+              src="/img/{{ item.asset.filename }}" 
+              class="bg-white rounded-full w-16 h-16 lg:w-20 lg:h-20 mb-3" 
+              style="background-image: url('/img/{{ item.asset.filename }}?w=10&blur=250'); filter: blur(10px); background-size: 100%;"
+              onload="this.style.backgroundImage = null; this.style.filter = null; this.classList.remove('bg-white');"
+            />
           @else
             <div class="w-16 h-16 lg:w-20 lg:h-20 text-2xl font-semibold flex items-center justify-center mb-3 rounded-full bg-brand-300 text-brand-800">
               {{ getAbbrev(item.name) }}
@@ -12,7 +17,7 @@
           @endif
         </div>
         <div class="flex-1 ml-3 md:ml-6 md:-mt-3 -mr-px">
-          <h4 class="text-slate-500 font-sans uppercase tracking-wider text-sm">
+          <h4 class="text-slate-600 font-sans uppercase tracking-wider text-sm">
             Featured Series
           </h4>
           
@@ -20,7 +25,7 @@
             {{ item.name }}
           </h2>
           
-          <div class="w-full text-slate-500 text-xs flex items-center relative z-10 gap-3 mt-2">
+          <div class="w-full text-slate-600 text-xs flex items-center relative z-10 gap-3 mt-2">
             <div class="flex flex-col justify-center tracking-wider">
               {{ item.meta.postsFlattened_count ?? '0' }}
               {{ getSingularOrPlural('Lesson', item.meta.postsFlattened_count ?? 0) }}
@@ -39,12 +44,12 @@
 
       <div class="w-full md:w-2/5 lg:w-1/5 space-y-1 flex flex-col gap-1.5 mb-3">
         @if (item.postsFlattened?.length)
-          @buttons.primary.inverse({ href: route('series.lesson', { slug: item.slug, index: 1 }), className: 'gap-3', block: true })
+          @buttons.brand.base({ href: route('series.lesson', { slug: item.slug, index: 1 }), className: 'gap-3', block: true })
             @!icons.playerPlay()
             Start Series
           @end
         @endif
-        @buttons.primary.inverse({ href: route('series.show', { slug: item.slug }), className: 'gap-3', block: true, attrs: 'up-follow' })
+        @buttons.primary.outline({ href: route('series.show', { slug: item.slug }), className: 'gap-3', block: true, attrs: 'up-follow' })
           @!icons.folder()
           View Series
         @end
@@ -54,7 +59,7 @@
     <div class="flex flex-wrap md:flex-nowrap md:gap-8 -mx-3">
       @!lessons.featureHalfTall({ item: item.postsFlattened.at(0) })
 
-      <div class="flex flex-wrap items-start lg:w-1/2">
+      <div class="flex flex-wrap items-start md:w-1/2">
         @each (item in item.postsFlattened.slice(1, 5))
           @!lessons.featureHalfList({ item })
         @endeach

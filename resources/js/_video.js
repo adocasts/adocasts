@@ -1,14 +1,17 @@
 import axios from 'axios'
+import Cookies from 'js-cookie'
 
-let isYtVideoPlaying = false
+let isVideoPlaying = false
 let isInitialLoad = true
 let playerInterval = null
 let keepPlayerPostId = null
 let keepPlayer = false
 
 window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMethod = 'post', httpUrl, httpPayload = {}, watchSeconds = 0, isLive = false, autoplay = false } = {}) {
-  const startMuted = isLive || autoplay
+  const startMuted = isLive
   const bodyContent = document.querySelector('.body-content')
+
+  Cookies.remove('playingId')
 
   if (isLive) {
     autoplay = true
@@ -16,6 +19,7 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
 
   if (!autoplay) {
     autoplay = window.$params.autoplay ?? 0
+    delete window.$params.autoplay
   }
 
   if (autoplay) {
@@ -47,7 +51,7 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
       }
 
       if (window.player) {
-        window.player.seekTo(duration)
+        window.player.currentTime = duration
       } else {
         onInitVideo(true, duration)
       }
@@ -59,85 +63,101 @@ window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMe
     }
   })
 
-  element.addEventListener('click', () => {
-    element.removeEventListener('click', onInitVideo)
-    onInitVideo(true, watchSeconds)
-  })
-
   function onInitVideo(playOnReady, skipToSeconds = watchSeconds) {
     keepPlayerPostId = httpPayload.postId
     keepPlayer = false
 
-    window.onYouTubeIframeAPIReady = function () {
-      const playerVars = {
-        autoplay: playOnReady,
-        modestbranding: 1,
-        rel: 0,
-        showinfo: 0,
-        ecver: 2,
-        start: skipToSeconds
-      }
-
-      if (isLive) {
-        delete playerVars.start
-      }
-
-      window.player = new YT.Player(el, {
-        videoId: videoId,
-        playerVars,
-        events: {
-          'onReady': onPlayerReady,
-          'onStateChange': onPlayerStateChange
-        }
-      })
+    if (window.player && typeof window.player.destroy === 'function') {
+      window.player.destroy()
     }
 
-    if (isInitialLoad) {
-      const tag = document.createElement('script')
+    window.player = new Plyr('#' + el, {
+      autoplay: !!playOnReady,
+      muted: startMuted,
+      volume: window.player?.volume ?? 1,
+      settings: ['captions', 'quality', 'speed', 'loop'],
+      quality: {
+        default: 2160,
+        options: [2160, 1080, 720, 480, 360]
+      }
+    })
+    
+    const nextUpEl = document.getElementById('lessonVideoNextUp')
 
-      let playerInterval
-      tag.src = "https://www.youtube.com/iframe_api"
-      document.body.appendChild(tag)
-      isInitialLoad = false
-    } else {
-      window.onYouTubeIframeAPIReady()
+    window.player.on('playing', onPlayerStateChange)
+    window.player.on('pause', onPlayerStateChange)
+    window.player.on('ended', onPlayerStateChange)
+
+    window.player.on('ready', () => {
+      if (!playOnReady && !isLive && skipToSeconds) {
+        window.player.currentTime = skipToSeconds
+      }
+    })
+
+    if (nextUpEl) {
+      window.player.on('timeupdate', onPlayerTimeUpdate)
     }
 
-    function onPlayerReady(event) {
-      // setTimeout(() => player.pauseVideo(), 500)
-      // setTimeout(() => player.seekTo(300), 500)
-      if (startMuted) {
-        event.target.mute()
-      }
+    let lastTimeUpdate = null
+    function onPlayerTimeUpdate(event) {
+      if (!nextUpEl) return
+
+      const player = event.detail.plyr
+      const timeUpdate = Math.floor(player.currentTime)
+
+      if (timeUpdate === lastTimeUpdate) return
+      
+      lastTimeUpdate = timeUpdate
+
+      // don't dispatch to nextUp if player isn't actively playing
+      if (!isVideoPlaying) return 
+
+      nextUpEl.dispatchEvent(new CustomEvent('timeupdate', { detail: { player } }))
     }
 
     function onPlayerStateChange(event) {
-      isYtVideoPlaying = event.data == YT.PlayerState.PLAYING
+      const player = event.detail.plyr
+
+      isVideoPlaying = player.playing
 
       // only update keepPlayer when on video's designated page
       if (location.pathname === placeholder.dataset.path) {
-        keepPlayer = isYtVideoPlaying
+        keepPlayer = isVideoPlaying
         keepPlayerPostId = httpPayload.postId
       }
 
       if (isLive) return
 
-      if (isYtVideoPlaying) {
+      if (!window.player) {
+        Cookies.remove('playingId')
+        keepPlayer = null
+        keepPlayerPostId = null
+      }
+
+      if (isVideoPlaying) {
         playerInterval = setInterval(async () => {
-          const currentTime = window.player.getCurrentTime()
-          const duration = window.player.getDuration()
+          const currentTime = window.player.currentTime
+          const duration = window.player.duration
 
           // duration may be 0 if meta data is still loading
           if (duration !== 0) {
             await storeWatchingProgression(currentTime, duration)
           }
-        }, 15000)
+        }, 7500)
+
+        if (!Cookies.get('playingId')) {
+          Cookies.set('playingId', httpPayload.postId)
+        }
       } else {
-        const currentTime = window.player.getCurrentTime()
-        const duration = window.player.getDuration()
+        if (typeof window.player?.currentTime === 'number') {
+          const currentTime = window.player.currentTime
+          const duration = window.player.duration
+          storeWatchingProgression(currentTime, duration)
+        }
 
         clearInterval(playerInterval)
-        storeWatchingProgression(currentTime, duration)
+
+        Cookies.remove('playingId')
       }
     }
 
@@ -173,7 +193,7 @@ let lessonVideoResize
 let wasIntersecting = undefined
 
 up.compiler('#lessonVideoEmbed', function(element) {
-  const isInitialized = element.nodeName === 'IFRAME'
+  const isInitialized = !!window.player
   const isPostPage = !!document.getElementById('videoPlayerPosition')
 
   // if not post page and player is already initialized, do nothing
@@ -220,8 +240,8 @@ up.compiler('#videoPlayerPosition', position => {
   const placeholder = document.querySelector('[video-placeholder]')
   placeholder?.dispatchEvent(new CustomEvent('open'))
 
-  if (!isYtVideoPlaying) {
-    const embed = document.getElementById('lessonVideoEmbed')
+  if (!isVideoPlaying) {
+    const embed = window.player?.elements?.container
     if (embed) {
       embed.dataset.keepPlayer = false
     }
@@ -244,19 +264,27 @@ up.compiler('#videoPlayerPosition', position => {
 up.on('up:location:changed', function(event) {
   const exitPaths = ['/users/menu', '/signin', '/signup', '/histories/', '/watchlist/']
   const placeholder = document.querySelector('[video-placeholder]')
-  const element = document.getElementById('lessonVideoEmbed')
+  const isPlayerInitialized = !!window.player
+
+  if (!placeholder) return
+
+  if (placeholder.classList.contains('no-access')) {
+    placeholder.dispatchEvent(new CustomEvent('close'))
+    return
+  }
 
   // if video hasn't loaded yet - don't do anything
-  if (!element || element.nodeName !== 'IFRAME') return
+  if (!isPlayerInitialized) return
 
   // if opening one of the exit paths, don't do anything
   if (exitPaths.some(path => event.url.toLowerCase().includes(path))) return
 
+  const isEnabledMiniPlayer = placeholder.dataset.isEnabledMiniPlayer === "true"
   const videoPath = placeholder.dataset.path
   const isVideoPath = videoPath == location.pathname
   const isSamePost = !keepPlayerPostId || keepPlayerPostId == placeholder.dataset.postId
 
-  if (!keepPlayer && !isVideoPath && isSamePost) {
+  if ((!keepPlayer || !isEnabledMiniPlayer) && !isVideoPath && isSamePost) {
     placeholder.dispatchEvent(new CustomEvent('close'))
     return
   }
@@ -282,6 +310,8 @@ up.on('up:fragment:loaded', event => {
   const isLayer = ['modal', 'drawer'].includes(event.request.mode)
   const isSmallPlayer = !event.response.text.includes('id="videoPlayerPosition"')
   positionVideoPlaceholder(isSmallPlayer && !isLayer)
+
+  setTimeout(() => positionVideoPlaceholder(isSmallPlayer && !isLayer), 600)
 })
 
 // const footer = document.querySelector('footer')
@@ -303,13 +333,14 @@ up.on('up:fragment:loaded', event => {
 
 function positionVideoPlaceholder(isSmallPlayer = false) {
   const placeholder = document.querySelector('[video-placeholder]')
-
+  
   if (!placeholder) return
-
+  
+  const isEnabledMiniPlayer = placeholder.dataset.isEnabledMiniPlayer === "true"
   const videoPath = placeholder.dataset.path
   const isVideoPath = videoPath == location.pathname
 
-  if (isSmallPlayer) {
+  if (isSmallPlayer && isEnabledMiniPlayer && !placeholder.classList.contains('no-access')) {
     isVideoPath
       ? placeholder.classList.add('video-noactions')
       : placeholder.classList.remove('video-noactions')

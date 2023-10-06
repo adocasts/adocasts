@@ -165,6 +165,10 @@ export default class Collection extends AppBaseModel {
     return this.query().where('collectionTypeId', CollectionTypes.PLAYLIST)
   }
 
+  public static paths() {
+    return this.query().where('collectionTypeId', CollectionTypes.PATH)
+  }
+
   public static withPostLatestPublished = scope<typeof Collection>((query) => {
     query.select(
       Database.rawQuery(`(

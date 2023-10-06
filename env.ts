@@ -61,4 +61,10 @@ export default Env.rules({
 
 	NOTION_SECRET: Env.schema.string(),
 	NOTION_VERSION: Env.schema.string(),
+
+	STRIPE_PUBLISHABLE_KEY: Env.schema.string(),
+	STRIPE_SECRET_KEY: Env.schema.string(),
+	STRIPE_WEBHOOK_SECRET: Env.schema.string(),
+
+	DROPBOX_ACCESS_TOKEN: Env.schema.string(),
 })

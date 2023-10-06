@@ -25,23 +25,23 @@
       
       <p class="font-semibold text-xs uppercase tracking-wider text-slate-400 px-2 mt-8 mb-2">Settings</p>
 
-      @header.navLink({ href: route('users.settings.index') })
-        General
-      @end
-
-      @header.navLink({ href: '/users/settings#account' })
+      @header.navLink({ href: route('users.settings.index', { section: 'account' }) })
         Account
       @end
 
-      @header.navLink({ href: '/users/settings#profile' })
+      @header.navLink({ href: route('users.settings.index', { section: 'profile' }) })
         Profile
       @end
 
-      @header.navLink({ href: '/users/settings#notifications' })
+      @header.navLink({ href: route('users.settings.index', { section: 'billing' }) })
+        Billing
+      @end
+
+      @header.navLink({ href: route('users.settings.index', { section: 'notifications' }) })
         Notifications
       @end
 
-      @header.navLink({ href: '/users/settings#data' })
+      @header.navLink({ href: route('users.settings.index', { section: 'data' }) })
         Data
       @end
 
@@ -95,7 +95,28 @@
         <div>
           <h3>{{ auth.user.username }}</h3>
           <p class="text-xs text-slate-700">Member Since {{ auth.user.createdAt.toLocaleString('en-US') }}</p>
-          {{--  <p class="text-xs text-slate-700">Forever Plan</p>  --}}
+
+          @set('plan', await auth.user.related('plan').query().firstOrFail())
+          @if (auth.user.stripeCustomerId)
+            <button type="submit" form="stripePortalForm" class="text-xs text-slate-700 flex items-center gap-1.5">
+              @if (auth.user.stripeSubscriptionStatus === StripeSubscriptionStatuses.PAUSED)
+                <span class="flex p-0.5 rounded bg-orange-100 text-orange-600 uppercase tracking-wider leading-none" style="font-size: .65rem;">
+                  {{ auth.user.stripeSubscriptionStatus }}
+                </span>
+              @endif
+              {{ plan.name }}
+            </button>
+            @!form.post({ id: 'stripePortalForm', action: route('stripe.portal') })
+          @else
+            <p class="text-xs text-slate-700 flex items-center gap-1.5">
+              @if (auth.user.stripeSubscriptionStatus === StripeSubscriptionStatuses.PAUSED)
+                <span class="flex p-0.5 rounded bg-orange-100 text-orange-600 uppercase tracking-wider leading-none" style="font-size: .65rem;">
+                  {{ auth.user.stripeSubscriptionStatus }}
+                </span>
+              @endif
+              {{ plan.name }}
+            </p>
+          @endif
         </div>
       </div>
 

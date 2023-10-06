@@ -1,34 +1,37 @@
 @set('origin', origin || 'top-right')
-@set('direction', origin.includes('-right') ? 'right-0' : 'left-0')
+@set('direction', direction ? direction : origin.includes('-right') ? 'right-0' : 'left-0')
 @set('width', width || 'w-48')
 @set('shadow', shadow || 'shadow-xs')
+@set('onHover', onHover || false)
 
-<div @click.away="open = false" class="relative flex-shrink-0 {{ className }}" x-data="{ 
+<div @click.away="close" class="group relative flex-shrink-0 {{ className }}" x-data="{ 
   open: false, 
   onOpen() {
     this.open = !this.open
     if (this.open) {{onOpen && `${onOpen}({{ JSON.stringify(onOpenData) }})` }} 
+  },
+  close() {
+    this.open = false
   }
 }" {{{ attrs }}}>
   <div>
     @if ($slots.triggerManual)
       {{{ await $slots.triggerManual({ handler: 'onOpen' }) }}}
     @else
-      <button type="button" @click.prevent.stop="onOpen" aria-haspopup="true" x-bind:aria-expanded="open" class="flex">
+      <button type="button" {{{ onHover ? '@mouseenter="open ? false : onOpen" @click.prevent.stop="open ? (open = false) : onOpen"' : '@click.prevent.stop="onOpen"' }}} aria-haspopup="true" x-bind:aria-expanded="open" class="flex {{ triggerClass || '' }}">
         {{{ await $slots.trigger() }}}
       </button>
     @endif
   </div>
-  <div x-show="open"
+  <div x-cloak x-show="open"
     x-transition:enter="transition ease-out duration-100"
     x-transition:enter-start="transform opacity-0 scale-95"
     x-transition:enter-end="transform opacity-100 scale-100"
     x-transition:leave="transition ease-in duration-75"
     x-transition:leave-start="transform opacity-100 scale-100"
     x-transition:leave-end="transform opacity-0 scale-95"
-    class="origin-{{ origin }} absolute {{ direction }} mt-2 {{ width }} rounded-md {{ shadow }} z-50"
-    style="display: none;">
-    <div class="rounded-lg shadow-lg ring-1 ring-brand-500 ring-opacity-5 overflow-hidden bg-slate-50 px-2 py-2" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+    class="origin-{{ origin }} absolute {{ direction }} {{ onHover ? 'mt-[1.25rem]' : 'mt-2' }} {{ width }} rounded-md {{ shadow }} z-50">
+    <div class="rounded-lg shadow-lg ring-1 ring-brand-500 ring-opacity-5 overflow-hidden bg-slate-200 px-2 py-2 {{ dropdownClass }}" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
       {{{ await $slots.main() }}}
     </div>
   </div>

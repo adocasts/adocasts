@@ -44,7 +44,7 @@ export default class PasswordResetController {
       const email = request.input('email');
 
       DiscordLogger.error('AuthController.forgotPasswordSend', { email, error })
-      session.flash('error', "Something went wrong and we couldn't send your forgot password email.");
+      session.flash('error', "Account couldn't be found for this email");
 
       return response.redirect().back()
     }

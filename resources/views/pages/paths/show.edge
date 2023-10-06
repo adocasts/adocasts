@@ -1,0 +1,169 @@
+@layout('layouts/app')
+
+@section('meta')
+  @!meta.tags({
+    url: route('series.show', { slug: series.slug }),
+    title: series.name,
+    desc: excerpt(series.description, 180),
+    asset: series.assets,
+    index: true
+  })
+@endsection
+
+@section('hero')
+
+  <div class="relative">
+    <div class="hero-backdrop-container">
+      @if (series.asset)
+        <div class="hero-backdrop-inner">
+          <img 
+            src="/img/{{ series.asset.filename }}"
+            class="hero-backdrop-image" 
+          />
+          <div class="hero-backdrop-fade"></div>
+        </div>
+      @endif
+    </div>
+  </div>
+
+@endsection
+
+@section('content')
+
+  <div class="flex flex-wrap lg:flex-nowrap gap-6">
+    <div class="w-full lg:w-1/4 xl:w-[400px]">
+      <div class="flex flex-col pb-10 sticky top-6 xl:pr-6">
+        <div class="w-full lg:w-auto inline-flex flex-col pb-3">
+          @if (series.asset)
+            <div class="w-32 lg:w-full flex justify-center items-center p-3 bg-slate-100 rounded-xl mb-6 relative overflow-hidden shadow-xl">
+              <img src="/img/{{ series.asset.filename }}" class="absolute w-full h-full object-cover object-center scale-150 lg:scale-125 blur-md opacity-50" />
+
+              <div class="aspect-square w-24 lg:w-36 relative z-10">
+                <img src="/img/{{ series.asset.filename }}" class="rounded-full w-24 h-24 lg:w-36 lg:h-36 shadow-lg border-2 border-slate-900/25" />
+              </div>
+            </div>
+          @endif
+          <div class="flex-1">
+            <h1 class="font-semibold text-slate-900 text-2xl xl:text-3xl mb-3">
+              {{ series.name }}
+            </h1>
+            <div class="text-xs xl:text-sm text-slate-600 uppercase tracking-wider mb-3">
+              @set('watchDisplay', secondsForDisplay(series.meta.videoSecondsSum))
+
+              <p class="flex items-center gap-3">
+                @!icons.school()
+                {{ series.meta.postsFlattened_count ?? '0' }}
+                {{ getSingularOrPlural('Lesson', series.meta.postsFlattened_count ?? 0) }}
+              </p>
+
+              <p class="flex items-center gap-3">
+                @!icons.clock()
+                {{ watchDisplay.maxDisplay }}
+                {{ getSingularOrPlural(watchDisplay.maxDisplayKey, watchDisplay.maxDisplay) }}
+              </p>
+            </div>
+            <p class="text-slate-600 text-sm xl:text-base max-w-prose mb-3">
+              {{ series.description }}
+            </p>
+          </div>
+        </div>
+
+        <div class="w-full flex flex-col space-y-3 lg:pb-6">
+          @if (series.postsFlattened.length)
+            @buttons.brand.base({ href: routePost(nextLesson), block: true, attrs: 'up-follow' })
+              @!icons.playerPlay({ className: 'w-5 h-5' })
+              <span class="ml-2">{{ nextLesson.id === series.postsFlattened[0].id ? 'Start Path' : 'Continue Path' }}</span>
+            @end
+          @endif
+          @if (series.repositoryUrl)
+            @buttons.primary.outline({ href: series.repositoryUrl, block: true, attrs: 'target="_blank"' })
+              @!icons.brandGithub({ className: 'w-5 h-5' })
+              <span class="ml-2">View Repository</span>
+            @end
+          @endif
+          @if (series.youtubePlaylistUrl)
+            @buttons.primary.outline({ href: series.youtubePlaylistUrl, block: true, attrs: 'target="_blank"' })
+              @!icons.brandYoutube({ className: 'w-5 h-5' })
+              <span class="ml-2">View Playlist</span>
+            @end
+          @endif
+        </div>
+
+        @if (series.children?.length)
+          <div class="text-sm xl:text-base hidden lg:block">
+            <h5>Path Modules</h5>
+
+            <ol class="flex flex-col mt-3 -mx-3">
+              @each (module in series.children)
+                <li>
+                  <a href="#module{{module.moduleNumber}}" class="flex items-center flex-wrap text-slate-600 gap-x-3 px-3 py-2 rounded-xl hover:bg-slate-100">
+                    <span class="uppercase tracking-wider hidden md:block bg-slate-300/50 rounded-lg py-1 px-2 text-xs">
+                      Module {{ module.moduleNumber }}
+                    </span>
+                    <span>
+                      {{ module.name }}
+                    </span>
+                  </a>
+                </li>
+              @endeach
+            </ol>
+          </div>
+        @endif
+      </div>
+    </div>
+
+    <div class="w-full lg:w-3/4 xl:w-[calc(100% - 400px)]">
+      <div class="w-full">
+        @each ((module, x) in series.children)
+          <div id="module{{module.moduleNumber }}" class="mb-6">
+            <div class="bg-slate-100 rounded-xl p-3 mb-3 py-3 sticky top-0 z-20">
+              <h3 class="flex items-baseline flex-wrap text-lg lg:text-xl text-slate-600 gap-x-3">
+                <span class="uppercase tracking-wider hidden md:block bg-slate-300/50 rounded-lg py-1 px-2 text-xs relative -top-[2px]">
+                  Module {{ module.moduleNumber }}
+                </span>
+                <span class="font-semibold">
+                  {{ module.name }}
+                </span>
+                <span class="text-slate-600 text-sm">
+                  ({{ module.posts.length }} lessons)
+                </span>
+              </h3>
+            </div>
+
+            <div class="-mx-3">
+              @each ((item, y) in module.posts)
+                @!lessons.listItem({
+                  item,
+                  imgWidth: 'mb-3 md:mb-0 md:w-1/2 lg:w-2/5 xl:w-1/3 ml-3',
+                  detailWidth: 'md:w-1/2 lg:w-3/5 xl:w-2/3',
+                  descClassName: '!inline-block',
+                  lineClamp: 'md:line-clamp-5',
+                  showProgress: true,
+                  lazyItem: true
+                })
+              @endeach
+            </div>
+          </div>
+        @endeach
+
+        @if (series.posts.length)
+          <div class="-mt-3 -mx-3 mb-3">
+            @each (item in series.posts)
+              @!lessons.listItem({
+                item,
+                className: 'pl-3',
+                imgWidth: 'mb-3 md:mb-0 md:w-1/2 lg:w-2/5 xl:w-1/3',
+                detailWidth: 'md:w-1/2 lg:w-3/5 xl:w-2/3',
+                descClassName: '!inline-block',
+                lineClamp: 'md:line-clamp-5',
+                showProgress: true,
+                lazyItem: true
+              })
+            @endeach
+          </div>
+        @endif
+      </div>
+    </div>
+  </div>
+
+@endsection

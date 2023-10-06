@@ -2,7 +2,7 @@
 @set('showBio', !submittable ? false : auth.user && !update)
 
 <div x-data="setupEditor(`{{ value ?? '' }}`)" x-init="() => init($refs.element)">
-  <div class="bubble-menu bg-slate-50 text-slate-700 text-sm py-1 px-2 rounded-md">
+  <div class="bubble-menu bg-slate-100 text-slate-700 text-sm py-1 px-2 rounded-md">
     <template x-if="typeof isInitialized === 'boolean'">
       <div class="flex items-center space-x-2">
         <button type="button" @click="command('h3')" :class="{ 'text-white': isActive('bold') }">
@@ -31,7 +31,7 @@
     @if (showBio)
       <div class="prose-comment-bio">
         <figure>
-          <img class="mr-3 h-8 w-8 rounded-xl shadow-md shadow-black/5 ring-1 fill-brand-400 ring-black/5 bg-brand-900" src="{{ auth.user.avatar }}" />
+          <img class="mr-3 h-8 w-8 rounded-md shadow-md shadow-black/5 ring-1 fill-brand-400 ring-black/5 bg-brand-900" src="{{ auth.user.avatar }}" />
         </figure>
         <h4>{{ auth.user.username }}</h4>
       </div>
@@ -44,7 +44,7 @@
           @end
         @endif
 
-        @buttons.base({ type: 'submit', className: 'btn-comment-submit' })
+        @buttons.brand.base({ type: 'submit', className: 'btn-comment-submit' })
           {{ update ? 'Update' : 'Create' }} Comment
         @end
       </div>

@@ -28,7 +28,8 @@ export default class SignUpValidator {
     username: usernameValidation,
     email: schema.string({ trim: true }, [rules.email(), rules.unique({ table: 'users', column: 'email' })]),
     password: schema.string({ trim: true }, [rules.minLength(8)]),
-    forward: schema.string.optional()
+    forward: schema.string.optional(),
+    plan: schema.string.optional({}, [rules.exists({ table: 'plans', column: 'slug' })])
   })
 
   /**

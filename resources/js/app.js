@@ -1,10 +1,13 @@
 import '../css/app.css'
 import axios from 'axios'
+import { DateTime } from 'luxon'
 import './tiptap/basic'
 import './_alpine'
 import './_unpoly'
 import './_video'
 import './_prose'
+
+window.DateTime = DateTime
 
 window.hideBanner = async function(target) {
   document.getElementById(target).remove()

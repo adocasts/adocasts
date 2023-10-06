@@ -1,7 +1,7 @@
 <div id="boxSeries" x-cloak x-data="{ show: false }" @toggle="show = !show; document.body.classList.toggle('box-series-show')" @hide="show = false; document.body.classList.remove('box-series-show')" up-hungry>
-  <div class="lesson-list-placeholder bg-slate-50" @click="show = false; document.body.classList.remove('box-series-show')" :class="{ show }"></div>
-  <div class="lesson-list bg-slate-100 border-l border-slate-200/50 shadow-xl z-10" :class="{ show }">
-    <div class="flex justify-between items-center pt-3 pb-3 md:pb-0 md:sticky top-0 z-30 bg-slate-50 backdrop-blur-lg">
+  <div class="lesson-list-placeholder bg-slate-100" @click="show = false; document.body.classList.remove('box-series-show')" :class="{ show }"></div>
+  <div class="lesson-list bg-slate-100 shadow-xl z-10" :class="{ show }">
+    <div class="flex justify-between items-center pt-3 pb-3 md:pb-0 md:sticky top-0 z-30 bg-slate-100 backdrop-blur-lg">
       <div class="relative">
         <div class="block text-slate-700 px-6" :class="[{ 'pb-3': !show }]">
           <h4 class="text-base font-semibold mb-2 truncate">Related Lessons</h4>
@@ -14,7 +14,7 @@
         @end
       </div>
     </div>
-    <ol class="flex-1 bg-gradient-to-br to-slate-100 to-opacity-50 from-slate-50 list-none m-0 p-0 px-3 top-0 left-0 overflow-y-auto hide-scrollbar -mt-3 md:mt-0" :class="{ 'hidden md:block': !show }">
+    <ol class="flex-1 list-none m-0 p-0 px-3 top-0 left-0 overflow-y-auto hide-scrollbar -mt-3 md:mt-0" :class="{ 'hidden md:block': !show }">
       @!lessons.similarListPosts({ posts: similarLessons })
     </ol>
   </div>

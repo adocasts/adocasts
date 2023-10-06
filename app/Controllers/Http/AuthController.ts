@@ -1,10 +1,15 @@
+import { inject } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import AuthAttemptService from 'App/Services/AuthAttemptService'
+import StripeService from 'App/Services/StripeService'
 import SignInValidator from 'App/Validators/SignInValidator'
 import SignUpValidator from 'App/Validators/SignUpValidator'
 
+@inject()
 export default class AuthController {
+  constructor (protected stripeService: StripeService) {}
+
   /**
    * Displays sign in page
    * @param param0 
@@ -21,7 +26,7 @@ export default class AuthController {
    * @returns 
    */
   public async authenticate({ request, response, auth, session, up }: HttpContextContract) {
-    let { uid, password, rememberMe, forward, action } = await request.validate(SignInValidator)
+    let { uid, password, rememberMe, forward, action, plan } = await request.validate(SignInValidator)
 
     if (!await AuthAttemptService.hasRemainingAttempts(uid)) {
       session.flash('error', 'Your account has been locked due to repeated bad login attempts. Please reset your password.')
@@ -35,13 +40,24 @@ export default class AuthController {
       await AuthAttemptService.recordLoginAttempt(uid)
 
       session.flash('errors', { form: 'The provided username/email or password is incorrect' })
-      return response.redirect().back()
+      return response.redirect().toRoute('auth.signin')
     }
 
     switch (action) {
       case 'email_verification':
         forward = session.get('email_verification')
         break
+    }
+
+    if (plan) {
+      const { status, message, checkout } = await this.stripeService.tryCreateCheckoutSession(auth.user!, plan)
+
+      if (status === 'warning' || status === 'error') {
+        session.flash(status, message)
+        return response.redirect().back()
+      }
+
+      return response.redirect(checkout!.url!)
     }
 
     session.flash('success', `Welcome back, ${auth.user!.username}!`)
@@ -60,11 +76,22 @@ export default class AuthController {
   }
 
   public async register({ request, response, auth, session, up }: HttpContextContract) {
-    let { forward, ...data } = await request.validate(SignUpValidator)
+    let { forward, plan, ...data } = await request.validate(SignUpValidator)
     const user = await User.create(data)
 
     await user.related('profile').create({})
     await auth.login(user)
+
+    if (plan) {
+      const { status, message, checkout } = await this.stripeService.tryCreateCheckoutSession(auth.user!, plan)
+
+      if (status === 'warning' || status === 'error') {
+        session.flash(status, message)
+        return response.redirect().back()
+      }
+
+      return response.redirect(checkout!.url!)
+    }
 
     session.flash('success', `Welcome to Adocasts, ${user.username}!`)
 

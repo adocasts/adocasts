@@ -2,9 +2,20 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Profile from 'App/Models/Profile'
 import Route from '@ioc:Adonis/Core/Route'
 import AuthSocialService from 'App/Services/AuthSocialService'
+import StripeService from 'App/Services/StripeService'
+import { inject } from '@adonisjs/core/build/standalone'
 
+@inject()
 export default class AuthSocialController {
-  public async redirect ({ ally, params }: HttpContextContract) {
+  constructor(protected stripeService: StripeService) {}
+
+  public async redirect ({ request, session, ally, params }: HttpContextContract) {
+    const plan = request.qs().plan
+    
+    plan
+      ? session.put('plan', plan)
+      : session.forget('plan')
+
     await ally.use(params.provider).redirect()
   }
 
@@ -27,6 +38,17 @@ export default class AuthSocialController {
     if (wasAuthenticated) {
       session.flash('success', `Your ${params.provider} account has been successfully linked`)
       return response.redirect().toRoute('users.settings.index')
+    }
+
+    if (session.has('plan')) {
+      const { status, message, checkout } = await this.stripeService.tryCreateCheckoutSession(user!, session.get('plan'))
+
+      if (status === 'warning' || status === 'error') {
+        session.flash(status, message)
+        return response.redirect('/')
+      }
+
+      return response.redirect(checkout!.url!)
     }
 
     session.flash('success', hasProfile ? `Welcome back, ${auth.user!.username}` : `Welcome to Adocasts, ${auth.user!.username}`)

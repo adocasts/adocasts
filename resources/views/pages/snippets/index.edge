@@ -27,7 +27,7 @@
         @each (item in snippets)
           <article class="flex max-w-2xl flex-col items-start">
             <div class="flex items-center gap-x-4 text-xs">
-              <time datetime="{{ item.publishAt.toFormat('yyyy-MM-dd') }}" class="text-slate-500">
+              <time datetime="{{ item.publishAt.toFormat('yyyy-MM-dd') }}" class="text-slate-600">
                 {{ item.publishAt.toFormat('MMM dd, yyyy') }}
               </time>
               @each (topic in item.taxonomies)

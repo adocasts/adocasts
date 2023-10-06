@@ -1,0 +1,168 @@
+@layout('layouts/app')
+
+@section('meta')
+  @!meta.tags({
+    url: '/',
+    title: "Settings",
+    desc: `Update your username, social connections, notifications, and more`,
+    asset: null,
+    index: true
+  })
+@endsection
+
+@section('content')
+
+  <div x-data="{ active: 'account' }" class="flex flex-col lg:flex-row gap-3 lg:gap-6">
+    @!settings.nav()
+
+    <div class="w-full lg:w-3/4">
+      <div id="subscription" class="bg-slate-100 p-6 rounded-xl mb-3" x-intersect="active = $el.id">
+        <h3 class="border-b border-slate-200 text-lg font-bold pb-6 mb-6">
+          Subscription Details
+        </h3>
+        
+        @!settings.manageSubscription()
+      </div>
+
+      {{--  @if (invoices.length)
+        <div id="invoices" class="bg-slate-100 p-6 rounded-xl mb-3" x-intersect="active = $el.id">
+          <h3 class="border-b border-slate-200 text-lg font-bold pb-6 mb-6">
+            Subscription Invoices
+          </h3>
+          
+          <div>
+            <div class="mt-8 flow-root overflow-hidden">
+              <div class="mx-auto max-w-7xl">
+                <table class="w-full text-left">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="relative isolate py-3.5 pr-3 text-left text-sm font-semibold text-slate-900">
+                        Plan Period
+                        <div class="absolute inset-y-0 right-full -z-10 w-screen border-b border-b-slate-200"></div>
+                        <div class="absolute inset-y-0 left-0 -z-10 w-screen border-b border-b-slate-200"></div>
+                      </th>
+                      <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-slate-900 sm:table-cell">Status</th>
+                      <th scope="col" class="hidden px-3 py-3.5 text-right text-sm font-semibold text-slate-900 md:table-cell">Total</th>
+                      <th scope="col" class="hidden px-3 py-3.5 text-right text-sm font-semibold text-slate-900 md:table-cell">Due</th>
+                      <th scope="col" class="hidden px-3 py-3.5 text-right text-sm font-semibold text-slate-900 md:table-cell">Paid</th>
+                      <th scope="col" class="pl-3 py-3.5 text-right text-sm font-semibold text-slate-900">Invoice</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @each (invoice in invoices)
+                      <tr>
+                        <td class="relative py-4 pr-3 text-sm font-medium text-slate-900">
+                          <div class="flex items-center gap-1.5">
+                            {{ DateTime.fromSeconds(invoice.lines.data[0].period.start).toFormat('MMM dd, yyyy') }} 
+                            @!icons.arrowNarrowRight()
+                            {{ DateTime.fromSeconds(invoice.lines.data[0].period.end).toFormat('MMM dd, yyyy') }} 
+                          </div>
+                          <div class="absolute bottom-0 right-full h-px w-screen bg-slate-100"></div>
+                          <div class="absolute bottom-0 left-0 h-px w-screen bg-slate-100"></div>
+                        </td>
+                        <td class="hidden px-3 py-4 text-sm text-slate-600 md:table-cell">
+                          @if (invoice.status === 'paid')
+                            <div class="text-green-600 flex items-center gap-x-1.5 capitalize">
+                              @!icons.circleCheck()
+                              <span>{{ invoice.status }}</span>
+                            </div>
+                          @elseif (invoice.status === 'open')
+                            <div class="text-orange-600 flex items-center gap-x-1.5 capitalize">
+                              @!icons.refresh()
+                              <span>{{ invoice.status }}</span>
+                            </div>
+                          @elseif (invoice.status === 'draft')
+                            <div class="text-blue-600 flex items-center gap-x-1.5 capitalize">
+                              @!icons.notes()
+                              <span>{{ invoice.status }}</span>
+                            </div>
+                          @else
+                            <div class="text-slate-600 flex items-center gap-x-1.5 capitalize">
+                              @!icons.exclamationCircle()
+                              <span>{{ invoice.status }}</span>
+                            </div>
+                          @endif
+                        </td>
+                        <td class="hidden px-3 py-4 text-right text-sm text-slate-600 sm:table-cell">{{ formatCurrency(invoice.total, invoice.currency) }}</td>
+                        <td class="hidden px-3 py-4 text-right text-sm text-slate-600 sm:table-cell">{{ formatCurrency(invoice.amount_due, invoice.currency) }}</td>
+                        <td class="hidden px-3 py-4 text-right text-sm text-slate-600 sm:table-cell">{{ formatCurrency(invoice.amount_paid, invoice.currency) }}</td>
+                        <td class="relative py-4 pl-3 text-right text-sm font-medium">
+                          @if (invoice.hosted_invoice_url)
+                            <a href="{{ invoice.hosted_invoice_url }}" target="_blank" class="anchor">View Invoice</span></a>
+                          @endif
+                        </td>
+                      </tr>
+                    @endeach
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      @endif  --}}
+
+      <div id="receipts" class="bg-slate-100 p-6 rounded-xl mb-3" x-intersect="active = $el.id">
+        <h3 class="border-b border-slate-200 text-lg font-bold pb-6 mb-6">
+          Receipts
+        </h3>
+        
+        <div>
+          <div class="mt-8 flow-root overflow-hidden">
+            <div class="mx-auto max-w-7xl">
+              <table class="w-full text-left">
+                <thead>
+                  <tr>
+                    <th scope="col" class="relative isolate py-3.5 pr-3 text-left text-sm font-semibold text-slate-900">
+                      Date
+                      <div class="absolute inset-y-0 right-full -z-10 w-screen border-b border-b-slate-200"></div>
+                      <div class="absolute inset-y-0 left-0 -z-10 w-screen border-b border-b-slate-200"></div>
+                    </th>
+                    <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-slate-900 sm:table-cell">Status</th>
+                    <th scope="col" class="hidden px-3 py-3.5 text-right text-sm font-semibold text-slate-900 md:table-cell">Charge</th>
+                    <th scope="col" class="pl-3 py-3.5 text-right text-sm font-semibold text-slate-900">Receipt</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @each (charge in charges)
+                    <tr>
+                      <td class="relative py-4 pr-3 text-sm font-medium text-slate-900">
+                        {{ DateTime.fromSeconds(charge.created).toFormat('MMM dd, yyyy') }}
+                        <div class="absolute bottom-0 right-full h-px w-screen bg-slate-100"></div>
+                        <div class="absolute bottom-0 left-0 h-px w-screen bg-slate-100"></div>
+                      </td>
+                      <td class="hidden px-3 py-4 text-sm text-slate-600 md:table-cell">
+                        @if (charge.status === 'succeeded')
+                          <div class="text-green-600 flex items-center gap-x-1.5 capitalize">
+                            @!icons.circleCheck()
+                            <span>{{ charge.status }}</span>
+                          </div>
+                        @elseif (charge.status === 'pending')
+                          <div class="text-orange-600 flex items-center gap-x-1.5 capitalize">
+                            @!icons.refresh()
+                            <span>{{ charge.status }}</span>
+                          </div>
+                        @else
+                          <div class="text-red-600 flex items-center gap-x-1.5 capitalize">
+                            @!icons.exclamationCircle()
+                            <span>{{ charge.status }}</span>
+                          </div>
+                        @endif
+                      </td>
+                      <td class="hidden px-3 py-4 text-right text-sm text-slate-600 sm:table-cell">{{ formatCurrency(charge.amount, charge.currency) }}</td>
+                      <td class="relative py-4 pl-3 text-right text-sm font-medium">
+                        @if (charge.receipt_url)
+                          <a href="{{ charge.receipt_url }}" target="_blank" class="anchor">View Receipt</span></a>
+                        @endif
+                      </td>
+                    </tr>
+                  @endeach
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+@endsection

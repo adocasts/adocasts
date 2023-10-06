@@ -12,6 +12,6 @@
   @endif
 
   <div class="absolute {{ left }} {{ bottom }} {{ right }} {{ bg }} bg-opacity-30 backdrop-blur h-2 rounded-full">
-    <div class="bg-gradient-to-b from-slate-base-50/80 via-slate-base-100/60 to-slate-base-200/30 h-2 rounded-full" style="width: {{ progressPercent }}%"></div>
+    <div class="bg-gradient-to-b {{ progressPercent == 100 ? 'from-green-400 to-green-600' : 'from-accent-50/80 via-accent-100/60 to-accent-200/30' }} h-2 rounded-full" style="width: {{ progressPercent }}%"></div>
   </div>
 @endif

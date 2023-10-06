@@ -3,7 +3,7 @@
 }
 
 .prose p.timestamp {
-  @apply text-xs text-slate-500 tracking-wide font-bold;
+  @apply text-xs text-slate-600 tracking-wide font-bold;
   margin-bottom: -2em;
   position: relative;
   top: -4px;
@@ -100,22 +100,6 @@
   opacity: 100%;
 }
 
-.prose .line.del > span:first-of-type:before {
-  content: "--";
-  color: theme('colors.red.500') !important;
-  font-size: .9em;
-  position: absolute;
-  left: -3.25rem;
-}
-
-.prose .line.add > span:first-of-type:before {
-  content: "++";
-  color: theme('colors.green.500') !important;
-  font-size: .9em;
-  position: absolute;
-  left: -3.25rem;
-}
-
 .prose .line.del,
 .prose .line.add {
   position: relative;
@@ -125,19 +109,19 @@
 .prose .line.add:after {
   content: "";
   height: 100%;
-  left: -2ch;
+  left: -1.5rem;
   opacity: 30%;
   position: absolute;
   top: 0;
-  width: calc(100% + 5ch);
+  width: calc(100% + 3rem);
 }
 
 .prose .line.del:after {
-  background-color: theme('colors.red.500');
+  @apply bg-red-500/50;
 }
 
 .prose .line.add:after {
-  background-color: theme('colors.green.500');
+  @apply bg-green-500/50;
 }
 
 .prose .line.del > span,
@@ -162,24 +146,33 @@
 
 pre {
   overflow: hidden;
+  position: relative;
 }
 
 code {
-  counter-reset: step;
+  counter-reset: step delStep;
   counter-increment: step 0;
+  counter-increment: delStep 0;
 }
 
 code .line:before {
-  content: counter(step);
-  counter-increment: step;
-  width: 1rem;
-  background-color: theme('colors.slate-base.900');
+  width: 2.5rem;
+  text-align: right;
   opacity: 50%;
-  margin-right: .5rem;
-  margin-left: -1.3333333em;
-  padding-left: 1.3333333em;
-  padding-right: 1.5rem;
+  margin-right: 1rem;
+  margin-left: -1.6666666em;
+  padding-right: .65rem;
   display: inline-block;
+}
+
+code .line:not(.del):before {
+  content: counter(step);
+  counter-increment: step delStep;
+}
+
+code .line.del:before {
+  content: counter(delStep);
+  counter-increment: delStep;
 }
 
 code .line:first-of-type:before {
@@ -188,6 +181,62 @@ code .line:first-of-type:before {
 
 code .line:last-of-type:before {
   @apply rounded-br-lg;
+}
+
+pre .filepath {
+  background-color: theme('colors.slate-base.900');
+  padding: 1.5rem .5rem .125rem;
+  border-bottom-right-radius: .25rem;
+  border-bottom-left-radius: .25rem;
+  line-height: 1;
+  font-size: theme('fontSize.xs');
+  display: flex;
+  align-items: flex-end;
+  gap: .75rem;
+  position: absolute;
+  top: -1rem;
+  left: 6rem;
+}
+
+/* purgecss start ignore */
+pre .filepath .lang-icon {
+  width: 1em;
+  height: 1em;
+  position: relative;
+  top: -10px;
+
+  &.ts,
+  &.tsx {
+    color: theme('colors.blue.500');
+  }
+
+  &.js,
+  &.jsx {
+    color: theme('colors.yellow.500');
+  }
+
+  &.edge {
+    color: theme('colors.indigo.500');
+  }
+}
+/* purgecss end ignore */
+
+pre ul.filepath-list {
+  list-style: none;
+  display: flex;
+  gap: .25rem;
+  margin: 0;
+  padding: 0;
+
+  li {
+    padding: 0;
+  }
+
+  li:not(:first-of-type):before {
+    content: "/";
+    display: inline-block;
+    padding-right: .25rem;
+  }
 }
 
 .cdx-block.ce-code {
@@ -239,12 +288,12 @@ code .line:last-of-type:before {
 
 /* purgecss start ignore */
 .prose-comment .ProseMirror {
-  @apply rounded-xl bg-slate-50 border-slate-200/75 pt-3 pb-16;
+  @apply rounded-xl bg-slate-100 border-none pt-3 pb-20;
   min-height: 150px;
 }
 
 .comment-form.with-bio .prose-comment .ProseMirror {
-  @apply pt-16;
+  @apply pt-20 px-3 lg:px-6;
 }
 
 .comment-form.with-bg .prose-comment .ProseMirror {
@@ -256,64 +305,25 @@ code .line:last-of-type:before {
 }
 
 .prose-comment-bio {
-  @apply bg-slate-100 flex items-center py-2 px-2 rounded-xl absolute top-1 left-1 z-10;
+  @apply bg-slate-100 flex items-center py-2 px-3 lg:px-6 rounded-xl absolute top-3 lg:top-6 left-0 z-10;
   width: calc(100% - .5rem);
 }
 
 .prose-comment-actions {
-  @apply absolute bottom-1 right-1 flex items-center z-10;
+  @apply absolute bottom-3 right-3 lg:bottom-6 lg:right-6 flex items-center z-10;
 }
 
 .comment-form .btn-comment-submit,
 .comment-form .btn-comment-cancel {
-  @apply inline-flex items-center rounded-xl border border-transparent bg-slate-100 hover:bg-slate-200 px-3 py-2 text-sm font-medium leading-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 duration-150;
+  @apply inline-flex items-center rounded-md border border-transparent bg-slate-200 hover:bg-slate-200 px-3 py-2 text-sm font-medium leading-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 duration-150;
 }
 
 .comment-form:hover .btn-comment-submit,
 .comment-form:focus-within .btn-comment-submit {
-  @apply bg-brand-600 text-white hover:bg-brand-500;
+  @apply bg-brand-600 text-brand-900 hover:bg-brand-500;
+}
+
+.comment-form:not(:hover):not(:focus-within) .btn-comment-submit {
+  background-image: none;
 }
 /* purgecss end ignore */
-
-progress {
-  --progress-width: 100%;
-  --progress-height: 6px;
-  --progress-bar-color: theme('colors.violet.100');
-  --progress-bg: none;
-  --progress-border-radius: 0 6px 6px 0;
-
-  position: sticky;
-  top: 0;
-  z-index: 9999;
-  transition: color 300ms ease;
-}
-
-progress.is-complete {
-  --progress-bar-color: theme('colors.green.800');
-  --progress-border-radius: 0;
-}
-
-progress[value] {
-  appearance: none;
-  border: none;
-  width: var(--progress-width);
-  height: var(--progress-height);
-  background-color: var(--progress-bg);
-  border-radius: var(--progress-border-radius);
-  color: var(--progress-bar-color);
-}
-
-progress[value]::-moz-progress-bar {
-  background-color: var(--progress-bar-color);
-  border-radius: var(--progress-border-radius);
-}
-
-progress[value]::-webkit-progress-bar {
-  background-color: var(--progress-bg);
-  border-radius: var(--progress-border-radius);
-}
-
-progress[value]::-webkit-progress-value {
-  background-color: var(--progress-bar-color);
-  border-radius: var(--progress-border-radius);
-}

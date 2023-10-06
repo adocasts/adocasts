@@ -10,11 +10,11 @@
     </svg>
     <rect width="100%" height="100%" stroke-width="0" fill="url(#1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84)" />
   </svg>
-  <div class="absolute left-1/2 right-0 top-0 -z-10 -ml-24 transform-gpu overflow-hidden blur-3xl lg:ml-24 xl:ml-48" aria-hidden="true">
+  <div class="absolute left-1/2 right-0 top-0 -z-10 -ml-24 transform-gpu overflow-hidden blur-3xl lg:ml-24 xl:ml-48 opacity-[25%]" aria-hidden="true">
     <div class="aspect-[801/1036] w-[50.0625rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30" style="clip-path: polygon(63.1% 29.5%, 100% 17.1%, 76.6% 3%, 48.4% 0%, 44.6% 4.7%, 54.5% 25.3%, 59.8% 49%, 55.2% 57.8%, 44.4% 57.2%, 27.8% 47.9%, 35.1% 81.5%, 0% 97.7%, 39.2% 100%, 35.2% 81.4%, 97.2% 52.8%, 63.1% 29.5%)"></div>
   </div>
   <div class="overflow-hidden">
-    <div class="mx-auto max-w-7xl px-6 pb-32 lg:px-8">
+    <div class="mx-auto max-w-7xl px-6 md:pb-16 lg:px-8">
       <div class="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
         <div class="w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
           <h1 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl">Take your AdonisJS skills to the next level!</h1>
@@ -24,35 +24,67 @@
           </p>
           <div class="mt-10 flex flex-wrap items-center gap-6">
             @buttons.brand.base({ href: route('auth.signup'), attrs: 'up-layer="new modal" up-size="grow"' })
-              Sign Up for FREE!
+              Sign Up for Free
             @end
-            <a href="/series/lets-learn-adonisjs-5" up-follow class="text-sm font-semibold leading-6 text-slate-900">New to AdonisJS? Start Here <span aria-hidden="true">→</span></a>
+            @buttons.primary.outline({ href: '/series/lets-learn-adonisjs-5', attrs: 'up-follow' })
+              New to AdonisJS? Start Here&nbsp;&nbsp;<span aria-hidden="true">→</span>
+            @end
           </div>
         </div>
-        <div class="mt-14 flex justify-end gap-8 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
+        <div class="hidden md:flex w-full justify-end gap-8 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
           <div class="ml-auto w-44 flex-none space-y-8 pt-32 sm:ml-0 sm:pt-80 lg:order-last lg:pt-36 xl:order-none xl:pt-80">
             <div class="relative aspect-[2/3] w-full rounded-xl bg-slate-900/5 overflow-hidden">
-              <img src="/img/1/LLA5-Icon_1649705005547.jpeg?w=600" alt="Let's Learn AdonisJS 5" class="aspect-[2/3] w-full rounded-xl object-cover object-center shadow-lg scale-[1.2]">
+              <img 
+                src="/img/1/LLA5-Icon_1649705005547.jpeg?w=600" 
+                alt="Let's Learn AdonisJS 5" 
+                class="bg-white aspect-[2/3] w-full rounded-xl object-cover object-center shadow-lg scale-[1.2]"
+                style="background-image: url('/img/1/LLA5-Icon_1649705005547.jpeg?w=10'); filter: blur(10px); background-size: 100%;"
+                onload="this.style.backgroundImage = null; this.style.filter = null; this.classList.remove('bg-white');"
+              >
               <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-slate-900/10"></div>
             </div>
           </div>
           <div class="mr-auto w-44 flex-none space-y-8 sm:mr-0 sm:pt-52 lg:pt-36">
             <div class="relative aspect-[2/3] w-full rounded-xl bg-slate-900/5 overflow-hidden">
-              <img src="/img/1/AdonisJS-In-15_1649705092413.jpeg?w=600" alt="AdonisJS In 15" class="aspect-[2/3] w-full rounded-xl object-cover object-center shadow-lg scale-[1.2]">
+              <img 
+                src="/img/1/AdonisJS-In-15_1649705092413.jpeg?w=600" 
+                alt="AdonisJS In 15" 
+                class="aspect-[2/3] w-full rounded-xl object-cover object-center shadow-lg scale-[1.2]"
+                style="background-image: url('/img/1/AdonisJS-In-15_1649705092413.jpeg?w=10'); filter: blur(10px); background-size: 100%;"
+                onload="this.style.backgroundImage = null; this.style.filter = null; this.classList.remove('bg-white');"
+              >
               <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-slate-900/10"></div>
             </div>
             <div class="relative aspect-[2/3] w-full rounded-xl bg-slate-900/5 overflow-hidden">
-              <img src="/img/1/adonisjs-user-roles_1668269535001.png?w=600" alt="AdonisJS User Roles" class="aspect-[2/3] w-full rounded-xl object-cover object-center shadow-lg scale-[1.2]">
+              <img 
+                src="/img/1/adonisjs-user-roles_1668269535001.png?w=600" 
+                alt="AdonisJS User Roles" 
+                class="aspect-[2/3] w-full rounded-xl object-cover object-center shadow-lg scale-[1.2]"
+                style="background-image: url('/img/1/adonisjs-user-roles_1668269535001.png?w=10'); filter: blur(10px); background-size: 100%;"
+                onload="this.style.backgroundImage = null; this.style.filter = null; this.classList.remove('bg-white');"
+              >
               <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-slate-900/10"></div>
             </div>
           </div>
           <div class="w-44 flex-none space-y-8 pt-32 sm:pt-0">
             <div class="relative aspect-[2/3] w-full rounded-xl bg-slate-900/5 overflow-hidden">
-              <img src="/img/1/Quick-Tip_1649705074437.jpeg?w=600" alt="AdonisJS Quick Tips" class="aspect-[2/3] w-full rounded-xl object-cover object-center shadow-lg scale-[1.2]">
+              <img 
+                src="/img/1/Quick-Tip_1649705074437.jpeg?w=600" 
+                alt="AdonisJS Quick Tips" 
+                class="aspect-[2/3] w-full rounded-xl object-cover object-center shadow-lg scale-[1.2]"
+                style="background-image: url('/img/1/Quick-Tip_1649705074437.jpeg?w=10'); filter: blur(10px); background-size: 100%;"
+                onload="this.style.backgroundImage = null; this.style.filter = null; this.classList.remove('bg-white');"
+              >
               <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-slate-900/10"></div>
             </div>
             <div class="relative aspect-[2/3] w-full rounded-xl bg-slate-900/5 overflow-hidden">
-              <img src="/img/1/Lets-Build_1649705055095.jpeg?w=600" alt="Let's Build with AdonisJS" class="aspect-[2/3] w-full rounded-xl object-cover object-top shadow-lg scale-[1.2]">
+              <img 
+                src="/img/1/Lets-Build_1649705055095.jpeg?w=600" 
+                alt="Let's Build with AdonisJS" 
+                class="aspect-[2/3] w-full rounded-xl object-cover object-top shadow-lg scale-[1.2]"
+                style="background-image: url('/img/1/Lets-Build_1649705055095.jpeg?w=10'); filter: blur(10px); background-size: 100%;"
+                onload="this.style.backgroundImage = null; this.style.filter = null; this.classList.remove('bg-white');"
+              >
               <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-slate-900/10"></div>
             </div>
           </div>

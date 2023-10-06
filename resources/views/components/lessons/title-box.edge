@@ -1,8 +1,17 @@
-<div class="flex flex-wrap justify-between bg-slate-50 border border-slate-200/75 mb-6 rounded-xl p-6">
-  <div class="max-w-3xl xl:flex-1">
+<div class="flex flex-wrap justify-between bg-slate-100 mb-6 rounded-xl p-6">
+  <div class="max-w-3xl xl:flex-1 mx-auto">
     <div>
-      @if (series)
-        <h2 class="font-bold uppercase text-sm tracking-wider text-slate-600 hover:text-accent-800 duration-150 mb-1">
+      @if (path)
+        <h2 class="font-bold uppercase text-sm tracking-wider text-slate-600 hover:text-brand-800 duration-150 mb-1">
+          <a href="{{ route('paths.show', { slug: path.slug }) }}" up-follow>
+            {{ path.name }}
+            <span class="inline-block ml-1 font-normal">
+              #{{ post.lessonIndexDisplay }}
+            </span>
+          </a>
+        </h2>
+      @elseif (series)
+        <h2 class="font-bold uppercase text-sm tracking-wider text-slate-600 hover:text-brand-800 duration-150 mb-1">
           <a href="{{ route('series.show', { slug: series.slug }) }}" up-follow>
             {{ series.name }}
             <span class="inline-block ml-1 font-normal">
@@ -16,14 +25,14 @@
       </h1>
     </div>
 
-    <p class="text-slate-600 max-w-prose mb-3">
+    <p class="text-slate-600 mb-3">
       {{ post.description }}
     </p>
 
     <ul class="list-plain flex flex-wrap space-x-3">
       @each (topic in post.taxonomies)
         <li>
-          <a href="{{ route('topics.show', { slug: topic.slug }) }}" up-follow class="text-brand-600 hover:text-brand-500 duration-150">
+          <a href="{{ route('topics.show', { slug: topic.slug }) }}" up-follow class="anchor">
             #{{ topic.slug }}
           </a>
         </li>

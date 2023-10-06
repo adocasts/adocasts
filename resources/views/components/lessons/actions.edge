@@ -4,7 +4,7 @@
       @!fragments.complete({ userProgression })
       @!fragments.watchlist({ isInWatchlist: post.isInWatchlist })
     @else
-      @buttons.primary.inverse({ href: route('auth.signup'), attrs: 'up-layer="new modal" up-size="grow"', className: 'gap-3', block: true })
+      @buttons.brand.base({ href: route('auth.signup'), attrs: 'up-layer="new modal" up-size="grow"', className: 'gap-3', block: true })
         @!icons.user()
         Sign Up for Free
       @end

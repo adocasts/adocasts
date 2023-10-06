@@ -2,7 +2,7 @@ const colors = require('tailwindcss/colors')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./resources/**/*.{edge,js,ts,vue,jsx,tsx}'],
+  content: ['./resources/**/*.{edge,js,ts,vue,jsx,tsx}', './app/ViewModels/**/*.ts'],
   theme: {
     extend: {
       colors: {
@@ -20,6 +20,7 @@ module.exports = {
           700: 'rgb(var(--slate-base-700) / <alpha-value>)',
           800: 'rgb(var(--slate-base-800) / <alpha-value>)',
           900: 'rgb(var(--slate-base-900) / <alpha-value>)',
+          950: 'rgb(var(--slate-base-950) / <alpha-value>)',
         },
 
         ['brand-base']: {
@@ -33,6 +34,21 @@ module.exports = {
           700: 'rgb(var(--brand-base-700) / <alpha-value>)',
           800: 'rgb(var(--brand-base-800) / <alpha-value>)',
           900: 'rgb(var(--brand-base-900) / <alpha-value>)',
+          950: 'rgb(var(--brand-base-950) / <alpha-value>)',
+        },
+
+        ['accent-base']: {
+          50: 'rgb(var(--accent-base-50) / <alpha-value>)',
+          100: 'rgb(var(--accent-base-100) / <alpha-value>)',
+          200: 'rgb(var(--accent-base-200) / <alpha-value>)',
+          300: 'rgb(var(--accent-base-300) / <alpha-value>)',
+          400: 'rgb(var(--accent-base-400) / <alpha-value>)',
+          500: 'rgb(var(--accent-base-500) / <alpha-value>)',
+          600: 'rgb(var(--accent-base-600) / <alpha-value>)',
+          700: 'rgb(var(--accent-base-700) / <alpha-value>)',
+          800: 'rgb(var(--accent-base-800) / <alpha-value>)',
+          900: 'rgb(var(--accent-base-900) / <alpha-value>)',
+          950: 'rgb(var(--accent-base-950) / <alpha-value>)',
         },
 
         ['green-base']: {
@@ -98,6 +114,7 @@ module.exports = {
           700: 'rgb(var(--slate-700) / <alpha-value>)',
           800: 'rgb(var(--slate-800) / <alpha-value>)',
           900: 'rgb(var(--slate-900) / <alpha-value>)',
+          950: 'rgb(var(--slate-950) / <alpha-value>)',
         },
 
         brand: {
@@ -111,6 +128,21 @@ module.exports = {
           700: 'rgb(var(--brand-700) / <alpha-value>)',
           800: 'rgb(var(--brand-800) / <alpha-value>)',
           900: 'rgb(var(--brand-900) / <alpha-value>)',
+          950: 'rgb(var(--brand-950) / <alpha-value>)',
+        },
+
+        accent: {
+          50: 'rgb(var(--accent-50) / <alpha-value>)',
+          100: 'rgb(var(--accent-100) / <alpha-value>)',
+          200: 'rgb(var(--accent-200) / <alpha-value>)',
+          300: 'rgb(var(--accent-300) / <alpha-value>)',
+          400: 'rgb(var(--accent-400) / <alpha-value>)',
+          500: 'rgb(var(--accent-500) / <alpha-value>)',
+          600: 'rgb(var(--accent-600) / <alpha-value>)',
+          700: 'rgb(var(--accent-700) / <alpha-value>)',
+          800: 'rgb(var(--accent-800) / <alpha-value>)',
+          900: 'rgb(var(--accent-900) / <alpha-value>)',
+          950: 'rgb(var(--accent-950) / <alpha-value>)',
         },
 
         green: {
@@ -164,6 +196,8 @@ module.exports = {
           800: 'rgb(var(--orange-800) / <alpha-value>)',
           900: 'rgb(var(--orange-900) / <alpha-value>)',
         },
+
+        body: 'rgb(var(--body-bg) / <alpha-value>)',
       },
       fontFamily: {
         heading: ['var(--font-heading)'],

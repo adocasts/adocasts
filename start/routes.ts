@@ -26,7 +26,23 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.get('/img/:userId/:filename', 'AssetsController.show').as('userimg')
 Route.get('/img/*', 'AssetsController.show').where('path', /.*/).as('img')
 
+Route.get('/test', async ({ view }) => {
+  // const box = new Dropbox({ accessToken: Env.get('DROPBOX_ACCESS_TOKEN') })
 
+  // return box.filesGetMetadata({ path: '/thanks-for-watching.mp4' })
+
+  // const resp = await box.filesGetTemporaryLink({ path: '/thanks-for-watching.mp4' })
+  // const link = resp.result.link
+
+  // return view.render('pages/test')
+})
+
+Route.get('/video/:path', async () => {
+  // const box = new Dropbox({ accessToken: Env.get('DROPBOX_ACCESS_TOKEN') })
+
+  // const resp = await box.filesDownload({ path: '/thanks-for-watching.mp4' })
+  // const link = resp.result
+})
 
 Route.group(() => {
   // PUBLIC -- Redirects from old
@@ -39,10 +55,10 @@ Route.group(() => {
   /**
    * auth
    */
-  Route.get('/signin', 'AuthController.signin').as('auth.signin')
-  Route.post('/signin', 'AuthController.authenticate').as('auth.authenticate')
-  Route.get('/signup', 'AuthController.signup').as('auth.signup')
-  Route.post('/signup', 'AuthController.register').as('auth.register').middleware('turnstile')
+  Route.get('/signin', 'AuthController.signin').as('auth.signin').middleware(['guest'])
+  Route.post('/signin', 'AuthController.authenticate').as('auth.authenticate').middleware(['guest'])
+  Route.get('/signup', 'AuthController.signup').as('auth.signup').middleware(['guest'])
+  Route.post('/signup', 'AuthController.register').as('auth.register').middleware(['guest', 'turnstile'])
   Route.post('/signout', 'AuthController.signout').as('auth.signout')
 
 
@@ -78,7 +94,7 @@ Route.group(() => {
   /**
    * user settings
    */
-  Route.get('/users/settings', 'UserSettingsController.index').as('users.settings.index').middleware(['auth'])
+  Route.get('/settings/:section?', 'UserSettingsController.index').as('users.settings.index').middleware(['auth'])
   Route.patch('/users/update/username', 'UserSettingsController.updateUsername').as('users.update.username').middleware(['auth'])
   Route.put('/users/update/email', 'UserSettingsController.updateEmail').as('users.update.email').middleware(['auth'])
   Route.get('/users/revert/:id/:oldEmail/:newEmail', 'UserSettingsController.revertEmail').as('users.revert.email')
@@ -87,6 +103,7 @@ Route.group(() => {
   Route.get('/users/:userId/notifications/off', 'UserSettingsController.disableNotifications').as('users.notifications.disable')
   Route.delete('/users/delete', 'UserSettingsController.deleteAccount').as('users.destroy')
   Route.put('/users/profile', 'ProfilesController.update').as('users.profiles.update').middleware(['auth'])
+  Route.put('/users/preferences', 'PreferencesController.update').as('users.preferences.update').middleware(['auth'])
 
 
 
@@ -96,18 +113,25 @@ Route.group(() => {
   Route.get('/:username', 'ProfilesController.show').as('profiles.show').where('username', /^@/)
   Route.get('/', 'HomeController.index').as('home.index')
   Route.get('/analytics', 'HomeController.analytics').as('analytics')
+  Route.get('/pricing', 'HomeController.pricing').as('pricing')
   Route.get('/search', 'SearchController.index').as('search.index')
   Route.post('/search', 'SearchController.search').as('search.search')
   Route.get('/series', 'SeriesController.index').as('series.index')
   Route.on('/series/lets-learn').redirectToPath('/series/lets-learn-adonisjs-5')
   Route.get('/series/:slug', 'SeriesController.show').as('series.show')
   Route.get('/series/:slug/lesson/:index',  'SeriesController.lesson').as('series.lesson')
+  Route.get('/paths/:slug', 'PathsController.show').as('paths.show')
+  Route.get('/paths/:slug/lesson/:index', 'PathsController.lesson').as('paths.lesson')
   Route.get('/topics', 'TopicsController.index').as('topics.index')
   Route.get('/topics/:slug', 'TopicsController.show').as('topics.show')
   Route.get('/lessons', 'LessonsController.index').as('lessons.index')
   Route.get('/lessons/:slug', 'LessonsController.show').as('lessons.show').middleware(['postTypeCheck'])
+  Route.get('/paths/:collectionSlug/lessons/:slug', 'LessonsController.show').as('paths.lessons.show')
+  Route.get('/series/:collectionSlug/lessons/:slug', 'LessonsController.show').as('series.lessons.show').middleware(['postTypeCheck'])
   Route.get('/streams', 'StreamsController.index').as('streams.index')
   Route.get('/streams/:slug', 'StreamsController.show').as('streams.show').middleware(['postTypeCheck'])
+  Route.get('/paths/:collectionSlug/streams/:slug', 'StreamsController.show').as('paths.streams.show')
+  Route.get('/series/:collectionSlug/streams/:slug', 'StreamsController.show').as('series.streams.show').middleware(['postTypeCheck'])
   Route.get('/news', 'NewsController.index').as('news.index')
   Route.get('/news/:slug', 'NewsController.show').as('news.show').middleware(['postTypeCheck'])
   Route.get('/snippets', 'SnippetsController.index').as('snippets.index')
@@ -142,6 +166,16 @@ Route.group(() => {
   Route.get('/uses', 'HomeController.uses').as('uses')
   Route.get('/schedule', 'SchedulesController.index').as('schedule')
   Route.get('/schedule/:id', 'SchedulesController.show').as('schedule.show')
+
+
+
+  /**
+   * stripe routes
+   */
+  Route.get('/stripe/subscription/success', 'StripeSubscriptionsController.success').as('stripe.success')
+  Route.post('/stripe/subscription/checkout/:slug', 'StripeSubscriptionsController.checkout').as('stripe.checkout').middleware(['auth'])
+  Route.post('/stripe/subscription/portal', 'StripeSubscriptionsController.portal').as('stripe.portal').middleware(['auth'])
+  Route.post('/stripe/webhook', 'StripeWebhooksController.index')
 
 
 

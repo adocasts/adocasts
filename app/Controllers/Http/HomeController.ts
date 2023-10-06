@@ -6,6 +6,8 @@ import Post from "App/Models/Post";
 import Collection from "App/Models/Collection";
 import Taxonomy from "App/Models/Taxonomy";
 import HistoryService from 'App/Services/HistoryService';
+import Plan from 'App/Models/Plan';
+import Plans from 'App/Enums/Plans';
 
 export default class HomeController {
   /**
@@ -39,6 +41,18 @@ export default class HomeController {
     }
 
     return view.render('pages/index', { trending, posts, series, topics, stats })
+  }
+
+  public async pricing({ view }: HttpContextContract) {
+    const plusMonthly = await Plan.findOrFail(Plans.PLUS_MONTHLY)
+    const plusAnnual = await Plan.findOrFail(Plans.PLUS_ANNUAL)
+    const forever = await Plan.findOrFail(Plans.FOREVER)
+
+    return view.render('pages/pricing', {
+      plusMonthly,
+      plusAnnual,
+      forever
+    })
   }
 
   public async analytics({ view }: HttpContextContract) {

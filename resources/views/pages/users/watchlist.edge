@@ -41,13 +41,15 @@
       </div>
     </div>
 
-    <div class="px-3">
+    <div>
       @!headings.panel({ title: `Lessons/Posts In Your Watchlist` })
     </div>
-    <div class="grid xl:grid-cols-2 gap-3 w-full px-3">
-      @each ((item, i) in posts)
-        @!lessons.listItem({ item, className: 'mb-6' })
-      @endeach
+    <div class="-mx-3">
+      <div class="grid xl:grid-cols-2 gap-3 w-full px-3">
+        @each ((item, i) in posts)
+          @!lessons.listItem({ item, className: 'mb-6' })
+        @endeach
+      </div>
     </div>
   @endif
 

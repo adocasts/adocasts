@@ -74,7 +74,7 @@ export const getSuggestions = ({ isBasic = true }) => ({
         }
 
         const component = `
-          <div class="items flex flex-col bg-slate-50 border border-slate-200 shadow-xl rounded-lg p-2">
+          <div class="items flex flex-col bg-slate-100 border border-slate-200 shadow-xl rounded-lg p-2">
             <template x-for="(item, index) in state.tiptapCommand.items" :key="index">
               <button class="item w-full pl-3 pr-12 rounded-lg text-left" :class="{ 'bg-brand-400': state.tiptapCommand.selectedIndex === index }" @click="state.tiptapCommand.onClick(index)" class="block py-1">
                 <div class="title" class="text-left" x-text="item.title"></div>

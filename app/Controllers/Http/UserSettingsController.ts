@@ -7,12 +7,25 @@ import Event from '@ioc:Adonis/Core/Event'
 import EmailNotificationValidator from 'App/Validators/EmailNotificationValidator'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import UserService from 'App/Services/UserService'
+import StripeService from 'App/Services/StripeService'
 
 export default class UserSettingsController {
-  public async index({ view, auth }: HttpContextContract) {
+  public async index({ view, auth, params }: HttpContextContract) {
+    if (!params.section) {
+      params.section = 'account'
+    }
+
     const profile = await Profile.findByOrFail('userId', auth.user!.id)
 
-    return view.render('pages/users/settings', { profile })
+    if (params.section === 'billing') {
+      const stripeService = new StripeService()
+      const charges = await stripeService.getCharges(auth.user!)
+      const invoices = await stripeService.getInvoices(auth.user!)
+      const subscriptions = await stripeService.getSubscriptions(auth.user!)
+      view.share({ charges, invoices, subscriptions })
+    }
+
+    return view.render(`pages/settings/${params.section}`, { profile })
   }
 
   public async updateUsername({ request, response, auth, session }: HttpContextContract) {

@@ -1,13 +1,25 @@
 @set('fontSize', fontSize ?? 'text-xs')
 
-@if (item.series.length)
+@if (item.series?.length)
   @set('series', item.rootSeries.at(0))
   <object>
-    <h5 class="uppercase flex items-center text-brand-500 hover:text-brand-600 tracking-wide font-sans {{ fontSize }} mb-1">
+    <h5 class="uppercase flex items-center text-accent-500 hover:text-accent-600 tracking-wide font-sans {{ fontSize }} mb-1">
       <a href="{{ route('series.show', { slug: series.slug }) }}" up-follow class="anchor truncate" {{{ upAttrs }}}>
         {{ series.name }}
       </a>
-      <span class="text-slate-500 group-hover:text-slate-800 duration-150 ml-2">
+      <span class="text-slate-600 group-hover:text-slate-700 duration-150 ml-2">
+        #{{ item.lessonIndexDisplay }}
+      </span>
+    </h5>
+  </object>
+@elseif (item.paths?.length)
+  @set('path', item.rootPaths.at(0))
+  <object>
+    <h5 class="uppercase flex items-center text-accent-500 hover:text-accent-600 tracking-wide font-sans {{ fontSize }} mb-1">
+      <a href="{{ route('series.show', { slug: path.slug }) }}" up-follow class="anchor truncate" {{{ upAttrs }}}>
+        {{ path.name }}
+      </a>
+      <span class="text-slate-600 group-hover:text-slate-700 duration-150 ml-2">
         #{{ item.lessonIndexDisplay }}
       </span>
     </h5>

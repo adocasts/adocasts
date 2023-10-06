@@ -1,0 +1,7 @@
+@set('plusMonthly', plusMonthly ?? await Plan.findOrFail(Plans.PLUS_MONTHLY))
+@set('block', block || false)
+
+@buttons.brand.base({ form: 'plusMonthlyForm', type: 'submit', attrs: 'aria-describedby="tier-personal"', block })
+  {{ cta ?? 'Get Started Today' }}
+@end
+@!form.post({ id: 'plusMonthlyForm', action: route('stripe.checkout', { slug: plusMonthly.slug }) })

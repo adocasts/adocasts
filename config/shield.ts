@@ -92,7 +92,7 @@ export const csrf: ShieldConfig['csrf'] = {
 	| ```
   |
   */
-  exceptRoutes: [],
+  exceptRoutes: ({ request }) => request.url().includes('/stripe/webhook'),
 
   /*
   |--------------------------------------------------------------------------

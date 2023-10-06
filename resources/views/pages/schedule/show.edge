@@ -28,7 +28,7 @@
         <dd class="mt-1 text-sm leading-6 text-slate-700 sm:col-span-2 sm:mt-0">
           {{ pageDate.toFormat('MMM dd, yyyy') }}
           @if (pageStatus !== 'Done')
-            <span class="text-xs text-slate-500 inline-block ml-2">*subject to change</span>
+            <span class="text-xs text-slate-600 inline-block ml-2">*subject to change</span>
           @endif
         </dd>
       </div>
@@ -56,7 +56,7 @@
               {{ pageStatus }}
             </p>
           @elseif (pageStatus === 'Not started')
-            <p class="inline-block capitalize rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset text-slate-500 bg-slate-100 ring-slate-500/10">
+            <p class="inline-block capitalize rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset text-slate-600 bg-slate-100 ring-slate-500/10">
               {{ pageStatus }}
             </p>
           @endif
@@ -77,7 +77,7 @@
       <details class="max-w-4xl my-6" open>
         <summary class="flex flex-col bg-slate-100 rounded-xl p-4 sm:p-6 mb-6">
           <div class="font-bold">Notes</div>
-          <div class="text-xs text-slate-500">
+          <div class="text-xs text-slate-600">
             Only the first five paragraphs of our notes will be publicly displayed below.
           </div>
         </summary>
@@ -88,7 +88,7 @@
             {{{ content }}}
           </div>
         @else
-          <div class="border-2 border-dashed border-slate-100 rounded-xl p-4 sm:p-6 text-slate-500">
+          <div class="border-2 border-dashed border-slate-100 rounded-xl p-4 sm:p-6 text-slate-600">
             This content item currently does not have any notes associated with it.
           </div>
         @endif

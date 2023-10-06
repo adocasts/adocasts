@@ -1,13 +1,13 @@
 @dropdown.base()
   @slot('triggerManual', props)
-    @buttons.primary.base({ className: 'theme-selector', atClick: props.handler, square: true })
-      <span class="theme-icon theme-icon-light">
+    @buttons.primary.inverse({ className: 'theme-selector', atClick: props.handler, square: true })
+      <span class="theme-icon theme-icon-light text-slate-600 group-hover:text-slate-900">
         @!icons.sunFilled()
       </span>
-      <span class="theme-icon theme-icon-dark">
+      <span class="theme-icon theme-icon-dark text-slate-600 group-hover:text-slate-900">
         @!icons.moonFilled()
       </span>
-      <span class="theme-icon theme-icon-system">
+      <span class="theme-icon theme-icon-system text-slate-600 group-hover:text-slate-900">
         @!icons.sunMoon()
       </span>
     @end

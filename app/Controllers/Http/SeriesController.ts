@@ -7,7 +7,7 @@ import PostService from 'App/Services/PostService'
 export default class SeriesController {
   public async index({ view }: HttpContextContract) {
     const featured = await CollectionService.getFirstLastUpdated()
-    const series = await CollectionService.getList()
+    const series = await CollectionService.getList([featured.id])
 
     return view.render('pages/series/index', { featured, series })
   }

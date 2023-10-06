@@ -1,23 +1,31 @@
 @set('author', post.authors[0])
 
-<div class="bg-slate-50 rounded-xl relative overflow-hidden xl:overflow-visible p-6 border border-slate-200/75 xl:border-0 xl:p-0">
+<div class="bg-slate-100 rounded-xl relative overflow-hidden xl:overflow-visible p-6 xl:p-0">
   <div class="relative z-20">
     <div class="flex flex-wrap">
       <div class="inline-flex items-center mr-3">
-        <div class="mr-3">
-          <img class="rounded-xl w-16 h-16 border-2 border-slate-900 border-opacity-20 bg-slate-100" src="{{ author.avatar }}" />
-        </div>
+        @if (author?.avatar)
+          <div class="mr-3">
+            @profiles.link({ user: author })
+              <img class="rounded-xl w-16 h-16 border-1 border-slate-900 border-opacity-20 bg-slate-100" src="{{ author.avatar }}" />
+            @end
+          </div>
+        @endif
         <div>
-          <div class="text-xs opacity-60">Published By</div>
-          <div class="font-semibold">{{ author.profile.name ?? author.username }}</div>
-          <div class="text-xs opacity-80">
+          <div class="text-xs text-slate-600">Published By</div>
+          <div class="font-semibold">
+            @profiles.link({ user: author })
+              {{ author.profile.name ?? author.username }}
+            @end
+          </div>
+          <div class="text-xs text-slate-600">
             {{ post.timeago }}
           </div>
         </div>
       </div>
     </div>
 
-    <p class="opacity-80 text-sm mt-3 mb-6">
+    <p class="text-slate-600 text-sm leading-relaxed mt-3 mb-6">
       {{ author.profile.biography }}
     </p>
 
@@ -35,37 +43,37 @@
         </p>
       @endif
       @if (author.profile.githubUrl)
-        <a href="{{ author.profile.githubUrl }}" target="_blank" class="flex items-center gap-3 truncate">
+        <a href="{{ author.profile.githubUrl }}" target="_blank" class="flex items-center gap-3 truncate hover:text-slate-900">
           @!icons.brandGithub()
           {{ displaySocialUrl(author.profile.githubUrl) }}
         </a>
       @endif
       @if (author.profile.youtubeUrl)
-        <a href="{{ author.profile.youtubeUrl }}" target="_blank" class="flex items-center gap-3 truncate">
+        <a href="{{ author.profile.youtubeUrl }}" target="_blank" class="flex items-center gap-3 truncate hover:text-slate-900">
           @!icons.brandYoutube()
           {{ displaySocialUrl(author.profile.youtubeUrl) }}
         </a>
       @endif
       @if (author.profile.twitterUrl)
-        <a href="{{ author.profile.twitterUrl }}" target="_blank" class="flex items-center gap-3 truncate">
+        <a href="{{ author.profile.twitterUrl }}" target="_blank" class="flex items-center gap-3 truncate hover:text-slate-900">
           @!icons.brandTwitter()
           {{ displaySocialUrl(author.profile.twitterUrl) }}
         </a>
       @endif
       @if (author.profile.facebookUrl)
-        <a href="{{ author.profile.facebookUrl }}" target="_blank" class="flex items-center gap-3 truncate">
+        <a href="{{ author.profile.facebookUrl }}" target="_blank" class="flex items-center gap-3 truncate hover:text-slate-900">
           @!icons.brandFacebook()
           {{ displaySocialUrl(author.profile.facebookUrl) }}
         </a>
       @endif
       @if (author.profile.instagramUrl)
-        <a href="{{ author.profile.instagramUrl }}" target="_blank" class="flex items-center gap-3 truncate">
+        <a href="{{ author.profile.instagramUrl }}" target="_blank" class="flex items-center gap-3 truncate hover:text-slate-900">
           @!icons.brandInstagram()
           {{ displaySocialUrl(author.profile.instagramUrl) }}
         </a>
       @endif
       @if (author.profile.threadsUrl)
-        <a href="{{ author.profile.threadsUrl }}" target="_blank" class="flex items-center gap-3 truncate">
+        <a href="{{ author.profile.threadsUrl }}" target="_blank" class="flex items-center gap-3 truncate hover:text-slate-900">
           @!icons.brandThreads()
           {{ displaySocialUrl(author.profile.threadsUrl) }}
         </a>

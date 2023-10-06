@@ -10,6 +10,7 @@ class ImageOptions {
   quality: number
   format: string
   name: string
+  blur: number
 }
 
 export default class AssetService {
@@ -48,10 +49,16 @@ export default class AssetService {
     let image = sharp(file);
     return image.metadata().then(metadata => {
       const toOptions = options.quality ? { quality: options.quality } : {};
-      return image
+      
+      image
         .resize(options.width || metadata.width)
         .toFormat(options.format, toOptions)
-        .toBuffer()
+
+      if (options.blur) {
+        image = image.blur(options.blur)
+      }
+        
+      return image.toBuffer()
     });
   }
 
@@ -75,6 +82,9 @@ export default class AssetService {
         case 'format':
           options.format = isSVG ? `svg+xml` : value;
           break;
+        case 'blur':
+          options.blur = parseInt(value || '0')
+          break
       }
     }
 

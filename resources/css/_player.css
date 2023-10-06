@@ -23,8 +23,12 @@
     display: none;
   }
 
-  [video-placeholder]:not(.video-small) {
+  [video-placeholder]:not(.video-small):not(.no-access) {
     background-color: transparent !important;
+  }
+
+  [video-placeholder].video-small {
+    @apply rounded-t-xl overflow-hidden;
   }
 
   .video-small-details {
@@ -94,6 +98,17 @@
     @screen xl {
       right: calc(var(--lesson-list-width) + 1.5rem) !important;
     }
+  }
+
+  .lesson-wrapper header {
+    @apply bg-slate-100;
+    margin-bottom: 0 !important;
+  }
+
+  .lesson-wrapper header > div {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    margin-top: 0;
   }
 
   @keyframes fadeIn {

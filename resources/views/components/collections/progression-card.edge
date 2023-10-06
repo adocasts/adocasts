@@ -3,8 +3,8 @@
 @set('lessonQueue', item.postsFlattened)
 
 <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="{{ className }}" {{{ upAttrs }}}>
-  <div class="group h-full flex flex-col bg-slate-50 text-center p-6 rounded-xl overflow-hidden relative">
-    <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-transparent via-slate-50/60 to-slate-50 z-10"></div>
+  <div class="group h-full flex flex-col bg-slate-100 text-center p-6 rounded-xl overflow-hidden relative">
+    <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-200/0 via-slate-200/60 to-slate-200/95 z-10"></div>
     
     @if (item.asset)
       <div class="absolute w-full h-full top-0 left-0 opacity-60 group-hover:opacity-80 duration-150">
@@ -18,7 +18,7 @@
     <div class="flex flex-col h-full justify-between relative z-20">
       <div class="flex flex-col">
         <div class="flex justify-center">
-          @!collections.icon({ item, width: 'w-24', height: 'h-24', className: 'shadow-xl' })
+          @!collections.icon({ item, width: 'w-24', height: 'h-24' })
         </div>
         <div class="mt-3">
           <h3 class="text-slate-900 font-semibold text-lg 2xl:text-xl mb-1">
@@ -27,9 +27,10 @@
         </div>
       </div>
 
-      <div class="w-full text-slate-500 text-xs py-6 px-6 flex justify-around items-center relative z-10">
-        <div class="flex flex-col justify-center text-center uppercase tracking-wider px-3">
-          <span class="text-base">{{ Math.floor((item.meta.postCompletedCount / item.meta.postCount) * 100) }}%</span>
+      <div class="w-full text-slate-600 text-xs py-6 px-6 flex justify-around items-center relative z-10">
+        @set('percentCompleted', Math.floor((item.meta.postCompletedCount / item.meta.postCount) * 100))
+        <div class="flex flex-col justify-center text-center uppercase tracking-wider px-3 {{ percentCompleted >= 100 ? 'text-green-600' : '' }}">
+          <span class="text-base">{{ percentCompleted }}%</span>
           <span class="text-xs ">Completed</span>
         </div>
 
@@ -52,9 +53,9 @@
             <h6 class="text-xs text-left font-bold tracking-wide px-3 pt-3">
               {{ lessonInProgress ? 'Continue Your Next Lesson' : 'Start Your Next Lesson' }}
             </h6>
-            <a href="{{ routePost(currentLesson, { slug: currentLesson.slug }) }}" up-follow {{{ upAttrs }}} class="w-full flex flex-wrap p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-opacity-5 transition">
+            <a href="{{ currentLesson.routeUrl }}" up-follow {{{ upAttrs }}} class="w-full flex flex-wrap p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-opacity-5 transition">
               @if (thumbnail)
-                <div class="w-full md:w-2/5 md:pr-2">
+                <div class="w-full md:w-2/5 md:pr-2 pt-1">
                   @!picture({ filename: thumbnail.filename, className: 'rounded-lg overflow-hidden', lazy: lazyItem })
                 </div>
               @endif
@@ -69,6 +70,11 @@
             </a>
           </object>
         @endeach
+      @elseif (percentCompleted >= 100)
+        <div class="bg-slate-900/10 flex-1 flex items-center justify-center flex-col p-3 rounded-md mb-3">
+          @!icons.trophyFilled({ className: 'w-10 h-10 mb-3' })
+          Series Completed
+        </div>
       @endif
 
       <object class="w-full">

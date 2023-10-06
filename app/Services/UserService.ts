@@ -2,6 +2,7 @@ import Database from "@ioc:Adonis/Lucid/Database";
 import DiscordLogger from "@ioc:Logger/Discord";
 import States from "App/Enums/States";
 import User from "App/Models/User";
+import StripeService from "./StripeService";
 
 export default class UserService {
   /**
@@ -31,6 +32,15 @@ export default class UserService {
       await user.delete()
 
       await trx.commit()
+
+      try {
+        if (user.stripeCustomerId) {
+          const stripeService = new StripeService()
+          await stripeService.cancelCustomerSubscriptions(user)
+        }
+      } catch (error) {
+        await DiscordLogger.error(`UserService.destroy.cancelCustomerSubscriptions > An error occurred for user id: ${user.id}, stripe customer id ${user.stripeCustomerId}`)
+      }
 
       return true
     } catch (error) {

@@ -1,6 +1,6 @@
 @if (auth.user && !auth.user.isEmailVerified && up.isPage)
 
-  <div class="w-[450px] max-w-full fixed bottom-0 left-0 sm:bottom-3 sm:left-3 z-50">
+  <div class="w-[450px] max-w-full fixed bottom-0 left-0 sm:bottom-3 sm:left-3 z-[100]">
     <div class="bg-brand-400 p-3 border-b border-brand-200 border-opacity-40 relative sm:rounded-xl">
       @form.post({ action: route('verification.email.send') })
         <div class="flex items-center justify-between flex-wrap">

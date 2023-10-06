@@ -1,5 +1,6 @@
 import { AuthContract } from "@ioc:Adonis/Addons/Auth";
 import { ModelQueryBuilderContract } from "@ioc:Adonis/Lucid/Orm";
+import CollectionTypes from "App/Enums/CollectionTypes";
 import Collection from "App/Models/Collection";
 import Post from "App/Models/Post";
 
@@ -55,8 +56,9 @@ export default class CollectionService {
    * returns a list of all root series collections and 3 of their latest published posts
    * @returns
    */
-  public static async getList() {
+  public static async getList(exclude: number[] | undefined = undefined) {
     return await Collection.series()
+        .if (exclude, query => query.whereNotIn('id', exclude))
         .apply(scope => scope.withPostLatestPublished())
         .select(['collections.*'])
         .wherePublic()
@@ -110,6 +112,43 @@ export default class CollectionService {
   }
 
   /**
+   * returns a root series matching the provided slug
+   * @param auth
+   * @param slug
+   * @returns
+   */
+  public static async getByPathSlug(auth: AuthContract, slug: string) {
+    return await Collection.paths()
+      .if(auth.user, query => query.withWatchlist(auth.user!.id))
+      .apply(scope => scope.withPublishedPostCount())
+      .apply(scope => scope.withPublishedPostDuration())
+      .wherePublic()
+      .where({ slug })
+      .whereNull('parentId')
+      .preload('asset')
+      .preload('postsFlattened', query => query
+        .apply(scope => scope.forCollectionPathDisplay({ orderBy: 'pivot_root_sort_order' }))
+        .if(auth.user, query => query.preload('progressionHistory', query => query.where('userId', auth.user!.id)))
+      )
+      .preload('children', query => query
+        .wherePublic()
+        .preload('posts', query => query
+          .apply(scope => scope.forCollectionPathDisplay())
+          .if(auth.user, query => query.preload('progressionHistory', query => query.where({ userId: auth.user!.id }).orderBy('updated_at', 'desc')))
+        )
+      )
+      .preload('posts', query => query
+        .apply(scope => scope.forCollectionPathDisplay())
+        .if(auth.user, query => query.preload('progressionHistory', query => query.where({ userId: auth.user!.id }).orderBy('updated_at', 'desc')))
+      )
+      .preload('updatedVersions', query => query
+        .wherePublic()
+        .whereHas('postsFlattened', query => query.apply(s => s.published()))
+      )
+      .firstOrFail()
+  }
+
+  /**
    * returns the next lesson for the user based off progression history
    * @param auth
    * @param series
@@ -140,6 +179,20 @@ export default class CollectionService {
   }
 
   /**
+   * returns the next lesson after the provided post in the path (if there is one)
+   * @param series 
+   * @param post 
+   * @returns 
+   */
+  public static findNextPathLesson(series: Collection | null, post: Post) {
+    if (!series) return
+    if (!post?.rootPaths?.length || !series?.postsFlattened?.length) return
+
+    const postRootIndex = post.rootPaths[0].$extras.pivot_root_sort_order
+    return series?.postsFlattened.find(p => p.$extras.pivot_root_sort_order === postRootIndex + 1)
+  }
+
+  /**
    * returns the previous lesson before the provided post in the series (if there is one)
    * @param series 
    * @param post 
@@ -150,6 +203,20 @@ export default class CollectionService {
     if (!post?.rootSeries?.length || !series?.postsFlattened?.length) return
 
     const postRootIndex = post.rootSeries[0].$extras.pivot_root_sort_order
+    return series?.postsFlattened.find(p => p.$extras.pivot_root_sort_order === postRootIndex - 1)
+  }
+
+  /**
+   * returns the previous lesson before the provided post in the path (if there is one)
+   * @param series 
+   * @param post 
+   * @returns 
+   */
+  public static findPrevPathLesson(series: Collection | null, post: Post) {
+    if (!series) return
+    if (!post?.rootPaths?.length || !series?.postsFlattened?.length) return
+
+    const postRootIndex = post.rootPaths[0].$extras.pivot_root_sort_order
     return series?.postsFlattened.find(p => p.$extras.pivot_root_sort_order === postRootIndex - 1)
   }
 

@@ -1,9 +1,16 @@
 @set('width', width ?? 'w-16')
 @set('height', height ?? 'h-16')
+@set('rounded', rounded || 'rounded-full')
 
 <div class="aspect-square">
   @if (item.asset)
-    <img src="/img/{{ item.asset.filename }}" class="rounded-full object-contain object-center {{ width }} {{ height }} mb-3 {{ className }}" />
+    <img 
+      src="/img/{{ item.asset.filename }}" 
+      class="bg-white {{ rounded }} object-contain object-center {{ width }} {{ height }} mb-3 {{ className }}" 
+      style="background-image: url('/img/{{ item.asset.filename }}?w=10'); filter: blur(10px); background-size: 100%;"
+      onload="this.style.backgroundImage = null; this.style.filter = null; this.classList.remove('bg-white');"
+      loading="lazy" 
+    />
   @else
     <div class="{{ width }} {{ height }} text-2xl font-semibold flex items-center justify-center mb-3 rounded-full bg-brand-300 text-brand-800 {{ className }}">
       {{ getAbbrev(item.name) }}

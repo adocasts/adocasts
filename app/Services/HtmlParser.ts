@@ -1,5 +1,6 @@
 import { parse } from 'node-html-parser'
 import Application from '@ioc:Adonis/Core/Application'
+import View from '@ioc:Adonis/Core/View'
 import Env from '@ioc:Adonis/Core/Env'
 import slugify from 'slugify'
 const shiki = require('shiki')
@@ -55,6 +56,47 @@ export default class HtmlParser {
       })
     }
 
+    return root.toString()
+  }
+
+  public static async getLangIconHtml(lang) {
+    let langIcon = ''
+    let iconHtml = ''
+
+    switch (lang) {
+      case 'ts':
+        langIcon = 'brand-typescript'
+        break
+      case 'edge':
+        langIcon = 'brand-adonis-js'
+        break
+      case 'js':
+        langIcon = 'brand-javascript'
+        break
+      case 'vue':
+        langIcon = 'brand-vue'
+        break
+      case 'jsx':
+        langIcon = 'file-type-jsx'
+        break
+      case 'tsx':
+        langIcon = 'file-type-tsx'
+        break
+    }
+
+    if (langIcon) {
+      iconHtml = `<span class="lang-icon ${lang}">${await View.render(`components/icons/${langIcon}`)}</span>`
+    }
+
+    return iconHtml
+  }
+
+  public static async getPreview(html: string) {
+    const root = parse(html || '')
+    const [one, two, three, four, five, ..._rest ] = root.childNodes
+    
+    root.childNodes = [one, two, three, four, five].filter(Boolean)
+    
     return root.toString()
   }
 
@@ -122,12 +164,18 @@ export default class HtmlParser {
 
           const outerHTML = codeBlock.outerHTML
           const tagStart = outerHTML.replace('</code>', '')
-          const code = c.text.replace(tagStart, '').replace('</code>', '')
+          let code = c.text.replace(tagStart, '').replace('</code>', '')
+          const filepath = code.match(/^\/\/ (\w+\/){1,6}\w+.(ts|js|edge|vue|jsx|tsx)((\r\n)?){1,6}/)
+
+          if (filepath?.length) {
+            code = code.replace(filepath[0], '')
+          }
+
           const lines = code.split('\r\n')
           const delLineNumbers = lines.map((line, i) => line.startsWith('--') ? i + 1 : undefined).filter(Boolean)
           const addLineNumbers = lines.map((line, i) => line.startsWith('++') ? i + 1 : undefined).filter(Boolean)
           const codeLessChange = code.replaceAll('\r\n--', '\r\n').replaceAll('\r\n++', '\r\n')
-          const highlighted = await (await highlighter).codeToHtml(codeLessChange, { 
+          let highlighted = await (await highlighter).codeToHtml(codeLessChange, { 
             lang,
             lineOptions: [
               ...delLineNumbers.map(x => ({ line: x, classes: ['del'] })),
@@ -135,7 +183,20 @@ export default class HtmlParser {
             ]
           })
 
-          c.replaceWith(highlighted)
+          const h = parse(highlighted)
+          let highlightedCode = highlighted
+          
+          if (filepath?.length) {
+            const path = filepath[0].replaceAll('\r\n', '').replace('//', '').trim().split('/')
+            const iconHtml = await this.getLangIconHtml(lang)
+            const filePathHtml = parse(`<span class="filepath">${iconHtml}<ul class="filepath-list">${path.map(item => `<li>${item}</li>`).join('')}</ul></span>`)
+            const rawInnerText = h.firstChild.rawText
+            const rawText = rawInnerText + filePathHtml.outerHTML
+            
+            highlightedCode = highlighted.replace(rawInnerText, rawText)
+          }
+          
+          c.replaceWith(highlightedCode)
         }
       })
 

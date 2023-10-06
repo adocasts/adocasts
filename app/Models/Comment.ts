@@ -76,13 +76,12 @@ export default class Comment extends AppBaseModel {
   })
   public userVotes: ManyToMany<typeof User>
 
-  @computed()
   public get createdAtCalendar() {
-    return this.createdAt.toRelativeCalendar();
+    return this.createdAt?.toRelativeCalendar();
   }
 
-  @computed()
   public get timeago() {
-    return timeago.format(this.createdAt.toJSDate())
+    if (!this.createdAt) return
+    return timeago.format(this.createdAt?.toJSDate())
   }
 }

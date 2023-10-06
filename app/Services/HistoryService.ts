@@ -18,9 +18,9 @@ export default class HistoryService {
    * @param post 
    * @returns 
    */
-  public static async getPostProgression(auth: AuthContract, post: Post) {
-    if (!auth.user) return
-    return post.related('progressionHistory').query().where('userId', auth.user!.id).orderBy('updatedAt', 'desc').first()
+  public static async getPostProgression(user: User | undefined, post: Post) {
+    if (!user) return
+    return post.related('progressionHistory').query().where('userId', user!.id).orderBy('updatedAt', 'desc').first()
   }
 
   /**
@@ -68,8 +68,8 @@ export default class HistoryService {
    * @param data 
    * @returns 
    */
-  public static async toggleComplete(auth: AuthContract, routeName: string | undefined, data: HistoryValidator['schema']['props']) {
-    const progression = await this.getProgressionOrNew(auth.user!, routeName, data)
+  public static async toggleComplete(user: User, routeName: string | undefined, data: Partial<History>) {
+    const progression = await this.getProgressionOrNew(user, routeName, data)
 
     progression.isCompleted = !progression.isCompleted
 
@@ -95,7 +95,7 @@ export default class HistoryService {
    * @param data 
    * @returns 
    */
-  private static async getProgressionOrNew(user: User, routeName: string | undefined, data: HistoryValidator['schema']['props']) {
+  private static async getProgressionOrNew(user: User, routeName: string | undefined, data: Partial<History>) {
     const query: Partial<History> = {
       userId: user.id,
       historyTypeId: HistoryTypes.PROGRESSION
@@ -162,17 +162,17 @@ export default class HistoryService {
       .where('historyTypeId', HistoryTypes.PROGRESSION)
       .where('userId', user.id)
       .whereNotNull('collectionId')
-      .where(query => query
-        .where('isCompleted', false)
-        .orWhereHas('collection', query => query
-          .whereHas('postsFlattened', query => query
-            .whereDoesntHave('progressionHistory', query => query
-              .where('userId', user.id)
-              .where('isCompleted', true)
-            )
-          )
-        )
-      )
+      // .where(query => query
+      //   .where('isCompleted', false)
+      //   .orWhereHas('collection', query => query
+      //     .whereHas('postsFlattened', query => query
+      //       .whereDoesntHave('progressionHistory', query => query
+      //         .where('userId', user.id)
+      //         .where('isCompleted', true)
+      //       )
+      //     )
+      //   )
+      // )
       .orderBy('updatedAt', 'desc')
       .selectIds('collectionId')
 
@@ -217,9 +217,14 @@ export default class HistoryService {
       .where('historyTypeId', HistoryTypes.PROGRESSION)
       .where('userId', user.id)
       .whereNotNull('postId')
-      .where(query => query.where('isCompleted', false))
-      .where(query => query.whereNotNull('watchPercent').orWhereNotNull('readPercent'))
-      .where(query => query.where('watchPercent', '>', 0).orWhere('readPercent', '>', 0))
+      .where(query => query
+        .where('isCompleted', true)  
+        .orWhere(query => query.whereNotNull('watchPercent').orWhereNotNull('readPercent'))
+        .orWhere(query => query.where('watchPercent', '>', 0).orWhere('readPercent', '>', 0))
+      )
+      // .where(query => query.where('isCompleted', false))
+      // .where(query => query.whereNotNull('watchPercent').orWhereNotNull('readPercent'))
+      // .where(query => query.where('watchPercent', '>', 0).orWhere('readPercent', '>', 0))
       .orderBy('updatedAt', 'desc')
       .selectIds('postId')
 
@@ -234,9 +239,11 @@ export default class HistoryService {
       .apply(scope => scope.forDisplay())
       .preload('progressionHistory', query => query
         .where('userId', user.id)
-        .where('isCompleted', false)
-        .where(query => query.whereNotNull('watchPercent').orWhereNotNull('readPercent'))
-        .where(query => query.where('watchPercent', '>', 0).orWhere('readPercent', '>', 0))
+        .where(query => query
+          .where('isCompleted', true)  
+          .orWhere(query => query.whereNotNull('watchPercent').orWhereNotNull('readPercent'))
+          .orWhere(query => query.where('watchPercent', '>', 0).orWhere('readPercent', '>', 0))
+        )
         .orderBy('updatedAt', 'desc')
         .groupLimit(1)
       )

@@ -73,7 +73,7 @@ export default class AssetsController {
     // try {
       const tempDirectory = '.cache';
       const path = AssetService.getParamFilename(params);
-      const query = request.only(['w', 'width', 'q', 'quality', 'f', 'format']);
+      const query = request.only(['w', 'width', 'q', 'quality', 'f', 'format', 'blur']);
       const options = AssetService.getImageOptions(query, path);
       const tempName = `${tempDirectory}/${path}/${options.name}`;
       const isCached = await CacheService.has(tempName);

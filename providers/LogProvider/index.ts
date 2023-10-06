@@ -26,7 +26,7 @@ export default class LogProvider {
     // Register your own bindings
     this.app.container.singleton('Logger/Discord', () => {
       const { discordLogConfig } = this.app.config.get('log')
-      return new (require('./discord').default)(discordLogConfig)
+      return new (require('./discord').default)(discordLogConfig, this.app)
     })
   }
 

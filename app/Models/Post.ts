@@ -29,6 +29,8 @@ import HistoryTypes from 'App/Enums/HistoryTypes'
 import Route from '@ioc:Adonis/Core/Route'
 import AssetTypes from 'App/Enums/AssetTypes'
 import { HttpContext } from '@adonisjs/core/build/standalone'
+import PaywallTypes from 'App/Enums/PaywallTypes'
+import VideoTypes from 'App/Enums/VideoTypes'
 
 export default class Post extends AppBaseModel {
   public serializeExtras = true
@@ -68,7 +70,13 @@ export default class Post extends AppBaseModel {
   public bodyTypeId: number
 
   @column()
+  public videoTypeId: VideoTypes | null
+
+  @column()
   public videoUrl: string | null
+
+  @column()
+  public videoBunnyPath: string | null
 
   @column()
   public livestreamUrl: string | null
@@ -90,6 +98,9 @@ export default class Post extends AppBaseModel {
 
   @column()
   public stateId: State
+
+  @column()
+  public paywallTypeId: PaywallTypes
 
   @column()
   public readMinutes: number
@@ -184,6 +195,15 @@ export default class Post extends AppBaseModel {
 
   @manyToMany(() => Collection, {
     onQuery(query) {
+      query.where('collectionTypeId', CollectionTypes.PATH)
+    },
+    pivotRelatedForeignKey: 'root_collection_id',
+    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
+  })
+  public rootPaths: ManyToMany<typeof Collection>
+
+  @manyToMany(() => Collection, {
+    onQuery(query) {
       query.where('collectionTypeId', CollectionTypes.COURSE)
     },
     pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
@@ -197,6 +217,14 @@ export default class Post extends AppBaseModel {
     pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
   })
   public playlists: ManyToMany<typeof Collection>
+
+  @manyToMany(() => Collection, {
+    onQuery(query) {
+      query.where('collectionTypeId', CollectionTypes.PATH)
+    },
+    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
+  })
+  public paths: ManyToMany<typeof Collection>
 
   @manyToMany(() => Collection, {
     pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
@@ -272,6 +300,26 @@ export default class Post extends AppBaseModel {
   }
 
   @computed()
+  public get paywallDaysRemaining() {
+    const { days } = DateTime.now().diff(this.publishAt!, ['days'])
+    return days
+  }
+
+  @computed()
+  public get paywallTimeAgo() {
+    if (!this.publishAt) return
+    return timeago.format(this.publishAt!.plus({ days: 14 }).toJSDate())
+  }
+
+  @computed()
+  public get isPaywalled() {
+    if (this.paywallTypeId === PaywallTypes.NONE) return false
+    if (this.paywallTypeId === PaywallTypes.FULL) return true
+    
+    return this.paywallDaysRemaining > 0
+  }
+
+  @computed()
   public get rootSortOrder() {
     if (!this.series || !this.series.length) {
       return undefined
@@ -340,17 +388,35 @@ export default class Post extends AppBaseModel {
   public get routeUrl() {
     if (this.redirectUrl) return this.redirectUrl
 
+    let namePrefix = ''
+    let params: { collectionSlug?: string, slug: string } = { slug: this.slug }
+    
+    if (typeof this.$extras.pivot_sort_order != undefined && (this.rootSeries?.length || this.rootPaths?.length)) {
+      const series = this.rootPaths?.length ? this.rootPaths.at(0) : this.rootSeries.at(0)
+      
+      switch (series?.collectionTypeId) {
+        case CollectionTypes.SERIES:
+          namePrefix = 'series.'
+          params.collectionSlug = series.slug
+          break
+        case CollectionTypes.PATH:
+          namePrefix = 'paths.'
+          params.collectionSlug = series.slug
+          break
+      }
+    }
+
     switch (this.postTypeId) {
       case PostType.BLOG:
-        return Route.makeUrl('posts.show', { slug: this.slug })
+        return Route.makeUrl(`${namePrefix}posts.show`, params)
       case PostType.NEWS:
-        return Route.makeUrl('news.show', { slug: this.slug })
+        return Route.makeUrl(`${namePrefix}news.show`, params)
       case PostType.LIVESTREAM:
-        return Route.makeUrl('streams.show', { slug: this.slug })
+        return Route.makeUrl(`${namePrefix}streams.show`, params)
       case PostType.SNIPPET:
-        return Route.makeUrl('snippets.show', { slug: this.slug })
+        return Route.makeUrl(`${namePrefix}snippets.show`, params)
       default:
-        return Route.makeUrl('lessons.show', { slug: this.slug })
+        return Route.makeUrl(`${namePrefix}lessons.show`, params)
     }
   }
 
@@ -371,7 +437,14 @@ export default class Post extends AppBaseModel {
 
   @computed()
   public get lessonIndexDisplay() {
+    const path = this.rootPaths?.length && this.paths[0]
     const series = this.series?.length && this.series[0]
+    
+    if (path) {
+      return !path.parentId
+        ? `${path.$extras.pivot_sort_order + 1}.0`
+        : `${path.sortOrder + 1}.${path.$extras.pivot_sort_order}`
+    }
 
     if (!series) {
       return ''
@@ -444,9 +517,29 @@ export default class Post extends AppBaseModel {
       .preload('authors', query => query.preload('profile'))
   })
 
+  public static forPathDisplay = scope<typeof Post>((query, skipPublishCheck: boolean = false) => {
+    const ctx = HttpContext.get()
+
+    query
+      .if(!skipPublishCheck, query => query.apply(scope => scope.published()))
+      .if(ctx?.auth.user, query => query.withCount('watchlist', query => query.where('userId', ctx!.auth.user!.id)))
+      .preload('thumbnails')
+      .preload('covers')
+      .preload('taxonomies')
+      .preload('rootPaths')
+      .preload('paths')
+      .preload('authors', query => query.preload('profile'))
+  })
+
   public static forCollectionDisplay = scope<typeof Post>((query, { orderBy, direction }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order', direction: 'asc' | 'desc' } = { orderBy: 'pivot_sort_order', direction: 'asc' }) => {
     query
       .apply(scope => scope.forDisplay())
+      .orderBy(orderBy, direction)
+  })
+
+  public static forCollectionPathDisplay = scope<typeof Post>((query, { orderBy, direction }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order', direction: 'asc' | 'desc' } = { orderBy: 'pivot_sort_order', direction: 'asc' }) => {
+    query
+      .apply(scope => scope.forPathDisplay())
       .orderBy(orderBy, direction)
   })
 }

@@ -1,4 +1,4 @@
-<a href="{{ route('topics.show', { slug: item.slug }) }}" {{{ upAttrs }}} up-follow class="relative group overview-hidden w-full flex items-center bg-slate-50/75 hover:bg-white duration-150 rounded-xl  px-3 py-5 flicker-fix">
+<a href="{{ route('topics.show', { slug: item.slug }) }}" {{{ upAttrs }}} up-follow class="relative group overview-hidden w-full flex items-center bg-slate-100 hover:bg-slate-200 duration-150 rounded-xl p-3 flicker-fix">
   @if (item.asset?.filename)
     <div class="absolute w-full h-full top-0 left-0 opacity-0 group-hover:opacity-5">
       @!picture({
@@ -18,7 +18,8 @@
         className: 'rounded-xl w-12 h-12 h-full',
         width: 42,
         ratio: 'aspect-square',
-        imgClassName: 'object-contain object-center'
+        imgClassName: 'object-contain object-center',
+        lazy
       })
     @else
       <div class="w-12 h-12 text-base lg:text-xl font-semibold flex items-center justify-center rounded-xl bg-slate-100 text-brand-800">

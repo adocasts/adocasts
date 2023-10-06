@@ -1,6 +1,8 @@
 import { string } from '@ioc:Adonis/Core/Helpers'
 import { parse } from 'node-html-parser'
 import { DateTime } from 'luxon'
+import { dinero, toDecimal } from 'dinero.js'
+import * as currencies from '@dinero.js/currencies'
 import * as timeago from 'timeago.js'
 
 export default class UtilityService {
@@ -126,6 +128,16 @@ export default class UtilityService {
 
   public static formatNumber(number: number) {
     return number.toLocaleString()
+  }
+
+  public static formatCurrency(amount: number, currencyCode: string | undefined = 'USD', lang: string | undefined = 'en-US', minimumFractionDigits: number = 2) {
+    const currency = currencies[currencyCode.toUpperCase()]
+    const data = dinero({ amount, currency })
+    return toDecimal(data, ({ currency, value }) => Number(value).toLocaleString(lang, { 
+      currency: currency.code,
+      style: 'currency',
+      minimumFractionDigits
+    }))
   }
 
   public static displaySocialUrl(url: string) {

@@ -1,4 +1,4 @@
-import { schema, CustomMessages } from '@ioc:Adonis/Core/Validator'
+import { schema, rules, CustomMessages } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class SignInValidator {
@@ -28,7 +28,8 @@ export default class SignInValidator {
     password: schema.string(),
     rememberMe: schema.boolean.optional(),
     forward: schema.string.optional(),
-    action: schema.string.optional()
+    action: schema.string.optional(),
+    plan: schema.string.optional([rules.exists({ table: 'plans', column: 'slug' })])
   })
 
   /**

@@ -1,0 +1,146 @@
+@set('plusMonthly', await Plan.findOrFail(Plans.PLUS_MONTHLY))
+@set('plusAnnual', await Plan.findOrFail(Plans.PLUS_ANNUAL))
+@set('forever', await Plan.findOrFail(Plans.FOREVER))
+
+<div class="relative isolate px-6 py-12 sm:py-24 lg:px-8">
+  <svg class="absolute inset-x-0 -top-12 -z-10 h-[72rem] w-full stroke-slate-200 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)]" aria-hidden="true">
+    <defs>
+      <pattern id="1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
+        <path d="M.5 200V.5H200" fill="none" />
+      </pattern>
+    </defs>
+    <svg x="50%" y="-1" class="overflow-visible fill-slate-50">
+      <path d="M-200 0h201v201h-201Z M600 0h201v201h-201Z M-400 600h201v201h-201Z M200 800h201v201h-201Z" stroke-width="0" />
+    </svg>
+    <rect width="100%" height="100%" stroke-width="0" fill="url(#1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84)" />
+  </svg>
+  <div class="absolute inset-x-0 -top-3 -z-10 transform-gpu overflow-hidden px-36 blur-3xl opacity-[25%]" aria-hidden="true">
+    <div class="mx-auto aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+  </div>
+  @!headings.section({
+    title: 'Simple And Affordable Pricing',
+    subtitle: 'Join today to unlock our full library of content with either a monthly, annually, or lifetime membership. Joining is quick and easy, plus you can cancel anytime.',
+    className: 'text-center mb-6'
+  })
+  <div class="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2">
+    <div x-data="{ display: 'monthly' }" x-cloak class="rounded-3xl p-8 ring-1 ring-slate-900/10 sm:p-10 relative bg-white shadow-2xl">
+      <div class="flex justify-between">
+        <div>
+          <h3 id="tier-personal" class="text-base font-semibold leading-7 text-brand-600">Adocasts+</h3>
+          <p class="mt-4 flex items-baseline gap-x-2">
+            <span class="text-5xl font-bold tracking-tight text-slate-900">
+              <span x-show="display === 'monthly'">{{ plusMonthly.displayPrice }}</span>
+              <span x-show="display === 'annually'">{{ plusAnnual.displayPrice }}</span>
+            </span>
+            <span class="text-base text-slate-600">
+              <span x-show="display === 'monthly'">/month</span>
+              <span x-show="display === 'annually'">/year</span>
+            </span>
+          </p>
+        </div>
+        <div class="mt-16 flex justify-center">
+          <fieldset class="grid grid-cols-2 gap-x-1 rounded-full p-1 text-center text-xs font-semibold leading-5 ring-1 ring-inset ring-slate-200">
+            <legend class="sr-only">Payment frequency</legend>
+            <label class="cursor-pointer rounded-full px-2.5 py-1" :class="[display === 'monthly' ? 'bg-brand-600 bg-gradient-to-br from-accent-500/50 to-brand-500 text-brand-base-50' : 'text-slate-500 hover:text-slate-700']">
+              <input type="radio" name="frequency" x-model="display" value="monthly" class="sr-only">
+              <span>Monthly</span>
+            </label>
+            <label class="cursor-pointer rounded-full px-2.5 py-1" :class="[display === 'annually' ? 'bg-brand-600 bg-gradient-to-br from-accent-500/50 to-brand-500 text-brand-base-50' : 'text-slate-500 hover:text-slate-700']">
+              <input type="radio" name="frequency" x-model="display" value="annually" class="sr-only">
+              <span>Annually</span>
+            </label>
+          </fieldset>
+        </div>
+      </div>
+      <p class="mt-6 text-base leading-7 text-slate-600">
+        One low price to unlock everything. Get 2 months free by switching to annual.
+      </p>
+      <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-slate-600 sm:mt-10">
+        <li class="flex gap-x-3">
+          <svg class="h-6 w-5 flex-none text-brand-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+          </svg>
+          Unlock all series and lessons
+        </li>
+        <li class="flex gap-x-3">
+          <svg class="h-6 w-5 flex-none text-brand-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+          </svg>
+          2 weeks early access to new lessons
+        </li>
+        <li class="flex gap-x-3">
+          <svg class="h-6 w-5 flex-none text-brand-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+          </svg>
+          Ad-free experience
+        </li>
+      </ul>
+      <div x-show="display === 'monthly'" class="w-full mt-8 sm:mt-10">
+        @if (auth.user)
+          @buttons.brand.base({ form: 'plusMonthlyForm', type: 'submit', attrs: 'aria-describedby="tier-personal"', block: true })
+            Select monthly plan
+          @end
+          @!form.post({ id: 'plusMonthlyForm', action: route('stripe.checkout', { slug: plusMonthly.slug }) })
+        @else
+          @buttons.brand.base({ href: route('auth.signup', {}, { qs: { plan: plusMonthly.slug } }), attrs: 'up-layer="new modal" up-size="grow"', block: true })
+            Select monthly plan
+          @end
+        @endif
+      </div>
+      <div x-show="display === 'annually'" class="w-full mt-8 sm:mt-10">
+        @if (auth.user)
+          @buttons.brand.base({ form: 'plusAnnualForm', type: 'submit', attrs: 'aria-describedby="tier-personal"', block: true })
+            Select annual plan
+          @end
+          @!form.post({ id: 'plusAnnualForm', action: route('stripe.checkout', { slug: plusAnnual.slug }) })
+        @else
+          @buttons.brand.base({ href: route('auth.signup', {}, { qs: { plan: plusAnnual.slug } }), attrs: 'up-layer="new modal" up-size="grow"', block: true })
+            Select annual plan
+          @end
+        @endif
+      </div>
+    </div>
+    <div class="rounded-3xl p-8 ring-1 ring-slate-900/10 sm:p-10 bg-white/60 sm:mx-8 lg:mx-0 sm:rounded-t-none lg:rounded-tr-3xl lg:rounded-bl-none">
+      <h3 id="tier-team" class="text-base font-semibold leading-7 text-brand-600">Forever</h3>
+      <p class="mt-4 flex items-baseline gap-x-2">
+        <span class="text-5xl font-bold tracking-tight text-slate-900">{{ forever.displayPrice }}</span>
+        <span class="text-base text-slate-600">/lifetime</span>
+      </p>
+      <p class="mt-6 text-base leading-7 text-slate-600">
+        Hate subscriptions? Me too! Pay once, then never again with our forever plan.
+      </p>
+      <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-slate-600 sm:mt-10">
+        <li class="flex gap-x-3">
+          <svg class="h-6 w-5 flex-none text-brand-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+          </svg>
+          Everything in Adocasts+
+        </li>
+        <li class="flex gap-x-3">
+          <svg class="h-6 w-5 flex-none text-brand-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+          </svg>
+          Pay once then never again!
+        </li>
+      </ul>
+      <div class="w-full mt-8 sm:mt-10">
+        @if (auth.user)
+          @buttons.primary.outline({ form: 'foreverForm', type: 'submit', attrs: 'aria-describedby="tier-personal"', block: true })
+            Get set for life
+          @end
+          @!form.post({ id: 'foreverForm', action: route('stripe.checkout', { slug: forever.slug }) })
+        @else
+          @buttons.primary.outline({ href: route('auth.signup', {}, { qs: { plan: forever.slug } }), attrs: 'up-layer="new modal" up-size="grow"', block: true })
+            Get set for life
+          @end
+        @endif
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-12 flex justify-center">
+    @buttons.primary.outline({ href: route('auth.signup'), attrs: 'up-layer="new modal" up-size="grow"' })
+      Not ready? No worries, sign up for free to watch our library of free content
+    @end
+  </div>
+</div>

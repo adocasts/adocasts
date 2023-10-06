@@ -54,7 +54,7 @@ export default class WatchlistService {
    * @param data 
    * @returns 
    */
-  public static async toggle(user: User, data: WatchlistValidator['schema']['props']) {
+  public static async toggle(user: User, data: Partial<Watchlist>) {
     const record = await Watchlist.query().where(data).where({ userId: user.id }).first()
 
     const watchlist = record

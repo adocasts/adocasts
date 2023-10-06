@@ -33,7 +33,7 @@ export default class ExceptionHandler extends HttpExceptionHandler {
   }
 
   public async handle(error: any, ctx: HttpContextContract) {
-    if (error.code === 'E_VALIDATION_FAILURE') {
+    if (error.code === 'E_VALIDATION_FAILURE' && ctx.up.isUnpolyRequest) {
       await super.handle(error, ctx)
       
       ctx.up.setTarget(ctx.up.getFailTarget())

@@ -1,6 +1,5 @@
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
 import States from 'App/Enums/States'
-import HtmlParser from 'App/Services/HtmlParser'
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +30,7 @@ export default class QueryBuilderProvider {
   public async boot() {
     // All bindings are ready, feel free to use them
     const { ModelQueryBuilder } = this.app.container.resolveBinding('Adonis/Lucid/Database')
+    const HtmlParser = (await import('App/Services/HtmlParser')).default
 
     ModelQueryBuilder.macro('whereTrue', function(columnName: string) {
       return this.where(columnName, true)

@@ -1,5 +1,5 @@
 @each((item, i) in posts)
-  @set('href', routePost(item))
+  @set('href', item.routeUrl)
   @set('isActive', request.routeParams.slug == item.slug || request.routeParams.index - 1 === item.meta.pivot_root_sort_order)
 
   <li>
@@ -18,7 +18,7 @@
           </div>
         @endif
 
-        <div class="w-8 h-8 relative z-10 rounded-full flex items-center justify-center text-xs duration-150 {{ isActive ? 'bg-brand-500' : 'bg-slate-300 group-hover:opacity-0' }}">
+        <div class="w-8 h-8 relative z-10 rounded-full flex items-center justify-center text-xs duration-150 {{ isActive ? 'bg-brand-500' : 'bg-slate-200 text-slate-700 group-hover:opacity-0' }}">
           {{ i + 1 }}
         </div>
 

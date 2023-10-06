@@ -1,7 +1,7 @@
-<div class="overflow-hidden bg-slate-50 shadow-xl sm:rounded-xl" up-request-list>
+<div class="overflow-hidden bg-slate-100 shadow-xl sm:rounded-xl" up-request-list>
   <ul role="list" class="divide-y divide-slate-200">
     @each (lessonRequest in lessonRequests)
-      <li class="relative block hover:bg-slate-100">
+      <li class="relative block hover:bg-slate-200">
         <div class="flex items-center px-4 py-4 sm:px-6">
           <div class="flex min-w-0 flex-1 items-center flex-wrap">
             <div class="order-2 md:order-1 mx-3 md:mx-0 mt-4 md:mt-0">
@@ -10,12 +10,12 @@
 
             <div class="order-1 md:order-2 min-w-0 w-full md:flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
               <div>
-                <p class="truncate text-sm font-medium text-brand-600">
+                <p class="truncate text-sm font-medium text-slate-900">
                   <a href="{{ route('requests.lessons.show', { id: lessonRequest.id }) }}" class="expand-link font-semibold" up-follow>
                     {{ lessonRequest.name }}
                   </a>
                 </p>
-                <p class="mt-1 flex flex-wrap items-center text-sm text-slate-500 gap-1">
+                <p class="mt-1 flex flex-wrap items-center text-sm text-slate-600 gap-1">
                   <span class="truncate">Requested by {{ lessonRequest.user.username }}</span>
                   <time datetime="{{ lessonRequest.createdAt.toString() }}">{{ timeago(lessonRequest.createdAt) }}</time>
                 </p>
@@ -23,7 +23,7 @@
               <div class="flex items-center md:flex-col md:justify-center md:items-start gap-x-6 gap-y-1 mt-2 md:mt-0">
                 @!fragments.requestStatus({ lessonRequest })
 
-                <div class="flex items-center gap-1 text-slate-500 text-sm">
+                <div class="flex items-center gap-1 text-slate-600 text-sm">
                   @!icons.messageTwo()
                   <span>{{ lessonRequest.$extras.comments_count }}</span>
                   <span>{{ getSingularOrPlural('comment', lessonRequest.$extras.comments_count) }}</span>
@@ -43,7 +43,7 @@
         <h3 class="text-lg font-semibold">
           No requests match your search
         </h3>
-        <p class="text-slate-500">
+        <p class="text-slate-600">
           Please try again with more broad or fewer keywords.
           If you still can't find what you're looking for, 
           @can('LessonRequestPolicy.store')

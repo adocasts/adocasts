@@ -1,7 +1,10 @@
 @set('width', width ? width : 600)
 @set('lazy', lazy ?? false)
 
-<div class="overflow-hidden max-w-full {{ className }}">
+<div class="overflow-hidden max-w-full relative {{ className }}">
+  @if ($slots.main)
+    {{{ await $slots.main() }}}
+  @endif
   <picture class="max-w-full h-full {{ pictureClassName }}">
     <source
       srcset="
@@ -18,7 +21,9 @@
         /img/{{ filename }}?w={{ width }} 1x,
       "
       alt="{{ altText || '' }}"
-      class="w-full max-w-full {{ ratio ? ratio : '' }} {{ fit ? `${fit} h-full` : '' }} {{ blur ? 'bg-img-blur' : '' }} {{ imgClassName ? imgClassName : '' }}"
+      class="bg-white w-full max-w-full {{ ratio ? ratio : '' }} {{ fit ? `${fit} h-full` : '' }} {{ blur ? 'bg-img-blur' : '' }} {{ imgClassName ? imgClassName : '' }}"
+      style="background-image: url('/img/{{ filename }}?w=10'); filter: blur(10px); background-size: 100%;"
+      onload="this.style.backgroundImage = null; this.style.filter = null; this.classList.remove('bg-white');"
       {{ lazy && 'loading=lazy' }}
       {{ ratio === 'aspect-video' ? 'width=1280 height=720' : '' }}
     />

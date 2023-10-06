@@ -23,7 +23,7 @@
 
 @section('content')
 
-  <ul role="list" class="divide-y divide-slate-200/50 bg-slate-50 px-6 rounded-xl">
+  <ul role="list" class="divide-y divide-slate-200/50 bg-slate-100 px-6 rounded-xl">
     @each (item in schedule.results)
       @set('dte', DateTime.fromFormat(item.properties['Date'].date.start, 'yyyy-MM-dd'))
       @set('status', item.properties['Status'].status.name)
@@ -33,9 +33,9 @@
         <div class="flex items-center">
           <div class="hidden lg:flex flex-col justify-center w-36 mr-6">
             @if (status === 'Done')
-              <p style="font-size: .65rem;" class="text-slate-500 uppercase tracking-wider">Released</p>
+              <p style="font-size: .65rem;" class="text-slate-600 uppercase tracking-wider">Released</p>
             @else
-              <p style="font-size: .65rem;" class="text-slate-500 uppercase tracking-wider">Scheduled</p>
+              <p style="font-size: .65rem;" class="text-slate-600 uppercase tracking-wider">Scheduled</p>
             @endif
             <time datetime="{{ dte.toISO() }}">{{ dte.toFormat('MMM dd, yyyy')}}</time>
           </div>
@@ -60,12 +60,12 @@
                   {{ status }}
                 </p>
               @elseif (status === 'Not started')
-                <p class="rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset text-slate-500 bg-slate-100 ring-slate-500/10">
+                <p class="rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset text-slate-600 bg-slate-100 ring-slate-500/10">
                   {{ status }}
                 </p>
               @endif
             </div>
-            <div class="mt-1 flex items-center gap-x-2 text-xs leading-5 text-slate-500">
+            <div class="mt-1 flex items-center gap-x-2 text-xs leading-5 text-slate-600">
               @if (status === 'Done')
                 <p class="lg:hidden whitespace-nowrap">Released <time datetime="{{ dte.toISO() }}">{{ dte.toFormat('MMM dd, yyyy')}}</time></p>
               @else
@@ -87,11 +87,11 @@
               View Content<span class="sr-only">, {{ item.properties['Name'].title.map(x => x.text.content).join(', ') }}</span>
             @end
           @elseif (status === 'Done')
-            <div class="border border-transparent bg-slate-100/50 text-slate-500 shadow-sm px-4 py-2 rounded-md text-sm font-medium">
+            <div class="border border-transparent bg-slate-100/50 text-slate-600 shadow-sm px-4 py-2 rounded-md text-sm font-medium">
               Released
             </div>
           @else
-            <div class="border border-transparent bg-slate-100/50 text-slate-500 shadow-sm px-4 py-2 rounded-md text-sm font-medium">
+            <div class="border border-transparent bg-slate-100/50 text-slate-600 shadow-sm px-4 py-2 rounded-md text-sm font-medium">
               Coming Soon
             </div>
           @endif

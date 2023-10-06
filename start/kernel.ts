@@ -45,6 +45,7 @@ Server.middleware.register([
 Server.middleware.registerNamed({
   honeypot: () => import('@ioc:Adocasts/Honeypot'),
   auth: () => import('App/Middleware/Auth'),
+  guest: () => import('App/Middleware/Guest'),
   turnstile: () => import('App/Middleware/Turnstile'),
   unpoly: () => import('App/Middleware/Unpoly'),
   postTypeCheck: () => import('App/Middleware/PostTypeCheck')

@@ -7,6 +7,14 @@ export default class BasePolicy extends BouncerBasePolicy {
 		return user?.roleId === Role.ADMIN
 	}
 
+	protected isContributorLvl1(user: User | null) {
+		return user?.roleId === Role.CONTRIBUTOR_LVL_1
+	}
+
+	protected isContributorLvl2(user: User | null) {
+		return user?.roleId === Role.CONTRIBUTOR_LVL_2
+	}
+
 	protected isAuthenticated(user: User | null) {
 		return !!user
 	}

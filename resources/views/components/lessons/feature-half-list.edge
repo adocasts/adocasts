@@ -1,15 +1,7 @@
-<a href="{{ routePost(item) }}" up-follow class="w-full md:px-1.5 mb-6 md:mb-0">
+<a href="{{ item.routeUrl }}" up-follow class="w-full mb-6 md:mb-0">
   <div class="group h-full duration-150 relative rounded-xl overflow-hidden">
     <div class="flex flex-wrap relative z-20 hover:bg-slate-200 p-3">
-      @if (item.thumbnails?.length || item.covers?.length)
-        @set('img', item.thumbnails?.length ? item.thumbnails[0] : item.covers[0])
-        @!picture({
-          ratio: 'aspect-video',
-          className: 'w-full md:w-1/3 mb-5 lg:mb-0 rounded-xl overflow-hidden group-hover:shadow-xl duration-150',
-          filename: img.filename,
-          altText: img.altText
-        })
-      @endif
+      @!lessons.picture({ item, className: 'w-full md:w-1/3 mb-5 lg:mb-0' })
 
       <div class="flex flex-col flex-1 md:ml-6 xl:justify-center">
         @!lessons.barSeries({ item })
@@ -17,14 +9,6 @@
         <h2 class="md:text-base font-semibold xl:text-lg 2xl:text-xl op-1 duration-150 mb-1 md:mb-1">
           {{ item.title }}
         </h2>
-
-        @if (item.description)
-          <div class="md:hidden xl:block">
-            <p class="op-2 line-clamp-2 text-xs xl:text-sm duration-150">
-              {{ item.description}}
-            </p>
-          </div>
-        @endif
       </div>
     </div>
   </div>

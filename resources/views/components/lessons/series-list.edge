@@ -1,7 +1,7 @@
 <div id="boxSeries" x-cloak x-data="{ show: false }" @toggle="show = !show; document.body.classList.toggle('box-series-show')" @hide="show = false; document.body.classList.remove('box-series-show')" up-hungry>
-  <div class="lesson-list-placeholder bg-slate-50" @click="show = false; document.body.classList.remove('box-series-show')" :class="{ show }"></div>
-  <div class="lesson-list bg-slate-100 border-l border-slate-200/50 shadow-xl z-10" :class="{ show }">
-    <div class="flex justify-between items-center pt-3 pb-3 md:pb-0 md:sticky top-0 z-30 bg-slate-50 backdrop-blur-lg">
+  <div class="lesson-list-placeholder bg-slate-100" @click="show = false; document.body.classList.remove('box-series-show')" :class="{ show }"></div>
+  <div class="lesson-list bg-slate-100 shadow-xl z-10" :class="{ show }">
+    <div class="flex justify-between items-center pt-3 pb-3 md:pb-0 md:sticky top-0 z-30 backdrop-blur">
       <div class="relative">
         @if (series.statusId === Status.OUTDATED)
           <h5 class="font-medium uppercase text-xs md:text-sm text-brand-600 opacity-70 flex items-center px-6 tracking-wider" title="This series may not have up-to-date information">
@@ -29,7 +29,7 @@
         @end
       </div>
     </div>
-    <ol class="flex-1 bg-gradient-to-br to-slate-100 to-opacity-50 from-slate-50 list-none m-0 p-0 px-3 top-0 left-0 overflow-y-auto hide-scrollbar -mt-3 md:mt-0" :class="{ 'hidden md:block': !show }">
+    <ol class="flex-1 list-none m-0 p-0 px-3 top-0 left-0 overflow-y-auto hide-scrollbar -mt-3 md:mt-0" :class="{ 'hidden md:block': !show }">
       @!lessons.seriesListModules({ modules: series.children })
       @!lessons.seriesListPosts({ posts: series.posts })
     </ol>

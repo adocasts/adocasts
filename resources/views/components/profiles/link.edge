@@ -1,0 +1,9 @@
+@if (user.isEnabledProfile)
+  <a href="{{ route('profiles.show', { username: user.handle }) }}" {{ $props.serializeExcept(['user']) }}>
+    {{{ await $slots.main() }}}
+  </a>
+@else
+  <span {{ $props.serializeExcept(['user']) }}>
+    {{{ await $slots.main() }}}
+  </span>
+@endif

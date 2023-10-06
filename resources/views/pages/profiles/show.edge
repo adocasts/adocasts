@@ -13,23 +13,23 @@
 @section('content')
 
   <div class="flex flex-wrap lg:flex-nowrap gap-6">
-    <div class="w-full lg:w-1/4 xl:w-1/5">
+    <div class="w-full lg:w-1/4">
       <div class="flex flex-col pb-10 sticky top-6">
         <div class="w-full lg:w-auto inline-flex flex-col pb-3">
-          <div class="w-32 lg:w-full flex justify-center items-center p-3 bg-slate-50 rounded-t-xl relative overflow-hidden shadow-xl">
+          <div class="w-32 lg:w-full flex justify-center items-center p-3 bg-slate-100 rounded-t-xl relative overflow-hidden shadow-xl">
             <img src="{{ user.avatar }}" class="absolute w-full h-full object-cover object-center scale-150 lg:scale-125 blur-md opacity-50" />
 
             <div class="aspect-square w-24 lg:w-40 relative z-10">
               <img src="{{ user.avatar }}" class="rounded-full aspect-square w-24 lg:w-40 shadow-lg border-2 border-slate-900/25" />
             </div>
           </div>
-          <div class="flex-1 bg-slate-50 rounded-b-xl shadow-xl p-6">
+          <div class="flex-1 bg-slate-100 rounded-b-xl shadow-xl p-6">
             <h1 class="font-semibold text-slate-900 text-2xl xl:text-3xl">
               {{ user.profile.name ?? user.username }}
             </h1>
             @if (user.profile.name)
               <p class="text-slate-600 text-sm xl:text-base max-w-prose mb-3">
-                {{ user.username }}
+                {{ user.handle }}
               </p>
             @endif
             @if (user.biography)
@@ -100,30 +100,30 @@
       </div>
     </div>
 
-    <div class="-mx-3 w-full lg:w-3/4 xl:w-4/5">
-      <dl class="grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
-        <div class="flex flex-col bg-slate-50 p-8">
+    <div class="w-full lg:w-3/4">
+      <dl class="grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4 mb-8">
+        <div class="flex flex-col bg-slate-100 p-8">
           <svg class="order-first w-10 mx-auto mb-4" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" stroke-linecap="round" stroke-linejoin="round"></path>
           </svg>
           <dt class="text-sm font-semibold leading-6 text-slate-400">Member Since</dt>
           <dd class="order-first text-3xl font-semibold tracking-tight text-slate-900">{{ user.createdAt.toFormat('MMM d, yyyy') }}</dd>
         </div>
-        <div class="flex flex-col bg-slate-50 p-8">
+        <div class="flex flex-col bg-slate-100 p-8">
           <svg class="order-first w-10 mx-auto mb-4" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" stroke-linecap="round" stroke-linejoin="round"></path>
           </svg>
           <dt class="text-sm font-semibold leading-6 text-slate-400">Lessons Completed</dt>
           <dd class="order-first text-3xl font-semibold tracking-tight text-slate-900">{{ completedLessonsCount }}</dd>
         </div>
-        <div class="flex flex-col bg-slate-50 p-8">
+        <div class="flex flex-col bg-slate-100 p-8">
           <svg class="order-first w-10 mx-auto mb-4" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" stroke-linecap="round" stroke-linejoin="round"></path>
           </svg>
           <dt class="text-sm font-semibold leading-6 text-slate-400">Comments Contributed</dt>
           <dd class="order-first text-3xl font-semibold tracking-tight text-slate-900">{{ commentCount }}</dd>
         </div>
-        <div class="flex flex-col bg-slate-50 p-8">
+        <div class="flex flex-col bg-slate-100 p-8">
           <svg class="order-first w-10 mx-auto mb-4" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0118 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0118 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75m-9.75 0A1.125 1.125 0 016 10.875M7.125 12C6.504 12 6 12.504 6 13.125m0-2.25C6 11.496 5.496 12 4.875 12M18 10.875c0 .621-.504 1.125-1.125 1.125M18 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m-12 5.25v-5.25m0 5.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125m-12 0v-1.5c0-.621-.504-1.125-1.125-1.125M18 18.375v-5.25m0 5.25v-1.5c0-.621.504-1.125 1.125-1.125M18 13.125v1.5c0 .621.504 1.125 1.125 1.125M18 13.125c0-.621.504-1.125 1.125-1.125M6 13.125v1.5c0 .621-.504 1.125-1.125 1.125M6 13.125C6 12.504 5.496 12 4.875 12m-1.5 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M19.125 12h1.5m0 0c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h1.5m14.25 0h1.5" stroke-linecap="round" stroke-linejoin="round"></path>
           </svg>
@@ -131,6 +131,16 @@
           <dd class="order-first text-3xl font-semibold tracking-tight text-slate-900">{{ hoursWatchedSum.toLocaleString('en-US', { maximumFractionDigits: 2 }) }}</dd>
         </div>
       </dl>
+
+      <div class="max-w-3xl mx-auto">
+        @!headings.section({ 
+          title: 'Recent Activity',
+          subtitle: `Here's what ${ user.handle } has been up to over the past year`
+        })
+        <div class="mt-6">
+          @!activity.list({ activity })
+        </div>
+      </div>
     </div>
   </div>
 

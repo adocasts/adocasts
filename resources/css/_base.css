@@ -13,11 +13,11 @@
   }
 
   a.anchor {
-    @apply text-brand-600 hover:text-brand-500;
+    @apply text-brand-700 hover:text-brand-800;
   }
 
   .app-container {
-    @apply max-w-[1450px] mx-auto px-6;
+    @apply max-w-[1300px] mx-auto px-6;
   }
 
   .app-container-sm {
@@ -25,7 +25,7 @@
   }
 
   .link {
-    @apply text-brand-500 hover:text-brand-700;
+    @apply text-brand-700 hover:text-brand-800;
   }
 
   .op-1 {
@@ -33,7 +33,7 @@
   }
   
   .op-2 {
-    @apply text-slate-500 group-hover:text-slate-800 duration-150;
+    @apply text-slate-600 group-hover:text-slate-800 duration-150;
   }
 
   .expand-link:after {
@@ -133,7 +133,7 @@
   }
 
   /* .hero-backdrop-container {
-    @apply absolute top-0 left-0 w-full bg-slate-50 rounded-b-[25px] lg:rounded-b-[100px] pointer-events-none;
+    @apply absolute top-0 left-0 w-full bg-slate-100 rounded-b-[25px] lg:rounded-b-[100px] pointer-events-none;
     
     height: 350px;
   
@@ -147,9 +147,9 @@
   } */
   
   .hero-backdrop-inner {
-    --header-height: calc(60px + 1.25rem);
+    --header-height: calc(80px + 1.25rem);
   
-    @apply absolute w-full h-[450px] lg:min-h-[600px] left-0 opacity-20 group-hover:opacity-80 duration-150 rounded-b-[25px] lg:rounded-b-[100px];
+    @apply absolute w-full h-[450px] lg:min-h-[600px] left-0 opacity-20 group-hover:opacity-80 duration-150;
     
     pointer-events: none;
     top: calc(var(--header-height) * -1);
@@ -157,13 +157,13 @@
   }
   
   .hero-backdrop-image {
-    @apply rounded-full w-full h-full min-h-[450px] lg:min-h-[600px] object-cover object-center scale-[1.75] group-hover:scale-[1.4] blur-xl group-hover:blur-none mb-3 duration-150;
+    @apply rounded-full w-full h-full min-h-[450px] lg:min-h-[600px] object-cover object-center scale-[2.25] group-hover:scale-[1.4] blur-xl group-hover:blur-none mb-3 duration-150;
   
     /* mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0)); */
   }
   
   .hero-backdrop-fade {
-    @apply absolute top-0 w-full h-full min-h-[450px] lg:min-h-[600px] bg-gradient-to-b from-transparent via-transparent to-slate-100 z-10 duration-150;
+    @apply absolute top-0 w-full h-full min-h-[450px] lg:min-h-[600px] bg-gradient-to-b from-body/0 via-body/50 to-body z-10 duration-150;
     /* @apply absolute top-2/3 left-0 w-full h-80 bg-gradient-to-b from-transparent to-slate-100 z-10; */
   }
 

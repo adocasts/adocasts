@@ -1,5 +1,6 @@
 @layout('layouts/app')
 @set('hasVideo', post.videoUrl || post.livestreamUrl)
+@set('plusMonthly', await Plan.findOrFail(Plans.PLUS_MONTHLY))
 
 @section('meta')
   @!meta.tags({
@@ -14,7 +15,9 @@
 
 @section('list')
 
-  @if (series)
+  @if (path)
+    @!lessons.pathList({ path })
+  @elseif (series)
     @!lessons.seriesList({ series })
   @elseif (similarLessons?.length)
     @!lessons.similarList({ similarLessons })
@@ -24,12 +27,28 @@
 
 @section('hero')
 
-  {{--  <progress id="reading-progress" class="hidden" max="100" value="0"></progress>  --}}
-
   @if (hasVideo)
     <div id="videoPlayerContainer" class="pb-6">
-      <div class="app-container">
-        <div id="videoPlayerPosition" class="aspect-video relative rounded-xl overflow-hidden"></div>
+      <div class="app-container !px-0">
+        @cannot('PostPolicy.view', post)
+          <div class="no-access relative aspect-video bg-slate-100 bg-gradient-to-br from-accent-base-800/25 to-brand-base-900/25 p-12 flex items-center justify-center w-full h-full">
+            <img class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full object-cover opacity-10" src="/img/brand/bg-texture-1.jpg" />
+
+            @!plus.postCta({ 
+              post, 
+              plusMonthly, 
+              outlineVariant: 'base-light', 
+              size: 'lg', 
+              countdown: true 
+            })
+          </div>
+        @else
+          <div class="bg-slate-100 bg-gradient-to-br from-slate-base-800/50 to-slate-base-900/50">
+            <div class="mx-auto" style="max-width: 150vh;">
+              <div id="videoPlayerPosition" class="aspect-video relative overflow-hidden"></div>
+            </div>
+          </div>
+        @endcannot
       </div>
     </div>
   @endif
@@ -37,8 +56,8 @@
   @if (series)
     <div class="app-container lg:hidden">
       <div class="flex mb-6 space-x-3">
-        @if (prevSeriesLesson)
-          @buttons.primary.inverse({ href: routePost(prevSeriesLesson), attrs: 'up-follow' })
+        @if (prevLesson)
+          @buttons.primary.inverse({ href: prevLesson.routeUrl, attrs: 'up-follow' })
             @!icons.chevronLeft({ className: 'w-6 h-6' })
           @end
         @endif
@@ -52,8 +71,8 @@
           Series Details
         @end
 
-        @if (nextSeriesLesson)
-          @buttons.primary.inverse({ href: routePost(nextSeriesLesson), attrs: 'up-follow' })
+        @if (nextLesson)
+          @buttons.primary.inverse({ href: nextLesson.routeUrl, attrs: 'up-follow' })
             @!icons.chevronRight({ className: 'w-6 h-6' })
           @end
         @endif
@@ -67,33 +86,56 @@
 
   <div class="grid-post-content -mx-3">
     <div class="w-full title">
-      @!lessons.titleBox({ post, views, series, userProgression })
+      @!lessons.titleBox({ post, views, series, path, userProgression })
     </div>
 
     <aside class="w-full post-aside actions top mb-6 xl:pl-6">
-      <div class="xl:bg-slate-50 rounded-xl xl:p-6 xl:border border-slate-200/75">
+      <div class="xl:bg-slate-100 rounded-xl xl:p-6">
         @!lessons.author({ post, views })
 
-        <div class="hidden xl:block mt-6 xl:ml-3 space-y-6 border-t border-slate-200/50 pt-6">
-          @!ads.vertical()
-          <div class="hidden xl:block">
+        @can('AdPolicy.view')
+          <div class="hidden xl:block mt-6 xl:ml-3 space-y-6 border-t border-slate-200/50 pt-6">
             @!ads.vertical()
+            <div class="hidden xl:block">
+              @!ads.vertical()
+            </div>
           </div>
-        </div>
+        @endcan
       </div>
     </aside>
     
     <main class="w-full">
-      <div class="body-content bg-slate-50 rounded-xl p-6 border border-slate-200/75">
-        <div class="rounded-b-xl -m-6 mb-6 px-6 py-3 border-b border-slate-200/75">
-          @!ads.leaderboard()
-        </div>
-        <article id="proseBody" class="prose no-max !max-w-3xl flex-1 xl:py-6 post-type-{{ post.postTypeId }} text-slate-900">
-          {{{ post.body }}}
-        </article>
-      </div>
+      @set('canViewAds', await bouncer.with('AdPolicy').allows('view'))
+      @set('canViewPost', await bouncer.with('PostPolicy').allows('view', post)) 
+      @set('showBodyContent', canViewAds || !canViewPost || post.body?.length)
 
-      @!comments.base({ postId: post.id, comments, commentsCount })
+      @if (showBodyContent)
+        <div class="body-content bg-slate-100 rounded-xl p-6 xl:px-12">
+          @can('AdPolicy.view')
+            <div class="-mt-6 mx-3 mb-6 px-3 py-3 border-b border-slate-200/75">
+              @!ads.leaderboard()
+            </div>
+          @endcan
+          <article id="proseBody" class="prose xl:prose-lg no-max !max-w-3xl flex-1 xl:py-6 post-type-{{ post.postTypeId }} text-slate-700 relative">
+            @can('PostPolicy.view', post)
+              {{{ post.body }}}
+            @else
+              <div class="relative">
+                {{{ await getBodyPreview(post.body) }}}
+                <div class="w-full absolute bottom-0 left-0 h-full bg-gradient-to-b from-slate-100/0 via-slate-100/75 to-slate-100 z-10"></div>
+              </div>
+
+              <div class="bg-slate-200 rounded-xl p-6 shadow-xl -mt-16 relative z-20">
+                @!plus.postCta({ post, plusMonthly })
+              </div>
+            @endcan
+          </article>
+        </div>
+      @endif
+
+      <div class="{{ !showBodyContent ? '-mt-6' : '' }}">
+        @!comments.base({ postId: post.id, comments, commentsCount })
+      </div>
     </main>
   </div>
 

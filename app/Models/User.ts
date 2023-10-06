@@ -19,6 +19,10 @@ import LessonRequest from './LessonRequest'
 import Roles from 'App/Enums/Roles'
 import RequestVote from './RequestVote'
 import HistoryTypes from 'App/Enums/HistoryTypes'
+import Plan from './Plan'
+import Plans from 'App/Enums/Plans'
+import StripeSubscriptionStatuses from 'App/Enums/StripeSubscriptionStatuses'
+import * as timeago from 'timeago.js'
 
 class User extends AppBaseModel {
   @column({ isPrimary: true })
@@ -26,6 +30,9 @@ class User extends AppBaseModel {
 
   @column()
   public roleId: number
+
+  @column()
+  public planId: number
 
   @column()
   @slugify({
@@ -39,6 +46,18 @@ class User extends AppBaseModel {
 
   @column({ serializeAs: null })
   public password: string
+
+  @column({ serializeAs: null })
+  public stripeCustomerId: string | null
+
+  @column()
+  public stripeSubscriptionStatus: StripeSubscriptionStatuses | null
+
+  @column.dateTime()
+  public stripeSubscriptionPausedAt: DateTime | null
+
+  @column.dateTime()
+  public stripeSubscriptionCanceledAt: DateTime | null
 
   @column()
   public rememberMeToken?: string
@@ -71,16 +90,42 @@ class User extends AppBaseModel {
   public theme: string = Themes.SYSTEM
 
   @column()
+  public isEnabledProfile: boolean
+
+  @column()
+  public isEnabledMiniPlayer: boolean
+
+  @column()
+  public isEnabledAutoplayNext: boolean
+
+  @column()
   public emailVerified: string | null
 
   @column.dateTime()
   public emailVerifiedAt: DateTime | null
+
+  @column.dateTime()
+  public planPeriodStart: DateTime | null
+
+  @column.dateTime()
+  public planPeriodEnd: DateTime | null
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @computed()
+  public get handle() {
+    return `@${this.username}`
+  }
+
+  @computed()
+  public get memberDuration() {
+    if (!this.createdAt) return
+    return timeago.format(this.createdAt.toJSDate())
+  }
 
   @computed()
   public get avatar() {
@@ -92,12 +137,23 @@ class User extends AppBaseModel {
       return `/img/${this.avatarUrl}`
     }
 
-    return gravatar.url(this.email, { s: '40' })
+    return gravatar.url(this.email, { s: '100' })
   }
 
   @computed()
   public get isAdmin() {
     return this.roleId === Roles.ADMIN
+  }
+
+  @computed()
+  public get isSubscriptionActive() {
+    if (this.planId === Plans.FOREVER) return true
+    return this.stripeSubscriptionStatus === StripeSubscriptionStatuses.ACTIVE
+  }
+
+  @computed()
+  public get isFreeTier() {
+    return this.planId === Plans.FREE || !this.isSubscriptionActive
   }
 
   @computed()
@@ -120,6 +176,9 @@ class User extends AppBaseModel {
 
   @belongsTo(() => Role)
   public role: BelongsTo<typeof Role>
+
+  @belongsTo(() => Plan)
+  public plan: BelongsTo<typeof Plan>
 
   @hasMany(() => Collection, {
     foreignKey: 'ownerId'
