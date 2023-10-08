@@ -83,8 +83,8 @@
     @if (author.profile.website)
       <div class="mt-6">
         @buttons.brand.base({ className: 'flex flex-col', href: author.profile.website, block: true, attrs: 'target="_blank"' })
-          <span class="text-base -mb-1">Visit Website</span>
-          <span class="text-xs truncate">({{ displaySocialUrl(author.profile.website) }})</span>
+          <span class="text-base -my-1">Visit Website</span>
+          <span class="truncate leading-none" style="font-size: .65rem;">({{ displaySocialUrl(author.profile.website) }})</span>
         @end
       </div>
     @endif

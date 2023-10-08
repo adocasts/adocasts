@@ -6,7 +6,8 @@
     You're all set, forever! You'll always have access to all of our past and future content.
   </p>
 @elseif (auth.user.planId === Plans.PLUS_ANNUAL)
-  <strong class="text-xl">Adocasts+</strong>
+  <img class="logo-white h-6 relative" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts+" />
+  <img class="logo-black h-6 relative" src="/imgs/adocasts-plus-black-40.png" alt="Adocasts+" />
   
   <p class="text-slate-600 mb-3">
     @if (auth.user.stripeSubscriptionStatus === StripeSubscriptionStatuses.PAUSED)
@@ -54,7 +55,8 @@
   @!form.post({ id: 'foreverForm', action: route('stripe.checkout', { slug: forever.slug }) })
   @!form.post({ id: 'stripePortalForm', action: route('stripe.portal') })
 @elseif (auth.user.planId === Plans.PLUS_MONTHLY)
-  <strong class="text-xl">Adocasts+</strong>
+  <img class="logo-white h-6 relative" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts+" />
+  <img class="logo-black h-6 relative" src="/imgs/adocasts-plus-black-40.png" alt="Adocasts+" />
   
   <p class="text-slate-600 mb-3">
     @if (auth.user.stripeSubscriptionStatus === StripeSubscriptionStatuses.PAUSED)

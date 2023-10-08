@@ -89,24 +89,36 @@
 
     <section class="flex flex-col gap-y-3">
       <div class="flex items-center gap-x-3">
-        <figure>
-          <img class="w-12 h-12 rounded shadow-md" src="{{ auth.user.avatar }}" />
-        </figure>
+        @profiles.link({ user: auth.user })
+          <figure>
+            <img class="w-16 h-16 rounded shadow-xl" src="{{ auth.user.avatar }}" />
+          </figure>
+        @end
         <div>
-          <h3>{{ auth.user.username }}</h3>
-          <p class="text-xs text-slate-700">Member Since {{ auth.user.createdAt.toLocaleString('en-US') }}</p>
+          <h3 class="text-lg mb-0.5">
+            @profiles.link({ user: auth.user })
+              {{ auth.user.username }}
+            @end
+          </h3>
 
           @set('plan', await auth.user.related('plan').query().firstOrFail())
           @if (auth.user.stripeCustomerId)
-            <button type="submit" form="stripePortalForm" class="text-xs text-slate-700 flex items-center gap-1.5">
+            <button type="submit" form="stripePortalForm" class="text-xs text-black flex items-center gap-1.5">
               @if (auth.user.stripeSubscriptionStatus === StripeSubscriptionStatuses.PAUSED)
                 <span class="flex p-0.5 rounded bg-orange-100 text-orange-600 uppercase tracking-wider leading-none" style="font-size: .65rem;">
                   {{ auth.user.stripeSubscriptionStatus }}
                 </span>
               @endif
+              @if (!auth.user.isFreeTier)
+                <img class="logo-white h-2.5 relative top-px" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts+" />
+                <img class="logo-black h-2.5 relative top-px" src="/imgs/adocasts-plus-black-40.png" alt="Adocasts+" />
+              @endif
               {{ plan.name }}
             </button>
             @!form.post({ id: 'stripePortalForm', action: route('stripe.portal') })
+            @profiles.link({ user: auth.user, class: 'text-xs anchor relative -top-0.5' })
+              View Your Profile
+            @end
           @else
             <p class="text-xs text-slate-700 flex items-center gap-1.5">
               @if (auth.user.stripeSubscriptionStatus === StripeSubscriptionStatuses.PAUSED)
@@ -114,8 +126,15 @@
                   {{ auth.user.stripeSubscriptionStatus }}
                 </span>
               @endif
+              @if (!auth.user.isFreeTier)
+                <img class="logo-white h-2.5 relative top-px" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts+" />
+                <img class="logo-black h-2.5 relative top-px" src="/imgs/adocasts-plus-black-40.png" alt="Adocasts+" />
+              @endif
               {{ plan.name }}
             </p>
+            @profiles.link({ user: auth.user, class: 'text-xs anchor relative -top-0.5' })
+              View Your Profile
+            @end
           @endif
         </div>
       </div>

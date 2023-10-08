@@ -146,6 +146,7 @@ export default class StripeService {
 
   public async createCheckoutSession(user: User, planSlug: string) {
     const plan = await Plan.findByOrFail('slug', planSlug)
+    const discounts: Stripe.Checkout.SessionCreateParams.Discount[] = []
     let customerId = user.stripeCustomerId
 
     if (!user.stripeCustomerId) {
@@ -153,7 +154,12 @@ export default class StripeService {
       customerId = customer.id
     }
 
+    if (plan.hasActiveSale && plan.stripeCouponId) {
+      discounts.push({ coupon: plan.stripeCouponId })
+    }
+
     return this.stripe.checkout.sessions.create({
+      discounts,
       mode: plan.id === Plans.FOREVER ? 'payment' : 'subscription',
       customer: customerId!,
       line_items: [{ 

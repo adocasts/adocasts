@@ -1,5 +1,6 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 import Plans from 'App/Enums/Plans'
+import { DateTime } from 'luxon'
 
 export default class extends BaseSchema {
   protected tableName = 'plans'
@@ -29,6 +30,8 @@ export default class extends BaseSchema {
         name: 'Free Plan',
         description: "Free, limited, access to Adocasts content with ads.",
         price: 0,
+        created_at: DateTime.now().toSQL(),
+        updated_at: DateTime.now().toSQL()
       }, {
         id: Plans.PLUS_MONTHLY,
         slug: 'plus-monthly',
@@ -36,7 +39,9 @@ export default class extends BaseSchema {
         description: "Gain access to all Adocasts content, ad free",
         stripe_price_id: 'price_1NwSjRFPw3xO2XBhWexLbwFM',
         stripe_price_test_id: 'price_1LbTUAFPw3xO2XBhGnZz7AI1',
-        price: 8 * 100
+        price: 8 * 100,
+        created_at: DateTime.now().toSQL(),
+        updated_at: DateTime.now().toSQL()
       }, {
         id: Plans.PLUS_ANNUAL,
         slug: 'plus-annually',
@@ -44,7 +49,9 @@ export default class extends BaseSchema {
         description: "Gain access to all Adocasts content, ad free",
         stripe_price_id: 'price_1LbNpsFPw3xO2XBha1ujKpLA',
         stripe_price_test_id: 'price_1LbTUAFPw3xO2XBhVTPfzrri',
-        price: 80 * 100
+        price: 80 * 100,
+        created_at: DateTime.now().toSQL(),
+        updated_at: DateTime.now().toSQL()
       }, {
         id: Plans.FOREVER,
         slug: 'forever',
@@ -52,7 +59,9 @@ export default class extends BaseSchema {
         description: "Gain access to all Adocasts content, ad free, forever!",
         stripe_price_id: 'price_1M72t2FPw3xO2XBhPBIYkUuL',
         stripe_price_test_id: 'price_1M73ErFPw3xO2XBhi82Ouuml',
-        price: 285 * 100
+        price: 285 * 100,
+        created_at: DateTime.now().toSQL(),
+        updated_at: DateTime.now().toSQL()
       }])
     })
   }

@@ -37,7 +37,8 @@
               </h6>
               <div class="flex items-center gap-6 text-xs">
                 @if (!comment.user.isFreeTier)
-                  Adocasts+
+                  <img class="logo-white h-2.5 relative" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts+" />
+                  <img class="logo-black h-2.5 relative" src="/imgs/adocasts-plus-black-40.png" alt="Adocasts+" />
                 @endif
               </div>
               @if (lessonRequest && lessonRequest.approveCommentId === comment.id)

@@ -11,7 +11,14 @@
     @set('progressPercent', 100)
   @endif
 
-  <div class="absolute {{ left }} {{ bottom }} {{ right }} {{ bg }} bg-opacity-30 backdrop-blur h-2 rounded-full">
-    <div class="bg-gradient-to-b {{ progressPercent == 100 ? 'from-green-400 to-green-600' : 'from-accent-50/80 via-accent-100/60 to-accent-200/30' }} h-2 rounded-full" style="width: {{ progressPercent }}%"></div>
+  @set('gradient', progressPercent == 100 ? 'from-green-500 to-green-600 text-green-50' : 'from-accent-600 to-accent-700 text-accent-50')
+
+  <div class="absolute {{ left }} {{ bottom }} {{ right }}">
+    <div class="font-mono inline-block mb-1 rounded-full px-1.5 py-1 leading-none bg-gradient-to-b {{ gradient }}" style="font-size: .65rem;">
+      {{ progressPercent }}%
+    </div>
+    <div class="{{ bg }} bg-opacity-30 backdrop-blur h-1.5 rounded-full relative">
+      <div class="bg-gradient-to-b {{ gradient }} h-1.5 rounded-full" style="width: {{ progressPercent }}%"></div>
+    </div>
   </div>
 @endif

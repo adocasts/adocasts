@@ -25,31 +25,74 @@
   <div class="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2">
     <div x-data="{ display: 'monthly' }" x-cloak class="rounded-3xl p-8 ring-1 ring-slate-900/10 sm:p-10 relative bg-white shadow-2xl">
       <div class="flex justify-between">
-        <div>
-          <h3 id="tier-personal" class="text-base font-semibold leading-7 text-brand-600">Adocasts+</h3>
-          <p class="mt-4 flex items-baseline gap-x-2">
-            <span class="text-5xl font-bold tracking-tight text-slate-900">
-              <span x-show="display === 'monthly'">{{ plusMonthly.displayPrice }}</span>
-              <span x-show="display === 'annually'">{{ plusAnnual.displayPrice }}</span>
-            </span>
-            <span class="text-base text-slate-600">
-              <span x-show="display === 'monthly'">/month</span>
-              <span x-show="display === 'annually'">/year</span>
-            </span>
-          </p>
+        <div class="text-base font-semibold leading-7 text-black mb-6">
+          <img class="logo-white h-6" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts+" loading="lazy" />
+          <img class="logo-black h-6" src="/imgs/adocasts-plus-black-40.png" alt="Adocasts+" loading="lazy" />
+          <span class="sr-only">Adocasts Plus</span>
+          <span x-text="display === 'monthly' ? 'Monthly' : 'Annually'"></span>
         </div>
-        <div class="mt-16 flex justify-center">
-          <fieldset class="grid grid-cols-2 gap-x-1 rounded-full p-1 text-center text-xs font-semibold leading-5 ring-1 ring-inset ring-slate-200">
+
+        <div class="flex justify-center">
+          <fieldset class="grid grid-cols-2 gap-x-1 h-10 rounded-full p-1 text-center text-xs font-semibold leading-5 ring-1 ring-inset ring-slate-200">
             <legend class="sr-only">Payment frequency</legend>
-            <label class="cursor-pointer rounded-full px-2.5 py-1" :class="[display === 'monthly' ? 'bg-brand-600 bg-gradient-to-br from-accent-500/50 to-brand-500 text-brand-base-50' : 'text-slate-500 hover:text-slate-700']">
+            <label class="cursor-pointer rounded-full flex items-center justify-center px-2.5 py-1" :class="[display === 'monthly' ? 'bg-brand-600 bg-gradient-to-br from-accent-500/50 to-brand-500 text-brand-base-50' : 'text-slate-500 hover:text-slate-700']">
               <input type="radio" name="frequency" x-model="display" value="monthly" class="sr-only">
               <span>Monthly</span>
             </label>
-            <label class="cursor-pointer rounded-full px-2.5 py-1" :class="[display === 'annually' ? 'bg-brand-600 bg-gradient-to-br from-accent-500/50 to-brand-500 text-brand-base-50' : 'text-slate-500 hover:text-slate-700']">
+            <label class="cursor-pointer rounded-full flex items-center justify-center px-2.5 py-1" :class="[display === 'annually' ? 'bg-brand-600 bg-gradient-to-br from-accent-500/50 to-brand-500 text-brand-base-50' : 'text-slate-500 hover:text-slate-700']">
               <input type="radio" name="frequency" x-model="display" value="annually" class="sr-only">
               <span>Annually</span>
             </label>
           </fieldset>
+        </div>
+      </div>
+      <div class="flex justify-between">
+        <div>
+          @if (plusMonthly.hasActiveSale)
+            <div x-show="display === 'monthly'">
+              <div class="text-xs inline-block bg-accent-500 rounded-full px-2 py-1">
+                Save {{ plusMonthly.couponDescriptor }}
+              </div>
+              <p class="mt-4 flex items-baseline gap-x-2">
+                <span class="text-5xl font-bold tracking-tight text-slate-900">{{ plusMonthly.displaySalePrice }}</span>
+                <span class="text-base text-slate-600">/month</span>
+              </p>
+              <p class="mt-1 flex items-baseline line-through">
+                <span class="text-slate-600">{{ plusMonthly.displayPrice }}</span>
+                <span class="text-base text-slate-600">/month</span>
+              </p>
+            </div>
+          @else
+            <div x-show="display === 'monthly'">
+              <p class="mt-4 flex items-baseline gap-x-2">
+                <span class="text-5xl font-bold tracking-tight text-slate-900">{{ plusMonthly.displayPrice }}</span>
+                <span class="text-base text-slate-600">/month</span>
+              </p>
+            </div>
+          @endif
+
+          @if (plusAnnual.hasActiveSale)
+            <div x-show="display === 'annually'">
+              <div class="text-xs inline-block bg-accent-500 rounded-full px-2 py-1">
+                Save {{ plusAnnual.couponDescriptor }}
+              </div>
+              <p class="mt-4 flex items-baseline gap-x-2">
+                <span class="text-5xl font-bold tracking-tight text-slate-900">{{ plusAnnual.displaySalePrice }}</span>
+                <span class="text-base text-slate-600">/year</span>
+              </p>
+              <p class="mt-1 flex items-baseline line-through">
+                <span class="text-slate-600">{{ plusAnnual.displayPrice }}</span>
+                <span class="text-base text-slate-600">/year</span>
+              </p>
+            </div>
+          @else
+            <div x-show="display === 'annually'">
+              <p class="mt-4 flex items-baseline gap-x-2">
+                <span class="text-5xl font-bold tracking-tight text-slate-900">{{ plusAnnual.displayPrice }}</span>
+                <span class="text-base text-slate-600">/year</span>
+              </p>
+            </div>
+          @endif
         </div>
       </div>
       <p class="mt-6 text-base leading-7 text-slate-600">
@@ -73,6 +116,12 @@
             <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
           </svg>
           Ad-free experience
+        </li>
+        <li class="flex gap-x-3">
+          <svg class="h-6 w-5 flex-none text-brand-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+          </svg>
+          Cancel anytime
         </li>
       </ul>
       <div x-show="display === 'monthly'" class="w-full mt-8 sm:mt-10">
@@ -101,11 +150,30 @@
       </div>
     </div>
     <div class="rounded-3xl p-8 ring-1 ring-slate-900/10 sm:p-10 bg-white/60 sm:mx-8 lg:mx-0 sm:rounded-t-none lg:rounded-tr-3xl lg:rounded-bl-none">
-      <h3 id="tier-team" class="text-base font-semibold leading-7 text-brand-600">Forever</h3>
-      <p class="mt-4 flex items-baseline gap-x-2">
-        <span class="text-5xl font-bold tracking-tight text-slate-900">{{ forever.displayPrice }}</span>
-        <span class="text-base text-slate-600">/lifetime</span>
-      </p>
+      <div class="text-base font-semibold leading-7 text-black mb-6">
+        <img class="logo-white h-6" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts+" loading="lazy" />
+        <img class="logo-black h-6" src="/imgs/adocasts-plus-black-40.png" alt="Adocasts+" loading="lazy" />
+        <span class="sr-only">Adocasts Plus</span>
+        Forever
+      </div>
+        @if (forever.hasActiveSale)
+          <div class="text-xs inline-block bg-accent-500 rounded-full px-2 py-1">
+            Save {{ forever.couponDescriptor }}
+          </div>
+          <p class="mt-4 flex items-baseline gap-x-2">
+            <span class="text-5xl font-bold tracking-tight text-slate-900">{{ forever.displaySalePrice }}</span>
+            <span class="text-base text-slate-600">/lifetime</span>
+          </p>
+          <p class="mt-1 flex items-baseline line-through">
+            <span class="text-slate-600">{{ forever.displayPrice }}</span>
+            <span class="text-base text-slate-600">/lifetime</span>
+          </p>
+        @else
+          <p class="mt-4 flex items-baseline gap-x-2">
+            <span class="text-5xl font-bold tracking-tight text-slate-900">{{ forever.displayPrice }}</span>
+            <span class="text-base text-slate-600">/lifetime</span>
+          </p>
+        @endif
       <p class="mt-6 text-base leading-7 text-slate-600">
         Hate subscriptions? Me too! Pay once, then never again with our forever plan.
       </p>
@@ -114,13 +182,19 @@
           <svg class="h-6 w-5 flex-none text-brand-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
           </svg>
-          Everything in Adocasts+
+          Unlock all series and lessons forever
         </li>
         <li class="flex gap-x-3">
           <svg class="h-6 w-5 flex-none text-brand-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
           </svg>
-          Pay once then never again!
+          2 weeks early access to new lessons forever
+        </li>
+        <li class="flex gap-x-3">
+          <svg class="h-6 w-5 flex-none text-brand-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+          </svg>
+          Ad-free experience forever
         </li>
       </ul>
       <div class="w-full mt-8 sm:mt-10">

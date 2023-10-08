@@ -137,7 +137,20 @@ class User extends AppBaseModel {
       return `/img/${this.avatarUrl}`
     }
 
-    return gravatar.url(this.email, { s: '100' })
+    return gravatar.url(this.email, { s: '60' })
+  }
+
+  @computed()
+  public get avatarLarge() {
+    if (this.avatarUrl) {
+      if (this.avatarUrl.startsWith('https://')) {
+        return this.avatarUrl
+      }
+      
+      return `/img/${this.avatarUrl}`
+    }
+
+    return gravatar.url(this.email, { s: '250' })
   }
 
   @computed()

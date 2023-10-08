@@ -14,6 +14,7 @@ import VideoTypes from 'App/Enums/VideoTypes'
 import Env from '@ioc:Adonis/Core/Env'
 import StripeSubscriptionStatuses from 'App/Enums/StripeSubscriptionStatuses'
 import PaywallTypes from 'App/Enums/PaywallTypes'
+import CouponDurations from 'App/Enums/CouponDurations'
 
 if (Env.get('NODE_ENV') === 'test') {
   View.global('csrfField', () => '')
@@ -29,6 +30,7 @@ View.global('Plan', Plan)
 View.global('VideoTypes', VideoTypes)
 View.global('PaywallTypes', PaywallTypes)
 View.global('StripeSubscriptionStatuses', StripeSubscriptionStatuses)
+View.global('CouponDurations', CouponDurations)
 
 View.global('NotificationService', NotificationService)
 

@@ -301,7 +301,7 @@ export default class Post extends AppBaseModel {
 
   @computed()
   public get paywallDaysRemaining() {
-    const { days } = DateTime.now().diff(this.publishAt!, ['days'])
+    const { days } = this.publishAt!.plus({ days: 14 }).diffNow('days')
     return days
   }
 

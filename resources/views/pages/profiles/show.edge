@@ -20,30 +20,22 @@
             <img src="{{ user.avatar }}" class="absolute w-full h-full object-cover object-center scale-150 lg:scale-125 blur-md opacity-50" />
 
             <div class="aspect-square w-24 lg:w-40 relative z-10">
-              <img src="{{ user.avatar }}" class="rounded-full aspect-square w-24 lg:w-40 shadow-lg border-2 border-slate-900/25" />
+              <img src="{{ user.avatarLarge }}" class="rounded-full aspect-square w-24 lg:w-40 shadow-lg border-2 border-slate-900/25" />
             </div>
           </div>
           <div class="flex-1 bg-slate-100 rounded-b-xl shadow-xl p-6">
             <h1 class="font-semibold text-slate-900 text-2xl xl:text-3xl">
-              {{ user.profile.name ?? user.username }}
+              {{ user.profile.name ?? user.handle }}
             </h1>
             @if (user.profile.name)
               <p class="text-slate-600 text-sm xl:text-base max-w-prose mb-3">
                 {{ user.handle }}
               </p>
             @endif
-            @if (user.biography)
-              <p class="text-slate-600 text-sm xl:text-base max-w-prose mt-3 mb-3">
-                {{ user.biography }}
+            @if (user.profile.biography)
+              <p class="text-slate-600 text-sm max-w-prose mt-3 mb-6">
+                {{ user.profile.biography }}
               </p>
-            @endif
-            @if (user.profile.website)
-              <div class="my-6">
-                @buttons.brand.base({ className: 'flex flex-col', href: user.profile.website, block: true, attrs: 'target="_blank"' })
-                  <span class="text-base -mb-1">Visit Website</span>
-                  <span class="text-xs truncate">({{ displaySocialUrl(user.profile.website) }})</span>
-                @end
-              </div>
             @endif
             <div class="text-sm text-slate-600 tracking-wider mb-3 flex flex-col gap-1">
               @if (user.profile.company)
@@ -95,6 +87,15 @@
                 </a>
               @endif
             </div>
+
+            @if (user.profile.website)
+              <div class="mt-6">
+                @buttons.brand.base({ className: 'flex flex-col', href: user.profile.website, block: true, attrs: 'target="_blank"' })
+                  <span class="text-base -my-1">Visit Website</span>
+                  <span class="truncate leading-none" style="font-size: .65rem;">({{ displaySocialUrl(user.profile.website) }})</span>
+                @end
+              </div>
+            @endif
           </div>
         </div>
       </div>
