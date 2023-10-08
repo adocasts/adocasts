@@ -1,5 +1,4 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import type { ApplicationContract } from '@ioc:Adonis/Core/Application'
 import Application from '@ioc:Adonis/Core/Application'
 
 export default class Turnstile {

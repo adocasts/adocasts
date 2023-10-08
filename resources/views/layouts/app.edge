@@ -24,7 +24,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
   <script defer data-domain="adocasts.com" src="https://analytics.adocasts.com/js/plausible.js"></script>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+  
+  @if (env('TURNSTILE_ENABLED'))
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+  @endif
   
   @can('AdPolicy.view')
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0874550857266190" crossorigin="anonymous"></script>

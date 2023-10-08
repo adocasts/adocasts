@@ -9,10 +9,14 @@ import Database from '@ioc:Adonis/Lucid/Database'
 import States from 'App/Enums/States'
 import History from 'App/Models/History'
 import HistoryTypes from 'App/Enums/HistoryTypes'
+import User from './User'
 
 export default class Taxonomy extends AppBaseModel {
   @column({ isPrimary: true })
   public id: number
+
+  @column()
+  public ownerId: number
 
   @column()
   public rootParentId: number | null
@@ -53,6 +57,11 @@ export default class Taxonomy extends AppBaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @belongsTo(() => User, {
+    foreignKey: 'ownerId'
+  })
+  public owner: BelongsTo<typeof User>
 
   @belongsTo(() => Asset)
   public asset: BelongsTo<typeof Asset>

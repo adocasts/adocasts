@@ -3,10 +3,12 @@ import axios from "axios";
 import Env from "@ioc:Adonis/Core/Env";
 
 export default class TurnstileService {
+  private isEnabled = Env.get('TURNSTILE_ENABLED')
+
   constructor(protected ctx: HttpContextContract) {}
 
   public async check() {
-    if (this.ctx.session.get('TURNSTILE_STATUS') == true) {
+    if (!this.isEnabled || this.ctx.session.get('TURNSTILE_STATUS') == true) {
       return true
     }
     

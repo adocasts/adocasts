@@ -26,24 +26,6 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.get('/img/:userId/:filename', 'AssetsController.show').as('userimg')
 Route.get('/img/*', 'AssetsController.show').where('path', /.*/).as('img')
 
-Route.get('/test', async ({ view }) => {
-  // const box = new Dropbox({ accessToken: Env.get('DROPBOX_ACCESS_TOKEN') })
-
-  // return box.filesGetMetadata({ path: '/thanks-for-watching.mp4' })
-
-  // const resp = await box.filesGetTemporaryLink({ path: '/thanks-for-watching.mp4' })
-  // const link = resp.result.link
-
-  // return view.render('pages/test')
-})
-
-Route.get('/video/:path', async () => {
-  // const box = new Dropbox({ accessToken: Env.get('DROPBOX_ACCESS_TOKEN') })
-
-  // const resp = await box.filesDownload({ path: '/thanks-for-watching.mp4' })
-  // const link = resp.result
-})
-
 Route.group(() => {
   // PUBLIC -- Redirects from old
   Route.on('/topics/adonisjs-5').redirectToPath('/topics/adonisjs')

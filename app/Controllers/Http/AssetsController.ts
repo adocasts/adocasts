@@ -1,6 +1,5 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Asset from 'App/Models/Asset';
-import StorageService from 'App/Services/StorageService';
 import AssetService from 'App/Services/AssetService';
 import CacheService from 'App/Services/CacheService';
 import Database from '@ioc:Adonis/Lucid/Database';
@@ -33,7 +32,6 @@ export default class AssetsController {
           byteSize = file.bytes || 0;
 
           await Drive.putStream(filename, file)
-          // await StorageService.upload(file, customFilename);
         } catch (error) {
           console.error(error);
         }
@@ -83,22 +81,18 @@ export default class AssetsController {
 
       if (!isCached && !isSkipResize) {
         const exists = await Drive.exists(tempName)
-        // const exists = await StorageService.exists(tempName);
 
         if (!exists) {
           let file = await Drive.get(path)
-          // let file = await StorageService.getBufferOrProd(path);
 
           image = await AssetService.getAlteredImage(file, options);
 
           await Drive.put(tempName, image)
-          // await StorageService.upload(image, tempName);
         }
       }
 
       if (!image) {
         image = await Drive.get(isSkipResize ? path : tempName)
-        // image = await StorageService.getBuffer(isSVG ? path : tempName);
       }
 
       await CacheService.set(tempName, true);
@@ -125,7 +119,7 @@ export default class AssetsController {
     await asset.related('taxonomies').query().update({ assetId: null })
     await asset.delete()
 
-    await StorageService.destroy(asset.filename)
+    await Drive.delete(asset.filename)
 
     return response.status(200).json({
       status: 200,

@@ -5,6 +5,7 @@ import User from 'App/Models/User'
 import { CommentFactory } from './CommentFactory'
 import { PostFactory } from './PostFactory'
 import { ProfileFactory } from './ProfileFactory'
+import { CollectionFactory } from './CollectionFactory'
 
 export const UserFactory = Factory
   .define(User, ({ faker }) => ({
@@ -13,7 +14,7 @@ export const UserFactory = Factory
     username: faker.internet.userName(),
     email: faker.internet.email(),
     password: faker.internet.password(),
-    avatarUrl: faker.image.url(),
+    avatarUrl: faker.image.url({ width: 300, height: 300 }),
   }))
   .state('admin', user => user.roleId = Roles.ADMIN)
   .state('plusMonthly', user => user.planId = Plans.PLUS_MONTHLY)
@@ -25,4 +26,5 @@ export const UserFactory = Factory
   .relation('comments', () => CommentFactory)
   .relation('posts', () => PostFactory)
   .relation('profile', () => ProfileFactory)
+  .relation('collections', () => CollectionFactory)
   .build()

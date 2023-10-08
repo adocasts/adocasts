@@ -97,7 +97,9 @@ export default class Collection extends AppBaseModel {
     return this.sortOrder + 1
   }
 
-  @belongsTo(() => User)
+  @belongsTo(() => User, {
+    foreignKey: 'ownerId'
+  })
   public owner: BelongsTo<typeof User>
 
   @belongsTo(() => Asset)

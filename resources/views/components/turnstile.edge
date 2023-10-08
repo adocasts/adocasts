@@ -1,6 +1,8 @@
-<div
-  class="cf-turnstile"
-  data-sitekey="{{ env('TURNSTILE_SITE_KEY') }}"
-  x-data="turnstile"
-  x-init="onRender('{{ env('TURNSTILE_SITE_KEY') }}')"
-></div>
+@if (env('TURNSTILE_ENABLED'))
+  <div
+    class="cf-turnstile"
+    data-sitekey="{{ env('TURNSTILE_SITE_KEY') }}"
+    x-data="turnstile"
+    x-init="onRender('{{ env('TURNSTILE_SITE_KEY') }}')"
+  ></div>
+@endif

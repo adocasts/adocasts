@@ -18,6 +18,10 @@ class IdentityService {
     return this.create(ip, agent)
   }
 
+  public async getIdentity(ip: string, agent: string) {
+    return this.create(ip, agent)
+  }
+
   public async getByIdentity(table: string, identity: string, identityKey: string = 'name'): Promise<string> {
     const record = await Database.from(table).where('identity', identity).select([identityKey]).first();
     if (record && record.name) return record.name;

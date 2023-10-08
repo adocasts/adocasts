@@ -22,7 +22,7 @@ import { redisConfig } from '@adonisjs/redis/build/config'
 | Make sure to check `contracts/redis.ts` file for defining extra connections
 */
 export default redisConfig({
-  enabled: false, // toggle caching on/off
+  enabled: Env.get('REDIS_ENABLED'), // toggle caching on/off
   connection: Env.get('REDIS_CONNECTION'),
 
   connections: {

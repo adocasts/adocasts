@@ -19,6 +19,11 @@ export default Env.rules({
 	PORT: Env.schema.number(),
 	APP_KEY: Env.schema.string(),
 	APP_NAME: Env.schema.string(),
+	APP_BRAND: Env.schema.string(),
+	APP_LOGO: Env.schema.string(),
+	APP_LOGO_INV: Env.schema.string(),
+	APP_CONTACT_EMAIL: Env.schema.string(),
+	APP_DOMAIN: Env.schema.string(),
 	CACHE_VIEWS: Env.schema.boolean(),
 	SESSION_DRIVER: Env.schema.string(),
   DRIVE_DISK: Env.schema.enum(['local', 'gcs'] as const),
@@ -43,6 +48,7 @@ export default Env.rules({
 	GCS_BUCKET: Env.schema.string(),
 
 	// @adonisjs/redis
+	REDIS_ENABLED: Env.schema.boolean(),
 	REDIS_CONNECTION: Env.schema.enum(['local'] as const),
 	REDIS_HOST: Env.schema.string({ format: 'host' }),
 	REDIS_PORT: Env.schema.number(),
@@ -56,6 +62,7 @@ export default Env.rules({
 
 	DISCORD_WEBHOOK: Env.schema.string(),
 
+	TURNSTILE_ENABLED: Env.schema.boolean(),
   TURNSTILE_SITE_KEY: Env.schema.string(),
   TURNSTILE_SECRET_KEY: Env.schema.string(),
 
@@ -65,6 +72,4 @@ export default Env.rules({
 	STRIPE_PUBLISHABLE_KEY: Env.schema.string(),
 	STRIPE_SECRET_KEY: Env.schema.string(),
 	STRIPE_WEBHOOK_SECRET: Env.schema.string(),
-
-	DROPBOX_ACCESS_TOKEN: Env.schema.string(),
 })

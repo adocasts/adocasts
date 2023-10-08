@@ -143,4 +143,8 @@ export default class UtilityService {
   public static displaySocialUrl(url: string) {
     return url.replace('https://', '').replace('http://', '')
   }
+
+  public static getRandom<T>(array: T[]) {
+    return array[Math.floor(Math.random() * array.length)];
+  }
 }
