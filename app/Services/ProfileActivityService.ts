@@ -41,7 +41,8 @@ export default class ProfileActivityService {
     // anniversary
     const yearsSinceLaunch = Math.floor(DateTime.now().diff(DateTime.fromFormat('2021-01-01', 'yyyy-MM-dd'), 'years').years)
     for (let i = 1; i <= yearsSinceLaunch; i++) {
-      if (this.user.createdAt.plus({ years: i }) >= this.start) {
+      const anniversary = this.user.createdAt.plus({ years: i })
+      if (anniversary >= this.start && anniversary <= DateTime.now().endOf('day')) {
         activity.push(ActivityVM.getForUserAnniversary(this.user, i))
       }
     }
