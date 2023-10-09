@@ -9,11 +9,11 @@ type LogPayload = {
 
 export default class Logger {
   protected logger: DiscordLogger
-  protected app: ApplicationContract
 
-  constructor(config: typeof discordLogConfig, app: ApplicationContract) {
+  constructor(protected config: typeof discordLogConfig, protected app: ApplicationContract) {
+    if (!config.enabled) return
+
     this.logger = new DiscordLogger(config)
-    this.app = app
   }
 
   public async info(title: string, message?: string | object | Array<any>): Promise<void> {
@@ -37,7 +37,7 @@ export default class Logger {
   }
 
   public async log(method: 'info'|'warn'|'error'|'debug'|'silly', payload: LogPayload) {
-    if (this.app.inTest) return 
+    if (this.app.inTest || !this.config.enabled) return 
     return this.logger[method](payload)
   }
 

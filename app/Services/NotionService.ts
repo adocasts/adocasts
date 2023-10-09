@@ -17,13 +17,13 @@ export default class NotionService {
         database_id: 'cc16b7c9f2e745bd81c7041a58f8867f',
         sorts: [{ property: 'Date', direction: 'ascending' }]
       })
-    }, CacheService.oneDay, true)
+    }, CacheService.oneDay)
   }
 
   public async getPage(page_id: string) {
     return CacheService.try(`NOTION_PAGE_${page_id}`, async () => {
       return this._client.pages.retrieve({ page_id })
-    }, CacheService.oneDay, true)
+    }, CacheService.oneDay)
   }
 
   public async getPageContent(pageId: string) {
@@ -40,6 +40,6 @@ export default class NotionService {
       if (!mdString?.parent) return
       
       return md.render(mdString.parent)
-    }, CacheService.oneDay, true)
+    }, CacheService.oneDay)
   }
 }

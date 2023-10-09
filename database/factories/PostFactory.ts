@@ -8,6 +8,7 @@ import PaywallTypes from 'App/Enums/PaywallTypes'
 import VideoTypes from 'App/Enums/VideoTypes'
 import UtilityService from 'App/Services/UtilityService'
 import { AssetFactory } from './AssetFactory'
+import { string } from '@ioc:Adonis/Core/Helpers'
 
 const youtubeUrls = [
   'https://www.youtube.com/watch?v=Npn-2qweD5k',
@@ -23,7 +24,7 @@ const youtubeUrls = [
 
 export const PostFactory = Factory
   .define(Post, ({ faker }) => ({
-    title: faker.word.words(5),
+    title: string.titleCase(faker.lorem.words({ min: 3, max: 9 })),
     description: faker.lorem.sentences(2),
     body: faker.lorem.paragraphs(5),
     stateId: States.PUBLIC,
@@ -37,9 +38,10 @@ export const PostFactory = Factory
   .state('private', (post) => post.stateId = States.PRIVATE)
   .state('paywalled', (post) => post.paywallTypeId = PaywallTypes.FULL)
   .state('timedPaywall', (post) => post.paywallTypeId = PaywallTypes.DELAYED_RELEASE)
-  .state('video', (post) => {
+  .state('video', (post, { faker }) => {
     post.videoTypeId = VideoTypes.YOUTUBE
     post.videoUrl = UtilityService.getRandom(youtubeUrls)
+    post.videoSeconds = faker.number.int({ min: 90, max: 3600 })
   })
   .relation('authors', () => UserFactory)
   .relation('comments', () => CommentFactory)

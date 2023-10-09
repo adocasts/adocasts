@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 import CacheService from './CacheService'
 
 export default class AnalyticsService {
+  public static enabled = Env.get('PLAUSIBLE_API_KEY') && Env.get('PLAUSIBLE_API_KEY') !== '<api_key>'
   private static breakdownEndpoint = 'https://analytics.adocasts.com/api/v1/stats/breakdown?site_id=adocasts.com'
   private static aggregateEndpoint = 'https://analytics.adocasts.com/api/v1/stats/aggregate?site_id=adocasts.com'
   private static defaultStartDte = DateTime.now().set({ year: 2000, month: 1, day: 1 })
@@ -14,6 +15,8 @@ export default class AnalyticsService {
    * @returns 
    */
   public static async getPastMonthsPopularContentSlugs(limit = 8) {
+    if (!this.enabled) return []
+
     return await CacheService.try('ANALYTICS_PAST_MONTH_POPULAR_CONTENT', async () => {
       const contentPathPrefix = ['/lessons/', '/news/', '/streams/', '/posts/']
       const results = await this.getPast30dViews()
@@ -24,7 +27,7 @@ export default class AnalyticsService {
         }
         return list
       }, [])
-    }, CacheService.oneDay, true)
+    }, CacheService.oneDay)
   }
 
   /**
@@ -35,12 +38,14 @@ export default class AnalyticsService {
    * @returns 
    */
   public static async getPageViews(path: string, startDte: DateTime = this.defaultStartDte, endDte = DateTime.now()) {
+    if (!this.enabled) return 0
+    
     return await CacheService.try(`ANALYTICS_PATH_${path}`, async () => {
       const start = startDte.toFormat('yyyy-MM-dd')
       const end = endDte.toFormat('yyyy-MM-dd')
       const { data } = await this.apiGet(`${this.aggregateEndpoint}&metrics=pageviews&period=custom&date=${start},${end}&filters=event:page%3D%3D${path}`)
-      return data.results.pageviews.value
-    }, CacheService.oneDay, true)
+      return data.results?.pageviews.value
+    }, CacheService.oneDay)
   }
 
   /**

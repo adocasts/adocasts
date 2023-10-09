@@ -7,7 +7,7 @@ import CollectionTypes from 'App/Enums/CollectionTypes'
 
 export const CollectionFactory = Factory
   .define(Collection, ({ faker }) => ({
-    name: faker.word.words({ count: { min: 2, max: 8 }}),
+    name: faker.commerce.productName(),
     description: faker.lorem.sentence(),
     collectionTypeId: CollectionTypes.SERIES
   }))
