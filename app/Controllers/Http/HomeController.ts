@@ -8,6 +8,8 @@ import Taxonomy from "App/Models/Taxonomy";
 import HistoryService from 'App/Services/HistoryService';
 import Plan from 'App/Models/Plan';
 import Plans from 'App/Enums/Plans';
+import StripeService from 'App/Services/StripeService';
+import NotAllowedException from 'App/Exceptions/NotAllowedException';
 
 export default class HomeController {
   /**
@@ -44,6 +46,8 @@ export default class HomeController {
   }
 
   public async pricing({ view }: HttpContextContract) {
+    if (!StripeService.isActive) throw new NotAllowedException("Plans are currently turned off")
+    
     const plusMonthly = await Plan.findOrFail(Plans.PLUS_MONTHLY)
     const plusAnnual = await Plan.findOrFail(Plans.PLUS_ANNUAL)
     const forever = await Plan.findOrFail(Plans.FOREVER)

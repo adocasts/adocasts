@@ -10,6 +10,7 @@ import StripeSubscriptionStatuses from 'App/Enums/StripeSubscriptionStatuses'
 import Application from '@ioc:Adonis/Core/Application'
 
 export default class StripeService {
+  public static isActive: boolean = Env.get('STRIPE_ENABLED')
   private stripe: Stripe
   private inTest: boolean = Application.inTest
   

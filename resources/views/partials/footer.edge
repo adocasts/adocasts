@@ -57,9 +57,11 @@
               @footer.link({ href: '/contact' })
                 Contact Us
               @end
-              @footer.link({ href: '/pricing' })
-                Pricing
-              @end
+              @if (env('STRIPE_ENABLED'))
+                @footer.link({ href: '/pricing' })
+                  Pricing
+                @end
+              @endif
               @footer.link({ href: '/sitemap' })
                 Sitemap
               @end

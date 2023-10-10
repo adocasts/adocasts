@@ -67,6 +67,9 @@
         <div class="flex flex-col">
           <a href="/uses">What We Use</a>
           <a href="{{ route('contact.index') }}">Contact Us</a>
+          @if (env('STRIPE_ENABLED'))
+            <a href="{{ route('pricing') }}">Pricing</a>
+          @endif
           <a href="{{ route('analytics') }}">Analytics</a>
           <a href="{{ route('legals.cookies') }}">Cookie Policy</a>
           <a href="{{ route('legals.privacy') }}">Privacy Policy</a>

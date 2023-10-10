@@ -33,9 +33,11 @@
         Profile
       @end
 
-      @header.navLink({ href: route('users.settings.index', { section: 'billing' }) })
-        Billing
-      @end
+      @if (env('STRIPE_ENABLED'))
+        @header.navLink({ href: route('users.settings.index', { section: 'billing' }) })
+          Billing
+        @end
+      @endif
 
       @header.navLink({ href: route('users.settings.index', { section: 'notifications' }) })
         Notifications

@@ -26,7 +26,7 @@ export default Env.rules({
 	APP_DOMAIN: Env.schema.string(),
 	CACHE_VIEWS: Env.schema.boolean(),
 	SESSION_DRIVER: Env.schema.string(),
-  	DRIVE_DISK: Env.schema.enum(['local', 'gcs'] as const),
+  DRIVE_DISK: Env.schema.enum(['local', 'gcs'] as const),
 	NODE_ENV: Env.schema.enum(['development', 'production', 'test'] as const),
 
 	// @adonisjs/lucid
@@ -67,6 +67,7 @@ export default Env.rules({
 	NOTION_SECRET: Env.schema.string(),
 	NOTION_VERSION: Env.schema.string(),
 
+	STRIPE_ENABLED: Env.schema.boolean(),
 	STRIPE_PUBLISHABLE_KEY: Env.schema.string(),
 	STRIPE_SECRET_KEY: Env.schema.string(),
 	STRIPE_WEBHOOK_SECRET: Env.schema.string(),

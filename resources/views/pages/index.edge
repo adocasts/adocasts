@@ -158,7 +158,7 @@
       </section>
     @endif
 
-    @if (!auth.user?.planId || auth.user?.planId === Plans.FREE)
+    @if (env('STRIPE_ENABLED') && (!auth.user?.planId || auth.user?.planId === Plans.FREE))
       <section class="break">
         @!pricing({ faqLink: true })
       </section>

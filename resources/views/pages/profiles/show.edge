@@ -32,6 +32,12 @@
                 {{ user.handle }}
               </p>
             @endif
+            @if (!user.isFreeTier)
+              <div class="-mt-1 mb-6">
+                <img class="logo-white h-3 relative" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts+" />
+                <img class="logo-black h-3 relative" src="/imgs/adocasts-plus-black-40.png" alt="Adocasts+" />
+              </div>
+            @endif
             @if (user.profile.biography)
               <p class="text-slate-600 text-sm max-w-prose mt-3 mb-6">
                 {{ user.profile.biography }}

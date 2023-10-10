@@ -107,6 +107,7 @@
         </h3>
         
         <div>
+          @if (charges.length)
           <div class="mt-8 flow-root overflow-hidden">
             <div class="mx-auto max-w-7xl">
               <table class="w-full text-left">
@@ -160,6 +161,14 @@
               </table>
             </div>
           </div>
+          @else
+            <div class="p-6 rounded-xl border-[3px] border-dashed border-slate-300 text-slate-600">
+              <strong>No Receipts Found</strong>
+              <p class="text-slate-600">
+                Looks like you don't have any recipts from us.
+              </p>
+            </div>
+          @endif
         </div>
       </div>
     </div>
