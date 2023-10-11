@@ -39,7 +39,7 @@ export default class SyndicationService {
       this.make('/series', 'weekly', 0.8),
       this.make('/topics', 'weekly', 0.8),
       this.make('/lessons', 'weekly', 0.8),
-      this.make('/news', 'weekly', 0.3),
+      this.make('/blog', 'weekly', 0.3),
       this.make('/streams', 'weekly', 0.3),
       this.make('/posts', 'weekly', 0.3),
     ]
@@ -50,7 +50,7 @@ export default class SyndicationService {
     lessons.map(slug => urls = this.add(urls, this.map('lessons.show', { slug }, 'weekly', 0.6)))
     news.map(slug => urls = this.add(urls, this.map('news.show', { slug }, 'weekly', 0.3)))
     streams.map(slug => urls = this.add(urls, this.map('streams.show', { slug }, 'weekly', 0.3)))
-    blogs.map(slug => urls = this.add(urls, this.map('posts.show', { slug }, 'weekly', 0.2)))
+    blogs.map(slug => urls = this.add(urls, this.map('blog.show', { slug }, 'weekly', 0.2)))
 
     return urls
   }

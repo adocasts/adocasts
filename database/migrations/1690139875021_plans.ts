@@ -38,7 +38,7 @@ export default class extends BaseSchema {
         name: 'Plus Plan (Monthly)',
         description: "Gain access to all Adocasts content, ad free",
         stripe_price_id: 'price_1NwSjRFPw3xO2XBhWexLbwFM',
-        stripe_price_test_id: 'price_1LbTUAFPw3xO2XBhGnZz7AI1',
+        stripe_price_test_id: 'price_1Nzon4FPw3xO2XBhZe5ETPF7',
         price: 8 * 100,
         created_at: DateTime.now().toSQL(),
         updated_at: DateTime.now().toSQL()
@@ -48,7 +48,7 @@ export default class extends BaseSchema {
         name: 'Plus Plan (Annually)',
         description: "Gain access to all Adocasts content, ad free",
         stripe_price_id: 'price_1LbNpsFPw3xO2XBha1ujKpLA',
-        stripe_price_test_id: 'price_1LbTUAFPw3xO2XBhVTPfzrri',
+        stripe_price_test_id: 'price_1NzooOFPw3xO2XBhDO2K7tfb',
         price: 80 * 100,
         created_at: DateTime.now().toSQL(),
         updated_at: DateTime.now().toSQL()

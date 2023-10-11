@@ -77,9 +77,12 @@ export default class PostService {
    * @param baseUrl
    * @returns
    */
-  public static async getPaginated(page: number, limit: number, sortBy: string, sortDir: 'asc'|'desc', postTypeId: PostTypes = PostTypes.LESSON, baseUrl: string): Promise<ModelPaginatorContract<Post>> {
+  public static async getPaginated(page: number, limit: number, sortBy: string, sortDir: 'asc'|'desc', postTypeId: PostTypes | PostTypes[] = PostTypes.LESSON, baseUrl: string): Promise<ModelPaginatorContract<Post>> {
     const items = await Post.query()
-      .where({ postTypeId })
+      .if(Array.isArray(postTypeId), 
+        query => query.whereIn('postTypeId', <PostTypes[]>postTypeId),
+        query => query.where({ postTypeId })
+      )
       .apply(scope => scope.forDisplay())
       .orderBy(sortBy, sortDir)
       .paginate(page, limit)
@@ -223,7 +226,7 @@ export default class PostService {
       case PostTypes.LESSON:
         return Route.makeUrl('lessons.show', params, options)
       case PostTypes.BLOG:
-        return Route.makeUrl('posts.show', params, options)
+        return Route.makeUrl('blog.show', params, options)
       case PostTypes.NEWS:
         return Route.makeUrl('news.show', params, options)
       case PostTypes.LIVESTREAM:

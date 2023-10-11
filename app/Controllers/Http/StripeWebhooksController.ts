@@ -1,6 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { inject } from '@adonisjs/core/build/standalone'
 import StripeService from 'App/Services/StripeService'
+import Application from '@ioc:Adonis/Core/Application'
 
 @inject()
 export default class StripeWebhooksController {
@@ -8,12 +9,17 @@ export default class StripeWebhooksController {
 
   public async index({ request, response }: HttpContextContract) {
     let event
+    const isProd = Application.inProduction
 
     try {
       event = await this.stripeService.connectToWebhook(request)
     } catch (error) {
       return response.status(400).send(`Webhook error: ${error.message}`)
     }
+
+    // isProd = true, then livemode should be true
+    // isProd = false, then livemode should be false
+    if (event.data.object.livemode != isProd) return
     
     switch (event.type) {
       // occurs whenever a customer is signed up for a new plan

@@ -116,6 +116,8 @@ Route.group(() => {
   Route.get('/series/:collectionSlug/streams/:slug', 'StreamsController.show').as('series.streams.show').middleware(['postTypeCheck'])
   Route.get('/news', 'NewsController.index').as('news.index')
   Route.get('/news/:slug', 'NewsController.show').as('news.show').middleware(['postTypeCheck'])
+  Route.get('/blog', 'BlogController.index').as('blog.index')
+  Route.get('/blog/:slug', 'BlogController.show').as('blog.show').middleware(['postTypeCheck'])
   Route.get('/snippets', 'SnippetsController.index').as('snippets.index')
   Route.get('/snippets/:slug', 'SnippetsController.show').as('snippets.show').middleware(['postTypeCheck'])
   Route.post('/comments', 'CommentsController.store').as('comments.store')

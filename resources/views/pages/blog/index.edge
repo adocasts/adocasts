@@ -1,0 +1,49 @@
+@layout('layouts/app')
+
+@section('meta')
+  @!meta.tags({
+    url: route('blog.index'),
+    title: 'Blog',
+    desc: `Browse the Adocasts blog, news, shared linkes, and more`,
+    asset: null,
+    index: true
+  })
+@endsection
+
+@section('hero')
+
+  @headings.hero({
+    subtitle: ` Browse our blog, news, shared links, and more `
+  })
+    @slot('title')
+      Blog <span class="font-normal">&mdash; Page {{ items.currentPage }}</span>
+    @endslot
+  @end
+
+@endsection
+
+@section('content')
+
+  <div class="flex flex-wrap -mx-6">
+    <div class="w-full md:w-2/3 px-6 -ml-3">
+      @if (filteredTo)
+        <div class="bg-slate-200 px-3 py-1.5 text-xs inline-flex gap-3 rounded-full -mt-6 mb-3 ml-3">
+          <span>Showing only {{ filteredTo }} items</span>
+          <a href="{{ route('blog.index') }}" up-follow>
+            @!icons.x()
+          </a>
+        </div>
+      @endif
+
+      @each ((item, i) in items)
+        @!lessons.item({ item })
+      @endeach
+      
+      @!pagination({ data: items })
+    </div>
+    <div class="w-full md:w-1/3 px-6">
+      @!ads.vertical()
+    </div>
+  </div>
+
+@endsection

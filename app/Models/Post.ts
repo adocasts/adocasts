@@ -408,7 +408,7 @@ export default class Post extends AppBaseModel {
 
     switch (this.postTypeId) {
       case PostType.BLOG:
-        return Route.makeUrl(`${namePrefix}posts.show`, params)
+        return Route.makeUrl(`${namePrefix}blog.show`, params)
       case PostType.NEWS:
         return Route.makeUrl(`${namePrefix}news.show`, params)
       case PostType.LIVESTREAM:

@@ -27,7 +27,7 @@
 @elseif (item.postTypeId === PostTypes.NEWS)
   <object>
     <h5 class="uppercase inline-flex items-center text-brand-500 hover:text-brand-600 tracking-wide  font-sans {{ fontSize }} mb-1">
-      <a href="" up-follow class="anchor" {{{ upAttrs }}}>
+      <a href="{{ route('blog.index', {}, { qs: { type: 'news' }})}}" up-follow class="anchor" {{{ upAttrs }}}>
         NEWS
       </a>
     </h5>
@@ -35,7 +35,7 @@
 @elseif (item.postTypeId === PostTypes.LIVESTREAM)
   <object>
     <h5 class="uppercase inline-flex items-center text-brand-500 hover:text-brand-600 tracking-wide  font-sans {{ fontSize }} mb-1">
-      <a href="" up-follow class="anchor" {{{ upAttrs }}}>
+      <a href="{{ route('streams.index') }}" up-follow class="anchor" {{{ upAttrs }}}>
         LIVESTREAM
       </a>
     </h5>
@@ -43,7 +43,7 @@
 @elseif (item.postTypeId === PostTypes.BLOG)
   <object>
     <h5 class="uppercase inline-flex items-center text-brand-500 hover:text-brand-600 tracking-wide  font-sans {{ fontSize }} mb-1">
-      <a href="" up-follow class="anchor" {{{ upAttrs }}}>
+      <a href="{{ route('blog.index', {}, { qs: { type: 'blog' }})}}" up-follow class="anchor" {{{ upAttrs }}}>
         BLOG
       </a>
     </h5>
