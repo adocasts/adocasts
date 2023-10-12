@@ -1,4 +1,4 @@
-<div x-data="{ show: false }" class="-mx-3">
+<div x-data="{ show: false }">
   <header class="app-container w-full mb-6" up-header>
     <div class="px-3 md:px-6 py-3 bg-slate-100 text-slate-900 rounded-xl mt-3 flex justify-between items-center">
       @dropdown.base({ 
@@ -103,7 +103,7 @@
             </div>
 
             @buttons.primary.base({ type: 'button', square: true, className: '!p-0 relative top-0.5', href: route('users.menu'), atClick: 'showCount = false', attrs: 'up-layer="new drawer" up-size="large" up-position="right"' })
-              <img class="w-4 h-4 md:h-8 md:w-8 rounded-md" src="{{ auth.user.avatar }}" />
+              <img class="w-7 h-7 md:h-8 md:w-8 rounded-md" src="{{ auth.user.avatar }}" />
             @end
           </div>
         @else

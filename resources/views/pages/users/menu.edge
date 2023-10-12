@@ -12,8 +12,8 @@
 
 @section('content')
 
-  <div class="flex gap-x-6 p-6">
-    <nav class="flex flex-col sticky top-6">
+  <div class="max-w-[100vw] flex gap-x-3 md:gap-x-6 p-3 md:p-6">
+    <nav class="flex flex-col sticky top-6 -mx-2">
       <p class="font-semibold text-xs uppercase tracking-wider text-slate-400 px-2 mb-2">Content</p>
       @header.navLink({ href: route('users.watchlist') })
         Watchlist

@@ -17,7 +17,7 @@
   }
 
   .app-container {
-    @apply max-w-[1300px] mx-auto px-6;
+    @apply max-w-[1300px] mx-auto px-3 md:px-6;
   }
 
   .app-container-sm {
