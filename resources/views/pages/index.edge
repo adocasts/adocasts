@@ -40,7 +40,7 @@
         @!headings.section({
           title: 'Discover Our Latest Updated Series',
           subtitle: 'Unlock your full potential with our educational series, designed to step you through your learning journey to the next level.',
-          className: 'text-center'
+          className: 'text-center mb-3'
         })
         <div class="w-full max-w-screen-xl mx-auto flex flex-wrap justify-center pt-6">
           @each (item in series)
@@ -50,40 +50,20 @@
       </div>
     </section>
 
-    
-    <section>
-      @!headings.panel({ title: 'Recently Released' })
-      <div class="-mx-3">
-        <div class="grid md:grid-cols-2 gap-x-3 gap-y-1 w-full">
-          @each (item in posts.slice(postSkip, postSkip + 8))
-            @!lessons.listItem({ 
-              item,
-              className: 'mb-6 px-3',
-              lineClamp: 'md:line-clamp-3',
-              flexFlow: 'flex-col lg:flex-row',
-              imgWidth: 'mb-3 md:mb-0 w-full lg:w-1/2 ',
-              detailWidth: 'w-full lg:w-1/2',
-              px: 'pt-3 lg:pt-0 lg:px-6',
-              description: false,
-              lazyItem: true
-            })
-            @set('postSkip', postSkip + 1)
-          @endeach
-        </div>
-      </div>
-    </section>
-
-    <section class="break py-12 -my-12">
+    <section class="break py-8">
       <div class="container mx-auto">
         @!headings.section({
           title: 'Covered Topics',
-          subtitle: `Each Adocasts topic contains groupings of series, lessons, news, and livestreams.`,
-          className: 'text-center'
+          subtitle: `
+            Looking for a specific subject? Our topics are the place for you.
+            Each topic contains various groupings of sub-topics, series, lessons, news, snippets, and livestreams.
+          `,
+          className: 'text-center mb-3'
         })
         <div class="-mx-3">
           <div class="w-full flex flex-wrap justify-center items-center pt-6 px-3">
             @each (item in topics)
-              <div class="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 2xl:w-1/6 px-1.5 mb-3">
+              <div class="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 2xl:w-1/5 px-1.5 mb-3">
                 @!taxonomies.card({ item, lazy: true })
               </div>
             @endeach
@@ -91,12 +71,16 @@
         </div>
       </div>
     </section>
-
+    
     <section>
-      @!headings.panel({ title: 'Recently Released' })
+      @!headings.section({
+        title: 'Recently Released Lessons',
+        subtitle: `Curious what's new? Below are our latest lessons regardless if they're standalone lessons or a part of a bigger series`,
+        className: 'text-center mb-8'
+      })
       <div class="-mx-3">
-        <div class="grid md:grid-cols-2 gap-x-3 w-full">
-          @each (item in posts.slice(postSkip, postSkip + 8))
+        <div class="grid md:grid-cols-2 gap-x-3 gap-y-1 w-full">
+          @each (item in posts.slice(postSkip, postSkip + 12))
             @!lessons.listItem({ 
               item,
               className: 'mb-6 px-3',
@@ -114,7 +98,7 @@
       </div>
     </section>
 
-    <section class="break ">
+    <section class="break">
       <div class="app-container">
         @!headings.section({
           title: 'Explore Our Trending Lessons',
@@ -125,11 +109,45 @@
       </div>
     </section>
 
+    <section class="py-8">
+      @!headings.section({
+        title: 'Odds and Ins',
+        subtitle: `
+          When we have something to share, we'll share it here in either our blog or snippets. 
+          Whether it's a helpful snippet, personal update, or anything inbetween
+        `,
+        className: 'text-center mb-10'
+      })
+      <div class="flex flex-col items-center lg:flex-row gap-y-10 gap-x-6">
+        <div class="w-full lg:w-1/2 max-w-xl">
+          @!headings.panel({ title: 'From Our Blog' })
+          
+          <div class="flex flex-col gap-6">
+            @each (item in blogs)
+              @!lessons.itemSimple({ item })
+            @endeach
+          </div>
+        </div>
+        <div class="w-full lg:w-1/2 max-w-xl">
+          @!headings.panel({ title: 'Snippets' })
+          
+          <div class="flex flex-col gap-6">
+            @each (item in snippets)
+              @!lessons.itemSimple({ item })
+            @endeach
+          </div>
+        </div>
+      </div>
+    </section>
+
     @if (inProgressPosts?.length >= 2)
       <section class="w-full flex flex-col py-6">
         @!headings.section({
           title: 'Pick Up Where You Left Off',
-          subtitle: 'Here is a list of your latest in-progress series and lessons',
+          subtitle: `
+            Below is a list of some of your latest completed and in-progress series and lessons. 
+            There here for you whenver you're ready to jump back in!
+          `,
           className: 'text-center mb-6'
         })
         <div class="-mx-3">

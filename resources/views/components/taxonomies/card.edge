@@ -1,27 +1,27 @@
 <a href="{{ route('topics.show', { slug: item.slug }) }}" {{{ upAttrs }}} up-follow class="relative group overview-hidden w-full flex items-center bg-slate-100 hover:bg-slate-200 duration-150 rounded-xl p-3 flicker-fix overflow-hidden">
-  <div class="mr-4 relative z-10">
+  <div class="mr-4 xl:mr-6 relative z-10">
     @if (item.asset?.filename)
       @!picture({
         filename: item.asset.filename,
-        className: 'rounded-xl w-12 h-12 h-full',
+        className: 'rounded-xl w-16 h-16 h-full',
         width: 42,
         ratio: 'aspect-square',
         imgClassName: 'object-contain object-center',
         lazy
       })
     @else
-      <div class="w-12 h-12 text-base lg:text-xl font-semibold flex items-center justify-center rounded-xl bg-slate-100 text-brand-800">
+      <div class="w-16 h-16 text-base lg:text-xl font-semibold flex items-center justify-center rounded-xl bg-slate-100 text-brand-800">
         {{ getAbbrev(item.name) }}
       </div>
     @endif
   </div>
 
   <div class="flex flex-col relative z-10">
-    <h4 class="font-sans mb-1 text-sm 2xl:text-base op-1 font-semibold duration-150 truncate leading-tight">
+    <h4 class="font-sans mb-1 text-sm lg:text-base xl:text-lg op-1 font-semibold duration-150 truncate leading-tight">
       {{ item.name }}
     </h4>
 
-    <div class="w-full text-slate-400 text-xs flex justify-center items-center relative z-10 leading-tight">
+    <div class="w-full text-slate-500 text-xs flex justify-center items-center relative z-10 leading-tight">
       <div class="flex items-center pr-2">
         <span class="mr-1">{{ item.meta?.collections_count ?? 0 }}</span>
         <span>{{ getSingularOrPlural('Series', item.meta?.collections_count ?? 0) }}</span>

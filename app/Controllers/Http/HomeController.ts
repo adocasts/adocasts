@@ -10,6 +10,7 @@ import Plan from 'App/Models/Plan';
 import Plans from 'App/Enums/Plans';
 import StripeService from 'App/Services/StripeService';
 import NotAllowedException from 'App/Exceptions/NotAllowedException';
+import PostTypes from 'App/Enums/PostTypes';
 
 export default class HomeController {
   /**
@@ -19,8 +20,10 @@ export default class HomeController {
    */
   public async index({ view, auth }: HttpContextContract) {
     const trending = await PostService.getTrending(15)
-    const posts = await PostService.getLatest(auth.user ? 21 : 16)
-    const series = await CollectionService.getLastUpdated(4, false)
+    const posts = await PostService.getLatest(auth.user ? 17 : 12, [], [PostTypes.LESSON, PostTypes.LIVESTREAM])
+    const blogs = await PostService.getLatest(6, [], [PostTypes.BLOG, PostTypes.NEWS])
+    const snippets = await PostService.getLatest(3, [], [PostTypes.SNIPPET])
+    const series = await CollectionService.getLastUpdated(8, false)
     const topics = await TaxonomyService.getList()
 
     const postCount = await Post.query().apply(s => s.published()).getCount()
@@ -42,7 +45,7 @@ export default class HomeController {
       topicCount
     }
 
-    return view.render('pages/index', { trending, posts, series, topics, stats })
+    return view.render('pages/index', { trending, posts, series, topics, stats, blogs, snippets })
   }
 
   public async pricing({ view }: HttpContextContract) {
