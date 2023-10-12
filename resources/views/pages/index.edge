@@ -36,7 +36,7 @@
 
   <div class="space-y-24 mt-12">
     <section class="break py-12 -mb-12">
-      <div class="container mx-auto">
+      <div class="container mx-auto px-4 md:px-0">
         @!headings.section({
           title: 'Discover Our Latest Updated Series',
           subtitle: 'Unlock your full potential with our educational series, designed to step you through your learning journey to the next level.',
@@ -47,13 +47,18 @@
             @!collections.cardTall({ item })
           @endeach
         </div>
+        <div class="flex justify-center">
+          @buttons.primary.outline({ href: route('series.index'), attrs: 'up-follow' })
+            Browse All Of Our Series
+          @end
+        </div>
       </div>
     </section>
 
     <section class="break py-8">
-      <div class="container mx-auto">
+      <div class="container mx-auto px-3">
         @!headings.section({
-          title: 'Covered Topics',
+          title: 'Dive Into Our Covered Topics',
           subtitle: `
             Looking for a specific subject? Our topics are the place for you.
             Each topic contains various groupings of sub-topics, series, lessons, news, snippets, and livestreams.
@@ -68,13 +73,18 @@
               </div>
             @endeach
           </div>
+          <div class="flex justify-center px-3 mt-3">
+            @buttons.primary.outline({ href: route('topics.index'), attrs: 'up-follow' })
+              Peek Into All Our Topics
+            @end
+          </div>
         </div>
       </div>
     </section>
     
     <section>
       @!headings.section({
-        title: 'Recently Released Lessons',
+        title: 'Stay Updated With Our Latest Lessons',
         subtitle: `Curious what's new? Below are our latest lessons regardless if they're standalone lessons or a part of a bigger series`,
         className: 'text-center mb-8'
       })
@@ -95,6 +105,11 @@
             @set('postSkip', postSkip + 1)
           @endeach
         </div>
+        <div class="flex justify-center px-3">
+          @buttons.primary.outline({ href: route('lessons.index'), attrs: 'up-follow' })
+            View All Of Our Lessons
+          @end
+        </div>
       </div>
     </section>
 
@@ -105,13 +120,14 @@
           subtitle: 'From popular topics to emerging trends, our lessons cover a variety of subjects to keep you informed. Browse our most popular lessons from the past month.',
           className: 'text-center mb-6'
         })
+        
         @!lessons.imageCardGrid({ posts: trending })
       </div>
     </section>
 
     <section class="py-8">
       @!headings.section({
-        title: 'Odds and Ins',
+        title: 'Blogs and Snippets',
         subtitle: `
           When we have something to share, we'll share it here in either our blog or snippets. 
           Whether it's a helpful snippet, personal update, or anything inbetween
@@ -127,6 +143,12 @@
               @!lessons.itemSimple({ item })
             @endeach
           </div>
+
+          <div class="mt-6">
+            <a href="{{ route('blog.index') }}" class="anchor anchor-inv" up-follow>
+              View Our Blog
+            </a>
+          </div>
         </div>
         <div class="w-full lg:w-1/2 max-w-xl">
           @!headings.panel({ title: 'Snippets' })
@@ -135,6 +157,12 @@
             @each (item in snippets)
               @!lessons.itemSimple({ item })
             @endeach
+          </div>
+
+          <div class="mt-6">
+            <a href="{{ route('blog.index') }}" class="anchor anchor-inv" up-follow>
+              View Our Snippets
+            </a>
           </div>
         </div>
       </div>

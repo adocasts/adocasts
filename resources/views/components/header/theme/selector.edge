@@ -2,13 +2,13 @@
   @slot('triggerManual', props)
     @buttons.primary.inverse({ className: 'theme-selector', atClick: props.handler, square: true })
       <span class="theme-icon theme-icon-light text-slate-600 group-hover:text-slate-900">
-        @!icons.sunFilled()
+        @!icons.sunFilled({ className: 'w-3 h-3 md:w-4 md:h-4'})
       </span>
       <span class="theme-icon theme-icon-dark text-slate-600 group-hover:text-slate-900">
-        @!icons.moonFilled()
+        @!icons.moonFilled({ className: 'w-3 h-3 md:w-4 md:h-4'})
       </span>
       <span class="theme-icon theme-icon-system text-slate-600 group-hover:text-slate-900">
-        @!icons.sunMoon()
+        @!icons.sunMoon({ className: 'w-3 h-3 md:w-4 md:h-4'})
       </span>
     @end
   @endslot

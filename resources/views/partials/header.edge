@@ -1,10 +1,10 @@
-<div x-data="{ show: false }">
+<div x-data="{ show: false }" class="-mx-3">
   <header class="app-container w-full mb-6" up-header>
-    <div class="px-6 py-3 bg-slate-100 text-slate-900 rounded-md mt-3 flex justify-between items-center">
+    <div class="px-3 md:px-6 py-3 bg-slate-100 text-slate-900 rounded-md mt-3 flex justify-between items-center">
       @dropdown.base({ 
-        width: 'w-72', 
+        width: 'w-[85vw] md:w-72', 
         origin: 'top-left', 
-        direction: '-left-6 top-[calc(100% + 2rem)]',
+        direction: 'md:-left-6 top-[calc(100% + 2rem)]',
         className: 'mr-2 md:mr-6', 
         triggerClass: 'p-5 -m-5',
         onHover: true 
@@ -56,12 +56,23 @@
             </div>
             Blog
           </a>
+
+          <div class="flex flex-col md:hidden gap-3">
+            <div class="border-t border-slate-300"></div>
+            @buttons.primary.base({ href: route('auth.signin', {}, { qs: request.qs() }), attrs: 'up-layer="new modal" up-size="grow"' })
+              Sign In
+            @end
+
+            @buttons.brand.base({ href: route('auth.signup', {}, { qs: request.qs() }), attrs: 'up-layer="new modal" up-size="grow"' })
+              Sign Up
+            @end
+          </div>
         </nav>
       @end
 
       <a href="/" class="mr-4 flex-1 md:flex-none md:mr-0 hover:opacity-80" up-follow>
-        <img class="logo-white w-auto h-7" src="/imgs/logo-white.svg" alt="Adocasts" width="146px" height="28px" />
-        <img class="logo-black w-auto h-7" src="/imgs/logo-black.svg" alt="Adocasts" width="146px" height="28px" />
+        <img class="logo-white w-auto h-6 md:h-7" src="/imgs/logo-white.svg" alt="Adocasts" width="146px" height="28px" />
+        <img class="logo-black w-auto h-6 md:h-7" src="/imgs/logo-black.svg" alt="Adocasts" width="146px" height="28px" />
       </a>
 
       <nav class="hidden md:flex flex-1 space-x-3 ml-6">
@@ -73,30 +84,34 @@
       <div class="flex gap-1">
         <div class="flex items-center gap-1">
           @buttons.primary.inverse({ square: true, href: route('search.index'), attrs: 'up-layer="new modal" up-size="grow"' })
-            @!icons.search({ className: 'w-4 h-4 text-slate-600 group-hover:text-slate-900' })
+            @!icons.search({ className: 'w-3 h-3 md:w-4 md:h-4 text-slate-600 group-hover:text-slate-900' })
           @end
 
           @!header.theme.selector()
         </div>
 
-        <div class="flex items-center">
-          <div class="h-6 border-r border-slate-200 md:space-x-3 mr-3 pr-3"></div>
-        </div>
-
-
         @if (auth.user)
           @set('unreadNotificationCount', await NotificationService.getUnreadCount(auth.user.id))
+          
+          <div class="flex items-center">
+            <div class="h-6 border-r border-slate-200 md:space-x-3 mr-3 pr-3"></div>
+          </div>
+
           <div x-data="{ showCount: {{ parseInt(unreadNotificationsCount) ? 'true' : 'false' }} }" class="relative">
             <div x-cloak x-show="showCount" class="pointer-events-none rounded-full w-4 h-4 text-xs bg-brand-500 text-brand-900 flex items-center justify-center absolute -right-2 -top-2" up-hungry>
               {{ unreadNotificationCount }}
             </div>
 
             @buttons.primary.base({ type: 'button', square: true, className: '!p-0 relative top-0.5', href: route('users.menu'), atClick: 'showCount = false', attrs: 'up-layer="new drawer" up-size="large" up-position="right"' })
-              <img class="h-8 w-8 rounded-md" src="{{ auth.user.avatar }}" />
+              <img class="w-4 h-4 md:h-8 md:w-8 rounded-md" src="{{ auth.user.avatar }}" />
             @end
           </div>
         @else
-          <div class="hidden lg:flex items-center space-x-3">
+          <div class="hidden md:flex items-center">
+            <div class="h-6 border-r border-slate-200 md:space-x-3 mr-3 pr-3"></div>
+          </div>
+
+          <div class="hidden md:flex items-center space-x-3">
             @buttons.primary.outline({ href: route('auth.signin', {}, { qs: request.qs() }), attrs: 'up-layer="new modal" up-size="grow"' })
               Sign In
             @end
@@ -109,119 +124,4 @@
       </div>
     </div>
   </header>
-
-  <div class="relative z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
-    <!-- Background backdrop, show/hide based on slide-over state. -->
-    <div x-cloak x-show="show" class="fixed inset-0"></div>
-
-    <div x-cloak x-show="show" class="fixed inset-0 overflow-hidden">
-      <div class="absolute inset-0 overflow-hidden">
-        <div class="pointer-events-none fixed inset-y-0 right-0 flex w-full">
-          <!--
-            Slide-over panel, show/hide based on slide-over state.
-
-            Entering: "transform transition ease-in-out duration-500 sm:duration-700"
-              From: "translate-x-full"
-              To: "translate-x-0"
-            Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
-              From: "translate-x-0"
-              To: "translate-x-full"
-          -->
-          <div
-            x-show="show"
-            x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
-            x-transition:enter-start="translate-x-full"
-            x-transition:enter-end="translate-x-0"
-            x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
-            x-transition:leave-start="translate-x-0"
-            x-transition:leave-end="translate-x-full"
-            class="pointer-events-auto w-screen">
-            <div class="flex h-full flex-col overflow-y-scroll bg-gradient-to-br from-slate-50 to-slate-100 py-6 shadow-xl">
-              <div class="px-4 sm:px-6">
-                <div class="flex items-start justify-end">
-                  <div class="ml-3 flex h-7 items-center">
-                    @buttons.primary.base({ atClick: 'show = false'})
-                      @!icons.x({ className: 'w-6 h-6', square: true })
-                      <span class="sr-only">Close menu</span>
-                    @end
-                  </div>
-                </div>
-              </div>
-              <div class="relative mt-6 flex-1 px-4 sm:px-6">
-                <nav class="flex flex-col flex-1 space-y-3 border-b border-slate-200 mb-6 pb-6">
-                  <a href="{{ route('series.index') }}" up-follow class="hover:bg-slate-300 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="show = false">
-                    @!icons.playlist({ className: 'w-6 h-6' })
-                    Series
-                  </a>
-                  <a href="{{ route('topics.index') }}" up-follow class="hover:bg-slate-300 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="show = false">
-                    @!icons.hash({ className: 'w-6 h-6' })
-                    Topics
-                  </a>
-                  <a href="{{ route('lessons.index') }}" up-follow class="hover:bg-slate-300 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="show = false">
-                    @!icons.school({ className: 'w-6 h-6' })
-                    Lessons
-                  </a>
-                  <a href="{{ route('streams.index') }}" up-follow class="hover:bg-slate-300 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="show = false">
-                    @!icons.accessPoint({ className: 'w-6 h-6' })
-                    Streams
-                  </a>
-                  <a href="{{ route('news.index') }}" up-follow class="hover:bg-slate-300 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="show = false">
-                    @!icons.news({ className: 'w-6 h-6' })
-                    News
-                  </a>
-                  <a href="{{ route('requests.lessons.index') }}" up-follow class="hover:bg-slate-300 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="show = false">
-                    @!icons.heartHandshake({ className: 'w-6 h-6' })
-                    Requests
-                  </a>
-                  <a href="{{ route('schedule') }}" up-follow class="hover:bg-slate-300 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="show = false">
-                    @!icons.calendarEvent({ className: 'w-6 h-6' })
-                    Schedule
-                  </a>
-                </nav>
-
-                @if (!auth.user)
-                  <div class="flex flex-col gap-3 mb-6 pb-6 border-b border-slate-200">
-                    @buttons.primary.inverse({ href: route('auth.signin'), attrs: 'up-layer="new modal" up-size="grow" @click="show = false"', block: true, size: 'xl' })
-                      Sign In
-                    @end
-
-                    @buttons.brand.base({ href: route('auth.signup'), attrs: 'up-layer="new modal" up-size="grow" @click="show = false"', block: true, size: 'xl' })
-                      Sign Up
-                    @end
-                  </div>
-                @endif
-
-                <div class="grid grid-cols-2 gap-8 xl:col-span-2">
-                  <div class="md:grid md:grid-cols-2 md:gap-8">
-                    <h3 class="text-sm font-semibold text-slate-700 tracking-wider uppercase">
-                      Company
-                    </h3>
-                    <div>
-                      <ul class="mt-4 space-y-4">
-                        @footer.link({ href: '/uses', attrs: 'up-follow  @click="show = false"' })
-                          What We Use
-                        @end
-                        @footer.link({ href: '/contact', attrs: 'up-follow  @click="show = false"' })
-                          Contact Us
-                        @end
-                        @footer.link({ href: '/analytics', attrs: 'up-follow  @click="show = false"' })
-                          Analytics
-                        @end
-                        @footer.link({ href: '/sitemap', attrs: 'up-follow  @click="show = false"' })
-                          Sitemap
-                        @end
-                        @footer.link({ href: '/guidelines', attrs: 'up-follow  @click="show = false"' })
-                          Guidelines
-                        @end
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
