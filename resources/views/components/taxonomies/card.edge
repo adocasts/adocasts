@@ -1,16 +1,16 @@
-<a href="{{ route('topics.show', { slug: item.slug }) }}" {{{ upAttrs }}} up-follow class="relative group overview-hidden w-full flex items-center bg-slate-100 hover:bg-slate-200 duration-150 rounded-xl p-3 flicker-fix overflow-hidden">
+<a href="{{ route('topics.show', { slug: item.slug }) }}" {{{ upAttrs }}} up-follow class="relative group overview-hidden w-full flex items-center bg-slate-100 hover:bg-slate-200 duration-150 rounded-xl p-3 xl:px-5 xl:py-4 flicker-fix overflow-hidden">
   <div class="mr-4 xl:mr-6 relative z-10">
     @if (item.asset?.filename)
       @!picture({
         filename: item.asset.filename,
-        className: 'rounded-xl w-16 h-16 h-full',
+        className: 'rounded-xl w-14 h-14 h-full',
         width: 42,
         ratio: 'aspect-square',
         imgClassName: 'object-contain object-center',
         lazy
       })
     @else
-      <div class="w-16 h-16 text-base lg:text-xl font-semibold flex items-center justify-center rounded-xl bg-slate-100 text-brand-800">
+      <div class="w-14 h-14 text-base lg:text-xl font-semibold flex items-center justify-center rounded-xl bg-slate-100 text-brand-800">
         {{ getAbbrev(item.name) }}
       </div>
     @endif
