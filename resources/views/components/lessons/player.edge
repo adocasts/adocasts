@@ -50,9 +50,14 @@
                 data-payload-route="{{ request.ctx.route?.name ?? '' }}"
                 data-poster="{{ post.thumbnails.length ? '/img/' + post.thumbnails[0].filename : '' }}"
                 data-hls-url="{{ post.bunnyHlsUrl }}"
+                crossorigin="anonymous"
               >
                 @each (quality in post.bunnyFallbackUrls)
                   <source src="{{ quality.src }}" size="{{ quality.height }}" type="video/mp4" />
+                @endeach
+
+                @each ((subtitle, i) in post.bunnySubtitleUrls)
+                  <track kind="captions" label="{{ subtitle.label }}" src="{{ subtitle.src }}" srclang="{{ subtitle.code }}" />
                 @endeach
               </video>
             @endif

@@ -101,6 +101,7 @@ class VideoPlayer {
         'duration', 
         'mute', 
         'volume', 
+        'captions',
         'settings',
         'pip',
         'airplay',

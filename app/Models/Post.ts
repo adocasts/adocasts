@@ -363,6 +363,18 @@ export default class Post extends AppBaseModel {
   }
 
   @computed()
+  public get bunnySubtitleUrls() {
+    if (this.videoTypeId !== VideoTypes.BUNNY) return
+
+    const langs = [{ label: 'English', code: 'en' }]
+
+    return langs.map(lang => ({
+      ...lang,
+      src: `https://videos.adocasts.com/${this.videoBunnyId}/captions/${lang.code}.vtt`
+    }))
+  }
+
+  @computed()
   public get streamId() {
     if (!this.livestreamUrl) return '';
 
