@@ -139,6 +139,7 @@ class VideoPlayer {
             // when auto is selected in plyr, enable it within hls
             if (quality === 'AUTO') {
               hls.currentLevel = -1
+              return
             }
 
             // otherwise, find and set the newly selected quality
