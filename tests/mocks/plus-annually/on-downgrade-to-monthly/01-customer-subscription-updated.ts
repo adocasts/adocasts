@@ -48,7 +48,7 @@ export const MockPlusAnnuallyDowngradeToMonthly = (user: User, offset: DurationL
             "metadata": {
             },
             "plan": {
-              "id": "price_1LbTUAFPw3xO2XBhGnZz7AI1",
+              "id": "price_1Nzon4FPw3xO2XBhZe5ETPF7",
               "object": "plan",
               "active": true,
               "aggregate_usage": null,
@@ -70,7 +70,7 @@ export const MockPlusAnnuallyDowngradeToMonthly = (user: User, offset: DurationL
               "usage_type": "licensed"
             },
             "price": {
-              "id": "price_1LbTUAFPw3xO2XBhGnZz7AI1",
+              "id": "price_1Nzon4FPw3xO2XBhZe5ETPF7",
               "object": "price",
               "active": true,
               "billing_scheme": "per_unit",
@@ -123,7 +123,7 @@ export const MockPlusAnnuallyDowngradeToMonthly = (user: User, offset: DurationL
       "pending_setup_intent": null,
       "pending_update": null,
       "plan": {
-        "id": "price_1LbTUAFPw3xO2XBhGnZz7AI1",
+        "id": "price_1Nzon4FPw3xO2XBhZe5ETPF7",
         "object": "plan",
         "active": true,
         "aggregate_usage": null,
@@ -172,7 +172,7 @@ export const MockPlusAnnuallyDowngradeToMonthly = (user: User, offset: DurationL
             "metadata": {
             },
             "plan": {
-              "id": "price_1LbTUAFPw3xO2XBhVTPfzrri",
+              "id": "price_1NzooOFPw3xO2XBhDO2K7tfb",
               "object": "plan",
               "active": true,
               "aggregate_usage": null,
@@ -194,7 +194,7 @@ export const MockPlusAnnuallyDowngradeToMonthly = (user: User, offset: DurationL
               "usage_type": "licensed"
             },
             "price": {
-              "id": "price_1LbTUAFPw3xO2XBhVTPfzrri",
+              "id": "price_1NzooOFPw3xO2XBhDO2K7tfb",
               "object": "price",
               "active": true,
               "billing_scheme": "per_unit",
@@ -230,7 +230,7 @@ export const MockPlusAnnuallyDowngradeToMonthly = (user: User, offset: DurationL
       },
       "latest_invoice": "in_1NfARqFPw3xO2XBh8RFrNdyo",
       "plan": {
-        "id": "price_1LbTUAFPw3xO2XBhVTPfzrri",
+        "id": "price_1NzooOFPw3xO2XBhDO2K7tfb",
         "amount": 5000,
         "amount_decimal": "5000",
         "interval": "year"

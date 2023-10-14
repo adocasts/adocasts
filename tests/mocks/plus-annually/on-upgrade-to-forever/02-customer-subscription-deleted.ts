@@ -48,7 +48,7 @@ export const MockPlusAnnuallyUpgradeToForeverCustomerSubscriptionDeleted = (user
             "metadata": {
             },
             "plan": {
-              "id": "price_1LbTUAFPw3xO2XBhVTPfzrri",
+              "id": "price_1NzooOFPw3xO2XBhDO2K7tfb",
               "object": "plan",
               "active": true,
               "aggregate_usage": null,
@@ -70,7 +70,7 @@ export const MockPlusAnnuallyUpgradeToForeverCustomerSubscriptionDeleted = (user
               "usage_type": "licensed"
             },
             "price": {
-              "id": "price_1LbTUAFPw3xO2XBhVTPfzrri",
+              "id": "price_1NzooOFPw3xO2XBhDO2K7tfb",
               "object": "price",
               "active": true,
               "billing_scheme": "per_unit",
@@ -123,7 +123,7 @@ export const MockPlusAnnuallyUpgradeToForeverCustomerSubscriptionDeleted = (user
       "pending_setup_intent": null,
       "pending_update": null,
       "plan": {
-        "id": "price_1LbTUAFPw3xO2XBhVTPfzrri",
+        "id": "price_1NzooOFPw3xO2XBhDO2K7tfb",
         "object": "plan",
         "active": true,
         "aggregate_usage": null,
