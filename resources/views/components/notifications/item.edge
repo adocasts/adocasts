@@ -2,14 +2,14 @@
   @if (item.href)
     <a href="{{ item.href }}" class="flex flex-col px-4 py-2 hover:bg-slate-100 rounded-xl my-1 duration-150">
       <strong class="text-xs">{{ item.title }}</strong>
-      <div class="break-all text-xs md:text-sm">
+      <div class="break-all md:break-keep md:break-words text-xs md:text-sm">
         {{ stripHTML(item.body) }}
       </div>
     </a>
   @else
     <div class="flex flex-col px-4 py-2">
       <strong class="text-xs">{{ item.title }}</strong>
-      <div class="break-all text-xs md:text-sm">
+      <div class="break-all md:break-keep md:break-words text-xs md:text-sm">
         {{ stripHTML(item.body) }}
       </div>
     </div>

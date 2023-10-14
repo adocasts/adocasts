@@ -1,5 +1,5 @@
 @layout('layouts/app')
-@set('hasVideo', post.videoUrl || post.livestreamUrl)
+@set('hasVideo', post.hasVideo)
 @set('plusMonthly', await Plan.findOrFail(Plans.PLUS_MONTHLY))
 
 @section('meta')

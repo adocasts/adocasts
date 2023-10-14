@@ -1,191 +1,296 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import Hls from 'hls.js'
+import Plyr from 'plyr'
 
 let isVideoPlaying = false
-let isInitialLoad = true
 let playerInterval = null
 let keepPlayerPostId = null
 let keepPlayer = false
 
-window.initVideo = function ({ el = 'ytEmbed', autoEmbed = true, videoId, httpMethod = 'post', httpUrl, httpPayload = {}, watchSeconds = 0, isLive = false, autoplay = false } = {}) {
-  const startMuted = isLive
-  const bodyContent = document.querySelector('.body-content')
-
-  Cookies.remove('playingId')
-
-  if (isLive) {
-    autoplay = true
-  }
-
-  if (!autoplay) {
-    autoplay = window.$params.autoplay ?? 0
-    delete window.$params.autoplay
-  }
-
-  if (autoplay) {
-    onInitVideo(true, watchSeconds)
-    return
-  }
-
-  if (autoEmbed) {
-    onInitVideo(false, watchSeconds)
-  }
-
-  const placeholder = document.querySelector('[video-placeholder]')
-  const element = document.getElementById(el)
-
-  bodyContent?.addEventListener('click', (event) => {
-    const isTarget = event.target.classList.contains('timestamp')
-    const containsTarget = event.target.closest('.timestamp')
-
-    if (isTarget || containsTarget) {
-      const target = isTarget ? event.target : event.target.closest('.timestamp')
-      const displayDuration = target.textContent
-      const splits = displayDuration.split(':')
-      let duration = splits[splits.length]
-
-      if (splits.length > 1) {
-        duration = splits.reduce((x, s, i) => {
-          return i == splits.length -1 ? x + parseInt(s) : x + (parseInt(s) * 60)
-        }, 0)
-      }
-
-      if (window.player) {
-        window.player.currentTime = duration
-      } else {
-        onInitVideo(true, duration)
-      }
-
-      window.scrollTo({
-        top: element.offsetTop,
-        behavior: 'smooth'
-      })
+class VideoPlayer {
+  constructor({ el = 'ytEmbed', autoEmbed = true, videoId, httpMethod = 'post', httpUrl, httpPayload = {}, watchSeconds = 0, isLive = false, autoplay = false } = {}) {
+    this.autoplay = autoplay
+    this.startMuted = isLive
+    this.watchSeconds = watchSeconds
+    this.bodyContent = document.querySelector('.body-content')
+    this.placeholder = document.querySelector('[video-placeholder]')
+    this.nextUpEl = document.getElementById('lessonVideoNextUp')
+    this.btnCompleted = document.querySelector('[btn-completed]')
+    this.btnNotCompleted = document.querySelector('[btn-not-completed]')
+    this.element = document.getElementById(el)
+    this.elementInitialNodeName = this.element.nodeName
+    this.videoId = videoId
+    this.autoEmbed = autoEmbed
+    this.http = {
+      method: httpMethod,
+      url: httpUrl,
+      payload: httpPayload
     }
-  })
 
-  function onInitVideo(playOnReady, skipToSeconds = watchSeconds) {
-    keepPlayerPostId = httpPayload.postId
-    keepPlayer = false
+    Cookies.remove('playingId')
 
+    if (isLive) this.autoplay = true
+    if (!autoplay) {
+      this.autoplay = window.$params.autoplay ?? 0
+      delete window.$params.autoplay
+    }
+
+    this.onInitVideo()
+  }
+
+  get isHlsVideo() {
+    return this.elementInitialNodeName === 'VIDEO' && this.element.dataset.hlsUrl
+  }
+
+  // #region Player Initialization
+
+  /**
+   * Initialize the video player and it's event listeners
+   * @param {boolean} playOnReady 
+   * @param {number} skipToSeconds 
+   */
+  async onInitVideo(playOnReady = this.autoplay, skipToSeconds = this.watchSeconds) {
+    this.keepPlayerPostId = this.http.payload.postId
+    this.keepPlayer = false
+
+    // clean up any prior video
     if (window.player && typeof window.player.destroy === 'function') {
       window.player.destroy()
     }
 
-    window.player = new Plyr('#' + el, {
-      autoplay: !!playOnReady,
-      muted: startMuted,
-      volume: window.player?.volume ?? 1,
-      settings: ['captions', 'quality', 'speed', 'loop'],
-      quality: {
-        default: 2160,
-        options: [2160, 1080, 720, 480, 360]
-      }
-    })
+    this.player = await this.#initPlayer(playOnReady)
     
-    const nextUpEl = document.getElementById('lessonVideoNextUp')
-
-    window.player.on('playing', onPlayerStateChange)
-    window.player.on('pause', onPlayerStateChange)
-    window.player.on('ended', onPlayerStateChange)
-
-    window.player.on('ready', () => {
-      if (!playOnReady && !isLive && skipToSeconds) {
-        window.player.currentTime = skipToSeconds
+    this.player.on('playing', this.#onPlayerStateChange.bind(this))
+    this.player.on('pause', this.#onPlayerStateChange.bind(this))
+    this.player.on('ended', this.#onPlayerStateChange.bind(this))
+    this.player.on('ready', () => {
+      if (!playOnReady && skipToSeconds && !this.isLive) {
+        this.player.currentTime = skipToSeconds
       }
     })
 
-    if (nextUpEl) {
-      window.player.on('timeupdate', onPlayerTimeUpdate)
+    if (this.nextUpEl) {
+      this.player.on('timeupdate', this.#onPlayerTimeUpdate.bind(this))
     }
 
-    let lastTimeUpdate = null
-    function onPlayerTimeUpdate(event) {
-      if (!nextUpEl) return
-
-      const player = event.detail.plyr
-      const timeUpdate = Math.floor(player.currentTime)
-
-      if (timeUpdate === lastTimeUpdate) return
-      
-      lastTimeUpdate = timeUpdate
-
-      // don't dispatch to nextUp if player isn't actively playing
-      if (!isVideoPlaying) return 
-
-      nextUpEl.dispatchEvent(new CustomEvent('timeupdate', { detail: { player } }))
-    }
-
-    function onPlayerStateChange(event) {
-      const player = event.detail.plyr
-
-      isVideoPlaying = player.playing
-
-      // only update keepPlayer when on video's designated page
-      if (location.pathname === placeholder.dataset.path) {
-        keepPlayer = isVideoPlaying
-        keepPlayerPostId = httpPayload.postId
-      }
-
-      if (isLive) return
-
-      if (!window.player) {
-        Cookies.remove('playingId')
-        keepPlayer = null
-        keepPlayerPostId = null
-      }
-
-      if (isVideoPlaying) {
-        playerInterval = setInterval(async () => {
-          const currentTime = window.player.currentTime
-          const duration = window.player.duration
-
-          // duration may be 0 if meta data is still loading
-          if (duration !== 0) {
-            await storeWatchingProgression(currentTime, duration)
-          }
-        }, 7500)
-
-        if (!Cookies.get('playingId')) {
-          Cookies.set('playingId', httpPayload.postId)
-        }
-      } else {
-        if (typeof window.player?.currentTime === 'number') {
-          const currentTime = window.player.currentTime
-          const duration = window.player.duration
-          storeWatchingProgression(currentTime, duration)
-        }
-
-        clearInterval(playerInterval)
-
-        Cookies.remove('playingId')
-      }
-    }
-
-    async function storeWatchingProgression(currentTime, duration) {
-      if (!window.isAuthenticated) return
-
-      const watchPercent = Math.floor(currentTime / duration * 100)
-      const { data } = await axios[httpMethod](httpUrl, {
-        ...httpPayload,
-        watchPercent,
-        watchSeconds: Math.floor(currentTime)
-      })
-
-      const isCompleted = data.progression.isCompleted
-      const btnCompleted = document.querySelector('[btn-completed]')
-      const btnNotCompleted = document.querySelector('[btn-not-completed]')
-
-      if (!btnCompleted || !btnNotCompleted) return
-
-      if (isCompleted) {
-        btnCompleted.classList.remove('hidden')
-        btnNotCompleted.classList.add('hidden')
-      } else {
-        btnNotCompleted.classList.remove('hidden')
-        btnCompleted.classList.add('hidden')
-      }
-    }
+    this.bodyContent?.addEventListener('click', this.#onTimestampClick.bind(this))
   }
+
+  /**
+   * initializes the plyr player for the needed video type
+   * @param {boolean} playOnReady 
+   * @returns 
+   */
+  async #initPlayer(playOnReady) {
+    const config = {
+      autoplay: !!playOnReady,
+      muted: this.startMuted,
+      volume: window.player?.volume ?? 1,
+      settings: ['captions', 'quality', 'speed', 'loop']
+    }
+
+    const player = this.isHlsVideo 
+      ? await this.#initPlayerHls(config) 
+      : this.#initStandardVideo(config)
+
+    window.player = player
+
+    return player
+  }
+
+  /**
+   * initializes the plyr video specifically for an HLS Stream (how we're handling Bunny Stream videos)
+   * @param {Partial<Plyr.Options>|undefined} config 
+   * @returns 
+   */
+  #initPlayerHls(config) {
+    if (!Hls.isSupported()) {
+      this.element.src = this.element.dataset.hlsUrl
+      return
+    }
+
+    const hls = new Hls()
+
+    hls.loadSource(this.element.dataset.hlsUrl)
+    hls.attachMedia(this.element)
+
+    window.hls = hls
+
+    return new Promise((resolve) => {
+      hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+        const qualities = hls.levels.map(l => l.height)
+
+        config.quality = {
+          default: qualities[0],
+          options: qualities,
+          forced: true,
+          onChange: quality => {
+            hls.levels.map((level, index) => {
+              if (level.height !== quality) return
+              hls.currentLevel = index
+            })
+          }
+        }
+
+        const player = this.#initStandardVideo(config)
+        
+        player.on('languagechange', () => setTimeout(() => hls.subtitleTrack = player.currentTrack, 50))
+
+        resolve(player)
+      })
+    })
+  }
+
+  /**
+   * simple initialization of plyr
+   * @param {Partial<Plyr.Options>|undefined} config 
+   * @returns 
+   */
+  #initStandardVideo(config) {
+    return new Plyr(this.element, config)
+  }
+
+  /**
+   * dispatches times updates to the nextUp element
+   * @param {CustomEvent} event 
+   * @returns 
+   */
+  #onPlayerTimeUpdate(event) {
+    if (!this.nextUpEl) return
+
+    const player = event.detail.plyr
+    const timeUpdate = Math.floor(player.currentTime)
+
+    if (timeUpdate === this.lastTimeUpdate) return
+
+    this.lastTimeUpdate = timeUpdate
+
+    // don't dispatch to nextUp if player isn't actively playing
+    if (!isVideoPlaying) return
+
+    this.nextUpEl.dispatchEvent(new CustomEvent('timeupdate', { detail: { player } }))
+  }
+
+  // #endregion
+  // #region Player State Handlers
+
+  /**
+   * handles player state changes (play, pause, end, etc)
+   * @param {CustomEvent} event 
+   * @returns 
+   */
+  #onPlayerStateChange(event) {
+    const player = event.detail.plyr
+
+    isVideoPlaying = player.playing
+
+    // only update keepPlayer when on video's designated page
+    if (location.pathname === this.placeholder.dataset.path) {
+      this.keepPlayer = isVideoPlaying
+      this.keepPlayerPostId = this.http.payload.postId
+    }
+
+    if (this.isLive) return
+
+    if (!this.player) {
+      Cookies.remove('playingId')
+      this.keepPlayer = null
+      this.keepPlayerPostId = null
+    }
+
+    if (!isVideoPlaying) {
+      clearInterval(playerInterval)
+      Cookies.remove('playingId')
+
+      if (typeof player.currentTime !== 'number') return
+
+      this.#storeWatchingProgression(player.currentTime, player.duration)
+
+      return
+    }
+
+    if (!Cookies.get('playingId')) {
+      Cookies.set('playingId', this.http.payload.postId)
+    }
+
+    playerInterval = setInterval(async () => {
+      if (player.duration <= 0) return
+      this.#storeWatchingProgression(player.currentTime, player.duration)
+    }, 5000)
+  }
+
+  /**
+   * store's the user's current progress for the video
+   * @param {number} currentTime 
+   * @param {number} duration 
+   * @returns 
+   */
+  async #storeWatchingProgression(currentTime, duration) {
+    if (!window.isAuthenticated) return
+
+    const watchPercent = Math.floor(currentTime / duration * 100)
+    const { data } = await axios[this.http.method](this.http.url, {
+      ...this.http.payload,
+      watchPercent,
+      watchSeconds: Math.floor(currentTime)
+    })
+
+    const isCompleted = data.progression.isCompleted
+    
+    if (!this.btnCompleted || !this.btnNotCompleted) return
+
+    if (isCompleted) {
+      this.btnCompleted.classList.remove('hidden')
+      this.btnNotCompleted.classList.add('hidden')
+      return
+    }
+
+    this.btnNotCompleted.classList.remove('hidden')
+    this.btnCompleted.classList.add('hidden')
+  }
+
+  /**
+   * handles when a timestamp has been clicked within the body copy (jumps to position in video)
+   * @param {MouseEvent} event 
+   * @returns 
+   */
+  #onTimestampClick(event) {
+    const isTarget = event.target.classList.contains('timestamp')
+    const containsTarget = event.target.closest('.timestamp')
+
+    if (!isTarget && !containsTarget) return
+
+    const target = isTarget ? event.target : containsTarget
+    const displayDuration = target.textContent
+    const splits = displayDuration.split(':')
+    let duration = splits[splits.length]
+
+    if (splits.length > 1) {
+      duration = splits.reduce((x, s, i) => {
+        return i == splits.length - 1 ? x + parseInt(s) : x + (parseInt(s) * 60)
+      }, 0)
+    }
+
+    // youtube... setting currentTime then calling play mutes the video for some reason
+    // so this is a workaround that
+    if (typeof this.player.embed?.seekTo === 'function') {
+      this.player.embed.seekTo(duration)
+    } else {
+      this.player.currentTime = duration
+    }
+
+    if (!isVideoPlaying) {
+      this.player.play()
+    }
+
+    window.scrollTo({
+      top: this.element.offsetTop,
+      behavior: 'smooth'
+    })
+  }
+
+  // #endregion
 }
 
 let lessonVideoIntersection
@@ -205,7 +310,7 @@ up.compiler('#lessonVideoEmbed', function(element) {
   positionVideoPlaceholder()
 
   // kick-off video initialization
-  initVideo({
+  new VideoPlayer({
     el: 'lessonVideoEmbed',
     isLive: data.isLive == "true",
     videoId: data.videoId,

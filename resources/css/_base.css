@@ -36,6 +36,14 @@
     @apply text-slate-600 group-hover:text-slate-800 duration-150;
   }
 
+  .plyr.plyr--video {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
   .expand-link:after {
     content: "";
     width: 100%;

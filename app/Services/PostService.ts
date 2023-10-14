@@ -22,7 +22,10 @@ export default class PostService {
         query => query.where({ postTypeId: postTypeIds })
       )
       .if(excludeIds.length, query => query.whereNotIn('id', excludeIds))
-      .orderBy('publishAt', 'desc')
+      .orderBy([
+        { column: 'publishAt', order: 'desc' },
+        { column: 'createdAt', order: 'desc' }
+      ])
       .limit(limit)
   }
 
@@ -33,10 +36,11 @@ export default class PostService {
    */
   public static async getTrending(limit: number = 10): Promise<Post[]> {
     const slugs = await AnalyticsService.getPastMonthsPopularContentSlugs(limit)
-    return Post.query()
+    const posts = await Post.query()
       .apply(scope => scope.forDisplay())
       .whereIn('slug', slugs)
-      .orderBy('publishAt', 'desc')
+
+    return slugs.map(slug => posts.find(post => post.slug === slug))
   }
 
   /**

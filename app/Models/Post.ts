@@ -76,7 +76,7 @@ export default class Post extends AppBaseModel {
   public videoUrl: string | null
 
   @column()
-  public videoBunnyPath: string | null
+  public videoBunnyId: string | null
 
   @column()
   public livestreamUrl: string | null
@@ -330,6 +330,10 @@ export default class Post extends AppBaseModel {
 
   @computed()
   public get videoId() {
+    if (this.videoTypeId === VideoTypes.BUNNY) {
+      return this.videoBunnyId
+    }
+
     if (!this.videoUrl) return '';
 
     return this.videoUrl
@@ -337,6 +341,23 @@ export default class Post extends AppBaseModel {
       .replace('https://youtube.com/watch?v=', '')
       .replace('https://youtube.com/embed/', '')
       .replace('https://youtu.be/', '');
+  }
+
+  @computed()
+  public get bunnyHlsUrl() {
+    if (this.videoTypeId !== VideoTypes.BUNNY) return
+
+    return `https://videos.adocasts.com/${this.videoBunnyId}/playlist.m3u8`
+  }
+
+  @computed()
+  public get bunnyFallbackUrls() {
+    if (this.videoTypeId !== VideoTypes.BUNNY) return
+    
+    const baseUrl = `https://videos.adocasts.com/${this.videoBunnyId}`
+    const heights = ['240', '360', '480', '720', '1080', '1440']
+
+    return heights.map(height => ({ height, src: `${baseUrl}/play_${height}p.mp4` }))
   }
 
   @computed()
@@ -348,6 +369,11 @@ export default class Post extends AppBaseModel {
       .replace('https://youtube.com/watch?v=', '')
       .replace('https://youtube.com/embed/', '')
       .replace('https://youtu.be/', '');
+  }
+
+  @computed()
+  public get hasVideo() {
+    return this.videoUrl || this.livestreamUrl || this.videoBunnyId
   }
 
   @computed()

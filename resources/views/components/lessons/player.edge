@@ -1,4 +1,4 @@
-@set('hasVideo', post.videoUrl || post.livestreamUrl)
+@set('hasVideo', post.hasVideo)
 
 @if (hasVideo)
   @can('PostPolicy.view', post)
@@ -20,21 +20,42 @@
         @endif
         <div class="w-full h-full mx-auto" style="max-width: 150vh;">
           <div class="w-full aspect-video relative overflow-hidden">
-            <div
-              id="lessonVideoEmbed"
-              class="absolute top-0 left-0 w-full h-full"
-              data-plyr-provider="youtube"
-              data-plyr-embed-id="{{ post.isLive && post.livestreamUrl ? post.streamId : post.videoId }}"
-              data-is-live="{{ post.livestreamUrl && post.isLive }}"
-              data-video-id="{{ post.isLive && post.livestreamUrl ? post.streamId : post.videoId }}"
-              data-watch-seconds="{{ userProgression?.watchSeconds ?? 0 }}"
-              data-http-url="{{ route('api.histories.progression', { id: userProgression?.id }) }}"
-              data-payload-post-id="{{ post.id }}"
-              data-payload-collection-id="{{ series?.id }}"
-              data-payload-user-id="{{ auth.user?.id }}"
-              data-payload-route="{{ request.ctx.route?.name }}"
-            >
-            </div>
+            @if (post.videoTypeId === VideoTypes.YOUTUBE)
+              <div
+                id="lessonVideoEmbed"
+                class="absolute top-0 left-0 w-full h-full"
+                data-plyr-provider="youtube"
+                data-plyr-embed-id="{{ post.isLive && post.livestreamUrl ? post.streamId : post.videoId }}"
+                data-is-live="{{ post.livestreamUrl && post.isLive }}"
+                data-video-id="{{ post.isLive && post.livestreamUrl ? post.streamId : post.videoId }}"
+                data-watch-seconds="{{ userProgression?.watchSeconds ?? 0 }}"
+                data-http-url="{{ route('api.histories.progression', { id: userProgression?.id }) }}"
+                data-payload-post-id="{{ post.id }}"
+                data-payload-collection-id="{{ series?.id ?? '' }}"
+                data-payload-user-id="{{ auth.user?.id ?? '' }}"
+                data-payload-route="{{ request.ctx.route?.name ?? '' }}"
+              >
+              </div>
+            @elseif (post.videoTypeId === VideoTypes.BUNNY)
+              <video
+                id="lessonVideoEmbed"
+                class="absolute top-0 left-0 w-full h-full"
+                data-is-live="false"
+                data-video-id="{{ post.videoId }}"
+                data-watch-seconds="{{ userProgression?.watchSeconds ?? 0 }}"
+                data-http-url="{{ route('api.histories.progression', { id: userProgression?.id }) }}"
+                data-payload-post-id="{{ post.id }}"
+                data-payload-collection-id="{{ series?.id ?? '' }}"
+                data-payload-user-id="{{ auth.user?.id ?? '' }}"
+                data-payload-route="{{ request.ctx.route?.name ?? '' }}"
+                data-poster="{{ post.thumbnails.length ? '/img/' + post.thumbnails[0].filename : '' }}"
+                data-hls-url="{{ post.bunnyHlsUrl }}"
+              >
+                {{--  @each (quality in post.bunnyFallbackUrls)
+                  <source src="{{ quality.src }}" size="{{ quality.height }}" type="video/mp4" />
+                @endeach  --}}
+              </video>
+            @endif
 
             @if (nextLesson)
               <div 
