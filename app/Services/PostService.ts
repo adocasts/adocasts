@@ -40,7 +40,7 @@ export default class PostService {
       .apply(scope => scope.forDisplay())
       .whereIn('slug', slugs)
 
-    return slugs.map(slug => posts.find(post => post.slug === slug))
+    return slugs.map(slug => posts.find(post => post.slug === slug)).filter(Boolean)
   }
 
   /**
