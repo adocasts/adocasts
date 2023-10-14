@@ -112,20 +112,36 @@ class VideoPlayer {
 
     const hls = new Hls()
 
+    // bind hls to our video element
     hls.loadSource(this.element.dataset.hlsUrl)
     hls.attachMedia(this.element)
+
+    // when hls auto updates the level, update our auto selection to show current quality
+    hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
+      const autoOptionEl = document.querySelector('.plyr__menu__container [data-plyr="quality"][value="AUTO"] span')
+      autoOptionEl.textContent = hls.autoLevelEnabled
+        ? `Auto (${hls.levels[data.level].height}p)`
+        : `Auto`
+    })
 
     window.hls = hls
 
     return new Promise((resolve) => {
       hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-        const qualities = hls.levels.map(l => l.height)
-
+        // get available quality options for video from hls, prefixing with auto option
+        const qualities = ['AUTO', ...hls.levels.map(l => l.height)]
+        
         config.quality = {
-          default: qualities[0],
+          default: 'AUTO',
           options: qualities,
           forced: true,
           onChange: quality => {
+            // when auto is selected in plyr, enable it within hls
+            if (quality === 'AUTO') {
+              hls.currentLevel = -1
+            }
+
+            // otherwise, find and set the newly selected quality
             hls.levels.map((level, index) => {
               if (level.height !== quality) return
               hls.currentLevel = index
@@ -133,8 +149,10 @@ class VideoPlayer {
           }
         }
 
+        // create the plyr instance
         const player = this.#initStandardVideo(config)
         
+        // when subtitle language is changed, update it within hls
         player.on('languagechange', () => setTimeout(() => hls.subtitleTrack = player.currentTrack, 50))
 
         resolve(player)

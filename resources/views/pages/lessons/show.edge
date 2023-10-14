@@ -122,8 +122,8 @@
             @else
               {{{ await getBodyPreview(post.body) }}}
               <div class="w-full absolute bottom-0 left-0 h-full bg-gradient-to-b from-slate-100/0 via-slate-100/75 to-slate-100 z-10"></div>
-              <div class="bg-slate-200 rounded-xl p-6 shadow-xl -mt-16 relative z-20">
-                @!plus.postCta({ post, plusMonthly })
+              <div class="bg-slate-200 rounded-xl p-6 shadow-xl relative z-20 {{ post.body.length ? '-mt-16' : '' }}">
+                @!plus.postCta({ post, plusMonthly, outlineVariant: 'base-light' })
               </div>
             @endcan
           </article>
