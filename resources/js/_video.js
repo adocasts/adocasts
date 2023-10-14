@@ -51,8 +51,8 @@ class VideoPlayer {
    * @param {number} skipToSeconds 
    */
   async onInitVideo(playOnReady = this.autoplay, skipToSeconds = this.watchSeconds) {
-    this.keepPlayerPostId = this.http.payload.postId
-    this.keepPlayer = false
+    keepPlayerPostId = this.http.payload.postId
+    keepPlayer = false
 
     // clean up any prior video
     if (window.player && typeof window.player.destroy === 'function') {
@@ -64,11 +64,18 @@ class VideoPlayer {
     this.player.on('playing', this.#onPlayerStateChange.bind(this))
     this.player.on('pause', this.#onPlayerStateChange.bind(this))
     this.player.on('ended', this.#onPlayerStateChange.bind(this))
-    this.player.on('ready', () => {
+
+    const setInitialTime = () => {
       if (!playOnReady && skipToSeconds && !this.isLive) {
         this.player.currentTime = skipToSeconds
       }
-    })
+    }
+
+    // ready is needed to set YouTube video start times
+    this.player.on('ready', () => setInitialTime())
+
+    // loadedmetadata is need for bunny stream videos when loaded via unpoly (setting in ready is ignored for some reason)
+    this.player.on('loadedmetadata', () => setInitialTime())
 
     if (this.nextUpEl) {
       this.player.on('timeupdate', this.#onPlayerTimeUpdate.bind(this))
@@ -87,6 +94,18 @@ class VideoPlayer {
       autoplay: !!playOnReady,
       muted: this.startMuted,
       volume: window.player?.volume ?? 1,
+      controls: [
+        'play-large', 
+        'play',
+        'progress', 
+        'duration', 
+        'mute', 
+        'volume', 
+        'settings',
+        'pip',
+        'airplay',
+        'fullscreen'
+      ],
       settings: ['captions', 'quality', 'speed', 'loop']
     }
 
@@ -206,16 +225,16 @@ class VideoPlayer {
 
     // only update keepPlayer when on video's designated page
     if (location.pathname === this.placeholder.dataset.path) {
-      this.keepPlayer = isVideoPlaying
-      this.keepPlayerPostId = this.http.payload.postId
+      keepPlayer = isVideoPlaying
+      keepPlayerPostId = this.http.payload.postId
     }
 
     if (this.isLive) return
 
     if (!this.player) {
       Cookies.remove('playingId')
-      this.keepPlayer = null
-      this.keepPlayerPostId = null
+      keepPlayer = null
+      keepPlayerPostId = null
     }
 
     if (!isVideoPlaying) {

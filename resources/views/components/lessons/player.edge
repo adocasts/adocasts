@@ -51,9 +51,9 @@
                 data-poster="{{ post.thumbnails.length ? '/img/' + post.thumbnails[0].filename : '' }}"
                 data-hls-url="{{ post.bunnyHlsUrl }}"
               >
-                {{--  @each (quality in post.bunnyFallbackUrls)
+                @each (quality in post.bunnyFallbackUrls)
                   <source src="{{ quality.src }}" size="{{ quality.height }}" type="video/mp4" />
-                @endeach  --}}
+                @endeach
               </video>
             @endif
 
