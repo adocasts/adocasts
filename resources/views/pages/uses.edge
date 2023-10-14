@@ -79,8 +79,8 @@
       subtitle: `A collection of tech and software used at ${ env('APP_BRAND') } that we deem vital to our lives as developers and content creators. Some items may be referrals.`
     })
     <div class="app-container">
-      <div class="flex flex-wrap -mx-6">
-        <div class="w-full lg:w-1/2 px-6 order-2 lg:order-1">
+      <div class="flex flex-wrap sm:-mx-6">
+        <div class="w-full lg:w-1/2 sm:px-6 order-2 lg:order-1">
           @!headings.section({ title: 'Hardware' })
           <ul class="mb-12 mt-3">
             @each (item in hardware)
@@ -93,13 +93,13 @@
           </ul>
         </div>
 
-        <div class="w-full lg:w-1/2 px-6 order-1 lg:order-2">
+        <div class="w-full lg:w-1/2 sm:px-6 order-1 lg:order-2">
           <img src="/img/1/uses-image.jpg" class="w-full xl:max-w-md rounded-lg mb-6" alt="Adocast's/Tom's office setup">
         </div>
       </div>
 
-      <div class="flex flex-wrap -mx-6">
-        <div class="w-full lg:w-1/2 px-6">
+      <div class="flex flex-wrap sm:-mx-6">
+        <div class="w-full lg:w-1/2 sm:px-6">
           @!headings.section({ title: 'Frameworks & Libraries' })
           <ul class="mb-12 mt-3">
             @each (item in frameworks)
@@ -112,7 +112,7 @@
           </ul>
         </div>
 
-        <div class="w-full lg:w-1/2 px-6">
+        <div class="w-full lg:w-1/2 sm:px-6">
           @!headings.section({ title: 'Git & Hosting' })
           <ul class="mb-12 mt-3">
             @each (item in hosting)
@@ -126,8 +126,8 @@
         </div>
       </div>
 
-      <div class="flex flex-wrap -mx-6">
-        <div class="w-full lg:w-1/2 px-6">
+      <div class="flex flex-wrap sm:-mx-6">
+        <div class="w-full lg:w-1/2 sm:px-6">
           @!headings.section({ title: 'Software' })
           <ul class="mb-12 mt-3">
             @each (item in software)
@@ -140,7 +140,7 @@
           </ul>
         </div>
 
-        <div class="w-full lg:w-1/2 px-6">
+        <div class="w-full lg:w-1/2 sm:px-6">
           @!headings.section({ title: 'Editor & Extensions' })
           <ul class="mb-12 mt-3">
             @each (item in ide)

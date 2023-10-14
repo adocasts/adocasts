@@ -24,8 +24,8 @@
 
 @section('content')
 
-  <div class="flex flex-wrap -mx-6">
-    <div class="w-full md:w-2/3 px-6 -ml-3">
+  <div class="flex flex-wrap md:-mx-6">
+    <div class="w-full md:w-2/3 md:px-6 md:-ml-3">
       @if (filteredTo)
         <div class="bg-slate-200 px-3 py-1.5 text-xs inline-flex gap-3 rounded-full -mt-6 mb-3 ml-3">
           <span>Showing only {{ filteredTo }} items</span>
@@ -41,7 +41,7 @@
       
       @!pagination({ data: items })
     </div>
-    <div class="w-full md:w-1/3 px-6">
+    <div class="w-full md:w-1/3 md:px-6">
       @!ads.vertical()
     </div>
   </div>

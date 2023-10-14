@@ -24,14 +24,14 @@
 
 @section('content')
 
-  <div class="flex flex-wrap -mx-6">
-    <div class="w-full md:w-2/3 px-6 -ml-3">
+  <div class="flex flex-wrap md:-mx-6">
+    <div class="w-full md:w-2/3 md:px-6 md:-ml-3">
       @each ((item, i) in items)
         @!lessons.item({ item })
       @endeach
       @!pagination({ data: items })
     </div>
-    <div class="w-full md:w-1/3 px-6 space-y-6">
+    <div class="w-full md:w-1/3 md:px-6 space-y-6">
       @!ads.vertical()
       @!ads.vertical()
     </div>
