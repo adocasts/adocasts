@@ -5,7 +5,7 @@
 @set('pageEndCount', isLastPage ? data.total : data.currentPage * data.perPage)
 @set('disabledClass', 'text-slate-400 cursor-not-allowed')
 
-<div class="bg-slate-100 px-4 py-3 flex items-center justify-between rounded-xl sm:px-6 {{ className }}">
+<div class="bg-slate-100 p-3 flex items-center justify-between rounded-xl {{ className }}">
   <div class="flex-1 flex justify-between sm:hidden">
     <a {{{ !isFirstPage && `href="${data.getPreviousPageUrl()}"` }}} up-follow class="relative inline-flex items-center px-4 py-2 border border-slate-200 text-sm font-medium rounded-md bg-white {{ isFirstPage ? disabledClass : 'text-slate-900 hover:bg-slate-100' }}">
       Previous
@@ -15,7 +15,7 @@
     </a>
   </div>
   <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-    <div>
+    <div class="px-1 sm:px-3">
       <p class="text-sm text-slate-900 dark:text-slate-700">
         Showing
         <span class="font-medium">{{ pageStartCount }}</span>
@@ -27,7 +27,7 @@
       </p>
     </div>
     <div>
-      <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+      <nav class="relative z-0 inline-flex flex-wrap justify-center rounded-md shadow-sm -space-x-px" aria-label="Pagination">
         <a {{{ !isFirstPage && `href="${data.getPreviousPageUrl()}"` }}} up-follow class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-slate-200 bg-white text-sm font-medium {{ isFirstPage ? disabledClass : 'text-slate-800 hover:bg-slate-100' }}">
           <span class="sr-only">Previous</span>
           <!-- Heroicon name: solid/chevron-left -->
