@@ -43,7 +43,7 @@
         </p>
       @endif
       @if (author.profile.githubUrl)
-        <a href="{{ author.profile.githubUrl }}" target="_blank" class="flex items-center gap-3 truncate hover:text-slate-900">
+        <a href="{{ author.profile.githubUrl }}" target="_blank" class="flex items-center gap-3 truncate hover:text-slate-900 hover:underline">
           @!icons.brandGithub()
           {{ displaySocialUrl(author.profile.githubUrl) }}
         </a>
