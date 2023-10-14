@@ -1,3 +1,4 @@
+@set('isDelayedRelease', post.paywallTypeId === PaywallTypes.DELAYED_RELEASE)
 @set('size', size ?? 'base')
 @set('sizes', {
   base: {
@@ -6,7 +7,7 @@
     action: 'mt-3 flex flex-wrap items-center gap-6'
   },
   lg: {
-    heading: 'font-black uppercase text-xl lg:text-3xl tracking-wider border-t border-brand-300/75 mt-6 pt-6',
+    heading: `font-black uppercase text-xl lg:text-3xl tracking-wider ${isDelayedRelease ? 'border-t border-brand-300/75 mt-6 pt-6' : ''}`,
     p: 'lg:text-lg max-w-lg mt-3 mb-10',
     action: 'mt-10 flex flex-wrap items-center gap-6'
   }
@@ -14,7 +15,7 @@
 
 @set('classes', sizes[size])
 
-@if (post.paywallTypeId === PaywallTypes.DELAYED_RELEASE)
+@if (isDelayedRelease)
   <div class="relative z-10">
     @if (countdown)
       @!countdown({ dateTime: post.publishAt.plus({ days: 14 }).toISO() })

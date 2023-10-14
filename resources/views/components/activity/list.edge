@@ -21,7 +21,7 @@
                   {{ item.titleDescriptor }}
                 @endif
                 @if (item.title && item.href)
-                  <a href="{{ item.href }}" class="font-medium text-slate-900" up-follow>
+                  <a href="{{ item.href }}" class="font-medium !text-slate-900 anchor anchor-inv anchor-thin anchor-current" up-follow>
                     {{ item.title }}
                   </a>
                 @elseif (item.title)

@@ -12,7 +12,7 @@
     }
   }
 
-  a.anchor {
+  a.anchor:not(.anchor-current) {
     @apply text-brand-700 hover:text-brand-800;
   }
 
