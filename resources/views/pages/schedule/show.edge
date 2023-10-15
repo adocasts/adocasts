@@ -1,9 +1,9 @@
 @layout('layouts/app')
 @set('pageTitle', page.properties['Name'].title.map(x => x.text.content).join(', '))
-@set('pageDate', DateTime.fromFormat(page.properties['Date'].date.start, 'yyyy-MM-dd'))
-@set('pageStatus', page.properties['Status'].status.name)
+@set('pageDate', page.properties['Date'].date ? DateTime.fromFormat(page.properties['Date'].date.start, 'yyyy-MM-dd') : null)
+@set('pageStatus', page.properties['Status'].status?.name)
 @set('pageSeries', page.properties['Series'].select?.name || 'N/A')
-@set('pageRequestedBy', page.properties['Requested By'].rich_text.map(x => x.text.content).join(', '))
+@set('pageRequestedBy', page.properties['Requested By'].rich_text.map(x => x.text.content).join(', ') || 'N/A')
 
 @section('meta')
 
@@ -26,7 +26,7 @@
       <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-sm font-medium text-slate-900">{{ pageStatus === 'Done' ? 'Released' : 'Scheduled'}}</dt>
         <dd class="mt-1 text-sm leading-6 text-slate-700 sm:col-span-2 sm:mt-0">
-          {{ pageDate.toFormat('MMM dd, yyyy') }}
+          {{ pageDate?.toFormat('MMM dd, yyyy') || 'Pending' }}
           @if (pageStatus !== 'Done')
             <span class="text-xs text-slate-600 inline-block ml-2">*subject to change</span>
           @endif
@@ -84,7 +84,7 @@
 
         @if (content)
           <div id="proseBody" class="body-content prose max-w-4xl flex-1 text-slate-900 relative">
-            <div class="absolute left-0 bottom-0 w-full z-10 bg-gradient-to-b from-transparent to-slate-50 h-[150px]"></div>
+            <div class="absolute left-0 bottom-0 w-full z-10 bg-gradient-to-b {{ up.isPage ? 'from-body/0 to-body' : 'from-slate-100/0 to-slate-100' }} h-[150px]"></div>
             {{{ content }}}
           </div>
         @else

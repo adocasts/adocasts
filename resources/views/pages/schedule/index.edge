@@ -25,8 +25,8 @@
 
   <ul role="list" class="divide-y divide-slate-200/50 bg-slate-100 px-6 rounded-xl">
     @each (item in schedule.results)
-      @set('dte', DateTime.fromFormat(item.properties['Date'].date.start, 'yyyy-MM-dd'))
-      @set('status', item.properties['Status'].status.name)
+      @set('dte', item.properties['Date'].date ? DateTime.fromFormat(item.properties['Date'].date.start, 'yyyy-MM-dd') : null)
+      @set('status', item.properties['Status'].status?.name)
       @set('series', item.properties['Series'].select?.name)
 
       <li class="flex items-center justify-between gap-x-6 py-5">
@@ -37,7 +37,11 @@
             @else
               <p style="font-size: .65rem;" class="text-slate-600 uppercase tracking-wider">Scheduled</p>
             @endif
-            <time datetime="{{ dte.toISO() }}">{{ dte.toFormat('MMM dd, yyyy')}}</time>
+            @if (dte)
+              <time datetime="{{ dte.toISO() }}">{{ dte.toFormat('MMM dd, yyyy')}}</time>
+            @else
+              Pending
+            @endif
           </div>
           <div class="min-w-0">
             @if (series)
@@ -67,9 +71,19 @@
             </div>
             <div class="mt-1 flex items-center gap-x-2 text-xs leading-5 text-slate-600">
               @if (status === 'Done')
-                <p class="lg:hidden whitespace-nowrap">Released <time datetime="{{ dte.toISO() }}">{{ dte.toFormat('MMM dd, yyyy')}}</time></p>
+                <p class="lg:hidden whitespace-nowrap">
+                  Released 
+                  @if (dte)
+                    <time datetime="{{ dte.toISO() }}">{{ dte.toFormat('MMM dd, yyyy')}}</time>
+                  @endif
+                </p>
               @else
-                <p class="lg:hidden whitespace-nowrap">Planned for release <time datetime="{{ dte.toISO() }}">{{ dte.toFormat('MMM dd, yyyy')}}</time></p>
+                <p class="lg:hidden whitespace-nowrap">
+                  Planned for release 
+                  @if (dte)
+                    <time datetime="{{ dte.toISO() }}">{{ dte.toFormat('MMM dd, yyyy')}}</time>
+                  @endif
+                </p>
               @endif
               @if (series)
                 <p class="hidden lg:block whitespace-nowrap">{{ series }}</p>
@@ -77,7 +91,9 @@
               <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current {{ !series ? 'lg:hidden' : '' }}">
                 <circle cx="1" cy="1" r="1" />
               </svg>
-              <p class="truncate">Requested by {{ item.properties['Requested By'].rich_text.map(x => x.text.content).join(', ') }}</p>
+              @if (item.properties['Requested By'].rich_text)
+                <p class="truncate">Requested by {{ item.properties['Requested By'].rich_text.map(x => x.text.content).join(', ') || 'N/A' }}</p>
+              @endif
             </div>
           </div>
         </div>
