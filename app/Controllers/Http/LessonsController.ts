@@ -41,7 +41,7 @@ export default class LessonsController {
 
     if (post.isNotViewable && !auth.user?.isAdmin) {
       throw new Exception('This post is not currently available to the public', 404)
-    } else if (!post.isViewable && await bouncer.with('PostPolicy').denies('viewFutureDated', post)) {
+    } else if (!post.isViewable && await bouncer.with('PostPolicy').denies('viewFutureDated')) {
       return view.render('pages/lessons/soon', { post, series })
     }
 

@@ -3,9 +3,11 @@ declare module '@ioc:Logger/Discord' {
   import { DiscordLoggerOptions } from 'node-discord-logger'
 
 
-  interface DiscordContract extends DiscordLoggerOptions {
+  export interface DiscordContract extends DiscordLoggerOptions {
     enabled: boolean
   }
 
   const DiscordLogger: Logger
+
+  export default DiscordLogger
 }
