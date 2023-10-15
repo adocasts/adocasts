@@ -3,22 +3,30 @@
 @set('width', width || 'w-48')
 @set('shadow', shadow || 'shadow-xs')
 @set('onHover', onHover || false)
-
-<div @click.away="close" class="group relative flex-shrink-0 {{ className }}" x-data="{ 
+@set('xData', `
   open: false, 
-  onOpen() {
+  toggle() {
     this.open = !this.open
-    if (this.open) {{onOpen && `${onOpen}({{ JSON.stringify(onOpenData) }})` }} 
   },
   close() {
     this.open = false
-  }
-}" {{{ attrs }}}>
+  },
+`)
+
+@if (onHover)
+  @set('xData', xData + `hover() {
+    if (!window.matchMedia('(pointer: coarse)').matches) {
+      this.open = true
+    }
+  },`)
+@endif
+
+<div @click.away="close" class="group relative flex-shrink-0 {{ className }}" x-data="{ {{{ xData }}} }" {{{ attrs }}}>
   <div>
     @if ($slots.triggerManual)
-      {{{ await $slots.triggerManual({ handler: 'onOpen' }) }}}
+      {{{ await $slots.triggerManual({ handler: 'toggle' }) }}}
     @else
-      <button type="button" {{{ onHover ? '@mouseenter="open ? false : onOpen" @click.prevent.stop="open ? (open = false) : onOpen"' : '@click.prevent.stop="onOpen"' }}} aria-haspopup="true" x-bind:aria-expanded="open" class="flex {{ triggerClass || '' }}">
+      <button type="button" {{{ onHover && '@mouseenter="hover"' }}} @click.prevent.stop="toggle" aria-haspopup="true" x-bind:aria-expanded="open" class="flex {{ triggerClass || '' }}">
         {{{ await $slots.trigger() }}}
       </button>
     @endif
