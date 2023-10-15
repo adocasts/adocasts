@@ -1,3 +1,4 @@
+import States from "App/Enums/States";
 import CommentVote from "App/Models/CommentVote";
 import User from "App/Models/User";
 import ActivityVM from "App/ViewModels/Activity";
@@ -88,6 +89,7 @@ export default class ProfileActivityService {
   public async getRequestedLessons() {
     const requests = await this.user.related('lessonRequests').query()
       .where('createdAt', '>=', this.startSql)
+      .whereNot('stateId', States.ARCHIVED)
 
     return requests.map(lessonRequest => new ActivityVM({ lessonRequest }))
   }
@@ -95,6 +97,7 @@ export default class ProfileActivityService {
   public async getRequestedLessonUpvotes() {
     const upvotes = await this.user.related('lessonRequestVotes').query()
       .where('createdAt', '>=', this.startSql)
+      .whereHas('lessonRequest', query => query.whereNot('stateId', States.ARCHIVED))
       .preload('lessonRequest')
 
     return upvotes.map(requestVote => new ActivityVM({ requestVote }))
