@@ -139,6 +139,11 @@
   border-radius: theme('borderRadius.xl');
 }
 
+.prose pre,
+.prose-sm pre {
+  overflow-x: auto;
+}
+
 .prose pre > code {
   display: flex;
   flex-flow: column;

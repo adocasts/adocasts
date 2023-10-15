@@ -12,7 +12,7 @@
                 @!component(`components/icons/${item.icon}`, { className: 'h-5 w-5' })
               </span>
             </div>
-            <div class="w-full pt-0">
+            <div class="flex-auto w-full pt-0 overflow-hidden">
               <div class="whitespace-nowrap text-xs text-slate-500">
                 <time datetime="{{ item.createdAt.toFormat('yyyy-MM-dd') }}">{{ item.createdAtDisplay }}</time>
               </div>
