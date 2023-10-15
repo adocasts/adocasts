@@ -16,7 +16,7 @@ export default class PostPolicy extends BasePolicy {
 	}
 
 	@action({ allowGuest: true })
-	public async viewFutureDated(user: User, post: Post) {
+	public async viewFutureDated(user: User) {
 		if (this.isAdmin(user) || this.isContributorLvl1(user) || this.isContributorLvl2(user)) return true
 		return false
 	}

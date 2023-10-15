@@ -1,6 +1,5 @@
 import { AuthContract } from "@ioc:Adonis/Addons/Auth";
 import { ModelQueryBuilderContract } from "@ioc:Adonis/Lucid/Orm";
-import CollectionTypes from "App/Enums/CollectionTypes";
 import Collection from "App/Models/Collection";
 import Post from "App/Models/Post";
 
@@ -58,7 +57,7 @@ export default class CollectionService {
    */
   public static async getList(exclude: number[] | undefined = undefined) {
     return await Collection.series()
-        .if (exclude, query => query.whereNotIn('id', exclude))
+        .if(exclude, query => query.whereNotIn('id', <number[]>exclude))
         .apply(scope => scope.withPostLatestPublished())
         .select(['collections.*'])
         .wherePublic()

@@ -1,6 +1,5 @@
 import Watchlist from 'App/Models/Watchlist'
 import User from 'App/Models/User'
-import WatchlistValidator from 'App/Validators/WatchlistValidator'
 
 export default class WatchlistService {
   /**

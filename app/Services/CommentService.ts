@@ -11,7 +11,6 @@ import Logger from "@ioc:Logger/Discord";
 import UtilityService from "./UtilityService";
 import IdentityService from "./IdentityService";
 import CommentTypes from "App/Enums/CommentTypes";
-import CommentVote from "App/Models/CommentVote";
 import { DateTime } from "luxon";
 
 export default class CommentService {

@@ -4,7 +4,6 @@ import HttpStatus from 'App/Enums/HttpStatus'
 import { PostFactory } from 'Database/factories/PostFactory'
 import { UserFactory } from 'Database/factories/UserFactory'
 import HistoryService from 'App/Services/HistoryService'
-import PostService from 'App/Services/PostService'
 import WatchlistService from 'App/Services/WatchlistService'
 import Watchlist from 'App/Models/Watchlist'
 

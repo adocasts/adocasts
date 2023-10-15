@@ -1,4 +1,3 @@
-import { AuthContract } from "@ioc:Adonis/Addons/Auth";
 import User from "App/Models/User";
 import History from 'App/Models/History'
 import HistoryValidator from "App/Validators/HistoryValidator";

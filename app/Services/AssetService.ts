@@ -1,6 +1,6 @@
 import { AllyUserContract, GithubToken, GoogleToken } from '@ioc:Adonis/Addons/Ally';
 import User from 'App/Models/User';
-import sharp from 'sharp';
+import sharp, { AvailableFormatInfo, FormatEnum } from 'sharp';
 import fetch from 'cross-fetch'
 import Drive from '@ioc:Adonis/Core/Drive'
 import Asset from 'App/Models/Asset';
@@ -8,7 +8,7 @@ import Asset from 'App/Models/Asset';
 class ImageOptions {
   width: number
   quality: number
-  format: string
+  format: keyof FormatEnum | AvailableFormatInfo
   name: string
   blur: number
 }
@@ -90,7 +90,7 @@ export default class AssetService {
 
     if (!options.format) {
       const [_, format] = path.split('.');
-      options.format = isSVG ? 'svg+xml' : format;
+      options.format = isSVG ? 'svg' : format as keyof FormatEnum;
     }
 
     options.name = `width_${options.width}__quality_${options.quality}.${options.format}`
