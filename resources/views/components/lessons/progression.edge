@@ -6,6 +6,10 @@
 @if (progressionHistory?.length)
   @set('progress', progressionHistory[0])
   @set('progressPercent', progress.watchPercent > progress.readPercent ? progress.watchPercent : progress.readPercent)
+  
+  @if (progressPercent === null)
+    @set('progressPercent', 0)
+  @endif
 
   @if (progress.isCompleted)
     @set('progressPercent', 100)
