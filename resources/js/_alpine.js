@@ -65,7 +65,7 @@ Alpine.data('videoAutoPlayNext', (enabled = true, nextLessonUrl) => {
     onPlayNext() {
       if (!this.enabled) return
 
-      window.location.href = nextLessonUrl + '?autoplay=1'
+      window.up.visit(nextLessonUrl + '?autoplay=1')
     },
 
     onCancel() {

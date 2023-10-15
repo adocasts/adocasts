@@ -9,10 +9,11 @@ let keepPlayerPostId = null
 let keepPlayer = false
 
 class VideoPlayer {
-  constructor({ el = 'ytEmbed', autoEmbed = true, videoId, httpMethod = 'post', httpUrl, httpPayload = {}, watchSeconds = 0, isLive = false, autoplay = false } = {}) {
+  constructor({ el = 'ytEmbed', autoEmbed = true, videoId, httpMethod = 'post', httpUrl, httpPayload = {}, watchSeconds = 0, isCompleted = false, isLive = false, autoplay = false } = {}) {
     this.autoplay = autoplay
     this.startMuted = isLive
     this.watchSeconds = watchSeconds
+    this.isCompleted = isCompleted
     this.bodyContent = document.querySelector('.body-content')
     this.placeholder = document.querySelector('[video-placeholder]')
     this.nextUpEl = document.getElementById('lessonVideoNextUp')
@@ -66,8 +67,13 @@ class VideoPlayer {
     this.player.on('ended', this.#onPlayerStateChange.bind(this))
 
     const setInitialTime = () => {
-      if (!playOnReady && skipToSeconds && !this.isLive) {
+      // start user where they left off... unless lesson was already completed or it's a livestream
+      if (!this.isCompleted && skipToSeconds && !this.isLive) {
         this.player.currentTime = skipToSeconds
+      }
+
+      if (playOnReady) {
+        player.play()
       }
     }
 
@@ -91,7 +97,6 @@ class VideoPlayer {
    */
   async #initPlayer(playOnReady) {
     const config = {
-      autoplay: !!playOnReady,
       muted: this.startMuted,
       volume: window.player?.volume ?? 1,
       controls: [
@@ -352,6 +357,7 @@ up.compiler('#lessonVideoEmbed', function(element) {
   new VideoPlayer({
     el: 'lessonVideoEmbed',
     isLive: data.isLive == "true",
+    isCompleted: data.isCompleted == "true",
     videoId: data.videoId,
     watchSeconds: parseInt(data.watchSeconds || '0'),
     httpUrl: data.httpUrl,

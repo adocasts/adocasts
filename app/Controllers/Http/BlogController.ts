@@ -34,7 +34,7 @@ export default class BlogController {
   }
 
   public async show({ request, view, params, auth, session, up, route }: HttpContextContract) {
-    const post = await PostService.getBySlug(params.slug, PostTypes.NEWS)
+    const post = await PostService.getBySlug(params.slug, [PostTypes.BLOG, PostTypes.NEWS])
 
     if (post.isNotViewable && !auth.user?.isAdmin) {
       throw new Exception('This post is not currently available to the public', 404)

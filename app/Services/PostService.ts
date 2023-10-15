@@ -49,9 +49,16 @@ export default class PostService {
    * @param postTypeId
    * @returns
    */
-  public static async getBySlug(slug: string, postTypeId: PostTypes): Promise<Post> {
-    return Post.query()
-      .if(postTypeId, query => query.where({ postTypeId }))
+  public static async getBySlug(slug: string, postTypeId: PostTypes | PostTypes[]): Promise<Post> {
+    const query = Post.query()
+
+    if (postTypeId && Array.isArray(postTypeId)) {
+      query.whereIn('postTypeId', postTypeId)
+    } else if (postTypeId) {
+      query.where({ postTypeId })
+    }
+
+    return query
       .apply(scope => scope.forDisplay(true))
       .where({ slug })
       .highlightOrFail()
