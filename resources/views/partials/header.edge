@@ -57,16 +57,18 @@
             Blog
           </a>
 
-          <div class="flex flex-col md:hidden gap-3">
-            <div class="border-t border-slate-300"></div>
-            @buttons.primary.base({ href: route('auth.signin', {}, { qs: request.qs() }), attrs: 'up-layer="new modal" up-size="grow"' })
-              Sign In
-            @end
+          @if (!auth.user)
+            <div class="flex flex-col md:hidden gap-3">
+              <div class="border-t border-slate-300"></div>
+              @buttons.primary.base({ href: route('auth.signin', {}, { qs: request.qs() }), attrs: 'up-layer="new modal" up-size="grow"' })
+                Sign In
+              @end
 
-            @buttons.brand.base({ href: route('auth.signup', {}, { qs: request.qs() }), attrs: 'up-layer="new modal" up-size="grow"' })
-              Sign Up
-            @end
-          </div>
+              @buttons.brand.base({ href: route('auth.signup', {}, { qs: request.qs() }), attrs: 'up-layer="new modal" up-size="grow"' })
+                Sign Up
+              @end
+            </div>
+          @endif
         </nav>
       @end
 
