@@ -90,7 +90,7 @@ export default class CollectionService {
       .preload('asset')
       .preload('postsFlattened', query => query
         .apply(scope => scope.forCollectionDisplay({ orderBy: 'pivot_root_sort_order' }))
-        .if(auth.user, query => query.preload('progressionHistory', query => query.where('userId', auth.user!.id)))
+        .if(auth.user, query => query.preload('progressionHistory', query => query.where('userId', auth.user!.id).orderBy('updated_at', 'desc')))
       )
       .preload('children', query => query
         .wherePublic()
@@ -155,7 +155,7 @@ export default class CollectionService {
    */
   public static async findNextLesson(auth: AuthContract, series: Collection) {
     let nextLesson = auth.user
-      ? series.postsFlattened.find(p => !p.progressionHistory.length || p.progressionHistory.some(h => !h.isCompleted))
+      ? series.postsFlattened.find(p => !p.progressionHistory.length || !p.progressionHistory?.at(0)?.isCompleted)
       : null
 
     if (!nextLesson) nextLesson = series.postsFlattened[0]
