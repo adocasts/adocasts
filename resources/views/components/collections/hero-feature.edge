@@ -44,7 +44,7 @@
 
       <div class="w-full md:w-2/5 lg:w-1/5 space-y-1 flex flex-col gap-1.5 mb-3">
         @if (item.postsFlattened?.length)
-          @buttons.brand.base({ href: route('series.lesson', { slug: item.slug, index: 1 }), className: 'gap-3', block: true })
+          @buttons.brand.base({ href: route('series.lesson', { slug: item.slug, index: 1 }, { qs: { autoplay: true }}), className: 'gap-3', block: true, attrs: 'up-follow' })
             @!icons.playerPlay()
             Start Series
           @end

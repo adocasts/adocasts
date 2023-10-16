@@ -25,6 +25,6 @@ export default class SeriesController {
     const series = await Collection.query().where('slug', params.slug).firstOrFail()
     const lesson = await series.related('postsFlattened').query().where('root_sort_order', params.index - 1).firstOrFail()
 
-    return response.redirect().toPath(PostService.getPostPath(lesson)!)
+    return response.redirect().withQs().toPath(PostService.getPostPath(lesson)!)
   }
 }
