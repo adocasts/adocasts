@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BelongsTo, belongsTo, column, computed } from '@ioc:Adonis/Lucid/Orm'
 import HistoryTypes from 'App/Enums/HistoryTypes'
 import AppBaseModel from 'App/Models/AppBaseModel'
 import Post from 'App/Models/Post'
@@ -54,4 +54,9 @@ export default class History extends AppBaseModel {
 
   @belongsTo(() => Taxonomy)
   public taxonomy: BelongsTo<typeof Taxonomy>
+
+  @computed()
+  public get hasActivity() {
+    return (this.readPercent && this.readPercent > 0) || this.watchSeconds > 0
+  }
 }
