@@ -39,7 +39,7 @@ export default class LessonsController {
       prevLesson = CollectionService.findPrevSeriesLesson(series, post)
     }
 
-    if (post.isNotViewable && !auth.user?.isAdmin) {
+    if (post.isNotViewable && !auth.user?.isAdmin && !post.authors.some(a => a.id === auth.user?.id)) {
       throw new Exception('This post is not currently available to the public', 404)
     } else if (!post.isViewable && await bouncer.with('PostPolicy').denies('viewFutureDated')) {
       return view.render('pages/lessons/soon', { post, series })
