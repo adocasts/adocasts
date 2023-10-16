@@ -28,7 +28,7 @@
 @section('hero')
 
   @if (hasVideo)
-    <div id="videoPlayerContainer" class="pb-6">
+    <div id="videoPlayerContainer" class="mb-6">
       <div class="app-container !px-0">
         @cannot('PostPolicy.view', post)
           <div class="no-access relative aspect-video bg-slate-base-900 text-slate-base-100 bg-gradient-to-br from-accent-base-800/25 to-brand-base-900/25 p-12 flex items-center justify-center w-full h-full">
@@ -84,7 +84,7 @@
 
 @section('content')
 
-  <div class="grid-post-content -mx-3">
+  <div class="grid-post-content -mx-3 !mt-6">
     <div class="w-full title">
       @!lessons.titleBox({ post, views, series, path, userProgression })
     </div>
