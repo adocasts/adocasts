@@ -1,5 +1,27 @@
 @form.section({ title: 'About You', description: 'Update your publicly shared info', borderBottom })
   @form.put({ action: route('users.profiles.update'), attrs: 'up-submit up-target="[up-main]" up-fail-target="[up-main]" up-scroll="restore"' })
+    <div x-data="{ src: {{ stringify(auth.user.avatarLarge) }} }" class="flex flex-col lg:flex-row lg:items-center gap-6 mb-8">
+      <div>
+        <img class="w-32 h-32 bg-slate-300 object-cover object-center rounded-xl" :src="src" />
+      </div>
+      <label class="cursor-pointer">
+        <span class="rounded-md bg-slate-300 px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm hover:bg-slate-400">Change avatar</span>
+        <p class="mt-2 text-xs leading-5 text-gray-400">JPG, GIF or PNG. 1MB max.</p>
+        @if (flashMessages.has('errors.avatar'))
+          <p class="mt-1 text-sm text-red-600" id="avatar-error">
+            {{ sentenceCase(flashMessages.get('errors.avatar').join(', ')) }}
+          </p>
+        @endif
+        <input 
+          type="file" 
+          name="avatar" 
+          class="hidden" 
+          accept="image/png, image/jpeg, image/jpg, image/gif" 
+          @change="e => src = e.target.files.length ? URL.createObjectURL(e.target.files[0]) : src"
+        />
+      </label>
+    </div>
+
     @!form.input({
       label: 'Name',
       name: 'name',
@@ -46,7 +68,7 @@
       placeholder: 'Abstergo Inc.',
     })
 
-    @buttons.primary.inverse({ type: 'submit', className: 'mt-3' })
+    @buttons.brand.base({ type: 'submit', className: 'mt-3' })
       Update Details
     @end
   @end

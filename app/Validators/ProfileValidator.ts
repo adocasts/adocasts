@@ -24,6 +24,10 @@ export default class ProfileValidator {
    *    ```
    */
   public schema = schema.create({
+    avatar: schema.file.optional({
+      size: '1mb',
+      extnames: ['png', 'jpeg', 'jpg', 'gif']
+    }),
     name: schema.string.optional([rules.trim(), rules.minLength(2), rules.maxLength(75)]),
     biography: schema.string.optional([rules.trim()]),
     location: schema.string.optional([rules.trim(), rules.maxLength(255)]),
