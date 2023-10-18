@@ -4,7 +4,6 @@ import ProfileActivityService from 'App/Services/ProfileActivityService'
 import ProfileValidator from 'App/Validators/ProfileValidator'
 import { chain } from 'mathjs'
 import Drive from '@ioc:Adonis/Core/Drive';
-import Asset from 'App/Models/Asset'
 
 export default class ProfilesController {
   public async index({}: HttpContextContract) {}
