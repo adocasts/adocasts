@@ -42,7 +42,7 @@ export default class ProfilesController {
 
     if (avatar) {
       const avatarUrl = auth.user!.avatarUrl
-      const location = `${auth.user!.id}/`
+      const location = `${auth.user!.id}/profile/`
       const filename = `avatar_${new Date().getTime()}.${avatar.extname}`
       
       // upload and set new avatar

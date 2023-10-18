@@ -99,7 +99,7 @@ export default class AssetService {
   }
 
   public static async refreshAvatar(user: User, socialUser: AllyUserContract<GithubToken | GoogleToken>) {
-    if (!socialUser.avatarUrl) return
+    if (!socialUser.avatarUrl || user.avatarUrl?.startsWith(`${user.id}/profile`)) return
 
     const response = await fetch(socialUser.avatarUrl)
     const arrayBuffer = await response.arrayBuffer()
