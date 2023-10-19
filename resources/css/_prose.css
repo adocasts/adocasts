@@ -223,6 +223,10 @@ pre .filepath .lang-icon {
   &.edge {
     color: theme('colors.indigo.500');
   }
+
+  &.vue {
+    color: theme('colors.green.500');
+  }
 }
 /* purgecss end ignore */
 

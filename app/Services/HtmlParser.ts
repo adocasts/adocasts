@@ -61,9 +61,14 @@ export default class HtmlParser {
     return root.toString()
   }
 
-  public static async getLangIconHtml(lang) {
+  public static async getLangIconHtml(lang: string, filepath: string) {
     let langIcon = ''
     let iconHtml = ''
+
+    // overwrite to correct lang when using html as fallback
+    if (lang === 'html') {
+      if (filepath.includes('.vue')) lang = 'vue'
+    }
 
     switch (lang) {
       case 'ts':
@@ -83,6 +88,9 @@ export default class HtmlParser {
         break
       case 'tsx':
         langIcon = 'file-type-tsx'
+        break
+      case 'html':
+        langIcon = 'brand-html5'
         break
     }
 
@@ -211,7 +219,7 @@ export default class HtmlParser {
           
           if (filepath?.length) {
             const path = filepath[0].replaceAll('\r\n', '').replace('//', '').trim().split('/')
-            const iconHtml = await this.getLangIconHtml(lang)
+            const iconHtml = await this.getLangIconHtml(lang, filepath[0])
             const filePathHtml = parse(`<span class="filepath">${iconHtml}<ul class="filepath-list">${path.map(item => `<li>${item}</li>`).join('')}</ul></span>`)
             const rawInnerText = h.firstChild.rawText
             const rawText = rawInnerText + filePathHtml.outerHTML
