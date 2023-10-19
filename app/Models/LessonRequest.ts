@@ -29,6 +29,7 @@ export default class LessonRequest extends BaseModel {
 
   @column()
   public body: string
+  public bodyDisplay: string = ''
 
   @column()
   public priority: number = RequestPriorities.NORMAL

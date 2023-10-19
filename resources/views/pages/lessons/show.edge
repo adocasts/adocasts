@@ -118,9 +118,9 @@
           @endcan
           <article id="proseBody" class="prose xl:prose-lg no-max flex-1 xl:py-6 post-type-{{ post.postTypeId }} text-slate-700 relative">
             @can('PostPolicy.view', post)
-              {{{ post.body }}}
+              {{{ post.bodyDisplay }}}
             @else
-              {{{ await getBodyPreview(post.body) }}}
+              {{{ await getBodyPreview(post.bodyDisplay) }}}
               <div class="w-full absolute bottom-0 left-0 h-full bg-gradient-to-b from-slate-100/0 via-slate-100/75 to-slate-100 z-10"></div>
               <div class="bg-slate-200 rounded-xl p-6 shadow-xl relative z-20 {{ post.body.length ? '-mt-16' : '' }}">
                 @!plus.postCta({ post, plusMonthly, outlineVariant: 'base-light' })

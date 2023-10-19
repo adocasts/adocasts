@@ -75,6 +75,18 @@ Alpine.data('videoAutoPlayNext', (enabled = true, nextLessonUrl) => {
   }
 })
 
+Alpine.data('copyToClipboard', (copyText) => {
+  return {
+    copyText: copyText,
+    copyNotification: false,
+    copyToClipboard() {
+      navigator.clipboard.writeText(this.copyText)
+      this.copyNotification = true
+      setTimeout(() => this.copyNotification = false, 3000)
+    }
+  }
+})
+
 Alpine.data('comments', function () {
   return {
     editId: null,

@@ -27,7 +27,7 @@ export default class CommentService {
       ...data,
       commentTypeId: data.lessonRequestId ? CommentTypes.LESSON_REQUEST : CommentTypes.POST,
       identity,
-      body: sanitizeHtml(body),
+      body: sanitizeHtml(body, { allowedAttributes: false }),
       userId: auth.user.id,
       stateId: States.PUBLIC
     })
@@ -62,6 +62,8 @@ export default class CommentService {
     const trx = await Database.transaction()
 
     comment.useTransaction(trx)
+
+    data.body = sanitizeHtml(data.body, { allowedAttributes: false })
 
     await comment.merge(data).save()
     await NotificationService.onUpdate(Comment.table, comment.id, comment.body, trx)

@@ -291,6 +291,10 @@ pre ul.filepath-list {
   pointer-events: none;
 }
 
+.code-copy {
+  @apply absolute top-1.5 right-1.5;
+}
+
 /* purgecss start ignore */
 .prose-comment .ProseMirror {
   @apply rounded-xl bg-slate-100 border-none pt-3 pb-20;
@@ -302,7 +306,7 @@ pre ul.filepath-list {
 }
 
 .comment-form.with-bg .prose-comment .ProseMirror {
-  @apply bg-slate-100;
+  @apply bg-slate-200/75 border border-slate-300 focus:border-brand-500;
 
   .is-empty:before {
     @apply text-slate-400;

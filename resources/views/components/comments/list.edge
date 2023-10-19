@@ -72,7 +72,7 @@
         </div>
 
         <div>
-          <div x-show="editId !== {{ comment.id }}" class="prose !max-w-full text-slate-800">{{{ comment.body }}}</div>
+          <div x-show="editId !== {{ comment.id }}" class="prose !max-w-full text-slate-800">{{{ comment.bodyDisplay }}}</div>
 
           @can('CommentPolicy.update', comment, identity)
             <div x-show="editId === {{ comment.id }}">

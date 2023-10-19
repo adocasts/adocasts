@@ -41,6 +41,7 @@ export default class Comment extends AppBaseModel {
 
   @column()
   public body: string
+  public bodyDisplay: string = ''
 
   @column({ serializeAs: null })
   public identity: string

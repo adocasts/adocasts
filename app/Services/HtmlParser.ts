@@ -17,6 +17,8 @@ const highlighter = shiki.getHighlighter({
 })
 
 export default class HtmlParser {
+  public static highlightVersion = '2023-10-19.01'
+
   public static normalizeLanguage(language: string | undefined) {
     if (!language) return language
 
@@ -89,6 +91,23 @@ export default class HtmlParser {
     }
 
     return iconHtml
+  }
+
+  public static getCopyCode(code: string, lang: string) {
+    let lines = code
+      .split('\n')
+      .filter(l => !l.startsWith('--'))
+      .filter(l => l !== '\r')
+      .map(l => l.startsWith('++') ? l.replace('++', '') : l)
+
+    switch (lang) {
+      case 'bash':
+        // remove bash comments
+        lines = lines.filter(l => !l.startsWith('#'))
+        break
+    }
+  
+    return lines.join('\n')
   }
 
   public static async getPreview(html: string) {
@@ -182,6 +201,10 @@ export default class HtmlParser {
               ...addLineNumbers.map(x => ({ line: x, classes: ['add'] }))
             ]
           })
+
+          const copyCode = this.getCopyCode(code, lang)
+          const copy = `<div class="code-copy">${await View.render('components/copy_to_clipboard', { code: copyCode })}</div>`
+          highlighted = highlighted.replace('</pre>', copy + '</pre>')
 
           const h = parse(highlighted)
           let highlightedCode = highlighted

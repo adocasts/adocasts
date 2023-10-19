@@ -62,6 +62,7 @@ export default class Post extends AppBaseModel {
 
   @column()
   public body: string | null
+  public bodyDisplay: string = ''
 
   @column()
   public bodyBlocks: object | string | null
