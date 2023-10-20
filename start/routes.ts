@@ -98,6 +98,7 @@ Route.group(() => {
   Route.get('/pricing', 'HomeController.pricing').as('pricing')
   Route.get('/search', 'SearchController.index').as('search.index')
   Route.post('/search', 'SearchController.search').as('search.search')
+  Route.get('/attributions', 'HomeController.attributions').as('attributions')
   Route.get('/series', 'SeriesController.index').as('series.index')
   Route.on('/series/lets-learn').redirectToPath('/series/lets-learn-adonisjs-5')
   Route.get('/series/:slug', 'SeriesController.show').as('series.show')

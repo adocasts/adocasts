@@ -69,4 +69,8 @@ export default class HomeController {
   public async uses({ view }: HttpContextContract) {
     return view.render('pages/uses')
   }
+
+  public async attributions({ view }: HttpContextContract) {
+    return view.render('pages/attributions')
+  }
 }

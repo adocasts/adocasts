@@ -1,0 +1,45 @@
+@layout('layouts/app')
+
+@section('meta')
+
+@!meta.tags({
+  url: route('attributions'),
+  title: "Credit Attributions",
+  desc: "Some of the graphics used throughout our site are open-source. You can find them linked here.",
+  asset: null,
+  index: true
+})
+
+@endsection
+
+@section('content')
+
+<article class="flex flex-wrap mt-12 md:-mx-6 lg:-mx-12">
+  <main class="w-full prose lg:prose-lg rounded-xl md:px-6 pb-4 lg:px-12 lg:pb-8" style="max-width: 100%;">
+    <h1 class="text-4xl">
+      Credit Attribution
+    </h1>
+
+    <div class="w-full flex flex-wrap">
+      <div class="w-full">
+        <h3>Topic Iconography</h3>
+        <div class="flex flex-col">
+          <a href="https://www.flaticon.com/free-icons/command-prompt" title="command prompt icons">Ace CLI represented by the command prompt icon created by Hopstarter - Flaticon</a>
+          <a href="https://www.flaticon.com/free-icons/biometric-identification" title="biometric identification icons">Authentication represented by the biometric identification icon created by Freepik - Flaticon</a>
+          <a href="https://www.flaticon.com/free-icons/id-card" title="id-card icons">Authorization represented by the id-card icon created by Smashicons - Flaticon</a>
+          <a href="https://www.flaticon.com/free-icons/ui" title="ui icons">Bouncer represented by the lock icon created by Smashicons - Flaticon</a>
+          <a href="https://www.flaticon.com/free-icons/computing" title="computing icons">Drive represented by the hard drive icon created by Freepik - Flaticon</a>
+          <a href="https://www.flaticon.com/free-icons/wireframe" title="wireframe icons">Edge represented by the wireframe icon created by Freepik - Flaticon</a>
+          <a href="https://www.flaticon.com/free-icons/email" title="email icons">Email represented by the email icon created by DinosoftLabs - Flaticon</a>
+          <a href="https://www.flaticon.com/free-icons/computing" title="computing icons">HttpContext represented by the folder icon created by Freepik - Flaticon</a>
+          <a href="https://www.flaticon.com/free-icons/database" title="database icons">Lucid represented by the database icon created by Smashicons - Flaticon</a>
+          <a href="https://www.flaticon.com/free-icons/computing" title="computing icons">Router represented by the router icon created by Freepik - Flaticon</a>
+          <a href="https://www.flaticon.com/free-icons/idea" title="idea icons">Tips represented by the idea icon created by Freepik - Flaticon</a>
+          <a href="https://www.flaticon.com/free-icons/settings" title="settings icons">Validator represented by the settings icon created by DinosoftLabs - Flaticon</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</article>
+
+@endsection
