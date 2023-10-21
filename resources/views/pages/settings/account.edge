@@ -40,8 +40,10 @@
           </h3>
 
           @form.delete({ action: route('users.sessions.destroy'), attrs: 'up-autosubmit up-target="[up-user-sessions]" up-fail-target="[up-user-sessions]" up-scroll="restore"' })
-            @buttons.primary.outline({ type: 'submit' })
-              End All Sessions
+            @tooltip({ position: 'left', text: "Will immediately end all sessions, except the current session", block: false })
+              @buttons.primary.outline({ type: 'submit' })
+                End All Sessions
+              @end
             @end
           @end
         </div>

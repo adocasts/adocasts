@@ -39,8 +39,10 @@
                     <span class="italic">Current session</span>
                   @else
                     @form.delete({ action: route('users.sessions.destroy', { id: session.id }), attrs: 'up-autosubmit up-target="[up-user-sessions]" up-fail-target="[up-user-sessions]" up-scroll="restore"' })
-                      @buttons.primary.outline({ type: 'submit' })
-                        End Session
+                      @tooltip({ position: 'left', text: "Will immediately end this session", block: false })
+                        @buttons.primary.outline({ type: 'submit' })
+                          End Session
+                        @end
                       @end
                     @end
                   @endif
