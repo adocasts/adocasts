@@ -218,8 +218,8 @@ export default class HistoryService {
       .whereNotNull('postId')
       .where(query => query
         .where('isCompleted', true)  
-        .orWhere(query => query.whereNotNull('watchPercent').orWhereNotNull('readPercent'))
-        .orWhere(query => query.where('watchPercent', '>', 0).orWhere('readPercent', '>', 0))
+        .orWhere(query => query.whereNotNull('watchPercent').where('watchPercent', '>', 0))
+        .orWhere(query => query.whereNotNull('readPercent').where('readPercent', '>', 0))
       )
       // .where(query => query.where('isCompleted', false))
       // .where(query => query.whereNotNull('watchPercent').orWhereNotNull('readPercent'))
@@ -238,11 +238,6 @@ export default class HistoryService {
       .apply(scope => scope.forDisplay())
       .preload('progressionHistory', query => query
         .where('userId', user.id)
-        .where(query => query
-          .where('isCompleted', true)  
-          .orWhere(query => query.whereNotNull('watchPercent').orWhereNotNull('readPercent'))
-          .orWhere(query => query.where('watchPercent', '>', 0).orWhere('readPercent', '>', 0))
-        )
         .orderBy('updatedAt', 'desc')
         .groupLimit(1)
       )

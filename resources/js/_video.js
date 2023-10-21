@@ -273,7 +273,7 @@ class VideoPlayer {
   async #storeWatchingProgression(currentTime, duration) {
     if (!window.isAuthenticated) return
 
-    const watchPercent = Math.floor(currentTime / duration * 100)
+    const watchPercent = Math.ceil(currentTime / duration * 100)
     const { data } = await axios[this.http.method](this.http.url, {
       ...this.http.payload,
       watchPercent,

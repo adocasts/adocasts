@@ -6,23 +6,21 @@
 @if (progressionHistory?.length)
   @set('progress', progressionHistory[0])
   @set('progressPercent', progress.watchPercent > progress.readPercent ? progress.watchPercent : progress.readPercent)
-  
-  @if (progressPercent === null)
-    @set('progressPercent', 0)
-  @endif
 
-  @if (progress.isCompleted)
-    @set('progressPercent', 100)
-  @endif
+  @if (progressPercent !== null && progressPercent > 0)
+    @if (progress.isCompleted)
+      @set('progressPercent', 100)
+    @endif
 
-  @set('gradient', progressPercent == 100 ? 'from-green-500 to-green-600 text-green-50' : 'from-accent-600 to-accent-700 text-accent-50')
+    @set('gradient', progressPercent == 100 ? 'from-green-500 to-green-600 text-green-50' : 'from-accent-600 to-accent-700 text-accent-50')
 
-  <div class="absolute {{ left }} {{ bottom }} {{ right }}">
-    <div class="font-mono inline-block mb-1 rounded-full px-1.5 py-1 leading-none bg-gradient-to-b {{ gradient }}" style="font-size: .65rem;">
-      {{ progressPercent }}%
+    <div class="absolute {{ left }} {{ bottom }} {{ right }}">
+      <div class="font-mono inline-block mb-1 rounded-full px-1.5 py-1 leading-none bg-gradient-to-b {{ gradient }}" style="font-size: .65rem;">
+        {{ progressPercent }}%
+      </div>
+      <div class="{{ bg }} bg-opacity-30 backdrop-blur h-1.5 rounded-full relative">
+        <div class="bg-gradient-to-b {{ gradient }} h-1.5 rounded-full" style="width: {{ progressPercent }}%"></div>
+      </div>
     </div>
-    <div class="{{ bg }} bg-opacity-30 backdrop-blur h-1.5 rounded-full relative">
-      <div class="bg-gradient-to-b {{ gradient }} h-1.5 rounded-full" style="width: {{ progressPercent }}%"></div>
-    </div>
-  </div>
+  @endif
 @endif
