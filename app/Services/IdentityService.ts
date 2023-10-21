@@ -17,7 +17,8 @@ class IdentityService {
 
     try {
       const ip2Location = new IP2Location()
-      const bin = path.join(process.cwd(), 'D83.BIN')
+      const version = ip.includes(':') ? 'IPV6' : 'IPV4'
+      const bin = path.join(process.cwd(), `DB3.${version}.BIN`)
 
       ip2Location.open(bin)
 

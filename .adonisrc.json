@@ -56,7 +56,7 @@
       "reloadServer": false
     },
     {
-      "pattern": "D83.BIN",
+      "pattern": "D83.*.BIN",
       "reloadServer": false
     }
   ],
