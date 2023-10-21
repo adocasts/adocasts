@@ -205,9 +205,13 @@ Route.get('/test', async ({ request }) => {
   const ips = request.ips()
   const location = await IdentityService.getLocation(ip)
   const trueClientIp = request.header('True-Client-IP')
+  const xForwardedFor = request.header('X-Forwarded-For')
+  const connectingIp = request.header('Cf-Connecting-Ip')
   return {
     ip,
     ips,
+    xForwardedFor,
+    connectingIp,
     trueClientIp,
     remoteAddress: request.request.socket.remoteAddress,
     location
