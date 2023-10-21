@@ -2,6 +2,7 @@ import { inject } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import AuthAttemptService from 'App/Services/AuthAttemptService'
+import SessionLogService from 'App/Services/SessionLogService'
 import StripeService from 'App/Services/StripeService'
 import SignInValidator from 'App/Validators/SignInValidator'
 import SignUpValidator from 'App/Validators/SignUpValidator'
@@ -33,15 +34,18 @@ export default class AuthController {
       return response.redirect('/forgot-password')
     }
 
-    try {
-      await auth.attempt(uid, password, rememberMe)
-      await AuthAttemptService.deleteBadAttempts(uid)
-    } catch (error) {
-      await AuthAttemptService.recordLoginAttempt(uid)
+    const sessionLogService = new SessionLogService(request, response)
 
-      session.flash('errors', { form: 'The provided username/email or password is incorrect' })
-      return response.redirect().toRoute('auth.signin')
-    }
+    // try {
+      await auth.attempt(uid, password, rememberMe)
+      await sessionLogService.onSignInSuccess(auth.user!)
+      await AuthAttemptService.deleteBadAttempts(uid)
+    // } catch (error) {
+    //   await AuthAttemptService.recordLoginAttempt(uid)
+
+    //   session.flash('errors', { form: 'The provided username/email or password is incorrect' })
+    //   return response.redirect().toRoute('auth.signin')
+    // }
 
     switch (action) {
       case 'email_verification':
@@ -78,9 +82,11 @@ export default class AuthController {
   public async register({ request, response, auth, session, up }: HttpContextContract) {
     let { forward, plan, ...data } = await request.validate(SignUpValidator)
     const user = await User.create(data)
+    const sessionLogService = new SessionLogService(request, response)
 
     await user.related('profile').create({})
     await auth.login(user)
+    await sessionLogService.onSignInSuccess(user)
 
     if (plan) {
       const { status, message, checkout } = await this.stripeService.tryCreateCheckoutSession(auth.user!, plan)
@@ -106,8 +112,11 @@ export default class AuthController {
 
   public async signout({ request, response, auth, session, up }: HttpContextContract) {
     const { forward } = request.only(['forward'])
+    const user = auth.user!
+    const sessionLogService = new SessionLogService(request, response)
     
     await auth.logout()
+    await sessionLogService.onSignOutSuccess(user)
 
     session.flash('success', 'You have been signed out. Cya next time!')
 

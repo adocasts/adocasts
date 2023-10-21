@@ -2,6 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Comment from 'App/Models/Comment'
 import LessonRequest from 'App/Models/LessonRequest'
 import Post from 'App/Models/Post'
+import SessionLogService from 'App/Services/SessionLogService'
 
 export default class GoController {
   public async postComment({ response, params, session }: HttpContextContract) {
