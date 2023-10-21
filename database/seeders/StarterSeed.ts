@@ -16,7 +16,7 @@ export default class StarterSeedSeeder extends BaseSeeder {
     try {
       await this.seedRoles(trx)
 
-      if (!Application.inTest) {
+      if (!Application.inTest && !Application.inProduction) {
         await this.seedUsersAndContent(trx)
       }
 
