@@ -98,6 +98,7 @@
     "striptags": "^3.2.0",
     "timeago.js": "^4.0.2",
     "tippy": "^0.0.0",
+    "ua-parser-js": "^1.0.36",
     "unique-names-generator": "^4.7.1"
   }
 }

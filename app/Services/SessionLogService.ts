@@ -112,6 +112,20 @@ export default class SessionLogService {
       })
   }
 
+  public async getList(user: User) {
+    const sessions = await user.related('sessions').query()
+      .whereTrue('loginSuccessful')
+      .whereFalse('forceLogout')
+      .whereNull('logoutAt')
+      .orderBy('lastTouchedAt', 'desc')
+
+    const token = this.token
+    return sessions.map(session => {
+      session.isCurrentSession = session.token === token
+      return session
+    })
+  }
+
   public async getIsKnown(user: User) {
     const { ipAddress, userAgent, token } = this
     return user.related('sessions').query()

@@ -87,6 +87,7 @@ Route.group(() => {
   Route.delete('/users/delete', 'UserSettingsController.deleteAccount').as('users.destroy')
   Route.put('/users/profile', 'ProfilesController.update').as('users.profiles.update').middleware(['auth'])
   Route.put('/users/preferences', 'PreferencesController.update').as('users.preferences.update').middleware(['auth'])
+  Route.delete('/users/sessions/:id?', 'SessionsController.destroy').as('users.sessions.destroy').middleware(['auth'])
 
 
 
@@ -183,7 +184,7 @@ Route.group(() => {
  */
 Route.put('/api/user/theme', 'ThemesController.update').as('api.user.theme')
 Route.get('/api/user/check', 'UsersController.check').as('api.user.check')
-Route.post('/api/session/set', 'SessionsController.set').as('session.set')
+Route.post('/api/session/set', 'SessionsController.set').as('sessions.set')
 Route.post('/api/history/progression/:id?', 'ProgressionsController.record').as('api.histories.progression')
 
 
