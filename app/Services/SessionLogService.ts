@@ -62,6 +62,7 @@ export default class SessionLogService {
       token,
       loginAt: DateTime.now(),
       loginSuccessful: true,
+      lastTouchedAt: DateTime.now()
     })
 
     if (!user.profile) {

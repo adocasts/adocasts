@@ -19,20 +19,6 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-import IdentityService from 'App/Services/IdentityService'
-import SessionLogService from '../app/Services/SessionLogService';
-
-Route.get('/test', async ({ request, response }) => {
-  const sessionLogService = new SessionLogService(request, response)
-  const ip = sessionLogService.ipAddress
-  const location = await IdentityService.getLocation(ip)
-  return {
-    ip,
-    cfConnectingIp: request.header('Cf-Connecting-Ip'),
-    xForwardedFor: request.header('X-Forwarded-For'),
-    location
-  }
-})
 
 /**
  * images

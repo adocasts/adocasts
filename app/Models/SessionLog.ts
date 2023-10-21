@@ -57,7 +57,12 @@ export default class SessionLog extends BaseModel {
 
   @computed()
   public get lastTouchedAgo() {
-    if (!this.lastTouchedAt) return
+    if (!this.lastTouchedAt && !this.loginAt) return ''
+    
+    if (!this.lastTouchedAt) {
+      return timeago.format(this.loginAt!.toJSDate())
+    }
+
     return timeago.format(this.lastTouchedAt.toJSDate())
   }
 

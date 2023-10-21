@@ -20,11 +20,13 @@
               <tr>
                 <td class="relative py-4 pr-3 text-sm font-medium text-slate-900">
                   <div>
-                    {{ titleCase(session.lastTouchedAgo) }}
+                    {{ titleCase(session.lastTouchedAgo) || '--' }}
                   </div>
-                  <div class="text-xs text-slate-600">
-                    {{ session.lastTouchedAt.toFormat('MMM dd, yyyy') }}
-                  </div>
+                  @if (session.lastTouchedAt || session.loginAt)
+                    <div class="text-xs text-slate-600">
+                      {{ (session.lastTouchedAt ?? session.loginAt).toFormat('MMM dd, yyyy') }}
+                    </div>
+                  @endif
                   <div class="absolute bottom-0 right-full h-px w-screen bg-slate-200"></div>
                   <div class="absolute bottom-0 left-0 h-px w-screen bg-slate-200"></div>
                 </td>
