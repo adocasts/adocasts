@@ -6,6 +6,7 @@ import SessionLog from 'App/Models/SessionLog';
 import { ResponseContract } from '@ioc:Adonis/Core/Response';
 import { string } from '@ioc:Adonis/Core/Helpers'
 import Application from '@ioc:Adonis/Core/Application';
+import Event from '@ioc:Adonis/Core/Event'
 
 export default class SessionLogService {
   public cookieName = 'ado-ident'
@@ -34,7 +35,7 @@ export default class SessionLogService {
     
     // don't kill pre-existing sessions, instead log their session
     if (!log) {
-      await this.onSignInSuccess(user)
+      await this.onSignInSuccess(user, true)
       return true
     }
 
@@ -46,7 +47,7 @@ export default class SessionLogService {
     return true
   }
 
-  public async onSignInSuccess(user: User) {
+  public async onSignInSuccess(user: User, skipNewDevice: boolean = false) {
     const { ipAddress, userAgent } = this
     const { city, countryLong, countryShort } = await IdentityService.getLocation(ipAddress)
     const known = await this.getIsKnown(user)
@@ -63,8 +64,12 @@ export default class SessionLogService {
       loginSuccessful: true,
     })
 
-    if (!known && !Application.inTest) {
-      console.log('new login device', { ipAddress, userAgent })
+    if (!user.profile) {
+      await user.load('profile')
+    }
+
+    if (!known && !skipNewDevice && user.profile.emailOnNewDeviceLogin && !Application.inTest) {
+      Event.emit('email:new_device', { user, log })
     }
 
     this.response.encryptedCookie(this.cookieName, token, {

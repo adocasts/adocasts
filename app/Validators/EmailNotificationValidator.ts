@@ -26,7 +26,8 @@ export default class EmailNotificationValidator {
   public schema = schema.create({
     emailOnComment: schema.boolean.optional(),
     emailOnCommentReply: schema.boolean.optional(),
-    emailOnAchievement: schema.boolean.optional()
+    emailOnAchievement: schema.boolean.optional(),
+    emailOnNewDeviceLogin: schema.boolean.optional()
   })
 
   /**

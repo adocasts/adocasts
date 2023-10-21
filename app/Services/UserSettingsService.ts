@@ -112,6 +112,7 @@ export default class UserSettingsService extends BaseService {
   public static async updateEmailNotifications(user: User | undefined, data: EmailNotificationValidator['schema']['props']) {
     const profile = await Profile.findByOrFail('userId', user?.id)
 
+    profile.emailOnNewDeviceLogin = data.emailOnNewDeviceLogin ?? false
     profile.emailOnComment = data.emailOnComment ?? false
     profile.emailOnCommentReply = data.emailOnCommentReply ?? false
     profile.emailOnAchievement = data.emailOnAchievement ?? false

@@ -1,9 +1,22 @@
+@set('emailOnNewDeviceLogin', flashMessages.get('emailOnNewDeviceLogin') ?? profile.emailOnNewDeviceLogin)
 @set('emailOnComment', flashMessages.get('emailOnComment') ?? profile.emailOnComment)
 @set('emailOnCommentReply', flashMessages.get('emailOnCommentReply') ?? profile.emailOnCommentReply)
 @set('emailOnAchievement', flashMessages.get('emailOnAchievement') ?? profile.emailOnAchievement)
 @set('checkboxClass', 'class="h-4 w-4 text-brand-600 bg-slate-100 focus:ring-slate-500 border-slate-300 rounded mr-2 mt-1"')
 @form.section({ title: 'Email Notifications', description: 'Would you like to be notified via email for anything?', borderBottom })
   @form.put({ action: route('users.notifications.email'), attrs: 'up-submit up-target="[up-main]" up-fail-target="[up-main]" up-scroll="restore"' })
+    <div class="mb-3">
+      <label class="inline-flex">
+        <input type="checkbox" name="emailOnNewDeviceLogin" class="{{ checkboxClass }}" {{ emailOnNewDeviceLogin && 'checked=checked' }}>
+        <div>
+          <div class="text-sm font-semibold">New Device Sign In</div>
+          <div class="text-slate-600 text-xs">
+            Get notified when a new device signs into your Adocasts account.
+          </div>
+        </div>
+      </label>
+    </div>
+
     <div class="mb-3">
       <label class="inline-flex">
         <input type="checkbox" name="emailOnComment" class="{{ checkboxClass }}" {{ emailOnComment && 'checked=checked' }}>
