@@ -40,6 +40,15 @@ export default class SessionLogService {
     }
 
     if (log.forceLogout || log.logoutAt) return false
+
+    if (log.ipAddress !== this.ipAddress && this.ipAddress) {
+      const location = await IdentityService.getLocation(this.ipAddress)
+      
+      log.ipAddress = this.ipAddress
+      log.city = location.city || null
+      log.country = location.countryLong || null
+      log.countryCode = location.countryShort || null
+    }
     
     log.lastTouchedAt = DateTime.now()
     await log.save()
