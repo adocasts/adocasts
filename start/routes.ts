@@ -204,9 +204,11 @@ Route.get('/test', async ({ request }) => {
   const ip = request.ip()
   const ips = request.ips()
   const location = await IdentityService.getLocation(ip)
+  const trueClientIp = request.header('True-Client-IP')
   return {
     ip,
     ips,
+    trueClientIp,
     remoteAddress: request.request.socket.remoteAddress,
     location
   }
