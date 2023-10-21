@@ -112,7 +112,7 @@ export default class AuthController {
 
   public async signout({ request, response, auth, session, up }: HttpContextContract) {
     const { forward } = request.only(['forward'])
-    const user = auth.user!
+    // const user = auth.user!
     // const sessionLogService = new SessionLogService(request, response)
     
     await auth.logout()

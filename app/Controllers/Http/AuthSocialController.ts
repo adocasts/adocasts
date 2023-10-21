@@ -20,7 +20,7 @@ export default class AuthSocialController {
     await ally.use(params.provider).redirect()
   }
 
-  public async callback ({ request, response, auth, ally, params, session }: HttpContextContract) {
+  public async callback ({ response, auth, ally, params, session }: HttpContextContract) {
     const wasAuthenticated = !!auth.user
     const { success, user, message } = await AuthSocialService.getUser(auth, ally, params.provider)
 

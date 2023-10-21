@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, beforeSave, belongsTo, column, computed } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, computed } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import uap from 'ua-parser-js'
 import * as timeago from 'timeago.js'
