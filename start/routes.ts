@@ -19,8 +19,6 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-import IdentityService from 'App/Services/IdentityService'
-import SessionLogService from 'App/Services/SessionLogService'
 
 /**
  * images
