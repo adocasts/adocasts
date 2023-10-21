@@ -4,6 +4,7 @@ import Route from '@ioc:Adonis/Core/Route'
 import AuthSocialService from 'App/Services/AuthSocialService'
 import StripeService from 'App/Services/StripeService'
 import { inject } from '@adonisjs/core/build/standalone'
+// import SessionLogService from 'App/Services/SessionLogService'
 
 @inject()
 export default class AuthSocialController {
@@ -19,7 +20,7 @@ export default class AuthSocialController {
     await ally.use(params.provider).redirect()
   }
 
-  public async callback ({ response, auth, ally, params, session }: HttpContextContract) {
+  public async callback ({ request, response, auth, ally, params, session }: HttpContextContract) {
     const wasAuthenticated = !!auth.user
     const { success, user, message } = await AuthSocialService.getUser(auth, ally, params.provider)
 
@@ -34,6 +35,9 @@ export default class AuthSocialController {
     if (!hasProfile) {
       await user?.related('profile').create({})
     }
+
+    // const sessionLogService = new SessionLogService(request, response)
+    // await sessionLogService.onSignInSuccess(user!)
 
     if (wasAuthenticated) {
       session.flash('success', `Your ${params.provider} account has been successfully linked`)

@@ -3,13 +3,29 @@ import CacheService from 'App/Services/CacheService';
 import { RequestContract } from '@ioc:Adonis/Core/Request';
 import { uniqueNamesGenerator, NumberDictionary, animals, colors, names, starWars } from 'unique-names-generator';
 import crypto from 'crypto';
-import ipLocate from 'node-iplocate'
+import { IP2Location } from 'ip2location-nodejs'
+import path from 'path'
+import Application from '@ioc:Adonis/Core/Application';
+import DiscordLogger from "@ioc:Logger/Discord";
 
 class IdentityService {
   protected key: string = 'identity-secret';
 
   public async getLocation(ip: string) {
-    return ipLocate(ip)
+    const fallback = { city: undefined, countryLong: undefined, countryShort: undefined }
+    if (Application.inTest) return fallback
+
+    try {
+      const ip2Location = new IP2Location()
+      const bin = path.join(process.cwd(), 'D83.BIN')
+
+      ip2Location.open(bin)
+
+      return ip2Location.getAll(ip)
+    } catch (error) {
+      await DiscordLogger.error('IdentityService.getLocation', error.message)
+      return fallback
+    }
   }
 
   public async getRequestIdentity(request: RequestContract) {

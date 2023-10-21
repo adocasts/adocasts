@@ -5,6 +5,7 @@ import IdentityService from './IdentityService';
 import SessionLog from 'App/Models/SessionLog';
 import { ResponseContract } from '@ioc:Adonis/Core/Response';
 import { string } from '@ioc:Adonis/Core/Helpers'
+import Application from '@ioc:Adonis/Core/Application';
 
 export default class SessionLogService {
   public cookieName = 'ado-ident'
@@ -27,9 +28,12 @@ export default class SessionLogService {
   public async check(user: User) {
     const log = await this.getLatest(user)
     
-    // no log? have them reauthenticate
-    if (!log) return false
-    
+    // don't kill pre-existing sessions, instead log their session
+    if (!log) {
+      await this.onSignInSuccess(user)
+      return true
+    }
+
     if (log.forceLogout || log.logoutAt) return false
     
     log.lastTouchedAt = DateTime.now()
@@ -40,7 +44,7 @@ export default class SessionLogService {
 
   public async onSignInSuccess(user: User) {
     const { ipAddress, userAgent } = this
-    const { city, country, countryCode } = await IdentityService.getLocation(ipAddress)
+    const { city, countryLong, countryShort } = await IdentityService.getLocation(ipAddress)
     const known = await this.getIsKnown(user)
     const token = string.generateRandom(16)
     
@@ -48,14 +52,14 @@ export default class SessionLogService {
       ipAddress,
       userAgent,
       city,
-      country,
-      countryCode,
+      country: countryLong,
+      countryCode: countryShort,
       token,
       loginAt: DateTime.now(),
       loginSuccessful: true,
     })
 
-    if (!known) {
+    if (!known && !Application.inTest) {
       console.log('new login device', { ipAddress, userAgent })
     }
 
@@ -72,14 +76,10 @@ export default class SessionLogService {
     let log = await this.getLatest(user)
 
     if (!log) {
-      const { city, country, countryCode } = await IdentityService.getLocation(ipAddress)
       log = new SessionLog().merge({
         userId: user.id,
         ipAddress,
-        userAgent,
-        city,
-        country,
-        countryCode
+        userAgent
       })
     }
 
@@ -116,7 +116,7 @@ export default class SessionLogService {
     const { ipAddress, userAgent, token } = this
     return user.related('sessions').query()
       .where(query => query
-        .where(query => query.where({ ipAddress, userAgent }))
+        .if(ipAddress && userAgent, query => query.where(query => query.where({ ipAddress, userAgent })))
         .if(token, query => query.orWhere({ token }))
       )
       .whereTrue('loginSuccessful')

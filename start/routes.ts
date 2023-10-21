@@ -19,6 +19,7 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import IdentityService from 'App/Services/IdentityService'
 
 /**
  * images
@@ -193,3 +194,15 @@ Route.get('/go/posts/:id/comment/:commentId', 'GoController.postComment').as('go
 Route.get('/go/post/:id/comment/:commentId', 'GoController.postComment').as('go.post.comment')
 Route.get('/go/requests/lessons/:id/comment/:commentId', 'GoController.lessonRequestComment').as('go.requests.lessons.comment')
 Route.get('/go/auth/reset', 'GoController.authReset').as('go.auth.reset')
+
+
+
+// temporary to test and ensure our ip location works before rigging it up to auth
+Route.get('/test', async ({ request }) => {
+  const ip = request.ip()
+  const location = await IdentityService.getLocation(ip)
+  return {
+    ip,
+    location
+  }
+})

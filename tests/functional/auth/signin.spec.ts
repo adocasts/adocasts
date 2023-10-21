@@ -23,7 +23,7 @@ test.group('Auth sign in', (group) => {
 
   test('should fail to sign in a user with invalid credentials', async ({ client }) => {
     const user = await UserFactory.merge({ password: 'Password!01' }).create()
-
+    
     const response = await client.post('/signin').withCsrfToken().form({
       uid: user.email,
       password: 'Password!02',
