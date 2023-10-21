@@ -20,6 +20,7 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 import IdentityService from 'App/Services/IdentityService'
+import SessionLogService from 'App/Services/SessionLogService'
 
 /**
  * images
@@ -199,21 +200,13 @@ Route.get('/go/auth/reset', 'GoController.authReset').as('go.auth.reset')
 
 
 // temporary to test and ensure our ip location works before rigging it up to auth
-Route.get('/test', async ({ request }) => {
-  console.log({ ip: request.request.socket.remoteAddress })
-  const ip = request.ip()
-  const ips = request.ips()
+Route.get('/test', async ({ request, response }) => {
+  const sessionLogService = new SessionLogService(request, response)
+  const ip = sessionLogService.ipAddress
   const location = await IdentityService.getLocation(ip)
-  const trueClientIp = request.header('True-Client-IP')
-  const xForwardedFor = request.header('X-Forwarded-For')
-  const connectingIp = request.header('Cf-Connecting-Ip')
+
   return {
     ip,
-    ips,
-    xForwardedFor,
-    connectingIp,
-    trueClientIp,
-    remoteAddress: request.request.socket.remoteAddress,
     location
   }
 })

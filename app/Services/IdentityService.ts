@@ -11,9 +11,9 @@ import DiscordLogger from "@ioc:Logger/Discord";
 class IdentityService {
   protected key: string = 'identity-secret';
 
-  public async getLocation(ip: string) {
+  public async getLocation(ip: string | undefined) {
     const fallback = { city: undefined, countryLong: undefined, countryShort: undefined }
-    if (Application.inTest) return fallback
+    if (Application.inTest || !ip) return fallback
 
     try {
       const ip2Location = new IP2Location()
