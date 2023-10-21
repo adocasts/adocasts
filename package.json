@@ -75,13 +75,13 @@
     "hls.js": "^1.4.12",
     "html-minifier": "^4.0.0",
     "htmx.org": "^1.9.4",
+    "ip2location-nodejs": "^9.6.0",
     "js-cookie": "^3.0.5",
     "luxon": "^3.4.0",
     "markdown-it": "^13.0.1",
     "mathjs": "^11.9.1",
     "node-discord-logger": "^1.2.2",
     "node-html-parser": "^6.1.4",
-    "node-iplocate": "^1.0.3",
     "notion-to-md": "^3.1.1",
     "pg": "^8.11.2",
     "phc-argon2": "^1.1.4",
@@ -98,6 +98,7 @@
     "striptags": "^3.2.0",
     "timeago.js": "^4.0.2",
     "tippy": "^0.0.0",
+    "ua-parser-js": "^1.0.36",
     "unique-names-generator": "^4.7.1"
   }
 }

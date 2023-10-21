@@ -8,14 +8,22 @@ import EmailNotificationValidator from 'App/Validators/EmailNotificationValidato
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import UserService from 'App/Services/UserService'
 import StripeService from 'App/Services/StripeService'
+import SessionLogService from 'App/Services/SessionLogService'
 
 export default class UserSettingsController {
-  public async index({ view, auth, params }: HttpContextContract) {
+  public async index({ request, response, view, auth, params }: HttpContextContract) {
     if (!params.section) {
       params.section = 'account'
     }
 
     const profile = await Profile.findByOrFail('userId', auth.user!.id)
+
+    if (params.section === 'account') {
+      const sessionLogService = new SessionLogService(request, response)
+      const sessions = await sessionLogService.getList(auth.user!)
+      
+      view.share({ sessions })
+    }
 
     if (params.section === 'billing') {
       const stripeService = new StripeService()

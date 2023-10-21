@@ -53,6 +53,10 @@
     {
       "pattern": "resources/views/**/*.edge",
       "reloadServer": false
+    },
+    {
+      "pattern": "D83.BIN",
+      "reloadServer": false
     }
   ],
   "aceProviders": [

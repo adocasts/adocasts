@@ -23,6 +23,7 @@ import Plan from './Plan'
 import Plans from 'App/Enums/Plans'
 import StripeSubscriptionStatuses from 'App/Enums/StripeSubscriptionStatuses'
 import * as timeago from 'timeago.js'
+import SessionLog from './SessionLog'
 
 class User extends AppBaseModel {
   @column({ isPrimary: true })
@@ -203,6 +204,9 @@ class User extends AppBaseModel {
 
   @hasOne(() => Profile)
   public profile: HasOne<typeof Profile>
+
+  @hasMany(() => SessionLog)
+  public sessions: HasMany<typeof SessionLog>
 
   @manyToMany(() => Post, {
     pivotTable: 'author_posts',

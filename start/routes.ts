@@ -19,6 +19,7 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import IdentityService from 'App/Services/IdentityService'
 
 /**
  * images
@@ -86,6 +87,7 @@ Route.group(() => {
   Route.delete('/users/delete', 'UserSettingsController.deleteAccount').as('users.destroy')
   Route.put('/users/profile', 'ProfilesController.update').as('users.profiles.update').middleware(['auth'])
   Route.put('/users/preferences', 'PreferencesController.update').as('users.preferences.update').middleware(['auth'])
+  Route.delete('/users/sessions/:id?', 'SessionsController.destroy').as('users.sessions.destroy').middleware(['auth'])
 
 
 
@@ -182,7 +184,7 @@ Route.group(() => {
  */
 Route.put('/api/user/theme', 'ThemesController.update').as('api.user.theme')
 Route.get('/api/user/check', 'UsersController.check').as('api.user.check')
-Route.post('/api/session/set', 'SessionsController.set').as('session.set')
+Route.post('/api/session/set', 'SessionsController.set').as('sessions.set')
 Route.post('/api/history/progression/:id?', 'ProgressionsController.record').as('api.histories.progression')
 
 
@@ -193,3 +195,15 @@ Route.get('/go/posts/:id/comment/:commentId', 'GoController.postComment').as('go
 Route.get('/go/post/:id/comment/:commentId', 'GoController.postComment').as('go.post.comment')
 Route.get('/go/requests/lessons/:id/comment/:commentId', 'GoController.lessonRequestComment').as('go.requests.lessons.comment')
 Route.get('/go/auth/reset', 'GoController.authReset').as('go.auth.reset')
+
+
+
+// temporary to test and ensure our ip location works before rigging it up to auth
+Route.get('/test', async ({ request }) => {
+  const ip = request.ip()
+  const location = await IdentityService.getLocation(ip)
+  return {
+    ip,
+    location
+  }
+})
