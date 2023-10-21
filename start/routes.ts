@@ -200,10 +200,14 @@ Route.get('/go/auth/reset', 'GoController.authReset').as('go.auth.reset')
 
 // temporary to test and ensure our ip location works before rigging it up to auth
 Route.get('/test', async ({ request }) => {
+  console.log({ ip: request.request.socket.remoteAddress })
   const ip = request.ip()
+  const ips = request.ips()
   const location = await IdentityService.getLocation(ip)
   return {
     ip,
+    ips,
+    remoteAddress: request.request.socket.remoteAddress,
     location
   }
 })
