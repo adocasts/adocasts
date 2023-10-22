@@ -12,7 +12,7 @@
       data-post-id="{{ post.id }}"
       @close="close"
       @open="open" up-keep="progression_{{ userProgression?.id }}">
-      <div id="videoContents" class="flex flex-row xl:flex-col">
+      <div id="videoContents" class="flex flex-col">
         @if (post.livestreamUrl && post.isLive)
           <div class="mb-3">
             @!lessons.liveIndicator()
@@ -89,9 +89,9 @@
           </div>
         </div>
 
-        <div class="bg-slate-100 flex flex-col video-small-details p-4">
+        <div class="bg-slate-100 flex flex-col video-small-details p-1.5 md:p-4">
           @if (path)
-            <h5 class="font-semibold uppercase text-xs tracking-wider text-slate-600 hover:text-accent-800 duration-150 mb-1">
+            <h5 class="hidden md:block font-semibold uppercase text-xs tracking-wider text-slate-600 hover:text-accent-800 duration-150 mb-1">
               <a href="{{ route('paths.show', { slug: path.slug }) }}">
                 {{ path.name }}
                 <span class="inline-block ml-1 font-normal">
@@ -100,7 +100,7 @@
               </a>
             </h5>
           @elseif (series)
-            <h5 class="font-semibold uppercase text-xs tracking-wider text-slate-600 hover:text-accent-800 duration-150 mb-1">
+            <h5 class="hidden md:block font-semibold uppercase text-xs tracking-wider text-slate-600 hover:text-accent-800 duration-150 mb-1">
               <a href="{{ route('series.show', { slug: series.slug }) }}">
                 {{ series.name }}
                 <span class="inline-block ml-1 font-normal">
@@ -110,13 +110,13 @@
             </h5>
           @endif
 
-          <h3 class="font-semibold">
+          <h3 class="hidden md:block font-semibold">
             <a href="{{ post.routeUrl }}" up-follow>
               {{ post.title }}
             </a>
           </h3>
 
-          <div class="flex video-small-actions items-center gap-3 mt-6">
+          <div class="flex video-small-actions items-center gap-3 md:mt-6">
             @buttons.primary.inverse({ href: post.routeUrl, attrs: 'up-follow', block: true, size: 'xs' })
               @!icons.externalLink({ className: 'w-4 h-4 rotate-50 gap-3' })
               Re-Open
