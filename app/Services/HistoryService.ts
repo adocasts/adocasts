@@ -7,6 +7,7 @@ import Collection from "App/Models/Collection";
 import Taxonomy from "App/Models/Taxonomy";
 import NotImplementedException from "App/Exceptions/NotImplementedException";
 import States from "App/Enums/States";
+import Database from "@ioc:Adonis/Lucid/Database";
 
 export default class HistoryService {
   protected static completedPercentThreshold = 90
@@ -212,22 +213,31 @@ export default class HistoryService {
   }
 
   public static async getLatestPostProgress(user: User, limit: number | undefined = undefined) {
-    const postIds = await History.query()
-      .where('historyTypeId', HistoryTypes.PROGRESSION)
-      .where('userId', user.id)
-      .whereNotNull('postId')
-      .where(query => query
-        .where('isCompleted', true)  
-        .orWhere(query => query.whereNotNull('watchPercent').orWhereNotNull('readPercent'))
-        .orWhere(query => query.where('watchPercent', '>', 0).orWhere('readPercent', '>', 0))
-      )
-      // .where(query => query.where('isCompleted', false))
-      // .where(query => query.whereNotNull('watchPercent').orWhereNotNull('readPercent'))
-      // .where(query => query.where('watchPercent', '>', 0).orWhere('readPercent', '>', 0))
-      .orderBy('updatedAt', 'desc')
-      .selectIds('postId')
+    const subQuery = Database.knexQuery().from('histories')
+      .select(Database.knexRawQuery('MAX(updated_at) as updated_at'), 'post_id', 'user_id')
+      .where('history_type_id', HistoryTypes.PROGRESSION)
+      .groupBy('post_id', 'user_id')
+      .as('h2')
 
-    let distinctPostIds = [...new Set(postIds)]
+    const latestHistoryPerPost = await Database.knexQuery().from('histories as h1')
+      .innerJoin(subQuery, query => query
+        .on('h1.user_id', 'h2.user_id')
+        .andOn('h1.post_id', 'h2.post_id')
+        .andOn('h1.updated_at', 'h2.updated_at')
+      )
+      .where('h1.user_id', user.id)
+      .where('h1.history_type_id', HistoryTypes.PROGRESSION)
+      .whereNotNull('h1.post_id')
+      .where(query => query
+        .where('h1.is_completed', true)
+        .orWhere(query => query.whereNotNull('h1.watch_percent').where('h1.watch_percent', '>', 0))
+        .orWhere(query => query.whereNotNull('h1.read_percent').where('h1.read_percent', '>', 0))
+      )
+      .select('h1.id', 'h1.post_id', 'h1.updated_at')
+      .orderBy('h1.updated_at', 'desc')
+
+    let distinctPostIds = [...new Set(latestHistoryPerPost.map(h => h.post_id))] as number[]
+    let distinctHistoryIds = [...new Set(latestHistoryPerPost.map(h => h.id))] as number[]
 
     if (limit) {
       distinctPostIds = distinctPostIds.slice(0, limit)
@@ -236,13 +246,9 @@ export default class HistoryService {
     const posts = await Post.query()
       .whereIn('id', distinctPostIds)
       .apply(scope => scope.forDisplay())
+      .whereHas('progressionHistory', query => query.whereIn('id', distinctHistoryIds))
       .preload('progressionHistory', query => query
-        .where('userId', user.id)
-        .where(query => query
-          .where('isCompleted', true)  
-          .orWhere(query => query.whereNotNull('watchPercent').orWhereNotNull('readPercent'))
-          .orWhere(query => query.where('watchPercent', '>', 0).orWhere('readPercent', '>', 0))
-        )
+        .whereIn('id', distinctHistoryIds)
         .orderBy('updatedAt', 'desc')
         .groupLimit(1)
       )
