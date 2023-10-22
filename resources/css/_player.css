@@ -1,6 +1,12 @@
 @layer utilities {
-  .aspect-video {
+  .aspect-video:not(.no-access) {
     aspect-ratio: 16 / 9;
+  }
+
+  @screen lg {
+    .aspect-video {
+      aspect-ratio: 16 / 9;
+    }
   }
 
   .aspect-square {

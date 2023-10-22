@@ -4,14 +4,14 @@
       <a 
         up-follow
         href="{{ item.routeUrl }}" 
-        class="relative group aspect-video overview-hidden w-full flex items-center bg-slate-100 text-slate-100 duration-150">
-        @!lessons.picture({ item, className: 'overflow-hidden', lazy: true })
+        class="relative group aspect-video overview-hidden w-full flex items-center text-slate-100 duration-150">
+        @!lessons.picture({ item, className: 'w-full', lazy: true })
         
         <div class="absolute top-0 left-0 w-full h-full">
-          <div class="w-full h-full flex flex-col z-10 p-6 bg-slate-100/75 backdrop-blur opacity-0 group-hover:opacity-100 duration-300">
-            @!lessons.barSeries({ item, on: 'dark', className: 'text-xs' })
+          <div class="w-full h-full flex flex-col z-10 p-6 bg-slate-100/75 backdrop-blur opacity-0 group-hover:opacity-100 duration-300 rounded-xl">
+            @!lessons.barSeries({ item, on: 'dark', className: 'text-lg md:text-xs' })
 
-            <h4 class="font-sans text-sm font-semibold op-1 line-clamp-3 duration-150 mt-0 mb-2">
+            <h4 class="font-sans text-2xl md:text-sm font-semibold op-1 line-clamp-3 duration-150 mt-0 mb-2">
               {{ item.title }}
             </h4>
           </div>
