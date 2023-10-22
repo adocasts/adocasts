@@ -47,8 +47,8 @@
             @!collections.cardTall({ item })
           @endeach
         </div>
-        <div class="flex justify-center">
-          @buttons.primary.outline({ href: route('series.index'), attrs: 'up-follow' })
+        <div class="flex justify-center lg:max-w-[50%] xl:max-w-[33%] mx-auto">
+          @buttons.primary.outline({ href: route('series.index'), attrs: 'up-follow', block: true })
             Browse All Of Our Series
           @end
         </div>
@@ -73,8 +73,8 @@
               </div>
             @endeach
           </div>
-          <div class="flex justify-center px-3 mt-3">
-            @buttons.primary.outline({ href: route('topics.index'), attrs: 'up-follow' })
+          <div class="flex justify-center px-3 mt-3 lg:max-w-[50%] xl:max-w-[33%] mx-auto">
+            @buttons.primary.outline({ href: route('topics.index'), attrs: 'up-follow', block: true })
               Peek Into All Our Topics
             @end
           </div>
@@ -105,8 +105,8 @@
             @set('postSkip', postSkip + 1)
           @endeach
         </div>
-        <div class="flex justify-center px-3">
-          @buttons.primary.outline({ href: route('lessons.index'), attrs: 'up-follow' })
+        <div class="flex justify-center px-3 lg:max-w-[50%] xl:max-w-[33%] mx-auto">
+          @buttons.primary.outline({ href: route('lessons.index'), attrs: 'up-follow', block: true })
             View All Of Our Lessons
           @end
         </div>
@@ -199,6 +199,11 @@
                 lazyItem: true
               })
             @endeach
+          </div>
+          <div class="text-center mt-3 lg:max-w-[50%] xl:max-w-[33%] mx-auto">
+            @buttons.primary.outline({ href: route('users.history'), attrs: 'up-follow', block: true })
+              View All Your History
+            @end
           </div>
         </div>
       </section>
