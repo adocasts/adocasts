@@ -159,9 +159,17 @@ export default class StripeService {
       discounts.push({ coupon: plan.stripeCouponId })
     }
 
+    const mode = plan.id === Plans.FOREVER ? 'payment' : 'subscription'
+    const baseConfig = mode !== 'payment' ? {} : {
+      invoice_creation: {
+        enabled: plan.id === Plans.FOREVER
+      },
+    }
+
     return this.stripe.checkout.sessions.create({
+      ...baseConfig,
+      mode,
       discounts,
-      mode: plan.id === Plans.FOREVER ? 'payment' : 'subscription',
       customer: customerId!,
       line_items: [{ 
         price: plan.priceId!, 
