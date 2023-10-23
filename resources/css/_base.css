@@ -12,9 +12,9 @@
     }
   }
 
-  a.anchor:not(.anchor-current) {
+  /* a.anchor:not(.anchor-current) {
     @apply text-brand-700 hover:text-brand-800;
-  }
+  } */
 
   .app-container {
     @apply max-w-[1300px] mx-auto px-3 md:px-6;
@@ -64,6 +64,34 @@
   }
 
   .anchor,
+  .prose :where(a):not(:where([class~="not-prose"] *)) {
+    color: theme('colors.brand.600');
+    text-decoration: none !important;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size .3s, color .3s;
+
+    &:hover, 
+    &:focus {
+      background-size: 100% 2px;
+      color: theme('colors.brand.700');
+    }
+  }
+
+  .anchor.anchor-inv {
+    color: theme('colors.brand.600');
+    background-size: 100% 2px;
+
+    &:hover,
+    &:focus {
+      background-size: 0% 2px;
+      color: theme('colors.brand.700');
+    }
+  }
+
+  /* .anchor,
   .anchor-inv,
   .anchor-b {
     display: var(--display, inline-block);
@@ -130,7 +158,7 @@
   .anchor-inv:hover::after {
     transform: scaleX(0);
     transform-origin: bottom right;
-  }
+  } */
 
   footer .formkit-form input {
     @apply !w-full !text-sm !rounded-md !placeholder-slate-400 !bg-slate-100 !border !border-slate-200 !text-black;
