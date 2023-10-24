@@ -132,7 +132,11 @@ class VideoPlayer {
   #initPlayerHls(config) {
     if (!Hls.isSupported()) {
       this.element.src = this.element.dataset.hlsUrl
-      return
+      
+      // create the plyr instance
+      const player = this.#initStandardVideo(config)
+
+      return new Promise(resolve => resolve(player))
     }
 
     const hls = new Hls()
