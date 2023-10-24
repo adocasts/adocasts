@@ -45,6 +45,7 @@ export default class StripeWebhooksController {
         break
       case 'invoice.paid':
       case 'invoice.finalized':
+      case 'invoice.voided':
       case 'invoice.payment_succeeded':
         await this.stripeService.onInvoicePaymentSucceeded(event)
         break
