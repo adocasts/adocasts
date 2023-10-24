@@ -24,6 +24,7 @@ import Plans from 'App/Enums/Plans'
 import StripeSubscriptionStatuses from 'App/Enums/StripeSubscriptionStatuses'
 import * as timeago from 'timeago.js'
 import SessionLog from './SessionLog'
+import Invoice from './Invoice'
 
 class User extends AppBaseModel {
   @column({ isPrimary: true })
@@ -259,6 +260,9 @@ class User extends AppBaseModel {
     onQuery: query => query.whereNotNull('lessonRequestId')
   })
   public lessonRequestVotes: HasMany<typeof RequestVote>
+
+  @hasMany(() => Invoice)
+  public invoices: HasMany<typeof Invoice>
 }
 
 User['findForAuth'] = function (uids: string[], uidValue: string) {

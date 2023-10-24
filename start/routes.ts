@@ -77,6 +77,7 @@ Route.group(() => {
    * user settings
    */
   Route.get('/settings/:section?', 'UserSettingsController.index').as('users.settings.index').middleware(['auth'])
+  Route.get('/settings/invoices/:invoice', 'UserSettingsController.invoice').as('users.settings.invoice').middleware(['auth'])
   Route.patch('/users/update/username', 'UserSettingsController.updateUsername').as('users.update.username').middleware(['auth'])
   Route.put('/users/update/email', 'UserSettingsController.updateEmail').as('users.update.email').middleware(['auth'])
   Route.get('/users/revert/:id/:oldEmail/:newEmail', 'UserSettingsController.revertEmail').as('users.revert.email')

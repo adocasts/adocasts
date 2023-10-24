@@ -24,11 +24,16 @@
         @!settings.manageSubscription()
       </div>
 
-      {{--  @if (invoices.length)
+      @if (invoices.length)
         <div id="invoices" class="bg-slate-100 p-6 rounded-xl mb-3" x-intersect="active = $el.id">
           <h3 class="border-b border-slate-200 text-lg font-bold pb-6 mb-6">
-            Subscription Invoices
+            Invoices
           </h3>
+
+          <p class="text-slate-600 text-sm">
+            We're currently working on adding customizable invoices, and hope to have them added by the 28th of October.
+            In the meantime, if you need any alterations to your invoice please <a class="anchor" href="mailto:tom@adocasts.com">send us an email</a>.
+          </p>
           
           <div>
             <div class="mt-8 flow-root overflow-hidden">
@@ -37,14 +42,12 @@
                   <thead>
                     <tr>
                       <th scope="col" class="relative isolate py-3.5 pr-3 text-left text-sm font-semibold text-slate-900">
-                        Plan Period
+                        Date
                         <div class="absolute inset-y-0 right-full -z-10 w-screen border-b border-b-slate-200"></div>
                         <div class="absolute inset-y-0 left-0 -z-10 w-screen border-b border-b-slate-200"></div>
                       </th>
                       <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-slate-900 sm:table-cell">Status</th>
-                      <th scope="col" class="hidden px-3 py-3.5 text-right text-sm font-semibold text-slate-900 md:table-cell">Total</th>
-                      <th scope="col" class="hidden px-3 py-3.5 text-right text-sm font-semibold text-slate-900 md:table-cell">Due</th>
-                      <th scope="col" class="hidden px-3 py-3.5 text-right text-sm font-semibold text-slate-900 md:table-cell">Paid</th>
+                      <th scope="col" class="hidden px-3 py-3.5 text-right text-sm font-semibold text-slate-900 md:table-cell">Amount</th>
                       <th scope="col" class="pl-3 py-3.5 text-right text-sm font-semibold text-slate-900">Invoice</th>
                     </tr>
                   </thead>
@@ -53,9 +56,13 @@
                       <tr>
                         <td class="relative py-4 pr-3 text-sm font-medium text-slate-900">
                           <div class="flex items-center gap-1.5">
-                            {{ DateTime.fromSeconds(invoice.lines.data[0].period.start).toFormat('MMM dd, yyyy') }} 
-                            @!icons.arrowNarrowRight()
-                            {{ DateTime.fromSeconds(invoice.lines.data[0].period.end).toFormat('MMM dd, yyyy') }} 
+                            @if (invoice.lines.data.length && invoice.lines.data[0].period?.start)
+                              {{ DateTime.fromSeconds(invoice.lines.data[0].period.start).toFormat('MMM dd, yyyy') }} 
+                            @elseif (invoice.period_start)
+                              {{ DateTime.fromSeconds(invoice.period_start).toFormat('MMM dd, yyyy') }}
+                            @else
+                              {{ DateTime.fromSeconds(invoice.created).toFormat('MMM dd, yyyy') }}
+                            @endif
                           </div>
                           <div class="absolute bottom-0 right-full h-px w-screen bg-slate-100"></div>
                           <div class="absolute bottom-0 left-0 h-px w-screen bg-slate-100"></div>
@@ -83,9 +90,7 @@
                             </div>
                           @endif
                         </td>
-                        <td class="hidden px-3 py-4 text-right text-sm text-slate-600 sm:table-cell">{{ formatCurrency(invoice.total, invoice.currency) }}</td>
                         <td class="hidden px-3 py-4 text-right text-sm text-slate-600 sm:table-cell">{{ formatCurrency(invoice.amount_due, invoice.currency) }}</td>
-                        <td class="hidden px-3 py-4 text-right text-sm text-slate-600 sm:table-cell">{{ formatCurrency(invoice.amount_paid, invoice.currency) }}</td>
                         <td class="relative py-4 pl-3 text-right text-sm font-medium">
                           @if (invoice.hosted_invoice_url)
                             <a href="{{ invoice.hosted_invoice_url }}" target="_blank" class="anchor">View Invoice</span></a>
@@ -99,7 +104,7 @@
             </div>
           </div>
         </div>
-      @endif  --}}
+      @endif
 
       <div id="receipts" class="bg-slate-100 p-6 rounded-xl mb-3" x-intersect="active = $el.id">
         <h3 class="border-b border-slate-200 text-lg font-bold pb-6 mb-6">

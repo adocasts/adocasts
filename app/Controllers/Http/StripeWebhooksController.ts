@@ -43,6 +43,11 @@ export default class StripeWebhooksController {
       case 'checkout.session.completed':
         await this.stripeService.onCheckoutCompleted(event)
         break
+      case 'invoice.paid':
+      case 'invoice.finalized':
+      case 'invoice.payment_succeeded':
+        await this.stripeService.onInvoicePaymentSucceeded(event)
+        break
       default:
         console.log(`Unhandled event type ${event.type}`);
     }

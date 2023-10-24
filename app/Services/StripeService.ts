@@ -61,7 +61,7 @@ export default class StripeService {
 
   public async getInvoices(user: User) {
     if (!user.stripeCustomerId) return []
-    const { data } = await this.stripe.invoices.list({ customer: user.stripeCustomerId })
+    const { data } = await this.stripe.invoices.list({ customer: user.stripeCustomerId, status: 'paid' })
     return data
   }
 
@@ -175,6 +175,13 @@ export default class StripeService {
         price: plan.priceId!, 
         quantity: 1 
       }],
+      tax_id_collection: {
+        enabled: true
+      },
+      customer_update: {
+        name: 'auto',
+        address: 'auto'
+      },
       success_url: `${Env.get('APP_DOMAIN')}/stripe/subscription/success?session_id={CHECKOUT_SESSION_ID}&plan_id=${plan.id}`,
       cancel_url: `${Env.get('APP_DOMAIN')}`
     })
@@ -282,5 +289,23 @@ export default class StripeService {
     if (plan.id === Plans.FOREVER && previousPlanId) {
       await this.cancelCustomerSubscriptions(user)
     }
+  }
+
+  public async onInvoicePaymentSucceeded(event) {
+    const data = event.data.object
+    const user = await User.findByOrFail('stripeCustomerId', data.customer)
+
+    await user.related('invoices').updateOrCreate({ invoiceId: data.id }, {
+      invoiceId: data.id,
+      invoiceNumber: data.number,
+      chargeId: data.charge,
+      amountDue: data.amount_due,
+      amountPaid: data.amount_paid,
+      amountRemaining: data.amount_remaining,
+      status: data.status,
+      paid: data.paid,
+      periodStartAt: data.period_start ? DateTime.fromSeconds(data.period_start) : null,
+      periodEndAt: data.period_end ? DateTime.fromSeconds(data.period_end) : null
+    })
   }
 }
