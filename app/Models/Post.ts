@@ -23,7 +23,6 @@ import States from 'App/Enums/States'
 import Collection from 'App/Models/Collection'
 import CollectionTypes from 'App/Enums/CollectionTypes'
 import Watchlist from 'App/Models/Watchlist'
-import * as timeago from 'timeago.js'
 import History from 'App/Models/History'
 import HistoryTypes from 'App/Enums/HistoryTypes'
 import Route from '@ioc:Adonis/Core/Route'
@@ -31,6 +30,7 @@ import AssetTypes from 'App/Enums/AssetTypes'
 import { HttpContext } from '@adonisjs/core/build/standalone'
 import PaywallTypes from 'App/Enums/PaywallTypes'
 import VideoTypes from 'App/Enums/VideoTypes'
+import UtilityService from 'App/Services/UtilityService'
 
 export default class Post extends AppBaseModel {
   public serializeExtras = true
@@ -309,7 +309,7 @@ export default class Post extends AppBaseModel {
   @computed()
   public get paywallTimeAgo() {
     if (!this.publishAt) return
-    return timeago.format(this.publishAt!.plus({ days: 14 }).toJSDate())
+    return UtilityService.timeago(this.publishAt.plus({ days: 14 }))
   }
 
   @computed()
@@ -402,7 +402,7 @@ export default class Post extends AppBaseModel {
 
   @computed()
   public get timeago() {
-    return this.publishAt ? timeago.format(this.publishAt.toJSDate()) : ''
+    return UtilityService.timeago(this.publishAt)
   }
 
   @computed()

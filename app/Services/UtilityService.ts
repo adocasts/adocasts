@@ -3,7 +3,6 @@ import { parse } from 'node-html-parser'
 import { DateTime } from 'luxon'
 import { dinero, toDecimal } from 'dinero.js'
 import * as currencies from '@dinero.js/currencies'
-import * as timeago from 'timeago.js'
 
 export default class UtilityService {
   /**
@@ -123,7 +122,7 @@ export default class UtilityService {
       date = DateTime.fromISO(date)
     }
 
-    return date ? timeago.format(date.toJSDate()) : ''
+    return date ? date.toRelative() : ''
   }
 
   public static formatNumber(number: number) {

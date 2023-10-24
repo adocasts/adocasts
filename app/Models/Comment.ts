@@ -4,9 +4,9 @@ import User from './User'
 import Post from './Post'
 import State from 'App/Enums/States'
 import AppBaseModel from 'App/Models/AppBaseModel'
-import * as timeago from 'timeago.js'
 import CommentTypes from 'App/Enums/CommentTypes'
 import LessonRequest from './LessonRequest'
+import UtilityService from 'App/Services/UtilityService'
 
 export default class Comment extends AppBaseModel {
   @column({ isPrimary: true })
@@ -82,7 +82,6 @@ export default class Comment extends AppBaseModel {
   }
 
   public get timeago() {
-    if (!this.createdAt) return
-    return timeago.format(this.createdAt?.toJSDate())
+    return UtilityService.timeago(this.createdAt)
   }
 }

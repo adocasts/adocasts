@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column, computed } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import uap from 'ua-parser-js'
-import * as timeago from 'timeago.js'
+import UtilityService from 'App/Services/UtilityService'
 
 export default class SessionLog extends BaseModel {
   @column({ isPrimary: true })
@@ -60,10 +60,10 @@ export default class SessionLog extends BaseModel {
     if (!this.lastTouchedAt && !this.loginAt) return ''
     
     if (!this.lastTouchedAt) {
-      return timeago.format(this.loginAt!.toJSDate())
+      return UtilityService.timeago(this.loginAt)
     }
 
-    return timeago.format(this.lastTouchedAt.toJSDate())
+    return UtilityService.timeago(this.lastTouchedAt)
   }
 
   @computed()

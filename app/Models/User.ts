@@ -22,7 +22,6 @@ import HistoryTypes from 'App/Enums/HistoryTypes'
 import Plan from './Plan'
 import Plans from 'App/Enums/Plans'
 import StripeSubscriptionStatuses from 'App/Enums/StripeSubscriptionStatuses'
-import * as timeago from 'timeago.js'
 import SessionLog from './SessionLog'
 import Invoice from './Invoice'
 
@@ -126,7 +125,7 @@ class User extends AppBaseModel {
   @computed()
   public get memberDuration() {
     if (!this.createdAt) return
-    return timeago.format(this.createdAt.toJSDate())
+    return this.createdAt.toRelative()
   }
 
   @computed()

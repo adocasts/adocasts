@@ -64,7 +64,7 @@
   }
 
   .anchor,
-  .prose :where(a):not(:where([class~="not-prose"] *)) {
+  .prose :where(a):not(.btn):not(:where([class~="not-prose"] *)) {
     color: theme('colors.brand.600');
     text-decoration: none !important;
     background-image: linear-gradient(currentColor, currentColor);
