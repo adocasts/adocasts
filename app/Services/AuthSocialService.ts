@@ -81,10 +81,11 @@ export default class AuthSocialService {
       .first()
 
     if (!userMatch) {
+      let avatarUrl = user.avatarUrl && user.avatarUrl.length > 500 ? '' : (user.avatarUrl ?? undefined)
       userMatch = await User.create({
         username,
         email: user.email!,
-        avatarUrl: user.avatarUrl ?? undefined,
+        avatarUrl: avatarUrl,
         roleId: Role.USER,
         [userIdKey]: user.id,
         [userEmailKey]: user.email,
@@ -119,7 +120,12 @@ export default class AuthSocialService {
     username = slugify(username, { lower: true })
     
     const occurances = await Database.from('users').where('username', 'ILIKE', `${username}%`)
+    const incrementors = occurances
+      .map(o => o.username.match(/-\d+$/)?.at(0).replace('-', ''))
+      .filter(Boolean)
+      .map(o => parseInt(o))
     
-    return occurances.length ? `${username}-${occurances.length + 1}` : username
+    const maxIncrementor = incrementors.length ? Math.max(...incrementors) : occurances.length
+    return occurances.length ? `${username}-${maxIncrementor + 1}` : username
   }
 }

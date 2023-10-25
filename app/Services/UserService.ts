@@ -3,6 +3,7 @@ import DiscordLogger from "@ioc:Logger/Discord";
 import States from "App/Enums/States";
 import User from "App/Models/User";
 import StripeService from "./StripeService";
+import Logger from '@ioc:Adonis/Core/Logger';
 
 export default class UserService {
   /**
@@ -22,6 +23,8 @@ export default class UserService {
       await user.related('initiatedNotifications').query().delete()
       await user.related('emailHistory').query().delete()
       await user.related('commentVotes').query().update({ userId: null })
+      await user.related('invoices').query().delete()
+      await user.related('sessions').query().delete()
       await this.destroyComments(user)
       await this.destroyLessonRequests(user)
 
@@ -44,7 +47,8 @@ export default class UserService {
 
       return true
     } catch (error) {
-      DiscordLogger.error(`Failed to delete user id: ${user.id}`)
+      Logger.error(error.message)
+      DiscordLogger.error(`Failed to delete user id: ${user.id}`, error.message)
       await trx.rollback()
       return false
     }

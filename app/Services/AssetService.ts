@@ -4,6 +4,7 @@ import sharp, { AvailableFormatInfo, FormatEnum } from 'sharp';
 import fetch from 'cross-fetch'
 import Drive from '@ioc:Adonis/Core/Drive'
 import Asset from 'App/Models/Asset';
+import Application from '@ioc:Adonis/Core/Application';
 
 class ImageOptions {
   width: number
@@ -108,7 +109,7 @@ export default class AssetService {
 
     if (user.avatarUrl === filename) return
 
-    if (await Drive.exists(filename)) {
+    if (await Drive.exists(filename) && Application.inProduction) {
       await Drive.delete(filename)
     }
 
@@ -120,8 +121,9 @@ export default class AssetService {
   }
 
   public static getAvatarFilename(user: User, url: string) {
+    const prefix = Application.inProduction ? '' : 'local/'
     const extension = AssetService.getFilenameExtension(url, 'jpg');
-    return `${user.id}/avatar.${extension}`;
+    return `${prefix}${user.id}/avatar.${extension}`;
   }
 
   public static async syncAssetTypes(assetIds: number[] | undefined, assetTypeIds: number[] | undefined, altTexts: (string | undefined)[] | undefined, credits: (string | undefined)[] | undefined) {
