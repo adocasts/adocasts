@@ -36,6 +36,13 @@ export default class UserSettingsController {
     return view.render(`pages/settings/${params.section}`, { profile })
   }
 
+  public async invoice({ view, params, auth }: HttpContextContract) {
+    const stripeService = new StripeService()
+    const invoice  = await stripeService.getInvoice(auth.user!, params.invoice)
+    
+    return view.render('pages/settings/invoices/show', { invoice })
+  }
+
   public async updateUsername({ request, response, auth, session }: HttpContextContract) {
     const { username } = request.only(['username'])
     const { flashStatus, message } = await UserSettingsService.updateUsername(auth.user!, username)

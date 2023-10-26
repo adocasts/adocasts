@@ -29,11 +29,6 @@
           <h3 class="border-b border-slate-200 text-lg font-bold pb-6 mb-6">
             Invoices
           </h3>
-
-          <p class="text-slate-600 text-sm">
-            We're currently working on adding customizable invoices, and hope to have them added by the 28th of October.
-            In the meantime, if you need any alterations to your invoice please <a class="anchor" href="mailto:tom@adocasts.com">send us an email</a>.
-          </p>
           
           <div>
             <div class="mt-8 flow-root overflow-hidden">
@@ -57,11 +52,11 @@
                         <td class="relative py-4 pr-3 text-sm font-medium text-slate-900">
                           <div class="flex items-center gap-1.5">
                             @if (invoice.lines.data.length && invoice.lines.data[0].period?.start)
-                              {{ DateTime.fromSeconds(invoice.lines.data[0].period.start).toFormat('MMM dd, yyyy') }} 
+                              {{ stripeDateTime(invoice.lines.data[0].period.start).setZone(timezone).toFormat('MMM dd, yyyy') }} 
                             @elseif (invoice.period_start)
-                              {{ DateTime.fromSeconds(invoice.period_start).toFormat('MMM dd, yyyy') }}
+                              {{ stripeDateTime(invoice.period_start).setZone(timezone).toFormat('MMM dd, yyyy') }}
                             @else
-                              {{ DateTime.fromSeconds(invoice.created).toFormat('MMM dd, yyyy') }}
+                              {{ stripeDateTime(invoice.created).setZone(timezone).toFormat('MMM dd, yyyy') }}
                             @endif
                           </div>
                           <div class="absolute bottom-0 right-full h-px w-screen bg-slate-100"></div>
@@ -92,9 +87,9 @@
                         </td>
                         <td class="hidden px-3 py-4 text-right text-sm text-slate-600 sm:table-cell">{{ formatCurrency(invoice.amount_due, invoice.currency) }}</td>
                         <td class="relative py-4 pl-3 text-right text-sm font-medium">
-                          @if (invoice.hosted_invoice_url)
-                            <a href="{{ invoice.hosted_invoice_url }}" target="_blank" class="anchor">View Invoice</span></a>
-                          @endif
+                          <a href="{{ route('users.settings.invoice', { invoice: invoice.number }) }}" target="_blank" class="anchor">
+                            View Invoice
+                          </a>
                         </td>
                       </tr>
                     @endeach
@@ -132,7 +127,7 @@
                   @each (charge in charges)
                     <tr>
                       <td class="relative py-4 pr-3 text-sm font-medium text-slate-900">
-                        {{ DateTime.fromSeconds(charge.created).toFormat('MMM dd, yyyy') }}
+                        {{ stripeDateTime(charge.created).setZone(timezone).toFormat('MMM dd, yyyy') }}
                         <div class="absolute bottom-0 right-full h-px w-screen bg-slate-100"></div>
                         <div class="absolute bottom-0 left-0 h-px w-screen bg-slate-100"></div>
                       </td>

@@ -7,6 +7,7 @@ import Plans from 'App/Enums/Plans'
 import Plan from 'App/Models/Plan'
 import NotificationService from 'App/Services/NotificationService'
 import PostService from 'App/Services/PostService'
+import StripeService from 'App/Services/StripeService'
 import UtilityService from 'App/Services/UtilityService'
 import { DateTime } from 'luxon'
 import HtmlParser from 'App/Services/HtmlParser'
@@ -46,3 +47,4 @@ View.global('formatCurrency', UtilityService.formatCurrency)
 View.global('displaySocialUrl', UtilityService.displaySocialUrl)
 View.global('getBodyPreview', HtmlParser.getPreview)
 View.global('htmlParser', HtmlParser)
+View.global('stripeDateTime', StripeService.toDateTime)

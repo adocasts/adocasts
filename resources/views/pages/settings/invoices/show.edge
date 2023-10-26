@@ -1,0 +1,158 @@
+@layout('layouts.pdf')
+@set('filename', `${invoice.number}.pdf`)
+
+@section('meta')
+  <title>
+    Invoice {{ invoice.number }} | Adocasts
+  </title>
+@endsection
+
+@section('before')
+
+  <div class="bg-[#fff] w-full shadow-xl">
+    <div class="flex justify-between items-center flex-wrap mx-auto max-w-screen-2xl p-6 gap-y-3">
+      <div>
+        <p class="text-lg font-bold">
+          {{ stripeDateTime(invoice.created).setZone(timezone).toFormat('MMMM dd, yyyy') }}
+          <span class="text-xs text-slate-base-600 font-normal">({{ timezone || 'UTC' }})</span>
+        </p>
+        <p class="text-sm">You can click to edit various portions of your invoice below.</p>
+      </div>
+      
+      <div class="w-full md:w-auto flex flex-col md:flex-row gap-3">
+        @buttons.primary.outline({ variant: 'base-dark', href: invoice.hosted_invoice_url, className: 'justify-center' })
+          Open in Stripe
+        @end
+
+        @buttons.primary.outline({ atClick: 'onPrint($refs.page)', className: 'justify-center' })
+          Print
+        @end
+
+        @buttons.brand.base({ atClick: 'onExport($refs.page)', className: 'justify-center' })
+          Download
+        @end
+      </div>
+    </div>
+  </div>
+
+@endsection
+
+@section('page')
+
+  @set('regionNames', new Intl.DisplayNames(['en'], { type: 'region' }))
+
+  <div class="flex flex-col justify-between h-full">
+    <div>
+      <div class="mb-10 flex justify-between">
+        <h1 class="text-3xl font-bold">Invoice</h1>
+      </div>
+
+      <dl class="grid grid-cols-2 w-fit mb-10">
+        <dt class="font-bold" contenteditable>Invoice Number</dt>
+        <dd contenteditable>{{ invoice.number }}</dd>
+
+        <dt class="font-bold" contenteditable>Date of Invoice</dt>
+        <dd contenteditable>{{ stripeDateTime(invoice.created).setZone(timezone).toFormat('MMMM dd, yyyy') }}</dd>
+      </dl>
+
+      <div class="grid grid-cols-2 mb-10 gap-6">
+        <div>
+          <h3 class="font-xl font-bold mb-1.5">Adocasts</h3>
+          <p contenteditable>
+            Kentucky 41005<br/>
+            United States<br/>
+            contact@adocasts.com
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-xl font-bold mb-1.5">Bill to</h3>
+          <p contenteditable>
+            {{ invoice.customer_name }}<br/>
+            @if (invoice.customer_address['line1'])
+              {{ invoice.customer_address['line1'] }}<br/>
+            @endif
+            @if (invoice.customer_address['line2'])
+              {{ invoice.customer_address['line2'] }}<br/>
+            @endif
+            @if (invoice.customer_address.city || invoice.customer_address.state)
+              {{ [invoice.customer_address.city, invoice.customer_address.state].filter(Boolean).join(',') }}
+            @endif
+            @if (invoice.customer_address.postal_code)
+            {{ invoice.customer_address.postal_code }}<br/>
+            @endif
+            @if (invoice.customer_address.country)
+              {{ regionNames.of(invoice.customer_address.country) }}<br/>
+            @endif
+            {{ invoice.customer_email }}<br/>
+            @if (invoice.customer_tax_ids?.length)
+              @each (id in invoice.customer_tax_ids)
+                {{ sentenceCase(id.type).toUpperCase() }} {{ id.value }}
+              @endeach
+            @endif
+          </p>
+        </div>
+      </div>
+
+      <div class="w-full mt-8">
+        <table class="w-full max-w-full">
+          <colgroup>
+            <col class="w-full sm:w-1/2">
+            <col class="w-1/4 md:w-1/6">
+            <col class="w-1/4 md:w-1/6">
+          </colgroup>
+          <thead class="border-b border-slate-base-300 text-slate-base-900">
+            <tr>
+              <th scope="col" class="py-3.5 pr-3 text-left text-sm font-semibold text-slate-base-900 pl-0">Description</th>
+              <th scope="col" class="px-3 py-3.5 text-sm text-left font-semibold text-slate-base-900 table-cell">Qty</th>
+              <th scope="col" class="py-3.5 pl-3 pr-4 text-right text-sm font-semibold text-slate-base-900 sm:pr-0">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            @each (line in invoice.lines.data)
+              <tr class="border-b border-slate-base-200">
+                <td class="max-w-0 py-5 pl-4 pr-3 text-sm sm:pl-0">
+                  <div class="font-medium text-slate-base-900" contenteditable>{{ line.description }}</div>
+                  <div class="mt-1 truncate text-slate-base-600 flex items-center gap-1.5" contenteditable>
+                    {{ stripeDateTime(line.period.start).setZone(timezone).toFormat('MMM dd, yyyy') }}
+                    @if (line.subscription)
+                      -
+                      {{ stripeDateTime(line.period.end).setZone(timezone).toFormat('MMM dd, yyyy') }}
+                    @endif
+                  </div>
+                </td>
+                <td class="px-3 py-5 text-sm text-slate-base-600 sm:table-cell" contenteditable>{{ line.quantity }}</td>
+                <td class="py-5 pl-3 pr-4 text-right text-sm sm:pr-0" contenteditable>{{ formatCurrency(line.amount, invoice.currency) }}</td>
+              </tr>
+            @endeach
+          </tbody>
+          <tfoot>
+            <tr>
+              <th></th>
+              <th scope="row" class="border-b border-slate-base-200 pl-4 pr-3 pt-6 pb-2 text-left text-sm font-normal text-slate-base-600">Subtotal</th>
+              <td class="border-b border-slate-base-200 pl-3 pr-4 pt-6 pb-2 text-right text-sm text-slate-base-600 sm:pr-0">{{ formatCurrency(invoice.subtotal, invoice.currency) }}</td>
+            </tr>
+            <tr>
+              <th></th>
+              <th scope="row" class="pl-4 pr-3 py-2 text-left text-sm font-semibold text-slate-base-900">Total</th>
+              <td class="pl-3 pr-4 py-2 text-right text-sm font-semibold text-slate-base-900 sm:pr-0">{{ formatCurrency(invoice.total, invoice.currency) }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-slate-base-600 text-sm absolute bottom-[0.5in] left-0 px-[0.5in] w-full">
+    <div class="flex justify-between border-t border-slate-base-200 pt-3">
+      <div>
+        Adocasts Invoice <span contenteditable>{{ invoice.number }}</span>
+      </div>
+
+      <div>
+        Page 1 of 1
+      </div>
+    </div>
+  </div>
+
+@endsection

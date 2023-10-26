@@ -1,11 +1,14 @@
 import '../css/app.css'
 import axios from 'axios'
 import { DateTime } from 'luxon'
+import Cookies from 'js-cookie'
 import './tiptap/basic'
 import './_alpine'
 import './_unpoly'
 import './_video'
 import './_prose'
+
+Cookies.set('timezone', DateTime.now().zoneName)
 
 window.DateTime = DateTime
 

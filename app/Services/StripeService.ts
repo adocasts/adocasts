@@ -37,6 +37,11 @@ export default class StripeService {
     return this.stripe
   }
 
+  public static toDateTime(seconds: number | undefined) {
+    if (!seconds) return 
+    return DateTime.fromSeconds(seconds, { zone: 'UTC' })
+  } 
+
   public async connectToWebhook(request: RequestContract) {
     const sig = request.header('stripe-signature')
     return this.stripe.webhooks.constructEvent(request.raw() || '', sig || '', Env.get('STRIPE_WEBHOOK_SECRET'))
@@ -63,6 +68,25 @@ export default class StripeService {
     if (!user.stripeCustomerId) return []
     const { data } = await this.stripe.invoices.list({ customer: user.stripeCustomerId, status: 'paid' })
     return data
+  }
+
+  public async getInvoice(user: User, invoiceNumber: string) {
+    const ado = await user.related('invoices').query().where({ invoiceNumber }).first()
+
+    if (!ado) {
+      return this.searchForInvoice(user, invoiceNumber)
+    }
+
+    return this.stripe.invoices.retrieve(ado.invoiceId)
+  }
+
+  public async searchForInvoice(user: User, invoiceNumber: string) {
+    const results = await this.stripe.invoices.search({
+      query: `number:"${invoiceNumber}" AND customer:"${user.stripeCustomerId}"`,
+      limit: 1
+    })
+
+    return results.data.at(0)
   }
 
   public async getCharges(user: User) {

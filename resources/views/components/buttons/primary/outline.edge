@@ -2,7 +2,8 @@
 @set('variant', variant ?? 'base')
 @set('variants', {
   base: 'border-slate-200 text-slate-700 hover:bg-slate-200',
-  ['base-light']: 'border-slate-base-200 text-slate-base-200 hover:text-slate-base-800 hover:bg-slate-base-200'
+  ['base-light']: 'border-slate-base-200 text-slate-base-200 hover:text-slate-base-800 hover:bg-slate-base-200',
+  ['base-dark']: 'border-slate-base-200 text-slate-base-700 hover:text-slate-base-200 hover:bg-slate-base-700 hover:border-slate-base-700'
 })
 @set('theme', `border-[3px] ${variants[variant]} bg-transparent hover:text-slate-950 shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2`)
 
