@@ -1,9 +1,12 @@
 import Alpine from 'alpinejs'
 import { domToJpeg } from 'modern-screenshot'
 import { jsPDF } from 'jspdf'
+import axios from 'axios'
 
-Alpine.data('pdf', function (filename = 'invoice.pdf') {
+Alpine.data('pdf', function ({ filename = 'invoice.pdf', ...data }) {
   return {
+    ...data,
+    showConfirm: false,
     isExporting: false,
     isDone: false,
     scale: '1',
@@ -85,6 +88,49 @@ Alpine.data('pdf', function (filename = 'invoice.pdf') {
       const ppi = 96
       const dpi = devicePixelRatio
       return pixels / dpi / ppi
+    },
+
+    confirmBillToInfo() {
+      if (!this.billToInfo) {
+        this.billToInfo = this.isCustomBillTo 
+          ? this.$refs.billToInfoCustom.innerHTML.replaceAll('<br>', '\n')
+          : this.$refs.billToInfo.innerHTML.replaceAll('<br>', '\n')
+      }
+
+      this.showConfirm = true
+    },
+
+    async saveBillToInfo() {
+      const billToInfo = this.billToInfo
+      try {
+        this.isSavingBillTo = true
+        
+        const { data } = await axios.patch('/api/users/billto', { billToInfo })
+
+        this.successBillTo = data.clearedBillTo 
+          ? `Your address info has been reset back to the invoice original`
+          : `Your address info has been saved successfully`
+
+        if (data.clearedBillTo) {
+          this.changeIsCustomBillTo(false)
+        }
+      } catch (error) {
+        this.errorBillTo = `Sorry, something went wrong. We've logged this error and will have it fixed soon`
+      } finally {
+        this.isSavingBillTo = false
+      }
+
+      setTimeout(() => {
+        this.successBillTo = null
+        this.errorBillTo = null
+      }, 7500)
+    },
+
+    changeIsCustomBillTo(value) {
+      this.isCustomBillTo = value
+      this.billToInfo = this.isCustomBillTo 
+          ? this.$refs.billToInfoCustom.innerHTML.replaceAll('<br>', '\n')
+          : this.$refs.billToInfo.innerHTML.replaceAll('<br>', '\n')
     }
   }
 })

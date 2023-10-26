@@ -50,5 +50,6 @@ Server.middleware.registerNamed({
   guest: () => import('App/Middleware/Guest'),
   turnstile: () => import('App/Middleware/Turnstile'),
   unpoly: () => import('App/Middleware/Unpoly'),
-  postTypeCheck: () => import('App/Middleware/PostTypeCheck')
+  postTypeCheck: () => import('App/Middleware/PostTypeCheck'),
+  throttle: () => import('@adonisjs/limiter/build/throttle'),
 })

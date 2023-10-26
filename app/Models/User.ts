@@ -61,6 +61,9 @@ class User extends AppBaseModel {
   public stripeSubscriptionCanceledAt: DateTime | null
 
   @column()
+  public billToInfo: string | null
+
+  @column()
   public rememberMeToken?: string
 
   @column()

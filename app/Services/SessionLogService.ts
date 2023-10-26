@@ -18,7 +18,7 @@ export default class SessionLogService {
     const cfConnectingIp = this.request.header('Cf-Connecting-Ip')
     if (cfConnectingIp) return cfConnectingIp // should be user's ip
     const xForwardedFor = this.request.header('X-Forwarded-For')
-    if (xForwardedFor) return xForwardedFor.split(',').at(0) // should be user's ip
+    if (xForwardedFor) return xForwardedFor.split(',').at(0)! // should be user's ip
     return this.request.ip() // will be cloudflare's ip
   }
 

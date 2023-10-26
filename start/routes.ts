@@ -162,7 +162,6 @@ Route.group(() => {
   Route.get('/stripe/subscription/success', 'StripeSubscriptionsController.success').as('stripe.success')
   Route.post('/stripe/subscription/checkout/:slug', 'StripeSubscriptionsController.checkout').as('stripe.checkout').middleware(['auth'])
   Route.post('/stripe/subscription/portal', 'StripeSubscriptionsController.portal').as('stripe.portal').middleware(['auth'])
-  Route.post('/stripe/webhook', 'StripeWebhooksController.index')
 
 
 
@@ -175,7 +174,9 @@ Route.group(() => {
   Route.get('/fragments/requests/lessons/:id/:fragment', 'LessonRequestsController.fragment').as('requests.lessons.fragment')
   Route.get('/fragments/:fragment', 'FragmentsController.index').as('fragments.index')
   Route.get('/fragments/:fragment/:id', 'FragmentsController.show').as('fragments.show')
-}).middleware(['unpoly'])
+}).middleware(['unpoly', 'throttle:global'])
+
+Route.post('/stripe/webhook', 'StripeWebhooksController.index')
 
 
 
@@ -184,6 +185,7 @@ Route.group(() => {
  */
 Route.put('/api/user/theme', 'ThemesController.update').as('api.user.theme')
 Route.get('/api/user/check', 'UsersController.check').as('api.user.check')
+Route.patch('/api/users/billto', 'UsersController.billto').as('api.users.billto').middleware(['auth'])
 Route.post('/api/session/set', 'SessionsController.set').as('sessions.set')
 Route.post('/api/history/progression/:id?', 'ProgressionsController.record').as('api.histories.progression')
 

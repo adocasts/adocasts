@@ -2,6 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import HistoryService from 'App/Services/HistoryService'
 import NotificationService from 'App/Services/NotificationService'
 import WatchlistService from 'App/Services/WatchlistService'
+import { schema, rules } from '@ioc:Adonis/Core/Validator'
 
 export default class UsersController {
   public async menu({ response, view, auth }: HttpContextContract) {
@@ -32,5 +33,24 @@ export default class UsersController {
 
   public async check({ auth }: HttpContextContract) {
     return !!auth.user
+  }
+
+  public async billto({ request, response, auth }: HttpContextContract) {
+    const _schema = schema.create({
+      billToInfo: schema.string.nullableAndOptional([rules.maxLength(500)])
+    })
+
+    let clearedBillTo = false
+    let { billToInfo } = await request.validate({ schema: _schema })
+    let user = auth.user!
+
+    if (billToInfo == '\n') {
+      billToInfo = null
+      clearedBillTo = true
+    }
+
+    await user.merge({ billToInfo }).save()
+
+    return response.status(200).json({ clearedBillTo, billToInfo })
   }
 }

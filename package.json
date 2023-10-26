@@ -37,6 +37,7 @@
     "@adonisjs/bouncer": "^2.3.0",
     "@adonisjs/core": "^5.9.0",
     "@adonisjs/drive-gcs": "^1.1.2",
+    "@adonisjs/limiter": "^1.0.2",
     "@adonisjs/lucid": "^18.4.0",
     "@adonisjs/lucid-slugify": "^2.2.1",
     "@adonisjs/mail": "^8.2.0",

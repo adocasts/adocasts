@@ -1,5 +1,12 @@
 @layout('layouts.pdf')
-@set('filename', `${invoice.number}.pdf`)
+@set('data', {
+  filename: `${invoice.number}.pdf`,
+  billToInfo: auth.user.billToInfo,
+  isCustomBillTo: !!auth.user.billToInfo,
+  isSavingBillTo: false,
+  successBillTo: null,
+  errorBillTo: null,
+})
 
 @section('meta')
   <title>
@@ -20,8 +27,9 @@
       </div>
       
       <div class="w-full md:w-auto flex flex-col md:flex-row gap-3">
-        @buttons.primary.outline({ variant: 'base-dark', href: invoice.hosted_invoice_url, className: 'justify-center' })
-          Open in Stripe
+        @buttons.primary.outline({ variant: 'base-dark', className: 'justify-center', atClick: 'confirmBillToInfo', attrs: ':disabled="isSavingBillTo"' })
+          <span x-show="isSavingBillTo" x-cloak>Saving Address ...</span>
+          <span x-show="!isSavingBillTo">Save Address</span>
         @end
 
         @buttons.primary.outline({ atClick: 'onPrint($refs.page)', className: 'justify-center' })
@@ -34,6 +42,14 @@
       </div>
     </div>
   </div>
+
+  @if (auth.user.billToInfo)
+    <div x-show="isCustomBillTo" class="bg-slate-200 text-slate-900 shadow-xl">
+      <div class="text-xs text-slate-600 mx-auto max-w-screen-2xl px-6 py-3">
+        You've customized your address information. <button class="anchor" type="button" @click="changeIsCustomBillTo(false)">Click here to view the original invoice.</button>
+      </div>
+    </div>
+  @endif
 
 @endsection
 
@@ -67,24 +83,27 @@
 
         <div>
           <h3 class="font-xl font-bold mb-1.5">Bill to</h3>
-          <p contenteditable>
-            {{ invoice.customer_name }}<br/>
+          @if (auth.user.billToInfo)
+            <p x-show="isCustomBillTo" x-ref="billToInfoCustom" class="whitespace-pre-line" @input="billToInfo = $el.innerHTML.replaceAll('<br>', '\n')" contenteditable>{{ auth.user.billToInfo }}</p>
+          @endif
+            
+          <p {{ auth.user.billToInfo && 'x-cloak' }} x-show="!isCustomBillTo" x-ref="billToInfo" class="whitespace-pre-line" @input="billToInfo = $el.innerHTML.replaceAll('<br>', '\n')" contenteditable>{{ invoice.customer_name }}
             @if (invoice.customer_address['line1'])
-              {{ invoice.customer_address['line1'] }}<br/>
+              {{ invoice.customer_address['line1'] }}
             @endif
             @if (invoice.customer_address['line2'])
-              {{ invoice.customer_address['line2'] }}<br/>
+              {{ invoice.customer_address['line2'] }}
             @endif
             @if (invoice.customer_address.city || invoice.customer_address.state)
               {{ [invoice.customer_address.city, invoice.customer_address.state].filter(Boolean).join(',') }}
             @endif
             @if (invoice.customer_address.postal_code)
-            {{ invoice.customer_address.postal_code }}<br/>
+              {{ invoice.customer_address.postal_code }}
             @endif
             @if (invoice.customer_address.country)
-              {{ regionNames.of(invoice.customer_address.country) }}<br/>
+              {{ regionNames.of(invoice.customer_address.country) }}
             @endif
-            {{ invoice.customer_email }}<br/>
+            {{ invoice.customer_email }}
             @if (invoice.customer_tax_ids?.length)
               @each (id in invoice.customer_tax_ids)
                 {{ sentenceCase(id.type).toUpperCase() }} {{ id.value }}
@@ -153,6 +172,30 @@
         Page 1 of 1
       </div>
     </div>
+  </div>
+
+@endsection
+
+@section('after')
+
+  @dialog({ model: 'showConfirm', title: 'Save Address', confirmText: 'Save Info', confirm: 'saveBillToInfo' })
+    <p>
+      We'll save your "Bill to" information as-is and apply it to this and all of your other invoices.
+    </p>
+    <p class="mt-3">
+      You can update this at any time, or reset back to the invoice default by clearing your address info.
+    </p>
+    <div class="bg-slate-100 px-6 py-3 rounded-xl mt-6">
+      <p x-show="billToInfo && billToInfo !== '\n'" x-text="billToInfo" class="whitespace-pre-line"></p>
+      <p x-show="!billToInfo || billToInfo === '\n'">
+        Your address information will be reset back to the invoice's default.
+      </p>
+    </div>
+  @end
+
+  <div class="fixed bottom-3 right-3 z-50" x-cloak>
+    <div x-show="successBillTo" class="bg-green-100 text-green-600 px-6 py-3 rounded-md" x-text="successBillTo"></div>
+    <div x-show="errorBillTo" class="bg-red-100 text-red-600 px-6 py-3 rounded-md" x-text="errorBillTo"></div>
   </div>
 
 @endsection

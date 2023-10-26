@@ -24,7 +24,8 @@
     "./start/events/email-changed",
     "./start/events/notifications",
     "./start/events/post-stats",
-    "./start/events/new-device"
+    "./start/events/new-device",
+    "./start/limiter"
   ],
   "providers": [
     "./providers/AppProvider",
@@ -44,7 +45,8 @@
     "@adonisjs/bouncer",
     "@adonisjs/redis",
     "@adonisjs/ally",
-    "./providers/Turnstile/Provider"
+    "./providers/Turnstile/Provider",
+    "@adonisjs/limiter"
   ],
   "metaFiles": [
     {

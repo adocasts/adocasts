@@ -11,7 +11,9 @@
     "outDir": "build",
     "rootDir": "./",
     "sourceMap": true,
-    "lib": ["ES2021"],
+    "lib": [
+      "ES2021"
+    ],
     "paths": {
       "App/*": [
         "./app/*"
@@ -41,7 +43,8 @@
       "@adocasts.com/adonisjs-honeypot",
       "@adonisjs/bouncer",
       "@adonisjs/redis",
-      "@adonisjs/ally"
+      "@adonisjs/ally",
+      "@adonisjs/limiter"
     ]
   }
 }

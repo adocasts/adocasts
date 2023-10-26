@@ -146,6 +146,12 @@ Encore.configureDevServerOptions((options) => {
     directory: join(__dirname, './resources/views'),
     watch: true,
   })
+
+  options.allowedHosts = 'all'
+  options.client = {
+    ...options.client,
+    webSocketURL: 'auto://0.0.0.0/ws'
+  }
 })
 
 /*
@@ -198,6 +204,7 @@ Encore.enablePostCssLoader()
 | the level to "info".
 |
 */
+
 const config = Encore.getWebpackConfig()
 config.infrastructureLogging = {
   level: 'warn',

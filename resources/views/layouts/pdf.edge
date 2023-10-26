@@ -55,7 +55,7 @@
     }
   </style>
 </head>
-<body x-data="pdf(`{{ filename || 'invoice' }}.pdf`)" class="bg-slate-base-100 print:bg-[#fff]">
+<body x-data="pdf({{ stringify(data) }})" class="bg-slate-base-100 print:bg-[#fff]">
   <div class="print:hidden sticky top-0 z-10">
     @!section('before')
   </div>

@@ -33,7 +33,6 @@ export default class ExceptionHandler extends HttpExceptionHandler {
   }
 
   public async handle(error: any, ctx: HttpContextContract) {
-    console.log({ error })
     if (error.code === 'E_VALIDATION_FAILURE' && ctx.up.isUnpolyRequest) {
       await super.handle(error, ctx)
       
@@ -61,6 +60,7 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 
     ctx.logger.error(error.message)
 
+    if (error.code === 'E_TOO_MANY_REQUESTS') return
     if (error.code === 'E_HONEYPOT_FAILURE' && ctx.request.url() === '/contact') return
     if (error.code === 'E_CANNOT_READ_FILE' && ctx.request.url() === '/img/178/VSCode_1614756076826.png') return
     if (error.code === 'E_BAD_CSRF_TOKEN') return
