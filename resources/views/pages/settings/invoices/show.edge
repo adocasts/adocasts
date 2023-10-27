@@ -107,20 +107,22 @@
           @endif
             
           <p {{ auth.user.billToInfo && 'x-cloak' }} x-show="!isCustomBillTo" x-ref="billToInfo" class="whitespace-pre-line" @input="billToInfo = $el.innerHTML.replaceAll('<br>', '\n')" contenteditable>{{ invoice.customer_name }}
-            @if (invoice.customer_address['line1'])
-              {{ invoice.customer_address['line1'] }}
-            @endif
-            @if (invoice.customer_address['line2'])
-              {{ invoice.customer_address['line2'] }}
-            @endif
-            @if (invoice.customer_address.city || invoice.customer_address.state)
-              {{ [invoice.customer_address.city, invoice.customer_address.state].filter(Boolean).join(',') }}
-            @endif
-            @if (invoice.customer_address.postal_code)
-              {{ invoice.customer_address.postal_code }}
-            @endif
-            @if (invoice.customer_address.country)
-              {{ regionNames.of(invoice.customer_address.country) }}
+            @if (invoice.customer_address)
+              @if (invoice.customer_address['line1'])
+                {{ invoice.customer_address['line1'] }}
+              @endif
+              @if (invoice.customer_address['line2'])
+                {{ invoice.customer_address['line2'] }}
+              @endif
+              @if (invoice.customer_address.city || invoice.customer_address.state)
+                {{ [invoice.customer_address.city, invoice.customer_address.state].filter(Boolean).join(',') }}
+              @endif
+              @if (invoice.customer_address.postal_code)
+                {{ invoice.customer_address.postal_code }}
+              @endif
+              @if (invoice.customer_address.country)
+                {{ regionNames.of(invoice.customer_address.country) }}
+              @endif
             @endif
             {{ invoice.customer_email }}
             @if (invoice.customer_tax_ids?.length)
