@@ -178,22 +178,22 @@ Route.group(() => {
 
 Route.post('/stripe/webhook', 'StripeWebhooksController.index')
 
+Route.group(() => {
+  /**
+   * api
+   */
+  Route.put('/api/user/theme', 'ThemesController.update').as('api.user.theme')
+  Route.get('/api/user/check', 'UsersController.check').as('api.user.check')
+  Route.patch('/api/users/billto', 'UsersController.billto').as('api.users.billto').middleware(['auth'])
+  Route.post('/api/session/set', 'SessionsController.set').as('sessions.set')
+  Route.post('/api/history/progression/:id?', 'ProgressionsController.record').as('api.histories.progression')
 
 
-/**
- * api
- */
-Route.put('/api/user/theme', 'ThemesController.update').as('api.user.theme')
-Route.get('/api/user/check', 'UsersController.check').as('api.user.check')
-Route.patch('/api/users/billto', 'UsersController.billto').as('api.users.billto').middleware(['auth'])
-Route.post('/api/session/set', 'SessionsController.set').as('sessions.set')
-Route.post('/api/history/progression/:id?', 'ProgressionsController.record').as('api.histories.progression')
-
-
-/**
- * go
- */
-Route.get('/go/posts/:id/comment/:commentId', 'GoController.postComment').as('go.posts.comment')
-Route.get('/go/post/:id/comment/:commentId', 'GoController.postComment').as('go.post.comment')
-Route.get('/go/requests/lessons/:id/comment/:commentId', 'GoController.lessonRequestComment').as('go.requests.lessons.comment')
-Route.get('/go/auth/reset', 'GoController.authReset').as('go.auth.reset')
+  /**
+   * go
+   */
+  Route.get('/go/posts/:id/comment/:commentId', 'GoController.postComment').as('go.posts.comment')
+  Route.get('/go/post/:id/comment/:commentId', 'GoController.postComment').as('go.post.comment')
+  Route.get('/go/requests/lessons/:id/comment/:commentId', 'GoController.lessonRequestComment').as('go.requests.lessons.comment')
+  Route.get('/go/auth/reset', 'GoController.authReset').as('go.auth.reset')
+}).middleware(['throttle:api'])

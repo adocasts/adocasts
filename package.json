@@ -78,6 +78,7 @@
     "html2pdf.js": "^0.10.1",
     "htmx.org": "^1.9.4",
     "ip2location-nodejs": "^9.6.0",
+    "isbot": "^3.7.0",
     "js-cookie": "^3.0.5",
     "jspdf": "^2.5.1",
     "luxon": "^3.4.0",

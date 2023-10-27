@@ -58,7 +58,7 @@ export default class ExceptionHandler extends HttpExceptionHandler {
       return
     }
 
-    ctx.logger.error(error.message)
+    ctx.logger.error({ url: ctx.request.url(true), userId: ctx.auth?.user?.id, ...error }, error.message)
 
     if (error.code === 'E_TOO_MANY_REQUESTS') return
     if (error.code === 'E_HONEYPOT_FAILURE' && ctx.request.url() === '/contact') return
