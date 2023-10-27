@@ -67,7 +67,7 @@ export default class AssetsController {
     }
   }
 
-  public async show({ request, response, params, logger }: HttpContextContract) {
+  public async show({ request, response, params }: HttpContextContract) {
     // try {
       const tempDirectory = '.cache';
       const path = AssetService.getParamFilename(params);
