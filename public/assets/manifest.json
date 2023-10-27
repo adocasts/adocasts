@@ -1,8 +1,8 @@
 {
-  "assets/app.css": "http://localhost:61956/assets/app.css",
-  "assets/app.js": "http://localhost:61956/assets/app.js",
-  "assets/pdf.js": "http://localhost:61956/assets/pdf.js",
-  "assets/vendors-node_modules_html2canvas_dist_html2canvas_js.js": "http://localhost:61956/assets/vendors-node_modules_html2canvas_dist_html2canvas_js.js",
-  "assets/vendors-node_modules_dompurify_dist_purify_js.js": "http://localhost:61956/assets/vendors-node_modules_dompurify_dist_purify_js.js",
-  "assets/vendors-node_modules_canvg_lib_index_es_js.js": "http://localhost:61956/assets/vendors-node_modules_canvg_lib_index_es_js.js"
+  "assets/app.css": "http://localhost:52148/assets/app.css",
+  "assets/app.js": "http://localhost:52148/assets/app.js",
+  "assets/pdf.js": "http://localhost:52148/assets/pdf.js",
+  "assets/vendors-node_modules_html2canvas_dist_html2canvas_js.js": "http://localhost:52148/assets/vendors-node_modules_html2canvas_dist_html2canvas_js.js",
+  "assets/vendors-node_modules_dompurify_dist_purify_js.js": "http://localhost:52148/assets/vendors-node_modules_dompurify_dist_purify_js.js",
+  "assets/vendors-node_modules_canvg_lib_index_es_js.js": "http://localhost:52148/assets/vendors-node_modules_canvg_lib_index_es_js.js"
 }

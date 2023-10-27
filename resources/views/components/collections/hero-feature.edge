@@ -5,7 +5,7 @@
         <div class="aspect-square relative -top-1">
           @if (item.asset)
             <img 
-              src="{{ item.asset.filename.startsWith('http') ? item.asset.filename : `/img/${item.asset.filename}` }}" 
+              src="{{ item.asset.filename.startsWith('http') ? item.asset.filename : `${ assetDomain }/img/${item.asset.filename}` }}" 
               class="bg-white rounded-full w-16 h-16 lg:w-20 lg:h-20 mb-3" 
               style="background-image: url('/img/{{ item.asset.filename }}?w=10&blur=250'); filter: blur(10px); background-size: 100%;"
               onload="this.style.backgroundImage = null; this.style.filter = null; this.classList.remove('bg-white');"

@@ -2,15 +2,15 @@
   "entrypoints": {
     "app": {
       "css": [
-        "http://localhost:61956/assets/app.css"
+        "http://localhost:52148/assets/app.css"
       ],
       "js": [
-        "http://localhost:61956/assets/app.js"
+        "http://localhost:52148/assets/app.js"
       ]
     },
     "pdf": {
       "js": [
-        "http://localhost:61956/assets/pdf.js"
+        "http://localhost:52148/assets/pdf.js"
       ]
     }
   }

@@ -9,21 +9,21 @@
     @if (!filename.startsWith('http'))
       <source
         srcset="
-          /img/{{ filename }}?w={{ width * 2 }}&f=webp 2x,
-          /img/{{ filename }}?w={{ width }}&f=webp 1x
+          {{ assetDomain }}/img/{{ filename }}?w={{ width * 2 }}&f=webp 2x,
+          {{ assetDomain }}/img/{{ filename }}?w={{ width }}&f=webp 1x
         "
         type="image/webp"
       />
 
       <img
-        src="/img/{{ filename }}?w={{ width * 2 }}"
+        src="{{ assetDomain }}/img/{{ filename }}?w={{ width * 2 }}"
         srcset="
-          /img/{{ filename }}?w={{ width * 2 }} 2x,
-          /img/{{ filename }}?w={{ width }} 1x,
+          {{ assetDomain }}/img/{{ filename }}?w={{ width * 2 }} 2x,
+          {{ assetDomain }}/img/{{ filename }}?w={{ width }} 1x,
         "
         alt="{{ altText || '' }}"
         class="bg-white w-full max-w-full {{ ratio ? ratio : '' }} {{ fit ? `${fit} h-full` : '' }} {{ blur ? 'bg-img-blur' : '' }} {{ imgClassName ? imgClassName : '' }}"
-        style="background-image: url('/img/{{ filename }}?w=10'); filter: blur(10px); background-size: 100%;"
+        style="background-image: url('{{ assetDomain }}/img/{{ filename }}?w=10'); filter: blur(10px); background-size: 100%;"
         onload="this.style.backgroundImage = null; this.style.filter = null; this.classList.remove('bg-white');"
         {{ lazy && 'loading=lazy' }}
         {{ ratio === 'aspect-video' ? 'width=1280 height=720' : '' }}

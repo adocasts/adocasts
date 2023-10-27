@@ -6,9 +6,9 @@
   @if (item.asset)
     @if (!item.asset.filename.startsWith('http'))
       <img 
-        src="/img/{{ item.asset.filename }}" 
+        src="{{ assetDomain }}/img/{{ item.asset.filename }}" 
         class="bg-white {{ rounded }} object-contain object-center {{ width }} {{ height }} mb-3 {{ className }}" 
-        style="background-image: url('/img/{{ item.asset.filename }}?w=10'); filter: blur(10px); background-size: 100%;"
+        style="background-image: url('{{ assetDomain }}/img/{{ item.asset.filename }}?w=10'); filter: blur(10px); background-size: 100%;"
         onload="this.style.backgroundImage = null; this.style.filter = null; this.classList.remove('bg-white');"
         loading="lazy" 
       />

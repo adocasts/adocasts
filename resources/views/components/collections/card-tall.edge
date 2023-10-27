@@ -7,7 +7,7 @@
     @if (item.asset)
       <div class="absolute w-full h-full top-0 left-0 opacity-60 group-hover:opacity-80 duration-150">
         <img 
-          src="{{ item.asset.filename.startsWith('http') ? item.asset.filename : `/img/${item.asset.filename}` }}" 
+          src="{{ item.asset.filename.startsWith('http') ? item.asset.filename : `${ assetDomain }/img/${item.asset.filename}` }}" 
           class="rounded-full w-full h-full object-cover object-center scale-[1.75] group-hover:scale-[1.4] blur-xl group-hover:blur-none mb-3 duration-150" 
           loading="lazy"
         />
