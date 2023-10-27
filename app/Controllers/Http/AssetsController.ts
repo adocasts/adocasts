@@ -78,7 +78,7 @@ export default class AssetsController {
       const isSkipResize = path.endsWith('.svg') || path.endsWith('.gif');
 
       let image: Buffer|undefined;
-      logger.debug(`tempName=${tempName}; isCached=${isCached}; isSkipResize=${isSkipResize}; path=${path}`)
+      
       if (!isCached && !isSkipResize) {
         const exists = await Drive.exists(tempName)
       
