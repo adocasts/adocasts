@@ -66,8 +66,8 @@ export default class StripeService {
 
   public async getInvoices(user: User) {
     if (!user.stripeCustomerId) return []
-    const { data } = await this.stripe.invoices.list({ customer: user.stripeCustomerId, status: 'paid' })
-    return data
+    const { data } = await this.stripe.invoices.list({ customer: user.stripeCustomerId })
+    return data.filter(invoice => invoice.status && ['void', 'paid'].includes(invoice.status))
   }
 
   public async getInvoice(user: User, invoiceNumber: string) {

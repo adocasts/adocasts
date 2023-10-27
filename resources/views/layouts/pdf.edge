@@ -57,10 +57,14 @@
 </head>
 <body x-data="pdf({{ stringify(data) }})" class="bg-slate-base-100 print:bg-[#fff]">
   <div class="print:hidden sticky top-0 z-10">
+    @!section('sticky')
+  </div>
+
+  <div class="print:hidden">
     @!section('before')
   </div>
 
-  <page size="A4" x-ref="page" class="origin-top-left pdf-page relative block w-[8.27in] h-[11.69in] print:w-full print:h-full bg-[#fff] text-[#000] p-[.5in] mx-auto mt-8 print:mt-0">
+  <page size="A4" x-ref="page" class="origin-top-left pdf-page relative block w-[8.27in] h-[11.69in] print:w-full print:h-full bg-[#fff] text-[#000] p-[.5in] mx-auto mt-6 print:mt-0">
     @!section('page')
   </page>
 
