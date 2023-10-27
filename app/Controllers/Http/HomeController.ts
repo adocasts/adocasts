@@ -19,7 +19,6 @@ export default class HomeController {
    * @returns
    */
   public async index({ view, auth }: HttpContextContract) {
-    console.log({ connection: Post.connection })
     const trending = await PostService.getTrending(15)
     const posts = await PostService.getLatest(auth.user ? 17 : 12, [], [PostTypes.LESSON, PostTypes.LIVESTREAM])
     const blogs = await PostService.getLatest(6, [], [PostTypes.BLOG, PostTypes.NEWS])

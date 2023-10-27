@@ -148,10 +148,6 @@ Encore.configureDevServerOptions((options) => {
   })
 
   options.allowedHosts = 'all'
-  options.client = {
-    ...options.client,
-    webSocketURL: 'auto://0.0.0.0/ws'
-  }
 })
 
 /*
