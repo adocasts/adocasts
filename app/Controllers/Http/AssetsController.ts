@@ -67,7 +67,7 @@ export default class AssetsController {
     }
   }
 
-  public async show({ request, response, params }: HttpContextContract) {
+  public async show({ request, response, params, logger }: HttpContextContract) {
     // try {
       const tempDirectory = '.cache';
       const path = AssetService.getParamFilename(params);
@@ -78,10 +78,10 @@ export default class AssetsController {
       const isSkipResize = path.endsWith('.svg') || path.endsWith('.gif');
 
       let image: Buffer|undefined;
-
+      logger.debug(`tempName=${tempName}; isCached=${isCached}; isSkipResize=${isSkipResize}; path=${path}`)
       if (!isCached && !isSkipResize) {
         const exists = await Drive.exists(tempName)
-
+      
         if (!exists) {
           let file = await Drive.get(path)
 
@@ -90,11 +90,11 @@ export default class AssetsController {
           await Drive.put(tempName, image)
         }
       }
-
+      
       if (!image) {
         image = await Drive.get(isSkipResize ? path : tempName)
       }
-
+      
       await CacheService.set(tempName, true);
 
       response.append('Content-Type', `image/${options.format}`);
