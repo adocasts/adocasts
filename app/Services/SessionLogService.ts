@@ -7,6 +7,8 @@ import { ResponseContract } from '@ioc:Adonis/Core/Response';
 import { string } from '@ioc:Adonis/Core/Helpers'
 import Application from '@ioc:Adonis/Core/Application';
 import Event from '@ioc:Adonis/Core/Event'
+import ms from 'ms'
+import SessionConfig from 'Config/session';
 
 export default class SessionLogService {
   public cookieName = 'ado-ident'
@@ -35,7 +37,7 @@ export default class SessionLogService {
     
     // don't kill pre-existing sessions, instead log their session
     if (!log) {
-      await this.onSignInSuccess(user, true)
+      await this.onSignInExisting(user)
       return true
     }
 
@@ -56,16 +58,24 @@ export default class SessionLogService {
     return true
   }
 
-  public async onSignInSuccess(user: User, skipNewDevice: boolean = false) {
+  public async onSignInExisting(user: User) {
+    const isRememberSession = !!this.request.cookiesList().remember_web
+    return this.onSignInSuccess(user, isRememberSession, true)
+  }
+
+  public async onSignInSuccess(user: User, isRememberSession: boolean = false, skipNewDevice: boolean = false) {
     const { ipAddress, userAgent } = this
     const { city, countryLong, countryShort } = await IdentityService.getLocation(ipAddress)
     const known = await this.getIsKnown(user)
     const token = string.generateRandom(16)
+
+    await this.signOutTimedOut(user)
     
     const log = await user.related('sessions').create({
       ipAddress,
       userAgent,
       city,
+      isRememberSession,
       country: countryLong,
       countryCode: countryShort,
       token,
@@ -132,6 +142,8 @@ export default class SessionLogService {
   }
 
   public async getList(user: User) {
+    await this.signOutTimedOut(user)
+
     const sessions = await user.related('sessions').query()
       .whereTrue('loginSuccessful')
       .whereFalse('forceLogout')
@@ -163,5 +175,29 @@ export default class SessionLogService {
       .whereTrue('loginSuccessful')
       .orderBy('loginAt', 'desc')
       .first()
+  }
+
+  public async signOutTimedOut(user: User) {
+    const expiry = DateTime.now().minus({ milliseconds: ms(SessionConfig.age) })
+    const rememberExpiry = DateTime.now().minus({ years: 5 }) // rememberMeToken = 5yr duration
+
+    console.log(`Signing out expired sessions for user ${user.id}. Expiry = ${expiry.toString()}`)
+
+    return user.related('sessions').query()
+      .where('userId', user.id)
+      .whereNull('logoutAt')
+      .where(query => query
+        .where(query => query // not a remembered session & last activity is beyond session duration
+          .whereFalse('isRememberSession')
+          .where('lastTouchedAt', '<=', expiry.toSQL())
+        )
+        .orWhere(query => query // a remembers ession & last activity is beyond remembered duration
+          .whereTrue('isRememberSession')
+          .where('lastTouchedAt', '<=', rememberExpiry.toSQL())
+        )
+      )
+      .update({
+        logoutAt: DateTime.now()
+      })
   }
 }

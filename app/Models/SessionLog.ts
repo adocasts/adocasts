@@ -44,6 +44,9 @@ export default class SessionLog extends BaseModel {
   @column()
   public forceLogout: boolean
 
+  @column()
+  public isRememberSession: boolean
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

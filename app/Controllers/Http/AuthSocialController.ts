@@ -37,7 +37,7 @@ export default class AuthSocialController {
     }
 
     const sessionLogService = new SessionLogService(request, response)
-    await sessionLogService.onSignInSuccess(user!)
+    await sessionLogService.onSignInSuccess(user!, true)
 
     if (wasAuthenticated) {
       session.flash('success', `Your ${params.provider} account has been successfully linked`)

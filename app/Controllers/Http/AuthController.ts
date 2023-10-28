@@ -38,7 +38,7 @@ export default class AuthController {
 
     try {
       await auth.attempt(uid, password, rememberMe)
-      await sessionLogService.onSignInSuccess(auth.user!)
+      await sessionLogService.onSignInSuccess(auth.user!, rememberMe)
       await AuthAttemptService.deleteBadAttempts(uid)
     } catch (error) {
       await AuthAttemptService.recordLoginAttempt(uid)
