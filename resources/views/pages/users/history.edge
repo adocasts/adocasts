@@ -30,24 +30,24 @@
       </div>
     </div>
   @else
-    <div class="w-full flex flex-col py-8 -mx-3">
-      <div class="px-3">
+    <div class="w-full flex flex-col py-8 md:-mx-3">
+      <div class="md:px-3">
         @!headings.panel({ title: 'Series Progress' })
       </div>
       <div class="flex w-full flex-wrap mb-6">
         @each (collection in collections)
-          @!collections.progressionCard({ collection, className: 'w-full md:w-1/2 lg:w-1/4 px-3 mb-6' })
+          @!collections.progressionCard({ collection, className: 'w-full md:w-1/2 lg:w-1/4 md:px-3 mb-3 md:mb-6' })
         @endeach
       </div>
     </div>
 
-    <div class="w-full flex flex-col py-8 -mx-3">
-      <div class="px-3">
+    <div class="w-full flex flex-col py-8 md:-mx-3">
+      <div class="md:px-3">
         @!headings.panel({ title: `Lesson/Post Progress (${posts.length})` })
       </div>
-      <div class="grid xl:grid-cols-2 gap-3 w-full px-3">
+      <div class="grid xl:grid-cols-2 gap-3 w-full md:-mx-3 md:px-3">
         @each ((post, i) in posts)
-          @!lessons.listItem({ item: post, className: 'mb-6', showProgress: true })
+          @!lessons.listItem({ item: post, className: 'md:px-3 mb-6', px: 'py-3 md:py-0 md:px-6', showProgress: true })
         @endeach
       </div>
     </div>

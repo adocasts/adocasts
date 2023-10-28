@@ -7,6 +7,7 @@
 @set('hoverBg', hoverBg ?? 'hover:bg-slate-200/50')
 @set('flexFlow', flexFlow ?? 'flex-col md:flex-row')
 @set('isCol', flexFlow === 'flex-col')
+@set('colBreakpoint', /(\w+):flex-col/.test(flexFlow) ? flexFlow.match(/(\w+):flex-col/)[1] : null)
 @set('px', px ?? 'md:px-6')
 @set('size', size ?? 'sm')
 @set('sizeClassMap', {
@@ -24,13 +25,13 @@
   }
 })
 @set('imgWidth', imgWidth ? imgWidth : useImage && flexFlow.includes('flex-col')
-  ? 'w-full'
+  ? colBreakpoint ? colBreakpoint + ':w-full w-2/5' : 'w-full'
   : useImage
     ? 'mb-3 md:mb-0 md:w-1/2 lg:w-2/5'
     : 'w-full'
 )
 @set('detailWidth', detailWidth ? detailWidth : useImage && flexFlow.includes('flex-col')
-  ? 'w-full'
+  ? colBreakpoint ? colBreakpoint + ':w-full w-3/5' : 'w-full'
   : useImage
     ? 'md:w-1/2 lg:w-3/5'
     : 'w-full')
