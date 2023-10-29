@@ -55,7 +55,8 @@ export default class SyndicationController {
 
     return CacheService.try(CacheKeys.RSS_FEED, async () => {
       const content = await Post.query()
-        .apply(s => s.forDisplay())
+        .apply(s => s.forDisplay(true))
+        .apply(s => s.publishedPublic())
         .orderBy('publishAt', 'desc')
         .limit(25)
         .makeAllSharable()

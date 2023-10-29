@@ -544,6 +544,16 @@ export default class Post extends AppBaseModel {
       .where('publishAt', '<=', DateTime.now().toSQL())
   })
 
+  public static publishedPublic = scope<typeof Post>((query) => {
+    query
+      .where('stateId', States.PUBLIC)
+      .where(query => query
+        .where('paywallTypeId', PaywallTypes.DELAYED_RELEASE)
+        .where('publishAt', '<=', DateTime.now().minus({ days: 14 }).toSQL())
+        .orWhere('paywallTypeId', PaywallTypes.NONE)
+      )
+  })
+
   public static forDisplay = scope<typeof Post>((query, skipPublishCheck: boolean = false) => {
     const ctx = HttpContext.get()
 
