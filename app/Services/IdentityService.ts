@@ -22,7 +22,11 @@ class IdentityService {
 
       ip2Location.open(bin)
 
-      return ip2Location.getAll(ip)
+      const data = ip2Location.getAll(ip)
+
+      ip2Location.close()
+
+      return data
     } catch (error) {
       await DiscordLogger.error('IdentityService.getLocation', error.message)
       return fallback

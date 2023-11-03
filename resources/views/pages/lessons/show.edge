@@ -93,6 +93,18 @@
       <div class="xl:bg-slate-100 rounded-xl xl:p-6">
         @!lessons.author({ post, views })
 
+        @if (post.thumbnails?.length && post.thumbnails.at(0).credit)
+          <div class="flex gap-1.5 mt-6 p-3 rounded-xl bg-slate-100 xl:bg-slate-200">
+            <div>
+              @!icons.photo({ className: 'w-9 h-9 text-slate-600' })
+            </div>
+            <div>
+              <div class="text-slate-600 text-xs">Imagry within thumbnail provided by</div>
+              <div class="text-sm">{{ post.thumbnails.at(0).credit }}</div>
+            </div>
+          </div>
+        @endif
+
         @can('AdPolicy.view')
           <div class="hidden xl:block mt-6 xl:ml-3 space-y-6 border-t border-slate-200/50 pt-6">
             @!ads.vertical()
