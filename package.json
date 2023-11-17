@@ -72,6 +72,7 @@
     "postcss-import": "^15.1.0",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.1.6",
+    "starback": "^2.1.5",
     "ua-parser-js": "^1.0.37",
     "unpoly": "^3.5.1"
   },

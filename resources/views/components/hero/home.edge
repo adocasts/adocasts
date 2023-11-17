@@ -1,0 +1,23 @@
+<section x-data x-init="starfield($refs.canvasLine, $refs.canvasDot)" class="pt-24 pb-60 relative bg-gradient-to-br from-slate-base-950 to-slate-base-800">
+  <div class="page relative z-10">
+    <h1 class="text-6xl font-black max-w-4xl text-slate-base-100 uppercase tracking-wider">
+      Take Your AdonisJS Skills to the Stars
+    </h1>
+
+    <div class="inline-grid grid-cols-1 md:grid-cols-2 gap-3 mt-8">
+      @button({ variant: 'light', href: route('auth.signup.create') })
+        Sign up for free
+      @end
+
+      @button.outline({ variant: 'light', href: route('auth.signup.create') })
+        New to AdonisJS? Start here <span aria-hidden="true">&rarr;</span>
+      @end
+    </div>
+  </div>
+
+  <div class="absolute z-20 bottom-0 left-0 w-full">
+    @!svg.mountain({ class: 'text-body -mb-3' })
+  </div>
+  <canvas x-ref="canvasLine" class="w-full h-full absolute top-0 left-0"></canvas>
+  <canvas x-ref="canvasDot" class="w-full h-full absolute top-0 left-0"></canvas>
+</section>

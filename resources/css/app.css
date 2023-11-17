@@ -8,6 +8,14 @@
   display: none;
 }
 
+.p-page {
+  @apply px-4 xl:px-6;
+}
+
+.page {
+  @apply max-w-7xl mx-auto px-4 xl:px-6;
+}
+
 a.link {
   @apply text-brand-600 hover:text-black duration-300;
   position: relative;

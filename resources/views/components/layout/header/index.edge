@@ -1,7 +1,7 @@
-<header x-data="{ showMobileMenu: false }" class="border-b border-slate-200">
-  <nav class="mx-auto flex justify-between px-4 lg:px-6" aria-label="Global">
+<header x-data="{ showMobileMenu: false }" class="border-b border-slate-200 relative z-50">
+  <nav class="mx-auto flex justify-between p-page" aria-label="Global">
     <div class="flex flex-1">
-      <div class="hidden lg:flex lg:gap-x-8">
+      <div class="hidden lg:flex lg:gap-x-4">
         <a href="#" class="text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
           Paths
           @!highlight.underline()
@@ -29,15 +29,20 @@
       </div>
     </div>
     <div class="w-[200px] relative">
-      <a href="#" class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[calc(100%+.5rem)] rounded-b-md bg-gradient-to-b from-slate-100/0 via-slate-200 to-slate-200 duration-300 hover:bg-slate-200 flex justify-center items-center shadow-md">
+      <a href="/" up-follow class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[calc(100%+.5rem)] rounded-b-md bg-body duration-300 hover:bg-slate-200 flex justify-center items-center border border-t-0 border-slate-200 shadow-xl">
         <span class="sr-only">Adocasts</span>
         <img class="logo-white w-auto h-6 md:h-7" src="/imgs/logo-white.svg" alt="Adocasts" width="146px" height="28px" />
         <img class="logo-black w-auto h-6 md:h-7" src="/imgs/logo-black.svg" alt="Adocasts" width="146px" height="28px" />
       </a>
     </div>
-    <div class="flex flex-1 justify-end">
-      <a href="{{ route('auth.signin.create') }}" class="text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
-        Sign in <span aria-hidden="true">&rarr;</span>
+    <div class="flex flex-1 justify-end gap-4">
+      <a href="{{ route('auth.signin.create') }}" up-follow class="text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
+        Sign in
+        @!highlight.underline()
+      </a>
+
+      <a href="{{ route('auth.signup.create') }}" up-follow class="text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
+        Sign up <span aria-hidden="true">&rarr;</span>
         @!highlight.underline()
       </a>
     </div>
@@ -56,7 +61,7 @@
             </svg>
           </button>
         </div>
-        <a href="#" class="-m-1.5 p-1.5">
+        <a href="/" up-follow class="-m-1.5 p-1.5">
           <span class="sr-only">Adocasts</span>
           <img class="logo-white w-auto h-6 md:h-7" src="/imgs/logo-white.svg" alt="Adocasts" width="146px" height="28px" />
           <img class="logo-black w-auto h-6 md:h-7" src="/imgs/logo-black.svg" alt="Adocasts" width="146px" height="28px" />
