@@ -1,58 +1,59 @@
 import { DateTime } from 'luxon'
-import { BelongsTo, belongsTo, column, computed } from '@ioc:Adonis/Lucid/Orm'
-import User from './User'
-import AppBaseModel from 'App/Models/AppBaseModel'
-import NotificationTypes from 'App/Enums/NotificationTypes'
-import NotImplementedException from 'App/Exceptions/NotImplementedException'
-import Event from '@ioc:Adonis/Core/Event'
-import Profile from './Profile'
-import { TransactionClientContract } from '@ioc:Adonis/Lucid/Database'
+import { belongsTo, column, computed } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import { TransactionClientContract } from '@adonisjs/lucid/types/database'
+import User from '#models/user'
+import Profile from '#models/profile'
+import AppBaseModel from '#models/app_base_model'
+import NotificationTypes from '#enums/notification_types'
+import NotImplementedException from '#exceptions/not_implemented_exception'
+import Emitter from '@adonisjs/core/services/emitter'
 
 export default class Notification extends AppBaseModel {
   @column({ isPrimary: true })
-  public id: number
+  declare id: number
 
   @column()
-  public global: boolean
+  declare global: boolean
 
   @column()
-  public userId: number
+  declare userId: number
 
   @column()
-  public initiatorUserId: number | null
+  declare initiatorUserId: number | null
 
   @column()
-  public notificationTypeId: number
+  declare notificationTypeId: number
 
   @column()
-  public table: string | null
+  declare table: string | null
 
   @column()
-  public tableId: number | null
+  declare tableId: number | null
 
   @column()
-  public title: string
+  declare title: string
 
   @column()
-  public body: string
+  declare body: string
 
   @column()
-  public href: string | null
+  declare href: string | null
 
   @column.dateTime()
-  public readAt: DateTime | null
+  declare readAt: DateTime | null
 
   @column.dateTime()
-  public actionedAt: DateTime | null
+  declare actionedAt: DateTime | null
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  declare updatedAt: DateTime
 
   @belongsTo(() => User)
-  public user: BelongsTo<typeof User>
+  declare user: BelongsTo<typeof User>
 
   @computed()
   public get settingsField() {
@@ -93,8 +94,8 @@ export default class Notification extends AppBaseModel {
     const user = await User.query().where({ id: userId }).preload('profile').firstOrFail()
     
     if (!this.isEmailEnabled(user.profile)) return
-    if (!trx) return Event.emit('notification:send', { notification: this, user })
+    if (!trx) return Emitter.emit('notification:send', { notification: this, user })
 
-    trx.on('commit', () => Event.emit('notification:send', { notification: this, user }))
+    trx.on('commit', () => Emitter.emit('notification:send', { notification: this, user }))
   }
 }

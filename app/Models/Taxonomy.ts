@@ -1,101 +1,103 @@
 import { DateTime } from 'luxon'
-import { BelongsTo, belongsTo, column, HasMany, hasMany, ManyToMany, manyToMany, scope } from '@ioc:Adonis/Lucid/Orm'
-import Asset from './Asset'
-import Collection from './Collection'
-import Post from './Post'
+import { belongsTo, column, hasMany, manyToMany, scope } from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
-import AppBaseModel from 'App/Models/AppBaseModel'
-import Database from '@ioc:Adonis/Lucid/Database'
-import States from 'App/Enums/States'
-import History from 'App/Models/History'
-import HistoryTypes from 'App/Enums/HistoryTypes'
-import User from './User'
+import Database from '@adonisjs/lucid/services/db'
+import Asset from '#models/asset'
+import Collection from '#models/collection'
+import Post from '#models/post'
+import User from '#models/user'
+import AppBaseModel from '#models/app_base_model'
+import States from '#enums/states'
+import History from '#models/history'
+import HistoryTypes from '#enums/history_types'
+import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 
 export default class Taxonomy extends AppBaseModel {
   @column({ isPrimary: true })
-  public id: number
+  declare id: number
 
   @column()
-  public ownerId: number
+  declare ownerId: number
 
   @column()
-  public rootParentId: number | null
+  declare rootParentId: number | null
 
   @column()
-  public parentId: number | null
+  declare parentId: number | null
 
   @column()
-  public levelIndex: number
+  declare levelIndex: number
 
   @column()
-  public assetId: number | null
+  declare assetId: number | null
 
   @column()
-  public name: string
+  declare name: string
 
   @column()
   @slugify({
     strategy: 'dbIncrement',
     fields: ['name']
   })
-  public slug: string
+  declare slug: string
 
   @column()
-  public description: string
+  declare description: string
 
   @column()
-  public pageTitle: string
+  declare pageTitle: string
 
   @column()
-  public metaDescription: string
+  declare metaDescription: string
 
   @column()
-  public isFeatured: boolean
+  declare isFeatured: boolean
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  declare updatedAt: DateTime
 
   @belongsTo(() => User, {
     foreignKey: 'ownerId'
   })
-  public owner: BelongsTo<typeof User>
+  declare owner: BelongsTo<typeof User>
 
   @belongsTo(() => Asset)
-  public asset: BelongsTo<typeof Asset>
+  declare asset: BelongsTo<typeof Asset>
 
   @belongsTo(() => Taxonomy, {
     foreignKey: 'parentId'
   })
-  public parent: BelongsTo<typeof Taxonomy>
+  declare parent: BelongsTo<typeof Taxonomy>
 
   @hasMany(() => Taxonomy, {
     foreignKey: 'parentId'
   })
-  public children: HasMany<typeof Taxonomy>
+  declare children: HasMany<typeof Taxonomy>
 
   @hasMany(() => History, {
     onQuery: q => q.where('historyTypeId', HistoryTypes.VIEW)
   })
-  public viewHistory: HasMany<typeof History>
+  declare viewHistory: HasMany<typeof History>
 
   @hasMany(() => History, {
     onQuery: q => q.where('historyTypeId', HistoryTypes.PROGRESSION)
   })
-  public progressionHistory: HasMany<typeof History>
+  declare progressionHistory: HasMany<typeof History>
 
   @manyToMany(() => Post, {
     pivotColumns: ['sort_order']
   })
-  public posts: ManyToMany<typeof Post>
+  declare posts: ManyToMany<typeof Post>
 
   @manyToMany(() => Collection, {
     pivotColumns: ['sort_order'],
     pivotTable: 'collection_taxonomies'
   })
-  public collections: ManyToMany<typeof Collection>
+  declare collections: ManyToMany<typeof Collection>
 
   public static roots() {
     return this.query().whereNull('parentId')
@@ -109,14 +111,14 @@ export default class Taxonomy extends AppBaseModel {
     return this.query().whereNotNull('parentId')
   }
 
-  public static hasContent = scope<typeof Taxonomy>((query) => {
+  public static hasContent = scope<typeof Taxonomy, (query: ModelQueryBuilderContract<typeof Taxonomy>) => void>((query) => {
     query.where(q => q
       .orWhereHas('posts', p => p.apply(scope => scope.published()))
       .orWhereHas('collections', p => p.wherePublic())
     )
   })
 
-  public static withPostLatestPublished = scope<typeof Taxonomy>((query) => {
+  public static withPostLatestPublished = scope<typeof Taxonomy, (query: ModelQueryBuilderContract<typeof Taxonomy>) => void>((query) => {
     query.select(
       Database.rawQuery(`(
         select

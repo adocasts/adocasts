@@ -1,8 +1,8 @@
-const colors = require('tailwindcss/colors')
-
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ['./resources/**/*.{edge,js,ts,vue,jsx,tsx}', './app/ViewModels/**/*.ts'],
+export default {
+  content: [
+    "./resources/**/*.{edge,js,ts,jsx,tsx,vue}",
+  ],
   theme: {
     extend: {
       colors: {
@@ -209,6 +209,6 @@ module.exports = {
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
     require('@tailwindcss/aspect-ratio'),
-    require('@tailwindcss/line-clamp')
   ],
 }
+

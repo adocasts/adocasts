@@ -1,5 +1,5 @@
-import BaseSchema from '@ioc:Adonis/Lucid/Schema'
-import VideoTypes from 'App/Enums/VideoTypes'
+import { BaseSchema } from '@adonisjs/lucid/schema'
+import VideoTypes from '#enums/video_types'
 
 export default class extends BaseSchema {
   protected tableName = 'posts'

@@ -1,5 +1,5 @@
-import BaseSchema from '@ioc:Adonis/Lucid/Schema'
-import BodyTypes from 'App/Enums/BodyTypes'
+import { BaseSchema } from '@adonisjs/lucid/schema'
+import BodyTypes from '#enums/body_types'
 
 export default class PostsAddJsonBodies extends BaseSchema {
   protected tableName = 'posts'

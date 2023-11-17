@@ -1,0 +1,4 @@
+<form {{ $props.except(['action']).merge({ method: 'POST' }).toAttrs() }}>
+  {{ csrfField() }}
+  {{{ await $slots.main() }}}
+</form>

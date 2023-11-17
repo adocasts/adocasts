@@ -1,35 +1,36 @@
 import { DateTime } from 'luxon'
-import { column, computed, HasMany, hasMany, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
-import Post from './Post'
-import AssetService from 'App/Services/AssetService'
-import AppBaseModel from 'App/Models/AppBaseModel'
-import Collection from 'App/Models/Collection'
-import Taxonomy from 'App/Models/Taxonomy'
+import { column, computed, hasMany, manyToMany } from '@adonisjs/lucid/orm'
+import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
+import Post from '#models/post'
+import AssetService from '#services/asset_service'
+import AppBaseModel from '#models/app_base_model'
+import Collection from '#models/collection'
+import Taxonomy from '#models/taxonomy'
 
 export default class Asset extends AppBaseModel {
   @column({ isPrimary: true })
-  public id: number
+  declare id: number
 
   @column()
-  public assetTypeId: number
+  declare assetTypeId: number
 
   @column()
-  public filename: string
+  declare filename: string
 
   @column()
-  public byteSize: number | null
+  declare byteSize: number | null
 
   @column()
-  public altText: string | null
+  declare altText: string | null
 
   @column()
-  public credit: string | null
+  declare credit: string | null
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  declare updatedAt: DateTime
 
   @computed()
   public get assetUrl() {
@@ -40,11 +41,11 @@ export default class Asset extends AppBaseModel {
     pivotTable: 'asset_posts',
     pivotColumns: ['sort_order']
   })
-  public posts: ManyToMany<typeof Post>
+  declare posts: ManyToMany<typeof Post>
   
   @hasMany(() => Collection)
-  public collections: HasMany<typeof Collection>
+  declare collections: HasMany<typeof Collection>
   
   @hasMany(() => Taxonomy)
-  public taxonomies: HasMany<typeof Taxonomy>
+  declare taxonomies: HasMany<typeof Taxonomy>
 }

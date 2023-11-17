@@ -1,87 +1,87 @@
 import { DateTime } from 'luxon'
 import {
-  BelongsTo,
   belongsTo,
-  column, computed, HasMany, hasMany,
-  ManyToMany,
+  column, computed, hasMany,
   manyToMany, scope
-} from '@ioc:Adonis/Lucid/Orm'
-import CollectionTypes from 'App/Enums/CollectionTypes'
-import Status from 'App/Enums/Status'
-import User from './User'
-import Post from './Post'
-import Taxonomy from './Taxonomy'
-import Asset from './Asset'
-import State from 'App/Enums/States'
+} from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
-import AppBaseModel from 'App/Models/AppBaseModel'
-import Database from '@ioc:Adonis/Lucid/Database'
-import States from 'App/Enums/States'
-import Watchlist from 'App/Models/Watchlist'
-import History from 'App/Models/History'
-import HistoryTypes from 'App/Enums/HistoryTypes'
+import Database from '@adonisjs/lucid/services/db'
+import User from '#models/user'
+import Post from '#models/post'
+import Asset from '#models/asset'
+import Taxonomy from '#models/taxonomy'
+import CollectionTypes from '#enums/collection_types'
+import Status from '#enums/status'
+import State from '#enums/states'
+import AppBaseModel from '#models/app_base_model'
+import States from '#enums/states'
+import Watchlist from '#models/watchlist'
+import History from '#models/history'
+import HistoryTypes from '#enums/history_types'
+import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 
 export default class Collection extends AppBaseModel {
   @column({ isPrimary: true })
-  public id: number
+  declare id: number
 
   @column()
-  public ownerId: number
+  declare ownerId: number
 
   @column()
-  public parentId: number | null
+  declare parentId: number | null
 
   @column()
-  public outdatedVersionId: number | null
+  declare outdatedVersionId: number | null
 
   @column()
-  public collectionTypeId: CollectionTypes
+  declare collectionTypeId: CollectionTypes
 
   @column()
-  public statusId: Status
+  declare statusId: Status
 
   @column()
-  public stateId: State
+  declare stateId: State
 
   @column()
-  public assetId: number | null
+  declare assetId: number | null
 
   @column()
-  public name: string
+  declare name: string
 
   @column()
   @slugify({
     strategy: 'dbIncrement',
     fields: ['name']
   })
-  public slug: string
+  declare slug: string
 
   @column()
-  public description: string
+  declare description: string
 
   @column()
-  public pageTitle: string
+  declare pageTitle: string
 
   @column()
-  public metaDescription: string
+  declare metaDescription: string
 
   @column()
-  public youtubePlaylistUrl: string
+  declare youtubePlaylistUrl: string
 
   @column()
-  public repositoryUrl: string
+  declare repositoryUrl: string
 
   @column()
-  public isFeatured: boolean
+  declare isFeatured: boolean
 
   @column()
-  public sortOrder: number
+  declare sortOrder: number
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  declare updatedAt: DateTime
 
   @computed()
   public get isInWatchlist() {
@@ -100,60 +100,60 @@ export default class Collection extends AppBaseModel {
   @belongsTo(() => User, {
     foreignKey: 'ownerId'
   })
-  public owner: BelongsTo<typeof User>
+  declare owner: BelongsTo<typeof User>
 
   @belongsTo(() => Asset)
-  public asset: BelongsTo<typeof Asset>
+  declare asset: BelongsTo<typeof Asset>
 
   @belongsTo(() => Collection)
-  public parent: BelongsTo<typeof Collection>
+  declare parent: BelongsTo<typeof Collection>
 
   @belongsTo(() => Collection, {
     localKey: 'outdatedVersionId'
   })
-  public outdatedVersion: BelongsTo<typeof Collection>
+  declare outdatedVersion: BelongsTo<typeof Collection>
 
   @hasMany(() => Collection, {
     foreignKey: 'outdatedVersionId'
   })
-  public updatedVersions: HasMany<typeof Collection>
+  declare updatedVersions: HasMany<typeof Collection>
 
   @manyToMany(() => Post, {
     pivotTable: 'collection_posts',
     pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
   })
-  public posts: ManyToMany<typeof Post>
+  declare posts: ManyToMany<typeof Post>
 
   @manyToMany(() => Post, {
     pivotForeignKey: 'root_collection_id',
     pivotTable: 'collection_posts',
     pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
   })
-  public postsFlattened: ManyToMany<typeof Post>
+  declare postsFlattened: ManyToMany<typeof Post>
 
   @manyToMany(() => Taxonomy, {
     pivotColumns: ['sort_order'],
     pivotTable: 'collection_taxonomies'
   })
-  public taxonomies: ManyToMany<typeof Taxonomy>
+  declare taxonomies: ManyToMany<typeof Taxonomy>
 
   @hasMany(() => Collection, {
     foreignKey: 'parentId'
   })
-  public children: HasMany<typeof Collection>
+  declare children: HasMany<typeof Collection>
 
   @hasMany(() => Watchlist)
-  public watchlist: HasMany<typeof Watchlist>
+  declare watchlist: HasMany<typeof Watchlist>
 
   @hasMany(() => History, {
     onQuery: q => q.where('historyTypeId', HistoryTypes.VIEW)
   })
-  public viewHistory: HasMany<typeof History>
+  declare viewHistory: HasMany<typeof History>
 
   @hasMany(() => History, {
     onQuery: q => q.where('historyTypeId', HistoryTypes.PROGRESSION)
   })
-  public progressionHistory: HasMany<typeof History>
+  declare progressionHistory: HasMany<typeof History>
 
   public static series() {
     return this.query().where('collectionTypeId', CollectionTypes.SERIES)
@@ -171,7 +171,7 @@ export default class Collection extends AppBaseModel {
     return this.query().where('collectionTypeId', CollectionTypes.PATH)
   }
 
-  public static withPostLatestPublished = scope<typeof Collection>((query) => {
+  public static withPostLatestPublished = scope((query) => {
     query.select(
       Database.rawQuery(`(
         select
@@ -190,11 +190,11 @@ export default class Collection extends AppBaseModel {
     )
   })
 
-  public static withPublishedPostCount = scope<typeof Collection>((query) => {
+  public static withPublishedPostCount = scope<typeof Collection, (query: ModelQueryBuilderContract<typeof Collection>) => void>((query) => {
     query.withCount('postsFlattened', post => post.apply(scope => scope.published()))
   })
 
-  public static withPublishedPostDuration = scope<typeof Collection>((query) => {
+  public static withPublishedPostDuration = scope<typeof Collection, (query: ModelQueryBuilderContract<typeof Collection>) => void>((query) => {
     query.withAggregate('postsFlattened', query => query
       .apply(scope => scope.published())
       .sum('video_seconds')

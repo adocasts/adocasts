@@ -1,77 +1,19 @@
 @import '_theme.css';
-@import '_base.css';
-@import '_modal.css';
-@import '_drawer.css';
-@import '_player.css';
-@import '_prose.css';
-@import '_lesson.css';
-@import '_safari.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* purgecss start ignore */
-.header-ad ins.leaderboard:not(:empty) {
-  margin: .25rem auto;
-}
-
-.header-ad ins.leaderboard:empty {
-  width: 100%;
-  height: 98px;
-}
-
-.header-ad {
-  overflow: hidden;
-  max-width: 100%;
-}
-
-pre.shiki.github-dark,
-.code-block pre {
-  background-color: theme('colors.slate-base.800') !important;
-
-  &:before {
-    content: "";
-    margin-bottom: 1.75rem;
-    margin-left: -1.75rem;
-    display: block;
-    height: .75rem;
-    width: .75rem;
-    border-radius: 9999px;
-    opacity: .3;
-    box-shadow: 1.4em 0, 2.8em 0, 4.2em 0;
-  }
-
-  [style="color: #E1E4E8"] {
-    color: theme('colors.slate-base.300') !important;
-  }
-
-  [style="color: #6A737D"] {
-    color: theme('colors.slate-base.500') !important;
-  }
-}
-
-.countdown {
-  display: inline-flex;
-  line-height: 1em;
-}
-
-.countdown > * {
-  height: 1em;
-  display: inline-block;
-  overflow-y: hidden;
-}
-
-.countdown > ::before {
-  position: relative;
-  content: "00\a 01\a 02\a 03\a 04\a 05\a 06\a 07\a 08\a 09\a 10\a 11\a 12\a 13\a 14\a 15\a 16\a 17\a 18\a 19\a 20\a 21\a 22\a 23\a 24\a 25\a 26\a 27\a 28\a 29\a 30\a 31\a 32\a 33\a 34\a 35\a 36\a 37\a 38\a 39\a 40\a 41\a 42\a 43\a 44\a 45\a 46\a 47\a 48\a 49\a 50\a 51\a 52\a 53\a 54\a 55\a 56\a 57\a 58\a 59\a 60\a 61\a 62\a 63\a 64\a 65\a 66\a 67\a 68\a 69\a 70\a 71\a 72\a 73\a 74\a 75\a 76\a 77\a 78\a 79\a 80\a 81\a 82\a 83\a 84\a 85\a 86\a 87\a 88\a 89\a 90\a 91\a 92\a 93\a 94\a 95\a 96\a 97\a 98\a 99\a";
-  white-space: pre;
-  top: calc(var(--value) * -1em);
-  text-align: center;
-  transition: all 1s cubic-bezier(1,0,0,1);
-}
-
 [x-cloak] {
   display: none;
 }
-/* purgecss end ignore */
+
+a.link {
+  @apply text-brand-600 hover:text-black duration-300;
+  position: relative;
+  
+  &:after {
+    content: "";
+    @apply absolute bottom-0 w-0 h-px duration-300 ease-out translate-y-px hover:left-0 left-1/2 hover:w-full bg-gradient-to-r md:from-black md:via-slate-900 md:to-black from-black via-slate-900 to-black;
+  }
+}

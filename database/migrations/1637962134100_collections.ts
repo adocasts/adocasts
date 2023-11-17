@@ -1,7 +1,7 @@
-import BaseSchema from '@ioc:Adonis/Lucid/Schema'
-import CollectionType from 'App/Enums/CollectionTypes'
-import State from 'App/Enums/States'
-import Status from 'App/Enums/Status'
+import { BaseSchema } from '@adonisjs/lucid/schema'
+import CollectionType from '#enums/collection_types'
+import State from '#enums/states'
+import Status from '#enums/status'
 
 export default class Collections extends BaseSchema {
   protected tableName = 'collections'

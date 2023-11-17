@@ -1,8 +1,0 @@
-{
-  "assets/app.css": "http://localhost:8080/assets/app.css",
-  "assets/app.js": "http://localhost:8080/assets/app.js",
-  "assets/pdf.js": "http://localhost:8080/assets/pdf.js",
-  "assets/vendors-node_modules_html2canvas_dist_html2canvas_js.js": "http://localhost:8080/assets/vendors-node_modules_html2canvas_dist_html2canvas_js.js",
-  "assets/vendors-node_modules_dompurify_dist_purify_js.js": "http://localhost:8080/assets/vendors-node_modules_dompurify_dist_purify_js.js",
-  "assets/vendors-node_modules_canvg_lib_index_es_js.js": "http://localhost:8080/assets/vendors-node_modules_canvg_lib_index_es_js.js"
-}

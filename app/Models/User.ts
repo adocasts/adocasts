@@ -1,124 +1,125 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
-import { column, beforeSave, belongsTo, BelongsTo, hasMany, HasMany, hasOne, HasOne, manyToMany, ManyToMany, computed } from '@ioc:Adonis/Lucid/Orm'
-import Role from './Role'
-import Profile from './Profile'
-import Post from './Post'
+import { column, beforeSave, belongsTo, hasMany, hasOne, manyToMany, computed } from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasMany, HasOne, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
 import gravatar from 'gravatar'
-import Collection from './Collection'
-import Comment from './Comment'
-import AppBaseModel from 'App/Models/AppBaseModel'
-import Watchlist from 'App/Models/Watchlist'
-import EmailHistory from 'App/Models/EmailHistory'
-import Question from 'App/Models/Question'
-import History from './History'
-import Notification from './Notification'
-import Themes from 'App/Enums/Themes'
-import LessonRequest from './LessonRequest'
-import Roles from 'App/Enums/Roles'
-import RequestVote from './RequestVote'
-import HistoryTypes from 'App/Enums/HistoryTypes'
-import Plan from './Plan'
-import Plans from 'App/Enums/Plans'
-import StripeSubscriptionStatuses from 'App/Enums/StripeSubscriptionStatuses'
-import SessionLog from './SessionLog'
-import Invoice from './Invoice'
+import Role from '#models/role'
+import Profile from '#models/profile'
+import Post from '#models/post'
+import Collection from '#models/collection'
+import Comment from '#models/comment'
+import History from '#models/history'
+import Notification from '#models/notification'
+import LessonRequest from '#models/lesson_request'
+import RequestVote from '#models/request_vote'
+import Plan from '#models/plan'
+import SessionLog from '#models/session_log'
+import Invoice from '#models/invoice'
+import AppBaseModel from '#models/app_base_model'
+import Watchlist from '#models/watchlist'
+import EmailHistory from '#models/email_history'
+import Question from '#models/question'
+import Themes from '#enums/themes'
+import Roles from '#enums/roles'
+import HistoryTypes from '#enums/history_types'
+import Plans from '#enums/plans'
+import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
 
 class User extends AppBaseModel {
   @column({ isPrimary: true })
-  public id: number
+  declare id: number
 
   @column()
-  public roleId: number
+  declare roleId: number
 
   @column()
-  public planId: number
+  declare planId: number
 
   @column()
   @slugify({
     strategy: 'dbIncrement',
     fields: ['username']
   })
-  public username: string
+  declare username: string
 
   @column()
-  public email: string
+  declare email: string
 
   @column({ serializeAs: null })
-  public password: string
+  declare password: string
 
   @column({ serializeAs: null })
-  public stripeCustomerId: string | null
+  declare stripeCustomerId: string | null
 
   @column()
-  public stripeSubscriptionStatus: StripeSubscriptionStatuses | null
+  declare stripeSubscriptionStatus: StripeSubscriptionStatuses | null
 
   @column.dateTime()
-  public stripeSubscriptionPausedAt: DateTime | null
+  declare stripeSubscriptionPausedAt: DateTime | null
 
   @column.dateTime()
-  public stripeSubscriptionCanceledAt: DateTime | null
+  declare stripeSubscriptionCanceledAt: DateTime | null
 
   @column()
-  public billToInfo: string | null
+  declare billToInfo: string | null
 
   @column()
-  public rememberMeToken?: string
+  declare rememberMeToken?: string
 
   @column()
-  public avatarUrl: string
+  declare avatarUrl: string
 
   @column()
-  public githubId: string
+  declare githubId: string
 
   @column()
-  public googleId: string
+  declare googleId: string
 
   @column()
-  public githubEmail: string
+  declare githubEmail: string
 
   @column()
-  public googleEmail: string
+  declare googleEmail: string
 
   @column()
-  public githubAccessToken: string
+  declare githubAccessToken: string
 
   @column()
-  public googleAccessToken: string
+  declare googleAccessToken: string
 
   @column()
-  public twitterAccessToken: string
+  declare twitterAccessToken: string
 
   @column()
   public theme: string = Themes.SYSTEM
 
   @column()
-  public isEnabledProfile: boolean
+  declare isEnabledProfile: boolean
 
   @column()
-  public isEnabledMiniPlayer: boolean
+  declare isEnabledMiniPlayer: boolean
 
   @column()
-  public isEnabledAutoplayNext: boolean
+  declare isEnabledAutoplayNext: boolean
 
   @column()
-  public emailVerified: string | null
+  declare emailVerified: string | null
 
   @column.dateTime()
-  public emailVerifiedAt: DateTime | null
+  declare emailVerifiedAt: DateTime | null
 
   @column.dateTime()
-  public planPeriodStart: DateTime | null
+  declare planPeriodStart: DateTime | null
 
   @column.dateTime()
-  public planPeriodEnd: DateTime | null
+  declare planPeriodEnd: DateTime | null
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  declare updatedAt: DateTime
 
   @computed()
   public get handle() {
@@ -192,79 +193,79 @@ class User extends AppBaseModel {
   }
 
   @belongsTo(() => Role)
-  public role: BelongsTo<typeof Role>
+  declare role: BelongsTo<typeof Role>
 
   @belongsTo(() => Plan)
-  public plan: BelongsTo<typeof Plan>
+  declare plan: BelongsTo<typeof Plan>
 
   @hasMany(() => Collection, {
     foreignKey: 'ownerId'
   })
-  public collections: HasMany<typeof Collection>
+  declare collections: HasMany<typeof Collection>
 
   @hasMany(() => Comment)
-  public comments: HasMany<typeof Comment>
+  declare comments: HasMany<typeof Comment>
 
   @hasOne(() => Profile)
-  public profile: HasOne<typeof Profile>
+  declare profile: HasOne<typeof Profile>
 
   @hasMany(() => SessionLog)
-  public sessions: HasMany<typeof SessionLog>
+  declare sessions: HasMany<typeof SessionLog>
 
   @manyToMany(() => Post, {
     pivotTable: 'author_posts',
     pivotColumns: ['author_type_id']
   })
-  public posts: ManyToMany<typeof Post>
+  declare posts: ManyToMany<typeof Post>
 
   @manyToMany(() => Comment, {
     pivotTable: 'comment_votes'
   })
-  public commentVotes: ManyToMany<typeof Comment>
+  declare commentVotes: ManyToMany<typeof Comment>
 
   @hasMany(() => Watchlist)
-  public watchlist: HasMany<typeof Watchlist>
+  declare watchlist: HasMany<typeof Watchlist>
 
   @hasMany(() => EmailHistory)
-  public emailHistory: HasMany<typeof EmailHistory>
+  declare emailHistory: HasMany<typeof EmailHistory>
 
   @hasMany(() => History)
-  public histories: HasMany<typeof History>
+  declare histories: HasMany<typeof History>
 
   @hasMany(() => History, {
     onQuery: query => query.where('historyTypeId', HistoryTypes.PROGRESSION).whereNotNull('postId').where('watchSeconds', '>', 0)
   })
-  public watchedPosts: HasMany<typeof History>
+  declare watchedPosts: HasMany<typeof History>
 
   @hasMany(() => History, {
     onQuery: query => query.where('historyTypeId', HistoryTypes.PROGRESSION).whereNotNull('postId').where('isCompleted', true)
   })
-  public completedPosts: HasMany<typeof History>
+  declare completedPosts: HasMany<typeof History>
 
   @hasMany(() => Notification)
-  public notifications: HasMany<typeof Notification>
+  declare notifications: HasMany<typeof Notification>
 
   @hasMany(() => Notification, {
     foreignKey: 'initiatorUserId'
   })
-  public initiatedNotifications: HasMany<typeof Notification>
+  declare initiatedNotifications: HasMany<typeof Notification>
 
   @hasMany(() => Question)
-  public questions: HasMany<typeof Question>
+  declare questions: HasMany<typeof Question>
 
   @hasMany(() => LessonRequest)
-  public lessonRequests: HasMany<typeof LessonRequest>
+  declare lessonRequests: HasMany<typeof LessonRequest>
 
   @hasMany(() => RequestVote)
-  public requestVotes: HasMany<typeof RequestVote>
+  declare requestVotes: HasMany<typeof RequestVote>
 
   @hasMany(() => RequestVote, {
     onQuery: query => query.whereNotNull('lessonRequestId')
   })
-  public lessonRequestVotes: HasMany<typeof RequestVote>
+  declare lessonRequestVotes: HasMany<typeof RequestVote>
 
   @hasMany(() => Invoice)
-  public invoices: HasMany<typeof Invoice>
+  declare invoices: HasMany<typeof Invoice>
 }
 
 User['findForAuth'] = function (uids: string[], uidValue: string) {

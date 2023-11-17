@@ -1,32 +1,33 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
-import User from './User'
+import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import User from '#models/user'
 
 export default class Block extends BaseModel {
   @column({ isPrimary: true })
-  public id: number
+  declare id: number
 
   @column()
-  public userId: number | null
+  declare userId: number | null
 
   @column()
-  public sectionId: number
+  declare sectionId: number
   
   @column()
-  public ipAddress: string
+  declare ipAddress: string
   
   @column()
-  public reason: string | null
+  declare reason: string | null
   
   @column.dateTime()
-  public expiresAt: DateTime | null
+  declare expiresAt: DateTime | null
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  declare updatedAt: DateTime
 
   @belongsTo(() => User)
-  public user: BelongsTo<typeof User>
+  declare user: BelongsTo<typeof User>
 }

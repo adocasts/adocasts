@@ -1,0 +1,35 @@
+@let(size = $props.size || 'base')
+@let(sizes = {
+  xs: 'px-2.5 py-1 text-xs',
+  sm: 'px-3 py-1.5 text-sm',
+  base: 'px-4 py-2 text-sm',
+  lg: 'px-5 py-2.5 text-base'
+})
+
+@let(variant = $props.variant || 'dark')
+@let(variants = $props.variants || {
+  light: 'inline-flex items-center justify-center px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-200 bg-slate-100 hover:bg-slate-50 border rounded-md text-slate-500 hover:text-slate-700 border-slate-200/70 hover:bg-slate-100 active:bg-slate-50 focus:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-200/60 focus:shadow-outline',
+  dark: 'inline-flex items-center justify-center px-4 py-2 text-sm font-medium tracking-wide text-slate-50 transition-colors duration-200 rounded-md bg-slate-950 hover:bg-slate-700 focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 focus:shadow-outline focus:outline-none',
+  blue: 'inline-flex items-center justify-center px-4 py-2 text-sm font-medium tracking-wide text-slate-50 transition-colors duration-200 bg-blue-600 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:shadow-outline focus:outline-none',
+  red: 'inline-flex items-center justify-center px-4 py-2 text-sm font-medium tracking-wide text-slate-50 transition-colors duration-200 bg-red-600 rounded-md hover:bg-red-700 focus:ring-2 focus:ring-offset-2 focus:ring-red-700 focus:shadow-outline focus:outline-none',
+  green: 'inline-flex items-center justify-center px-4 py-2 text-sm font-medium tracking-wide text-slate-50 transition-colors duration-200 bg-green-600 rounded-md hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-700 focus:shadow-outline focus:outline-none',
+  yellow: 'inline-flex items-center justify-center px-4 py-2 text-sm font-medium tracking-wide text-slate-50 transition-colors duration-200 bg-yellow-500 rounded-md hover:bg-yellow-600 focus:ring-2 focus:ring-offset-2 focus:ring-yellow-600 focus:shadow-outline focus:outline-none',
+})
+
+@if (href)
+  <a
+    {{ $props.except(['type', 'class', 'size', 'variant', 'variants', 'block']).toAttrs() }}
+    x-data
+    type="{{ type || 'button' }}" 
+    class="{{ sizes[size] }} {{ variants[variant] }} {{ block ? 'flex w-full' : '' }} {{ $props.class }} duration-300">
+    {{{ await $slots.main() }}}
+  </a>
+@else
+  <button 
+    {{ $props.except(['type', 'class', 'size', 'variant', 'variants', 'block']).toAttrs() }}
+    x-data
+    type="{{ type || 'button' }}" 
+    class="{{ sizes[size] }} {{ variants[variant] }} {{ block ? 'flex w-full' : '' }} {{ $props.class }} duration-300">
+    {{{ await $slots.main() }}}
+  </button>
+@endif

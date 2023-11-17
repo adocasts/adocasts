@@ -1,6 +1,6 @@
-import BaseSchema from '@ioc:Adonis/Lucid/Schema'
-import RequestPriorities from 'App/Enums/RequestPriorities'
-import State from 'App/Enums/States'
+import { BaseSchema } from '@adonisjs/lucid/schema'
+import RequestPriorities from '#enums/request_priorities'
+import State from '#enums/states'
 
 export default class extends BaseSchema {
   protected tableName = 'lesson_requests'

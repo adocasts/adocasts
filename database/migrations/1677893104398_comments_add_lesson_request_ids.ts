@@ -1,5 +1,5 @@
-import BaseSchema from '@ioc:Adonis/Lucid/Schema'
-import CommentTypes from 'App/Enums/CommentTypes'
+import { BaseSchema } from '@adonisjs/lucid/schema'
+import CommentTypes from '#enums/comment_types'
 
 export default class extends BaseSchema {
   protected tableName = 'comments'

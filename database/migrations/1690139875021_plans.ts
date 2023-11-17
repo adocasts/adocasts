@@ -1,5 +1,5 @@
-import BaseSchema from '@ioc:Adonis/Lucid/Schema'
-import Plans from 'App/Enums/Plans'
+import { BaseSchema } from '@adonisjs/lucid/schema'
+import Plans from '#enums/plans'
 import { DateTime } from 'luxon'
 
 export default class extends BaseSchema {

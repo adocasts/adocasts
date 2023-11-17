@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html class="system">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> AdonisJS - A fully featured web framework for Node.js </title>
+
+  @vite(['resources/js/app.js'])
+</head>
+<body class="h-full bg-body text-slate-900 overflow-x-hidden subpixel-antialiased" layout-root up-theme>
+  @!layout.header()
+
+  <main class="max-w-7xl mx-auto mt-8">
+    {{{ await $slots.main() }}}
+  </main>
+
+  <footer></footer>
+</body>
+</html>

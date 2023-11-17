@@ -1,81 +1,82 @@
 import { DateTime } from 'luxon'
-import { BelongsTo, belongsTo, column, computed, HasMany, hasMany, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
-import User from './User'
-import Post from './Post'
-import State from 'App/Enums/States'
-import AppBaseModel from 'App/Models/AppBaseModel'
-import CommentTypes from 'App/Enums/CommentTypes'
-import LessonRequest from './LessonRequest'
-import UtilityService from 'App/Services/UtilityService'
+import { belongsTo, column, computed, hasMany, manyToMany } from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
+import User from '#models/user'
+import Post from '#models/post'
+import LessonRequest from '#models/lesson_request'
+import State from '#enums/states'
+import AppBaseModel from '#models/app_base_model'
+import CommentTypes from '#enums/comment_types'
+import UtilityService from '#services/utility_service'
 
 export default class Comment extends AppBaseModel {
   @column({ isPrimary: true })
-  public id: number
+  declare id: number
 
   @column()
-  public userId: number | null
+  declare userId: number | null
 
   @column()
-  public postId: number | null
+  declare postId: number | null
 
   @column()
-  public lessonRequestId: number | null
+  declare lessonRequestId: number | null
 
   @column()
-  public replyTo: number | null
+  declare replyTo: number | null
 
   @column()
-  public rootParentId: number
+  declare rootParentId: number
 
   @column()
-  public commentTypeId: CommentTypes
+  declare commentTypeId: CommentTypes
 
   @column()
-  public stateId: number
+  declare stateId: number
 
   @column()
-  public levelIndex: number
+  declare levelIndex: number
 
   @column()
-  public name: string
+  declare name: string
 
   @column()
-  public body: string
+  declare body: string
   public bodyDisplay: string = ''
 
   @column({ serializeAs: null })
-  public identity: string
+  declare identity: string
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  declare updatedAt: DateTime
 
   @computed()
-  public get isPublic() {
+  public get isdeclare() {
     return this.stateId === State.PUBLIC
   }
 
   @belongsTo(() => User)
-  public user: BelongsTo<typeof User>
+  declare user: BelongsTo<typeof User>
 
   @belongsTo(() => Post)
-  public post: BelongsTo<typeof Post>
+  declare post: BelongsTo<typeof Post>
 
   @belongsTo(() => LessonRequest)
-  public lessonRequest: BelongsTo<typeof LessonRequest>
+  declare lessonRequest: BelongsTo<typeof LessonRequest>
 
   @hasMany(() => Comment, { foreignKey: 'replyTo' })
-  public responses: HasMany<typeof Comment>
+  declare responses: HasMany<typeof Comment>
 
   @belongsTo(() => Comment, { foreignKey: 'replyTo' })
-  public parent: BelongsTo<typeof Comment>
+  declare parent: BelongsTo<typeof Comment>
 
   @manyToMany(() => User, {
     pivotTable: 'comment_votes'
   })
-  public userVotes: ManyToMany<typeof User>
+  declare userVotes: ManyToMany<typeof User>
 
   public get createdAtCalendar() {
     return this.createdAt?.toRelativeCalendar();

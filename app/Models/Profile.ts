@@ -1,78 +1,79 @@
 import { DateTime } from 'luxon'
-import { BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
-import User from './User'
-import Asset from './Asset'
-import AppBaseModel from 'App/Models/AppBaseModel'
+import { belongsTo, column } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import User from '#models/user'
+import Asset from '#models/asset'
+import AppBaseModel from '#models/app_base_model'
 
 export default class Profile extends AppBaseModel {
   public serializeExtras: boolean = true
 
   @column({ isPrimary: true })
-  public id: number
+  declare id: number
 
   @column()
-  public userId: number
+  declare userId: number
 
   @column()
-  public avatarAssetId: number | null
+  declare avatarAssetId: number | null
 
   @column()
-  public name: string | null
+  declare name: string | null
 
   @column()
-  public biography: string | null
+  declare biography: string | null
 
   @column()
-  public location: string | null
+  declare location: string | null
 
   @column()
-  public website: string | null
+  declare website: string | null
 
   @column()
-  public company: string | null
+  declare company: string | null
 
   @column()
-  public twitterUrl: string | null
+  declare twitterUrl: string | null
 
   @column()
-  public facebookUrl: string | null
+  declare facebookUrl: string | null
 
   @column()
-  public instagramUrl: string | null
+  declare instagramUrl: string | null
 
   @column()
-  public linkedinUrl: string | null
+  declare linkedinUrl: string | null
 
   @column()
-  public youtubeUrl: string | null
+  declare youtubeUrl: string | null
 
   @column()
-  public githubUrl: string | null
+  declare githubUrl: string | null
 
   @column()
-  public threadsUrl: string | null
+  declare threadsUrl: string | null
 
   @column()
-  public emailOnComment: boolean
+  declare emailOnComment: boolean
 
   @column()
-  public emailOnCommentReply: boolean
+  declare emailOnCommentReply: boolean
 
   @column()
-  public emailOnAchievement: boolean
+  declare emailOnAchievement: boolean
 
   @column()
-  public emailOnNewDeviceLogin: boolean
+  declare emailOnNewDeviceLogin: boolean
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  declare updatedAt: DateTime
 
   @belongsTo(() => User)
-  public user: BelongsTo<typeof User>
+  declare user: BelongsTo<typeof User>
 
   @belongsTo(() => Asset)
-  public asset: BelongsTo<typeof Asset>
+  declare asset: BelongsTo<typeof Asset>
 }

@@ -1,50 +1,22 @@
 {
-  "extends": "adonis-preset-ts/tsconfig.json",
-  "include": [
-    "**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "build"
-  ],
+  "extends": "@adonisjs/tsconfig/tsconfig.app.json",
   "compilerOptions": {
-    "outDir": "build",
     "rootDir": "./",
-    "sourceMap": true,
-    "lib": [
-      "ES2021"
-    ],
+    "outDir": "./build",
     "paths": {
-      "App/*": [
-        "./app/*"
-      ],
-      "Config/*": [
-        "./config/*"
-      ],
-      "Contracts/*": [
-        "./contracts/*"
-      ],
-      "Database/*": [
-        "./database/*"
-      ]
-    },
-    "types": [
-      "@adonisjs/core",
-      "@adonisjs/repl",
-      "@adonisjs/session",
-      "@adonisjs/view",
-      "@adonisjs/shield",
-      "@japa/preset-adonis/build/adonis-typings",
-      "@adonisjs/lucid",
-      "@adonisjs/auth",
-      "@adonisjs/mail",
-      "@adonisjs/lucid-slugify",
-      "@adonisjs/drive-gcs",
-      "@adocasts.com/adonisjs-honeypot",
-      "@adonisjs/bouncer",
-      "@adonisjs/redis",
-      "@adonisjs/ally",
-      "@adonisjs/limiter"
-    ]
+      "#controllers/*": ["./app/controllers/*.js"],
+      "#enums/*": ["./app/enums/*.js"],
+      "#exceptions/*": ["./app/exceptions/*.js"],
+      "#models/*": ["./app/models/*.js"],
+      "#services/*": ["./app/services/*.js"],
+      "#strategies/*": ["./app/strategies/*.js"],
+      "#listeners/*": ["./app/listeners/*.js"],
+      "#events/*": ["./app/events/*.js"],
+      "#middleware/*": ["./app/middleware/*.js"],
+      "#validators/*": ["./app/validators/*.js"],
+      "#factories/*": ["./database/factories/*.js"],
+      "#start/*": ["./start/*.js"],
+      "#config/*": ["./config/*.js"]
+    }
   }
 }

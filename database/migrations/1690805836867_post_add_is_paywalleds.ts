@@ -1,5 +1,5 @@
-import BaseSchema from '@ioc:Adonis/Lucid/Schema'
-import PaywallTypes from 'App/Enums/PaywallTypes'
+import { BaseSchema } from '@adonisjs/lucid/schema'
+import PaywallTypes from '#enums/paywall_types'
 
 export default class extends BaseSchema {
   protected tableName = 'posts'

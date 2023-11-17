@@ -1,5 +1,5 @@
-import BaseSchema from '@ioc:Adonis/Lucid/Schema'
-import Themes from 'App/Enums/Themes'
+import { BaseSchema } from '@adonisjs/lucid/schema'
+import Themes from '#enums/themes'
 
 export default class Users extends BaseSchema {
   protected tableName = 'users'

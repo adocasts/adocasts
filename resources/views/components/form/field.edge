@@ -1,0 +1,26 @@
+@let(value = $props.value ?? '')
+@let(data = { name, value, maxlength, minlength })
+
+@inject({ ...data, model })
+
+<label x-data="{{ js.stringify(data) }}" class="flex flex-col mb-6 relative">
+  <span class="block text-sm font-medium leading-6 text-slat-900">{{ label }}</span>
+
+  {{{ await $slots.main() }}}
+
+  @error(name)
+    <span class="text-xs text-red-600">{{ messages.join(', ') }}</span>
+  @elseif(hint)
+    <div class="text-xs text-right pt-1 absolute right-0 text-slate-400" style="bottom: -1rem">
+      {{ hint }}
+    </div>
+  @elseif(maxlength)
+    <div :class="[`text-xs text-right pt-1 absolute right-0 ${value.length >= maxlength ? 'text-red-600' : 'text-slate-400'}`]" style="bottom: -1rem">
+      <span x-text="value.length"></span> of <span x-text="maxlength"></span>
+    </div>
+  @elseif(minlength)
+    <div x-cloak x-show="value.length < minlength" class="text-xs text-right pt-1 absolute right-0 text-slate-400" style="bottom: -1rem">
+      <span x-text="minlength"></span> character minimum
+    </div>
+  @end
+</label>

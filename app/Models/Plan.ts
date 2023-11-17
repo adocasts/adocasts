@@ -1,61 +1,61 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, computed } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, computed } from '@adonisjs/lucid/orm'
 import Env from '@ioc:Adonis/Core/Env'
-import UtilityService from 'App/Services/UtilityService'
-import Plans from 'App/Enums/Plans'
-import CouponDurations from 'App/Enums/CouponDurations'
+import UtilityService from '#services/utility_service'
+import Plans from '#enums/plans'
+import CouponDurations from '#enums/coupon_durations'
 
 export default class Plan extends BaseModel {
   @column({ isPrimary: true })
-  public id: number
+  declare id: number
 
   @column()
-  public slug: string
+  declare slug: string
 
   @column()
-  public name: string
+  declare name: string
 
   @column()
-  public description: string
+  declare description: string
 
   @column()
-  public stripePriceId: string | null
+  declare stripePriceId: string | null
 
   @column()
-  public stripePriceTestId: string | null
+  declare stripePriceTestId: string | null
 
   @column()
-  public price: number
+  declare price: number
 
   @column()
-  public isActive: true
+  declare isActive: true
 
   @column()
-  public couponCode: string | null
+  declare couponCode: string | null
 
   @column()
-  public couponDiscountFixed: number | null
+  declare couponDiscountFixed: number | null
 
   @column()
-  public couponDiscountPercent: number | null
+  declare couponDiscountPercent: number | null
 
   @column()
-  public couponDurationId: number | null
+  declare couponDurationId: number | null
 
   @column()
-  public stripeCouponId: string | null
+  declare stripeCouponId: string | null
 
   @column.dateTime()
-  public couponStartAt: DateTime | null
+  declare couponStartAt: DateTime | null
 
   @column.dateTime()
-  public couponEndAt: DateTime | null
+  declare couponEndAt: DateTime | null
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  declare updatedAt: DateTime
 
   @computed()
   public get mode() {
@@ -92,7 +92,7 @@ export default class Plan extends BaseModel {
     let amount = `${this.couponDiscountPercent}%`
     let duration = isForeverPlan ? '' : 'while subscribed'
 
-    if (this.couponDiscountFixed) amount = `${UtilityService.formatCurrency(this.couponDiscountFixed, 'USD', 'en-US', 0)}`
+    if (this.couponDiscountFixed) amount = `${UtilityService.formatCurrency(this.couponDiscountFixed, 'USD')}`
     if (this.couponDurationId === CouponDurations.ONCE) duration = isForeverPlan ? '' : `off your first ${isAnnualPlan ? 'year' : 'month'}`
 
     return `${amount} ${duration}`
@@ -113,11 +113,11 @@ export default class Plan extends BaseModel {
 
   @computed()
   public get displayPrice() {
-    return UtilityService.formatCurrency(this.price, 'USD', 'en-US', 0)
+    return UtilityService.formatCurrency(this.price, 'USD')
   }
 
   @computed()
   public get displaySalePrice() {
-    return UtilityService.formatCurrency(this.salePrice, 'USD', 'en-US', 0)
+    return UtilityService.formatCurrency(this.salePrice, 'USD')
   }
 }

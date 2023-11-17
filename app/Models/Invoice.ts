@@ -1,50 +1,51 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
-import User from './User'
+import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import User from '#models/user'
 
 export default class Invoice extends BaseModel {
   @column({ isPrimary: true })
-  public id: number
+  declare id: number
 
   @column()
-  public userId: number
+  declare userId: number
 
   @column()
-  public invoiceId: string
+  declare invoiceId: string
 
   @column()
-  public invoiceNumber: string
+  declare invoiceNumber: string
 
   @column()
-  public chargeId: string
+  declare chargeId: string
 
   @column()
-  public amountDue: number
+  declare amountDue: number
 
   @column()
-  public amountPaid: number
+  declare amountPaid: number
 
   @column()
-  public amountRemaining: number
+  declare amountRemaining: number
 
   @column()
-  public status: string | null
+  declare status: string | null
 
   @column()
-  public paid: boolean | null
+  declare paid: boolean | null
 
   @column.dateTime()
-  public periodStartAt: DateTime | null
+  declare periodStartAt: DateTime | null
 
   @column.dateTime()
-  public periodEndAt: DateTime | null
+  declare periodEndAt: DateTime | null
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  declare updatedAt: DateTime
 
   @belongsTo(() => User)
-  public user: BelongsTo<typeof User>
+  declare user: BelongsTo<typeof User>
 }

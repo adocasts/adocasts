@@ -3,179 +3,179 @@ import {
   beforeSave,
   column,
   computed,
-  HasMany,
   hasMany,
-  ManyToMany,
   manyToMany, scope
-} from '@ioc:Adonis/Lucid/Orm'
-import Asset from './Asset'
-import PostSnapshot from './PostSnapshot'
-import User from './User'
+} from '@adonisjs/lucid/orm'
+import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
+import Asset from '#models/asset'
+import PostSnapshot from '#models/post_snapshot'
+import User from '#models/user'
+import Comment from '#models/comment'
 import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
-import State from 'App/Enums/States'
-import Taxonomy from "App/Models/Taxonomy"
-import ReadService from 'App/Services/ReadService'
-import BodyTypes from 'App/Enums/BodyTypes'
-import PostType from 'App/Enums/PostTypes'
-import Comment from './Comment'
-import AppBaseModel from 'App/Models/AppBaseModel'
-import States from 'App/Enums/States'
-import Collection from 'App/Models/Collection'
-import CollectionTypes from 'App/Enums/CollectionTypes'
-import Watchlist from 'App/Models/Watchlist'
-import History from 'App/Models/History'
-import HistoryTypes from 'App/Enums/HistoryTypes'
-import Route from '@ioc:Adonis/Core/Route'
-import AssetTypes from 'App/Enums/AssetTypes'
 import { HttpContext } from '@adonisjs/core/build/standalone'
-import PaywallTypes from 'App/Enums/PaywallTypes'
-import VideoTypes from 'App/Enums/VideoTypes'
-import UtilityService from 'App/Services/UtilityService'
+import Route from '@ioc:Adonis/Core/Route'
+import State from '#enums/states'
+import Taxonomy from "#models/taxonomy"
+import ReadService from '#services/read_service'
+import BodyTypes from '#enums/body_types'
+import PostType from '#enums/post_types'
+import AppBaseModel from '#models/app_base_model'
+import States from '#enums/states'
+import Collection from '#models/collection'
+import CollectionTypes from '#enums/collection_types'
+import Watchlist from '#models/watchlist'
+import History from '#models/history'
+import HistoryTypes from '#enums/history_types'
+import AssetTypes from '#enums/asset_types'
+import PaywallTypes from '#enums/paywall_types'
+import VideoTypes from '#enums/video_types'
+import UtilityService from '#services/utility_service'
+import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 
 export default class Post extends AppBaseModel {
   public serializeExtras = true
 
   @column({ isPrimary: true })
-  public id: number
+  declare id: number
 
   @column()
-  public title: string
+  declare title: string
 
   @column()
   @slugify({
     strategy: 'dbIncrement',
     fields: ['title']
   })
-  public slug: string
+  declare slug: string
 
   @column()
-  public pageTitle: string | null
+  declare pageTitle: string | null
 
   @column()
-  public description: string | null
+  declare description: string | null
 
   @column()
-  public metaDescription: string | null
+  declare metaDescription: string | null
 
   @column()
-  public canonical: string | null
+  declare canonical: string | null
 
   @column()
-  public body: string | null
+  declare body: string | null
   public bodyDisplay: string = ''
 
   @column()
-  public bodyBlocks: object | string | null
+  declare bodyBlocks: object | string | null
 
   @column()
-  public bodyTypeId: number
+  declare bodyTypeId: number
 
   @column()
-  public videoTypeId: VideoTypes | null
+  declare videoTypeId: VideoTypes | null
 
   @column()
-  public videoUrl: string | null
+  declare videoUrl: string | null
 
   @column()
-  public videoBunnyId: string | null
+  declare videoBunnyId: string | null
 
   @column()
-  public livestreamUrl: string | null
+  declare livestreamUrl: string | null
 
   @column()
-  public isFeatured: boolean | null
+  declare isFeatured: boolean | null
 
   @column()
-  public isPersonal: boolean | null
+  declare isPersonal: boolean | null
 
   @column()
-  public isLive: boolean | null
+  declare isLive: boolean | null
 
   @column()
-  public viewCount: number | null
+  declare viewCount: number | null
 
   @column()
-  public viewCountUnique: number | null
+  declare viewCountUnique: number | null
 
   @column()
-  public stateId: State
+  declare stateId: State
 
   @column()
-  public paywallTypeId: PaywallTypes
+  declare paywallTypeId: PaywallTypes
 
   @column()
-  public readMinutes: number
+  declare readMinutes: number
 
   @column()
-  public readTime: number
+  declare readTime: number
 
   @column()
-  public wordCount: number
+  declare wordCount: number
 
   @column()
-  public videoSeconds: number
+  declare videoSeconds: number
 
   @column()
-  public postTypeId: number
+  declare postTypeId: number
 
   @column()
-  public redirectUrl: string
+  declare redirectUrl: string
 
   @column()
-  public repositoryUrl: string
+  declare repositoryUrl: string
 
   @column()
-  public timezone: string | null
+  declare timezone: string | null
 
   @column()
-  public publishAtUser: string | null
+  declare publishAtUser: string | null
 
   @column.dateTime()
-  public publishAt: DateTime | null
+  declare publishAt: DateTime | null
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  declare updatedAt: DateTime
 
   @manyToMany(() => Asset, {
     pivotTable: 'asset_posts',
     pivotColumns: ['sort_order']
   })
-  public assets: ManyToMany<typeof Asset>
+  declare assets: ManyToMany<typeof Asset>
 
   @manyToMany(() => Asset, {
     pivotTable: 'asset_posts',
     pivotColumns: ['sort_order'],
     onQuery: q => q.where('assetTypeId', AssetTypes.THUMBNAIL)
   })
-  public thumbnails: ManyToMany<typeof Asset>
+  declare thumbnails: ManyToMany<typeof Asset>
 
   @manyToMany(() => Asset, {
     pivotTable: 'asset_posts',
     pivotColumns: ['sort_order'],
     onQuery: q => q.where('assetTypeId', AssetTypes.COVER)
   })
-  public covers: ManyToMany<typeof Asset>
+  declare covers: ManyToMany<typeof Asset>
 
   @hasMany(() => PostSnapshot)
-  public snapshots: HasMany<typeof PostSnapshot>
+  declare snapshots: HasMany<typeof PostSnapshot>
 
   @hasMany(() => Comment)
-  public comments: HasMany<typeof Comment>
+  declare comments: HasMany<typeof Comment>
 
   @manyToMany(() => User, {
     pivotTable: 'author_posts',
     pivotColumns: ['author_type_id']
   })
-  public authors: ManyToMany<typeof User>
+  declare authors: ManyToMany<typeof User>
 
   @manyToMany(() => Taxonomy, {
     pivotTable: 'post_taxonomies',
     pivotColumns: ['sort_order']
   })
-  public taxonomies: ManyToMany<typeof Taxonomy>
+  declare taxonomies: ManyToMany<typeof Taxonomy>
 
   @manyToMany(() => Collection, {
     onQuery(query) {
@@ -183,7 +183,7 @@ export default class Post extends AppBaseModel {
     },
     pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
   })
-  public series: ManyToMany<typeof Collection>
+  declare series: ManyToMany<typeof Collection>
 
   @manyToMany(() => Collection, {
     onQuery(query) {
@@ -192,7 +192,7 @@ export default class Post extends AppBaseModel {
     pivotRelatedForeignKey: 'root_collection_id',
     pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
   })
-  public rootSeries: ManyToMany<typeof Collection>
+  declare rootSeries: ManyToMany<typeof Collection>
 
   @manyToMany(() => Collection, {
     onQuery(query) {
@@ -201,7 +201,7 @@ export default class Post extends AppBaseModel {
     pivotRelatedForeignKey: 'root_collection_id',
     pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
   })
-  public rootPaths: ManyToMany<typeof Collection>
+  declare rootPaths: ManyToMany<typeof Collection>
 
   @manyToMany(() => Collection, {
     onQuery(query) {
@@ -209,7 +209,7 @@ export default class Post extends AppBaseModel {
     },
     pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
   })
-  public courses: ManyToMany<typeof Collection>
+  declare courses: ManyToMany<typeof Collection>
 
   @manyToMany(() => Collection, {
     onQuery(query) {
@@ -217,7 +217,7 @@ export default class Post extends AppBaseModel {
     },
     pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
   })
-  public playlists: ManyToMany<typeof Collection>
+  declare playlists: ManyToMany<typeof Collection>
 
   @manyToMany(() => Collection, {
     onQuery(query) {
@@ -225,25 +225,25 @@ export default class Post extends AppBaseModel {
     },
     pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
   })
-  public paths: ManyToMany<typeof Collection>
+  declare paths: ManyToMany<typeof Collection>
 
   @manyToMany(() => Collection, {
     pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
   })
-  public collections: ManyToMany<typeof Collection>
+  declare collections: ManyToMany<typeof Collection>
 
   @hasMany(() => History, {
     onQuery: q => q.where('historyTypeId', HistoryTypes.VIEW)
   })
-  public viewHistory: HasMany<typeof History>
+  declare viewHistory: HasMany<typeof History>
 
   @hasMany(() => History, {
     onQuery: q => q.where('historyTypeId', HistoryTypes.PROGRESSION)
   })
-  public progressionHistory: HasMany<typeof History>
+  declare progressionHistory: HasMany<typeof History>
 
   @hasMany(() => Watchlist)
-  public watchlist: HasMany<typeof Watchlist>
+  declare watchlist: HasMany<typeof Watchlist>
 
   @computed()
   public get publishAtDateString() {
@@ -271,28 +271,28 @@ export default class Post extends AppBaseModel {
 
   @computed()
   public get isPublished(): boolean {
-    const isPublic = this.stateId === State.PUBLIC
+    const isdeclare = this.stateId === State.PUBLIC
 
     if (!this.publishAt) {
-      return isPublic
+      return isdeclare
     }
 
     const isPastPublishAt = this.publishAt.diffNow().as('seconds')
 
-    return isPublic && isPastPublishAt < 0
+    return isdeclare && isPastPublishAt < 0
   }
 
   @computed()
   public get isViewable(): boolean {
-    const isPublicOrUnlisted = this.stateId === State.PUBLIC || this.stateId === State.UNLISTED;
+    const isdeclareOrUnlisted = this.stateId === State.PUBLIC || this.stateId === State.UNLISTED;
 
     if (!this.publishAt) {
-      return isPublicOrUnlisted
+      return isdeclareOrUnlisted
     }
 
     const isPastPublishAt = this.publishAt.diffNow().as('seconds')
 
-    return isPublicOrUnlisted && isPastPublishAt < 0
+    return isdeclareOrUnlisted && isPastPublishAt < 0
   }
 
   @computed()
@@ -538,13 +538,13 @@ export default class Post extends AppBaseModel {
     return this.query().apply(scope => scope.forDisplay())
   }
 
-  public static published = scope<typeof Post>((query) => {
+  public static published = scope((query) => {
     query
       .where('stateId', States.PUBLIC)
       .where('publishAt', '<=', DateTime.now().toSQL())
   })
 
-  public static publishedPublic = scope<typeof Post>((query) => {
+  public static publisheddeclare = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query) => {
     query
       .where('stateId', States.PUBLIC)
       .where(query => query
@@ -554,7 +554,7 @@ export default class Post extends AppBaseModel {
       )
   })
 
-  public static forDisplay = scope<typeof Post>((query, skipPublishCheck: boolean = false) => {
+  public static forDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query, skipPublishCheck: boolean = false) => {
     const ctx = HttpContext.get()
 
     query
@@ -568,7 +568,7 @@ export default class Post extends AppBaseModel {
       .preload('authors', query => query.preload('profile'))
   })
 
-  public static forPathDisplay = scope<typeof Post>((query, skipPublishCheck: boolean = false) => {
+  public static forPathDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query, skipPublishCheck: boolean = false) => {
     const ctx = HttpContext.get()
 
     query
@@ -582,13 +582,13 @@ export default class Post extends AppBaseModel {
       .preload('authors', query => query.preload('profile'))
   })
 
-  public static forCollectionDisplay = scope<typeof Post>((query, { orderBy, direction }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order', direction: 'asc' | 'desc' } = { orderBy: 'pivot_sort_order', direction: 'asc' }) => {
+  public static forCollectionDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query, { orderBy, direction }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order', direction: 'asc' | 'desc' } = { orderBy: 'pivot_sort_order', direction: 'asc' }) => {
     query
       .apply(scope => scope.forDisplay())
       .orderBy(orderBy, direction)
   })
 
-  public static forCollectionPathDisplay = scope<typeof Post>((query, { orderBy, direction }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order', direction: 'asc' | 'desc' } = { orderBy: 'pivot_sort_order', direction: 'asc' }) => {
+  public static forCollectionPathDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query, { orderBy, direction }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order', direction: 'asc' | 'desc' } = { orderBy: 'pivot_sort_order', direction: 'asc' }) => {
     query
       .apply(scope => scope.forPathDisplay())
       .orderBy(orderBy, direction)

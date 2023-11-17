@@ -1,59 +1,60 @@
 import { DateTime } from 'luxon'
-import { BelongsTo, belongsTo, column, computed } from '@ioc:Adonis/Lucid/Orm'
-import HistoryTypes from 'App/Enums/HistoryTypes'
-import AppBaseModel from 'App/Models/AppBaseModel'
-import Post from 'App/Models/Post'
-import Collection from 'App/Models/Collection'
-import Taxonomy from 'App/Models/Taxonomy'
+import { belongsTo, column, computed } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import HistoryTypes from '#enums/history_types'
+import AppBaseModel from '#models/app_base_model'
+import Post from '#models/post'
+import Collection from '#models/collection'
+import Taxonomy from '#models/taxonomy'
 
 export default class History extends AppBaseModel {
   @column({ isPrimary: true })
-  public id: number
+  declare id: number
 
   @column()
-  public userId: number
+  declare userId: number
 
   @column()
-  public postId: number | null
+  declare postId: number | null
 
   @column()
-  public collectionId: number | null
+  declare collectionId: number | null
 
   @column()
-  public taxonomyId: number | null
+  declare taxonomyId: number | null
 
   @column()
-  public historyTypeId: HistoryTypes
+  declare historyTypeId: HistoryTypes
 
   @column()
-  public route: string
+  declare route: string
 
   @column()
-  public readPercent: number | null
+  declare readPercent: number | null
 
   @column()
-  public watchPercent: number | null
+  declare watchPercent: number | null
 
   @column()
-  public watchSeconds: number
+  declare watchSeconds: number
 
   @column()
-  public isCompleted: boolean
+  declare isCompleted: boolean
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  declare updatedAt: DateTime
 
   @belongsTo(() => Post)
-  public post: BelongsTo<typeof Post>
+  declare post: BelongsTo<typeof Post>
 
   @belongsTo(() => Collection)
-  public collection: BelongsTo<typeof Collection>
+  declare collection: BelongsTo<typeof Collection>
 
   @belongsTo(() => Taxonomy)
-  public taxonomy: BelongsTo<typeof Taxonomy>
+  declare taxonomy: BelongsTo<typeof Taxonomy>
 
   @computed()
   public get hasActivity() {

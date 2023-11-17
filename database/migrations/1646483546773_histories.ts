@@ -1,5 +1,5 @@
-import BaseSchema from '@ioc:Adonis/Lucid/Schema'
-import HistoryTypes from 'App/Enums/HistoryTypes'
+import { BaseSchema } from '@adonisjs/lucid/schema'
+import HistoryTypes from '#enums/history_types'
 
 export default class Histories extends BaseSchema {
   protected tableName = 'histories'
