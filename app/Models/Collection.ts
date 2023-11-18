@@ -5,7 +5,7 @@ import {
   manyToMany, scope
 } from '@adonisjs/lucid/orm'
 import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
-import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
+// import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
 import Database from '@adonisjs/lucid/services/db'
 import User from '#models/user'
 import Post from '#models/post'
@@ -50,10 +50,10 @@ export default class Collection extends AppBaseModel {
   declare name: string
 
   @column()
-  @slugify({
-    strategy: 'dbIncrement',
-    fields: ['name']
-  })
+  // @slugify({
+  //   strategy: 'dbIncrement',
+  //   fields: ['name']
+  // })
   declare slug: string
 
   @column()

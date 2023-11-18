@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import { column, computed, hasMany, manyToMany } from '@adonisjs/lucid/orm'
 import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import Post from '#models/post'
-import AssetService from '#services/asset_service'
+// import AssetService from '#services/asset_service'
 import AppBaseModel from '#models/app_base_model'
 import Collection from '#models/collection'
 import Taxonomy from '#models/taxonomy'
@@ -34,7 +34,8 @@ export default class Asset extends AppBaseModel {
 
   @computed()
   public get assetUrl() {
-    return AssetService.getAssetUrl(this.filename)
+    return '/img/' + this.filename // TODO
+    //return AssetService.getAssetUrl(this.filename)
   }
 
   @manyToMany(() => Post, {

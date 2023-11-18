@@ -1,0 +1,41 @@
+@let(width = $props.width ? width : 325)
+@let(lazy = $props.lazy ?? false)
+
+<div class="{{ html.classNames(['overflow-hidden max-w-full relative', ...($props.class || [])]) }}">
+  @if ($slots.main)
+    {{{ await $slots.main() }}}
+  @endif
+  <picture class="{{ html.classNames(['max-w-full h-full', ...($props.classPicture || [])]) }}">
+    @if (!filename.startsWith('http'))
+      <source
+        srcset="
+          {{ assetDomain }}/img/{{ filename }}?w={{ width * 2 }}&f=webp 2x,
+          {{ assetDomain }}/img/{{ filename }}?w={{ width }}&f=webp 1x
+        "
+        type="image/webp"
+      />
+
+      <img
+        src="{{ assetDomain }}/img/{{ filename }}?w={{ width * 2 }}"
+        srcset="
+          {{ assetDomain }}/img/{{ filename }}?w={{ width * 2 }} 2x,
+          {{ assetDomain }}/img/{{ filename }}?w={{ width }} 1x,
+        "
+        alt="{{ altText || '' }}"
+        style="background-image: url('{{ assetDomain }}/img/{{ filename }}?w=10'); filter: blur(10px); background-size: 100%;"
+        onload="this.style.backgroundImage = null; this.style.filter = null; this.classList.remove('bg-white');"
+        class="{{ html.classNames(['bg-white w-full max-w-full', ...($props.classImg || [])]) }}"
+        {{ lazy && 'loading=lazy' }}
+        {{ ratio === 'aspect-video' ? 'width=1280 height=720' : '' }}
+      />
+    @else
+      <img
+        src="{{ filename }}"
+        alt="{{ altText || '' }}"
+        class="{{ html.classNames(['bg-white w-full max-w-full', ...($props.classImg || [])]) }}"
+        {{ lazy && 'loading=lazy' }}
+        {{ ratio === 'aspect-video' ? 'width=1280 height=720' : '' }}
+      />
+    @endif
+  </picture>
+</div>

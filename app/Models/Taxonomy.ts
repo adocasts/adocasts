@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import { belongsTo, column, hasMany, manyToMany, scope } from '@adonisjs/lucid/orm'
 import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
-import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
+// import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
 import Database from '@adonisjs/lucid/services/db'
 import Asset from '#models/asset'
 import Collection from '#models/collection'
@@ -36,10 +36,10 @@ export default class Taxonomy extends AppBaseModel {
   declare name: string
 
   @column()
-  @slugify({
-    strategy: 'dbIncrement',
-    fields: ['name']
-  })
+  // @slugify({
+  //   strategy: 'dbIncrement',
+  //   fields: ['name']
+  // })
   declare slug: string
 
   @column()
@@ -114,7 +114,7 @@ export default class Taxonomy extends AppBaseModel {
   public static hasContent = scope<typeof Taxonomy, (query: ModelQueryBuilderContract<typeof Taxonomy>) => void>((query) => {
     query.where(q => q
       .orWhereHas('posts', p => p.apply(scope => scope.published()))
-      .orWhereHas('collections', p => p.wherePublic())
+      .orWhereHas('collections', p => p.where({ stateId: States.PUBLIC }))
     )
   })
 

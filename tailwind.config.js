@@ -205,6 +205,11 @@ export default {
         body: ['var(--font-body)'],
       },
 
+      backgroundSize: {
+        'icon-fit': '140%',
+        'icon-fit-zoomed': '160%'
+      },
+
       boxShadow: {
         glow: [
           "0 0px 20px rgba(255,255, 255, 0.35)",
@@ -223,7 +228,7 @@ export default {
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
-    require('@tailwindcss/aspect-ratio'),
+    // require('@tailwindcss/aspect-ratio'),
   ],
 }
 

@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon'
-import Hash from '@ioc:Adonis/Core/Hash'
+import Hash from '@adonisjs/core/services/hash'
 import { column, beforeSave, belongsTo, hasMany, hasOne, manyToMany, computed } from '@adonisjs/lucid/orm'
 import type { BelongsTo, HasMany, HasOne, ManyToMany } from '@adonisjs/lucid/types/relations'
-import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
+// import { slugify } from '@ioc:Adonis/Addons/LucidSlugify' // TODO
 import gravatar from 'gravatar'
 import Role from '#models/role'
 import Profile from '#models/profile'
@@ -37,10 +37,10 @@ class User extends AppBaseModel {
   declare planId: number
 
   @column()
-  @slugify({
-    strategy: 'dbIncrement',
-    fields: ['username']
-  })
+  // @slugify({
+  //   strategy: 'dbIncrement',
+  //   fields: ['username']
+  // })
   declare username: string
 
   @column()
@@ -266,12 +266,12 @@ class User extends AppBaseModel {
 
   @hasMany(() => Invoice)
   declare invoices: HasMany<typeof Invoice>
-}
 
-User['findForAuth'] = function (uids: string[], uidValue: string) {
-  const query = this.query()
-  uids.map(uid => query.orWhere(uid, 'ILIKE', uidValue))
-  return query.first()
+  public static async getUserForAuth(uids: string[], value: string) {
+    const query = this.query()
+    uids.map(uid => query.orWhereILike(uid, value))
+    return query.first()
+  }
 }
 
 export default User

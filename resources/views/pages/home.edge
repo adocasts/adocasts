@@ -4,4 +4,23 @@
     @!hero.home()
   @endslot
 
+  <section>
+    @!heading({
+      title: 'Series.',
+      subtitle: 'Step-By-Step Learning',
+      cta: 'Browse All Series',
+      href: '#'
+    })
+  
+    <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4 pb-8 pt-4">
+      @each ((item, i) in series)
+        @if ([0].includes(i))
+          @!collection.squareLarge({ item })
+        @else
+          @!collection.squareSmall({ item })
+        @endif
+      @endeach
+    </div>
+  </section>
+
 @end

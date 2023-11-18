@@ -19,7 +19,7 @@
           @!highlight.underline()
         </a>
       </div>
-      <div class="flex lg:hidden">
+      <div class="flex lg:hidden my-2.5">
         <button @click="showMobileMenu = true" type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-slate-700">
           <span class="sr-only">Open main menu</span>
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -36,12 +36,12 @@
       </a>
     </div>
     <div class="flex flex-1 justify-end gap-4">
-      <a href="{{ route('auth.signin.create') }}" up-follow class="text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
+      <a href="{{ route('auth.signin.create') }}" up-follow class="hidden md:block text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
         Sign in
         @!highlight.underline()
       </a>
 
-      <a href="{{ route('auth.signup.create') }}" up-follow class="text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
+      <a href="{{ route('auth.signup.create') }}" up-follow class="hidden md:block text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
         Sign up <span aria-hidden="true">&rarr;</span>
         @!highlight.underline()
       </a>

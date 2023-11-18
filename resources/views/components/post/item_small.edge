@@ -1,0 +1,36 @@
+@let(img = item.thumbnails?.length ? item.thumbnails[0] : item.covers?.length ? item.covers[0] : null)
+
+<a up-follow {{ html.attrs({
+  href: item.routeUrl,
+  class: ['-mx-2 flex flex-col sm:flex-row md:items-center mb-4 group duration-300 anchor-group', ...($props.class || [])],
+  ...($props.attrs || {})
+}) }} href="{{ item.routeUrl }}">
+  @if (img)
+    <div class="mb-3 md:mb-0 md:w-1/2 lg:w-2/5 xl:w-1/3 mx-2 relative duration-300 {{ imgClassName }}">
+      @!post.picture({ item, class: 'h-full', lazy: lazyItem })
+
+      {{--  @if (progression)
+        @!lessons.progression({ progressionHistory: item.progressionHistory })
+      @endif  --}}
+    </div>
+  @endif
+
+  <div class="{{ html.classNames([{
+    'md:w-1/2 lg:w-3/5 xl:w-2/3 mx-2': img,
+    'w-full mx-4': !img
+  }, ...($props.classContent || [])]) }}">
+    {{--  @!lessons.barSeries({ item, upAttrs })  --}}
+
+    <h3 class="{{ html.classNames(['font-bold text-sm line-clamp-3 leading-5', ...($props.classHeading || [])]) }}">
+      <span class="anchor-target current-color hover:current-color">
+        {{ item.title }}
+      </span>
+    </h3>
+
+    {{--  @if (description && item.description)
+      <p class="hidden md:inline-block {{ descClassName }} mb-2 mt-3 text-sm text-slate-600 group-hover:text-slate-700 duration-150 {{ sizeClassMap[size].description }}">
+        {{ item.description }}
+      </p>
+    @endif  --}}
+  </div>
+</a>

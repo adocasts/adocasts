@@ -17,11 +17,80 @@
 }
 
 a.link {
-  @apply text-brand-600 hover:text-black duration-300;
+  @apply text-brand-600 hover:text-slate-950 duration-300;
   position: relative;
+
+  &.slate {
+    @apply text-slate-950;
+  }
   
   &:after {
     content: "";
     @apply absolute bottom-0 w-0 h-px duration-300 ease-out translate-y-px hover:left-0 left-1/2 hover:w-full bg-gradient-to-r md:from-black md:via-slate-900 md:to-black from-black via-slate-900 to-black;
+  }
+}
+
+.anchor,
+.prose :where(a):not(.btn):not(:where([class~="not-prose"] *)) {
+  color: theme('colors.brand.600');
+  text-decoration: none !important;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 2px;
+  transition: background-size .3s, color .3s;
+
+  &:hover, 
+  &:focus {
+    background-size: 100% 2px;
+    color: theme('colors.brand.700');
+  }
+}
+
+.anchor.anchor-inv {
+  color: theme('colors.brand.600');
+  background-size: 100% 2px;
+
+  &:hover,
+  &:focus {
+    background-size: 0% 2px;
+    color: theme('colors.brand.700');
+  }
+}
+
+.anchor-group {
+  .anchor-target {
+    color: theme('colors.brand.600');
+    text-decoration: none !important;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size .3s, color .3s;
+
+    &.current-color {
+      color: currentColor;
+    }
+  }
+
+  &:hover .anchor-target {
+    background-size: 100% 2px;
+    color: theme('colors.brand.700');
+
+    &.hover\:current-color {
+      color: currentColor;
+    }
+  }
+}
+
+.anchor-inv-group {
+  .anchor-target {
+    color: theme('colors.brand.600');
+    background-size: 100% 2px;
+  }
+
+  &:hover .anchor-target {
+    background-size: 0% 2px;
+    color: theme('colors.brand.700');
   }
 }

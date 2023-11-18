@@ -9,6 +9,7 @@
       "#exceptions/*": ["./app/exceptions/*.js"],
       "#models/*": ["./app/models/*.js"],
       "#services/*": ["./app/services/*.js"],
+      "#builders/*": ["./app/builders/*.js"],
       "#strategies/*": ["./app/strategies/*.js"],
       "#listeners/*": ["./app/listeners/*.js"],
       "#events/*": ["./app/events/*.js"],

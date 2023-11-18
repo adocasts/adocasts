@@ -11,9 +11,8 @@ import Asset from '#models/asset'
 import PostSnapshot from '#models/post_snapshot'
 import User from '#models/user'
 import Comment from '#models/comment'
-import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
-import { HttpContext } from '@adonisjs/core/build/standalone'
-import Route from '@ioc:Adonis/Core/Route'
+// import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
+import Route from '@adonisjs/core/services/router'
 import State from '#enums/states'
 import Taxonomy from "#models/taxonomy"
 import ReadService from '#services/read_service'
@@ -42,10 +41,10 @@ export default class Post extends AppBaseModel {
   declare title: string
 
   @column()
-  @slugify({
-    strategy: 'dbIncrement',
-    fields: ['title']
-  })
+  // @slugify({
+  //   strategy: 'dbIncrement',
+  //   fields: ['title']
+  // })
   declare slug: string
 
   @column()
@@ -541,7 +540,7 @@ export default class Post extends AppBaseModel {
   public static published = scope((query) => {
     query
       .where('stateId', States.PUBLIC)
-      .where('publishAt', '<=', DateTime.now().toSQL())
+      .where('publishAt', '<=', DateTime.now().toSQL()!)
   })
 
   public static publisheddeclare = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query) => {
@@ -549,17 +548,17 @@ export default class Post extends AppBaseModel {
       .where('stateId', States.PUBLIC)
       .where(query => query
         .where('paywallTypeId', PaywallTypes.DELAYED_RELEASE)
-        .where('publishAt', '<=', DateTime.now().minus({ days: 14 }).toSQL())
+        .where('publishAt', '<=', DateTime.now().minus({ days: 14 }).toSQL()!)
         .orWhere('paywallTypeId', PaywallTypes.NONE)
       )
   })
 
   public static forDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query, skipPublishCheck: boolean = false) => {
-    const ctx = HttpContext.get()
+    // const ctx = HttpContext.get()
 
     query
       .if(!skipPublishCheck, query => query.apply(scope => scope.published()))
-      .if(ctx?.auth.user, query => query.withCount('watchlist', query => query.where('userId', ctx!.auth.user!.id)))
+      // .if(ctx?.auth.user, query => query.withCount('watchlist', query => query.where('userId', ctx!.auth.user!.id)))
       .preload('thumbnails')
       .preload('covers')
       .preload('taxonomies')
@@ -569,23 +568,17 @@ export default class Post extends AppBaseModel {
   })
 
   public static forPathDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query, skipPublishCheck: boolean = false) => {
-    const ctx = HttpContext.get()
+    // const ctx = HttpContext.get()
 
     query
       .if(!skipPublishCheck, query => query.apply(scope => scope.published()))
-      .if(ctx?.auth.user, query => query.withCount('watchlist', query => query.where('userId', ctx!.auth.user!.id)))
+      // .if(ctx?.auth.user, query => query.withCount('watchlist', query => query.where('userId', ctx!.auth.user!.id)))
       .preload('thumbnails')
       .preload('covers')
       .preload('taxonomies')
       .preload('rootPaths')
       .preload('paths')
       .preload('authors', query => query.preload('profile'))
-  })
-
-  public static forCollectionDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query, { orderBy, direction }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order', direction: 'asc' | 'desc' } = { orderBy: 'pivot_sort_order', direction: 'asc' }) => {
-    query
-      .apply(scope => scope.forDisplay())
-      .orderBy(orderBy, direction)
   })
 
   public static forCollectionPathDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query, { orderBy, direction }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order', direction: 'asc' | 'desc' } = { orderBy: 'pivot_sort_order', direction: 'asc' }) => {

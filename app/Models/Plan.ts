@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, computed } from '@adonisjs/lucid/orm'
-import Env from '@ioc:Adonis/Core/Env'
+import Env from '#start/env'
 import UtilityService from '#services/utility_service'
 import Plans from '#enums/plans'
 import CouponDurations from '#enums/coupon_durations'

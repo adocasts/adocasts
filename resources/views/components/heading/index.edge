@@ -1,0 +1,24 @@
+<div class="grid grid-cols-1 lg:grid-cols-2">
+  <div>
+    <h2 class="text-4xl md:text-5xl xl:text-6xl font-black tracking-tight">
+      {{ title }}
+    </h2>
+    <h5 class="xl:text-lg font-bold text-brand-600 uppercase">
+      {{ subtitle }}
+    </h5>
+  </div>
+
+  <div class="lg:flex lg:justify-end lg:items-end flex-col">
+    @if (description)
+      <p class="text-xl text-slate-600 leading-tight text-justify">
+        {{ description }}
+      </p>
+    @endif
+    
+    @if (href)
+      <a href="{{ href }}" up-follow class="xl:text-lg font-bold link slate">
+        {{ cta }} <span aria-hidden="true">&rarr;</span>
+      </a>
+    @endif
+  </div>
+</div>
