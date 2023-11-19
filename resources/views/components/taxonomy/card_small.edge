@@ -1,7 +1,7 @@
 <a href="#" up-follow class="flex justify-center items-center bg-slate-base-900 rounded-md relative overflow-hidden group">
   @if (item.asset)
     <div 
-      class="absolute w-full h-full top-0 left-0 bg-center bg-cover opacity-0 group-hover:opacity-100 duration-300 delay-75"
+      class="absolute w-full h-full top-0 left-0 bg-center bg-cover opacity-0 group-hover:opacity-100 duration-300"
       style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
     </div>
   @endif
@@ -11,19 +11,19 @@
       @!taxonomy.icon({ item, class: 'w-16 mx-auto' })
     </div>
     <div class="translate-y-0 group-hover:translate-y-full duration-300">
-      <h3 class="font-bold text-slate-base-50 text-sm">
+      <h3 class="font-bold text-slate-base-50 text-sm xl:text-base mb-1">
         {{ item.name }}
       </h3>
       <div class="flex justify-center items-center gap-3 text-slate-base-400 text-xs">
         <div class="flex items-center gap-1.5">
-          @svg('majesticons:checkbox-list-detail')
+          @svg('ph:books-fill')
           <span>
             {{ item.meta.collections_count ?? '0' }}
             {{ pluralize('Series', item.meta.collections_count) }}
           </span>
         </div>
         <div class="flex items-center gap-1.5">
-          @svg('majesticons:checkbox-list-detail')
+          @svg('ph:graduation-cap-fill')
           <span>
             {{ item.meta.posts_count ?? '0' }}
             {{ pluralize('Lessons', item.meta.posts_count) }}
@@ -40,7 +40,7 @@
     <div class="translate-y-full group-hover:translate-y-0 duration-300 text-center drop-shadow-lg">
       @button({ variant: 'lightBase', block: true, class: 'gap-1.5', size: 'xs' })
         View Topic
-        @svg('majesticons:arrow-up-circle')
+        @svg('ph:arrow-circle-right-fill')
       @end
     </div>
   </object>

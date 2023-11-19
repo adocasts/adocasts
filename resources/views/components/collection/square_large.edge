@@ -23,7 +23,7 @@
         <div class="relative">
           <div class="flex items-center gap-3 text-slate-base-300 text-xs lg:text-sm group-hover:translate-y-full group-hover:opacity-0 duration-300">
             <div class="flex items-center gap-1.5">
-              @svg('majesticons:checkbox-list-detail')
+              @svg('ph:graduation-cap-fill')
               <span>
                 {{ item.meta.postsFlattened_count ?? '0' }}
                 {{ pluralize('Lessons', item.meta.postsFlattened_count)}}
@@ -31,7 +31,7 @@
             </div>
   
             <div class="flex items-center gap-1.5">
-              @svg('majesticons:clock')
+              @svg('ph:clock-fill')
               {{ utils.secondsToTimestring(item.meta.videoSecondsSum) }}
             </div>
           </div>
@@ -39,7 +39,7 @@
           <object class="absolute w-full top-0 left-0 opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 duration-300 text-center drop-shadow-lg">
             @button({ variant: 'lightBase', block: true, class: 'gap-1.5', href: '#' })
               View Series
-              @svg('majesticons:arrow-up-circle')
+              @svg('ph:arrow-circle-right-fill')
             @end
           </object>
         </div>
