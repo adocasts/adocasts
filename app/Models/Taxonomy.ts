@@ -114,7 +114,10 @@ export default class Taxonomy extends AppBaseModel {
   public static hasContent = scope<typeof Taxonomy, (query: ModelQueryBuilderContract<typeof Taxonomy>) => void>((query) => {
     query.where(q => q
       .orWhereHas('posts', p => p.apply(scope => scope.published()))
-      .orWhereHas('collections', p => p.where({ stateId: States.PUBLIC }))
+      .orWhereHas('collections', p => p
+        .where({ stateId: States.PUBLIC })
+        .whereHas('postsFlattened', query => query.apply(scope => scope.published()))
+      )
     )
   })
 

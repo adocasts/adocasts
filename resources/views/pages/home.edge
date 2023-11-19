@@ -4,7 +4,7 @@
     @!hero.home()
   @endslot
 
-  <section>
+  <section class="mb-8 lg:mb-12">
     @!heading({
       title: 'Series.',
       subtitle: 'Step-By-Step Learning',
@@ -15,10 +15,25 @@
     <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4 pb-8 pt-4">
       @each ((item, i) in series)
         @if ([0].includes(i))
-          @!collection.squareLarge({ item })
+          @!collection.squareLarge({ item, class: ['col-span-2 lg:col-span-2 md:row-span-3 lg:row-span-2'] })
         @else
           @!collection.squareSmall({ item })
         @endif
+      @endeach
+    </div>
+  </section>
+
+  <section>
+    @!heading({
+      title: 'Topics.',
+      subtitle: 'Subject-Based Learning',
+      cta: 'Browse All Topics',
+      href: '#'
+    })
+
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-8 pt-4">
+      @each (item in topics)
+        @!taxonomy.cardSmall({ item })
       @endeach
     </div>
   </section>

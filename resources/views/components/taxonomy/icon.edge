@@ -1,0 +1,15 @@
+<div>
+  @if (item.asset)
+    <img 
+      src="{{ assetDomain }}{{ item.asset.assetUrl }}" 
+      class="bg-white rounded-md object-contain object-center {{ $props.class }}" 
+      style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}?w=10'); filter: blur(10px); background-size: 100%;"
+      onload="this.style.backgroundImage = null; this.style.filter = null; this.classList.remove('bg-white');"
+      loading="lazy" 
+    />
+  @else
+    <div class="text-2xl font-semibold flex items-center justify-center mb-3 rounded-md bg-brand-300 text-brand-800 {{ className }}">
+      {{ utils.getAbbrev(item.name) }}
+    </div>
+  @endif
+</div>

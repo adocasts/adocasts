@@ -1,20 +1,14 @@
 import States from "#enums/states";
 import Collection from "#models/collection";
+import BaseBuilder from "./base_builder.js";
 
-export default class CollectionBuilder {
-  protected query = Collection.query()
-
-  constructor() {}
+export default class CollectionBuilder extends BaseBuilder<typeof Collection, Collection> {
+  constructor() {
+    super(Collection)
+  }
 
   public static new() {
     return new CollectionBuilder()
-  }
-
-  public if(condition: any, cb: (self: this) => this) {
-    if (condition) {
-      return cb(this)
-    }
-    return this
   }
 
   public display() {
@@ -32,16 +26,6 @@ export default class CollectionBuilder {
 
   public root() {
     this.query.whereNull('parentId')
-    return this
-  }
-
-  public limit(limit: number) {
-    this.query.limit(limit)
-    return this
-  }
-
-  public exclude(values: any[], column: string = 'id') {
-    this.query.whereNotIn(column, values)
     return this
   }
 
@@ -95,12 +79,5 @@ export default class CollectionBuilder {
       .select(['collections.*'])
 
     return this
-  }
-
-  public then(
-    onfulfilled?: ((value: Collection[]) => Collection[] | PromiseLike<Collection[]>) | null | undefined,
-    onrejected?: ((reason: any) => PromiseLike<never>) | null | undefined
-  ) {
-    return this.query.then(onfulfilled, onrejected)
   }
 }
