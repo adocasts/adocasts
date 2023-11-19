@@ -1,4 +1,4 @@
-<div class="col-span-2 md:row-span-3 lg:row-span-2 flex flex-col justify-center items-center bg-slate-400 rounded-md relative overflow-hidden group">
+<div class="col-span-2 lg:col-span-2 md:row-span-3 lg:row-span-2 flex flex-col justify-center items-center bg-slate-400 rounded-md relative overflow-hidden group">
   @if (item.asset)
     <div 
       class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit duration-300"
@@ -6,17 +6,20 @@
     </div>
   @endif
 
-  <div class="p-4 lg:p-6 flex flex-col duration-300 z-10 w-full h-full bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 backdrop-blur-2xl">
-    <a href="#" up-follow class="anchor-group flex items-center justify-center p-4 bg-slate-base-900/25 rounded-md backdrop-blur-3xl gap-3 lg:gap-6">
-      <div class="w-1/5 flex justify-center items-center">
+  <div class="p-4 lg:p-6 flex-col duration-300 z-10 w-full h-full bg-gradient-to-t from-slate-base-900/0 via-slate-base-900/0 to-slate-base-900/75 backdrop-blur-2xl">
+    <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95"></div>
+    
+    <a href="#" up-follow class="anchor-group flex items-center justify-center rounded-md gap-3 lg:gap-6 relative z-10">
+      <div class="w-1/4 flex justify-center items-center">
         @!collection.icon({ item, class: 'w-full' })
       </div>
-      <div class="w-4/5">
+      <div class="w-3/4 space-y-1.5">
         <h3 class="font-bold text-slate-base-50 text-xl lg:text-2xl">
           <span class="anchor-target current-color hover:current-color">
             {{ item.name }}
           </span>
         </h3>
+
         <div class="flex items-center gap-3 text-slate-base-300 text-xs lg:text-sm">
           <div class="flex items-center gap-1.5">
             @svg('majesticons:checkbox-list-detail')
@@ -33,24 +36,24 @@
       </div>
     </a>
 
-    <object class="relative z-10 mt-6">
+    <div class="relative z-10 mt-8 pb-4">
       <div class="flex flex-col">
         <h5 class="uppercase font-semibold tracking-tight text-sm text-slate-base-50 mb-2">
           Latest Lessons
         </h5>
-        @each (post in item.postsFlattened.slice(0, 3))
-          @!post.itemSmall({ item: post, classContent: ['text-slate-base-50'] })
+        @each ((post, i) in item.postsFlattened.slice(0, 4))
+          @!post.itemSmall({ item: post, class: [{ 'hidden md:flex lg:hidden': i === 3 }], classContent: ['text-slate-base-50'] })
         @endeach
       </div>
-    </object>
-  </div>
-
-  {{--  <div class="p-4 flex flex-col justify-end absolute top-0 left-0 opacity-0 group-hover:opacity-100 duration-300 z-10 w-full h-full">
-    <div class="translate-y-full group-hover:translate-y-0 duration-300 text-center drop-shadow-lg">
-      <h3 class="font-bold text-slate-base-50 flex items-center justify-center gap-1.5">
-        View Series
-        @svg('majesticons:arrow-up-circle')
-      </h3>
     </div>
-  </div>  --}}
+    
+    <div class="p-4 flex flex-col justify-end absolute bottom-0 left-0 opacity-0 group-hover:opacity-100 duration-300 z-10 w-full">
+      <div class="translate-y-full group-hover:translate-y-0 duration-300 text-center drop-shadow-lg">
+        <a href="#" up-follow class="font-bold text-slate-base-50 flex items-center justify-center gap-1.5">
+          View Series
+          @svg('majesticons:arrow-up-circle')
+        </a>
+      </div>
+    </div>
+  </div>
 </div>
