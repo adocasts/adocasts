@@ -1,4 +1,4 @@
-<a href="#" up-follow class="flex justify-center items-center bg-slate-base-900 rounded-md relative overflow-hidden group">
+<div class="flex justify-center items-center bg-slate-base-900 rounded-md relative overflow-hidden group">
   @if (item.asset)
     <div 
       class="absolute w-full h-full top-0 left-0 bg-center bg-cover opacity-0 group-hover:opacity-100 duration-300"
@@ -6,42 +6,46 @@
     </div>
   @endif
 
-  <div class="p-4 flex items-center opacity-full group-hover:opacity-0 duration-300 z-10 w-full h-full bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 backdrop-blur-2xl gap-2 xl:gap-4">
-    <div class="flex justify-center items-center translate-y-0 group-hover:-translate-y-full duration-300 h-fit">
-      @!taxonomy.icon({ item, class: 'w-16 mx-auto' })
-    </div>
-    <div class="translate-y-0 group-hover:translate-y-full duration-300">
-      <h3 class="font-bold text-slate-base-50 text-sm xl:text-base mb-1">
-        {{ item.name }}
-      </h3>
-      <div class="flex justify-center items-center gap-3 text-slate-base-400 text-xs">
-        <div class="flex items-center gap-1.5">
-          @svg('ph:books-fill')
-          <span>
-            {{ item.meta.collections_count ?? '0' }}
-            {{ pluralize('Series', item.meta.collections_count) }}
-          </span>
+  <div class="backdrop-blur-2xl bg-slate-base-900 group-hover:bg-slate-base-900/0 w-full h-full flex justify-center items-center">
+    <a href="#" up-follow class="p-4 flex items-center opacity-full group-hover:opacity-0 duration-300 z-10 w-full h-full gap-2 xl:gap-4">
+      <div class="flex justify-center items-center translate-y-0 group-hover:-translate-y-full duration-300 h-fit">
+        @!taxonomy.icon({ item, class: 'w-14 mx-auto' })
+      </div>
+      <div class="translate-y-0 group-hover:translate-y-full duration-300">
+        <h3 class="font-bold text-slate-base-50 text-sm xl:text-base mb-1">
+          {{ item.name }}
+        </h3>
+        <div class="flex justify-center items-center gap-3 text-slate-base-400 text-xs">
+          <div class="flex items-center gap-1.5">
+            @svg('ph:books-fill')
+            <span>
+              {{ item.meta.collections_count ?? '0' }}
+              {{ pluralize('Series', item.meta.collections_count) }}
+            </span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            @svg('ph:graduation-cap-fill')
+            <span>
+              {{ item.meta.posts_count ?? '0' }}
+              {{ pluralize('Lessons', item.meta.posts_count) }}
+            </span>
+          </div>
         </div>
-        <div class="flex items-center gap-1.5">
-          @svg('ph:graduation-cap-fill')
-          <span>
-            {{ item.meta.posts_count ?? '0' }}
-            {{ pluralize('Lessons', item.meta.posts_count) }}
-          </span>
-        </div>
+      </div>
+    </a>
+  
+    <div class="p-4 flex flex-col justify-end absolute top-0 left-0 opacity-0 group-hover:opacity-100 duration-300 z-10 w-full h-full bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95">
+      <a href="#" up-follow class="anchor-expand">
+        <h3 class="font-black text-slate-base-50 text-center text-lg drop-shadow-lg -translate-y-full group-hover:translate-y-0 duration-300">
+          {{ item.name }}
+        </h3>
+      </a>
+      <div class="translate-y-full group-hover:translate-y-0 duration-300 text-center drop-shadow-lg">
+        @button({ href: '#', variant: 'lightBase', block: true, class: 'gap-1.5', size: 'xs' })
+          View Topic
+          @svg('ph:arrow-circle-right-fill')
+        @end
       </div>
     </div>
   </div>
-
-  <object class="p-4 flex flex-col justify-end absolute top-0 left-0 opacity-0 group-hover:opacity-100 duration-300 z-10 w-full h-full bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 backdrop-blur-2xl">
-    <h3 class="font-black text-slate-base-50 text-center text-lg mb-1.5 drop-shadow-lg -translate-y-full group-hover:translate-y-0 duration-300">
-      {{ item.name }}
-    </h3>
-    <div class="translate-y-full group-hover:translate-y-0 duration-300 text-center drop-shadow-lg">
-      @button({ variant: 'lightBase', block: true, class: 'gap-1.5', size: 'xs' })
-        View Topic
-        @svg('ph:arrow-circle-right-fill')
-      @end
-    </div>
-  </object>
-</a>
+</div>

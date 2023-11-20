@@ -23,7 +23,7 @@
     </div>
   </section>
 
-  <section>
+  <section class="mb-8 lg:mb-12">
     @!heading({
       title: 'Topics.',
       subtitle: 'Subject-Based Learning',
@@ -35,6 +35,19 @@
       @each (item in topics)
         @!taxonomy.cardSmall({ item })
       @endeach
+    </div>
+  </section>
+
+  <section class="mb-8 lg:mb-12">
+    @!heading({
+      title: 'Lessons.',
+      subtitle: "Here's What's New",
+      cta: 'Browse All Lessons',
+      href: '#'
+    })
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pb-8 pt-4">
+
     </div>
   </section>
 

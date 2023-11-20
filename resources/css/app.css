@@ -30,6 +30,15 @@ a.link {
   }
 }
 
+.anchor-expand:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .anchor,
 .prose :where(a):not(.btn):not(:where([class~="not-prose"] *)) {
   color: theme('colors.brand.600');
