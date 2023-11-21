@@ -1,0 +1,49 @@
+@let(img = item.thumbnails?.length ? item.thumbnails[0] : item.covers?.length ? item.covers[0] : null)
+@let(col = $props.col ?? false)
+
+<a up-follow {{ html.attrs({
+  href: item.routeUrl,
+  class: [
+    'flex flex-col mb-4 group duration-300 anchor-group', 
+    { 
+      '-mx-2 sm:flex-row md:items-center': !col 
+    },
+    ...($props.class || [])
+  ],
+  ...($props.attrs || {})
+}) }} href="{{ item.routeUrl }}">
+  @if (img)
+    <div class="{{ html.classNames([
+      'mb-3 w-full relative duration-300',
+      {
+        'md:mb-0 md:w-1/2 lg:w-2/5 mx-2': !col
+      },
+      ...(imgClassName || [])
+    ]) }}">
+      @!post.picture({ item, class: 'h-full', lazy: lazyItem })
+
+      {{--  @if (progression)
+        @!lessons.progression({ progressionHistory: item.progressionHistory })
+      @endif  --}}
+    </div>
+  @endif
+
+  <div class="{{ html.classNames([{
+    'md:w-1/2 lg:w-3/5 mx-2': img && !col,
+    'w-full mx-4': !img
+  }, ...($props.classContent || [])]) }}">
+    @!post.seriesBar({ item })
+
+    <h3 class="{{ html.classNames(['font-bold line-clamp-3 leading-5', ...($props.classHeading || [])]) }}">
+      <span class="anchor-target current-color hover:current-color">
+        {{ item.title }}
+      </span>
+    </h3>
+
+    @if (item.description)
+      <p class="{{ html.classNames(['mb-2 mt-3 text-xs text-slate-600 group-hover:text-slate-700 line-clamp-3 duration-300', ...($props.classDescription || [])]) }}">
+        {{ item.description }}
+      </p>
+    @endif
+  </div>
+</a>

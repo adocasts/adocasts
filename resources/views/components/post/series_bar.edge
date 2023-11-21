@@ -1,0 +1,57 @@
+@let(upAttrs = $props.upAttrs || {})
+
+<div class="flex justify-between">
+  @if (item.series?.length)
+    @let(series = item.rootSeries.at(0))
+    <object>
+      <h5 class="uppercase flex items-center text-accent-500 hover:text-accent-600 tracking-wide font-sans text-xs mb-1">
+        <a href="#" up-follow class="anchor truncate" {{ html.attrs(upAttrs) }}>
+          {{ series.name }}
+        </a>
+        <span class="text-slate-600 group-hover:text-slate-700 duration-150 ml-2">
+          #{{ item.lessonIndexDisplay }}
+        </span>
+      </h5>
+    </object>
+  @elseif (item.paths?.length)
+    @set(path = item.rootPaths.at(0))
+    <object>
+      <h5 class="uppercase flex items-center text-accent-500 tracking-wide font-sans text-xs mb-1">
+        <a href="#" up-follow class="anchor truncate" {{ html.attrs(upAttrs) }}>
+          {{ path.name }}
+        </a>
+        <span class="text-slate-600 group-hover:text-slate-700 duration-150 ml-2">
+          #{{ item.lessonIndexDisplay }}
+        </span>
+      </h5>
+    </object>
+  @elseif (item.postTypeId === PostTypes.NEWS)
+    <object>
+      <h5 class="uppercase inline-flex items-center text-brand-500 tracking-wide  font-sans text-xs mb-1">
+        <a href="#" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
+          NEWS
+        </a>
+      </h5>
+    </object>
+  @elseif (item.postTypeId === PostTypes.LIVESTREAM)
+    <object>
+      <h5 class="uppercase inline-flex items-center text-brand-500  tracking-wide  font-sans text-xs mb-1">
+        <a href="#" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
+          LIVESTREAM
+        </a>
+      </h5>
+    </object>
+  @elseif (item.postTypeId === PostTypes.BLOG)
+    <object>
+      <h5 class="uppercase inline-flex items-center text-brand-500  tracking-wide  font-sans text-xs mb-1">
+        <a href="#" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
+          BLOG
+        </a>
+      </h5>
+    </object>
+  @endif
+
+  <div class="text-slate-600 group-hover:text-slate-700 text-xs">
+    {{ item.publishAt.toFormat('MMM dd') }}
+  </div>
+</div>
