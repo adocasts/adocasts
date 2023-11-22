@@ -14,7 +14,7 @@
   }
 })
 
-<div {{ html.attrs({ class: utils.classes('grid', [{ 'lg:grid-cols-2': description || cta }], $props.class), ...($props.attrs || {}) }) }}>
+<div {{ html.attrs({ class: utils.classes('grid', [{ 'sm:grid-cols-2': description || cta }], $props.class), ...($props.attrs || {}) }) }}>
   <div>
     <h2 class="{{ html.classNames([sizes[size].title, ...($props.class?.title || [])]) }}">
       {{ title }}
@@ -25,7 +25,7 @@
   </div>
 
   @if (description || cta)
-    <div class="lg:flex lg:justify-end lg:items-end flex-col">
+    <div class="sm:flex sm:justify-end sm:items-end flex-col">
       @if (description)
         <p class="{{ html.classNames([sizes[size].description, ...($props.class?.description || [])]) }}">
           {{ description }}

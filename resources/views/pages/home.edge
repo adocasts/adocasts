@@ -12,12 +12,12 @@
       href: '#'
     })
   
-    <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4 pb-8 pt-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 pb-8 pt-4">
       @each ((item, i) in series)
         @if ([0].includes(i))
-          @!collection.square.large({ item, class: ['md:col-span-4 lg:col-span-5'] })
+          @!collection.square.large({ item, class: ['sm:col-span-2 md:col-span-4 lg:col-span-5'] })
         @elseif (i === 1)
-          @!collection.square({ item, class: ['lg:col-span-2 md:row-span-3 lg:row-span-2']})
+          @!collection.square({ item, class: ['sm:col-span-2 md:col-span-1 lg:col-span-2 md:row-span-3 lg:row-span-2']})
         @else
           @!collection.square.small({ item })
         @endif
@@ -33,7 +33,7 @@
       href: '#'
     })
 
-    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-8 pt-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-8 pt-4">
       @each (item in topics)
         @!taxonomy.card.small({ item })
       @endeach
@@ -48,21 +48,24 @@
       href: '#'
     })
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-8 gap-4 xl:gap-8 pb-8 pt-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-8 gap-4 xl:gap-8 pb-8 pt-4">
       @each((item, i) in lessons)
         @!post.item({ 
           item, 
           col: i < 4, 
           class: [{
             'lg:col-span-2': i < 4,
-            'lg:col-span-4': i >= 4
-          }] 
+            'sm:col-span-2 md:col-span-1 lg:col-span-4': i >= 4,
+          }],
+          classDescription: [{
+            'md:hidden lg:block': i >= 4
+          }]
         })
       @endeach
     </div>
   @end
 
-  @section({ class: ['grid grid-cols-2 gap-8 xl:gap-12'] })
+  @section({ class: ['grid md:grid-cols-2 gap-8 xl:gap-12'] })
     <div>
       @!heading({
         size: 'sm',

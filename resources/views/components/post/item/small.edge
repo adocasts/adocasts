@@ -4,9 +4,9 @@
   href: item.routeUrl,
   class: ['-mx-2 flex flex-col sm:flex-row md:items-center mb-4 group duration-300 anchor-group', ...($props.class || [])],
   ...($props.attrs || {})
-}) }} href="{{ item.routeUrl }}">
+}) }}>
   @if (img)
-    <div class="mb-3 md:mb-0 md:w-1/2 lg:w-2/5 mx-2 relative duration-300 {{ imgClassName }}">
+    <div class="mb-3 md:mb-0 sm:w-2/5 md:w-1/2 lg:w-2/5 mx-2 relative duration-300 {{ imgClassName }}">
       @!post.picture({ item, class: 'h-full', lazy: lazyItem })
 
       {{--  @if (progression)
@@ -16,7 +16,7 @@
   @endif
 
   <div class="{{ html.classNames([{
-    'md:w-1/2 lg:w-3/5 mx-2': img,
+    'sm:w-3/5 md:w-1/2 lg:w-3/5 mx-2': img,
     'w-full mx-4': !img
   }, ...($props.classContent || [])]) }}">
     @!post.seriesBar({ item, display })
@@ -27,10 +27,13 @@
       </span>
     </h3>
 
-    {{--  @if (description && item.description)
-      <p class="hidden md:inline-block {{ descClassName }} mb-2 mt-3 text-sm text-slate-600 group-hover:text-slate-700 duration-150 {{ sizeClassMap[size].description }}">
+    @if (item.description)
+      <p class="{{ html.classNames([
+        'mb-2 mt-3 text-xs line-clamp-2 md:hidden text-slate-600 group-hover:text-slate-700 duration-300', 
+        ...($props.classDescription || [])
+      ]) }}">
         {{ item.description }}
       </p>
-    @endif  --}}
+    @endif
   </div>
 </a>
