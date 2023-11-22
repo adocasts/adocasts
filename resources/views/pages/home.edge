@@ -96,41 +96,45 @@
     </div>
   @end
 
-  @starfield({ class: 'px-4 lg:px-8 lg:pt-[8rem] lg:pb-[18rem] rounded-3xl shadow-xl overflow-hidden', lines: false, mountain: false })
-    @!heading({
-      title: 'Adocasts+',
-      subtitle: 'Unlock All Content',
-      class: 'text-center'
-    })
-
-    <div class="relative z-10 flex justify-center items-center mt-4 lg:mt-6">
-      <div class="bg-gradient-to-br from-slate-100 to-slate-100/0 p-4 lg:p-8 rounded-md shadow-xl xl:w-2/5">
-        <ul role="list" class="space-y-3 text-sm leading-6 text-slate-600">
-          @!pricing.feature.item({ text: 'Unlock all series and lessons' })
-          @!pricing.feature.item({ text: '2 weeks early access to new lessons' })
-          @!pricing.feature.item({ text: 'Ad-free experience' })
-          @!pricing.feature.item({ text: 'Renewal reminders; cancel anytime' })
-        </ul>
+  <div class="break my-8 lg:my-12">
+    @starfield({ class: 'max-w-8xl mx-auto px-4 lg:px-8 pt-[6rem] pb-[8rem] sm:pb-[12rem] md:pb-[16rem] lg:pt-[8rem] lg:pb-[18rem] xl:pt-[10rem] xl:pb-[22rem] overflow-hidden', lines: false, mountain: false })
+      <div class="page">
+        @!heading({
+          title: 'Adocasts+',
+          subtitle: 'Unlock All Content',
+          class: 'text-center'
+        })
+  
+        <div class="relative z-10 flex justify-center items-center mt-4 lg:mt-6">
+          <div class="bg-gradient-to-br from-slate-100 to-slate-100/0 p-4 lg:p-8 rounded-md shadow-xl w-full md:w-3/5 lg:w-1/2 xl:w-2/5">
+            <ul role="list" class="space-y-3 text-sm leading-6 text-slate-600">
+              @!pricing.feature.item({ text: 'Unlock all series, lessons, and assets' })
+              @!pricing.feature.item({ text: '2 weeks early access to new lessons' })
+              @!pricing.feature.item({ text: 'Ad-free experience' })
+              @!pricing.feature.item({ text: 'Renewal reminders; cancel anytime' })
+            </ul>
+          </div>
+        </div>
+  
+        @!pricing.table({ class: 'mt-4 md:mt-6 relative z-10' })
       </div>
-    </div>
 
-    @!pricing.table({ class: 'mt-4 lg:mt-6 relative z-10' })
+      <div class="absolute w-full h-auto top-6 left-0 z-20 pointer-events-none">
+        <img src="/imgs/planets-top-front.svg" class="w-full" />
+      </div>
 
-    <div class="absolute w-full h-auto top-6 left-0 z-20">
-      <img src="/imgs/planets-top-front.svg" class="w-full" />
-    </div>
+      <div class="absolute w-full h-auto top-0 left-0 z-20 pointer-events-none">
+        <img src="/imgs/planets-top.svg" class="w-full" />
+      </div>
+      
+      <div class="absolute w-full h-auto bottom-0 left-0 z-20 pointer-events-none">
+        <img src="/imgs/planets-bottom.svg" class="w-full" />
+      </div>
 
-    <div class="absolute w-full h-auto top-0 left-0 z-20">
-      <img src="/imgs/planets-top.svg" class="w-full" />
-    </div>
-    
-    <div class="absolute w-full h-auto bottom-0 left-0 z-20">
-      <img src="/imgs/planets-bottom.svg" class="w-full" />
-    </div>
-
-    <div class="absolute w-full h-auto bottom-0 left-0 z-0">
-      <img src="/imgs/planets-bottom-behind.svg" class="w-full" />
-    </div>
-  @end
+      <div class="absolute w-full h-auto bottom-0 left-0 z-0 pointer-events-none">
+        <img src="/imgs/planets-bottom-behind.svg" class="w-full" />
+      </div>
+    @end
+  </div>
 
 @end
