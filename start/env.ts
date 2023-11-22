@@ -18,6 +18,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   HOST: Env.schema.string({ format: 'host' }),
   LOG_LEVEL: Env.schema.string(),
   CACHE_VIEWS: Env.schema.boolean(),
+  IDENTITY_SECRET: Env.schema.string(),
 
   /*
   |----------------------------------------------------------
@@ -36,5 +37,9 @@ export default await Env.create(new URL('../', import.meta.url), {
   DB_PORT: Env.schema.number(),
   DB_USER: Env.schema.string(),
   DB_PASSWORD: Env.schema.string.optional(),
-  DB_DATABASE: Env.schema.string()
+  DB_DATABASE: Env.schema.string(),
+
+  REDIS_ENABLED: Env.schema.boolean(),
+  REDIS_HOST: Env.schema.string({ format: 'host' }),
+  REDIS_PORT: Env.schema.number()
 })

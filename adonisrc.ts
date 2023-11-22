@@ -36,6 +36,7 @@ export default defineConfig({
     () => import('@adonisjs/lucid/database_provider'),
     () => import('@adonisjs/auth/auth_provider'),
     () => import('@adonisjs/static/static_provider'),
+    () => import('@adonisjs/redis/redis_provider')
   ],
 
   /*
@@ -47,11 +48,11 @@ export default defineConfig({
   |
   */
   preloads: [
-    () => import('#start/routes'), 
-    () => import('#start/kernel'), 
-    () => import('./start/macros/model_query_builder_macros.js'), 
+    () => import('#start/routes'),
+    () => import('#start/kernel'),
+    () => import('./start/macros/model_query_builder_macros.js'),
     () => import('./start/up/index.js'),
-    () => import('./start/globals.js'), 
+    () => import('./start/globals.js'),
   ],
 
   /*
