@@ -1,24 +1,42 @@
-<div class="grid grid-cols-1 lg:grid-cols-2">
+@let(size = $props.size || 'base')
+@let(sizes = {
+  sm: {
+    title: 'text-4xl font-black tracking-tight',
+    subtitle: 'text-base font-bold text-brand-600 uppercase',
+    description: 'text-xl text-slate-600 leading-tight text-justify',
+    cta: 'text-base font-bold text-slate-600 hover:text-slate-950 link current'
+  },
+  base: {
+    title: 'text-4xl md:text-5xl xl:text-6xl font-black tracking-tight',
+    subtitle: 'xl:text-lg font-bold text-brand-600 uppercase',
+    description: 'text-xl text-slate-600 leading-tight text-justify',
+    cta: 'xl:text-lg text-slate-600 hover:text-slate-950 font-bold link current'
+  }
+})
+
+<div {{ html.attrs({ class: utils.classes('grid', [{ 'lg:grid-cols-2': description || cta }], $props.class), ...($props.attrs || {}) }) }}>
   <div>
-    <h2 class="text-4xl md:text-5xl xl:text-6xl font-black tracking-tight">
+    <h2 class="{{ html.classNames([sizes[size].title, ...($props.class?.title || [])]) }}">
       {{ title }}
     </h2>
-    <h5 class="xl:text-lg font-bold text-brand-600 uppercase">
+    <h5 class="{{ html.classNames([sizes[size].subtitle, ...($props.class?.subtitle || [])]) }}">
       {{ subtitle }}
     </h5>
   </div>
 
-  <div class="lg:flex lg:justify-end lg:items-end flex-col">
-    @if (description)
-      <p class="text-xl text-slate-600 leading-tight text-justify">
-        {{ description }}
-      </p>
-    @endif
-    
-    @if (href)
-      <a href="{{ href }}" up-follow class="xl:text-lg font-bold link slate">
-        {{ cta }} <span aria-hidden="true">&rarr;</span>
-      </a>
-    @endif
-  </div>
+  @if (description || cta)
+    <div class="lg:flex lg:justify-end lg:items-end flex-col">
+      @if (description)
+        <p class="{{ html.classNames([sizes[size].description, ...($props.class?.description || [])]) }}">
+          {{ description }}
+        </p>
+      @endif
+      
+      @if (href)
+        <a href="{{ href }}" up-follow class="{{ html.classNames([sizes[size].cta, ...($props.class?.cta || [])]) }}">
+          {{ cta }} <span aria-hidden="true">&rarr;</span>
+        </a>
+      @endif
+    </div>
+  @endif
 </div>

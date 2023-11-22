@@ -31,3 +31,7 @@ router.get('/:provider/callback', [AuthSocialController, 'callback']).as('auth.s
 router.get('/:provider/unlink', [AuthSocialController, 'unlink']).as('auth.social.unlink')//.middleware(['auth'])
 
 router.get('/series/:collectionSlug/lessons/:slug', 'todo').as('series.lessons.show')
+router.get('/todo-1', 'todo').as('blog.show')
+router.get('/todo-2', 'todo').as('news.show')
+router.get('/todo-3', 'todo').as('snippets.show')
+router.get('/todo-4', 'todo').as('streams.show')

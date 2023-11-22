@@ -139,4 +139,14 @@ export default class UtilityService {
   public static getRandom<T>(array: T[]) {
     return array[Math.floor(Math.random() * array.length)];
   }
+
+  public static classes(...args: string[] | string[][]) {
+    return args.filter(Boolean).reduce((list, item) => {
+      if (Array.isArray(item)) {
+        return [...list, ...item]
+      }
+
+      return [...list, item]
+    }, [])
+  }
 }

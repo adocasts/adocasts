@@ -4,7 +4,7 @@
     @!hero.home()
   @endslot
 
-  <section class="mb-8 lg:mb-12">
+  @section()
     @!heading({
       title: 'Series.',
       subtitle: 'Step-By-Step Learning',
@@ -15,15 +15,17 @@
     <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4 pb-8 pt-4">
       @each ((item, i) in series)
         @if ([0].includes(i))
-          @!collection.squareLarge({ item, class: ['col-span-2 lg:col-span-2 md:row-span-3 lg:row-span-2'] })
+          @!collection.square.large({ item, class: ['md:col-span-4 lg:col-span-5'] })
+        @elseif (i === 1)
+          @!collection.square({ item, class: ['lg:col-span-2 md:row-span-3 lg:row-span-2']})
         @else
-          @!collection.squareSmall({ item })
+          @!collection.square.small({ item })
         @endif
       @endeach
     </div>
-  </section>
+  @end
 
-  <section class="mb-8 lg:mb-12">
+  @section()
     @!heading({
       title: 'Topics.',
       subtitle: 'Subject-Based Learning',
@@ -33,12 +35,12 @@
 
     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-8 pt-4">
       @each (item in topics)
-        @!taxonomy.cardSmall({ item })
+        @!taxonomy.card.small({ item })
       @endeach
     </div>
-  </section>
+  @end
 
-  <section class="mb-8 lg:mb-12">
+  @section()
     @!heading({
       title: 'Lessons.',
       subtitle: "Here's What's New",
@@ -58,6 +60,77 @@
         })
       @endeach
     </div>
-  </section>
+  @end
+
+  @section({ class: ['grid grid-cols-2 gap-8 xl:gap-12'] })
+    <div>
+      @!heading({
+        size: 'sm',
+        title: 'Blogs.',
+        subtitle: "Odds and Ins",
+        cta: 'Browse Our Blog',
+        href: '#'
+      })
+
+      <div class="flex flex-col gap-6 mt-4">
+        @each (item in blogs.slice(0, 4))
+          @!post.item.simple({ item })
+        @endeach
+      </div>
+    </div>
+
+    <div>
+      @!heading({
+        size: 'sm',
+        title: 'Snippets.',
+        subtitle: "Bite Sized Code",
+        cta: 'Browse All Snippets',
+        href: '#'
+      })
+
+      <div class="flex flex-col gap-6 mt-4">
+        @each (item in snippets.slice(0, 4))
+          @!post.item.simple({ item })
+        @endeach
+      </div>
+    </div>
+  @end
+
+  @starfield({ class: 'px-4 lg:px-8 lg:pt-[8rem] lg:pb-[18rem] rounded-3xl shadow-xl overflow-hidden', lines: false, mountain: false })
+    @!heading({
+      title: 'Adocasts+',
+      subtitle: 'Unlock All Content',
+      class: 'text-center'
+    })
+
+    <div class="relative z-10 flex justify-center items-center mt-4 lg:mt-6">
+      <div class="bg-gradient-to-br from-slate-100 to-slate-100/0 p-4 lg:p-8 rounded-md shadow-xl xl:w-2/5">
+        <ul role="list" class="space-y-3 text-sm leading-6 text-slate-600">
+          @!pricing.feature.item({ text: 'Unlock all series and lessons' })
+          @!pricing.feature.item({ text: '2 weeks early access to new lessons' })
+          @!pricing.feature.item({ text: 'Ad-free experience' })
+          @!pricing.feature.item({ text: 'Renewal reminders; cancel anytime' })
+        </ul>
+      </div>
+    </div>
+
+    @!pricing.table({ class: 'mt-4 lg:mt-6 relative z-10' })
+
+    <div class="absolute w-full h-auto top-6 left-0 z-20">
+      <img src="/imgs/planets-top-front.svg" class="w-full" />
+    </div>
+
+    <div class="absolute w-full h-auto top-0 left-0 z-20">
+      <img src="/imgs/planets-top.svg" class="w-full" />
+    </div>
+    
+    <div class="absolute w-full h-auto bottom-0 left-0 z-20">
+      <img src="/imgs/planets-bottom.svg" class="w-full" />
+    </div>
+
+    <div class="absolute w-full h-auto bottom-0 left-0 z-0">
+      <img src="/imgs/planets-bottom-behind.svg" class="w-full" />
+    </div>
+  @end
 
 @end

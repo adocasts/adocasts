@@ -1,0 +1,23 @@
+<article class="flex max-w-2xl flex-col items-start">
+  <div class="flex items-center gap-x-4 text-xs">
+    <time datetime="{{ item.publishAt.toFormat('yyyy-MM-dd') }}" class="text-slate-600">
+      {{ item.publishAtDisplay }}
+    </time>
+    @each (topic in item.taxonomies)
+      <a href="#" class="relative z-10 font-medium link text-slate-600" up-follow>
+        #{{ topic.slug }}
+      </a>
+    @endeach
+  </div>
+  <div class="group relative">
+    <h3 class="mt-2 text-lg font-semibold leading-6">
+      <a href="{{ item.routeUrl }}" class="anchor !text-slate-900" up-follow>
+        <span class="absolute inset-0"></span>
+        {{ item.title }}
+      </a>
+    </h3>
+    <p class="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">
+      {{ item.description }}
+    </p>
+  </div>
+</article>

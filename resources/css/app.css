@@ -17,8 +17,12 @@
 }
 
 a.link {
-  @apply text-brand-600 hover:text-slate-950 duration-300;
+  @apply duration-300;
   position: relative;
+
+  &:not(.current) {
+    @apply text-brand-600 hover:text-slate-950;
+  }
 
   &.slate {
     @apply text-slate-950;
@@ -102,4 +106,14 @@ a.link {
     background-size: 0% 2px;
     color: theme('colors.brand.700');
   }
+}
+
+.break {
+  left: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  max-width: 100vw;
+  position: relative;
+  right: 50%;
+  width: 100vw;
 }

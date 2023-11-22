@@ -245,6 +245,17 @@ export default class Post extends AppBaseModel {
   declare watchlist: HasMany<typeof Watchlist>
 
   @computed()
+  public get publishAtDisplay() {
+    if (!this.publishAt) return ''
+
+    if (DateTime.now().year === this.publishAt.year) {
+      return this.publishAt.toFormat('MMM dd')
+    }
+
+    return this.publishAt.toFormat('MMM dd, yy')
+  }
+
+  @computed()
   public get publishAtDateString() {
     let dte = this.publishAt
 

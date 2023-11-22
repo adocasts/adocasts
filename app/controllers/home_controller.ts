@@ -16,10 +16,18 @@ export default class HomeController {
    * Display a list of resource
    */
   async index({ view }: HttpContext) {
-    const series = await this.collectionService.getLastUpdated(7, true)
+    const series = await this.collectionService.getLastUpdated(8, true)
     const topics = await this.taxonomyService.getList()
     const lessons = await this.postService.getLatestLessons(12)
+    const blogs = await this.postService.getLatestBlogs(4)
+    const snippets = await this.postService.getLatestSnippets(4)
 
-    return view.render('pages/home', { series, topics, lessons })
+    return view.render('pages/home', { 
+      series, 
+      topics, 
+      lessons,
+      blogs,
+      snippets
+    })
   }
 }

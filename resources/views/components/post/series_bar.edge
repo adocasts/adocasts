@@ -1,57 +1,65 @@
 @let(upAttrs = $props.upAttrs || {})
+@let(defaultDisplay = {
+  series: true,
+  seriesName: true,
+  path: true,
+  pathName: true,
+  type: true
+})
+@let(display = { ...defaultDisplay, ...($props.display || {}) })
 
-<div class="flex justify-between">
+<div class="flex items-center">
   @if (item.series?.length)
     @let(series = item.rootSeries.at(0))
-    <object>
-      <h5 class="uppercase flex items-center text-accent-500 hover:text-accent-600 tracking-wide font-sans text-xs mb-1">
+    <h5 class="uppercase flex items-center text-accent-500 hover:text-accent-600 tracking-wide font-sans text-xs">
+      @if (display.seriesName)
         <a href="#" up-follow class="anchor truncate" {{ html.attrs(upAttrs) }}>
           {{ series.name }}
         </a>
-        <span class="text-slate-600 group-hover:text-slate-700 duration-150 ml-2">
-          #{{ item.lessonIndexDisplay }}
-        </span>
-      </h5>
-    </object>
+      @endif
+      <span class="{{ html.classNames(['text-slate-600 group-hover:text-slate-700 duration-150', { 'ml-2': display.seriesName }]) }}">
+        {{ display.seriesName ? '#' : 'Lesson' }}
+        {{ item.lessonIndexDisplay }}
+      </span>
+    </h5>
   @elseif (item.paths?.length)
     @set(path = item.rootPaths.at(0))
-    <object>
-      <h5 class="uppercase flex items-center text-accent-500 tracking-wide font-sans text-xs mb-1">
+    <h5 class="uppercase flex items-center text-accent-500 tracking-wide font-sans text-xs">
+      @if (display.pathName)
         <a href="#" up-follow class="anchor truncate" {{ html.attrs(upAttrs) }}>
           {{ path.name }}
         </a>
-        <span class="text-slate-600 group-hover:text-slate-700 duration-150 ml-2">
-          #{{ item.lessonIndexDisplay }}
-        </span>
-      </h5>
-    </object>
-  @elseif (item.postTypeId === PostTypes.NEWS)
-    <object>
-      <h5 class="uppercase inline-flex items-center text-brand-500 tracking-wide  font-sans text-xs mb-1">
-        <a href="#" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
-          NEWS
-        </a>
-      </h5>
-    </object>
-  @elseif (item.postTypeId === PostTypes.LIVESTREAM)
-    <object>
-      <h5 class="uppercase inline-flex items-center text-brand-500  tracking-wide  font-sans text-xs mb-1">
-        <a href="#" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
-          LIVESTREAM
-        </a>
-      </h5>
-    </object>
-  @elseif (item.postTypeId === PostTypes.BLOG)
-    <object>
-      <h5 class="uppercase inline-flex items-center text-brand-500  tracking-wide  font-sans text-xs mb-1">
-        <a href="#" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
-          BLOG
-        </a>
-      </h5>
-    </object>
+      @endif
+      <span class="{{ html.classNames(['text-slate-600 group-hover:text-slate-700 duration-150', { 'ml-2': display.pathName }]) }}">
+        {{ display.pathName ? '#' : 'Lesson' }}
+        {{ item.lessonIndexDisplay }}
+      </span>
+    </h5>
+  @elseif (display.type && item.postTypeId === PostTypes.NEWS)
+    <h5 class="uppercase inline-flex items-center text-brand-500 tracking-wide  font-sans text-xs">
+      <a href="#" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
+        NEWS
+      </a>
+    </h5>
+  @elseif (display.type && item.postTypeId === PostTypes.LIVESTREAM)
+    <h5 class="uppercase inline-flex items-center text-brand-500  tracking-wide  font-sans text-xs">
+      <a href="#" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
+        LIVESTREAM
+      </a>
+    </h5>
+  @elseif (display.type && item.postTypeId === PostTypes.BLOG)
+    <h5 class="uppercase inline-flex items-center text-brand-500  tracking-wide  font-sans text-xs">
+      <a href="#" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
+        BLOG
+      </a>
+    </h5>
   @endif
 
-  <div class="text-slate-600 group-hover:text-slate-700 text-xs">
-    {{ item.publishAt.toFormat('MMM dd') }}
+  <div class="pl-1 relative text-slate-600">
+    ・
+  </div>
+
+  <div class="text-slate-600 group-hover:text-slate-700 text-xs pl-1">
+    {{ item.publishAtDisplay }}
   </div>
 </div>

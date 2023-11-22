@@ -6,7 +6,7 @@
   ...($props.attrs || {})
 }) }} href="{{ item.routeUrl }}">
   @if (img)
-    <div class="mb-3 md:mb-0 md:w-1/2 lg:w-2/5 xl:w-1/3 mx-2 relative duration-300 {{ imgClassName }}">
+    <div class="mb-3 md:mb-0 md:w-1/2 lg:w-2/5 mx-2 relative duration-300 {{ imgClassName }}">
       @!post.picture({ item, class: 'h-full', lazy: lazyItem })
 
       {{--  @if (progression)
@@ -16,10 +16,10 @@
   @endif
 
   <div class="{{ html.classNames([{
-    'md:w-1/2 lg:w-3/5 xl:w-2/3 mx-2': img,
+    'md:w-1/2 lg:w-3/5 mx-2': img,
     'w-full mx-4': !img
   }, ...($props.classContent || [])]) }}">
-    {{--  @!lessons.barSeries({ item, upAttrs })  --}}
+    @!post.seriesBar({ item, display })
 
     <h3 class="{{ html.classNames(['font-bold text-sm line-clamp-3 leading-5', ...($props.classHeading || [])]) }}">
       <span class="anchor-target current-color hover:current-color">

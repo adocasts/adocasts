@@ -1,0 +1,6 @@
+@let(classNames = utils.classes('mb-8 lg:mb-12', $props.class))
+@let(attrs = $props.attrs || {})
+
+<section {{ html.attrs({ ...attrs, class: classNames }) }}>
+  {{{ await $slots.main() }}}
+</section>
