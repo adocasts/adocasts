@@ -15,7 +15,7 @@
       {{{ await $slots.hero() }}}
     @endif
 
-    <main class="page mt-8">
+    <main {{ html.attrs({ class: utils.classes('page', [up.isPage ? 'mt-8' : '!px-0']), ...($props.attrs || {}) }) }} >
       {{{ await $slots.main() }}}
     </main>
   </div>

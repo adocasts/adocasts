@@ -1,8 +1,10 @@
 @import '_theme.css';
+@import '_modal.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 [x-cloak] {
   display: none;

@@ -1,11 +1,4 @@
 import '../css/app.css'
-import 'unpoly'
-import 'unpoly/unpoly.css'
-import Alpine from 'alpinejs'
+import './_unpoly'
+import './_alpine'
 import './_stars'
-
-// up.log.enable()
-
-window.Alpine = Alpine
-
-Alpine.start()

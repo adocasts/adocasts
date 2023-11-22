@@ -46,7 +46,13 @@ export default defineConfig({
   | List of modules to import before starting the application.
   |
   */
-  preloads: [() => import('#start/routes'), () => import('#start/kernel'), () => import('./start/macros/model_query_builder_macros.js'), () => import('./start/globals.js')],
+  preloads: [
+    () => import('#start/routes'), 
+    () => import('#start/kernel'), 
+    () => import('./start/macros/model_query_builder_macros.js'), 
+    () => import('./start/up/index.js'),
+    () => import('./start/globals.js'), 
+  ],
 
   /*
   |--------------------------------------------------------------------------
