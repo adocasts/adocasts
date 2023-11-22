@@ -1,0 +1,9 @@
+<li>
+  <a href="{{ href }}" up-follow class="text-sm text-slate-600 hover:text-slate-900">
+    @if (text)
+      {{ text }}
+    @else
+      {{{ await $slots.main() }}}
+    @endif
+  </a>
+</li>

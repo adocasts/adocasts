@@ -117,3 +117,11 @@ a.link {
   right: 50%;
   width: 100vw;
 }
+
+footer .formkit-form input {
+  @apply !w-full !text-sm !rounded-md !placeholder-slate-400 !bg-slate-100 !border !border-slate-200 !text-black;
+
+  &:focus {
+    @apply border-brand-500 ring-brand-500;
+  }
+}
