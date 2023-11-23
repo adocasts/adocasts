@@ -1,4 +1,4 @@
-import States
+import States from '#enums/states'
 import { ModelQueryBuilder } from "@adonisjs/lucid/orm"
 
 declare module '@adonisjs/lucid/orm' {
@@ -10,7 +10,7 @@ declare module '@adonisjs/lucid/orm' {
 }
 
 ModelQueryBuilder.macro('wherePublic', function (this: ModelQueryBuilder) {
-  return this.where({ stateId: 5 })
+  return this.where({ stateId: States.PUBLIC })
 })
 
 ModelQueryBuilder.macro('whereTrue', function (this: ModelQueryBuilder, column: string) {

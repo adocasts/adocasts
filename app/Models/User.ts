@@ -25,8 +25,9 @@ import Roles from '#enums/roles'
 import HistoryTypes from '#enums/history_types'
 import Plans from '#enums/plans'
 import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
+import hash from '@adonisjs/core/services/hash'
 
-class User extends AppBaseModel {
+export default class User extends AppBaseModel {
   @column({ isPrimary: true })
   declare id: number
 
@@ -267,11 +268,13 @@ class User extends AppBaseModel {
   @hasMany(() => Invoice)
   declare invoices: HasMany<typeof Invoice>
 
+  async verifyPasswordForAuth(plainTextPassword: string) {
+    return hash.verify(this.password, plainTextPassword)
+  }
+
   public static async getUserForAuth(uids: string[], value: string) {
     const query = this.query()
     uids.map(uid => query.orWhereILike(uid, value))
     return query.first()
   }
 }
-
-export default User

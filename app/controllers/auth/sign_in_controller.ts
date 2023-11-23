@@ -46,7 +46,7 @@ export default class SignInController {
       // TODO
     }
 
-    session.flash('success', `Welcome back, ${auth.user.username}`)
+    session.flash('success', `Welcome back, ${auth.user!.username}`)
 
     up.setTarget('[up-main], [up-player], [up-header]')
 
