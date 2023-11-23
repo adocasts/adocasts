@@ -15,9 +15,9 @@ export default class AuthAttemptService {
       .where({ uid })
       .whereNull('deletedAt')
       .count('id')
-      .firstOrFail()
+      .first()
 
-    return attempts.$extras.count
+    return parseInt(attempts?.$extras.count ?? 0)
   }
 
   /**
@@ -37,7 +37,7 @@ export default class AuthAttemptService {
    */
   public static async hasAttempts(uid: string) {
     const remaining = await this.remainingAttempts(uid)
-    return this.allowedAttempts - remaining
+    return remaining >= 0
   }
 
   /**

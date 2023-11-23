@@ -6,20 +6,21 @@
     : 'focus:ring-brand-500 focus:border-brand-500 border-slate-300'
 ])
 @let(name = $$props?.name)
-@let(value = flashMessages.get(name) || ($$props.value ?? ''))
+@let(internalValue = flashMessages.get(name) || ($$props.value ?? ''))
 
 <input 
-  @if (!$context)
-    x-data="{{ js.stringify({ name, value }) }}"
-  @endif
+  x-data="{{ js.stringify({ name, internalValue }) }}"
 
   @if ($$props?.model)
-    x-modelable="value"
+    x-modelable="internalValue"
     x-model="{{ $$props?.model }}"
   @else
-    x-model="value"
+    x-model="internalValue"
   @endif
 
-  name="{{ name }}"
+  @if (name)
+    name="{{ name }}"
+  @endif
+
   {{ $props.except(['value', 'name', 'model']).merge({ type: 'text', class: classes, ...$context }).toAttrs() }} 
 />

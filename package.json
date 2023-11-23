@@ -54,7 +54,7 @@
     "tailwindcss": "^3.3.5",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
-    "vite": "^5.0.2"
+    "vite": "^4.4.11"
   },
   "dependencies": {
     "@adonisjs/auth": "^9.0.0-8",
@@ -70,6 +70,7 @@
     "@types/ms": "^0.7.34",
     "@vinejs/vine": "^1.7.0",
     "alpinejs": "^3.13.3",
+    "argon2": "^0.31.2",
     "dinero.js": "^1.9.1",
     "edge-iconify": "^2.0.0",
     "edge.js": "^6.0.0",
@@ -84,6 +85,7 @@
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.1.6",
     "starback": "^2.1.5",
+    "stripe": "^14.5.0",
     "striptags": "^3.2.0",
     "ua-parser-js": "^1.0.37",
     "unique-names-generator": "^4.7.1",

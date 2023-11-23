@@ -12,7 +12,7 @@
         </p>
       </div>
 
-      @form()
+      @form({ action: route('auth.signin.store'), 'up-submit': true, 'up-scroll': 'preserve', 'up-layer': 'root' })
         @if (action)
           <input type="hidden" name="action" value="{{ action }}" />
         @endif
@@ -40,6 +40,7 @@
             </span>
           </div>
         @endif  --}}
+
         @form.field({ label: 'Email/Username', name: 'uid' })
           @!form.input({
             placeholder: 'Enter your username or email',
@@ -60,14 +61,22 @@
         @end
 
         <div class="flex flex-wrap md:flex-nowrap items-center justify-between mt-8 mb-3">
-          <div class="w-full md:w-auto flex items-center mb-3">
-            <input id="rememberMe" name="rememberMe" type="checkbox" class="h-4 w-4 text-brand-600 bg-slate-100 focus:ring-slate-500 border-slate-300 rounded">
-            <label for="rememberMe" class="ml-2 block text-sm text-slate-900">
-              Remember me
-            </label>
+          <div class="w-full md:w-auto mb-4">
+            <div class="flex items-center">
+              <input id="rememberMe" name="rememberMe" type="checkbox" class="h-4 w-4 text-brand-600 bg-slate-100 focus:ring-slate-500 border-slate-300 rounded">
+              <label for="rememberMe" class="ml-2 block text-sm text-slate-900">
+                Remember me
+              </label>
+            </div>
+
+            @error('rememberMe')
+              <span class="text-xs text-red-600">
+                {{ messages.join(', ') }}
+              </span>
+            @end
           </div>
 
-          <div class="w-full md:w-auto text-sm mb-3">
+          <div class="w-full md:w-auto text-sm mb-4">
             <a href="/forgot-password" class="link">
               Forgot your password?
             </a>

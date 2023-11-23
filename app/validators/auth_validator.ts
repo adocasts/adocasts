@@ -4,7 +4,7 @@ export const signInValidator = vine.compile(
   vine.object({
     uid: vine.string(),
     password: vine.string(),
-    rememberMe: vine.accepted(),
+    rememberMe: vine.accepted().optional(),
     forward: vine.string().optional(),
     action: vine.string().optional(),
     plan: vine.string().optional()//.unique({ table: 'plans', column: 'slug' })

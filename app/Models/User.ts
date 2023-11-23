@@ -269,7 +269,7 @@ export default class User extends AppBaseModel {
   declare invoices: HasMany<typeof Invoice>
 
   async verifyPasswordForAuth(plainTextPassword: string) {
-    return hash.verify(this.password, plainTextPassword)
+    return hash.use('argon').verify(this.password, plainTextPassword)
   }
 
   public static async getUserForAuth(uids: string[], value: string) {

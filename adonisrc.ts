@@ -53,6 +53,7 @@ export default defineConfig({
     () => import('./start/macros/model_query_builder_macros.js'),
     () => import('./start/up/index.js'),
     () => import('./start/globals.js'),
+    () => import('./start/events.js')
   ],
 
   /*
