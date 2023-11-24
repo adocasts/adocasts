@@ -1,4 +1,13 @@
-<form {{ $props.merge({ method: 'POST' }).toAttrs() }}>
+@let(upSubmit = $props.upSubmit ?? false)
+
+<form 
+  @if (upSubmit)
+    up-submit
+    up-scroll="preserve"
+    up-layer="root"
+  @endif
+
+  {{ $props.merge({ method: 'POST' }).toAttrs() }}>
   {{ csrfField() }}
   {{{ await $slots.main() }}}
 </form>

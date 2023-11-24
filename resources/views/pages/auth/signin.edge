@@ -12,7 +12,7 @@
         </p>
       </div>
 
-      @form({ action: route('auth.signin.store'), 'up-submit': true, 'up-scroll': 'preserve', 'up-layer': 'root' })
+      @form({ action: route('auth.signin.store'), upSubmit: true })
         @if (action)
           <input type="hidden" name="action" value="{{ action }}" />
         @endif

@@ -1,5 +1,13 @@
 import vine from '@vinejs/vine'
 
+const usernameRule = vine
+  .string()
+  .maxLength(50)
+  .minLength(3)
+  .regex(/^[a-zA-Z0-9-_.]+$/)
+  .notIn(['admin', 'super', 'power', 'adocasts', 'adocast', 'Adocasts', 'AdoCasts', 'AdoCast', 'Adocast', 'jagr', 'jagrco', '_jagr', '_jagrco', 'jagr_', 'jagrco_', 'jagr-co', 'moderator', 'public', 'dev', 'alpha', 'mail'])
+  //.unique({ table: 'users', column: 'username', caseInsensitive: true })
+
 export const signInValidator = vine.compile(
   vine.object({
     uid: vine.string(),
@@ -8,5 +16,15 @@ export const signInValidator = vine.compile(
     forward: vine.string().optional(),
     action: vine.string().optional(),
     plan: vine.string().optional()//.unique({ table: 'plans', column: 'slug' })
+  })
+)
+
+export const signUpValidator = vine.compile(
+  vine.object({
+    username: usernameRule,
+    email: vine.string().trim().email(),//.unique({ table: 'users', column: 'email' }),
+    password: vine.string().minLength(8),
+    forward: vine.string().optional(),
+    plan: vine.string()/*.exists({ table: 'plans', column: 'slug' })*/.optional()
   })
 )

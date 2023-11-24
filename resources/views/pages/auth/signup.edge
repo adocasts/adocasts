@@ -12,7 +12,7 @@
         </p>
       </div>
 
-      @form()
+      @form({ action: route('auth.signup.store'), upSubmit: true })
         @if (request.qs().plan)
           <input type="hidden" name="plan" value="{{ request.qs().plan }}" />
         @endif
@@ -46,7 +46,7 @@
           })
         @end
 
-        @form.field({ label: 'Email', name: 'uid' })
+        @form.field({ label: 'Email', name: 'email' })
           @!form.input({
             placeholder: 'Enter your email',
             autocomplete: 'email',

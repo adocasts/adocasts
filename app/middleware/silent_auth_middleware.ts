@@ -8,8 +8,6 @@ export default class SilentAuthMiddleware {
      */
     const isAuth = await ctx.auth.use('web').check()
 
-    console.log({ isAuth })
-
     /**
      * Call next method in the pipeline and return its output
      */

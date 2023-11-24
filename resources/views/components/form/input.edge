@@ -22,5 +22,5 @@
     name="{{ name }}"
   @endif
 
-  {{ $props.except(['value', 'name', 'model']).merge({ type: 'text', class: classes, ...$context }).toAttrs() }} 
+  {{ $props.except(['value', 'name', 'model', 'upSubmit']).merge({ type: 'text', class: classes, ...$context }).toAttrs() }} 
 />
