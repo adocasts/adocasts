@@ -1,17 +1,36 @@
-@starfield({ class: 'pt-24 pb-60' })
-  <div class="page relative z-10">
-    <h1 class="text-4xl md:text-5xl xl:text-6xl font-black max-w-xl md:max-w-3xl xl:max-w-4xl text-slate-base-100 uppercase tracking-wider">
-      Take Your AdonisJS Skills to the Stars
-    </h1>
+<div x-data="{ active: false }" class="relative overflow-hidden">
+  @starfield({ class: 'pt-24 pb-72' })
+    <div class="page relative z-10">
+      <h1 class="text-4xl md:text-5xl xl:text-6xl font-black text-slate-base-100 uppercase tracking-wider flex flex-col">
+        <span>
+          Launch Your
+        </span>
+        <span>
+          AdonisJS Skills
+        </span>
+        <span class="inline-block bg-blue/15 bg-gradient-to-tr from-brand-600 to-accent-600 bg-clip-text text-transparent" @mouseover="active = true; setTimeout(() => active = false, 7500)">
+          to the Stars
+        </span>
+      </h1>
 
-    <div class="inline-grid grid-cols-1 md:grid-cols-2 gap-3 mt-8">
-      @button({ variant: 'lightBase', href: route('auth.signup.create') })
-        Sign up for free
-      @end
+      @if (auth.user)
 
-      @button.outline({ variant: 'lightBase', href: route('auth.signup.create') })
-        New to AdonisJS? Start here <span aria-hidden="true">&rarr;</span>
-      @end
+      @else
+        <div class="inline-grid grid-cols-1 md:grid-cols-2 gap-3 mt-8">
+          @button({ variant: 'lightBase', href: route('auth.signup.create'), '@mouseover': 'active = true; setTimeout(() => active = false, 7500)' })
+            Sign up for free
+          @end
+
+          @button.outline({ variant: 'lightBase', href: route('auth.signup.create') })
+            New to AdonisJS? Start here <span aria-hidden="true">&rarr;</span>
+          @end
+        </div>
+      @endif
     </div>
-  </div>
-@end
+    
+    <div x-cloak class="absolute z-10 top-[-300px] right-[50%] transition-transform duration-[5000ms] rotate-[-18deg] ease-in" :class="[active ? 'translate-0 scale-[60%] opacity-100' : 'translate-y-[225%] translate-x-[100%] scale-[40%] opacity-0 duration-0']">
+      <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+      <lottie-player src="https://lottie.host/c3d76a12-986f-4944-af9f-ec8b79502d36/m1UTSz4trd.json" background="##FFFFFF" speed="1" style="width: 300px; height: 300px" loop autoplay direction="1" mode="normal"></lottie-player>
+    </div>
+  @end
+</div>

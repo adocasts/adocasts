@@ -23,12 +23,14 @@
   @endif
   
   @if (clouds) 
-    <div class="absolute scale-50 right-8 top-8">
-      @!illustration.cloudOne({ class: 'text-slate-base-50/50' })
-    </div>
-
-    <div class="absolute scale-50 right-[15%] top-1/4">
-      @!illustration.cloudTwo({ class: 'text-slate-base-50/75' })
+    <div x-data="mouseParallax(['one', 'two'], 'scale(50%)')">
+      <div x-ref="one" class="absolute scale-50 right-8 top-8">
+        @!illustration.cloudOne({ class: 'text-slate-base-50/50' })
+      </div>
+  
+      <div x-ref="two" class="absolute scale-50 right-[15%] top-1/4">
+        @!illustration.cloudTwo({ class: 'text-slate-base-50/75' })
+      </div>
     </div>
   @endif
   
