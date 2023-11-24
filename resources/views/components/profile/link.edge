@@ -1,0 +1,9 @@
+@if (user.isEnabledProfile)
+  <a href="#" {{ $props.except(['user']).toAttrs() }}>
+    {{{ await $slots.main() }}}
+  </a>
+@else
+  <span {{ $props.except(['user']).toAttrs() }}>
+    {{{ await $slots.main() }}}
+  </span>
+@endif

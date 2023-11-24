@@ -6,6 +6,7 @@ declare module '@adonisjs/lucid/orm' {
     wherePublic(): this
     whereTrue(column: string): this
     whereFalse(column: string): this
+    getCount(): Promise<BigInt>
   }
 }
 
@@ -19,4 +20,8 @@ ModelQueryBuilder.macro('whereTrue', function (this: ModelQueryBuilder, column: 
 
 ModelQueryBuilder.macro('whereFalse', function (this: ModelQueryBuilder, column: string) {
   return this.where(column, false)
+})
+
+ModelQueryBuilder.macro('getCount', async function (this: ModelQueryBuilder) {
+  return this.count('* as total').first().then((res: any) => res.$extras.total)
 })

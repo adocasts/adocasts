@@ -38,9 +38,9 @@ export default class SignUpController {
 
     session.flash('success', `Welcome to Adocasts, ${user.username}!`)
 
-    up.setTarget('[up-main], [up-player], [up-header]')
+    up.setTarget('[up-theme]')
 
-    if (forward?.includes('signin') || forward?.includes('signup')) {
+    if (forward?.includes('signin') || forward?.includes('signup') || forward?.includes('users/menu')) {
       forward = '/'
     }
 

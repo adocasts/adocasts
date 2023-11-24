@@ -1,0 +1,10 @@
+@let(tagName = ['button', 'submit'].includes($props.type) ? 'button' : 'a')
+@let(classes = utils.classes('text-slate-900 group-hover:[&:not(:hover)]:text-slate-600 duration-300', $props.class))
+
+<{{ tagName }} class="{{ html.classNames(classes) }}" {{ $props.except(['text', 'class']).toAttrs() }}>
+  @if (text)
+    {{ text }}
+  @else
+    {{{ await $slots.main() }}}
+  @endif
+</{{ tagName }}>
