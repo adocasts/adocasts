@@ -1,3 +1,4 @@
+import CollectionTypes from "#enums/collection_types";
 import States from "#enums/states";
 import Collection from "#models/collection";
 import BaseBuilder from "./base_builder.js";
@@ -12,20 +13,34 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
   }
 
   public display() {
+    this.query.preload('asset')
     this
-      .whereHasPosts()
+      .public()
       .withTaxonomies()
       .withPostCount()
       .withTotalMinutes()
-      .query
-      .preload('asset')
-      .where({ stateId: States.PUBLIC })
 
     return this
   }
 
   public root() {
     this.query.whereNull('parentId')
+    return this
+  }
+
+  public series() {
+    this.query.where('collectionTypeId', CollectionTypes.SERIES)
+    return this
+  }
+
+  public path() {
+    this.query.where('collectionTypeId', CollectionTypes.PATH)
+    return this
+  }
+
+  public public() {
+    this.whereHasPosts()
+    this.query.where({ stateId: States.PUBLIC })
     return this
   }
 

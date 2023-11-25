@@ -1,3 +1,4 @@
+import States from "#enums/states";
 import Post from "#models/post";
 import Taxonomy from "#models/taxonomy";
 import BaseBuilder from "./base_builder.js";
@@ -13,13 +14,18 @@ export default class TaxonomyBuilder extends BaseBuilder<typeof Taxonomy, Taxono
 
   public display() {
     this
+      .public()
       .withPostCount()
       .withCollectionCount()
       .query
       .preload('asset')
       .preload('parent', query => query.preload('asset'))
-      .apply(scope => scope.hasContent())
 
+    return this
+  }
+
+  public public() {
+    this.query.apply(scope => scope.hasContent())
     return this
   }
 

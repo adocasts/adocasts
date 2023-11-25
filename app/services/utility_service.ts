@@ -98,7 +98,7 @@ export default class UtilityService {
     }
   }
 
-  public static secondsToTimestring(totalSeconds: number | string) {
+  public static secondsToTimestring(totalSeconds: number | string, verbose: boolean) {
     if (typeof totalSeconds === 'string') {
       totalSeconds = Number(totalSeconds)
     }
@@ -108,6 +108,10 @@ export default class UtilityService {
     totalSeconds %= 3600;
 
     const minutes = Math.floor(totalSeconds / 60);
+
+    if (verbose) {
+      return `${hours} hours ${minutes} minutes`
+    }
 
     return `${hours}h ${minutes}m`
   }

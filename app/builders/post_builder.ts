@@ -17,6 +17,21 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
     return this
   }
 
+  public published() {
+    this.query.apply(scope => scope.published())
+    return this
+  }
+
+  public whereLesson() {
+    this.query.whereIn('postTypeId', [PostTypes.LESSON, PostTypes.LIVESTREAM])
+    return this
+  }
+
+  public whereBlog() {
+    this.query.whereIn('postTypeId', [PostTypes.BLOG, PostTypes.NEWS])
+    return this
+  }
+
   public whereType(postTypeIds: PostTypes[] | PostTypes) {
     this.query.if(Array.isArray(postTypeIds),
       query => query.where(q => (<PostTypes[]>postTypeIds).map(postTypeId => q.orWhere({ postTypeId }))),

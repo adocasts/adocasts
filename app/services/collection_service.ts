@@ -2,6 +2,27 @@ import CollectionBuilder from "#builders/collection_builder"
 
 export default class CollectionService {
   /**
+   * Returns a new instance of the collection builder
+   * @returns 
+   */
+  public builder() {
+    return new CollectionBuilder()
+  }
+
+  /**
+   * Returns the number of public root series
+   * @returns 
+   */
+  public async getSeriesCount() {
+    return this
+      .builder()
+      .series()
+      .public()
+      .root()
+      .count()
+  }
+
+  /**
    * gets the latest updated series collections
    * @param limit
    * @param excludeIds

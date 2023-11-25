@@ -16,6 +16,7 @@ import VideoTypes from "#enums/video_types"
 import PaywallTypes from "#enums/paywall_types"
 import StripeSubscriptionStatuses from "#enums/stripe_subscription_statuses"
 import CouponDurations from "#enums/coupon_durations"
+import string from '@adonisjs/core/helpers/string'
 
 addCollection(phicons)
 addCollection(simpleicons)
@@ -23,6 +24,7 @@ addCollection(simpleicons)
 edge.use(edgeIconify)
 
 edge.global('DateTime', DateTime)
+edge.global('string', string)
 edge.global('env', (key: string) => env.get(key))
 edge.global('utils', UtilityService)
 edge.global('assetDomain', env.get('ASSET_DOMAIN', ''))

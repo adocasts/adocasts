@@ -15,12 +15,21 @@ export default class HomeController {
   /**
    * Display a list of resource
    */
-  async index({ view }: HttpContext) {
+  async index({ view, auth }: HttpContext) {
     const series = await this.collectionService.getLastUpdated(8, true)
     const topics = await this.taxonomyService.getList()
     const lessons = await this.postService.getLatestLessons(12)
     const blogs = await this.postService.getLatestBlogs(4)
     const snippets = await this.postService.getLatestSnippets(4)
+
+    if (auth.user) {
+      const lessonCount = await this.postService.getLessonCount()
+      const lessonDuration = await this.postService.getLessonDuration()
+      const seriesCount = await this.collectionService.getSeriesCount()
+      const topicCount = await this.taxonomyService.getCount()
+
+      view.share({ lessonCount, lessonDuration, seriesCount, topicCount })
+    }
 
     return view.render('pages/home', { 
       series, 
