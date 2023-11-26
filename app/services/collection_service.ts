@@ -124,7 +124,7 @@ export default class CollectionService {
 
   public async findNextLesson(collection: Collection) {
     let next = this.user
-      ? collection.postsFlattened.find(post => !post.progressionHistory.length || !post.progressionHistory?.at(0)?.isCompleted)
+      ? collection.postsFlattened.find(post => !post.progressionHistory?.length || !post.progressionHistory?.at(0)?.isCompleted)
       : null
 
     if (!next) next = collection.postsFlattened.at(0)

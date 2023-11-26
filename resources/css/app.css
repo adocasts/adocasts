@@ -11,6 +11,10 @@
   display: none;
 }
 
+* {
+  scroll-behavior: smooth;
+}
+
 .p-page {
   @apply px-4 xl:px-6;
 }

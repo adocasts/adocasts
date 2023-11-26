@@ -69,6 +69,12 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
         .apply(scope => scope.forDisplay())
         .orderBy(orderBy, direction)
         .if(limit, query => query.groupLimit(limit!))
+        .if(this.user, query => query
+          .preload('progressionHistory', query => query
+            .where({ userId: this.user!.id })
+            .orderBy('updated_at', 'desc')
+          )
+        )
       )
       .preload('posts', query => query
         .apply(scope => scope.forDisplay())
@@ -77,7 +83,6 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
           .preload('progressionHistory', query => query
             .where({ userId: this.user!.id })
             .orderBy('updated_at', 'desc')
-            .first()
           )
         )
       )
@@ -95,7 +100,6 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
             .preload('progressionHistory', query => query
               .where({ userId: this.user!.id })
               .orderBy('updated_at', 'desc')
-              .first()
             )
           )
         )

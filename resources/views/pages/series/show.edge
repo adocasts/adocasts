@@ -18,7 +18,7 @@
           <div class="flex-1 mt-4 md:mt-0 md:ml-4 xl:ml-8">
             @!heading({ title: item.name, size: 'sm' })
 
-            <div class="flex items-center gap-3 text-slate-base-400 mt-4">
+            <div class="flex items-center gap-3 text-slate-base-300 mt-2">
               <div class="flex items-center gap-1.5">
                 @svg('ph:graduation-cap-fill')
                 <span>
@@ -33,26 +33,40 @@
             </div>
 
             @if (item.description)
-              <p class="lg:font-lg leading-7 mt-4">
+              <p class="lg:font-lg leading-7 mt-2 max-w-prose">
                 {{ item.description }}
               </p>
             @endif
 
+            @if (item.taxonomies)
+              <div class="flex flex-wrap gap-4 mt-2">
+                @each (topic in item.taxonomies)
+                  <a href="#" class="font-medium anchor text-slate-600" up-follow>
+                    #{{ topic.slug }}
+                  </a>
+                @endeach
+              </div>
+            @endif
+
             <div class="flex flex-wrap gap-4 mt-4 lg:mt-8">
-              @button({ href: '#', class: ['gap-2'] })
-                @svg('ph:play-fill')
-                Start Series
-              @end
+              @if (nextLesson)
+                @button({ href: nextLesson.routeUrl, class: ['gap-2'] })
+                  @svg('ph:play-fill')
+                  {{ nextLesson.id === item.postsFlattened.at(0)?.id ? 'Start Series' : 'Continue Series' }}
+                @end
+              @endif
 
               @button.outline({ href: '#', class: ['gap-2'] })
                 @svg('ph:bookmark-simple-fill')
                 Add to Watchlist
               @end
 
-              @button.outline({ href: '#', class: ['gap-2'] })
-                @svg('simple-icons:github')
-                Repository
-              @end
+              @if (item.repositoryUrl)
+                @button.outline({ href: item.repositoryUrl, class: ['gap-2'] })
+                  @svg('simple-icons:github')
+                  Repository
+                @end
+              @endif
             </div>
           </div>
         </div>
@@ -69,8 +83,8 @@
           <ol class="flex flex-col mt-3 -mx-3">
             @each (module in item.children)
               <li>
-                <a href="#module{{module.moduleNumber}}" class="flex items-center flex-wrap text-slate-600 gap-x-3 px-3 py-2 rounded-xl hover:bg-slate-100">
-                  <span class="uppercase tracking-wider hidden md:block bg-slate-300/50 rounded-lg py-1 px-2 text-xs">
+                <a href="#module{{module.moduleNumber}}" class="flex items-center flex-wrap text-slate-600 gap-x-3 px-3 py-2 rounded-xl hover:bg-slate-100 group duration-300">
+                  <span class="uppercase tracking-wider hidden md:block bg-slate-200 group-hover:bg-slate-300 duration-300 rounded-lg py-1 px-2 text-xs">
                     Module {{ module.moduleNumber }}
                   </span>
                   <span>
@@ -85,18 +99,43 @@
     </aside>
 
     <main class="w-full lg:w-[calc(100%-385px)] px-4 lg:px-8">
+      @if (nextLesson.$extras.pivot_root_sort_order > 0)
+        <div class="-mx-4 bg-slate-100 mb-4">
+          <div class="bg-slate-100 px-4 mb-4">
+            <h3 class="flex items-baseline flex-wrap text-lg lg:text-xl text-slate-700 border-b border-slate-200 py-4">
+              <span class="uppercase tracking-wider font-black text-sm relative">
+                Next on Deck
+              </span>
+              <span class="ml-4">
+                ›
+              </span>
+              <span class="font-semibold border-slate-400 ml-4 text-sm">
+                Pick up where you left off
+              </span>
+            </h3>
+          </div>
+
+          <div class="px-4 pb-2">
+            @!post.item.large({ item: nextLesson })
+          </div>
+        </div>
+      @endif
+      
       @each ((module, x) in item.children)
         <div id="module{{module.moduleNumber }}" class="mb-6">
-          <div class="sticky top-0 z-20">
-            <div class="bg-slate-100 rounded-xl p-3 mb-3 py-3">
-              <h3 class="flex items-baseline flex-wrap text-lg lg:text-xl text-slate-600 gap-x-3">
-                <span class="uppercase tracking-wider hidden md:block bg-slate-300/50 rounded-lg py-1 px-2 text-xs relative -top-[2px]">
+          <div class="sticky top-0 z-20 -mx-4">
+            <div class="bg-slate-100 rounded-xl p-4 mb-4">
+              <h3 class="flex items-baseline flex-wrap text-lg lg:text-xl text-slate-700">
+                <span class="uppercase tracking-wider font-black text-sm relative">
                   Module {{ module.moduleNumber }}
                 </span>
-                <span class="font-semibold">
+                <span class="ml-4">
+                  ›
+                </span>
+                <span class="font-semibold border-slate-400 ml-4 text-sm">
                   {{ module.name }}
                 </span>
-                <span class="text-slate-600 text-sm">
+                <span class="text-slate-600 text-sm ml-4">
                   ({{ module.posts.length }} lessons)
                 </span>
               </h3>
