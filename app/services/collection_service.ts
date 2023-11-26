@@ -23,6 +23,32 @@ export default class CollectionService {
   }
 
   /**
+   * Returns the most recently updated series
+   * @returns 
+   */
+  public async getFeatured() {
+    const latest = await this.getLastUpdated(1, true, undefined, 4)
+    return latest.at(0)
+  }
+
+  /**
+   * returns a collection query builder to retrieve a list of series
+   * @param withPosts 
+   * @param excludeIds 
+   * @param postLimit 
+   * @returns 
+   */
+  public getList(withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 3) {
+    return this
+      .builder()
+      .series()
+      .if(withPosts, (builder) => builder.withPosts(postLimit, 'pivot_root_sort_order', 'desc'))
+      .if(excludeIds, (builder) => builder.exclude(excludeIds))
+      .root()
+      .display()
+  }
+
+  /**
    * gets the latest updated series collections
    * @param limit
    * @param excludeIds
@@ -30,8 +56,10 @@ export default class CollectionService {
    * @param postLimit
    * @returns
    */
-  public async getLastUpdated(limit: number = 4, withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 5) {
-    return this.queryGetLastUpdated(withPosts, excludeIds, postLimit).limit(limit)
+  public async getLastUpdated(limit: number | undefined = undefined, withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 5) {
+    return this
+      .queryGetLastUpdated(withPosts, excludeIds, postLimit)
+      .if(limit, builder => builder.limit(limit!))
   }
 
   /**
@@ -42,12 +70,7 @@ export default class CollectionService {
    * @param postLimit
    * @returns
    */
-  private queryGetLastUpdated(withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 5) {
-    return CollectionBuilder.new()
-      .if(withPosts, (builder) => builder.withPosts(postLimit, 'pivot_root_sort_order', 'desc'))
-      .if(excludeIds, (builder) => builder.exclude(excludeIds))
-      .root()
-      .display()
-      .orderLatestUpdated()
+  private queryGetLastUpdated(withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 3) {
+    return this.getList(withPosts, excludeIds, postLimit).orderLatestUpdated()
   }
 }

@@ -14,6 +14,7 @@ const AuthSignUpController = () => import('#controllers/auth/sign_up_controller'
 const AuthSignOutController = () => import('#controllers/auth/sign_out_controller')
 const AuthSocialController = () => import('#controllers/auth/social_controller')
 const UsersController = () => import('#controllers/users_controller')
+const SeriesController = () => import('#controllers/series_controller')
 
 router.get('/', [HomeController, 'index']).as('home')
 
@@ -41,7 +42,9 @@ router.get('/users/menu', [UsersController, 'menu']).as('users.menu')
 /**
  * content
  */
+router.get('/series', [SeriesController, 'index']).as('series.index')
 router.get('/series/:collectionSlug/lessons/:slug', 'todo').as('series.lessons.show')
+router.get('/series/:collectionSlug/streams/:slug', 'todo').as('series.streams.show')
 router.get('/todo-1', 'todo').as('blog.show')
 router.get('/todo-2', 'todo').as('news.show')
 router.get('/todo-3', 'todo').as('snippets.show')

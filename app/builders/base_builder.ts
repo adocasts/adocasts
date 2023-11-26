@@ -34,6 +34,11 @@ export default class BaseBuilder<Model extends LucidModel, Record extends LucidR
     return result?.$extras.sum ?? 0
   }
 
+  public async orderBy(column: string, direction: 'asc' | 'desc' = 'asc') {
+    this.query.orderBy(column, direction)
+    return this
+  }
+
   public then(
     onfulfilled?: ((value: Record[]) => Record[] | PromiseLike<Record[]>) | null | undefined,
     onrejected?: ((reason: any) => PromiseLike<never>) | null | undefined
