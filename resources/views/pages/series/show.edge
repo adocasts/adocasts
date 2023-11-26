@@ -1,0 +1,17 @@
+@layout()
+
+  <div class="grid md:grid-cols-2 bg-gradient-to-br from-slate-100 to-body">
+    @!collection.icon({ item, class: 'w-full' })
+
+    <div>
+      <h1>{{ item.name }}</h1>
+
+      @if (item.description)
+        <p>
+          {{ item.description }}
+        </p>
+      @endif
+    </div>
+  </div>
+
+@end

@@ -43,6 +43,7 @@ router.get('/users/menu', [UsersController, 'menu']).as('users.menu')
  * content
  */
 router.get('/series', [SeriesController, 'index']).as('series.index')
+router.get('/series/:slug', [SeriesController, 'show']).as('series.show')
 router.get('/series/:collectionSlug/lessons/:slug', 'todo').as('series.lessons.show')
 router.get('/series/:collectionSlug/streams/:slug', 'todo').as('series.streams.show')
 router.get('/todo-1', 'todo').as('blog.show')

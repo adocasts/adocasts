@@ -12,4 +12,13 @@ export default class SeriesController {
 
     return view.render('pages/series/index', { features, series })
   }
+
+  public async show({ view, params, route }: HttpContext) {
+    const item = await this.collectionService.findBy('slug', params.slug)
+    const nextLesson = await this.collectionService.findNextLesson(item)
+
+    // await this.historyService.recordView(item, route?.name)
+
+    return view.render('pages/series/show', { item, nextLesson })
+  }
 }

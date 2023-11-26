@@ -16,7 +16,7 @@
         </div>
         <div class="w-3/4 space-y-1.5">
           <h3 class="font-bold text-slate-base-50 text-xl lg:text-2xl">
-            <a href="#" up-follow class="anchor-expand anchor-target current-color hover:current-color">
+            <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="anchor-expand anchor-target current-color hover:current-color">
               {{ item.name }}
             </a>
           </h3>
@@ -38,7 +38,7 @@
             </div>
 
             <div class="absolute w-full top-0 left-0 opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 duration-300 text-center drop-shadow-lg">
-              @button({ variant: 'lightBase', block: true, class: 'gap-1.5', href: '#' })
+              @button({ variant: 'lightBase', block: true, class: 'gap-1.5', href: route('series.show', { slug: item.slug }) })
                 View Series
                 @svg('ph:arrow-circle-right-fill')
               @end

@@ -1,15 +1,16 @@
 import CollectionTypes from "#enums/collection_types";
 import States from "#enums/states";
 import Collection from "#models/collection";
+import User from "#models/user";
 import BaseBuilder from "./base_builder.js";
 
 export default class CollectionBuilder extends BaseBuilder<typeof Collection, Collection> {
-  constructor() {
+  constructor(protected user: User | undefined = undefined) {
     super(Collection)
   }
 
-  public static new() {
-    return new CollectionBuilder()
+  public static new(user: User | undefined = undefined) {
+    return new CollectionBuilder(user)
   }
 
   public display() {
@@ -59,15 +60,46 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
   }
 
   public withPosts(
-    limit: number | undefined, 
     orderBy: 'pivot_sort_order' | 'pivot_root_sort_order' = 'pivot_sort_order',
-    direction: 'asc' | 'desc' = 'asc'
+    direction: 'asc' | 'desc' = 'asc',
+    limit: number | undefined = undefined, 
   ) {
-    this.query.preload('postsFlattened', query => query
-      .apply(scope => scope.forDisplay())
-      .orderBy(orderBy, direction)
-      .if(limit, query => query.groupLimit(limit!))
-    )
+    this.query
+      .preload('postsFlattened', query => query
+        .apply(scope => scope.forDisplay())
+        .orderBy(orderBy, direction)
+        .if(limit, query => query.groupLimit(limit!))
+      )
+      .preload('posts', query => query
+        .apply(scope => scope.forDisplay())
+        .orderBy(orderBy, direction)
+        .if(this.user, query => query
+          .preload('progressionHistory', query => query
+            .where({ userId: this.user!.id })
+            .orderBy('updated_at', 'desc')
+            .first()
+          )
+        )
+      )
+    return this
+  }
+
+  public withChildren() {
+    this.query
+        .preload('children', query => query
+        .where('stateId', States.PUBLIC)
+        .whereHas('posts', query => query.apply(scope => scope.published()))
+        .preload('posts', query => query
+          .apply(scope => scope.forCollectionDisplay())
+          .if(this.user, query => query
+            .preload('progressionHistory', query => query
+              .where({ userId: this.user!.id })
+              .orderBy('updated_at', 'desc')
+              .first()
+            )
+          )
+        )
+      )
     return this
   }
 

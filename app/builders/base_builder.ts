@@ -14,9 +14,22 @@ export default class BaseBuilder<Model extends LucidModel, Record extends LucidR
     return this
   }
 
+  public where(column: string, value: any) {
+    this.query.where(column, value)
+    return this
+  }
+
   public limit(limit: number) {
     this.query.limit(limit)
     return this
+  }
+
+  public first() {
+    return this.query.first()
+  }
+
+  public firstOrFail() {
+    return this.query.firstOrFail()
   }
 
   public exclude(values: any[], column: string = 'id') {

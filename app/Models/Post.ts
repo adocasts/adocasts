@@ -548,13 +548,24 @@ export default class Post extends AppBaseModel {
     return this.query().apply(scope => scope.forDisplay())
   }
 
+  public static progression = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query, user: User | undefined = undefined) => {
+    query
+      .if(user, query => query
+        .preload('progressionHistory', query => query
+          .where({ userId: user!.id })
+          .orderBy('updated_at', 'desc')
+          .first()
+        )
+      )
+  })
+
   public static published = scope((query) => {
     query
       .where('stateId', States.PUBLIC)
       .where('publishAt', '<=', DateTime.now().toSQL()!)
   })
 
-  public static publisheddeclare = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query) => {
+  public static publishedPublic = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query) => {
     query
       .where('stateId', States.PUBLIC)
       .where(query => query
@@ -590,6 +601,12 @@ export default class Post extends AppBaseModel {
       .preload('rootPaths')
       .preload('paths')
       .preload('authors', query => query.preload('profile'))
+  })
+
+  public static forCollectionDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query, { orderBy, direction }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order', direction: 'asc' | 'desc' } = { orderBy: 'pivot_sort_order', direction: 'asc' }) => {
+    query
+      .apply(scope => scope.forDisplay())
+      .orderBy(orderBy, direction)
   })
 
   public static forCollectionPathDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query, { orderBy, direction }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order', direction: 'asc' | 'desc' } = { orderBy: 'pivot_sort_order', direction: 'asc' }) => {
