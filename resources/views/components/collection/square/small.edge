@@ -9,7 +9,7 @@
             style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
           </div>
         @endif
-        <div class="flex justify-center items-center duration-300 flex-1 h-full backdrop-blur-xl p-8 relative z-20">
+        <div class="flex justify-center items-center duration-300 flex-1 h-full backdrop-blur-xl bg-slate-base-900/50 group-hover:bg-slate-base-900/0 p-8 relative z-20">
           @!collection.icon({ item, class: 'w-1/3 sm:w-1/2 md:w-fit mx-auto shadow-lg' })
         </div>
       </div>

@@ -1,17 +1,123 @@
 @layout()
 
-  <div class="grid md:grid-cols-2 bg-gradient-to-br from-slate-100 to-body">
-    @!collection.icon({ item, class: 'w-full' })
+  @slot('hero')
+    <div class="bg-gradient-to-br from-slate-100 to-body relative">
+      <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 group-hover:opacity-0 duration-300 z-10"></div>
 
-    <div>
-      <h1>{{ item.name }}</h1>
-
-      @if (item.description)
-        <p>
-          {{ item.description }}
-        </p>
+      @if (item.asset)
+        <div 
+          class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit duration-300 opacity-25"
+          style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
+        </div>
       @endif
-    </div>
-  </div>
 
+      <div class="relative z-10 backdrop-blur-2xl lg:backdrop-blur-3xl">
+        <div class="page flex flex-wrap items-center p-4 xl:p-8">
+          @!collection.icon({ item, class: 'w-full max-w-[250px]' })
+
+          <div class="flex-1 mt-4 md:mt-0 md:ml-4 xl:ml-8">
+            @!heading({ title: item.name, size: 'sm' })
+
+            <div class="flex items-center gap-3 text-slate-base-400 mt-4">
+              <div class="flex items-center gap-1.5">
+                @svg('ph:graduation-cap-fill')
+                <span>
+                  {{ item.meta.postsFlattened_count ?? '0' }}
+                  {{ pluralize('Lessons', item.meta.postsFlattened_count)}}
+                </span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                @svg('ph:clock-fill')
+                {{ utils.secondsToTimestring(item.meta.videoSecondsSum) }}
+              </div>
+            </div>
+
+            @if (item.description)
+              <p class="lg:font-lg leading-7 mt-4">
+                {{ item.description }}
+              </p>
+            @endif
+
+            <div class="flex flex-wrap gap-4 mt-4 lg:mt-8">
+              @button({ href: '#', class: ['gap-2'] })
+                @svg('ph:play-fill')
+                Start Series
+              @end
+
+              @button.outline({ href: '#', class: ['gap-2'] })
+                @svg('ph:bookmark-simple-fill')
+                Add to Watchlist
+              @end
+
+              @button.outline({ href: '#', class: ['gap-2'] })
+                @svg('simple-icons:github')
+                Repository
+              @end
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  @end
+
+  <div class="flex flex-wrap -mx-4 lg:-mx-8">
+    <aside class="w-full lg:w-[385px] px-4 lg:px-8">
+      @if (item.children?.length)
+        <div class="text-sm sticky top-4 xl:text-base">
+          <h5>Series Modules</h5>
+
+          <ol class="flex flex-col mt-3 -mx-3">
+            @each (module in item.children)
+              <li>
+                <a href="#module{{module.moduleNumber}}" class="flex items-center flex-wrap text-slate-600 gap-x-3 px-3 py-2 rounded-xl hover:bg-slate-100">
+                  <span class="uppercase tracking-wider hidden md:block bg-slate-300/50 rounded-lg py-1 px-2 text-xs">
+                    Module {{ module.moduleNumber }}
+                  </span>
+                  <span>
+                    {{ module.name }}
+                  </span>
+                </a>
+              </li>
+            @endeach
+          </ol>
+        </div>
+      @endif
+    </aside>
+
+    <main class="w-full lg:w-[calc(100%-385px)] px-4 lg:px-8">
+      @each ((module, x) in item.children)
+        <div id="module{{module.moduleNumber }}" class="mb-6">
+          <div class="sticky top-0 z-20">
+            <div class="bg-slate-100 rounded-xl p-3 mb-3 py-3">
+              <h3 class="flex items-baseline flex-wrap text-lg lg:text-xl text-slate-600 gap-x-3">
+                <span class="uppercase tracking-wider hidden md:block bg-slate-300/50 rounded-lg py-1 px-2 text-xs relative -top-[2px]">
+                  Module {{ module.moduleNumber }}
+                </span>
+                <span class="font-semibold">
+                  {{ module.name }}
+                </span>
+                <span class="text-slate-600 text-sm">
+                  ({{ module.posts.length }} lessons)
+                </span>
+              </h3>
+            </div>
+          </div>
+
+          <div>
+            @each ((post, y) in module.posts)
+              @!post.item.large({ item: post })
+            @endeach
+          </div>
+        </div>
+      @endeach
+
+      @if (item.posts.length)
+        <div class="-mt-3 mb-3">
+          @each (post in item.posts)
+            @!post.item.large({ item: post })
+          @endeach
+        </div>
+      @endif
+    </main>
+  </div>
 @end
