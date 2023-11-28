@@ -48,21 +48,18 @@
               </div>
             @endif
 
-            <div class="flex flex-wrap gap-4 mt-4 lg:mt-8">
+            <div class="flex flex-wrap gap-4 mt-4 lg:mt-6">
               @if (nextLesson)
-                @button({ href: nextLesson.routeUrl, class: ['gap-2'] })
+                @button({ href: nextLesson.routeUrl, size: 'xs', class: ['gap-2'] })
                   @svg('ph:play-fill')
                   {{ nextLesson.id === item.postsFlattened.at(0)?.id ? 'Start Series' : 'Continue Series' }}
                 @end
               @endif
 
-              @button.outline({ href: '#', class: ['gap-2'] })
-                @svg('ph:bookmark-simple-fill')
-                Add to Watchlist
-              @end
+              @!watchlist.toggle({ active: parseInt(item.$extras.watchlist_count ?? 0), collectionId: item.id })
 
               @if (item.repositoryUrl)
-                @button.outline({ href: item.repositoryUrl, class: ['gap-2'] })
+                @button.outline({ href: item.repositoryUrl, size: 'xs', class: ['gap-2'] })
                   @svg('simple-icons:github')
                   Repository
                 @end

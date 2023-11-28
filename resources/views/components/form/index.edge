@@ -1,13 +1,21 @@
-@let(upSubmit = $props.upSubmit ?? false)
-
 <form 
   @if (upSubmit)
     up-submit
     up-scroll="preserve"
     up-layer="root"
+  @elseif (target)
+    up-submit
+    up-scroll="preserve"
+    up-target="[{{ target }}]"
+    {{ target }}
   @endif
 
-  {{ $props.merge({ method: 'POST' }).toAttrs() }}>
+  {{ $props.except(['upSubmit', 'target', 'fragment']).merge({ method: 'POST' }).toAttrs() }}>
   {{ csrfField() }}
+
+  @if (fragment)
+    <input type="hidden" name="fragment" value="{{ fragment }}" />
+  @endif
+
   {{{ await $slots.main() }}}
 </form>

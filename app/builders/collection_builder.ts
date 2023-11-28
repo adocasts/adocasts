@@ -17,6 +17,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     this.query.preload('asset')
     this
       .public()
+      .watchlist()
       .withTaxonomies()
       .withPostCount()
       .withTotalMinutes()
@@ -42,6 +43,12 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
   public public() {
     this.whereHasPosts()
     this.query.where({ stateId: States.PUBLIC })
+    return this
+  }
+
+  public watchlist() {
+    if (!this.user) return this
+    this.query.withCount('watchlist', query => query.where('userId', this.user.id))
     return this
   }
 

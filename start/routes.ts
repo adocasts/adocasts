@@ -15,6 +15,7 @@ const AuthSignOutController = () => import('#controllers/auth/sign_out_controlle
 const AuthSocialController = () => import('#controllers/auth/social_controller')
 const UsersController = () => import('#controllers/users_controller')
 const SeriesController = () => import('#controllers/series_controller')
+const WatchlistsController = () => import('#controllers/watchlists_controller')
 
 router.get('/', [HomeController, 'index']).as('home')
 
@@ -38,6 +39,11 @@ router.get('/:provider/unlink', [AuthSocialController, 'unlink']).as('auth.socia
  * users
  */
 router.get('/users/menu', [UsersController, 'menu']).as('users.menu')
+
+/**
+ * watchlists
+ */
+router.patch('/watchlist/toggle', [WatchlistsController, 'toggle']).as('watchlists.toggle')
 
 /**
  * content

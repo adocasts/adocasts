@@ -17,6 +17,7 @@ import PaywallTypes from "#enums/paywall_types"
 import StripeSubscriptionStatuses from "#enums/stripe_subscription_statuses"
 import CouponDurations from "#enums/coupon_durations"
 import string from '@adonisjs/core/helpers/string'
+import FormService from "#services/form_service"
 
 addCollection(phicons)
 addCollection(simpleicons)
@@ -28,6 +29,7 @@ edge.global('string', string)
 edge.global('env', (key: string) => env.get(key))
 edge.global('utils', UtilityService)
 edge.global('assetDomain', env.get('ASSET_DOMAIN', ''))
+edge.global('form', FormService)
 
 edge.global('Roles', Roles)
 edge.global('PostTypes', PostTypes)

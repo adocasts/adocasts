@@ -1,0 +1,23 @@
+@if (auth.user)
+  @form({ action: form.patch('watchlists.toggle'), target: 'up-watchlist-toggle', fragment: 'components/watchlist/toggle.edge' })
+    @if (postId)
+      <input type="hidden" name="postId" value="{{ postId }}" />
+    @elseif (collectionId)
+      <input type="hidden" name="collectionId" value="{{ collectionId }}" />
+    @elseif (taxonomyId)
+      <input type="hidden" name="taxonomyId" value="{{ taxonomyId }}" />
+    @endif
+
+    @if (active)
+      @button({ type: 'submit', size: 'xs', class: ['gap-2'] })
+        @svg('ph:bookmark-simple-fill')
+        Remove from Watchlist
+      @end
+    @else
+      @button.outline({ type: 'submit', size: 'xs', class: ['gap-2'] })
+        @svg('ph:bookmark-simple-fill')
+        Add to Watchlist
+      @end
+    @endif
+  @end
+@endif
