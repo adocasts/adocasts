@@ -9,12 +9,12 @@
     @endif
 
     @if (active)
-      @button({ type: 'submit', size: 'xs', class: ['gap-2'] })
+      @button({ type: 'submit', class: ['gap-2'] })
         @svg('ph:bookmark-simple-fill')
         Remove from Watchlist
       @end
     @else
-      @button.outline({ type: 'submit', size: 'xs', class: ['gap-2'] })
+      @button.outline({ type: 'submit', class: ['gap-2'] })
         @svg('ph:bookmark-simple-fill')
         Add to Watchlist
       @end
