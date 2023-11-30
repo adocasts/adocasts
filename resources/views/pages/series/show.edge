@@ -1,7 +1,7 @@
 @layout()
 
   @slot('hero')
-    <div class="bg-gradient-to-br from-slate-100 to-body relative">
+    <div class="bg-gradient-to-br from-slate-100 to-body relative" x-intersect:leave="heroVisible = false" x-intersect:enter="heroVisible = true">
       <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 group-hover:opacity-0 duration-300 z-10"></div>
 
       @if (item.asset)
@@ -13,9 +13,9 @@
 
       <div class="relative z-10 backdrop-blur-2xl lg:backdrop-blur-3xl">
         <div class="page flex flex-wrap items-center p-4 xl:p-8">
-          @!collection.icon({ item, class: 'w-full max-w-[250px]' })
+          @!collection.icon({ item, class: 'w-full max-w-[250px] order-1 md:order-2 md:hidden border-4 border-brand-base-800' })
 
-          <div class="flex-1 mt-4 md:mt-0 md:ml-4 xl:ml-8">
+          <div class="flex-1 mt-4 md:mt-0 md:mr-4 xl:mr-8 order-2 md:order-1">
             @!heading({ title: item.name, size: 'sm' })
 
             <div class="flex items-center gap-3 text-slate-base-300 mt-2">
@@ -71,33 +71,74 @@
     </div>
   @end
 
-  <div class="flex flex-wrap -mx-4 lg:-mx-8">
-    <aside class="w-full lg:w-[385px] px-4 lg:px-8">
+  <div class="flex flex-wrap -mx-4 lg:-mx-8 relative" style="--aside-width: {{ item.children?.length ? '385px' : '285px' }};">
+    <aside class="w-full px-4 xl:px-8 lg:w-[var(--aside-width)] lg:absolute lg:h-full -top-[19rem] right-0 z-20 order-1 md:order-2">
       @if (item.children?.length)
-        <div class="text-sm sticky top-4 xl:text-base">
-          <h5>Series Modules</h5>
+        <div class="sticky top-4 lg:bg-slate-100 lg:p-8 rounded-xl">
+          <div class="relative overflow-hidden rounded-xl" :class="[heroVisible ? 'mb-8' : 'mb-4']">
+            <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 group-hover:opacity-0 duration-300 z-10"></div>
+            @if (item.asset)
+              <div 
+                class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit group-hover:scale-[175%] duration-300"
+                style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
+              </div>
+            @endif
+            <div class="flex justify-center items-center duration-300 h-full backdrop-blur-xl bg-slate-base-900/50 group-hover:bg-slate-base-900/0 p-4 relative z-20">
+              @!collection.icon({ item, class: 'w-2/3 mx-auto shadow-lg' })
+            </div>
+          </div>
+        
+          <div x-show="!heroVisible" x-transition class="mb-4">
+            <h3 class="text-2xl font-black tracking-tight mb-2">
+              {{ item.name }}
+            </h3>
+    
+            <div class="flex items-center gap-3 text-slate-base-300 text-sm mt-2">
+              <div class="flex items-center gap-1.5">
+                @svg('ph:graduation-cap-fill')
+                <span>
+                  {{ item.meta.postsFlattened_count ?? '0' }}
+                  {{ pluralize('Lessons', item.meta.postsFlattened_count)}}
+                </span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                @svg('ph:clock-fill')
+                {{ utils.secondsToTimestring(item.meta.videoSecondsSum) }}
+              </div>
+            </div>
+    
+            @if (item.description)
+              <p class="text-xs mt-2 max-w-prose">
+                {{ item.description }}
+              </p>
+            @endif
+          </div>
 
-          <ol class="flex flex-col mt-3 -mx-3">
-            @each (module in item.children)
-              <li>
-                <a href="#module{{module.moduleNumber}}" class="flex items-center flex-wrap text-slate-600 gap-x-3 px-3 py-2 rounded-xl hover:bg-slate-100 group duration-300">
-                  <span class="uppercase tracking-wider hidden md:block bg-slate-200 group-hover:bg-slate-300 duration-300 rounded-lg py-1 px-2 text-xs">
-                    Module {{ module.moduleNumber }}
-                  </span>
-                  <span>
-                    {{ module.name }}
-                  </span>
-                </a>
-              </li>
-            @endeach
-          </ol>
+          <div class="text-sm xl:text-base">
+            <h5>Series Modules</h5>
+
+            <ol class="flex flex-col mt-3 -mx-3">
+              @each (module in item.children)
+                <li>
+                  <a href="#module{{module.moduleNumber}}" class="flex items-center flex-wrap text-slate-600 gap-x-3 px-3 py-2 rounded-xl hover:bg-slate-200 group duration-300">
+                    <span class="uppercase tracking-wider hidden md:block bg-slate-200 group-hover:bg-slate-300 duration-300 rounded-lg py-1 px-2 text-xs">
+                      Module {{ module.moduleNumber }}
+                    </span>
+                    <span>
+                      {{ module.name }}
+                    </span>
+                  </a>
+                </li>
+              @endeach
+            </ol>
+          </div>
         </div>
       @endif
     </aside>
 
-    <main class="w-full lg:w-[calc(100%-385px)] px-4 lg:px-8">
+    <main class="w-full lg:w-[calc(100%-var(--aside-width))] px-4 xl:px-8 order-2 md:order-1">
       @if (nextLesson.$extras.pivot_root_sort_order > 0)
-        <div class="-mx-4 bg-slate-100 mb-4">
+        <div class="-mx-4 bg-slate-100 mb-4 rounded-xl">
           <div class="bg-slate-100 px-4 mb-4">
             <h3 class="flex items-baseline flex-wrap text-lg lg:text-xl text-slate-700 border-b border-slate-200 py-4">
               <span class="uppercase tracking-wider font-black text-sm relative">

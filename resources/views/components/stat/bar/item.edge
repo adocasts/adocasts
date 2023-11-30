@@ -1,0 +1,16 @@
+<div class="flex flex-col bg-slate-400/5 p-8">
+  <dt class="text-sm font-semibold leading-6 text-slate-900/60">
+    @if (title)
+      {{ title }}
+    @elseif ($slots.title)
+      {{{ await $slots.title() }}}
+    @endif
+  </dt>
+  <dd class="order-first text-3xl font-semibold tracking-tight text-slate-900">
+    @if (value)
+      {{ value }}
+    @else
+      {{{ await $slots.main() }}}
+    @endif
+  </dd>
+</div>
