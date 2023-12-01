@@ -11,7 +11,7 @@
   @!layout.header()
 
   
-  <div x-data="{ heroVisible: true }" up-main>
+  <div x-data="{ heroVisible: true, heroHeight: 0 }" up-main>
     @if ($slots.hero)
       {{{ await $slots.hero() }}}
     @endif

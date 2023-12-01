@@ -1,7 +1,11 @@
 @layout()
 
   @slot('hero')
-    <div class="bg-gradient-to-br from-slate-100 to-body relative" x-intersect:leave="heroVisible = false" x-intersect:enter="heroVisible = true">
+    <div 
+      x-intersect:enter="heroVisible = true"
+      x-intersect:leave="heroVisible = false" 
+      x-init="heroHeight = $el.clientHeight"
+      class="bg-gradient-to-br from-slate-100 to-body relative">
       <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 group-hover:opacity-0 duration-300 z-10"></div>
 
       @if (item.asset)
@@ -12,7 +16,7 @@
       @endif
 
       <div class="relative z-10 backdrop-blur-2xl lg:backdrop-blur-3xl">
-        <div class="page flex flex-wrap items-center p-4 xl:p-8">
+        <div class="page flex flex-wrap items-center py-4 xl:py-8">
           @!collection.icon({ item, class: 'w-full max-w-[250px] order-1 md:order-2 md:hidden border-4 border-brand-base-800' })
 
           <div class="flex-1 mt-4 md:mt-0 md:mr-4 xl:mr-8 order-2 md:order-1">
@@ -71,51 +75,58 @@
     </div>
   @end
 
-  <div class="flex flex-wrap -mx-4 lg:-mx-8 relative" style="--aside-width: {{ item.children?.length ? '385px' : '285px' }};">
-    <aside class="w-full px-4 xl:px-8 lg:w-[var(--aside-width)] lg:absolute lg:h-full -top-[19rem] right-0 z-20 order-1 md:order-2">
-      @if (item.children?.length)
-        <div class="sticky top-4 lg:bg-slate-100 lg:p-8 rounded-xl">
-          <div class="relative overflow-hidden rounded-xl" :class="[heroVisible ? 'mb-8' : 'mb-4']">
-            <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 group-hover:opacity-0 duration-300 z-10"></div>
-            @if (item.asset)
-              <div 
-                class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit group-hover:scale-[175%] duration-300"
-                style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
-              </div>
-            @endif
-            <div class="flex justify-center items-center duration-300 h-full backdrop-blur-xl bg-slate-base-900/50 group-hover:bg-slate-base-900/0 p-4 relative z-20">
-              @!collection.icon({ item, class: 'w-2/3 mx-auto shadow-lg' })
+  <div class="flex flex-wrap -mx-4 lg:-mx-8 relative" style="--aside-width: 385px;">
+    <aside 
+      x-data="{ top: heroHeight * -1 - 20 + 'px' }"
+      class="w-full px-4 xl:px-8 lg:w-[var(--aside-width)] lg:absolute lg:h-[calc(100%-var(--top-offset))] top-[var(--top-offset)] right-0 z-20 order-1 md:order-2" 
+      :style="{ '--top-offset': top }">
+      <div class="sticky top-4 lg:p-8 rounded-xl" :class="{ 'lg:bg-slate-100': !heroVisible || {{ item.children?.length ?? 0 }} }">
+        <div class="relative overflow-hidden rounded-xl" :class="[heroVisible ? 'mb-8' : 'mb-4']">
+          <div 
+            x-show="!heroVisible || {{ item.children?.length ?? 0 }}"
+            class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 group-hover:opacity-0 duration-300 z-10"
+          ></div>
+          @if (item.asset)
+            <div 
+              x-show="!heroVisible || {{ item.children?.length ?? 0 }}"
+              class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit group-hover:scale-[175%] duration-300"
+              style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
+            </div>
+          @endif
+          <div class="flex justify-center items-center duration-300 h-full p-4 relative z-20" :class="{ 'backdrop-blur-xl bg-slate-base-900/50 group-hover:bg-slate-base-900/0': !heroVisible || {{ item.children?.length ?? 0 }} }">
+            @!collection.icon({ item, class: 'w-2/3 mx-auto shadow-lg' })
+          </div>
+        </div>
+      
+        <div x-show="!heroVisible" x-transition class="mb-4">
+          <h3 class="text-2xl font-black tracking-tight mb-2">
+            {{ item.name }}
+          </h3>
+  
+          <div class="flex items-center gap-3 text-slate-base-300 text-sm mt-2">
+            <div class="flex items-center gap-1.5">
+              @svg('ph:graduation-cap-fill')
+              <span>
+                {{ item.meta.postsFlattened_count ?? '0' }}
+                {{ pluralize('Lessons', item.meta.postsFlattened_count)}}
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              @svg('ph:clock-fill')
+              {{ utils.secondsToTimestring(item.meta.videoSecondsSum) }}
             </div>
           </div>
-        
-          <div x-show="!heroVisible" x-transition class="mb-4">
-            <h3 class="text-2xl font-black tracking-tight mb-2">
-              {{ item.name }}
-            </h3>
-    
-            <div class="flex items-center gap-3 text-slate-base-300 text-sm mt-2">
-              <div class="flex items-center gap-1.5">
-                @svg('ph:graduation-cap-fill')
-                <span>
-                  {{ item.meta.postsFlattened_count ?? '0' }}
-                  {{ pluralize('Lessons', item.meta.postsFlattened_count)}}
-                </span>
-              </div>
-              <div class="flex items-center gap-1.5">
-                @svg('ph:clock-fill')
-                {{ utils.secondsToTimestring(item.meta.videoSecondsSum) }}
-              </div>
-            </div>
-    
-            @if (item.description)
-              <p class="text-xs mt-2 max-w-prose">
-                {{ item.description }}
-              </p>
-            @endif
-          </div>
+  
+          @if (item.description)
+            <p class="text-xs mt-2 max-w-prose">
+              {{ item.description }}
+            </p>
+          @endif
+        </div>
 
-          <div class="text-sm xl:text-base">
-            <h5>Series Modules</h5>
+        @if (item.children?.length)
+          <div class="text-sm">
+            <h5 class="text-base">Series Modules</h5>
 
             <ol class="flex flex-col mt-3 -mx-3">
               @each (module in item.children)
@@ -124,7 +135,7 @@
                     <span class="uppercase tracking-wider hidden md:block bg-slate-200 group-hover:bg-slate-300 duration-300 rounded-lg py-1 px-2 text-xs">
                       Module {{ module.moduleNumber }}
                     </span>
-                    <span>
+                    <span class="truncate">
                       {{ module.name }}
                     </span>
                   </a>
@@ -132,8 +143,8 @@
               @endeach
             </ol>
           </div>
-        </div>
-      @endif
+        @endif
+      </div>
     </aside>
 
     <main class="w-full lg:w-[calc(100%-var(--aside-width))] px-4 xl:px-8 order-2 md:order-1">
@@ -189,7 +200,7 @@
       @endeach
 
       @if (item.posts.length)
-        <div class="-mt-3 mb-3">
+        <div class="mb-3">
           @each (post in item.posts)
             @!post.item.large({ item: post })
           @endeach
