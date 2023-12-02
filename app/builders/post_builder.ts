@@ -1,5 +1,6 @@
 import PostTypes from "#enums/post_types";
 import Post from "#models/post";
+import Taxonomy from "#models/taxonomy";
 import BaseBuilder from "./base_builder.js";
 
 export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
@@ -37,6 +38,20 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
       query => query.where(q => (<PostTypes[]>postTypeIds).map(postTypeId => q.orWhere({ postTypeId }))),
       query => query.where({ postTypeId: postTypeIds })
     )
+    return this
+  }
+
+  public whereHasTaxonomy(taxonomy: Taxonomy) {
+    this.query.whereHas('taxonomies', query => query.where('taxonomies.id', taxonomy.id))
+    return this
+  }
+
+  public whereHasTaxonomies(taxonomies: Taxonomy[] | undefined = undefined) {
+    this.query
+      .if(taxonomies, 
+        query => query.whereHas('taxonomies', query => query.whereIn('taxonomies.id', taxonomies!.map(tax => tax.id))),
+        query => query.whereHas('taxonomies', query => query.apply(scope => scope.hasContent()))
+      )
     return this
   }
 

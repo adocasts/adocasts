@@ -1,4 +1,5 @@
 import TaxonomyBuilder from "#builders/taxonomy_builder";
+import Taxonomy from "#models/taxonomy";
 
 export default class TaxonomyService {
   /**
@@ -30,8 +31,33 @@ export default class TaxonomyService {
       .builder()
       .if(postLimit, builder => builder.withPosts(postLimit))
       .display()
-      .withCollectionCount()
-      .withPostCount()
+      .order()
+  }
+
+  /**
+   * Returns a taxonomy for display by slug
+   * @param slug 
+   * @returns 
+   */
+  public getBySlug(slug: string) {
+    return this
+      .builder()
+      .display()
+      .withTotalMinutes()
+      .where('slug', slug)
+      .firstOrFail()
+  }
+
+  /**
+   * Returns a taxonomies children for display
+   * @param taxonomy 
+   * @returns 
+   */
+  public getChildren(taxonomy: Taxonomy) {
+    return this
+      .builder()
+      .where('parent_id', taxonomy.id)
+      .display()
       .order()
   }
 }

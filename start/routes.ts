@@ -14,6 +14,7 @@ const AuthSignUpController = () => import('#controllers/auth/sign_up_controller'
 const AuthSignOutController = () => import('#controllers/auth/sign_out_controller')
 const AuthSocialController = () => import('#controllers/auth/social_controller')
 const UsersController = () => import('#controllers/users_controller')
+const TopicsController = () => import('#controllers/topics_controller')
 const SeriesController = () => import('#controllers/series_controller')
 const WatchlistsController = () => import('#controllers/watchlists_controller')
 
@@ -48,6 +49,8 @@ router.patch('/watchlist/toggle', [WatchlistsController, 'toggle']).as('watchlis
 /**
  * content
  */
+router.get('/topics', [TopicsController, 'index']).as('topics.index')
+router.get('/topcis/:slug', [TopicsController, 'show']).as('topics.show')
 router.get('/series', [SeriesController, 'index']).as('series.index')
 router.get('/series/:slug', [SeriesController, 'show']).as('series.show')
 router.get('/series/:collectionSlug/lessons/:slug', 'todo').as('series.lessons.show')
@@ -56,3 +59,4 @@ router.get('/todo-1', 'todo').as('blog.show')
 router.get('/todo-2', 'todo').as('news.show')
 router.get('/todo-3', 'todo').as('snippets.show')
 router.get('/todo-4', 'todo').as('streams.show')
+router.get('/todo-5', 'todo').as('lessons.show')

@@ -1,6 +1,7 @@
 import CollectionTypes from "#enums/collection_types";
 import States from "#enums/states";
 import Collection from "#models/collection";
+import Taxonomy from "#models/taxonomy";
 import User from "#models/user";
 import BaseBuilder from "./base_builder.js";
 
@@ -48,7 +49,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
 
   public watchlist() {
     if (!this.user) return this
-    this.query.withCount('watchlist', query => query.where('userId', this.user.id))
+    this.query.withCount('watchlist', query => query.where('userId', this.user!.id))
     return this
   }
 
@@ -56,6 +57,20 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     this.query.whereHas('postsFlattened', query => query
       .apply(scope => scope.published())
     )
+    return this
+  }
+
+  public whereHasTaxonomy(taxonomy: Taxonomy) {
+    this.query.whereHas('taxonomies', query => query.where('taxonomies.id', taxonomy.id))
+    return this
+  }
+
+  public whereHasTaxonomies(taxonomies: Taxonomy[] | undefined = undefined) {
+    this.query
+      .if(taxonomies, 
+        query => query.whereHas('taxonomies', query => query.whereIn('taxonomies.id', taxonomies!.map(tax => tax.id))),
+        query => query.whereHas('taxonomies', query => query.apply(scope => scope.hasContent()))
+      )
     return this
   }
 

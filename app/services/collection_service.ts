@@ -99,7 +99,7 @@ export default class CollectionService {
    * @param id 
    * @returns 
    */
-  public async find(id: number) {
+  public find(id: number) {
     return this.findBy('id', id)
   }
 
@@ -109,7 +109,7 @@ export default class CollectionService {
    * @param value 
    * @returns 
    */
-  public async findBy(column: string, value: string | number) {
+  public findBy(column: string, value: string | number) {
     return this
       .builder()
       .where(column, value)
@@ -122,7 +122,7 @@ export default class CollectionService {
       .firstOrFail()
   }
 
-  public async findNextLesson(collection: Collection) {
+  public findNextLesson(collection: Collection) {
     let next = this.user
       ? collection.postsFlattened.find(post => !post.progressionHistory?.length || !post.progressionHistory?.at(0)?.isCompleted)
       : null
@@ -166,7 +166,7 @@ export default class CollectionService {
    * @param postLimit
    * @returns
    */
-  public async getLastUpdated(limit: number | undefined = undefined, withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 5) {
+  public getLastUpdated(limit: number | undefined = undefined, withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 5) {
     return this
       .queryGetLastUpdated(withPosts, excludeIds, postLimit)
       .if(limit, builder => builder.limit(limit!))

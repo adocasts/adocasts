@@ -17,14 +17,14 @@ export default class PostService {
    * @param postTypeIds 
    * @returns 
    */
-  public async getLatest(limit: number = 10, excludeIds: number[] = [], postTypeIds: PostTypes[] | PostTypes | null = null) {
+  public getLatest(limit: number | undefined = undefined, excludeIds: number[] = [], postTypeIds: PostTypes[] | PostTypes | null = null) {
     return this
       .builder()
       .if(excludeIds, builder => builder.exclude(excludeIds))
       .if(postTypeIds, builder => builder.whereType(postTypeIds!))
+      .if(limit, query => query.limit(limit!))
       .display()
       .orderPublished()
-      .limit(limit)
   }
 
   /**
@@ -33,7 +33,7 @@ export default class PostService {
    * @param excludeIds 
    * @returns 
    */
-  public async getLatestLessons(limit: number = 10, excludeIds: number[] = []) {
+  public getLatestLessons(limit: number | undefined = undefined, excludeIds: number[] = []) {
     return this.getLatest(limit, excludeIds, [PostTypes.LESSON, PostTypes.LIVESTREAM])
   }
 
@@ -43,7 +43,7 @@ export default class PostService {
    * @param excludeIds 
    * @returns 
    */
-  public async getLatestBlogs(limit: number = 10, excludeIds: number[] = []) {
+  public getLatestBlogs(limit: number | undefined = undefined, excludeIds: number[] = []) {
     return this.getLatest(limit, excludeIds, [PostTypes.BLOG, PostTypes.NEWS])
   }
 
@@ -53,7 +53,7 @@ export default class PostService {
    * @param excludeIds 
    * @returns 
    */
-  public async getLatestSnippets(limit: number = 10, excludeIds: number[] = []) {
+  public getLatestSnippets(limit: number | undefined = undefined, excludeIds: number[] = []) {
     return this.getLatest(limit, excludeIds, [PostTypes.SNIPPET])
   }
 
@@ -61,7 +61,7 @@ export default class PostService {
    * Returns the number of lessons and livestreams published
    * @returns 
    */
-  public async getLessonCount() {
+  public getLessonCount() {
     return this
       .builder()
       .whereLesson()

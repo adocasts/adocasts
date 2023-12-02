@@ -1,3 +1,4 @@
+import CollectionTypes from "#enums/collection_types";
 import States from "#enums/states";
 import Post from "#models/post";
 import Taxonomy from "#models/taxonomy";
@@ -41,7 +42,7 @@ export default class TaxonomyBuilder extends BaseBuilder<typeof Taxonomy, Taxono
 
   public withPosts(
     limit: number | undefined, 
-    orderBy: keyof Post = 'publishAt',
+    orderBy: keyof Post | 'publish_at' = 'publish_at',
     direction: 'asc' | 'desc' = 'desc'
   ) {
     this.query.preload('posts', query => query
@@ -49,6 +50,15 @@ export default class TaxonomyBuilder extends BaseBuilder<typeof Taxonomy, Taxono
       .orderBy(orderBy, direction)
       .if(limit, query => query.groupLimit(limit!))
       .if(orderBy, query => query.groupOrderBy(orderBy, direction))
+    )
+    return this
+  }
+
+  public withTotalMinutes() {
+    this.query.withAggregate('posts', query => query
+      .apply(scope => scope.published())
+      .sum('video_seconds')
+      .as('videoSecondsSum')
     )
     return this
   }

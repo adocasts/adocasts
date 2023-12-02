@@ -1,0 +1,158 @@
+@layout()
+
+  @slot('hero')
+    <div 
+      x-intersect:enter="heroVisible = true"
+      x-intersect:leave="heroVisible = false" 
+      x-init="heroHeight = $el.clientHeight"
+      class="bg-gradient-to-br from-slate-100 to-body relative">
+      <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 group-hover:opacity-0 duration-300 z-10"></div>
+
+      @if (item.asset)
+        <div 
+          class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit duration-300 opacity-25"
+          style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
+        </div>
+      @endif
+
+      <div class="relative z-10 backdrop-blur-2xl lg:backdrop-blur-3xl pb-4">
+        <div class="page flex flex-wrap items-center py-4 xl:py-8">
+          @!taxonomy.icon({ item, class: 'w-full max-w-[250px] order-1 md:order-2 md:hidden border-4 border-brand-base-800' })
+
+          <div class="flex-1 mt-4 md:mt-0 md:mr-4 xl:mr-8 order-2 md:order-1">
+            @!heading({ title: item.name })
+
+            <div class="flex items-center gap-3 text-slate-base-300 mt-4">
+              <div class="flex items-center gap-1.5">
+                @svg('ph:books-fill')
+                <span>
+                  {{ item.meta.collections_count ?? '0' }}
+                  {{ pluralize('Series', item.meta.collections_count) }}
+                </span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                @svg('ph:graduation-cap-fill')
+                <span>
+                  {{ item.meta.posts_count ?? '0' }}
+                  {{ pluralize('Lessons', item.meta.posts_count)}}
+                </span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                @svg('ph:clock-fill')
+                {{ utils.secondsToTimestring(item.meta.videoSecondsSum) }}
+              </div>
+            </div>
+
+            @if (item.description)
+              <p class="lg:font-lg leading-7 mt-2 max-w-prose">
+                {{ item.description }}
+              </p>
+            @endif
+          </div>
+        </div>
+      </div>
+    </div>
+  @end
+
+  <div class="flex flex-wrap -mx-4 lg:-mx-8 relative" style="--aside-width: 385px;">
+    <aside 
+      x-data="{ top: heroHeight * -1 - 34 + 'px' }"
+      class="w-full px-4 xl:px-8 lg:w-[var(--aside-width)] lg:absolute lg:h-[calc(100%-var(--top-offset))] top-[var(--top-offset)] right-0 z-20 order-1 md:order-2" 
+      :style="{ '--top-offset': top }">
+      <div class="sticky top-4 lg:p-8 rounded-xl" :class="{ 'lg:bg-slate-100': !heroVisible || {{ item.children?.length ?? 0 }} }">
+        <div class="relative overflow-hidden rounded-xl" :class="[heroVisible ? 'mb-8' : 'mb-4']">
+          <div 
+            x-show="!heroVisible || {{ item.children?.length ?? 0 }}"
+            class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 group-hover:opacity-0 duration-300 z-10"
+          ></div>
+          @if (item.asset)
+            <div 
+              x-show="!heroVisible || {{ item.children?.length ?? 0 }}"
+              class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit group-hover:scale-[175%] duration-300"
+              style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
+            </div>
+          @endif
+          <div class="flex justify-center items-center duration-300 h-full p-4 relative z-20" :class="{ 'backdrop-blur-xl bg-slate-base-900/50 group-hover:bg-slate-base-900/0': !heroVisible || {{ item.children?.length ?? 0 }} }">
+            @!taxonomy.icon({ item, class: 'w-2/3 mx-auto shadow-lg' })
+          </div>
+        </div>
+      
+        <div x-show="!heroVisible" x-transition class="mb-4">
+          <h3 class="text-2xl font-black tracking-tight mb-2">
+            {{ item.name }}
+          </h3>
+  
+          @if (item.description)
+            <p class="text-sm mt-2 max-w-prose">
+              {{ item.description }}
+            </p>
+          @endif
+
+          <div class="flex flex-col gap-1.5 text-slate-base-300 mt-6">
+            <div class="flex items-center gap-1.5">
+              @svg('ph:books-fill')
+              <span>
+                {{ item.meta.collections_count ?? '0' }}
+                {{ pluralize('Series', item.meta.collections_count) }}
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              @svg('ph:graduation-cap-fill')
+              <span>
+                {{ item.meta.posts_count ?? '0' }}
+                {{ pluralize('Lessons', item.meta.posts_count) }}
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              @svg('ph:clock-fill')
+              {{ utils.secondsToTimestring(item.meta.videoSecondsSum) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="w-full lg:w-[calc(100%-var(--aside-width))] px-4 xl:px-8 order-2 md:order-1">
+      @if (children?.length)
+        @section()
+          @!heading({ title: 'Sub-Topics.', size: 'sm' })
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 pb-8 pt-4">
+            @each (item in children)
+              @!taxonomy.card.small({ item })
+            @endeach
+          </div>
+        @end
+      @endif
+
+      @if (series)
+        @section()
+          @!heading({ title: 'Series.', size: 'sm' })
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 pb-8 pt-4">
+          @each (item in series)
+              @!collection.square.small({ item })
+            @endeach
+          </div>
+        @end
+      @endif
+
+      @if (posts.length)
+        @section()
+          @!heading({ title: 'Lessons.', size: 'sm' })
+
+          <div class="py-4">
+            @each (post in posts)
+              @!post.item.large({ item: post })
+            @endeach
+          </div>
+
+          @if (posts.hasPages)
+            @!pagination({ items: posts })
+          @endif
+        @end
+      @endif
+    </main>
+  </div>
+
+@end

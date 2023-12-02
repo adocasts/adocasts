@@ -37,6 +37,19 @@ export default class BaseBuilder<Model extends LucidModel, Record extends LucidR
     return this
   }
 
+  public orderBy(column: string, direction: 'asc' | 'desc' = 'asc') {
+    this.query.orderBy(column, direction)
+    return this
+  }
+
+  public async paginate(page: number, perPage?: number | undefined, url: string | undefined = undefined) {
+    const result = await this.query.paginate(page, perPage)
+    
+    if (url) result.baseUrl(url)
+
+    return result
+  }
+
   public async count(column: string = '*') {
     const result = await this.query.count(column, 'total').first()
     return result?.$extras.total ?? 0
@@ -45,11 +58,6 @@ export default class BaseBuilder<Model extends LucidModel, Record extends LucidR
   public async sum(column: string) {
     const result = await this.query.sum(column, 'sum').first()
     return result?.$extras.sum ?? 0
-  }
-
-  public async orderBy(column: string, direction: 'asc' | 'desc' = 'asc') {
-    this.query.orderBy(column, direction)
-    return this
   }
 
   public then(

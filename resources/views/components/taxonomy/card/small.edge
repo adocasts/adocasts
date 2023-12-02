@@ -7,7 +7,7 @@
   @endif
 
   <div class="backdrop-blur-2xl bg-slate-base-900 group-hover:bg-slate-base-900/0 w-full h-full flex justify-center items-center">
-    <a href="#" up-follow class="p-4 flex items-center opacity-full group-hover:opacity-0 duration-300 z-10 w-full h-full gap-2 xl:gap-4">
+    <a href="{{ route('topics.show', { slug: item.slug }) }}" up-follow class="p-4 flex items-center opacity-full group-hover:opacity-0 duration-300 z-10 w-full h-full gap-2 xl:gap-4">
       <div class="flex justify-center items-center translate-y-0 group-hover:-translate-y-full duration-300 h-fit">
         @!taxonomy.icon({ item, class: 'w-14 mx-auto' })
       </div>
@@ -35,13 +35,13 @@
     </a>
   
     <div class="p-4 flex flex-col justify-end absolute top-0 left-0 opacity-0 group-hover:opacity-100 duration-300 z-10 w-full h-full bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95">
-      <a href="#" up-follow class="anchor-expand">
+      <a href="{{ route('topics.show', { slug: item.slug }) }}" up-follow class="anchor-expand">
         <h3 class="font-black text-slate-base-50 text-center text-lg drop-shadow-lg -translate-y-full group-hover:translate-y-0 duration-300">
           {{ item.name }}
         </h3>
       </a>
       <div class="translate-y-full group-hover:translate-y-0 duration-300 text-center drop-shadow-lg">
-        @button({ href: '#', variant: 'lightBase', block: true, class: 'gap-1.5', size: 'xs' })
+        @button({ href: route('topics.show', { slug: item.slug }), variant: 'lightBase', block: true, class: 'gap-1.5', size: 'xs' })
           View Topic
           @svg('ph:arrow-circle-right-fill')
         @end

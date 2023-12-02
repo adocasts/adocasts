@@ -1,0 +1,35 @@
+@layout()
+
+  @section()
+    @!heading({
+      title: 'Covered Topics.',
+      subtitle: 'Subject-Based Learning'
+    })
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-8 pt-4">
+      @each (item in topics)
+        @!taxonomy.card.small({ item })
+      @endeach
+    </div>
+  @end
+
+  @section()
+    @!heading({
+      title: 'All Topics.',
+      subtitle: 'All our topics and their latest lessons'
+    })
+
+    <section class="grid md:gap-4 lg:gap-8 mt-8">
+      @each ((item, i) in topics)
+        <div class="grid lg:grid-cols-4 bg-slate-100 rounded-md">
+          @!taxonomy.card.tall({ item, class: ['bg-slate-200'] })
+
+          @each (post in item.posts)
+            @!post.item({ item: post, col: true, class: 'p-4' })
+          @endeach
+        </div>
+      @endeach
+    </section>
+  @end
+
+@end
