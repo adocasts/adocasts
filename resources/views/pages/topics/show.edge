@@ -137,6 +137,18 @@
         @end
       @endif
 
+      @if (snippets?.length)
+        @section()
+          @!heading({ title: 'Snippets.', size: 'sm' })
+
+          <div class="flex flex-col gap-6 mt-4">
+            @each (item in snippets)
+              @!post.item.simple({ item })
+            @endeach
+          </div>
+        @end
+      @endif
+
       @if (posts.length)
         @section()
           @!heading({ title: 'Lessons.', size: 'sm' })

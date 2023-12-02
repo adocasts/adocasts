@@ -26,7 +26,8 @@ export default class TopicsController {
     if (page == 1) {
       const children = await this.taxonomyService.getChildren(item)
       const series = await this.collectionService.getLastUpdated().whereHasTaxonomy(item)
-      view.share({ children, series })
+      const snippets = await this.postService.getLatestSnippets().whereHasTaxonomy(item)
+      view.share({ children, series, snippets })
     }
 
     const posts = await this.postService
