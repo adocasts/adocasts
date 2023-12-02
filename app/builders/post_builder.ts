@@ -1,18 +1,21 @@
 import PostTypes from "#enums/post_types";
+import States from "#enums/states";
 import Post from "#models/post";
 import Taxonomy from "#models/taxonomy";
+import User from "#models/user";
 import BaseBuilder from "./base_builder.js";
 
 export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
-  constructor() {
+  constructor(protected user: User | undefined = undefined) {
     super(Post)
   }
 
-  public static new() {
-    return new PostBuilder()
+  public static new(user: User | undefined = undefined) {
+    return new PostBuilder(user)
   }
 
-  public display() {
+  public display({ skipPublishCheck = false } = {}) {
+    this.if(!skipPublishCheck, builder => builder.published())
     this.orderPublished()
     this.query.apply(scope => scope.forDisplay())
     return this
@@ -53,6 +56,31 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
         query => query.whereHas('taxonomies', query => query.apply(scope => scope.hasContent()))
       )
     return this
+  }
+
+  public withProgression() {
+    if (!this.user) return this
+    this.query.preload('progressionHistory', query => query
+      .where('userId', this.user!.id)
+      .orderBy('updatedAt', 'desc')
+      .groupLimit(1)
+    )
+    return this
+  }
+
+  public withComments() {
+    this.withCommentCount()
+    this.query.preload('comments', query => query
+      .whereIn('stateId', [States.PUBLIC, States.ARCHIVED])
+      .preload('user')
+      .preload('userVotes', query => query.select('id'))
+      .orderBy('createdAt', 'desc')
+    )
+    return this
+  }
+
+  public withCommentCount() {
+    this.query.withCount('comments', query => query.where('stateId', States.PUBLIC))
   }
 
   public orderPublished() {

@@ -1,0 +1,13 @@
+@layout()
+
+  @slot('list')
+    @if (series)
+      @!post.list.series()
+    @elseif (similarLessons)
+
+    @endif
+  @endslot
+
+  {{ inspect({ post: !!post }) }}
+
+@end

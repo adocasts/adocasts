@@ -1,3 +1,6 @@
+@let(isPostOnDeck = !!post && (!!series || !!path || similarLessons?.length) && post.postTypeId !== PostTypes.NEWS)
+@let(postClass = html.classNames([{ 'w-[calc(100%-var(--lesson-list-width))]': isPostOnDeck }]))
+
 <!DOCTYPE html>
 <html class="system">
 <head>
@@ -8,10 +11,11 @@
   @vite(['resources/js/app.js'])
 </head>
 <body class="h-full bg-body text-slate-900 overflow-x-hidden subpixel-antialiased" layout-root up-theme>
-  @!layout.header()
+  <div class="{{ postClass }}" up-header>
+    @!layout.header()
+  </div>
 
-  
-  <div x-data="{ heroVisible: true, heroHeight: 0 }" up-main>
+  <div x-data="{ heroVisible: true, heroHeight: 0 }" class="{{ postClass }}" up-main>
     @if ($slots.hero)
       {{{ await $slots.hero() }}}
     @endif
@@ -19,8 +23,14 @@
     <main {{ html.attrs({ class: utils.classes('page', [up.isPage ? 'mt-8' : '!px-0']), ...($props.attrs || {}) }) }} >
       {{{ await $slots.main() }}}
     </main>
+
+    @if (isPostOnDeck && $slots.list)
+      {{{ await $slots.list() }}}
+    @endif
   </div>
 
-  @!layout.footer()
+  <div class="{{ postClass }}" up-footer>
+    @!layout.footer()
+  </div>
 </body>
 </html>

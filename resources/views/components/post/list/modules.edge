@@ -1,0 +1,10 @@
+@each((module, x) in modules)
+  <li>
+    <div class="text-xs uppercase text-slate-400 tracking-wider px-3 pb-2 {{ x > 0 ? 'pt-6' : '' }}">
+      {{ module.name }}
+    </div>
+    <ol class="text-sm">
+      @!post.list.posts({ posts: module.posts })
+    </ol>
+  </li>
+@endeach

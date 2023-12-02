@@ -13,7 +13,7 @@ export default class CollectionService {
     return this.ctx.auth.user
   }
 
-  //#region Static Methods
+  //#region Collection lesson helpers
 
   /**
    * returns the next lesson after the provided post in the series (if there is one)
@@ -21,7 +21,7 @@ export default class CollectionService {
    * @param post 
    * @returns 
    */
-  public static findNextSeriesLesson(series: Collection | null, post: Post) {
+  public findNextSeriesLesson(series: Collection | null, post: Post) {
     if (!series) return
     if (!post?.rootSeries?.length || !series?.postsFlattened?.length) return
 
@@ -35,7 +35,7 @@ export default class CollectionService {
    * @param post 
    * @returns 
    */
-  public static findNextPathLesson(series: Collection | null, post: Post) {
+  public findNextPathLesson(series: Collection | null, post: Post) {
     if (!series) return
     if (!post?.rootPaths?.length || !series?.postsFlattened?.length) return
 
@@ -49,7 +49,7 @@ export default class CollectionService {
    * @param post 
    * @returns 
    */
-  public static findPrevSeriesLesson(series: Collection | null, post: Post) {
+  public findPrevSeriesLesson(series: Collection | null, post: Post) {
     if (!series) return
     if (!post?.rootSeries?.length || !series?.postsFlattened?.length) return
 
@@ -63,7 +63,7 @@ export default class CollectionService {
    * @param post 
    * @returns 
    */
-  public static findPrevPathLesson(series: Collection | null, post: Post) {
+  public findPrevPathLesson(series: Collection | null, post: Post) {
     if (!series) return
     if (!post?.rootPaths?.length || !series?.postsFlattened?.length) return
 
@@ -120,6 +120,25 @@ export default class CollectionService {
       .withPosts('pivot_root_sort_order')
       .withChildren()
       .firstOrFail()
+  }
+  
+  /**
+   * Returns a post's collection
+   * @param post 
+   * @param collectionSlug 
+   * @returns 
+   */
+  public findForPost(post: Post, collectionSlug: string | undefined = undefined) {
+    return this
+      .builder()
+      .whereHasPost(post, collectionSlug)
+      .root()
+      .series()
+      .public()
+      .display()
+      .withPosts('pivot_root_sort_order')
+      .withChildren()
+      .first()
   }
 
   public findNextLesson(collection: Collection) {

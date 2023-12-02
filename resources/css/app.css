@@ -1,6 +1,7 @@
 @import '_theme.css';
 @import '_modal.css';
 @import '_drawer.css';
+@import '_lesson.css';
 
 @tailwind base;
 @tailwind components;

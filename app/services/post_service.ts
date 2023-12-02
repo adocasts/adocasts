@@ -1,13 +1,38 @@
 import PostBuilder from "#builders/post_builder";
 import PostTypes from "#enums/post_types";
+import Post from "#models/post";
+import { inject } from "@adonisjs/core";
+import { HttpContext } from "@adonisjs/core/http";
 
+@inject()
 export default class PostService {
+  constructor(protected ctx: HttpContext) {}
+
+  public get user() {
+    return this.ctx.auth.user
+  }
+
   /**
    * Start a new post builder
    * @returns 
    */
   public builder() {
-    return PostBuilder.new()
+    return PostBuilder.new(this.user)
+  }
+
+  /**
+   * Find or fail a post for display by a column value
+   * @param column 
+   * @param value 
+   * @returns 
+   */
+  public findBy(column: keyof Post, value: any) {
+    return this.builder()
+      .where(column, value)
+      .display({ skipPublishCheck: true })
+      .withProgression()
+      .withComments()
+      .firstOrFail()
   }
 
   /**
@@ -121,5 +146,30 @@ export default class PostService {
       .whereLesson()
       .published()
       .sum('video_seconds')
+  }
+
+  /**
+   * Returns similar posts to the one provided
+   * @param post 
+   * @param limit 
+   * @returns 
+   */
+  public async getSimilarPosts(post: Post, limit: number = 15) {
+    const taxonomyIds = post.taxonomies.map(t => t.id)
+    let query = Post.query()
+    
+    query = query
+      .where('postTypeId', post.postTypeId)
+      .whereNot('id', post.id)
+    
+    if (taxonomyIds.length) {
+      query = query
+        .withAggregate('taxonomies', query => query.whereIn('taxonomies.id', taxonomyIds).count('*').as('taxonomy_matches'))
+        .orderBy('taxonomy_matches', 'desc')
+    } else {
+      query = query.orderBy('publishAt', 'desc')
+    }
+
+    return query.apply(scope => scope.forDisplay()).limit(limit)
   }
 }

@@ -1,6 +1,7 @@
 import CollectionTypes from "#enums/collection_types";
 import States from "#enums/states";
 import Collection from "#models/collection";
+import Post from "#models/post";
 import Taxonomy from "#models/taxonomy";
 import User from "#models/user";
 import BaseBuilder from "./base_builder.js";
@@ -50,6 +51,13 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
   public watchlist() {
     if (!this.user) return this
     this.query.withCount('watchlist', query => query.where('userId', this.user!.id))
+    return this
+  }
+
+  public whereHasPost(post: Post, collectionSlug: string | undefined = undefined) {
+    this.query
+      .if(collectionSlug, query => query.where('slug', collectionSlug!))
+      .whereHas('postsFlattened', query => query.where('posts.id', post.id))
     return this
   }
 

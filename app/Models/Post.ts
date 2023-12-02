@@ -575,11 +575,10 @@ export default class Post extends AppBaseModel {
       )
   })
 
-  public static forDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query, skipPublishCheck: boolean = false) => {
+  public static forDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query) => {
     // const ctx = HttpContext.get()
 
     query
-      .if(!skipPublishCheck, query => query.apply(scope => scope.published()))
       // .if(ctx?.auth.user, query => query.withCount('watchlist', query => query.where('userId', ctx!.auth.user!.id)))
       .preload('thumbnails')
       .preload('covers')
