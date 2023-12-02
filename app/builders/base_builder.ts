@@ -20,7 +20,7 @@ export default class BaseBuilder<Model extends LucidModel, Record extends LucidR
       return this
     }
 
-    this.query.where(column, value)
+    this.query.where(column, operator)
     return this
   }
 
