@@ -1,0 +1,48 @@
+@layout()
+
+  @if (recent?.length)
+    @section()
+      @!heading({ 
+        title: 'Recently Released.',
+        subtitle: "Newly Released in the last 30 days"
+      })
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-8 gap-4 xl:gap-8 pb-8 pt-4">
+        @each(item in recent)
+          @!post.item({ 
+            item, 
+            col: true, 
+            class: ['lg:col-span-2'],
+            classDescription: ['md:hidden lg:block']
+          })
+        @endeach
+      </div>
+    @end
+  @endif
+
+  @section()
+    <div class="flex -mx-4">
+      <main class="w-full md:w-3/5 lg:w-2/3 px-4">
+        @!heading({ 
+          title: 'All Lessons.',
+          subtitle: "Browse all our lessons"
+        })
+    
+        <div class="py-4">
+          @each (item in items)
+            @!post.item.large({ item })
+          @endeach
+        </div>
+    
+        @if (items.hasPages)
+          @!pagination({ items })
+        @endif
+      </main>
+
+      <aside class="w-full md:w-2/5 lg:w-1/3 px-4">
+        aside
+      </aside>
+    </div>
+  @end
+
+@end

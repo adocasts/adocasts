@@ -14,7 +14,12 @@ export default class BaseBuilder<Model extends LucidModel, Record extends LucidR
     return this
   }
 
-  public where(column: string, value: any) {
+  public where(column: string, operator?: any, value?: any) {
+    if (value !== undefined) {
+      this.query.where(column, operator, value)
+      return this
+    }
+
     this.query.where(column, value)
     return this
   }

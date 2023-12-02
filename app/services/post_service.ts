@@ -11,6 +11,50 @@ export default class PostService {
   }
 
   /**
+   * Returns list of posts for display matching the postTypeIds
+   * @param postTypeIds 
+   * @returns 
+   */
+  public getList(postTypeIds: PostTypes[] | PostTypes | null = null) {
+    return this
+      .builder()
+      .if(postTypeIds, builder => builder.whereType(postTypeIds!))
+      .display()
+  }
+
+  /**
+   * Returns lessons and livestreams for display
+   * @returns 
+   */
+  public getLessons() {
+    return this.getList([PostTypes.LESSON, PostTypes.LIVESTREAM])
+  }
+
+  /**
+   * Returns livestreams for display
+   * @returns 
+   */
+  public getStreams() {
+    return this.getList([PostTypes.LIVESTREAM])
+  }
+
+  /**
+   * Returns snippets for display
+   * @returns 
+   */
+  public getSnippets() {
+    return this.getList([PostTypes.SNIPPET])
+  }
+
+  /**
+   * Returns blogs and news for display
+   * @returns 
+   */
+  public getBlogs() {
+    return this.getList([PostTypes.BLOG, PostTypes.NEWS])
+  }
+
+  /**
    * Return the latest post items for display
    * @param limit 
    * @param excludeIds 
@@ -19,11 +63,9 @@ export default class PostService {
    */
   public getLatest(limit: number | undefined = undefined, excludeIds: number[] = [], postTypeIds: PostTypes[] | PostTypes | null = null) {
     return this
-      .builder()
+      .getList(postTypeIds)
       .if(excludeIds, builder => builder.exclude(excludeIds))
-      .if(postTypeIds, builder => builder.whereType(postTypeIds!))
       .if(limit, query => query.limit(limit!))
-      .display()
       .orderPublished()
   }
 
