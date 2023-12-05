@@ -1,0 +1,373 @@
+.prose {
+  position: relative;
+}
+
+.prose p.timestamp {
+  @apply text-xs text-slate-600 tracking-wide font-bold;
+  margin-bottom: -2em;
+  position: relative;
+  top: -4px;
+}
+
+.prose .timestamp + p {
+  margin-bottom: .4em;
+}
+
+.prose .timestamp {
+  cursor: pointer;
+  color: theme('colors.brand.600') !important;
+}
+
+.prose.no-max {
+  max-width: 100%;
+}
+
+.prose.post-type-5 .timestamp + p:not(.timestamp),
+.prose .timestamp.transcript + p:not(.timestamp) {
+  margin-top: -1.75rem;
+  padding-left: 55px;
+}
+
+.prose.post-type-1 p.timestamp:not(.transcript):after {
+  content: "- Jump to this section in video";
+  color: theme('colors.slate.500');
+  font-weight: 300;
+  margin-left: 1ch;
+}
+
+.prose p.transcript.cutoff.active,
+.prose p.transcript.cutoff.active + p:not(.timestamp) {
+  display: none;
+}
+
+.transcript-cutoff {
+  @apply xl:pl-6;
+
+  width: 100%;
+  height: 10ch;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  background-image: linear-gradient(to bottom, transparent, theme('colors.slate.100') 90%);
+  pointer-events: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transition: all 300ms ease;
+}
+
+.transcript-cutoff.active {
+  background-image: none;
+  bottom: 0;
+  z-index: 10;
+}
+
+.transcript-cutoff button {
+  width: 100%;
+  height: 3ch;
+  display: block;
+  text-align: left;
+  font-size: theme('fontSize.sm');
+  font-weight: 500;
+  text-transform: uppercase;
+  pointer-events: all;
+  transition: all 300ms ease;
+}
+
+.transcript-cutoff button:hover,
+.transcript-cutoff button:active {
+  color: theme('colors.brand.600');
+}
+
+.transcript-cutoff button:before {
+  content: "👇 Show Full Transcript";
+}
+
+.transcript-cutoff.active button:before {
+  content: "👆 Hide Transcript";
+}
+
+.transcript-cutoff.active + .transcript-cutoff button {
+  display:none;
+}
+
+.prose pre code .line.del {
+  opacity: 40%;
+  transition: opacity 300ms ease;
+}
+
+.prose pre code:hover .line.del {
+  opacity: 100%;
+}
+
+.prose .line.del,
+.prose .line.add {
+  position: relative;
+}
+
+.prose .line.del:after,
+.prose .line.add:after {
+  content: "";
+  height: 100%;
+  left: -1.5rem;
+  opacity: 30%;
+  position: absolute;
+  top: 0;
+  width: calc(100% + 3rem);
+}
+
+.prose .line.del:after {
+  @apply bg-red-500/50;
+}
+
+.prose .line.add:after {
+  @apply bg-green-500/50;
+}
+
+.prose .line.del > span,
+.prose .line.add > span {
+  position: relative; 
+  z-index: 20;
+}
+
+.prose .line {
+  display: block;
+  line-height: 2;
+}
+
+.prose img {
+  border-radius: theme('borderRadius.xl');
+}
+
+.prose pre,
+.prose-sm pre {
+  overflow-x: auto;
+}
+
+.prose pre > code {
+  display: flex;
+  flex-flow: column;
+}
+
+pre {
+  overflow: hidden;
+  position: relative;
+}
+
+code {
+  counter-reset: step delStep;
+  counter-increment: step 0;
+  counter-increment: delStep 0;
+}
+
+code .line:before {
+  @apply text-slate-base-700;
+  width: 2.5rem;
+  text-align: right;
+  margin-right: 1rem;
+  margin-left: -1.6666666em;
+  padding-right: .65rem;
+  display: inline-block;
+}
+
+code .line:not(.del):before {
+  content: counter(step);
+  counter-increment: step delStep;
+}
+
+code .line.del:before {
+  content: counter(delStep);
+  counter-increment: delStep;
+}
+
+code .line:first-of-type:before {
+  @apply rounded-tr-lg;
+}
+
+code .line:last-of-type:before {
+  @apply rounded-br-lg;
+}
+
+pre .filepath {
+  background-color: theme('colors.slate-base.800');
+  padding: 1.5rem .75rem .125rem;
+  border-bottom-right-radius: .25rem;
+  border-bottom-left-radius: .25rem;
+  line-height: 1;
+  font-size: theme('fontSize.xs');
+  display: flex;
+  align-items: flex-end;
+  gap: .5rem;
+  position: absolute;
+  top: -1rem;
+  left: 6rem;
+}
+
+/* purgecss start ignore */
+pre .filepath .lang-icon {
+  width: 1em;
+  height: 1em;
+  position: relative;
+  top: -7px;
+
+  &.ts,
+  &.tsx {
+    color: theme('colors.blue.500');
+  }
+
+  &.js,
+  &.jsx {
+    color: theme('colors.yellow.500');
+  }
+
+  &.edge {
+    color: theme('colors.indigo.500');
+  }
+
+  &.vue {
+    color: theme('colors.green.500');
+  }
+}
+/* purgecss end ignore */
+
+pre ul.filepath-list {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+
+  li {
+    padding: 0;
+  }
+
+  li:not(:first-of-type):before {
+    content: "/";
+    display: inline-block;
+  }
+}
+
+.cdx-block.ce-code {
+  position: relative;
+}
+
+.ce-code__textarea {
+  min-height: 200px;
+  font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+  color: #41314e;
+  line-height: 1.6em;
+  font-size: 12px;
+  background: #f8f7fa;
+  border: 1px solid #f1f1f4;
+  box-shadow: none;
+  white-space: pre;
+  word-wrap: normal;
+  overflow-x: auto;
+  resize: vertical;
+}
+
+.ce-code__languagecode {
+  @apply text-xs px-3 py-1 rounded;
+  position: absolute;
+  bottom: 2ch;
+  right: 0;
+}
+
+.ProseMirror {
+  @apply border border-gray-300 p-3 rounded-lg;
+  min-height: 125px;
+
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: theme('colors.slate.500');
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.code-copy {
+  @apply absolute top-1.5 right-1.5;
+}
+
+/* purgecss start ignore */
+.prose-comment .ProseMirror {
+  @apply rounded-xl bg-slate-100 border-none pt-3 pb-20;
+  min-height: 150px;
+}
+
+.comment-form.with-bio .prose-comment .ProseMirror {
+  @apply pt-20 px-3 lg:px-6;
+}
+
+.comment-form.with-bg .prose-comment .ProseMirror {
+  @apply bg-slate-200/75 border border-slate-300 focus:border-brand-500;
+
+  .is-empty:before {
+    @apply text-slate-400;
+  }
+}
+
+.prose-comment-bio {
+  @apply bg-slate-100 flex items-center py-2 px-3 lg:px-6 rounded-xl absolute top-3 lg:top-6 left-0 z-10;
+  width: calc(100% - .5rem);
+}
+
+.prose-comment-actions {
+  @apply absolute bottom-3 right-3 lg:bottom-6 lg:right-6 flex items-center z-10;
+}
+
+.comment-form .btn-comment-submit,
+.comment-form .btn-comment-cancel {
+  @apply inline-flex items-center rounded-md border border-transparent bg-slate-200 hover:bg-slate-200 px-3 py-2 text-sm font-medium leading-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 duration-150;
+}
+
+.comment-form:hover .btn-comment-submit,
+.comment-form:focus-within .btn-comment-submit {
+  @apply bg-brand-600 text-brand-900 hover:bg-brand-500;
+}
+
+.comment-form:not(:hover):not(:focus-within) .btn-comment-submit {
+  background-image: none;
+}
+
+pre.shiki {
+  @apply -mx-4 !px-0 !pb-0 overflow-hidden;
+
+  > code {
+    @apply px-4 pb-4 overflow-auto;
+  }
+}
+
+pre.shiki.github-dark,
+.code-block pre {
+  background-color: theme('colors.slate-base.900') !important;
+
+  &:before {
+    content: "";
+    margin-bottom: 1.75rem;
+    margin-left: -0.5rem;
+    display: block;
+    height: .75rem;
+    width: .75rem;
+    border-radius: 9999px;
+    opacity: .3;
+    box-shadow: 1.4em 0, 2.8em 0, 4.2em 0;
+  }
+
+  [style="color: #E1E4E8"] {
+    color: theme('colors.slate-base.300') !important;
+  }
+
+  [style="color: #6A737D"] {
+    color: theme('colors.slate-base.500') !important;
+  }
+}
+/* purgecss end ignore */

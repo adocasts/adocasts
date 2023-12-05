@@ -9,14 +9,14 @@
 
 @let(variant = $props.variant || 'dark')
 @let(variants = $props.variants || {
-  light: 'inline-flex items-center justify-center font-medium tracking-wide transition-colors duration-200 border-2 border-slate-100 hover:border-slate-50 bg-slate-100 hover:bg-slate-50 rounded-md text-slate-900 hover:text-slate-700 active:bg-slate-50 focus:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-200/60 duration-300 focus:shadow-outline transition-all shadow-none hover:shadow-glow',
-  lightBase: 'inline-flex items-center justify-center font-medium tracking-wide transition-colors duration-200 border-2 border-slate-base-100 hover:border-slate-base-50 bg-slate-base-100 hover:bg-slate-base-50 rounded-md text-slate-base-900 hover:text-slate-base-700 active:bg-slate-base-50 focus:bg-slate-base-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-base-200/60 duration-300 focus:shadow-outline transition-all shadow-none hover:shadow-glow',
-  dark: 'inline-flex items-center justify-center font-medium tracking-wide text-slate-50 transition-colors duration-200 rounded-md border-2 border-slate-950 hover:border-slate-700 bg-slate-950 hover:bg-slate-700 focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 focus:shadow-outline focus:outline-none transition-all shadow-none hover:shadow-glow',
-  darkBase: 'inline-flex items-center justify-center font-medium tracking-wide text-slate-base-50 transition-colors duration-200 rounded-md border-2 border-slate-base-950 hover:border-slate-base-700 bg-slate-base-950 hover:bg-slate-base-700 focus:ring-2 focus:ring-offset-2 focus:ring-slate-base-900 focus:shadow-outline focus:outline-none transition-all shadow-none hover:shadow-glow',
-  blue: 'inline-flex items-center justify-center font-medium tracking-wide text-slate-50 transition-colors duration-200 border-2 border-blue-600 hover:border-blue-700 bg-blue-600 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:shadow-outline focus:outline-none',
-  red: 'inline-flex items-center justify-center font-medium tracking-wide text-slate-50 transition-colors duration-200 border-2 border-red-600 hover:border-red-700 bg-red-600 rounded-md hover:bg-red-700 focus:ring-2 focus:ring-offset-2 focus:ring-red-700 focus:shadow-outline focus:outline-none',
-  green: 'inline-flex items-center justify-center font-medium tracking-wide text-slate-50 transition-colors duration-200 border-2 border-green-600 hover:border-green-700 bg-green-600 rounded-md hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-700 focus:shadow-outline focus:outline-none',
-  yellow: 'inline-flex items-center justify-center font-medium tracking-wide text-slate-50 transition-colors duration-200 border-2 border-yellow-500 hover:border-yellow-600 bg-yellow-500 rounded-md hover:bg-yellow-600 focus:ring-2 focus:ring-offset-2 focus:ring-yellow-600 focus:shadow-outline focus:outline-none',
+  light: 'inline-flex items-center justify-center font-medium tracking-wide transition-colors border-2 border-slate-100 hover:border-slate-50 bg-slate-100 hover:bg-slate-50 rounded-md text-slate-900 hover:text-slate-700 active:bg-slate-50 focus:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-200/60 duration-300 focus:shadow-outline transition-all shadow-none hover:shadow-glow',
+  lightBase: 'inline-flex items-center justify-center font-medium tracking-wide transition-colors border-2 border-slate-base-100 hover:border-slate-base-50 bg-slate-base-100 hover:bg-slate-base-50 rounded-md text-slate-base-900 hover:text-slate-base-700 active:bg-slate-base-50 focus:bg-slate-base-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-base-200/60 duration-300 focus:shadow-outline transition-all shadow-none hover:shadow-glow',
+  dark: 'inline-flex items-center justify-center font-medium tracking-wide text-slate-50 transition-colors rounded-md border-2 border-slate-950 hover:border-slate-700 bg-slate-950 hover:bg-slate-700 focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 focus:shadow-outline focus:outline-none transition-all shadow-none hover:shadow-glow',
+  darkBase: 'inline-flex items-center justify-center font-medium tracking-wide text-slate-base-50 transition-colors rounded-md border-2 border-slate-base-950 hover:border-slate-base-700 bg-slate-base-950 hover:bg-slate-base-700 focus:ring-2 focus:ring-offset-2 focus:ring-slate-base-900 focus:shadow-outline focus:outline-none transition-all shadow-none hover:shadow-glow',
+  blue: 'inline-flex items-center justify-center font-medium tracking-wide text-slate-50 transition-colors border-2 border-blue-600 hover:border-blue-700 bg-blue-600 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:shadow-outline focus:outline-none',
+  red: 'inline-flex items-center justify-center font-medium tracking-wide text-slate-50 transition-colors border-2 border-red-600 hover:border-red-700 bg-red-600 rounded-md hover:bg-red-700 focus:ring-2 focus:ring-offset-2 focus:ring-red-700 focus:shadow-outline focus:outline-none',
+  green: 'inline-flex items-center justify-center font-medium tracking-wide text-slate-50 transition-colors border-2 border-green-600 hover:border-green-700 bg-green-600 rounded-md hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-700 focus:shadow-outline focus:outline-none',
+  yellow: 'inline-flex items-center justify-center font-medium tracking-wide text-slate-50 transition-colors border-2 border-yellow-500 hover:border-yellow-600 bg-yellow-500 rounded-md hover:bg-yellow-600 focus:ring-2 focus:ring-offset-2 focus:ring-yellow-600 focus:shadow-outline focus:outline-none',
 })
 
 @if (href)
@@ -24,7 +24,7 @@
     {{ $props.except(['type', 'class', 'size', 'variant', 'variants', 'block']).toAttrs() }}
     x-data
     type="{{ type || 'button' }}" 
-    class="{{ sizes[size] }} {{ variants[variant] }} {{ block ? 'flex w-full' : '' }} {{ $props.class }} duration-300">
+    class="{{ html.classNames('duration-300', utils.classes(sizes[size], variants[variant], $props.class, [{ 'flex w-full': block, 'opacity-40': disabled }])) }}">
     {{{ await $slots.main() }}}
   </a>
 @else
@@ -32,7 +32,7 @@
     {{ $props.except(['type', 'class', 'size', 'variant', 'variants', 'block']).toAttrs() }}
     x-data
     type="{{ type || 'button' }}" 
-    class="{{ sizes[size] }} {{ variants[variant] }} {{ block ? 'flex w-full' : '' }} {{ $props.class }} duration-300">
+    class="{{ html.classNames('duration-300', utils.classes(sizes[size], variants[variant], $props.class, [{ 'flex w-full': block, 'opacity-40 cursor-not-allowed': disabled }])) }}">
     {{{ await $slots.main() }}}
   </button>
 @endif

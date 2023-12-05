@@ -28,4 +28,34 @@ Alpine.data('mouseParallax', function (refNames = [], transforms = '') {
   }
 })
 
+Alpine.data('comments', function () {
+  return {
+    editId: null,
+    createId: null,
+    create(createId) {
+      this.cancel()
+      this.createId = createId
+    },
+    edit(editId) {
+      this.cancel()
+      this.editId = editId
+    },
+    cancel() {
+      this.editId = null
+      this.createId = null
+    }
+  }
+})
+
+Alpine.data('turnstile', function () {
+  return {
+    onRender(sitekey) {
+      turnstile.render(this.$el, {
+        sitekey,
+        callback: function(token) {},
+      })
+    }
+  }
+})
+
 Alpine.start()

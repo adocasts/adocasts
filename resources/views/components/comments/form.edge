@@ -1,0 +1,28 @@
+@let(action = '#' ?? route('comments.store'))
+@let(_id = '_' + Math.random().toString(36).substr(2, 9))
+
+@if (id)
+  @set('action', route('comments.update', { id }, { qs: { _method: 'PUT' }}))
+@endif
+
+<form method="POST" action="{{ action }}" up-submit up-layer="root" up-scroll="restore">
+  {{ csrfField() }}
+
+  @if (lessonRequest)
+    <input type="hidden" name="lessonRequestId" value="{{ lessonRequest.id }}" />
+  @else
+    <input type="hidden" name="postId" value="{{ postId }}" />
+  @endif
+
+  <input type="hidden" name="levelIndex" value="{{ levelIndex ?? 0 }}" />
+
+  @if (rootParentId)
+    <input type="hidden" name="rootParentId" value="{{ rootParentId }}" />
+  @endif
+
+  @if (replyTo)
+    <input type="hidden" name="replyTo" value="{{ replyTo }}" />
+  @endif
+
+  @!tiptap.basic({ value: body, update: !!id, cancelable, onCancel, includeScript: includeScript ?? false })
+</form>

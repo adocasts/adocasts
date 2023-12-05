@@ -1,0 +1,48 @@
+@let(rootComments = $props.comments.filter(c => !c.replyTo))
+@let(cta = $props.cta ?? 'Join The Discussion')
+@let(descriptor = $props.descriptor ?? 'Comment')
+@let(canComment = typeof $props.canComment == 'boolean' ? $props.canComment : true)
+
+<div x-cloak x-data="comments">
+  @if (auth.user && canComment)
+    @set('className', lessonRequestId ? 'text-base text-slate-600' : 'text-xl')
+    <h4 class="font-semibold mt-6 mb-6 p-6 flex rounded-xl bg-slate-100 {{ className }}">
+      {{ cta }}
+      <span class="text-slate-600 ml-2 font-normal">
+        ({{ commentsCount }} {{ string.pluralize(descriptor, commentsCount) }})
+      </span>
+    </h4>
+
+    @if (postId)
+      @!comments.form({ postId, lessonRequest, includeScript: true })
+    @endif
+  @elseif (canComment)
+    <div class="bg-slate-100 rounded-xl p-6 mt-6">
+      <h4 class="font-semibold text-lg mb-2">
+        Join The Discussion!
+        <span class="text-slate-600 ml-2 font-normal">
+          ({{ commentsCount }} {{ string.pluralize(descriptor, commentsCount) }})
+        </span>
+      </h4>
+      <p>
+        Please
+        <a href="{{ route('auth.signin.create') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+          sign in
+        </a>
+        or 
+        <a href="{{ route('auth.signup.create') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+          sign up for free
+        </a>
+        to join in on the dicussion.
+      </p>
+    </div>
+  @endif
+
+  <div class="-ml-8 mt-6">
+    @!comments.list({ postId, lessonRequest, comments, nodeComments: rootComments, canComment })
+  </div>
+
+  @if (auth.user && lessonRequest && canComment)
+    @!comments.form({ postId, lessonRequest, includeScript: true })
+  @endif
+</div>

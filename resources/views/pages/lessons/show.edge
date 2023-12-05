@@ -62,40 +62,37 @@
     @endif
 
     <div class="bg-slate-100 px-4 py-4 flex items-center gap-8">
-      @if (prevLesson)
-        <div class="hidden lg:block">
-          @button.inverse({ href: prevLesson.routeUrl, attrs: 'up-follow', class: 'gap-2' })
-            @svg('ph:caret-circle-left-fill', { class: 'w-6 h-6' })
-            Previous Lesson
-          @end
-        </div>
-      @endif
+      <div class="hidden lg:block">
+        @button.inverse({ href: prevLesson.routeUrl, attrs: 'up-follow', class: 'gap-2', disabled: !prevLesson.routeUrl })
+          @svg('ph:caret-circle-left-fill', { class: 'w-6 h-6' })
+          Previous Lesson
+        @end
+      </div>
 
-      <div class="flex-1">
+      <div class="flex-1 flex justify-center gap-2">
         @!watchlist.toggle({ active: parseInt(post.$extras.watchlist_count ?? 0), postId: post.id })
 
         @if (!auth.user)
-          @button.inverse({ href: route('auth.signup.create') })
+          @button.inverse({ href: route('auth.signup.create'), class: ['gap-2'] })
+            @svg('ph:sign-in-fill')
             Sign Up to Track Progress
           @end
         @endif
 
         @if (post.repositoryUrl)
-          @button.outline({ href: post.repositoryUrl, class: ['gap-2'] })
+          @button.inverse({ href: post.repositoryUrl, class: ['gap-2'] })
             @svg('simple-icons:github')
             Repository
           @end
         @endif
       </div>
   
-      @if (nextLesson)
-        <div class="hidden lg:block">
-          @button.inverse({ href: nextLesson.routeUrl, class: 'gap-2' })
-            Next Lesson
-            @svg('ph:caret-circle-right-fill', { class: 'w-6 h-6' })
-          @end
-        </div>
-      @endif
+      <div class="hidden lg:block">
+        @button.inverse({ href: nextLesson?.routeUrl, class: 'gap-2', disabled: !nextLesson?.routeUrl })
+          Next Lesson
+          @svg('ph:caret-circle-right-fill', { class: 'w-6 h-6' })
+        @end
+      </div>
     </div>
   @endslot
 
@@ -117,14 +114,14 @@
     @endif
 
     <div class="-mx-4">
-      <div class="bg-slate-200 rounded-md p-4 mt-8">
+      <div class="bg-slate-100 rounded-md p-4 mt-8">
         @let(author = post.authors.at(0))
-        @stat.bar({ size: 'small', display: 'flex', divideColor: 'divide-slate-300', class: 'mb-4' })
+        @stat.bar({ size: 'small', display: 'flex', class: 'mb-4' })
           @stat.bar.item({ title: 'Author' })
             @slot('prefix')
               @if (author.avatar)
                 @profile.link({ user: author })
-                  <img class="rounded-md w-8 h-8 border-1 border-slate-900 border-opacity-20 bg-slate-100" src="{{ assetDomain }}{{ author.avatar }}" />
+                  <img class="rounded-md w-10 h-10 border-1 border-slate-900 border-opacity-20 bg-slate-100" src="{{ assetDomain }}{{ author.avatar }}" />
                 @end
               @endif
             @endslot
@@ -192,7 +189,8 @@
               @end
             @endif
             @if (author.profile.website)
-              @button.inverse({ href: author.profile.website, target: '_blank', class: 'text-xs' })
+              @button.inverse({ href: author.profile.website, target: '_blank', class: 'text-xs gap-1.5' })
+                @svg('ph:globe-hemisphere-west-fill', { class: 'text-sm' })
                 Visit Website
               @end
             @endif
@@ -203,7 +201,11 @@
   </div>
 
   <article class="prose mx-auto mt-8">
-    {{{ post.body }}}
+    {{{ await parser.highlight(post.body) }}}
   </article>
+
+  <div class="max-w-prose mx-auto mt-8">
+    @!comments.base({ postId: post.id, comments, commentsCount })
+  </div>
 
 @end
