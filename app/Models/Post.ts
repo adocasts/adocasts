@@ -418,13 +418,7 @@ export default class Post extends AppBaseModel {
   @computed()
   public get watchMinutes() {
     if (!this.videoSeconds) return 0
-    const hours = Math.floor(this.videoSeconds / 3600)
-    const time = this.videoSeconds - hours * 3600
-    const minutes = Math.floor(time / 60)
-    const seconds = time - minutes * 60
-    const minutesDisplay = minutes < 10 ? "0" + minutes : minutes
-    const secondsDisplay = seconds < 10 ? "0" + seconds : seconds
-    return hours ? `${hours}:${minutesDisplay}:${secondsDisplay}` : `${minutesDisplay}:${secondsDisplay}`
+    return UtilityService.secondsToTimestring(this.videoSeconds)
   }
 
   @computed()

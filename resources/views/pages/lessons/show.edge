@@ -4,10 +4,206 @@
     @if (series)
       @!post.list.series()
     @elseif (similarLessons)
-
+      
     @endif
   @endslot
 
-  {{ inspect({ post: !!post }) }}
+  @slot('hero')
+    @if (post.hasVideo)
+      <div id="videoPlayerContainer">
+        <div class="app-container !px-0">
+          @if (!bounce.canViewPost(post))
+            <div class="no-access relative aspect-video bg-slate-base-900 text-slate-base-100 bg-gradient-to-br from-accent-base-800/25 to-brand-base-900/25 p-12 flex items-center justify-center w-full h-full">
+              <img class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full object-cover opacity-10" src="/img/brand/bg-texture-1.jpg" />
+
+              @!plus.postCta({ 
+                post, 
+                plusMonthly, 
+                outlineVariant: 'base-light', 
+                size: 'lg', 
+                countdown: true 
+              })
+            </div>
+          @else
+            <div class="bg-slate-100 bg-gradient-to-br from-slate-base-800/50 to-slate-base-900/50">
+              <div class="mx-auto" style="max-width: 150vh;">
+                <div id="videoPlayerPosition" class="aspect-video relative overflow-hidden"></div>
+              </div>
+            </div>
+          @endif
+        </div>
+      </div>
+    @endif
+
+    @if (series)
+      <div class="page lg:hidden">
+        <div class="flex mb-6 space-x-3">
+          @if (prevLesson)
+            @button({ href: prevLesson.routeUrl, attrs: 'up-follow' })
+              @svg('ph:caret-circle-left-fill', { class: 'w-6 h-6' })
+            @end
+          @endif
+
+          @button({ 
+            block: true, 
+            '@click': `document.getElementById('boxSeries').dispatchEvent(new CustomEvent('toggle'))`
+          })
+            @svg('ph:list-bullets-bold', { class: 'w-6 h-6' })
+            Series Details
+          @end
+
+          @if (nextLesson)
+            @button({ href: nextLesson.routeUrl })
+              @svg('ph:caret-circle-right-fill', { class: 'w-6 h-6' })
+            @end
+          @endif
+        </div>
+      </div>
+    @endif
+
+    <div class="bg-slate-100 px-4 py-4 flex items-center gap-8">
+      @if (prevLesson)
+        <div class="hidden lg:block">
+          @button.inverse({ href: prevLesson.routeUrl, attrs: 'up-follow', class: 'gap-2' })
+            @svg('ph:caret-circle-left-fill', { class: 'w-6 h-6' })
+            Previous Lesson
+          @end
+        </div>
+      @endif
+
+      <div class="flex-1">
+        @!watchlist.toggle({ active: parseInt(post.$extras.watchlist_count ?? 0), postId: post.id })
+
+        @if (!auth.user)
+          @button.inverse({ href: route('auth.signup.create') })
+            Sign Up to Track Progress
+          @end
+        @endif
+
+        @if (post.repositoryUrl)
+          @button.outline({ href: post.repositoryUrl, class: ['gap-2'] })
+            @svg('simple-icons:github')
+            Repository
+          @end
+        @endif
+      </div>
+  
+      @if (nextLesson)
+        <div class="hidden lg:block">
+          @button.inverse({ href: nextLesson.routeUrl, class: 'gap-2' })
+            Next Lesson
+            @svg('ph:caret-circle-right-fill', { class: 'w-6 h-6' })
+          @end
+        </div>
+      @endif
+    </div>
+  @endslot
+
+  <div class="max-w-prose mx-auto mt-8 lg:mt-12 mb-8">
+    <div class="flex items-center text-xs gap-x-4 mb-2">
+      @each (topic in post.taxonomies)
+        <a href="#" class="relative z-10 font-medium link text-slate-600" up-follow>
+          #{{ topic.slug }}
+        </a>
+      @endeach
+    </div>
+
+    @!heading({ title: post.title, size: 'sm' })
+    
+    @if (post.description)
+      <p class="text-slate-600 text-lg mt-2">
+        {{ post.description }}
+      </p>
+    @endif
+
+    <div class="-mx-4">
+      <div class="bg-slate-200 rounded-md p-4 mt-8">
+        @let(author = post.authors.at(0))
+        @stat.bar({ size: 'small', display: 'flex', divideColor: 'divide-slate-300', class: 'mb-4' })
+          @stat.bar.item({ title: 'Author' })
+            @slot('prefix')
+              @if (author.avatar)
+                @profile.link({ user: author })
+                  <img class="rounded-md w-8 h-8 border-1 border-slate-900 border-opacity-20 bg-slate-100" src="{{ assetDomain }}{{ author.avatar }}" />
+                @end
+              @endif
+            @endslot
+
+            @profile.link({ user: author })
+              {{ author.profile.name || author.username }}
+            @end
+          @end
+          @!stat.bar.item({ title: 'Published', value: post.publishAtDisplay })
+          @!stat.bar.item({ title: 'Duration', value: post.watchMinutes })
+          @!stat.bar.item({ title: 'Episode', value: post.lessonIndexDisplay })
+        @end
+
+        @if (author.profile.biography)
+          <p class="text-slate-600 text-sm my-2">
+            {{ author.profile.biography }}
+          </p>
+        @endif
+
+        <div class="text-sm text-slate-600 tracking-wider pt-2 flex flex-wrap justify-between gap-4">
+          <div class="flex flex-wrap gap-4">
+            @if (author.profile.company)
+              <p class="flex items-center gap-1.5 truncate">
+                @svg('ph:buildings-fill')
+                {{ author.profile.company }}
+              </p>
+            @endif
+            @if (author.profile.location)
+              <p class="flex items-center gap-1.5 truncate">
+                @svg('ph:map-pin-fill')
+                {{ author.profile.location }}
+              </p>
+            @endif
+          </div>
+
+          <div class="flex flex-wrap gap-1">
+            @if (author.profile.githubUrl)
+              @button.inverse({ href: author.profile.githubUrl, target: '_blank', square: true })
+                @svg('simple-icons:github')
+              @end
+            @endif
+            @if (author.profile.youtubeUrl)
+              @button.inverse({ href: author.profile.youtubeUrl, target: '_blank', square: true })
+                @svg('simple-icons:youtube')
+              @end
+            @endif
+            @if (author.profile.twitterUrl)
+              @button.inverse({ href: author.profile.twitterUrl, target: '_blank', square: true })
+                @svg('simple-icons:twitter')
+              @end
+            @endif
+            @if (author.profile.facebookUrl)
+              @button.inverse({ href: author.profile.facebookUrl, target: '_blank', square: true })
+                @svg('simple-icons:facebook')
+              @end
+            @endif
+            @if (author.profile.instagramUrl)
+              @button.inverse({ href: author.profile.instagramUrl, target: '_blank', square: true })
+                @svg('simple-icons:instagram')
+              @end
+            @endif
+            @if (author.profile.threadsUrl)
+              @button.inverse({ href: author.profile.threadsUrl, target: '_blank', square: true })
+                @svg('simple-icons:threads')
+              @end
+            @endif
+            @if (author.profile.website)
+              @button.inverse({ href: author.profile.website, target: '_blank', class: 'text-xs' })
+                Visit Website
+              @end
+            @endif
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <article class="prose mx-auto mt-8">
+    {{{ post.body }}}
+  </article>
 
 @end

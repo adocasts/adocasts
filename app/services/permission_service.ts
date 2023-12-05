@@ -1,5 +1,7 @@
+import PaywallTypes from "#enums/paywall_types";
 import Plans from "#enums/plans";
 import Roles from "#enums/roles";
+import Post from "#models/post";
 import { inject } from "@adonisjs/core";
 import { HttpContext } from "@adonisjs/core/http";
 
@@ -36,6 +38,14 @@ export default class PermissionService {
   //#endregion
 
   //#region Post
+
+  public canViewPost(post: Post) {
+    if (this.user && this.user.planId !== Plans.FREE) return true
+		if (post.paywallTypeId === PaywallTypes.NONE) return true
+		if (post.paywallTypeId === PaywallTypes.FULL) return false
+		
+		return !post.isPaywalled
+  }
 
   public canViewFutureDated() {
     return this.isElevatedRole

@@ -98,16 +98,26 @@ export default class UtilityService {
     }
   }
 
-  public static secondsToTimestring(totalSeconds: number | string, verbose: boolean) {
+  public static secondsToTimestring(totalSeconds: number | string, verbose: boolean = false) {
     if (typeof totalSeconds === 'string') {
       totalSeconds = Number(totalSeconds)
     }
 
-    const hours = Math.floor(totalSeconds / 3600);
+    const hours = Math.floor(totalSeconds / 3600)
 
-    totalSeconds %= 3600;
+    totalSeconds %= 3600
 
-    const minutes = Math.floor(totalSeconds / 60);
+    const minutes = Math.floor(totalSeconds / 60)
+    
+    totalSeconds %= 60
+    
+    const seconds = Math.floor(totalSeconds)
+
+    if (!hours) {
+      return verbose
+        ? `${minutes} minutes ${seconds} seconds`
+        : `${minutes}m ${seconds}s`
+    }
 
     if (verbose) {
       return `${hours} hours ${minutes} minutes`

@@ -1,3 +1,37 @@
-<dl class="bg-gradient-to-br from-brand-400 to-accent-500 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
+@let(gradient = $props.gradient ?? false)
+@let(gradientClass = 'bg-gradient-to-br from-brand-400 to-accent-500')
+@let(display = $props.display ?? 'grid')
+@let(divideColor = $props.divideColor || 'divide-slate-200')
+
+@let(sizeKey = $props.size || 'base')
+@let(sizeOptions = {
+  small: {
+    dl: `divide-x ${divideColor} -mx-4 lg:-mx-6`,
+    div: 'my-2 px-4 lg:px-6',
+    dt: 'text-xs text-slate-600',
+    dd: 'text-sm'
+  },
+  base: {
+    dl: `rounded-2xl text-center ${gradient ? gradientClass : ''}`,
+    div: 'bg-slate-400/5 p-8',
+    dt: 'text-sm text-slate-900/60 leading-6',
+    dd: 'text-3xl order-first'
+  }
+})
+@let(size = sizeOptions[sizeKey])
+
+@inject({ size })
+
+<dl {{ html.attrs({ 
+  class: [
+    'overflow-hidden', 
+    size.dl, 
+    $props.class || '',
+    {
+      'grid grid-cols-1 gap-0.5 sm:grid-cols-2 lg:grid-cols-4': display === 'grid',
+      'flex flex-wrap gap-0.5': display === 'flex'
+    }
+  ]
+}) }}>
   {{{ await $slots.main() }}}
 </dl>
