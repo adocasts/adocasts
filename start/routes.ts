@@ -20,6 +20,7 @@ const LessonsController = () => import('#controllers/lessons_controller')
 const BlogsController = () => import('#controllers/blogs_controller')
 const SnippetsController = () => import('#controllers/snippets_controller')
 const WatchlistsController = () => import('#controllers/watchlists_controller')
+const CommentsController = () => import('#controllers/comments_controller')
 
 router.get('/', [HomeController, 'index']).as('home')
 
@@ -66,3 +67,11 @@ router.get('/snippets', [SnippetsController, 'index']).as('snippets.index')
 router.get('/snippets/:slug', [SnippetsController, 'show']).as('snippets.show')
 router.get('/todo-2', 'todo').as('news.show')
 router.get('/todo-4', 'todo').as('streams.show')
+
+/**
+ * comments
+ */
+router.post('/comments', [CommentsController, 'store']).as('comments.store')
+router.put('/comments/:id', [CommentsController, 'update']).as('comments.update')
+router.patch('/comments/:id/like', [CommentsController, 'like']).as('comments.like')
+router.delete('/comments/:id', [CommentsController, 'destroy']).as('comments.destroy')

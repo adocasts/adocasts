@@ -63,9 +63,9 @@
 
     <div class="bg-slate-100 px-4 py-4 flex items-center gap-8">
       <div class="hidden lg:block">
-        @button.inverse({ href: prevLesson.routeUrl, attrs: 'up-follow', class: 'gap-2', disabled: !prevLesson.routeUrl })
-          @svg('ph:caret-circle-left-fill', { class: 'w-6 h-6' })
-          Previous Lesson
+        @button({ href: prevLesson.routeUrl, attrs: 'up-follow', class: 'gap-2', disabled: !prevLesson.routeUrl })
+          @svg('ph:caret-circle-left-fill', { class: 'w-5 h-5' })
+          Previous
         @end
       </div>
 
@@ -73,24 +73,24 @@
         @!watchlist.toggle({ active: parseInt(post.$extras.watchlist_count ?? 0), postId: post.id })
 
         @if (!auth.user)
-          @button.inverse({ href: route('auth.signup.create'), class: ['gap-2'] })
-            @svg('ph:sign-in-fill')
+          @button({ href: route('auth.signup.create'), class: 'gap-2' })
+            @svg('ph:sign-in-fill', { class: 'w-5 h-5' })
             Sign Up to Track Progress
           @end
         @endif
 
         @if (post.repositoryUrl)
-          @button.inverse({ href: post.repositoryUrl, class: ['gap-2'] })
-            @svg('simple-icons:github')
+          @button({ href: post.repositoryUrl, class: 'gap-2' })
+            @svg('simple-icons:github', { class: 'w-5 h-5' })
             Repository
           @end
         @endif
       </div>
   
       <div class="hidden lg:block">
-        @button.inverse({ href: nextLesson?.routeUrl, class: 'gap-2', disabled: !nextLesson?.routeUrl })
-          Next Lesson
-          @svg('ph:caret-circle-right-fill', { class: 'w-6 h-6' })
+        @button({ href: nextLesson?.routeUrl, class: 'gap-2', disabled: !nextLesson?.routeUrl })
+          Next
+          @svg('ph:caret-circle-right-fill', { class: 'w-5 h-5' })
         @end
       </div>
     </div>
@@ -159,37 +159,37 @@
 
           <div class="flex flex-wrap gap-1">
             @if (author.profile.githubUrl)
-              @button.inverse({ href: author.profile.githubUrl, target: '_blank', square: true })
+              @button({ href: author.profile.githubUrl, target: '_blank', square: true })
                 @svg('simple-icons:github')
               @end
             @endif
             @if (author.profile.youtubeUrl)
-              @button.inverse({ href: author.profile.youtubeUrl, target: '_blank', square: true })
+              @button({ href: author.profile.youtubeUrl, target: '_blank', square: true })
                 @svg('simple-icons:youtube')
               @end
             @endif
             @if (author.profile.twitterUrl)
-              @button.inverse({ href: author.profile.twitterUrl, target: '_blank', square: true })
+              @button({ href: author.profile.twitterUrl, target: '_blank', square: true })
                 @svg('simple-icons:twitter')
               @end
             @endif
             @if (author.profile.facebookUrl)
-              @button.inverse({ href: author.profile.facebookUrl, target: '_blank', square: true })
+              @button({ href: author.profile.facebookUrl, target: '_blank', square: true })
                 @svg('simple-icons:facebook')
               @end
             @endif
             @if (author.profile.instagramUrl)
-              @button.inverse({ href: author.profile.instagramUrl, target: '_blank', square: true })
+              @button({ href: author.profile.instagramUrl, target: '_blank', square: true })
                 @svg('simple-icons:instagram')
               @end
             @endif
             @if (author.profile.threadsUrl)
-              @button.inverse({ href: author.profile.threadsUrl, target: '_blank', square: true })
+              @button({ href: author.profile.threadsUrl, target: '_blank', square: true })
                 @svg('simple-icons:threads')
               @end
             @endif
             @if (author.profile.website)
-              @button.inverse({ href: author.profile.website, target: '_blank', class: 'text-xs gap-1.5' })
+              @button({ href: author.profile.website, target: '_blank', class: 'text-xs gap-1.5' })
                 @svg('ph:globe-hemisphere-west-fill', { class: 'text-sm' })
                 Visit Website
               @end
@@ -205,7 +205,7 @@
   </article>
 
   <div class="max-w-prose mx-auto mt-8">
-    @!comments.base({ postId: post.id, comments, commentsCount })
+    @!comments.base({ postId: post.id, comments, commentCount })
   </div>
 
 @end

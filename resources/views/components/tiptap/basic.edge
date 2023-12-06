@@ -39,12 +39,12 @@
     @if (submittable)
       <div class="prose-comment-actions">
         @if (cancelable)
-          @buttons.inverse({ type: 'button', className: 'btn-comment-cancel mr-3', '@click': onCancel ? 'onCancel' : '' })
+          @button.outline({ type: 'button', class: 'btn-comment-cancel mr-3', '@click': onCancel ? 'onCancel' : '' })
             Cancel
           @end
         @endif
 
-        @buttons({ type: 'submit', className: 'btn-comment-submit' })
+        @button({ type: 'submit', class: 'btn-comment-submit' })
           {{ update ? 'Update' : 'Create' }} Comment
         @end
       </div>
