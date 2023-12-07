@@ -55,14 +55,13 @@
         @endif
 
         @button({ type: 'submit', variant: 'dark', size: 'sm', ':disabled': 'sending' })
-          <span x-show="sending" class="flex items-center gap-1.5">
+          @slot('loading')
             @svg('svg-spinners:blocks-shuffle-3')
             Saving ...
-          </span>
-          <span x-show="!sending" class="flex items-center gap-1.5">
-            @svg('ph:chat-circle-text-fill')
-            {{ update ? 'Update' : 'Create' }} Comment
-          </span>
+          @endslot
+          
+          @svg('ph:chat-circle-text-fill')
+          {{ update ? 'Update' : 'Create' }} Comment
         @end
       </div>
     @endif

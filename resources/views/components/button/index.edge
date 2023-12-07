@@ -20,6 +20,8 @@
   yellow: 'inline-flex items-center justify-center font-medium tracking-wide text-yellow-500 transition-colors border-2 border-slate-200 hover:border-yellow-200 bg-slate-200 hover:bg-yellow-200 hover:text-yellow-800 rounded-md hover:bg-yellow-600 focus:ring-2 focus:ring-offset-2 focus:ring-yellow-600 focus:shadow-outline focus:outline-none',
 })
 
+@let(sendingKey = $props.sendingKey || 'sending')
+
 @if (href)
   <a
     {{ $props.except(['type', 'class', 'size', 'variant', 'variants', 'block']).toAttrs() }}
@@ -34,6 +36,13 @@
     x-data
     type="{{ type || 'button' }}" 
     class="{{ html.classNames('duration-300', utils.classes(sizes[size], variants[variant], $props.class, [{ 'flex w-full': block, 'opacity-40 cursor-not-allowed': disabled }])) }}">
-    {{{ await $slots.main() }}}
+    @if ($slots.loading)
+      <span x-show="{{ sendingKey }}" class="flex items-center gap-1.5">
+        {{{ await $slots.loading() }}}
+      </span>
+    @endif
+    <span {{ html.attrs({ 'x-show': $slots.loading && `!${sendingKey}` })}} class="flex items-center gap-1.5">
+      {{{ await $slots.main() }}}
+    </span>
   </button>
 @endif

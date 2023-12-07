@@ -1,5 +1,12 @@
 @if (auth.user)
-  @form({ action: form.patch('watchlists.toggle'), target: 'up-watchlist-toggle', fragment: 'components/watchlist/toggle.edge' })
+  @form({ 
+    action: form.patch('watchlists.toggle'), 
+    target: 'up-watchlist-toggle', 
+    fragment: 'components/watchlist/toggle.edge',
+    'up-disable': 'button',
+    'x-data': '{ loading: false }',
+    '@submit': 'loading = true'
+  })
     @if (postId)
       <input type="hidden" name="postId" value="{{ postId }}" />
     @elseif (collectionId)
