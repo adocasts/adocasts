@@ -26,6 +26,7 @@ import HistoryTypes from '#enums/history_types'
 import Plans from '#enums/plans'
 import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
 import hash from '@adonisjs/core/services/hash'
+import env from '#start/env'
 
 export default class User extends AppBaseModel {
   @column({ isPrimary: true })
@@ -140,7 +141,7 @@ export default class User extends AppBaseModel {
         return this.avatarUrl
       }
       
-      return `/img/${this.avatarUrl}`
+      return `${env.get('ASSET_DOMAIN')}/img/${this.avatarUrl}`
     }
 
     return gravatar.url(this.email, { s: '60' })

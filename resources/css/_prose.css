@@ -299,12 +299,12 @@ pre ul.filepath-list {
 
 /* purgecss start ignore */
 .prose-comment .ProseMirror {
-  @apply rounded-xl bg-slate-100 border-none pt-3 pb-20;
+  @apply rounded-md bg-slate-100 border-none pt-2 pb-20;
   min-height: 150px;
 }
 
 .comment-form.with-bio .prose-comment .ProseMirror {
-  @apply pt-20 px-3 lg:px-6;
+  @apply pt-16 px-4;
 }
 
 .comment-form.with-bg .prose-comment .ProseMirror {

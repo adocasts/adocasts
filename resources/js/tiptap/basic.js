@@ -14,7 +14,7 @@ import HardBreak from '@tiptap/extension-hard-break'
 import Image from '@tiptap/extension-image'
 import { Typography } from '@tiptap/extension-typography'
 
-window.setupEditor = function(content) {
+export const setupEditor = function(content) {
   let editor;
 
   return {
@@ -38,13 +38,9 @@ window.setupEditor = function(content) {
       return commandList.find(cmd => cmd.name === name).command({ editor })
     },
 
-    init(element) {
-      if (!element) {
-        return
-      }
-
+    init() {
       editor = new Editor({
-        element: element,
+        element: this.$refs.element,
         extensions: [
           StarterKit,
           BubbleMenu.configure({

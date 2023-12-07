@@ -2,6 +2,13 @@ import States from '#enums/states'
 import { ModelQueryBuilder } from "@adonisjs/lucid/orm"
 
 declare module '@adonisjs/lucid/orm' {
+  interface ModelQueryBuilderContract {
+    wherePublic(): this
+    whereTrue(column: string): this
+    whereFalse(column: string): this
+    getCount(): Promise<BigInt>
+  }
+
   interface ModelQueryBuilder {
     wherePublic(): this
     whereTrue(column: string): this

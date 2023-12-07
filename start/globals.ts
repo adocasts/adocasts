@@ -4,6 +4,7 @@ import edge from "edge.js"
 import { edgeIconify, addCollection } from 'edge-iconify'
 import { icons as phicons } from '@iconify-json/ph'
 import { icons as simpleicons } from '@iconify-json/simple-icons'
+import { icons as svgspinners } from '@iconify-json/svg-spinners'
 import { DateTime } from "luxon"
 import NotificationService from "#services/notification_service"
 import Roles from "#enums/roles"
@@ -22,6 +23,7 @@ import HtmlParser from "#services/html_parser"
 
 addCollection(phicons)
 addCollection(simpleicons)
+addCollection(svgspinners)
 
 edge.use(edgeIconify)
 

@@ -63,7 +63,7 @@
 
     <div class="bg-slate-100 px-4 py-4 flex items-center gap-8">
       <div class="hidden lg:block">
-        @button({ href: prevLesson.routeUrl, attrs: 'up-follow', class: 'gap-2', disabled: !prevLesson.routeUrl })
+        @button({ href: prevLesson?.routeUrl, attrs: 'up-follow', class: 'gap-2', disabled: !prevLesson?.routeUrl })
           @svg('ph:caret-circle-left-fill', { class: 'w-5 h-5' })
           Previous
         @end
@@ -121,7 +121,7 @@
             @slot('prefix')
               @if (author.avatar)
                 @profile.link({ user: author })
-                  <img class="rounded-md w-10 h-10 border-1 border-slate-900 border-opacity-20 bg-slate-100" src="{{ assetDomain }}{{ author.avatar }}" />
+                  <img class="rounded-md w-10 h-10 border-1 border-slate-900 border-opacity-20 bg-slate-100" src="{{ author.avatar }}" />
                 @end
               @endif
             @endslot
@@ -132,7 +132,7 @@
           @end
           @!stat.bar.item({ title: 'Published', value: post.publishAtDisplay })
           @!stat.bar.item({ title: 'Duration', value: post.watchMinutes })
-          @!stat.bar.item({ title: 'Episode', value: post.lessonIndexDisplay })
+          @!stat.bar.item({ title: 'Comments', value: commentCount, href: '#comments' })
         @end
 
         @if (author.profile.biography)
@@ -204,8 +204,8 @@
     {{{ await parser.highlight(post.body) }}}
   </article>
 
-  <div class="max-w-prose mx-auto mt-8">
-    @!comments.base({ postId: post.id, comments, commentCount })
+  <div id="comments" class="max-w-prose mx-auto mt-8">
+    @!comments.base({ postId: post.id, comments, commentCount, class: '-mx-4' })
   </div>
 
 @end

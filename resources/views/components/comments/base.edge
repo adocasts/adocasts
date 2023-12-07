@@ -3,7 +3,7 @@
 @let(descriptor = $props.descriptor ?? 'Comment')
 @let(canComment = typeof $props.canComment == 'boolean' ? $props.canComment : true)
 
-<div x-cloak x-data="comments">
+<div x-cloak x-data="comments" class="{{ $props.class }}" up-comments>
   @if (auth.user && canComment)
     @let(className = lessonRequestId ? 'text-base text-slate-600' : 'text-xl')
     <h4 class="font-semibold mt-6 mb-6 p-6 flex rounded-xl bg-slate-100 {{ className }}">
@@ -38,7 +38,7 @@
     </div>
   @endif
 
-  <div class="-ml-8 mt-6">
+  <div class="mt-6">
     @!comments.list({ postId, lessonRequest, comments, nodeComments: rootComments, canComment })
   </div>
 

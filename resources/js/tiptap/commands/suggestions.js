@@ -86,7 +86,7 @@ export const getSuggestions = ({ isBasic = true }) => ({
           </div>
         `
 
-        popup = tippy('body', {
+        popup = tippy(document.getElementById('portal'), {
           allowHTML: true,
           getReferenceClientRect: state.clientRect,
           appendTo: () => context,
@@ -108,14 +108,14 @@ export const getSuggestions = ({ isBasic = true }) => ({
 
         mount('tiptapCommand', { ...commandState, ...props })
 
-        popup[0].setProps({
+        popup.setProps({
           getReferenceClientRect: props.clientRect,
         })
       },
 
       onKeyDown(props) {
         if (props.event.key === 'Escape') {
-          popup[0].hide()
+          popup.hide()
 
           return true
         }
@@ -124,7 +124,7 @@ export const getSuggestions = ({ isBasic = true }) => ({
       },
 
       onExit() {
-        popup[0].destroy()
+        popup.destroy()
       },
     }
   },

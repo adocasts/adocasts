@@ -1,11 +1,12 @@
 @let(size = $context.size)
+@let(el = $props.href ? 'a' : 'div')
 
 <div class="{{ html.classNames([{ 'flex items-center gap-4': $slots.prefix || $slots.suffix }, size.div, $props.class || '']) }}">
   @if ($slots.prefix)
     {{{ await $slots.prefix() }}}
   @endif
 
-  <div class="{{ html.classNames(['flex flex-col']) }}">
+  <{{ el }} {{ html.attrs({ href: $props.href }) }} up-follow class="{{ html.classNames(['flex flex-col']) }}">
 
     <dt class="{{ html.classNames(['font-semibold', size.dt]) }}">
       @if (title)
@@ -21,7 +22,7 @@
         {{{ await $slots.main() }}}
       @endif
     </dd>
-  </div>
+  </{{ el }}>
 
   @if ($slots.suffix)
     {{{ await $slots.suffix() }}}

@@ -1,7 +1,7 @@
 @let(submittable = $props.submittable ?? true)
 @let(showBio = !submittable ? false : auth.user && !update)
 
-<div x-data="setupEditor(`{{ value ?? '' }}`)" x-init="() => init($refs.element)">
+<div x-data="setupEditor({{ js.stringify(value ?? '') }})">
   <div class="bubble-menu bg-slate-100 text-slate-700 text-sm py-1 px-2 rounded-md">
     <template x-if="typeof isInitialized === 'boolean'">
       <div class="flex items-center space-x-2">
@@ -27,9 +27,18 @@
     </template>
   </div>
 
-  <div class="flex-1 relative comment-form {{ showBio && 'with-bio' }} {{ withBg && 'with-bg' }}" :class="[isFocused && 'focused' ]">
+  @if (reply)
+    <div class="flex items-center gap-2 mb-1.5 text-xs uppercase tracking-wider">
+      @svg('ph:chat-circle-text-fill')
+      <span class="font-bold">
+        Replying to {{ reply.user?.username ?? reply.name }}
+      </span>
+    </div>
+  @endif
+
+  <div class="flex-1 relative comment-form {{ showBio && 'with-bio' }} {{ withBg && 'with-bg' }}" :class="[isFocused && 'focused']">
     @if (showBio)
-      <div class="prose-comment-bio">
+      <div class="absolute top-4 left-4 z-10 flex items-center gap-2">
         <figure>
           <img class="mr-3 h-8 w-8 rounded-md shadow-md shadow-black/5 ring-1 fill-brand-400 ring-black/5 bg-brand-900" src="{{ auth.user.avatar }}" />
         </figure>
@@ -37,19 +46,27 @@
       </div>
     @endif
     @if (submittable)
-      <div class="prose-comment-actions">
+      <div class="absolute bottom-4 right-4 flex items-center gap-2 z-10">
         @if (cancelable)
-          @button.outline({ type: 'button', class: 'btn-comment-cancel mr-3', '@click': onCancel ? 'onCancel' : '' })
+          @button({ type: 'button', class: 'gap-1.5', size: 'sm', '@click': onCancel ? onCancel : '' })
+            @svg('ph:x-bold')
             Cancel
           @end
         @endif
 
-        @button({ type: 'submit', class: 'btn-comment-submit' })
-          {{ update ? 'Update' : 'Create' }} Comment
+        @button({ type: 'submit', variant: 'dark', size: 'sm', ':disabled': 'sending' })
+          <span x-show="sending" class="flex items-center gap-1.5">
+            @svg('svg-spinners:blocks-shuffle-3')
+            Saving ...
+          </span>
+          <span x-show="!sending" class="flex items-center gap-1.5">
+            @svg('ph:chat-circle-text-fill')
+            {{ update ? 'Update' : 'Create' }} Comment
+          </span>
         @end
       </div>
     @endif
-    <div x-ref="element" class="{{ className ?? `prose prose-comment rounded-xl text-slate-900 !max-w-full flex-1 mb-6` }}"></div>
+    <div x-ref="element" class="{{ className ?? `prose prose-comment rounded-xl text-slate-900 !max-w-full flex-1` }}"></div>
   </div>
   <input type="hidden" name="{{ name ?? 'body' }}" :value="content">
 </div>

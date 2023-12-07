@@ -1,9 +1,12 @@
 import Alpine from 'alpinejs'
 import intersect from '@alpinejs/intersect'
- 
+import { setupEditor } from './tiptap/basic'
+
 Alpine.plugin(intersect)
 
 window.Alpine = Alpine
+
+Alpine.data('setupEditor', setupEditor)
 
 Alpine.data('mouseParallax', function (refNames = [], transforms = '') {
   return {

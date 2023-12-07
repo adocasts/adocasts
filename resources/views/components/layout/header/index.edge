@@ -38,7 +38,7 @@
     <div class="flex flex-1 justify-end gap-4">
       @if (auth.user)
         <a href="{{ route('users.menu') }}" up-layer="new" up-mode="drawer" up-position="right" up-size="large" class="text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
-          <img class="w-7 h-7 md:h-8 md:w-8 rounded-md" src="{{ assetDomain }}{{ auth.user.avatar }}" />
+          <img class="w-7 h-7 md:h-8 md:w-8 rounded-md" src="{{ auth.user.avatar }}" />
           <span class="sr-only">{{ auth.user.username }}</span>
         </a>
       @else
