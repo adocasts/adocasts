@@ -204,8 +204,16 @@
     </div>
   </div>
 
-  <article class="prose mx-auto mt-8">
-    {{{ await parser.highlight(post.body) }}}
+  <article x-data="proseBody" id="proseBody" class="prose mx-auto post-type-{{ post.postTypeId }} relative">
+    @can('PostPolicy.view', post)
+      {{{ await parser.highlight(post.body) }}}
+    @else
+      {{{ await parser.getPreview(post.body) }}}
+      <div class="w-full absolute bottom-0 left-0 h-full bg-gradient-to-b from-slate-100/0 via-slate-100/75 to-slate-100 z-10"></div>
+      <div class="bg-slate-200 rounded-xl p-6 shadow-xl relative z-20 {{ post.body.length ? '-mt-16' : '' }}">
+        @!plus.postCta({ post, plusMonthly, outlineVariant: 'base-light' })
+      </div>
+    @endcan
   </article>
 
   <div id="comments" class="max-w-prose mx-auto mt-8">

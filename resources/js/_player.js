@@ -16,7 +16,7 @@ class VideoPlayer {
     this.startMuted = isLive
     this.watchSeconds = watchSeconds
     this.isCompleted = isCompleted
-    this.bodyContent = document.querySelector('.body-content')
+    this.bodyContent = document.getElementById('proseBody')
     this.placeholder = document.querySelector('[video-placeholder]')
     this.nextUpEl = document.getElementById('lessonVideoNextUp')
     this.btnCompleted = document.querySelector('[btn-completed]')
@@ -218,7 +218,7 @@ class VideoPlayer {
 
     // don't dispatch to nextUp if player isn't actively playing
     if (!isVideoPlaying) return
-
+    
     this.nextUpEl.dispatchEvent(new CustomEvent('timeupdate', { detail: { player } }))
   }
 
