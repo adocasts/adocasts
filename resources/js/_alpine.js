@@ -17,18 +17,27 @@ Alpine.store('app', {
 Alpine.data('setupEditor', setupEditor)
 
 Alpine.data('mouseParallax', function (refNames = [], transforms = '') {
+  let onMouseMove
   return {
+    exists: true,
+
     init() {
-      document.addEventListener('mousemove', this.onMove.bind(this))
+      onMouseMove = this.onMove.bind(this)
+      document.addEventListener('mousemove', onMouseMove)
+
+      this.$watch('exists', (value) => !value && this.destroy())
     },
 
     destroy() {
-      document.removeEventListener('mousemove', this.onMove.bind(this))
+      document.removeEventListener('mousemove', onMouseMove)
     },
 
     onMove(event) {
       refNames.map(ref => {
         const el = this.$refs[ref]
+
+        if (!el) this.destroy()
+
         const position = el.getAttribute("value") || 5
         const x = (window.innerWidth - event.pageX * position) / 90
         const y = (window.innerHeight - event.pageY * position) / 90
