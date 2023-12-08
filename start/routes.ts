@@ -22,6 +22,7 @@ const SnippetsController = () => import('#controllers/snippets_controller')
 const WatchlistsController = () => import('#controllers/watchlists_controller')
 const CommentsController = () => import('#controllers/comments_controller')
 const ProgressionsController = () => import('#controllers/progressions_controller')
+const SearchesController = () => import('#controllers/searches_controller')
 
 router.get('/', [HomeController, 'index']).as('home')
 
@@ -51,6 +52,12 @@ router.put('/api/users/theme', [UsersController, 'theme']).as('api.users.theme')
  * watchlists
  */
 router.patch('/watchlist/toggle', [WatchlistsController, 'toggle']).as('watchlists.toggle')
+
+/**
+ * search
+ */
+router.get('/search', [SearchesController, 'index']).as('search.index')
+router.post('/search', [SearchesController, 'search']).as('search.search')
 
 /**
  * content

@@ -202,4 +202,14 @@ export default class CollectionService {
   private queryGetLastUpdated(withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 3) {
     return this.getList(withPosts, excludeIds, postLimit).orderLatestUpdated()
   }
+
+  public async search(term: string | undefined, limit: number = 8) {
+    return this
+      .builder()
+      .display()
+      .root()
+      .if(term, builder => builder.search(term!))
+      .orderLatestUpdated()
+      .limit(limit)
+  }
 }

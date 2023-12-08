@@ -54,6 +54,14 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     return this
   }
 
+  public search(term: string) {
+    this.query.where(query => query
+      .where('collections.name', 'ILIKE', `%${term}%`)
+      .orWhere('collections.description', 'ILIKE', `%${term}%`)
+    )
+    return this
+  }
+
   public whereHasPost(post: Post, collectionSlug: string | undefined = undefined) {
     this.query
       .if(collectionSlug, query => query.where('slug', collectionSlug!))

@@ -30,6 +30,14 @@ export default class TaxonomyBuilder extends BaseBuilder<typeof Taxonomy, Taxono
     return this
   }
 
+  public search(term: string) {
+    this.query.where(query => query
+      .where('taxonomies.name', 'ILIKE', `%${term}%`)
+      .orWhere('taxonomies.description', 'ILIKE', `%${term}%`)
+    )
+    return this
+  }
+
   public withPostCount() {
     this.query.withCount('posts')
     return this

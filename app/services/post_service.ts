@@ -173,4 +173,13 @@ export default class PostService {
 
     return query.apply(scope => scope.forDisplay()).limit(limit)
   }
+
+  public async search(term: string | undefined, limit: number = 15) {
+    return this
+      .builder()
+      .display()
+      .if(term, builder => builder.search(term!))
+      .orderPublished()
+      .limit(limit)
+  }
 }

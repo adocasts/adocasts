@@ -32,6 +32,15 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
     return this
   }
 
+  public search(term: string) {
+    this.query.where(query => query
+      .where('title', 'ILIKE', `%${term}%`)
+      .orWhere('description', 'ILIKE', `%${term}%`)
+      .orWhere('body', 'ILIKE', `${term}`)
+    )
+    return this
+  }
+
   public whereLesson() {
     this.query.whereIn('postTypeId', [PostTypes.LESSON, PostTypes.LIVESTREAM])
     return this

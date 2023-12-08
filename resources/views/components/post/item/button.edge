@@ -1,0 +1,13 @@
+@button({ href: item.routeUrl, class: 'bg-white border-white gap-4 flex-nowrap', size: 'sm' })
+  <div class="w-24">
+    @!post.picture({ item, class: 'h-full', lazy: lazyItem })
+  </div>
+  <div class="flex-1">
+    <object>
+      @!post.seriesBar({ item })
+    </object>
+    <h4 class="font-bold text-base">
+      {{ item.title }}
+    </h4>
+  </div>
+@end

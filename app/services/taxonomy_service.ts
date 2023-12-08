@@ -1,4 +1,5 @@
 import TaxonomyBuilder from "#builders/taxonomy_builder";
+import CollectionTypes from "#enums/collection_types";
 import Taxonomy from "#models/taxonomy";
 
 export default class TaxonomyService {
@@ -59,5 +60,14 @@ export default class TaxonomyService {
       .where('parent_id', taxonomy.id)
       .display()
       .order()
+  }
+
+  public async search(term: string | undefined, limit: number = 8) {
+    return this
+      .builder()
+      .display()
+      .if(term, builder => builder.search(term!))
+      .order()
+      .limit(limit)
   }
 }
