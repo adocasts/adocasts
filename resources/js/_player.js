@@ -452,12 +452,12 @@ up.on('up:location:changed', function(event) {
 up.on('up:fragment:loaded', event => {
   setTimeout(() => {
     const main = document.querySelector('[up-main]')
-    const mains = Array.from(document.querySelectorAll('[up-main-header], [up-main-footer]'))
+    const sync = Array.from(document.querySelectorAll(main.dataset.syncTo))
 
-    if (main.classList.contains('lesson-wrapper')) {
-      mains.map(m => m.classList.add('lesson-wrapper'))
+    if (main.classList.contains(main.dataset.postClass)) {
+      sync.map(m => m.classList.add(main.dataset.postClass))
     } else {
-      mains.map(m => m.classList.remove('lesson-wrapper'))
+      sync.map(m => m.classList.remove(main.dataset.postClass))
     }
   }, 300)
 

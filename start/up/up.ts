@@ -241,7 +241,7 @@ export default class Up {
   }
 
   public addTarget(...value: string[]) {
-    const current = this.getProperty('X-Up-Target').split(',')
+    const current = this.getProperty('X-Up-Target')?.split(',') ?? []
     return [...current, ...value].join(', ')
   }
 

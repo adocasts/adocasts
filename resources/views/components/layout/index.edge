@@ -1,5 +1,6 @@
 @let(isPostOnDeck = !!post && (!!series || !!path || similarLessons?.length) && post.postTypeId !== PostTypes.NEWS)
-@let(postClass = html.classNames([{ 'w-[calc(100%-var(--lesson-list-width))]': isPostOnDeck }]))
+@let(postClassString = 'w-[calc(100%-var(--lesson-list-width))]')
+@let(postClass = html.classNames([{ [postClassString] : isPostOnDeck }]))
 
 <!DOCTYPE html>
 <html class="system">
@@ -33,16 +34,18 @@
     @endif
   </div>
   
-  <div class="{{ postClass }}">
-    <main {{ html.attrs({ class: utils.classes('page relative z-20', [up.isPage ? 'mt-8' : '!px-0']), ...($props.attrs || {}) }) }} up-main>
+  <main class="{{ postClass }}" data-post-class="{{ postClassString }}" data-sync-to="[up-header], [up-hero], [up-footer]" up-main>
+    <div {{ html.attrs({ class: utils.classes('page relative z-20', [up.isPage ? 'mt-8' : '!px-0']), ...($props.attrs || {}) }) }}>
       {{{ await $slots.main() }}}
-    </main>
-  </div>
+    </div>
+  </main>
 
   <div class="{{ postClass }}" up-footer>
     @!layout.footer()
   </div>
 
   <div id="portal"></div>
+
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </body>
 </html>
