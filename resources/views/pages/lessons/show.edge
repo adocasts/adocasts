@@ -70,6 +70,10 @@
       </div>
 
       <div class="flex-1 flex justify-center gap-2">
+        @if (auth.user && [PostTypes.LESSON, PostTypes.LIVESTREAM].includes(post.postTypeId))
+          @!post.completed()
+        @endif
+
         @!watchlist.toggle({ active: parseInt(post.$extras.watchlist_count ?? 0), postId: post.id })
 
         @if (!auth.user)

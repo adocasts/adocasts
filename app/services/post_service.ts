@@ -30,6 +30,7 @@ export default class PostService {
     return this.builder()
       .where(column, value)
       .display({ skipPublishCheck: true })
+      .watchlist()
       .withProgression()
       .withComments()
       .firstOrFail()

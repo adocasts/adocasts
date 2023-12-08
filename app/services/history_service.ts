@@ -78,8 +78,8 @@ export default class HistoryService {
    * @param data 
    * @returns 
    */
-  public async toggleComplete(user: User, routeName: string | undefined, data: Partial<History>) {
-    const progression = await this.getProgressionOrNew(user, routeName, data)
+  public async toggleComplete(data: Partial<History>) {
+    const progression = await this.getProgressionOrNew(data)
 
     progression.isCompleted = !progression.isCompleted
 
@@ -105,9 +105,9 @@ export default class HistoryService {
    * @param data 
    * @returns 
    */
-  private async getProgressionOrNew(user: User, routeName: string | undefined, data: Partial<History>) {
+  private async getProgressionOrNew(data: Partial<History>) {
     const query: Partial<History> = {
-      userId: user.id,
+      userId: this.user!.id,
       historyTypeId: HistoryTypes.PROGRESSION
     }
 
@@ -116,8 +116,8 @@ export default class HistoryService {
     if (data.taxonomyId)    query.taxonomyId = data.taxonomyId
 
     return History.firstOrNew(query, {
-      userId: user.id,
-      route: routeName,
+      userId: this.user!.id,
+      route: this.ctx.route?.name,
       historyTypeId: HistoryTypes.PROGRESSION
     })
   }
@@ -129,7 +129,7 @@ export default class HistoryService {
    * @param data 
    * @returns 
    */
-  public async recordProgression(user: User, routeName: string | undefined, data: Infer<typeof historyValidator>) {
+  public async recordProgression(data: Infer<typeof historyValidator>) {
     const progression = await this.getProgressionOrNew(user, routeName, data)
 
     // if new value is less than previously recorded value, ditch new value

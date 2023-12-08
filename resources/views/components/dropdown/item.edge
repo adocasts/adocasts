@@ -1,0 +1,9 @@
+@if (type === 'button')
+  <button @click="open = false; {{ onClick }}" class="w-full block px-4 py-2 text-sm leading-5 rounded-lg text-slate-700 hover:bg-slate-300 focus:outline-none focus:bg-slate-100 transition duration-150 ease-in-out {{ className }}" {{{ attrs }}}>
+    {{{ await $slots.main() }}}
+  </button>
+@else 
+  <a href="{{ href }}" class="block px-4 py-2 text-sm leading-5 rounded-lg text-slate-900 focus:outline-none focus:bg-slate-100 transition duration-150 ease-in-out {{ className }}" {{{ attrs }}}>
+    {{{ await $slots.main() }}}
+  </a>
+@endif

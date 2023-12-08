@@ -21,6 +21,7 @@ const BlogsController = () => import('#controllers/blogs_controller')
 const SnippetsController = () => import('#controllers/snippets_controller')
 const WatchlistsController = () => import('#controllers/watchlists_controller')
 const CommentsController = () => import('#controllers/comments_controller')
+const ProgressionsController = () => import('#controllers/progressions_controller')
 
 router.get('/', [HomeController, 'index']).as('home')
 
@@ -44,6 +45,7 @@ router.get('/:provider/unlink', [AuthSocialController, 'unlink']).as('auth.socia
  * users
  */
 router.get('/users/menu', [UsersController, 'menu']).as('users.menu')
+router.get('/api/users/theme', [UsersController, 'theme']).as('api.users.theme')
 
 /**
  * watchlists
@@ -77,6 +79,7 @@ router.patch('/comments/:id/like', [CommentsController, 'like']).as('comments.li
 router.delete('/comments/:id', [CommentsController, 'destroy']).as('comments.destroy')
 
 /**
- * histories
+ * progression
  */
-router.post('/api/history/progression/:id?', 'ProgressionsController.record').as('api.histories.progression')
+router.post('/api/history/progression/:id?', [ProgressionsController, 'record']).as('api.histories.progression')
+router.patch('/histories/progression/toggle', [ProgressionsController, 'toggle']).as('histories.progression.toggle')

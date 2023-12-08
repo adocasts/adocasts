@@ -1,0 +1,24 @@
+@let(isCompleted = userProgression?.isCompleted ?? false)
+
+<div x-data="{ isCompleted: {{ isCompleted }} }" up-complete x-cloak>
+  <span x-show="isCompleted">
+    @button({ variant: 'green', form: 'completedForm', type: 'submit', 'btn-completed': true })
+      @svg('ph:check-fat-fill')
+      Completed
+    @end
+  </span>
+  <span x-show="!isCompleted">
+    @button.outline({ form: 'completedForm', type: 'submit', 'btn-completed': true })
+      @svg('ph:check-fat')
+      Mark As Completed
+    @end
+  </span>
+</div>
+
+@if (!rerender)
+  @form({ id: 'completedForm', action: form.patch('histories.progression.toggle'), upSubmit: true, 'up-target': '[up-complete]' })
+    <input type="hidden" name="postId" value="{{ post.id }}" />
+    <input type="hidden" name="collectionId" value="{{ series?.id }}" />
+    <input type="hidden" name="route" value="{{ request.ctx.route?.name }}" />
+  @end
+@endif

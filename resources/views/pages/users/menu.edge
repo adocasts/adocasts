@@ -2,11 +2,11 @@
 
   <div class="max-w-[100vw] flex gap-x-3 md:gap-x-6 p-3 md:p-6">
     <nav class="flex flex-col sticky top-6 -mx-2 group">
-      <p class="font-semibold text-xs uppercase tracking-wider text-slate-400 mb-2">Content</p>
+      <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mb-2">Content</p>
       @!menu.link({ text: 'Watchlist', href: '#' })
       @!menu.link({ text: 'Progression', href: '#' })
       
-      <p class="font-semibold text-xs uppercase tracking-wider text-slate-400 mt-8 mb-2">Settings</p>
+      <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8 mb-2">Settings</p>
 
       @!menu.link({ text: 'Account', href: '#' })
       @!menu.link({ text: 'Profile', href: '#' })
@@ -33,7 +33,7 @@
           <input type="hidden" name="forward" value="{{ request.header('referrer') }}" />
         @endif
 
-        <p class="font-semibold text-xs uppercase tracking-wider text-slate-400 mt-8">Session</p>
+        <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8">Session</p>
         @!menu.link({ type: 'submit', text: 'Sign out' })
       @end
     </nav>
@@ -44,7 +44,7 @@
       <div class="flex items-center gap-x-3">
         @profile.link({ user: auth.user })
           <figure>
-            <img class="w-16 h-16 rounded shadow-xl" src="{{ assetDomain }}{{ auth.user.avatar }}" alt="{{ auth.user.username }}" />
+            <img class="w-16 h-16 rounded shadow-xl" src="{{ auth.user.avatar }}" alt="{{ auth.user.username }}" />
           </figure>
         @end
         <div>

@@ -39,19 +39,25 @@
         <img class="logo-black w-auto h-6 md:h-7" src="/imgs/logo-black.svg" alt="Adocasts" width="146px" height="28px" />
       </a>
     </div>
-    <div class="flex flex-1 justify-end gap-4">
+    <div class="flex flex-1 justify-end items-center gap-2">
+      @button({ href: '#', 'up-layer': 'new', square: true })
+        @svg('ph:magnifying-glass-bold', { class: 'w-3 h-3 md:w-4 md:h-4' })
+      @end
+
+      @!theme.selector()
+
       @if (auth.user)
-        <a href="{{ route('users.menu') }}" up-layer="new" up-mode="drawer" up-position="right" up-size="large" class="text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
+        <a href="{{ route('users.menu') }}" up-layer="new" up-target="[up-main]" up-mode="drawer" up-position="right" up-size="large" class="text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
           <img class="w-7 h-7 md:h-8 md:w-8 rounded-md" src="{{ auth.user.avatar }}" />
           <span class="sr-only">{{ auth.user.username }}</span>
         </a>
       @else
-        <a href="{{ route('auth.signin.create') }}" up-layer="new" class="hidden md:block text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
+        <a href="{{ route('auth.signin.create') }}" up-layer="new" up-target="[up-main]" class="hidden md:block text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
           Sign in
           @!highlight.underline()
         </a>
 
-        <a href="{{ route('auth.signup.create') }}" up-layer="new" class="hidden md:block text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
+        <a href="{{ route('auth.signup.create') }}" up-layer="new" up-target="[up-main]" class="hidden md:block text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
           Sign up <span aria-hidden="true">&rarr;</span>
           @!highlight.underline()
         </a>

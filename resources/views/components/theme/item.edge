@@ -1,0 +1,8 @@
+@form({ action: form.put('api.users.theme'), upSubmit: true, 'up-target': '[up-theme]' })
+  @dropdown.item({ type: 'button', onClick: `document.body.parentElement.classList.remove('light', 'dark', 'system'); document.body.parentElement.classList.add('${value}')` })
+    <input type="hidden" name="theme" value="{{ value }}" />
+    <div class="flex items-center gap-x-3">
+      {{{ await $slots.main() }}}
+    </div>
+  @end
+@end
