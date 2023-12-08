@@ -68,10 +68,10 @@ export default class Up {
   private setHeadersAsResponse(headers: Record<string, string>) {
     Object.keys(headers).forEach((header) => {
       const h = header.split('-').map(h => string.capitalCase(h)).join('-')
-      this.ctx.response.response.setHeader(h, headers[header])
-      // this.ctx.response.header(h, headers[header])
+      // this.ctx.response.response.setHeader(h, headers[header])
+      this.ctx.response.header(h, headers[header])
     })
-
+console.log({ headers })
     if (this.getStatus()) {
       this.ctx.response.response.statusCode = parseInt(this.getStatus())
     }
@@ -242,7 +242,7 @@ export default class Up {
 
   public addTarget(...value: string[]) {
     const current = this.getProperty('X-Up-Target')?.split(',') ?? []
-    return [...current, ...value].join(', ')
+    this.setProperty('X-Up-Target', [...new Set([...current, ...value])].join(', '))
   }
 
   public setStatus(status: number) {

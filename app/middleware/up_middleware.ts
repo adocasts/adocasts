@@ -3,6 +3,10 @@ import type { NextFn } from '@adonisjs/core/types/http'
 
 export default class UpMiddleware {
   async handle(ctx: HttpContext, next: NextFn) {
+    if (!ctx.up.isUnpolyRequest || !ctx.request.cookiesList().playingId) {
+      ctx.session.forget('videoPlayerId')
+    }
+
     ctx.view.share({ up: ctx.up })
 
     /**

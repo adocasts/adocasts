@@ -350,8 +350,9 @@ let lessonVideoResize
 let wasIntersecting = undefined
 
 up.compiler('#lessonVideoEmbed', function(element) {
+  const postPaths = ['/lessons/', '/posts/', '/blog/', '/news/', '/snippet/', '/streams/']
   const isInitialized = !!window.player
-  const isPostPage = !!document.getElementById('videoPlayerPosition')
+  const isPostPage = postPaths.some(path => window.location.pathname.includes(path))
 
   // if not post page and player is already initialized, do nothing
   if (!isPostPage && isInitialized) return
@@ -435,7 +436,7 @@ up.on('up:location:changed', function(event) {
   if (!isPlayerInitialized) return
 
   // if opening one of the exit paths, don't do anything
-  if (exitPaths.some(path => event.url.toLowerCase().includes(path))) return
+  if (exitPaths.some(path => event.location.toLowerCase().includes(path))) return
 
   const isEnabledMiniPlayer = placeholder.dataset.isEnabledMiniPlayer === "true"
   const videoPath = placeholder.dataset.path

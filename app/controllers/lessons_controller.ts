@@ -71,7 +71,7 @@ export default class LessonsController {
     const hasPlayerId = session.has('videoPlayerId')
 
     if (!up.isUnpolyRequest || !hasPlayerId || (hasPlayerId && session.get('videoPlayerId') !== post.id)) {
-      up.addTarget('[up-player]', '[up-header]')
+      up.addTarget('[up-player]')
     }
 
     await this.historyService.recordView(post, route?.name)
