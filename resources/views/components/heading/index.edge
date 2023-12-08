@@ -1,16 +1,17 @@
 @let(size = $props.size || 'base')
+@let(theme = $props.theme ?? true)
 @let(sizes = {
   sm: {
-    title: 'text-4xl font-black tracking-tight',
-    subtitle: 'text-base font-bold text-brand-600 uppercase',
-    description: 'text-xl text-slate-600 leading-tight text-justify',
-    cta: 'text-base font-bold text-slate-600 hover:text-slate-950 link current'
+    title: `text-4xl tracking-tight`,
+    subtitle: `text-base font-bold text-brand-600 uppercase`,
+    description: `text-xl leading-tight text-justify ${theme ? 'text-slate-600' : 'text-slate-base-400'}`,
+    cta: `text-base font-bold link current ${theme ? 'text-slate-600 hover:text-slate-950' : 'text-slate-base-400 hover:text-slate-base-900'}`,
   },
   base: {
-    title: 'text-4xl md:text-5xl xl:text-6xl font-black tracking-tight',
-    subtitle: 'xl:text-lg font-bold text-brand-600 uppercase',
-    description: 'text-xl text-slate-600 leading-tight text-justify',
-    cta: 'xl:text-lg text-slate-600 hover:text-slate-950 font-bold link current'
+    title: `text-4xl md:text-5xl xl:text-6xl font-black tracking-tight`,
+    subtitle: `xl:text-lg font-bold text-brand-600 uppercase`,
+    description: `text-xl leading-tight text-justify ${theme ? 'text-slate-600' : 'text-slate-base-400'}`,
+    cta: `xl:text-lg font-bold link current ${theme ? 'text-slate-600 hover:text-slate-950' : 'text-slate-base-400 hover:text-slate-base-100'}`,
   }
 })
 

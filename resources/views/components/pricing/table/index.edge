@@ -1,11 +1,13 @@
 @let(attrs = $props.attrs || {})
+@let(theme = $props.theme ?? true)
 
-<div {{ html.attrs({ class: utils.classes('grid sm:grid-cols-2 md:grid-cols-3 rounded-md bg-slate-100 border-4 border-slate-300', $props.class || ''), ...attrs }) }}>
+<div {{ html.attrs({ class: utils.classes('grid sm:grid-cols-2 md:grid-cols-3 rounded-md border-4 border-slate-300', $props.class || '', theme ? 'bg-slate-100' : 'bg-slate-base-900'), ...attrs }) }}>
   @!pricing.table.item({
     title: 'Monthly',
     price: 8,
     period: 'month',
-    description: 'Take things month-by-month with one low price to unlock everything!'
+    description: 'Take things month-by-month with one low price to unlock everything!',
+    theme
   })
 
   @!pricing.table.item({
@@ -14,7 +16,8 @@
     title: 'Annually',
     price: 80,
     period: 'year',
-    description: 'Take things year-by-year with one low price to unlock everything!'
+    description: 'Take things year-by-year with one low price to unlock everything!',
+    theme
   })
 
   @!pricing.table.item({
@@ -22,6 +25,7 @@
     title: 'Forever',
     price: 285,
     period: 'lifetime',
-    description: 'Hate subscriptions? Me too! Pay once, then never again with our forever plan.'
+    description: 'Hate subscriptions? Me too! Pay once, then never again with our forever plan.',
+    theme
   })
 </div>

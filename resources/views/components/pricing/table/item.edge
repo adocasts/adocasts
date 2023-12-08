@@ -1,17 +1,14 @@
 @let(attrs = $props.attrs || {})
-@let(classNames = utils.classes('bg-slate-100 shadow-md rounded-md', $props.class, [{
-  'border border-slate-200': !primary,
-  'border-4 border-brand-600': primary
-}]))
+@let(classNames = utils.classes('shadow-md rounded-md', $props.class, theme ? 'bg-slate-100' : 'bg-slate-base-900', primary ? `border-4 border-brand-600` : `border ${theme ? 'border-slate-200' : 'border-slate-base-800'}`))
 
 <div {{ html.attrs({ class: classNames, ...attrs }) }}>
   <div class="p-4 lg:p-8">
-    <h3 class="m-0 text-2xl leading-tight tracking-tight font-black border-0 border-solid">
+    <h3 class="m-0 text-2xl leading-tight tracking-tight font-black border-0 border-solid {{ theme ? 'text-slate-900' : 'text-slate-base-100' }}">
       {{ title }}
     </h3>
     
-    <div class="flex items-end justify-start mt-4 leading-7 text-slate-900 border-0 border-solid sm:mt-6">
-      <p class="box-border m-0 text-4xl lg:text-6xl font-semibold leading-none border-0 border-slate-200">
+    <div class="flex items-end justify-start mt-4 leading-7 border-0 border-solid sm:mt-6 {{ theme ? 'text-slate-900' : 'text-slate-base-100' }}">
+      <p class="box-border m-0 text-4xl lg:text-6xl font-semibold leading-none border-0 {{ theme ? 'border-slate-200' : 'border-slate-base-800'}}">
         ${{ price }}
       </p>
       <p class="box-border m-0 border-solid" style="border-image: initial;">
@@ -19,7 +16,7 @@
       </p>
     </div>
 
-    <p class="mt-3 leading-7 text-slate-900 border-0 border-solid mb-4 text-sm lg:text-base">
+    <p class="mt-3 leading-7 border-0 border-solid mb-4 text-sm lg:text-base {{ theme ? 'text-slate-900' : 'text-slate-base-100' }}">
       {{ description }}
     </p>
 

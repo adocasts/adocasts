@@ -1,6 +1,6 @@
 <div class="{{ html.classNames(['flex flex-col justify-center items-center bg-slate-100 rounded-md relative overflow-hidden group', ...($props.class || [])]) }}">
   <div class="p-4 lg:p-6 flex flex-col duration-300 z-10 w-full h-full">
-    <div class="flex items-center rounded-md relative z-10 mb-8 overflow-hidden">
+    <div class="flex items-center rounded-md bg-slate-base-900 relative z-10 mb-8 overflow-hidden">
       <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 group-hover:opacity-0 duration-300 z-10"></div>
 
       @if (item.asset)
@@ -48,7 +48,7 @@
       </div>
     </div>
 
-    <h5 class="uppercase font-semibold tracking-tight text-sm text-slate-base-50 mb-2">
+    <h5 class="uppercase font-semibold tracking-tight text-sm text-slate-950 mb-2">
       Latest from this series
     </h5>
     <div class="flex flex-col md:flex-row relative z-10 mt-8 md:mt-0 gap-4 lg:gap-8">
@@ -58,7 +58,6 @@
             item: post, 
             col: true, 
             class: [{ 'md:hidden': i === 1 }],
-            classContent: ['text-slate-base-50'],
             display: { seriesName: false }
           })
         @endeach
@@ -68,7 +67,6 @@
           @!post.item({ 
             item: post, 
             class: [{ 'hidden md:flex': i === 0 }],
-            classContent: ['text-slate-base-50'],
             display: { seriesName: false }
           })
         @endeach
