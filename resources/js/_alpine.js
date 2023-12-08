@@ -6,6 +6,14 @@ Alpine.plugin(intersect)
 
 window.Alpine = Alpine
 
+Alpine.store('app', {
+  heroVisible: true, 
+  heroHeight: 0, 
+  videoSmall: false,
+  videoHeight: 0,
+  videoPlaying: false
+})
+
 Alpine.data('setupEditor', setupEditor)
 
 Alpine.data('mouseParallax', function (refNames = [], transforms = '') {
@@ -57,6 +65,55 @@ Alpine.data('turnstile', function () {
         sitekey,
         callback: function(token) {},
       })
+    }
+  }
+})
+
+Alpine.data('videoPlaceholder', () => {
+  return {
+    open() {
+      document.querySelector('[video-placeholder]').classList.remove('hidden')
+    },
+
+    close() {
+      console.log('closing video player')
+      window.player?.pause()
+      document.querySelector('[video-placeholder]').classList.add('hidden')
+    }
+  }
+})
+
+Alpine.data('videoAutoPlayNext', (enabled = true, nextLessonUrl) => {
+  return {
+    enabled: nextLessonUrl ? enabled : false,
+    displayed: false,
+    timeRemaining: 100, // start at some number outside threshold
+    threshold: 15, // remaining seconds to display countdown
+
+    onTimeUpdate(event) {
+      if (!this.enabled) return
+
+      const player = event.detail.player
+      const { currentTime, duration } = player
+      const remaining = chain(duration).subtract(currentTime).done()
+
+      this.timeRemaining = Math.floor(remaining)
+      this.displayed = this.timeRemaining <= this.threshold
+
+      if (this.timeRemaining === 0) {
+        this.onPlayNext()
+      }
+    },
+
+    onPlayNext() {
+      if (!this.enabled) return
+
+      window.up.visit(nextLessonUrl + '?autoplay=1')
+    },
+
+    onCancel() {
+      this.enabled = false
+      this.displayed = false
     }
   }
 })

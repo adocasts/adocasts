@@ -1,0 +1,87 @@
+@layer utilities {
+  .aspect-video:not(.no-access) {
+    aspect-ratio: 16 / 9;
+  }
+
+  @screen lg {
+    .aspect-video {
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  .aspect-square {
+    aspect-ratio: 1 / 1;
+  }
+
+  /* purgecss start ignore */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    overflow: auto;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* purgecss end ignore */
+
+  [video-placeholder]:empty {
+    display: none;
+  }
+
+  [video-placeholder]:not(.video-small):not(.no-access) {
+    background-color: transparent !important;
+  }
+
+  [video-placeholder].video-small {
+    @apply overflow-hidden border-t-8 border-slate-100;
+  }
+
+  .video-small-details {
+    display: none;
+  }
+
+  .video-small .video-small-details {
+    display: flex;
+  }
+
+  .video-small {
+    width: 65% !important;
+
+    .video-small-details {
+      width: 100%;
+    }
+
+    @screen md {
+      width: var(--lesson-list-width) !important;
+      padding: 0;
+
+      .aspect-video {
+        width: 100%;
+      }
+    }
+  }
+
+  .video-noactions .video-small-details {
+    display: none !important;
+
+    @screen md {
+      display: block !important;
+    }
+  }
+
+  .video-noactions .video-small-actions {
+    display: none !important;
+  }
+
+  .lesson-wrapper header {
+    @apply bg-slate-100;
+    margin-bottom: 0 !important;
+  }
+
+  .lesson-wrapper header > div {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    margin-top: 0;
+  }
+}

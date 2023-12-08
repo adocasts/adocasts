@@ -12,23 +12,31 @@
 </head>
 <body class="h-full bg-body text-slate-900 overflow-x-hidden subpixel-antialiased" layout-root up-theme>
   <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>
-  
-  <div class="{{ postClass }}" up-header>
-    @!layout.header()
-  </div>
 
-  <div x-data="{ heroVisible: true, heroHeight: 0 }" class="{{ postClass }}" up-main>
-    @if ($slots.hero)
-      {{{ await $slots.hero() }}}
-    @endif
-
-    <main {{ html.attrs({ class: utils.classes('page', [up.isPage ? 'mt-8' : '!px-0']), ...($props.attrs || {}) }) }} >
-      {{{ await $slots.main() }}}
-    </main>
-
+  <div up-list>
     @if (isPostOnDeck && $slots.list)
       {{{ await $slots.list() }}}
     @endif
+  </div>
+
+  <div up-player>
+    @!post.player()
+  </div>
+
+  <div class="relative z-[101] {{ postClass }}" up-header>
+    @!layout.header()
+  </div>
+
+  <div class="relative z-20 {{ postClass }}" up-hero>
+    @if ($slots.hero)
+      {{{ await $slots.hero() }}}
+    @endif
+  </div>
+  
+  <div class="{{ postClass }}">
+    <main {{ html.attrs({ class: utils.classes('page relative z-20', [up.isPage ? 'mt-8' : '!px-0']), ...($props.attrs || {}) }) }} up-main>
+      {{{ await $slots.main() }}}
+    </main>
   </div>
 
   <div class="{{ postClass }}" up-footer>

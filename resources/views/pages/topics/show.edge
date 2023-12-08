@@ -2,9 +2,9 @@
 
   @slot('hero')
     <div 
-      x-intersect:enter="heroVisible = true"
-      x-intersect:leave="heroVisible = false" 
-      x-init="heroHeight = $el.clientHeight"
+      x-intersect:enter="$store.app.heroVisible = true"
+      x-intersect:leave="$store.app.heroVisible = false" 
+      x-init="$store.app.heroHeight = $el.clientHeight"
       class="bg-gradient-to-br from-slate-100 to-body relative">
       <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 group-hover:opacity-0 duration-300 z-10"></div>
 
@@ -56,7 +56,7 @@
 
   <div class="flex flex-wrap -mx-4 lg:-mx-8 relative" style="--aside-width: 385px;">
     <aside 
-      x-data="{ top: heroHeight * -1 - 34 + 'px' }"
+      x-data="{ top: $store.app.heroHeight * -1 - 34 + 'px' }"
       class="w-full px-4 xl:px-8 lg:w-[var(--aside-width)] lg:absolute lg:h-[calc(100%-var(--top-offset))] top-[var(--top-offset)] right-0 z-20 order-1 md:order-2" 
       :style="{ '--top-offset': top }">
       <div class="sticky top-4 lg:p-8 rounded-xl" :class="{ 'lg:bg-slate-100': !heroVisible || {{ item.children?.length ?? 0 }} }">

@@ -15,7 +15,9 @@
               x-transition:leave-start="translate-x-0" 
               x-transition:leave-end="translate-x-full"
               class="w-screen max-w-md lg:max-w-[var(--lesson-list-width)] lg:!block">
-              <div class="flex flex-col h-full py-5 bg-white border-l shadow-lg border-slate-100/70">
+              <div 
+                class="flex flex-col pt-5 bg-white border-l shadow-lg border-slate-100/70"
+                :style="{ height: $store.app.videoSmall ? `calc(100% - ${$store.app.videoHeight}px)` : '100%'}">
                 <div class="px-4 pb-4">
                   <div class="flex items-start justify-between pb-1">
                     <a href="{{ route('series.show', { slug: series.slug }) }}" up-follow class="flex items-center gap-4">
@@ -54,7 +56,7 @@
                   </div>
                 </div>
                 <div class="relative flex-1 px-2 sm:px-5">
-                  <ol class="absolute inset-0 px-2 flex-1 list-none m-0 p-0 top-0 left-0 overflow-y-auto hide-scrollbar -mt-3 md:mt-0">
+                  <ol class="absolute inset-0 px-2 pb-6 flex-1 list-none m-0 p-0 top-0 left-0 overflow-y-auto hide-scrollbar -mt-3 md:mt-0">
                     @!post.list.modules({ modules: series.children })
                     @!post.list.posts({ posts: series.posts })
                   </ol>

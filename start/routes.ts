@@ -75,3 +75,8 @@ router.post('/comments', [CommentsController, 'store']).as('comments.store')
 router.put('/comments/:id', [CommentsController, 'update']).as('comments.update')
 router.patch('/comments/:id/like', [CommentsController, 'like']).as('comments.like')
 router.delete('/comments/:id', [CommentsController, 'destroy']).as('comments.destroy')
+
+/**
+ * histories
+ */
+router.post('/api/history/progression/:id?', 'ProgressionsController.record').as('api.histories.progression')

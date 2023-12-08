@@ -29,7 +29,11 @@
       </div>
     </div>
     <div class="w-[200px] relative">
-      <a href="/" up-follow class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[calc(100%+.5rem)] rounded-b-md bg-body duration-300 hover:bg-slate-200 flex justify-center items-center border border-t-0 border-slate-200 shadow-xl">
+      <a 
+        href="/" 
+        up-follow 
+        class="absolute top-0 left-1/2 -translate-x-1/2 w-full bg-body duration-300 hover:bg-slate-200 flex justify-center items-center border-t-0 border-slate-200 shadow-xl"
+        :class="[$store.app.videoPlaying && !$store.app.videoSmall ? 'h-full' : 'h-[calc(100%+.5rem)] border rounded-b-md']">
         <span class="sr-only">Adocasts</span>
         <img class="logo-white w-auto h-6 md:h-7" src="/imgs/logo-white.svg" alt="Adocasts" width="146px" height="28px" />
         <img class="logo-black w-auto h-6 md:h-7" src="/imgs/logo-black.svg" alt="Adocasts" width="146px" height="28px" />
