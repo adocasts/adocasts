@@ -45,7 +45,7 @@ router.get('/:provider/unlink', [AuthSocialController, 'unlink']).as('auth.socia
  * users
  */
 router.get('/users/menu', [UsersController, 'menu']).as('users.menu')
-router.get('/api/users/theme', [UsersController, 'theme']).as('api.users.theme')
+router.put('/api/users/theme', [UsersController, 'theme']).as('api.users.theme')
 
 /**
  * watchlists

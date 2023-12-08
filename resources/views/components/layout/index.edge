@@ -1,9 +1,10 @@
 @let(isPostOnDeck = !!post && (!!series || !!path || similarLessons?.length) && post.postTypeId !== PostTypes.NEWS)
 @let(postClassString = 'w-[calc(100%-var(--lesson-list-width))]')
 @let(postClass = html.classNames([{ [postClassString] : isPostOnDeck }]))
+@let(theme = auth.user?.theme || session.get('theme'))
 
 <!DOCTYPE html>
-<html class="system">
+<html lang="en" class="{{ theme ?? 'system' }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -46,6 +47,8 @@
 
   <div id="portal"></div>
 
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  @if (!up.isUnpolyRequest)
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  @endif
 </body>
 </html>

@@ -13,7 +13,7 @@ export default class UsersController {
 
   public async theme({ request, response, auth, session, up }: HttpContext) {
     const { theme } = await request.validateUsing(themeValidator)
-
+    
     await auth.user?.merge({ theme }).save()
 
     session.put('theme', theme)
