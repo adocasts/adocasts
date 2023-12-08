@@ -240,6 +240,11 @@ export default class Up {
     return this.setProperty('X-Up-Target', value)
   }
 
+  public addTarget(...value: string[]) {
+    const current = this.getProperty('X-Up-Target').split(',')
+    return [...current, ...value].join(', ')
+  }
+
   public setStatus(status: number) {
     return this.setProperty('X-Up-Status', status + '')
   }
