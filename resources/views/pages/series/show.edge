@@ -54,7 +54,7 @@
 
             <div class="flex flex-wrap gap-4 mt-4 lg:mt-6">
               @if (nextLesson)
-                @button({ href: nextLesson.routeUrl, class: ['gap-2'] })
+                @button({ variant: 'lightBase', href: nextLesson.routeUrl, class: ['gap-2'] })
                   @svg('ph:play-fill')
                   {{ nextLesson.id === item.postsFlattened.at(0)?.id ? 'Start Series' : 'Continue Series' }}
                 @end

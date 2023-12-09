@@ -1,0 +1,80 @@
+@layout()
+
+  @slot('hero')
+
+    <div class="w-full h-48 bg-no-repeat bg-cover bg-center">
+      @!starfield({ class: 'w-full h-full', mountain: false })
+    </div>
+
+    <div class="max-w-prose mx-auto flex gap-6 relative z-10">
+      @if (user.avatar)
+        <div class="-mt-24 h-full relative">
+          <img class="w-48 h-48 rounded-full border-8 border-body bg-slate-100 overflow-hidden" src="{{ user.avatar }}" />
+
+          @if (!user.isFreeTier)
+            <div class="w-2/3 absolute bottom-0 left-1/2 -translate-x-1/2 bg-gradient-to-br from-brand-400 to-brand-600 px-2 xl:px-3 py-1 xl:py-2 rounded-full">
+              <img class="w-full relative -bottom-px" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts+" />
+            </div>
+          @endif
+        </div>
+      @endif
+
+      <div class="flex justify-end h-full flex-1">
+        @!user.links({ user })
+      </div>
+    </div>
+
+  @endslot
+
+  <div class="max-w-prose mx-auto">
+    <div>
+      @!heading({ title: user.profile.name || user.handle, size: 'sm' })
+      
+      @if (user.profile.name)
+        <p class="text-slate-600 text-sm lg:text-base mb-3">
+          {{ user.handle }}
+        </p>
+      @endif
+    </div>
+
+    @if (user.profile.biography)
+      <p class="text-slate-600 max-w-prose mt-4 mb-6">
+        {{ user.profile.biography }}
+      </p>
+    @endif
+
+    <div class="flex flex-wrap gap-4">
+      @if (user.profile.company)
+        <p class="flex items-center gap-1.5 truncate">
+          @svg('ph:buildings-fill')
+          {{ user.profile.company }}
+        </p>
+      @endif
+      @if (user.profile.location)
+        <p class="flex items-center gap-1.5 truncate">
+          @svg('ph:map-pin-fill')
+          {{ user.profile.location }}
+        </p>
+      @endif
+    </div>
+
+    @stat.bar({ size: 'small', display: 'flex', class: 'my-4', })
+      @!stat.bar.item({ title: 'Member Since', value: user.createdAt.toFormat('MMM d, yyyy') })
+      @!stat.bar.item({ title: 'Lessons Completed', value: completedLessonsCount })
+      @!stat.bar.item({ title: 'Comments Contributed', value: commentCount })
+      @!stat.bar.item({ title: 'Hours Watched', value: hoursWatchedSum.toLocaleString('en-US', { maximumFractionDigits: 2 }) })
+    @end
+
+    <p class="font-semibold uppercase tracking-wider pt-8 mt-8 border-t border-slate-200">
+      Recent Activity
+    </p>
+    <p class="text-slate-600">
+      Here's what {{ user.handle }} has been up to this past year
+    </p>
+
+    <div class="mt-6">
+      @!user.activity.list({ activity })
+    </div>
+  </div>
+
+@end

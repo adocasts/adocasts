@@ -4,22 +4,23 @@ import { inject } from "@adonisjs/core";
 import ActivityVM from "../view_models/activity.js";
 import { DateTime } from "luxon";
 import { HttpContext } from "@adonisjs/core/http";
+import User from "#models/user";
 
 @inject()
 export default class ProfileActivityService {
   public start: DateTime = DateTime.now().startOf('day').minus({ months: 12 })
   
+  declare user: User
+  
   constructor(protected ctx: HttpContext) {}
-
-  protected get user() {
-    return this.ctx.auth.user
-  }
 
   public get startSql() {
     return this.start.toSQL()
   }
 
-  public async getActivity() {
+  public async get(user: User) {
+    this.user = user
+    
     const account = await this.getAccountActivity()
     const posts = await this.getPostActivity()
     const comments = await this.getCommentActivity()

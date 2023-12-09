@@ -1,0 +1,38 @@
+<div class="flex flex-wrap h-full gap-1 pt-6">
+  @if (user.profile.githubUrl)
+    @button({ href: user.profile.githubUrl, target: '_blank', square: true })
+      @svg('simple-icons:github')
+    @end
+  @endif
+  @if (user.profile.youtubeUrl)
+    @button({ href: user.profile.youtubeUrl, target: '_blank', square: true })
+      @svg('simple-icons:youtube')
+    @end
+  @endif
+  @if (user.profile.twitterUrl)
+    @button({ href: user.profile.twitterUrl, target: '_blank', square: true })
+      @svg('simple-icons:twitter')
+    @end
+  @endif
+  @if (user.profile.facebookUrl)
+    @button({ href: user.profile.facebookUrl, target: '_blank', square: true })
+      @svg('simple-icons:facebook')
+    @end
+  @endif
+  @if (user.profile.instagramUrl)
+    @button({ href: user.profile.instagramUrl, target: '_blank', square: true })
+      @svg('simple-icons:instagram')
+    @end
+  @endif
+  @if (user.profile.threadsUrl)
+    @button({ href: user.profile.threadsUrl, target: '_blank', square: true })
+      @svg('simple-icons:threads')
+    @end
+  @endif
+  @if (user.profile.website)
+    @button({ href: user.profile.website, target: '_blank', class: 'text-xs gap-1.5' })
+      @svg('ph:globe-hemisphere-west-fill', { class: 'text-sm' })
+      Visit Website
+    @end
+  @endif
+</div>

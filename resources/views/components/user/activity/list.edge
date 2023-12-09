@@ -1,0 +1,44 @@
+<div class="flow-root">
+  <ul role="list" class="-mb-8">
+    @each ((item, i) in activity)
+      <li>
+        <div class="relative pb-8">
+          @if (i < activity.length - 1)
+            <span class="absolute left-4 top-4 -ml-px h-full w-0.5 bg-slate-200" aria-hidden="true"></span>
+          @endif
+          <div class="relative flex space-x-3">
+            <div>
+              <span class="{{ item.color }} h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-body">
+                @svg(item.icon, { class: 'w-5 h-5' })
+              </span>
+            </div>
+            <div class="flex-auto w-full pt-0 overflow-hidden">
+              <div class="whitespace-nowrap text-xs text-slate-500">
+                <time datetime="{{ item.createdAt.toFormat('yyyy-MM-dd') }}">{{ item.createdAtDisplay }}</time>
+              </div>
+              <p class="text-sm text-slate-500">
+                @if (item.titleDescriptor)
+                  {{ item.titleDescriptor }}
+                @endif
+                @if (item.title && item.href)
+                  <a href="{{ item.href }}" class="font-medium !text-slate-900 anchor anchor-inv anchor-thin anchor-current" up-follow>
+                    {{ item.title }}
+                  </a>
+                @elseif (item.title)
+                  <span class="font-medium text-slate-900">
+                    {{ item.title }}
+                  </span>
+                @endif
+              </p>
+              @if (['comment', 'reply'].includes(item.type) && item.body)
+                <div class="w-full prose-sm !max-w-full text-slate-700 mt-3 bg-slate-100 p-3 lg:p-6 rounded-xl">
+                  {{{ await parser.highlight(item.body) }}}
+                </div>
+              @endif
+            </div>
+          </div>
+        </div>
+      </li>
+    @endeach
+  </ul>
+</div>

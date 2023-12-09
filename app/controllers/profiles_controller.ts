@@ -24,7 +24,7 @@ export default class ProfilesController {
     const secondsWatchedSum = parseInt((await user.related('watchedPosts').query().sum('watch_seconds', 'sum').first())?.$extras.sum ?? 0)
     const hoursWatchedSum = chain(secondsWatchedSum).divide(3600).done()
     
-    const activity = await activityService.getActivity()
+    const activity = await activityService.get(user)
 
     return view.render('pages/profiles/show', { user, activity, completedLessonsCount, commentCount, hoursWatchedSum })
   }

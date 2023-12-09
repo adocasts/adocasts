@@ -50,16 +50,16 @@
   @end
 
   @cannot('LessonRequestPolicy.store')
-    <p class="inline-flex items-center gap-3 bg-slate-100 text-slate-600 px-6 py-3 rounded-xl text-sm my-3">
+    <p class="inline-flex items-center gap-3 bg-slate-100 text-slate-600 px-6 py-3 rounded-md text-sm my-3">
       @svg('ph:info-fill', { class: 'w-5 h-5' })
 
       <span>
         Please
-        <a href="{{ route('auth.signin') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+        <a href="{{ route('auth.signin.create') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
           sign in
         </a>
         or
-        <a href="{{ route('auth.signup') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+        <a href="{{ route('auth.signup.create') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
           sign up for free
         </a>
         to request and vote for lessons

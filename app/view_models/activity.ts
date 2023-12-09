@@ -12,6 +12,40 @@ import PostTypes, { PostTypeDesc } from "#enums/post_types";
 import RequestVote from "#models/request_vote";
 import CommentVote from "#models/comment_vote";
 
+class Types {
+  public static COMMENT = 'comment'
+  public static REPLY = 'reply'
+  public static LESSON_REQUEST = 'lessonRequest'
+  public static LESSON_COMPLETED = 'lessonCompleted'
+  public static ACCOUNT_CREATED = 'accountCreated'
+  public static POST = 'post'
+  public static ANNIVERSARY = 'anniversary'
+  public static VOTE = 'vote'
+
+  public static icon(type: Types) {
+    switch (type) {
+      case this.COMMENT:
+        return 'ph:chat-circle-text-fill'
+      case this.REPLY:
+        return 'ph:chat-teardrop-text-fill'
+      case this.LESSON_REQUEST:
+        return 'ph:seal-question-fill'
+      case this.LESSON_COMPLETED:
+        return 'ph:check-circle-fill'
+      case this.ACCOUNT_CREATED:
+        return 'ph:confetti-fill'
+      case this.POST:
+        return 'ph:graduation-cap-fill'
+      case this.ANNIVERSARY:
+        return 'ph:cake-fill'
+      case this.VOTE:
+        return 'ph:heart-fill'
+      default:
+        return 'ph:barricade-fill'
+    }
+  }
+}
+
 interface ActivityModel {
   post?: Post
   comment?: Comment
@@ -23,7 +57,9 @@ interface ActivityModel {
 }
 
 export default class ActivityVM {
-  declare type: 'comment'|'reply'|'lessonRequest'|'lessonCompleted'|'accountCreated'|'post'|'anniversary'|'vote'
+  public titleLength = 60
+
+  declare type: Types
   declare titleDescriptor: string
   declare title: string
   declare href: string
@@ -59,27 +95,27 @@ export default class ActivityVM {
   private buildForPost(post: Post) {
     //@ts-ignore
     const postTypeDesc = PostTypeDesc[post.postTypeId]
-    let icon = 'news'
+    let icon = 'ph:newspaper-fill'
     let desc = `Published ${postTypeDesc.toLowerCase()}`
 
     switch (post.postTypeId) {
       case PostTypes.LESSON:
-        icon = 'school'
+        icon = 'ph:graduation-cap-fill'
         break
       case PostTypes.SNIPPET:
-        icon = 'code'
+        icon = 'ph:code-fill'
         break
       case PostTypes.LIVESTREAM:
-        icon = 'broadcast'
+        icon = 'ph:broadcast-fill'
         desc = 'Livestreamed'
         break
       case PostTypes.LINK:
-        icon = 'link'
+        icon = 'ph:link-fill'
         desc = 'Shared a link'
         break
     }
 
-    this.type = 'post'
+    this.type = Types.POST
     this.titleDescriptor = desc
     this.title = post.title
     this.createdAt = post.publishAt!
@@ -88,18 +124,18 @@ export default class ActivityVM {
   }
 
   private buildForComment(comment: Comment) {
-    this.type = 'comment'
+    this.type = Types.COMMENT
     this.titleDescriptor = comment.lessonRequest ? 'Commented on request' : 'Commented on post'
     this.body = comment.body
     this.createdAt = comment.createdAt
-    this.icon = 'message'
+    this.icon = Types.icon(this.type)
 
     if (comment.replyTo) {
-      this.type = 'reply'
+      this.type = Types.REPLY
       this.titleDescriptor = 'Replied to'
-      this.title = string.excerpt(UtilityService.stripHTML(comment.parent.body), 75, { completeWords: true })
+      this.title = string.excerpt(UtilityService.stripHTML(comment.parent.body), this.titleLength, { completeWords: true })
       this.href = NotificationService.getGoPath(comment)
-      this.icon = 'messages'
+      this.icon = Types.icon(this.type)
       return
     }
 
@@ -114,48 +150,48 @@ export default class ActivityVM {
   }
 
   private buildForHistory(history: History) {
-    this.type = 'lessonCompleted'
+    this.type = Types.LESSON_COMPLETED
     this.titleDescriptor = 'Completed lesson'
     this.title = history.post.title
     this.href = history.post.routeUrl
     this.createdAt = history.createdAt
-    this.icon = 'check'
+    this.icon = Types.icon(this.type)
     this.color = 'bg-green-400 text-green-900'
   }
 
   private buildForLessonRequest(request: LessonRequest) {
-    this.type = 'lessonRequest'
+    this.type = Types.LESSON_REQUEST
     this.titleDescriptor = 'Requested lesson'
     this.title = request.name
     this.href = router.makeUrl('requests.lessons.show', { id: request.id })
     this.createdAt = request.createdAt
-    this.icon = 'heart-handshake'
+    this.icon = Types.icon(this.type)
   }
 
   private buildForRequestVote(vote: RequestVote) {
-    this.type = 'vote'
+    this.type = Types.VOTE
     this.titleDescriptor = 'Upvoted lesson request'
     this.title = vote.lessonRequest.name
     this.href = router.makeUrl('requests.lessons.show', { id: vote.lessonRequestId })
     this.createdAt = vote.createdAt
-    this.icon = 'heart'
+    this.icon = Types.icon(this.type)
   }
 
   private buildForVoteCommentVote(vote: CommentVote) {
-    this.type = 'vote'
+    this.type = Types.VOTE
     this.titleDescriptor = 'Upvoted comment'
-    this.title = string.excerpt(UtilityService.stripHTML(vote.comment.body), 75, { completeWords: true })
+    this.title = string.excerpt(UtilityService.stripHTML(vote.comment.body), this.titleLength, { completeWords: true })
     this.href = NotificationService.getGoPath(vote.comment)
     this.createdAt = vote.createdAt
-    this.icon = 'heart'
+    this.icon = Types.icon(this.type)
   }
 
   public static getForUserCreated(user: User) {
     const activity = new ActivityVM()
-    activity.type = 'accountCreated'
+    activity.type = Types.ACCOUNT_CREATED
     activity.titleDescriptor = 'Account created'
     activity.title = `Welcome to Adocasts, ${user.handle}!`
-    activity.icon = 'confetti'
+    activity.icon = Types.icon(activity.type)
     activity.color = 'bg-teal-400 text-teal-900'
     activity.createdAt = user.createdAt
     return activity
@@ -174,10 +210,10 @@ export default class ActivityVM {
       title = `Thanks for spending ${years} years with Adocasts!`
     } 
 
-    activity.type = 'anniversary'
+    activity.type = Types.ANNIVERSARY
     activity.titleDescriptor = titleDescriptor
     activity.title = title
-    activity.icon = 'cake'
+    activity.icon = Types.icon(activity.type)
     activity.color = 'bg-indigo-400 text-indigo-900'
     activity.createdAt = user.createdAt.plus({ years })
 

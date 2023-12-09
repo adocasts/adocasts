@@ -17,7 +17,7 @@ export default class SocialController {
 
     // if (!success) {
     //   session.flash('errors', { form: message })
-    //   return response.redirect().toRoute('auth.signin')
+    //   return response.redirect().toRoute('auth.signin.create')
     // }
 
     // await auth.login(user!, true)
