@@ -1,0 +1,23 @@
+@can('LessonRequestPolicy.approve', lessonRequest)
+  <div up-admin-actions class="flex flex-col gap-y-3">
+    @form({ action: form.patch('requests.lessons.approve', { id: lessonRequest.id }), upSubmit: true })
+      <div class="flex items-center gap-3">
+        @button({ variant: 'green', type: 'submit', block: true, class: 'gap-3 flex-1' })
+          @svg('ph:thumbs-up-fill')
+          Confirm &amp; Approve
+        @end
+
+        @button({ href: route('requests.lessons.fragment', { id: lessonRequest.id, fragment: 'admin_actions' }), 'up-target': '[up-admin-actions]' })
+          @svg('ph:x-bold')
+          Cancel
+        @end
+      </div>
+
+      <div class="mt-2">
+        @!tiptap.basic({ name: 'comment', value: flashMessages.get('comment'), submittable: false, includeScript: false })
+      </div>
+    @end
+
+    <div class="border-b border-slate-200 my-6"></div>
+  </div>
+@endcan

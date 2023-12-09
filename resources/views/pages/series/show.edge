@@ -5,7 +5,7 @@
       x-intersect:enter="$store.app.heroVisible = true"
       x-intersect:leave="$store.app.heroVisible = false" 
       x-init="$store.app.heroHeight = $el.clientHeight"
-      class="bg-gradient-to-br from-slate-100 to-body relative">
+      class="bg-gradient-to-br from-slate-base-900 to-slate-base-950 relative">
       <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 group-hover:opacity-0 duration-300 z-10"></div>
 
       @if (item.asset)
@@ -20,9 +20,9 @@
           @!collection.icon({ item, class: 'w-full max-w-[250px] order-1 md:order-2 md:hidden border-4 border-brand-base-800' })
 
           <div class="flex-1 my-4 md:mr-4 xl:mr-8 order-2 md:order-1">
-            @!heading({ title: item.name })
+            @!heading({ title: item.name, class: 'text-slate-base-100' })
 
-            <div class="flex items-center gap-3 text-slate-base-300 mt-4">
+            <div class="flex items-center gap-3 text-slate-base-400 mt-4">
               <div class="flex items-center gap-1.5">
                 @svg('ph:graduation-cap-fill')
                 <span>
@@ -37,7 +37,7 @@
             </div>
 
             @if (item.description)
-              <p class="lg:font-lg leading-7 mt-2 max-w-prose">
+              <p class="lg:font-lg leading-7 mt-2 max-w-prose text-slate-base-100">
                 {{ item.description }}
               </p>
             @endif
@@ -45,7 +45,7 @@
             @if (item.taxonomies)
               <div class="flex flex-wrap gap-4 mt-2">
                 @each (topic in item.taxonomies)
-                  <a href="#" class="font-medium anchor text-slate-600" up-follow>
+                  <a href="#" class="font-medium anchor" up-follow>
                     #{{ topic.slug }}
                   </a>
                 @endeach
@@ -103,7 +103,7 @@
             {{ item.name }}
           </h3>
   
-          <div class="flex items-center gap-3 text-slate-base-300 text-sm mt-2">
+          <div class="flex items-center gap-3 text-slate-600 text-sm mt-2">
             <div class="flex items-center gap-1.5">
               @svg('ph:graduation-cap-fill')
               <span>
@@ -126,16 +126,16 @@
 
         @if (item.children?.length)
           <div class="text-sm">
-            <h5 class="text-base">Series Modules</h5>
+            <h5 class="font-bold uppercase text-xs text-slate-600">Series Modules</h5>
 
-            <ol class="flex flex-col mt-3 -mx-3">
+            <ol class="flex flex-col mt-1.5 -mx-1">
               @each (module in item.children)
                 <li>
-                  <a href="#module{{module.moduleNumber}}" class="flex items-center flex-wrap text-slate-600 gap-x-3 px-3 py-2 rounded-xl hover:bg-slate-200 group duration-300">
-                    <span class="uppercase tracking-wider hidden md:block bg-slate-200 group-hover:bg-slate-300 duration-300 rounded-lg py-1 px-2 text-xs">
+                  <a href="#module{{module.moduleNumber}}" class="flex items-center flex-wrap text-slate-600 gap-x-3 px-1 py-1 rounded-xl hover:bg-slate-200 group duration-300">
+                    <span class="uppercase tracking-tight hidden md:block bg-slate-200 group-hover:bg-slate-300 duration-300 rounded-lg py-0.5 px-2 text-2xs">
                       Module {{ module.moduleNumber }}
                     </span>
-                    <span class="truncate">
+                    <span class="truncate -my-1">
                       {{ module.name }}
                     </span>
                   </a>

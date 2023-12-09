@@ -15,7 +15,7 @@
   }
 })
 
-<div {{ html.attrs({ class: utils.classes('grid', [{ 'sm:grid-cols-2': description || cta }], $props.class), ...($props.attrs || {}) }) }}>
+<div {{ html.attrs({ class: utils.classes('grid', [{ 'sm:grid-cols-2': description || cta || $slots.action }], $props.class), ...($props.attrs || {}) }) }}>
   <div>
     <h2 class="{{ html.classNames([sizes[size].title, ...($props.class?.title || [])]) }}">
       {{ title }}
@@ -40,6 +40,10 @@
           {{ cta }} <span aria-hidden="true">&rarr;</span>
         </a>
       @endif
+    </div>
+  @elseif ($slots.action)
+    <div class="sm:flex sm:justify-end">
+      {{{ await $slots.action() }}}
     </div>
   @endif
 </div>

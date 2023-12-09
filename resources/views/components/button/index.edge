@@ -23,12 +23,16 @@
 @let(sendingKey = $props.sendingKey || 'sending')
 
 @if (href)
+  @let(follow = $props.follow ?? true)
   <a
     {{ $props.except(['type', 'class', 'size', 'variant', 'variants', 'block']).toAttrs() }}
+    {{ html.attrs({ 'up-follow': follow }) }}
     x-data
     type="{{ type || 'button' }}" 
     class="{{ html.classNames('duration-300', utils.classes(sizes[size], variants[variant], $props.class, [{ 'flex w-full': block, 'opacity-40': disabled }])) }}">
-    {{{ await $slots.main() }}}
+    <span class="flex items-center gap-1.5">
+      {{{ await $slots.main() }}}
+    </span>
   </a>
 @else
   <button 

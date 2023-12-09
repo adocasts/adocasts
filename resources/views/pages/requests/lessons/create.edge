@@ -1,0 +1,58 @@
+@let(skipAccent = true)
+
+@layout()
+  <div class="app-container relative z-10 mb-6">
+    <a href="{{ route('requests.lessons.index') }}" class="anchor" up-follow>
+      <span class="inline-flex items-center gap-1.5">
+        @svg('ph:arrow-left-bold')
+        Return to requests
+      </span>
+    </a>
+  </div>
+
+  @!heading({ title: 'Request A Lesson', size: 'sm' })
+
+  <div class="bg-slate-100 border border-slate-200 p-6 rounded-md max-w-4xl mt-6">
+    <p class="mb-3">
+      Please describe your idea for an Adocasts lesson below, keeping the following in mind:
+    </p>
+
+    <ul class="list-disc pl-6">
+      <li>Please be descriptive.</li>
+      <li>Try to break the request into a single 15 minute or less topic</li>
+      <li>Topics we're unfamiliar with will be declined (we can't help when we don't know)</li>
+    </ul>
+
+    <div class="w-full border-t border-slate-200 my-6"></div>
+
+    @form({ action: route('requests.lessons.store'), target: 'form-lesson-request' })
+      @if (flashMessages.get('errors.form'))
+        <div role="alert" class="bg-red-100 text-red-800 text-sm rounded p-3 mb-4">
+          {{ flashMessages.get('errors.form') }}
+        </div>
+      @endif
+
+      @form.field({ label: 'Request title', name: 'name' })
+        @!form.input({ type: 'text', placeholder: 'Title', required: true })
+      @end
+
+      @form.field({ label: 'Request details', name: 'body' })
+        @!tiptap.basic({ name: 'body', value: flashMessages.get('body') || '', submittable: false, withBg: true })
+      @end
+
+      <div class="flex items-center justify-between mb-3 -mt-3">
+        <div class="flex items-center">
+          <input id="non_duplicate" name="nonDuplicate" type="checkbox" class="h-4 w-4 text-brand-600 bg-slate-100 focus:ring-slate-500 border-slate-300 rounded" required>
+          <label for="non_duplicate" class="ml-2 block text-sm text-slate-900">
+            I have verified my request has not already been requested.
+          </label>
+        </div>
+      </div>
+
+      @button({ type: 'submit', class: 'mt-2' })
+        Submit Request
+      @end
+    @end
+  </div>
+
+@end

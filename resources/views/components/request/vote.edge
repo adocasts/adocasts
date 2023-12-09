@@ -1,0 +1,18 @@
+@let(hasUserVoted = lessonRequest.votes.some(v => v.id === auth.user?.id))
+@let(btnColors = hasUserVoted ? 'bg-brand-600 hover:bg-brand-500 text-brand-50' : 'bg-slate-200 group-hover:bg-slate-300 hover:bg-slate-50 hover:text-brand-600')
+
+<div class="flex-shrink-0 relative z-10" up-lesson-request-vote="{{ lessonRequest.id }}">
+  @can('LessonRequestPolicy.vote')
+    @form({ action: form.patch('requests.lessons.vote', { id: lessonRequest.id }), 'up-submit': true, 'up-target': `[up-lesson-request-vote='${lessonRequest.id}']` })
+      <button type="submit" class="relative rounded-full px-4 py-2 flex items-center justify-center text-xs {{ btnColors }}">
+        @svg('ph:arrow-up-bold', { class: 'w-4 h-4 mr-2' })
+        {{ lessonRequest.$extras.votes_count }}
+      </button>
+    @end
+  @else
+    <div type="submit" class="relative rounded-full px-4 py-2 flex items-center justify-center text-xs bg-slate-200 group-hover:bg-slate-300 text-slate-600" title="Please sign in or sign up to vote">
+      @svg('ph:arrow-up-bold', { class: 'w-4 h-4 mr-2' })
+      {{ lessonRequest.$extras.votes_count }}
+    </div>
+  @endcan
+</div>

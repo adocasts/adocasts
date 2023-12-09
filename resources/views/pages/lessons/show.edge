@@ -39,7 +39,7 @@
       <div class="page lg:hidden">
         <div class="flex mb-6 space-x-3">
           @if (prevLesson)
-            @button({ href: prevLesson.routeUrl, attrs: 'up-follow' })
+            @button({ href: prevLesson.routeUrl })
               @svg('ph:caret-circle-left-fill', { class: 'w-6 h-6' })
             @end
           @endif
@@ -103,7 +103,7 @@
   <div class="max-w-prose mx-auto mt-8 lg:mt-12 mb-8">
     <div class="flex items-center text-xs gap-x-4 mb-2">
       @each (topic in post.taxonomies)
-        <a href="#" class="relative z-10 font-medium link text-slate-600" up-follow>
+        <a href="{{ route('topics.show', { slug: topic.slug }) }}" class="relative z-10 font-medium link text-slate-600" up-follow>
           #{{ topic.slug }}
         </a>
       @endeach

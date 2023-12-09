@@ -1,0 +1,72 @@
+@let(skipAccent = true)
+
+@layout()
+
+  @heading({ title: 'Lesson Requests.', subtitle: 'Submit & Vote for Lessons'})
+    @slot('action')
+      <div class="flex items-end gap-6">
+        @can('LessonRequestPolicy.store')
+          <div class="flex flex-col justify-center">
+            @button({ href: route('requests.lessons.create') })
+              @svg('ph:plus-bold')
+              Request Lesson
+            @end
+          </div>
+        @endcan
+      </div>
+    @endslot
+  @end
+
+  @form({
+    action: form.post('requests.lessons.search'),
+    'up-autosubmit': true,
+    'up-target': '[up-request-list]',
+    'up-delay': '500'
+  })
+    <div class="flex flex-wrap items-center gap-3 md:gap-6 mt-6">
+      @form.field({ label: 'Search requests', name: 'pattern', class: 'w-full md:w-1/2' })
+        @!form.input({ type: 'search', placeholder: 'Search requests' })
+      @end
+
+      @form.field({ label: 'Filter state', name: 'state' })
+        @form.select()
+          <option value="">All</option>
+          <option value="{{ States.PUBLIC }}">Complete</option>
+          <option value="{{ States.IN_PROGRESS }}">In Progress</option>
+          <option value="{{ States.IN_REVIEW }}">In Review</option>
+          <option value="{{ States.DECLINED }}">Declined</option>
+        @end
+      @end
+
+      @form.field({ label: 'Sort by', name: 'sortBy' })
+        @form.select()
+          <option value="updatedAt_desc">Latest activity</option>
+          <option value="createdAt_desc">Newest</option>
+          <option value="createdAt_asc">Oldest</option>
+          <option value="name_asc">Title</option>
+        @end
+      @end
+    </div>
+  @end
+
+  @cannot('LessonRequestPolicy.store')
+    <p class="inline-flex items-center gap-3 bg-slate-100 text-slate-600 px-6 py-3 rounded-xl text-sm my-3">
+      @svg('ph:info-fill', { class: 'w-5 h-5' })
+
+      <span>
+        Please
+        <a href="{{ route('auth.signin') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+          sign in
+        </a>
+        or
+        <a href="{{ route('auth.signup') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+          sign up for free
+        </a>
+        to request and vote for lessons
+      </span>
+    </p>
+  @endcannot
+
+  @!request.list({ lessonRequests })
+
+@end

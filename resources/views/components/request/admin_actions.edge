@@ -1,0 +1,26 @@
+@can('LessonRequestPolicy.approve', lessonRequest)
+  @if (lessonRequest.stateId !== States.PUBLIC)
+    <div up-admin-actions class="flex flex-col gap-y-3">
+      @if (lessonRequest.stateId !== States.IN_PROGRESS && lessonRequest.stateId !== States.DECLINED)
+        <div class="flex items-center gap-3">
+          @button({ variant: 'green', href: route('requests.lessons.fragment', { id: lessonRequest.id, fragment: 'admin_actions_approve' }), 'up-target': '[up-admin-actions]', block: true })
+            @svg('ph:thumbs-up-fill')
+            Approve
+          @end
+
+          @button({ variant: 'red', href: route('requests.lessons.fragment', { id: lessonRequest.id, fragment: 'admin_actions_reject' }), 'up-target': '[up-admin-actions]', block: true })
+            @svg('ph:x-bold')
+            Deny
+          @end
+        </div>
+      @endif 
+
+      @button({ href: route('requests.lessons.fragment', { id: lessonRequest.id, fragment: 'admin_actions_complete'}), 'up-target': '[up-admin-actions]', block: true, })
+        @svg('ph:check-circle-fill')
+        Mark Request Completed
+      @end
+
+      <div class="border-b border-slate-200 my-6"></div>
+    </div>
+  @endif
+@endcan

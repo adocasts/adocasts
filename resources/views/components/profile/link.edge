@@ -1,5 +1,5 @@
 @if (user.isEnabledProfile)
-  <a href="#" {{ $props.except(['user']).toAttrs() }}>
+  <a href="{{ route('profiles.show', { username: user.handle }) }}" {{ $props.except(['user']).toAttrs() }}>
     {{{ await $slots.main() }}}
   </a>
 @else
