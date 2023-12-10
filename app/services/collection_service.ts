@@ -185,7 +185,7 @@ export default class CollectionService {
    * @param postLimit
    * @returns
    */
-  public getLastUpdated(limit: number | undefined = undefined, withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 5) {
+  public getLastUpdated(limit: number | undefined = undefined, withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 4) {
     return this
       .queryGetLastUpdated(withPosts, excludeIds, postLimit)
       .if(limit, builder => builder.limit(limit!))

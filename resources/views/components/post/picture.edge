@@ -11,13 +11,13 @@
     altText: img.altText,
     lazy
   })
-    {{--  @cannot('PostPolicy.view', item)
+    @cannot('PostPolicy.view', item)
       <div class="absolute bottom-3 left-3 text-slate-base-50 drop-shadow flex items-center">
         <div class="w-6 h-6 bg-slate-base-50 rounded-md text-slate-base-700 flex items-center justify-center">
           @if (item.paywallTypeId === PaywallTypes.DELAYED_RELEASE)
-            @!icons.clockShield({ className: 'w-4 h-4' })
+            @svg('ph:clock-countdown-fill', { class: 'w-4 h-4' })
           @else
-            @!icons.lock({ className: 'w-4 h-4' })
+            @svg('ph:lock-key-fill', { class: 'w-4 h-4' })
           @endif
         </div>
         @if (item.paywallTypeId === PaywallTypes.DELAYED_RELEASE)
@@ -26,6 +26,6 @@
           </div>
         @endif
       </div>
-    @endcannot  --}}
+    @endcannot
   @end
 @endif

@@ -52,21 +52,18 @@
       Latest from this series
     </h5>
     <div class="flex flex-col md:flex-row relative z-10 mt-8 md:mt-0 gap-4 lg:gap-8">
-      <div class="w-full md:w-1/2 xl:w-[47%] grid sm:grid-cols-2 md:grid-cols-1 gap-4">
+      <div class="w-full md:w-1/2 flex flex-col">
         @each ((post, i) in item.postsFlattened.slice(0, 2))
           @!post.item({ 
             item: post, 
-            col: true, 
-            class: [{ 'md:hidden': i === 1 }],
             display: { seriesName: false }
           })
         @endeach
       </div>
-      <div class="w-full md:w-1/2 xl:w-[53%] flex flex-col">
-        @each ((post, i) in item.postsFlattened.slice(1, 4))
+      <div class="w-full md:w-1/2 flex flex-col">
+        @each ((post, i) in item.postsFlattened.slice(2, 4))
           @!post.item({ 
             item: post, 
-            class: [{ 'hidden md:flex': i === 0 }],
             display: { seriesName: false }
           })
         @endeach
