@@ -26,6 +26,7 @@ const CommentsController = () => import('#controllers/comments_controller')
 const ProgressionsController = () => import('#controllers/progressions_controller')
 const SearchesController = () => import('#controllers/searches_controller')
 const LessonRequestsController = () => import('#controllers/lesson_requests_controller')
+const GoController = () => import('#controllers/go_controller')
 
 router.get('/', [HomeController, 'index']).as('home')
 
@@ -111,3 +112,11 @@ router.patch('/requests/lessons/:id/approve', [LessonRequestsController, 'approv
 router.patch('/requests/lessons/:id/reject', [LessonRequestsController, 'reject']).as('requests.lessons.reject').use(middleware.auth())
 router.patch('/requests/lessons/:id/complete', [LessonRequestsController, 'complete']).as('requests.lessons.complete').use(middleware.auth())
 router.get('/fragments/requests/lessons/:id/:fragment', [LessonRequestsController, 'fragment']).as('requests.lessons.fragment')
+
+/**
+ * go
+ */
+router.get('/go/posts/:id/comment/:commentId', [GoController, 'postComment']).as('go.posts.comment')
+router.get('/go/post/:id/comment/:commentId', [GoController, 'postComment']).as('go.post.comment')
+router.get('/go/requests/lessons/:id/comment/:commentId', [GoController, 'lessonRequestComment']).as('go.requests.lessons.comment')
+router.get('/go/auth/reset', [GoController, 'authReset']).as('go.auth.reset')

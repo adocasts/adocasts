@@ -54,7 +54,7 @@ export default class Comment extends AppBaseModel {
   declare updatedAt: DateTime
 
   @computed()
-  public get isdeclare() {
+  public get isPublic() {
     return this.stateId === State.PUBLIC
   }
 
