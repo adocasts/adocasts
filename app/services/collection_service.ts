@@ -13,6 +13,30 @@ export default class CollectionService {
     return this.ctx.auth.user
   }
 
+  /**
+   * Returns a new instance of the collection builder
+   * @returns 
+   */
+  public builder() {
+    return new CollectionBuilder(this.user)
+  }
+
+  /**
+   * Search for collections by a term
+   * @param term 
+   * @param limit 
+   * @returns 
+   */
+  public async search(term: string | undefined, limit: number = 8) {
+    return this
+      .builder()
+      .display()
+      .root()
+      .if(term, builder => builder.search(term!))
+      .orderLatestUpdated()
+      .limit(limit)
+  }
+
   //#region Collection lesson helpers
 
   /**
@@ -73,26 +97,7 @@ export default class CollectionService {
 
   //#endregion
 
-  /**
-   * Returns a new instance of the collection builder
-   * @returns 
-   */
-  public builder() {
-    return new CollectionBuilder(this.user)
-  }
-
-  /**
-   * Returns the number of public root series
-   * @returns 
-   */
-  public async getSeriesCount() {
-    return this
-      .builder()
-      .series()
-      .public()
-      .root()
-      .count()
-  }
+  //#region Find
 
   /**
    * Returns a series by id for display
@@ -151,6 +156,23 @@ export default class CollectionService {
     return next
   }
 
+  //#endregion
+
+  //#region Get
+
+  /**
+   * Returns the number of public root series
+   * @returns 
+   */
+  public async getSeriesCount() {
+    return this
+      .builder()
+      .series()
+      .public()
+      .root()
+      .count()
+  }
+
   /**
    * Returns the most recently updated series
    * @returns 
@@ -190,7 +212,7 @@ export default class CollectionService {
       .queryGetLastUpdated(withPosts, excludeIds, postLimit)
       .if(limit, builder => builder.limit(limit!))
   }
-
+  
   /**
    * returns query used to get the latest updated series collections
    * @param limit
@@ -203,13 +225,5 @@ export default class CollectionService {
     return this.getList(withPosts, excludeIds, postLimit).orderLatestUpdated()
   }
 
-  public async search(term: string | undefined, limit: number = 8) {
-    return this
-      .builder()
-      .display()
-      .root()
-      .if(term, builder => builder.search(term!))
-      .orderLatestUpdated()
-      .limit(limit)
-  }
+  //#endregion
 }

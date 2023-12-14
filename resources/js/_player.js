@@ -5,13 +5,17 @@ import Hls from 'hls.js'
 import Plyr from 'plyr'
 import 'plyr/dist/plyr.css'
 
+let isInitialLoad = true
 let isVideoPlaying = false
 let playerInterval = null
 let keepPlayerPostId = null
 let keepPlayer = false
+let nextUpInterval = null
 
 class VideoPlayer {
   constructor({ el = 'ytEmbed', autoEmbed = true, videoId, httpMethod = 'post', httpUrl, httpPayload = {}, watchSeconds = 0, isCompleted = false, isLive = false, autoplay = false } = {}) {
+    this.element = document.getElementById(el)
+    this.progressionInterval = 5000
     this.autoplay = autoplay
     this.startMuted = isLive
     this.watchSeconds = watchSeconds
@@ -21,7 +25,6 @@ class VideoPlayer {
     this.nextUpEl = document.getElementById('lessonVideoNextUp')
     this.btnCompleted = document.querySelector('[btn-completed]')
     this.btnNotCompleted = document.querySelector('[btn-not-completed]')
-    this.element = document.getElementById(el)
     this.elementInitialNodeName = this.element.nodeName
     this.videoId = videoId
     this.autoEmbed = autoEmbed
@@ -40,6 +43,10 @@ class VideoPlayer {
     }
 
     this.onInitVideo()
+  }
+
+  get isYouTube() {
+    return this.element.dataset.plyrProvider === 'youtube'
   }
 
   get isHlsVideo() {
@@ -62,11 +69,29 @@ class VideoPlayer {
       window.player.destroy()
     }
 
-    this.player = await this.#initPlayer(playOnReady)
+    clearInterval(nextUpInterval)
+
+    await this.#initPlayer(playOnReady, skipToSeconds)
     
-    this.player.on('playing', this.#onPlayerStateChange.bind(this))
-    this.player.on('pause', this.#onPlayerStateChange.bind(this))
-    this.player.on('ended', this.#onPlayerStateChange.bind(this))
+    this.bodyContent?.addEventListener('click', this.#onTimestampClick.bind(this))
+  }
+
+  /**
+   * initializes either the youtube or plyr player
+   * @param {boolean} playOnReady 
+   * @returns 
+   */
+  async #initPlayer(playOnReady, skipToSeconds) {
+    if (this.isYouTube) {
+      this.player = await this.#initYouTubePlayer(playOnReady)
+      return
+    }
+
+    this.player = await this.#initPlyrPlayer(playOnReady)
+
+    this.player.on('playing', this.#onPlyrStateChange.bind(this))
+    this.player.on('pause', this.#onPlyrStateChange.bind(this))
+    this.player.on('ended', this.#onPlyrStateChange.bind(this))
 
     const setInitialTime = () => {
       // start user where they left off... unless lesson was already completed or it's a livestream
@@ -88,8 +113,52 @@ class VideoPlayer {
     if (this.nextUpEl) {
       this.player.on('timeupdate', this.#onPlayerTimeUpdate.bind(this))
     }
+  }
 
-    this.bodyContent?.addEventListener('click', this.#onTimestampClick.bind(this))
+  /**
+   * initializes the youtube player
+   * @param {boolean} playOnReady 
+   * @returns 
+   */
+  async #initYouTubePlayer(playOnReady) {
+    return new Promise((resolve) => {
+      window.onYouTubeIframeAPIReady = () => {
+        const playerVars = {
+          autoplay: playOnReady,
+          modestbranding: 1,
+          rel: 0,
+          showinfo: 0,
+          ecver: 2,
+          start: this.watchSeconds
+        }
+
+        if (this.isLive) {
+          delete playerVars.start
+        }
+
+        const player = new YT.Player(this.element, {
+          videoId: this.videoId,
+          playerVars,
+          events: {
+            'onReady': (event) => this.startMuted && event.target.mute(),
+            'onStateChange': this.#onYouTubeStateChange.bind(this)
+          }
+        })
+
+        window.player = player
+
+        resolve(player)
+      }
+
+      if (isInitialLoad) {
+        const tag = document.createElement('script')
+        tag.src = "https://www.youtube.com/iframe_api"
+        document.body.appendChild(tag)
+        isInitialLoad = false
+      } else {
+        window.onYouTubeIframeAPIReady()
+      }
+    })
   }
 
   /**
@@ -97,7 +166,7 @@ class VideoPlayer {
    * @param {boolean} playOnReady 
    * @returns 
    */
-  async #initPlayer(playOnReady) {
+  async #initPlyrPlayer(playOnReady) {
     const config = {
       muted: this.startMuted,
       volume: window.player?.volume ?? 1,
@@ -118,8 +187,8 @@ class VideoPlayer {
     }
 
     const player = this.isHlsVideo 
-      ? await this.#initPlayerHls(config) 
-      : this.#initStandardVideo(config)
+      ? await this.#initPlyrPlayerHls(config) 
+      : this.#initPlyrPlayerStandard(config)
 
     window.player = player
 
@@ -131,12 +200,12 @@ class VideoPlayer {
    * @param {Partial<Plyr.Options>|undefined} config 
    * @returns 
    */
-  #initPlayerHls(config) {
+  #initPlyrPlayerHls(config) {
     if (!Hls.isSupported()) {
       this.element.src = this.element.dataset.hlsUrl
       
       // create the plyr instance
-      const player = this.#initStandardVideo(config)
+      const player = this.#initPlyrPlayerStandard(config)
 
       return new Promise(resolve => resolve(player))
     }
@@ -182,7 +251,7 @@ class VideoPlayer {
         }
 
         // create the plyr instance
-        const player = this.#initStandardVideo(config)
+        const player = this.#initPlyrPlayerStandard(config)
         
         // when subtitle language is changed, update it within hls
         player.on('languagechange', () => setTimeout(() => hls.subtitleTrack = player.currentTrack, 50))
@@ -197,7 +266,7 @@ class VideoPlayer {
    * @param {Partial<Plyr.Options>|undefined} config 
    * @returns 
    */
-  #initStandardVideo(config) {
+  #initPlyrPlayerStandard(config) {
     return new Plyr(this.element, config)
   }
 
@@ -209,17 +278,26 @@ class VideoPlayer {
   #onPlayerTimeUpdate(event) {
     if (!this.nextUpEl) return
 
-    const player = event.detail.plyr
-    const timeUpdate = Math.floor(player.currentTime)
+    let currentTime, duration
 
-    if (timeUpdate === this.lastTimeUpdate) return
+    const player = this.player
 
-    this.lastTimeUpdate = timeUpdate
+    if (this.isYouTube) {
+      currentTime = Math.ceil(player.getCurrentTime())
+      duration = player.getDuration()
+    } else {
+      currentTime = Math.floor(player.currentTime)
+      duration = player.duration
+    }
+
+    if (currentTime === this.lastTimeUpdate) return
+
+    this.lastTimeUpdate = currentTime
 
     // don't dispatch to nextUp if player isn't actively playing
     if (!isVideoPlaying) return
-    
-    this.nextUpEl.dispatchEvent(new CustomEvent('timeupdate', { detail: { player } }))
+
+    this.nextUpEl.dispatchEvent(new CustomEvent('timeupdate', { detail: { currentTime, duration } }))
   }
 
   // #endregion
@@ -230,7 +308,7 @@ class VideoPlayer {
    * @param {CustomEvent} event 
    * @returns 
    */
-  #onPlayerStateChange(event) {
+  #onPlyrStateChange(event) {
     const player = event.detail.plyr
 
     isVideoPlaying = player.playing
@@ -269,7 +347,58 @@ class VideoPlayer {
     playerInterval = setInterval(async () => {
       if (player.duration <= 0) return
       this.#storeWatchingProgression(player.currentTime, player.duration)
-    }, 5000)
+    }, this.progressionInterval)
+  }
+
+  #onYouTubeStateChange(event) {
+    isVideoPlaying = event.data == YT.PlayerState.PLAYING
+
+    Alpine.store('app').videoPlaying = isVideoPlaying
+
+    if (isVideoPlaying && this.nextUpEl) {
+      nextUpInterval = setInterval(() => this.#onPlayerTimeUpdate(), 1000)
+    } else {
+      clearInterval(nextUpInterval)
+    }
+    
+    // only update keepPlayer when on video's designated page
+    if (location.pathname === this.placeholder.dataset.path) {
+      keepPlayer = isVideoPlaying
+      keepPlayerPostId = this.http.payload.postId
+    }
+
+    if (this.isLive) return
+
+    if (!this.player) {
+      Cookies.remove('playingId')
+      keepPlayer = null
+      keepPlayerPostId = null
+    }
+
+    if (!isVideoPlaying) {
+      clearInterval(playerInterval)
+      Cookies.remove('playingId')
+
+      const currentTime = window.player.getCurrentTime()
+      const duration = window.player.getDuration()
+
+      this.#storeWatchingProgression(currentTime, duration)
+
+      return
+    }
+
+    if (!Cookies.get('playingId')) {
+      Cookies.set('playingId', this.http.payload.postId)
+    }
+
+    playerInterval = setInterval(async () => {
+      const currentTime = window.player.getCurrentTime()
+      const duration = window.player.getDuration()
+
+      // duration may be 0 if meta data is still loading
+      if (duration <= 0) return
+      this.#storeWatchingProgression(currentTime, duration)
+    }, this.progressionInterval)
   }
 
   /**
@@ -326,14 +455,18 @@ class VideoPlayer {
 
     // youtube... setting currentTime then calling play mutes the video for some reason
     // so this is a workaround that
-    if (typeof this.player.embed?.seekTo === 'function') {
+    if (this.isYouTube) {
+      this.player.seekTo(duration)
+    } else if (typeof this.player.embed?.seekTo === 'function') {
       this.player.embed.seekTo(duration)
     } else {
       this.player.currentTime = duration
     }
 
     if (!isVideoPlaying) {
-      this.player.play()
+      this.isYouTube 
+        ? this.player.playVideo() 
+        : this.player.play()
     }
 
     window.scrollTo({
@@ -350,44 +483,47 @@ let lessonVideoResize
 let wasIntersecting = undefined
 
 up.compiler('#lessonVideoEmbed', function(element) {
-  const postPaths = ['/lessons/', '/posts/', '/blog/', '/news/', '/snippet/', '/streams/']
-  const isInitialized = !!window.player
-  const isPostPage = postPaths.some(path => window.location.pathname.includes(path))
+  // wait for next tick so that other required elements can populate
+  setTimeout(() => {
+    const postPaths = ['/lessons/', '/posts/', '/blog/', '/news/', '/snippet/', '/streams/']
+    const isInitialized = !!window.player
+    const isPostPage = postPaths.some(path => window.location.pathname.includes(path))
 
-  // if not post page and player is already initialized, do nothing
-  if (!isPostPage && isInitialized) return
+    // if not post page and player is already initialized, do nothing
+    if (!isPostPage && isInitialized) return
 
-  const data = element.dataset
+    const data = element.dataset
 
-  // re-position to primary position when re-initialized
-  positionVideoPlaceholder()
+    // re-position to primary position when re-initialized
+    positionVideoPlaceholder()
 
-  // kick-off video initialization
-  new VideoPlayer({
-    el: 'lessonVideoEmbed',
-    isLive: data.isLive == "true",
-    isCompleted: data.isCompleted == "true",
-    videoId: data.videoId,
-    watchSeconds: parseInt(data.watchSeconds || '0'),
-    httpUrl: data.httpUrl,
-    httpPayload: {
-      postId: data.payloadPostId,
-      collectionId: data.payloadCollectionId,
-      userId: data.payloadUserId,
-      route: data.payloadRoute
-    }
-  })
-
-  if (!!window.ResizeObserver) {
-    let observer = new ResizeObserver((entries) => {
-      if (typeof wasIntersecting !== 'undefined') {
-        positionVideoPlaceholder(!wasIntersecting)
+    // kick-off video initialization
+    new VideoPlayer({
+      el: 'lessonVideoEmbed',
+      isLive: data.isLive == "true",
+      isCompleted: data.isCompleted == "true",
+      videoId: data.videoId,
+      watchSeconds: parseInt(data.watchSeconds || '0'),
+      httpUrl: data.httpUrl,
+      httpPayload: {
+        postId: data.payloadPostId,
+        collectionId: data.payloadCollectionId,
+        userId: data.payloadUserId,
+        route: data.payloadRoute
       }
     })
 
-    observer.observe(document.body)
-    lessonVideoResize = () => observer.unobserve(document.body)
-  }
+    if (!!window.ResizeObserver) {
+      let observer = new ResizeObserver((entries) => {
+        if (typeof wasIntersecting !== 'undefined') {
+          positionVideoPlaceholder(!wasIntersecting)
+        }
+      })
+
+      observer.observe(document.body)
+      lessonVideoResize = () => observer.unobserve(document.body)
+    }
+  })
 })
 
 up.compiler('#videoPlayerPosition', position => {

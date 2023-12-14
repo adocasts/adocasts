@@ -3,8 +3,8 @@
   <div class="max-w-[100vw] flex gap-x-3 md:gap-x-6 p-3 md:p-6">
     <nav class="flex flex-col sticky top-6 -mx-2 group">
       <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mb-2">Content</p>
-      @!menu.link({ text: 'Watchlist', href: '#' })
-      @!menu.link({ text: 'Progression', href: '#' })
+      @!menu.link({ text: 'Watchlist', href: route('users.watchlist') })
+      @!menu.link({ text: 'Progression', href: route('users.history') })
       
       <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8 mb-2">Settings</p>
 

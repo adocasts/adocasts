@@ -167,10 +167,10 @@ export default class HistoryService {
     return typeof progression.readPercent === 'number' && progression.readPercent >= this.completedPercentThreshold
   }
 
-  public async getLatestSeriesProgress(user: User, limit: number | undefined = undefined) {
+  public async getLatestSeriesProgress(limit: number | undefined = undefined) {
     const collectionIds = (await History.query()
       .where('historyTypeId', HistoryTypes.PROGRESSION)
-      .where('userId', user.id)
+      .where('userId', this.user!.id)
       .whereNotNull('collectionId')
       // .where(query => query
       //   .where('isCompleted', false)
@@ -197,7 +197,7 @@ export default class HistoryService {
       .preload('asset')
       .whereIn('id', distinctCollectionIds as number[])
       .withCount('postsFlattened', query => query.apply(scope => scope.published()).as('postCount'))
-      .withCount('progressionHistory', query => query.where('userId', user.id).where('isCompleted', true).as('postCompletedCount'))
+      .withCount('progressionHistory', query => query.where('userId', this.user!.id).where('isCompleted', true).as('postCompletedCount'))
       .preload('postsFlattened', query => query
         .preload('assets')
         .preload('series', query => query
@@ -205,12 +205,12 @@ export default class HistoryService {
           .groupLimit(1)
         )
         .preload('progressionHistory', query => query
-          .where('userId', user.id)
+          .where('userId', this.user!.id)
           .orderBy('updatedAt', 'desc')
           .groupLimit(1)
         )
         .whereDoesntHave('progressionHistory', query => query
-          .where('userId', user.id)
+          .where('userId', this.user!.id)
           .where('isCompleted', true)
         )
         .groupOrderBy('root_sort_order', 'asc')
@@ -223,7 +223,7 @@ export default class HistoryService {
     }, [] as Collection[]).filter(Boolean)
   }
 
-  public async getLatestPostProgress(user: User, limit: number | undefined = undefined) {
+  public async getLatestPostProgress(limit: number | undefined = undefined) {
     const subQuery = db.knexQuery().from('histories')
       .select(db.knexRawQuery('MAX(updated_at) as updated_at'), 'post_id', 'user_id')
       .where('history_type_id', HistoryTypes.PROGRESSION)
@@ -236,7 +236,7 @@ export default class HistoryService {
         .andOn('h1.post_id', 'h2.post_id')
         .andOn('h1.updated_at', 'h2.updated_at')
       )
-      .where('h1.user_id', user.id)
+      .where('h1.user_id', this.user!.id)
       .where('h1.history_type_id', HistoryTypes.PROGRESSION)
       .whereNotNull('h1.post_id')
       .where(query => query

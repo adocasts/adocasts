@@ -6,6 +6,31 @@ import './_prose'
 import './_player'
 
 /**
+ * Global shortcuts
+ */
+document.body.addEventListener('keydown', (event) => {
+  switch (event.key) {
+    case 'ArrowLeft':
+      // when player is using Plyr and not hidden, allow skipping back 5sec with left arrow
+      if (window.player?.isHTML5 && window.player.media.offsetParent != null) {
+        const currentTime = window.player.currentTime
+        const skipTo = currentTime - 5 > 0 ? currentTime - 5 : 0
+        window.player.currentTime = skipTo
+      }
+      break
+    case 'ArrowRight':
+      // when player is using Plyr and not hidden, allow skipping forward 5sec with right arrow
+      if (window.player?.isHTML5 && window.player.media.offsetParent != null) {
+        const currentTime = window.player.currentTime
+        const duration = window.player.duration
+        const skipTo = currentTime + 5 < duration ? currentTime + 5 : duration
+        window.player.currentTime = skipTo
+      }
+      break
+  }
+})
+
+/**
  * grabs query string off location href and adds object representation on window.$params
  * then clears the query string from the url to prevent future side-effects
  * @param {string} href should be fully qualified url (https://adocasts.com/some-url)
@@ -23,4 +48,4 @@ function storeAndClearQueryStrings(href) {
 
 // handle query strings on both initial load and when unpoly changes the location
 storeAndClearQueryStrings(location.href)
-up.on('up:location:changed', (event) => storeAndClearQueryStrings(event.target.location.href))
+up.on('up:location:changed', (event) => event.target?.location && storeAndClearQueryStrings(event.target.location.href))

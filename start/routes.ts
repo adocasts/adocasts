@@ -51,6 +51,8 @@ router.get('/:provider/unlink', [AuthSocialController, 'unlink']).as('auth.socia
  */
 router.get('/:username', [ProfilesController, 'show']).as('profiles.show').where('username', /^@/)
 router.get('/users/menu', [UsersController, 'menu']).as('users.menu')
+router.get('/users/watchlist', [UsersController, 'watchlist']).as('users.watchlist').use(middleware.auth())
+router.get('/users/history', [UsersController, 'history']).as('users.history').use(middleware.auth())
 router.put('/api/users/theme', [UsersController, 'theme']).as('api.users.theme')
 
 /**

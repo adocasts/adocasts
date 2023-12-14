@@ -45,6 +45,7 @@ export default class WatchlistService {
       .if(excludeIds.length, query => query.whereNotIn('collectionId', excludeIds))
       .preload('collection', query => query
         .preload('asset')
+        .preload('postsFlattened', query => query.apply(scope => scope.forDisplay()).groupLimit(3))
         .withCount('postsFlattened', query => query.apply(scope => scope.published()))
         .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
         .where('stateId', States.PUBLIC)

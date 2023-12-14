@@ -79,6 +79,15 @@ Alpine.data('turnstile', function () {
   }
 })
 
+Alpine.data('progressRing', function (percentage, width) {
+  return {
+    isOpen: false,
+    sideOpen: false,
+    percentage: percentage,
+    circumference: Math.round(Math.PI * (2 * width)),
+  }
+})
+
 Alpine.data('videoPlaceholder', () => {
   return {
     open() {
@@ -87,7 +96,13 @@ Alpine.data('videoPlaceholder', () => {
 
     close() {
       console.log('closing video player')
-      window.player?.pause()
+      
+      if (typeof window.player?.pause === 'function') {
+        window.player.pause()
+      } else if (typeof window.player?.stopVideo === 'function') {
+        window.player.stopVideo()
+      }
+
       document.querySelector('[video-placeholder]').classList.add('hidden')
     }
   }
@@ -103,8 +118,7 @@ Alpine.data('videoAutoPlayNext', (enabled = true, nextLessonUrl) => {
     onTimeUpdate(event) {
       if (!this.enabled) return
 
-      const player = event.detail.player
-      const { currentTime, duration } = player
+      const { currentTime, duration } = event.detail
       const remaining = chain(duration).subtract(currentTime).done()
 
       this.timeRemaining = Math.floor(remaining)
