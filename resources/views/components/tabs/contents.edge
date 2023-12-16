@@ -1,0 +1,13 @@
+<div class="relative flex items-center justify-center w-full p-5 mt-2 text-xs border rounded-md content border-gray-200/70">
+  
+  @each (tab in tabs)
+    <div :id="$id(tabId + '-content')" x-show="tabContentActive($el)" class="relative">
+      @if ($slots.tab)
+        {{{ await $slots.tab({ tab }) }}}
+      @elseif (tab.slot && $slots[tab.slot])
+        {{{ await $slots[tab.slot]({ tab }) }}}
+      @endif
+    </div>
+  @endeach
+
+</div>

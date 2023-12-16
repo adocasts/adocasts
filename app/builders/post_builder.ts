@@ -42,6 +42,11 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
     return this
   }
 
+  public whereWatched() {
+    this.query.whereHas('watchlist', query => query.where('userId', this.user!.id))
+    return this
+  }
+
   public whereLesson() {
     this.query.whereIn('postTypeId', [PostTypes.LESSON, PostTypes.LIVESTREAM])
     return this

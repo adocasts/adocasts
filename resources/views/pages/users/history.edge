@@ -2,32 +2,54 @@
 
   @!heading({ title: 'Progression History.', subtitle: "Here's what you've been up to", class: 'mb-8' })
 
-  @if (collections?.length)
-    @section()
-      @!heading({ title: 'Series.', size: 'sm' })
+  @tabs.data({ tabs, tabIndex, class: 'mb-8' })
+    @!tabs.buttons({ 'up-target': '[up-tab-content]', ':up-location': 'tabHref' })
+  @end
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-8 pt-4">
-        @each (item in collections)
-          @!collection.square.small({ item })
-        @endeach
-      </div>
-    @end
-  @endif
+  <div up-tab-content>
+    @if (tab === 'series')
+      @section()
+        @!heading({ title: 'Series.', size: 'sm' })
 
-  @if (posts?.length)
-    @section()
-      @!heading({ title: 'Lessons.', size: 'sm' })
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-8 pt-4">
+          @each (item in series)
+            @!collection.square.small({ item })
+          @endeach
+        </div>
+      @end
+    @endif
 
-      <div class="py-4 grid lg:grid-cols-2 gap-4">
-        @each (post in posts)
-          @!post.item.large({ item: post })
-        @endeach
-      </div>
+    @if (tab === 'lessons')
+      @section()
+        @!heading({ title: 'Lessons.', size: 'sm' })
 
-      @if (posts.hasPages)
-        @!pagination({ items: posts })
-      @endif
-    @end
-  @endif
+        <div class="py-4 grid lg:grid-cols-2 gap-4">
+          @each (item in lessons)
+            @!post.item.large({ item })
+          @endeach
+        </div>
+
+        @if (lessons.hasPages)
+          @!pagination({ items: lessons })
+        @endif
+      @end
+    @endif
+
+    @if (tab === 'posts')
+      @section()
+        @!heading({ title: 'Blogs, News, & Snippets.', size: 'sm' })
+
+        <div class="py-4 grid lg:grid-cols-2 gap-4">
+          @each (item in posts)
+            @!post.item.simple({ item })
+          @endeach
+        </div>
+
+        @if (posts?.hasPages)
+          @!pagination({ items: posts })
+        @endif
+      @end
+    @endif
+  </div>
 
 @end

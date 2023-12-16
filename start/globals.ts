@@ -20,6 +20,7 @@ import CouponDurations from "#enums/coupon_durations"
 import string from '@adonisjs/core/helpers/string'
 import FormService from "#services/form_service"
 import HtmlParser from "#services/html_parser"
+import Tab from "../app/view_models/tab.js"
 
 addCollection(phicons)
 addCollection(simpleicons)
@@ -34,6 +35,7 @@ edge.global('utils', UtilityService)
 edge.global('assetDomain', env.get('ASSET_DOMAIN', ''))
 edge.global('form', FormService)
 edge.global('parser', HtmlParser)
+edge.global('tabber', Tab)
 
 edge.global('Roles', Roles)
 edge.global('PostTypes', PostTypes)

@@ -62,6 +62,11 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     return this
   }
 
+  public whereWatched() {
+    this.query.whereHas('watchlist', query => query.where('userId', this.user!.id))
+    return this
+  }
+
   public whereHasPost(post: Post, collectionSlug: string | undefined = undefined) {
     this.query
       .if(collectionSlug, query => query.where('slug', collectionSlug!))

@@ -1,9 +1,14 @@
 import HistoryBuilder from '#builders/history_builder'
 import NotificationService from '#services/notification_service'
-import WatchlistService from '#services/watchlist_service'
 import { themeValidator } from '#validators/theme_validator'
-import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
+import Tab from '../view_models/tab.js'
+import router from '@adonisjs/core/services/router'
+import Collection from '#models/collection'
+import Post from '#models/post'
+import PostTypes from '#enums/post_types'
+import CollectionBuilder from '#builders/collection_builder'
+import PostBuilder from '#builders/post_builder'
 
 export default class UsersController {
   public async menu({ view, auth }: HttpContext) {
@@ -26,26 +31,97 @@ export default class UsersController {
     return response.redirect().back()
   }
 
-  @inject()
-  public async watchlist({ view }: HttpContext, watchlistService: WatchlistService) {
-    const posts = await watchlistService.getLatestPosts()
-    const collections = await watchlistService.getLatestCollections()
+  public async watchlist({ view, request, auth, params }: HttpContext) {
+    const { page = 1 } = request.qs()
 
-    return view.render('pages/users/watchlist', { posts, collections })
+    const keys = {
+      series: 'series',
+      lessons: 'lessons',
+      posts: 'posts',
+    }
+
+    const tab = params.tab || keys.series
+    const tabs = Object.values(keys).map(key => Tab.watchlist(key))
+    const tabIndex = tabs.findIndex(_tab => _tab.key === tab)
+    const route = router.makeUrl('users.watchlist', { tab })
+
+    let series: Collection[]|undefined
+    let lessons: Post[]|undefined
+    let posts: Post[]|undefined
+
+    switch (tab) {
+      case keys.series:
+        series = await CollectionBuilder
+          .new(auth.user)
+          .series()
+          .display()
+          .whereWatched()
+          .withPosts('pivot_root_sort_order', 'desc', 3)
+          .paginate(page, 15, route)
+        break
+      case keys.lessons:
+        lessons = await PostBuilder
+          .new(auth.user)
+          .whereLesson()
+          .whereWatched()
+          .display()
+          .paginate(page, 15, route)
+        break
+      case keys.posts:
+        const postTypes = [PostTypes.BLOG, PostTypes.LINK, PostTypes.NEWS, PostTypes.SNIPPET]
+        posts = await PostBuilder
+          .new(auth.user)
+          .whereType(postTypes)
+          .whereWatched()
+          .display()
+          .paginate(page, 15, route)
+        break
+    }
+
+    return view.render('pages/users/watchlist', { tab, tabs, tabIndex, series, lessons, posts })
   }
 
-  public async history({ view, auth }: HttpContext) {
-    const posts = await HistoryBuilder
-      .new(auth.user)
-      .progressions()
-      .posts(builder => builder.display().paginate(1, 30))
-    
-    const collections = await HistoryBuilder
-      .new(auth.user)
-      .progressions()
-      .collections(builder => builder.display().paginate(1, 30))
+  public async history({ view, request, auth, params }: HttpContext) {
+    const { page = 1 } = request.qs()
 
-    return view.render('pages/users/history', { posts, collections })
+    const keys = {
+      series: 'series',
+      lessons: 'lessons',
+      posts: 'posts',
+    }
+
+    const tab = params.tab || keys.series
+    const tabs = Object.values(keys).map(key => Tab.history(key))
+    const tabIndex = tabs.findIndex(_tab => _tab.key === tab)
+    const route = router.makeUrl('users.history', { tab })
+
+    let series: Collection[]|undefined
+    let lessons: Post[]|undefined
+    let posts: Post[]|undefined
+
+    switch (tab) {
+      case keys.series:
+        series = await HistoryBuilder
+          .new(auth.user)
+          .progressions()
+          .collections(builder => builder.series().display().paginate(page, 30, route))
+        break
+      case keys.lessons:
+        lessons = await HistoryBuilder
+          .new(auth.user)
+          .progressions()
+          .posts(builder => builder.whereLesson().display().paginate(page, 20, route))
+        break
+      case keys.posts:
+        const postTypes = [PostTypes.BLOG, PostTypes.LINK, PostTypes.NEWS, PostTypes.SNIPPET]
+        posts = await HistoryBuilder
+          .new(auth.user)
+          .progressions()
+          .posts(builder => builder.whereType(postTypes).display().paginate(page, 20, route))
+        break
+    }
+
+    return view.render('pages/users/history', { tab, tabs, tabIndex, series, lessons, posts })
   }
 
   public async check({ auth }: HttpContext) {

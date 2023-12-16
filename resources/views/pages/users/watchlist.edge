@@ -2,48 +2,58 @@
 
   @!heading({ title: 'Watchlist.', subtitle: "You're Keeping An Eye on These", class: 'mb-8' })
 
-  @if (collections?.length)
-    @!heading({ title: 'Series', size: 'sm' })
-    <section class="grid md:gap-4 lg:gap-8 mb-8 mt-4">
-      @each ((item, i) in collections)
-        <div class="grid lg:grid-cols-4 bg-slate-100 rounded-md">
-          @!collection.square.tall({ item, class: ['bg-slate-200'] })
+  @tabs.data({ tabs, tabIndex, class: 'mb-8' })
+    @!tabs.buttons({ 'up-target': '[up-tab-content]', ':up-location': 'tabHref' })
+  @end
 
-          @each (post in item.postsFlattened)
-            @!post.item({ item: post, col: true, class: 'p-4', display: { seriesName: false } })
+  <div up-tab-content>
+    @if (tab === 'series')
+      @section()
+        @!heading({ title: 'Series.', size: 'sm' })
+
+        @each ((item, i) in series)
+          <div class="grid lg:grid-cols-4 bg-slate-100 rounded-md mt-4">
+            @!collection.square.tall({ item, class: ['bg-slate-200'] })
+
+            @each (post in item.postsFlattened)
+              @!post.item({ item: post, col: true, class: 'p-4', display: { seriesName: false } })
+            @endeach
+          </div>
+        @endeach
+      @end
+    @endif
+
+    @if (tab === 'lessons')
+      @section()
+        @!heading({ title: 'Lessons.', size: 'sm' })
+
+        <div class="py-4 grid lg:grid-cols-2 gap-4">
+          @each (item in lessons)
+            @!post.item.large({ item })
           @endeach
         </div>
-      @endeach
-    </section>
-  @endif
 
-  @if (topics?.length)
-    @!heading({ title: 'Topics', size: 'sm' })
-    <section class="grid md:gap-4 lg:gap-8 mb-8 mt-4">
-      @each ((item, i) in topics)
-        <div class="grid lg:grid-cols-4 bg-slate-100 rounded-md">
-          @!taxonomy.card.tall({ item, class: ['bg-slate-200'] })
+        @if (lessons.hasPages)
+          @!pagination({ items: lessons })
+        @endif
+      @end
+    @endif
 
-          @each (post in item.posts)
-            @!post.item({ item: post, col: true, class: 'p-4' })
+    @if (tab === 'posts')
+      @section()
+        @!heading({ title: 'Blogs, News, & Snippets.', size: 'sm' })
+
+        <div class="py-4 grid lg:grid-cols-2 gap-4">
+          @each (item in posts)
+            @!post.item.simple({ item })
           @endeach
         </div>
-      @endeach
-    </section>
-  @endif
 
-  @if (posts?.length)
-    @!heading({ title: 'Posts', size: 'sm' })
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-8 gap-4 xl:gap-8 pb-8 pt-4">
-      @each(item in posts)
-        @!post.item({ 
-          item, 
-          col: true, 
-          class: ['lg:col-span-2'],
-          classDescription: ['md:hidden lg:block']
-        })
-      @endeach
-    </div>
-  @endif
+        @if (posts?.hasPages)
+          @!pagination({ items: posts })
+        @endif
+      @end
+    @endif
+  </div>
 
 @end
