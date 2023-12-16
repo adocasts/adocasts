@@ -1,4 +1,4 @@
-import HistoryService from '#services/history_service'
+import HistoryBuilder from '#builders/history_builder'
 import NotificationService from '#services/notification_service'
 import WatchlistService from '#services/watchlist_service'
 import { themeValidator } from '#validators/theme_validator'
@@ -34,10 +34,16 @@ export default class UsersController {
     return view.render('pages/users/watchlist', { posts, collections })
   }
 
-  @inject()
-  public async history({ view }: HttpContext, historyService: HistoryService) {
-    const posts = await historyService.getLatestPostProgress()
-    const collections = await historyService.getLatestSeriesProgress()
+  public async history({ view, auth }: HttpContext) {
+    const posts = await HistoryBuilder
+      .new(auth.user)
+      .progressions()
+      .posts(builder => builder.display().paginate(1, 30))
+    
+    const collections = await HistoryBuilder
+      .new(auth.user)
+      .progressions()
+      .collections(builder => builder.display().paginate(1, 30))
 
     return view.render('pages/users/history', { posts, collections })
   }

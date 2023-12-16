@@ -1,4 +1,5 @@
 import { LucidModel, LucidRow, ModelQueryBuilderContract } from "@adonisjs/lucid/types/model"
+import { StrictValues } from "@adonisjs/lucid/types/querybuilder"
 
 export default class BaseBuilder<Model extends LucidModel, Record extends LucidRow> {
   public query: ModelQueryBuilderContract<Model, Record>
@@ -21,6 +22,11 @@ export default class BaseBuilder<Model extends LucidModel, Record extends LucidR
     }
 
     this.query.where(column, operator)
+    return this
+  }
+
+  public whereIn(column: string, values: StrictValues[]) {
+    this.query.whereIn(column, values)
     return this
   }
 

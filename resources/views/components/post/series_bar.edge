@@ -7,9 +7,11 @@
   type: true
 })
 @let(display = { ...defaultDisplay, ...($props.display || {}) })
+@let(hasSeries = false)
 
-<div class="flex items-center">
+<div class="flex items-center gap-1">
   @if (item.series?.length)
+    @assign(hasSeries = true)
     @let(series = item.rootSeries.at(0))
     <h5 class="uppercase flex items-center text-accent-500 hover:text-accent-600 tracking-wide font-sans text-xs">
       @if (display.seriesName)
@@ -17,12 +19,12 @@
           {{ series.name }}
         </a>
       @endif
-      <span class="{{ html.classNames(['text-slate-600 group-hover:text-slate-700 duration-150', { 'ml-2': display.seriesName }]) }}">
-        {{ display.seriesName ? '#' : 'Lesson' }}
-        {{ item.lessonIndexDisplay }}
+      <span class="{{ html.classNames(['text-slate-600 group-hover:text-slate-700 whitespace-nowrap duration-150', { 'ml-2': display.seriesName }]) }}">
+        {{ display.seriesName ? '#' : 'Lesson ' }}{{ item.lessonIndexDisplay }}
       </span>
     </h5>
   @elseif (item.paths?.length)
+    @assign(hasSeries = true)
     @set(path = item.rootPaths.at(0))
     <h5 class="uppercase flex items-center text-accent-500 tracking-wide font-sans text-xs">
       @if (display.pathName)
@@ -36,18 +38,21 @@
       </span>
     </h5>
   @elseif (display.type && item.postTypeId === PostTypes.NEWS)
+    @assign(hasSeries = true)
     <h5 class="uppercase inline-flex items-center text-brand-500 tracking-wide  font-sans text-xs">
       <a href="#" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
         NEWS
       </a>
     </h5>
   @elseif (display.type && item.postTypeId === PostTypes.LIVESTREAM)
+    @assign(hasSeries = true)
     <h5 class="uppercase inline-flex items-center text-brand-500  tracking-wide  font-sans text-xs">
       <a href="#" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
         LIVESTREAM
       </a>
     </h5>
   @elseif (display.type && item.postTypeId === PostTypes.BLOG)
+    @assign(hasSeries = true)
     <h5 class="uppercase inline-flex items-center text-brand-500  tracking-wide  font-sans text-xs">
       <a href="#" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
         BLOG
@@ -55,11 +60,13 @@
     </h5>
   @endif
 
-  <div class="md:hidden lg:block pl-1 relative text-slate-500">
-    ・
-  </div>
+  @if (hasSeries)
+    <div class="md:hidden lg:block relative text-slate-500">
+      ・
+    </div>
+  @endif
 
-  <div class="md:hidden lg:block text-slate-500 group-hover:text-slate-700 text-xs pl-1">
+  <div class="md:hidden lg:block text-slate-500 group-hover:text-slate-700 whitespace-nowrap text-xs">
     {{ item.publishAtDisplay }}
   </div>
 </div>

@@ -13,3 +13,7 @@ up-drawer[position="left"] up-drawer-box {
 up-drawer-viewport {
   overflow-y: auto;
 }
+
+up-drawer-dismiss {
+  z-index: 50;
+}

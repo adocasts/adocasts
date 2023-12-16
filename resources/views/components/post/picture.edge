@@ -37,19 +37,10 @@
       @if (progressPercent !== null && progressPercent > 0)
         @let(bg = progressPercent < 100 ? 'bg-slate-base-50' : 'bg-green-600')
         @let(text = progressPercent < 100 ? 'text-slate-base-50' : 'text-green-600')
-
-        {{--  <div class="absolute bottom-2 left-2 w-[calc(100%-1rem)] pointer-events-none">
-          <div class="font-mono inline-block mb-1 rounded-full py-0.5 leading-none text-2xs {{ text }}">
-            {{ progressPercent }}%
-          </div>
-          <div class="h-1 bg-slate-100/50 backdrop-blur-lg rounded-sm relative z-10 overflow-hidden">
-            <div class="absolute h-full z-20 rounded-sm {{ bg }}" style="width: {{ progressPercent }}%"></div>
-          </div>
-        </div>  --}}
-
         @let(size = 6)
         @let(sizeClass = 'w-6 h-6')
-        <div class="absolute bottom-2 left-2 drop-shadow flex items-center gap-0.5 bg-slate-base-900/80 backdrop-blur-md pr-2 py-0.5 rounded-md">
+
+        <div class="absolute bottom-1 left-1 drop-shadow flex items-center gap-0.5 bg-slate-base-900/80 backdrop-blur-md pr-2 py-0.5 rounded-md">
           <div x-data="progressRing({{ progressPercent }}, {{ size }})" class="flex flex-col justify-center items-center select-none">
             <svg class="relative flex items-center justify-center transform -rotate-90 {{ sizeClass }}">
               <circle class="text-slate-base-600" stroke="currentColor" stroke-width="3" cx="50%" cy="50%" r="{{ size }}" fill="transparent" />
