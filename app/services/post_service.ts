@@ -167,11 +167,10 @@ export default class PostService {
    */
   public async getSimilarPosts(post: Post, limit: number = 15) {
     const taxonomyIds = post.taxonomies.map(t => t.id)
+    const similarPostTypes = this.getSimilarPostTypes(post)
     let query = Post.query()
     
-    query = query
-      .where('postTypeId', post.postTypeId)
-      .whereNot('id', post.id)
+    query = query.whereIn('postTypeId', similarPostTypes).whereNot('id', post.id)
     
     if (taxonomyIds.length) {
       query = query
@@ -182,6 +181,17 @@ export default class PostService {
     }
 
     return query.apply(scope => scope.forDisplay()).limit(limit)
+  }
+
+  public getSimilarPostTypes(post: Post) {
+    switch (post.postTypeId) {
+      case PostTypes.LESSON:
+      case PostTypes.LIVESTREAM:
+        return [PostTypes.LESSON, PostTypes.LIVESTREAM]
+      default:
+        // not enough content in the others, so just populate with everything
+        return [PostTypes.BLOG, PostTypes.NEWS, PostTypes.SNIPPET, PostTypes.LINK, PostTypes.LESSON, PostTypes.LIVESTREAM]
+    }
   }
 
   public async search(term: string | undefined, limit: number = 15) {

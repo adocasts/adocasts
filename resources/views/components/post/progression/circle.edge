@@ -1,0 +1,29 @@
+@let(plain = $props.plain ?? false)
+@let(progress = item.progressionHistory.at(0))
+@let(progressPercent = progress.watchPercent > progress.readPercent ? progress.watchPercent : progress.readPercent)
+
+@if (progress.isCompleted)
+  @assign(progressPercent = 100)
+@endif
+
+@if (progressPercent !== null && progressPercent > 0)
+  @let(bg = $props.color || 'text-brand-600')
+  @let(text = progressPercent < 100 ? 'text-slate-base-300' : ($props.color || 'text-brand-600'))
+  @let(size = $props.size ?? 6)
+  @let(sizeClass = $props.sizeClass || 'w-6 h-6')
+  @let(stroke = $props.stroke ?? 3)
+
+  <div class="{{ html.classNames([{ 'absolute bottom-1 left-1 drop-shadow flex items-center gap-0.5 bg-slate-base-900/80 backdrop-blur-md pr-2 py-0.5 rounded-md': !plain }]) }}">
+    <div x-data="progressRing({{ progressPercent }}, {{ size }})" class="flex flex-col justify-center items-center select-none">
+      <svg class="relative flex items-center justify-center transform -rotate-90 {{ sizeClass }}">
+        <circle class="text-slate-base-600" stroke="currentColor" stroke-width="{{ stroke }}" cx="50%" cy="50%" r="{{ size }}" fill="transparent" />
+        <circle cx="50%" cy="50%" r="{{ size }}" stroke="currentColor" stroke-linecap="round" stroke-width="{{ stroke }}" fill="transparent" :stroke-dasharray="circumference" :stroke-dashoffset="'-'+circumference - percentage / 100 * circumference" class="{{ bg }} transition-all duration-300" />
+      </svg>
+    </div>
+    @if (!plain)
+      <div class="font-mono inline-block rounded-full leading-none text-2xs {{ text }}">
+        {{ progressPercent }}%
+      </div>
+    @endif
+  </div>
+@endif

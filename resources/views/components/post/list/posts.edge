@@ -1,3 +1,5 @@
+@let(similar = $props.similar ?? false)
+
 @each((item, i) in posts)
   @let(href = item.routeUrl)
   @let(isActive = request.params().slug == item.slug || request.params().index - 1 === item.meta.pivot_root_sort_order)
@@ -19,20 +21,26 @@
         @endif
 
         <div class="w-8 h-8 relative z-10 rounded-full flex items-center justify-center text-xs duration-300 {{ isActive ? 'bg-brand-500 bg-gradient-to-br from-accent-500/50 to-brand-500 text-brand-950' : 'bg-slate-200 text-slate-700 group-hover:opacity-0' }}">
-          {{--  @can('PostPolicy.view', item)  --}}
-            {{ item.lessonIndexDisplay }}
-          {{--  @else
-            @if (item.paywallTypeId === PaywallTypes.DELAYED_RELEASE)
-              @!icons.clockShield({ className: 'w-4 h-4' })
+          @can('PostPolicy.view', item)
+            @if (similar)
+              {{ i + 1 }}
             @else
-              @!icons.lock({ className: 'w-4 h-4' })
+              {{ item.lessonIndexDisplay }}
             @endif
-          @endcan  --}}
+          @else
+            @if (item.paywallTypeId === PaywallTypes.DELAYED_RELEASE)
+              @svg('ph:clock-countdown-fill', { class: 'w-4 h-4' })
+            @else
+              @svg('ph:lock-key-fill', { class: 'w-4 h-4' })
+            @endif
+          @endcan
         </div>
 
-        {{--  @if (item.progressionHistory)
-          @!lessons.progressionCircle({ progressionHistory: item.progressionHistory })
-        @endif  --}}
+        @if (item.progressionHistory?.length)
+          <div class="absolute -top-1 -left-1 z-20 opacity-50 group-hover:opacity-100 duration-300">
+            @!post.progression.circle({ item, size: 16, sizeClass: 'w-10 h-10', stroke: 1, plain: true })
+          </div>
+        @endif
       </div>
       <div class="flex flex-col flex-1 text-2xs leading-snug max-w-full truncate">
         <div class="truncate">{{ item.title }}</div>

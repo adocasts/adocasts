@@ -26,7 +26,7 @@
                           Related Content
                         </h2>
                       </div>
-                    </a>
+                    </div>
                     <div class="flex items-center h-auto ml-3 lg:hidden">
                       <button @click="slideOverOpen=false"
                         class="absolute top-0 right-0 z-30 flex items-center justify-center px-3 py-2 mt-4 mr-5 space-x-1 text-xs font-medium uppercase border rounded-md border-slate-200 text-slate-600 hover:bg-slate-100">
@@ -41,7 +41,7 @@
                 </div>
                 <div class="relative flex-1 px-2 sm:px-5">
                   <ol class="absolute inset-0 px-2 pb-6 flex-1 list-none m-0 p-0 top-0 left-0 overflow-y-auto hide-scrollbar -mt-3 md:mt-0">
-                    @!post.list.posts({ posts })
+                    @!post.list.posts({ posts, similar: true })
                   </ol>
                 </div>
               </div>
