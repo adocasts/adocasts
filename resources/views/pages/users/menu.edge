@@ -8,15 +8,15 @@
       
       <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8 mb-2">Settings</p>
 
-      @!menu.link({ text: 'Account', href: '#' })
-      @!menu.link({ text: 'Profile', href: '#' })
+      @!menu.link({ text: 'Account', href: route('users.settings.index', { section: 'account' }) })
+      @!menu.link({ text: 'Profile', href: route('users.settings.index', { section: 'profile' }) })
 
       @if (env('STRIPE_ENABLED'))
-        @!menu.link({ text: 'Billing', href: '#' })
+        @!menu.link({ text: 'Billing', href: route('users.settings.index', { section: 'billing' }) })
       @endif
 
-      @!menu.link({ text: 'Notifications', href: '#' })
-      @!menu.link({ text: 'Data', href: '#' })
+      @!menu.link({ text: 'Notifications', href: route('users.settings.index', { section: 'notifications' }) })
+      @!menu.link({ text: 'Data', href: route('users.settings.index', { section: 'data' }) })
 
       @if (auth.user?.isAdmin)
         <p class="font-semibold text-xs uppercase tracking-wider text-slate-400 mt-8 mb-2">Studio</p>

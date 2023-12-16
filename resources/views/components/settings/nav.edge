@@ -1,0 +1,24 @@
+@let(section = request.params().section)
+
+<div class="w-full h-full lg:w-1/4 flex flex-col lg:sticky top-3 divide-y divide-slate-200">
+  <a href="{{ route('users.settings.index', { section: 'account' }) }}" up-follow class="flex items-center gap-x-3 p-3 bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-700 rounded-t-xl {{ section === 'account' && '!bg-brand-500 bg-gradient-to-br from-accent-500/50 to-brand-500 !text-brand-base-50' }}">
+    @svg('ph:key-fill')
+    <span>Account &amp; Preferences</span>
+  </a>
+  <a href="{{ route('users.settings.index', { section: 'profile' }) }}" up-follow class="flex items-center gap-x-3 p-3 bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-700 {{ section === 'profile' && '!bg-brand-500 bg-gradient-to-br from-accent-500/50 to-brand-500 !text-brand-base-50' }}">
+    @svg('ph:user-fill')
+    <span>Profile</span>
+  </a>
+  <a href="{{ route('users.settings.index', { section: 'billing' }) }}" up-follow class="flex items-center gap-x-3 p-3 bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-700 {{ section === 'billing' && '!bg-brand-500 bg-gradient-to-br from-accent-500/50 to-brand-500 !text-brand-base-50' }}">
+    @svg('ph:credit-card-fill')
+    <span>Billing</span>
+  </a>
+  <a href="{{ route('users.settings.index', { section: 'notifications' }) }}" up-follow class="flex items-center gap-x-3 p-3 bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-700 {{ section === 'notifications' && '!bg-brand-500 bg-gradient-to-br from-accent-500/50 to-brand-500 !text-brand-base-50' }}">
+    @svg('ph:notification-fill')
+    <span>Notifications</span>
+  </a>
+  <a href="{{ route('users.settings.index', { section: 'data' }) }}" up-follow class="flex items-center gap-x-3 p-3 bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-700 rounded-b-xl {{ section === 'data' && '!bg-brand-500 bg-gradient-to-br from-accent-500/50 to-brand-500 !text-brand-base-50' }}">
+    @svg('ph:database-fill')
+    <span>Your Data</span>
+  </a>
+</div>

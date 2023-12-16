@@ -22,6 +22,7 @@ import FormService from "#services/form_service"
 import HtmlParser from "#services/html_parser"
 import Tab from "../app/view_models/tab.js"
 import CollectionService from "#services/collection_service"
+import StripeService from "#services/stripe_service"
 
 addCollection(phicons)
 addCollection(simpleicons)
@@ -38,6 +39,7 @@ edge.global('form', FormService)
 edge.global('parser', HtmlParser)
 edge.global('tabber', Tab)
 edge.global('collectionService', CollectionService)
+edge.global('stripeDateTime', StripeService.toDateTime)
 
 edge.global('Roles', Roles)
 edge.global('PostTypes', PostTypes)

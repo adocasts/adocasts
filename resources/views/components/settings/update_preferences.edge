@@ -1,0 +1,32 @@
+<div up-user-preferences>
+  @form({ action: form.put('users.preferences.update'), 'up-autosubmit': true, 'up-target': '[up-user-preferences]', 'up-scroll': 'restore' })
+    <div class="flex flex-col gap-6">
+      @form.switch({ name: 'isEnabledProfile', value: auth.user.isEnabledProfile, upSubmit: true })
+        <div class="flex flex-col ml-3">
+          <strong>Public Profile</strong>
+          <p class="text-slate-700 text-xs">
+            Your Adocasts profile will be publicly viewable by the world wide web
+          </p>
+        </div>
+      @end
+
+      @form.switch({ name: 'isEnabledMiniPlayer', value: auth.user.isEnabledMiniPlayer, upSubmit: true })
+        <div class="flex flex-col ml-3">
+          <strong>Mini Video Player</strong>
+          <p class="text-slate-700 text-xs">
+            When playing a video lesson, a mini-player will continue to play your lesson as you explore the Adocasts site.
+          </p>
+        </div>
+      @end
+
+      @form.switch({ name: 'isEnabledAutoplayNext', value: auth.user.isEnabledAutoplayNext, upSubmit: true })
+        <div class="flex flex-col ml-3">
+          <strong>Autoplay Next Lesson</strong>
+          <p class="text-slate-700 text-xs">
+            When one lesson ends, the next in line series or similar lesson will start automatically.
+          </p>
+        </div>
+      @end
+    </div>
+  @end
+</div>

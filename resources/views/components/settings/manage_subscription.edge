@@ -1,0 +1,121 @@
+@let(forever = await Plan.findOrFail(Plans.FOREVER))
+
+@if (auth.user.planId === Plans.FOREVER)
+  <img class="logo-white h-6 relative mb-1" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts+" />
+  <img class="logo-black h-6 relative mb-1" src="/imgs/adocasts-plus-black-40.png" alt="Adocasts+" />
+  
+  <p class="text-slate-600 mb-3">
+    You're all set, <strong>forever</strong>! You'll always have access to all of our past and future content.
+  </p>
+  <div class="text-slate-700 flex flex-col">
+    <strong class="text-xs text-slate-600">Current Plan Period</strong>
+    <div class="flex items-center gap-1.5">
+      {{ auth.user.planPeriodStart.setZone(timezone).toFormat('MMM dd, yyyy') }} 
+      @svg('ph:arrow-right-bold')
+      Forever
+    </div>
+  </div>
+@elseif (auth.user.planId === Plans.PLUS_ANNUAL)
+  <img class="logo-white h-6 relative" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts+" />
+  <img class="logo-black h-6 relative" src="/imgs/adocasts-plus-black-40.png" alt="Adocasts+" />
+  
+  <p class="text-slate-600 mb-3">
+    @if (auth.user.stripeSubscriptionStatus === StripeSubscriptionStatuses.PAUSED)
+      You're subscribed to our <strong>monthly</strong> payment plan, however, you paused your subscription on {{ auth.user.stripeSubscriptionPausedAt.setZone(timezone).toFormat('MMM dd, yyyy') }}.
+    @else
+      You're on our <strong>annual</strong> payment plan.
+    @endif
+  </p>
+  <div class="text-slate-700 flex flex-col">
+    <strong class="text-xs text-slate-600">Current Plan Period</strong>
+    <div class="flex items-center gap-1.5">
+      {{ auth.user.planPeriodStart.setZone(timezone).toFormat('MMM dd, yyyy') }} 
+      @svg('ph:arrow-right-bold')
+      {{ auth.user.planPeriodEnd.setZone(timezone).toFormat('MMM dd, yyyy') }}
+    </div>
+  </div>
+
+  @if (subscriptions.length && subscriptions[0].cancel_at_period_end)
+    <div class="relative w-full rounded-lg border border-transparent bg-blue-50 p-4 [&>svg]:absolute [&>svg]:text-foreground [&>svg]:left-4 [&>svg]:top-4 [&>svg+div]:translate-y-[-3px] pl-11 text-blue-600 mt-6">
+      <svg class="w-5 h-5 -translate-y-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+      <h5 class="mb-1 font-medium leading-none tracking-tight">You're subscription will not renew</h5>
+      <div class="text-sm opacity-80">After {{ auth.user.planPeriodEnd.setZone(timezone).toFormat('MMM dd, yyyy') }}, your subscription is set to be canceled and will not renew.</div>
+    </div>
+  @elseif (subscriptions.length && subscriptions[0].pause_collection)
+    <div class="relative w-full rounded-lg border border-transparent bg-blue-50 p-4 [&>svg]:absolute [&>svg]:text-foreground [&>svg]:left-4 [&>svg]:top-4 [&>svg+div]:translate-y-[-3px] pl-11 text-blue-600 mt-6">
+      <svg class="w-5 h-5 -translate-y-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+      <h5 class="mb-1 font-medium leading-none tracking-tight">You're subscription is paused</h5>
+      @if (subscriptions[0].pause_collection.resumes_at)
+        <div class="text-sm opacity-80">Your subscription is paused until {{ stripeDateTime(subscriptions[0].pause_collection.resumes_at * 1000).setZone(timezone).toFormat('MMM dd, yyyy') }}. Please note that invoices will still be generated while your subscription is paused, but you will not be charged.</div>
+      @else
+        <div class="text-sm opacity-80">Your subscription is paused and you can restart your subscription whenever you're ready. Please note that invoices will be generated while your subscription is paused, but you will not be charged.</div>
+      @endif
+    </div>
+  @endif
+
+  <div class="flex items-center gap-3">
+    @button({ form: 'foreverForm', type: 'submit', class: 'mt-6', block: true })
+      Upgrade to Forever Plan
+    @end
+    @button.outline({ form: 'stripePortalForm', type: 'submit', class: 'mt-6', block: true })
+      Upgrade or Manage Subscription
+    @end
+  </div>
+
+  @!form({ id: 'foreverForm', action: form.post('stripe.checkout', { slug: forever.slug }) })
+  @!form({ id: 'stripePortalForm', action: form.post('stripe.portal') })
+@elseif (auth.user.planId === Plans.PLUS_MONTHLY)
+  <img class="logo-white h-6 relative" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts+" />
+  <img class="logo-black h-6 relative" src="/imgs/adocasts-plus-black-40.png" alt="Adocasts+" />
+  
+  <p class="text-slate-600 mb-3">
+    @if (auth.user.stripeSubscriptionStatus === StripeSubscriptionStatuses.PAUSED)
+      You're subscribed to our <strong>monthly</strong> payment plan, however, you paused your subscription on {{ auth.user.stripeSubscriptionPausedAt.toFormat('MMM dd, yyyy') }}.
+    @else
+      You're on our <strong>monthly</strong> payment plan.
+    @endif
+  </p>
+  <div class="text-slate-700 flex flex-col">
+    <strong class="text-xs text-slate-600">Current Plan Period</strong>
+    <div class="flex items-center gap-1.5">
+      {{ auth.user.planPeriodStart.setZone(timezone).toFormat('MMM dd, yyyy') }} 
+      @svg('ph:arrow-right-bold')
+      {{ auth.user.planPeriodEnd.setZone(timezone).toFormat('MMM dd, yyyy') }}
+    </div>
+  </div>
+
+  @if (subscriptions.length && subscriptions[0].cancel_at_period_end)
+    <div class="relative w-full rounded-lg border border-transparent bg-blue-50 p-4 [&>svg]:absolute [&>svg]:text-foreground [&>svg]:left-4 [&>svg]:top-4 [&>svg+div]:translate-y-[-3px] pl-11 text-blue-600 mt-6">
+      <svg class="w-5 h-5 -translate-y-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+      <h5 class="mb-1 font-medium leading-none tracking-tight">You're subscription will not renew</h5>
+      <div class="text-sm opacity-80">After {{ auth.user.planPeriodEnd.setZone(timezone).toFormat('MMM dd, yyyy') }}, your subscription is set to be canceled and will not renew.</div>
+    </div>
+  @elseif (subscriptions.length && subscriptions[0].pause_collection)
+    <div class="relative w-full rounded-lg border border-transparent bg-blue-50 p-4 [&>svg]:absolute [&>svg]:text-foreground [&>svg]:left-4 [&>svg]:top-4 [&>svg+div]:translate-y-[-3px] pl-11 text-blue-600 mt-6">
+      <svg class="w-5 h-5 -translate-y-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+      <h5 class="mb-1 font-medium leading-none tracking-tight">You're subscription is paused</h5>
+      @if (subscriptions[0].pause_collection.resumes_at)
+        <div class="text-sm opacity-80">Your subscription is paused until {{ stripeDateTime(subscriptions[0].pause_collection.resumes_at * 1000).setZone(timezone).toFormat('MMM dd, yyyy') }}. Please note that invoices will still be generated while your subscription is paused, but you will not be charged.</div>
+      @else
+        <div class="text-sm opacity-80">Your subscription is paused and you can restart your subscription whenever you're ready. Please note that invoices will be generated while your subscription is paused, but you will not be charged.</div>
+      @endif
+    </div>
+  @endif
+
+  <div class="flex items-center gap-3">
+    @button({ form: 'foreverForm', type: 'submit', class: 'mt-6', block: true })
+      Upgrade to Forever Plan
+    @end
+    @button.outline({ form: 'stripePortalForm', type: 'submit', class: 'mt-6', block: true })
+      Upgrade or Manage Subscription
+    @end
+  </div>
+  
+  @!form({ id: 'foreverForm', action: form.post('stripe.checkout', { slug: forever.slug }) })
+  @!form({ id: 'stripePortalForm', action: form.post('stripe.portal') })
+@else
+  <strong>Free Plan</strong>
+  <p class="text-sm text-slate-600">
+    You have access to our free content.
+  </p>
+@endif

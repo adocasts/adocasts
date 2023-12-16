@@ -1,6 +1,6 @@
 import vine from '@vinejs/vine'
 
-const usernameRule = vine
+export const usernameRule = vine
   .string()
   .maxLength(50)
   .minLength(3)

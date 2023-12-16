@@ -8,6 +8,10 @@
     <span class="block text-sm font-medium leading-6 text-slat-900">{{ label }}</span>
   @endif
 
+  @if (help)
+    <span class="text-xs text-slate-600 -mt-1 mb-1">{{ help }}</span>
+  @endif
+
   {{{ await $slots.main() }}}
 
   @error(name)

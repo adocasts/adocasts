@@ -11,7 +11,7 @@ export default defineConfig({
   |
   */
   commands: [
-    () => import('@adonisjs/core/commands'), 
+    () => import('@adonisjs/core/commands'),
     () => import('@adonisjs/lucid/commands'),
     () => import('@adonisjs/bouncer/commands')
   ],
@@ -58,7 +58,8 @@ export default defineConfig({
     () => import('./start/macros/model_query_builder_macros.js'),
     () => import('./start/up/index.js'),
     () => import('./start/globals.js'),
-    () => import('./start/events.js')
+    () => import('./start/events.js'),
+    () => import('./start/validator.js')
   ],
 
   /*

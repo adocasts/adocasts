@@ -15,6 +15,9 @@ const AuthSignUpController = () => import('#controllers/auth/sign_up_controller'
 const AuthSignOutController = () => import('#controllers/auth/sign_out_controller')
 const AuthSocialController = () => import('#controllers/auth/social_controller')
 const UsersController = () => import('#controllers/users_controller')
+const UserSettingsController = () => import('#controllers/user_settings_controller')
+const PreferencesController = () => import('#controllers/preferences_controller')
+const SessionsController = () => import('#controllers/sessions_controller')
 const ProfilesController = () => import('#controllers/profiles_controller')
 const TopicsController = () => import('#controllers/topics_controller')
 const SeriesController = () => import('#controllers/series_controller')
@@ -54,6 +57,22 @@ router.get('/users/menu', [UsersController, 'menu']).as('users.menu')
 router.get('/users/watchlist/:tab?', [UsersController, 'watchlist']).as('users.watchlist').use(middleware.auth())
 router.get('/users/history/:tab?', [UsersController, 'history']).as('users.history').use(middleware.auth())
 router.put('/api/users/theme', [UsersController, 'theme']).as('api.users.theme')
+
+/**
+ * user settings
+ */
+router.get('/settings/:section?', [UserSettingsController, 'index']).as('users.settings.index').use(middleware.auth())
+router.get('/settings/invoices/:invoice', [UserSettingsController, 'invoice']).as('users.settings.invoice').use(middleware.auth())
+router.patch('/users/update/username', [UserSettingsController, 'updateUsername']).as('users.update.username').use(middleware.auth())
+router.put('/users/update/email', [UserSettingsController, 'updateEmail']).as('users.update.email').use(middleware.auth())
+router.get('/users/revert/:id/:oldEmail/:newEmail', [UserSettingsController, 'revertEmail']).as('users.revert.email')
+router.put('/users/notifications/email', [UserSettingsController, 'updateNotificationEmails']).as('users.notifications.email')
+router.get('/users/:userId/notifications/:field/off', [UserSettingsController, 'disableNotificationField']).as('users.notifications.disable.field')
+router.get('/users/:userId/notifications/off', [UserSettingsController, 'disableNotifications']).as('users.notifications.disable')
+router.delete('/users/delete', [UserSettingsController, 'deleteAccount']).as('users.destroy')
+router.put('/users/profile', [ProfilesController, 'update']).as('users.profiles.update').use(middleware.auth())
+router.put('/users/preferences', [PreferencesController, 'update']).as('users.preferences.update').use(middleware.auth())
+router.delete('/users/sessions/:id?', [SessionsController, 'destroy']).as('users.sessions.destroy').use(middleware.auth())
 
 /**
  * watchlists

@@ -154,7 +154,7 @@ export default class User extends AppBaseModel {
         return this.avatarUrl
       }
       
-      return `/img/${this.avatarUrl}`
+      return `${env.get('ASSET_DOMAIN')}/img/${this.avatarUrl}`
     }
 
     return gravatar.url(this.email, { s: '250' })
