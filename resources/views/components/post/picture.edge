@@ -1,4 +1,5 @@
 @let(lazy = $props.lazy ?? false)
+@let(progression = $props.progression ?? true)
 
 @if (item.thumbnails?.length || item.covers?.length)
   @let(img = item.thumbnails?.length ? item.thumbnails[0] : item.covers[0])
@@ -26,7 +27,7 @@
           </div>
         @endif
       </div>
-    @elseif (item.progressionHistory?.length)
+    @elseif (progression && item.progressionHistory?.length)
       @let(progress = item.progressionHistory.at(0))
       @let(progressPercent = progress.watchPercent > progress.readPercent ? progress.watchPercent : progress.readPercent)
       

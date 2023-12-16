@@ -30,7 +30,7 @@
     x-data
     type="{{ type || 'button' }}" 
     class="{{ html.classNames('duration-300', utils.classes(sizes[size], variants[variant], $props.class, [{ 'flex w-full': block, 'opacity-40': disabled }])) }}">
-    <span class="flex items-center gap-1.5">
+    <span class="flex items-center gap-1.5 {{ $props.classInner }}">
       {{{ await $slots.main() }}}
     </span>
   </a>
@@ -41,11 +41,11 @@
     type="{{ type || 'button' }}" 
     class="{{ html.classNames('duration-300', utils.classes(sizes[size], variants[variant], $props.class, [{ 'flex w-full': block, 'opacity-40 cursor-not-allowed': disabled }])) }}">
     @if ($slots.loading)
-      <span x-show="{{ sendingKey }}" class="flex items-center gap-1.5">
+      <span x-show="{{ sendingKey }}" class="flex items-center gap-1.5 {{ $props.classInner }}">
         {{{ await $slots.loading() }}}
       </span>
     @endif
-    <span {{ html.attrs({ 'x-show': $slots.loading && `!${sendingKey}` })}} class="flex items-center gap-1.5">
+    <span {{ html.attrs({ 'x-show': $slots.loading && `!${sendingKey}` })}} class="flex items-center gap-1.5 {{ $props.classInner }}">
       {{{ await $slots.main() }}}
     </span>
   </button>

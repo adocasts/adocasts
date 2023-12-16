@@ -4,7 +4,7 @@
       <div class="flex-1">
         <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8 mb-2">Series</p>
 
-        <div class="flex flex-col -mx-2.5">
+        <div class="flex flex-col -mx-2.5 bg-slate-100 rounded-md">
           @each (item in series)
             @!collection.item.button({ item })
           @endeach
@@ -16,7 +16,7 @@
       <div class="flex-1">
         <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8 mb-2">Topics</p>
 
-        <div class="flex flex-col -mx-2.5">
+        <div class="flex flex-col -mx-2.5 bg-slate-100 rounded-md">
           @each (item in topics)
             @!taxonomy.item.button({ item })
           @endeach
@@ -28,7 +28,7 @@
   @if (posts)
     <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8 mb-2">Posts</p>
 
-    <div class="flex flex-col -mx-2.5">
+    <div class="flex flex-col -mx-2.5 bg-slate-100 rounded-md">
       @each (item in posts)
         @!post.item.button({ item })
       @endeach

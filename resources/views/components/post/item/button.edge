@@ -1,6 +1,6 @@
-@button({ href: item.routeUrl, class: 'bg-white border-white gap-4 flex-nowrap', size: 'sm' })
+@button({ href: item.routeUrl, class: 'bg-white border-white !justify-start flex-nowrap', classInner: '!gap-4', size: 'sm' })
   <div class="w-24">
-    @!post.picture({ item, class: 'h-full', lazy: lazyItem })
+    @!post.picture({ item, class: 'h-full', lazy: lazyItem, progression: false })
   </div>
   <div class="flex-1">
     <object>
