@@ -39,7 +39,27 @@ export default class LessonsController {
       .orderBy(sortBy, sort)
       .paginate(page, 20, router.makeUrl('lessons.index', params))
 
-    return view.render('pages/lessons/index', { items })
+    return view.render('pages/lessons/index', { type: 'Lessons', items })
+  }
+
+  async streams({ view, request, params }: HttpContext) {
+    const { page = 1, sortBy = 'publishAt', sort = 'desc' } = request.qs()
+
+    if (page == 1 && sortBy === 'publishAt') {
+      const recentDate = DateTime.now().minus({ days: 30 }).startOf('day')
+      const recent = await this.postService
+        .getLatestStreams()
+        .where('publishAt', '>=', recentDate)
+
+      view.share({ recent })
+    }
+
+    const items = await this.postService
+      .getStreams()
+      .orderBy(sortBy, sort)
+      .paginate(page, 20, router.makeUrl('lessons.index', params))
+
+    return view.render('pages/lessons/index', { type: 'Livestreams', items })
   }
   
   async show({ view, request, params, session, auth, up, route }: HttpContext) {

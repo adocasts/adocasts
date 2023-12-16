@@ -106,6 +106,16 @@ export default class PostService {
   }
 
   /**
+   * Returns the latest livestreams
+   * @param limit 
+   * @param excludeIds 
+   * @returns 
+   */
+  public getLatestStreams(limit: number | undefined = undefined, excludeIds: number[] = []) {
+    return this.getLatest(limit, excludeIds, [PostTypes.LIVESTREAM])
+  }
+
+  /**
    * Returns the latest blogs and news
    * @param limit 
    * @param excludeIds 

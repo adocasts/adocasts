@@ -4,7 +4,7 @@
     @if (series)
       @!post.list.series()
     @elseif (similarLessons)
-      
+      @!post.list.similar({ posts: similarLessons })
     @endif
   @endslot
 
@@ -62,7 +62,7 @@
     @endif
 
     <div class="bg-slate-100 px-4 py-4 flex items-center gap-8">
-      <div class="hidden lg:block">
+      <div class="hidden lg:block w-36">
         @button({ href: prevLesson?.routeUrl, attrs: 'up-follow', class: 'gap-2', disabled: !prevLesson?.routeUrl })
           @svg('ph:caret-circle-left-fill', { class: 'w-5 h-5' })
           Previous
@@ -91,7 +91,7 @@
         @endif
       </div>
   
-      <div class="hidden lg:block">
+      <div class="hidden lg:flex w-36 justify-end">
         @button({ href: nextLesson?.routeUrl, class: 'gap-2', disabled: !nextLesson?.routeUrl })
           Next
           @svg('ph:caret-circle-right-fill', { class: 'w-5 h-5' })
