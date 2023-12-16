@@ -23,6 +23,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
       .withTaxonomies()
       .withPostCount()
       .withTotalMinutes()
+      .withProgressCount()
 
     return this
   }
@@ -62,7 +63,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     return this
   }
 
-  public whereWatched() {
+  public whereInWatchlist() {
     this.query.whereHas('watchlist', query => query.where('userId', this.user!.id))
     return this
   }
@@ -92,6 +93,12 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
         query => query.whereHas('taxonomies', query => query.whereIn('taxonomies.id', taxonomies!.map(tax => tax.id))),
         query => query.whereHas('taxonomies', query => query.apply(scope => scope.hasContent()))
       )
+    return this
+  }
+
+  public withProgressCount() {
+    if (!this.user) return
+    this.query.withCount('progressionHistory', query => query.where('userId', this.user!.id))
     return this
   }
 

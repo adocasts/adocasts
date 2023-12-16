@@ -21,6 +21,7 @@ import string from '@adonisjs/core/helpers/string'
 import FormService from "#services/form_service"
 import HtmlParser from "#services/html_parser"
 import Tab from "../app/view_models/tab.js"
+import CollectionService from "#services/collection_service"
 
 addCollection(phicons)
 addCollection(simpleicons)
@@ -36,6 +37,7 @@ edge.global('assetDomain', env.get('ASSET_DOMAIN', ''))
 edge.global('form', FormService)
 edge.global('parser', HtmlParser)
 edge.global('tabber', Tab)
+edge.global('collectionService', CollectionService)
 
 edge.global('Roles', Roles)
 edge.global('PostTypes', PostTypes)

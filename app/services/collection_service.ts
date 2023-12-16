@@ -3,6 +3,7 @@ import Collection from "#models/collection"
 import Post from "#models/post"
 import { inject } from "@adonisjs/core"
 import { HttpContext } from "@adonisjs/core/http"
+import User from '../models/user';
 
 @inject()
 export default class CollectionService {
@@ -147,7 +148,11 @@ export default class CollectionService {
   }
 
   public findNextLesson(collection: Collection) {
-    let next = this.user
+    return CollectionService.findNextLesson(this.user, collection)
+  }
+
+  public static findNextLesson(user: User|undefined, collection: Collection) {
+    let next = user
       ? collection.postsFlattened.find(post => !post.progressionHistory?.length || !post.progressionHistory?.at(0)?.isCompleted)
       : null
 

@@ -55,7 +55,7 @@ export default class UsersController {
           .new(auth.user)
           .series()
           .display()
-          .whereWatched()
+          .whereInWatchlist()
           .withPosts('pivot_root_sort_order', 'desc', 3)
           .paginate(page, 15, route)
         break
@@ -63,7 +63,7 @@ export default class UsersController {
         lessons = await PostBuilder
           .new(auth.user)
           .whereLesson()
-          .whereWatched()
+          .whereInWatchlist()
           .display()
           .paginate(page, 15, route)
         break
@@ -72,7 +72,7 @@ export default class UsersController {
         posts = await PostBuilder
           .new(auth.user)
           .whereType(postTypes)
-          .whereWatched()
+          .whereInWatchlist()
           .display()
           .paginate(page, 15, route)
         break

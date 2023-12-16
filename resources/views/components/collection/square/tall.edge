@@ -1,4 +1,5 @@
 @let(classes = utils.classes('flex flex-col justify-center items-center bg-slate-100 rounded-md relative overflow-hidden group', $props.class))
+@let(isStarted = parseInt(item.$extras.progressionHistory_count) || 0)
 
 <div {{ html.attrs({ class: classes, ...($props.attrs || {}) }) }}>
   <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="flex anchor-expand w-full h-full">

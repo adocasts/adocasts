@@ -42,7 +42,7 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
     return this
   }
 
-  public whereWatched() {
+  public whereInWatchlist() {
     this.query.whereHas('watchlist', query => query.where('userId', this.user!.id))
     return this
   }
