@@ -13,17 +13,17 @@ import { Env } from '@adonisjs/core/env'
 
 export default await Env.create(new URL('../', import.meta.url), {
   HOST: Env.schema.string({ format: 'host' }),
-	PORT: Env.schema.number(),
-	APP_KEY: Env.schema.string(),
-	APP_BRAND: Env.schema.string(),
-	APP_LOGO: Env.schema.string(),
-	APP_LOGO_INV: Env.schema.string(),
-	APP_CONTACT_EMAIL: Env.schema.string(),
-	APP_DOMAIN: Env.schema.string(),
-	CACHE_VIEWS: Env.schema.boolean(),
+  PORT: Env.schema.number(),
+  APP_KEY: Env.schema.string(),
+  APP_BRAND: Env.schema.string(),
+  APP_LOGO: Env.schema.string(),
+  APP_LOGO_INV: Env.schema.string(),
+  APP_CONTACT_EMAIL: Env.schema.string(),
+  APP_DOMAIN: Env.schema.string(),
+  CACHE_VIEWS: Env.schema.boolean(),
   DRIVE_DISK: Env.schema.enum(['local', 'gcs'] as const),
-	NODE_ENV: Env.schema.enum(['development', 'production', 'test'] as const),
-	ASSET_DOMAIN: Env.schema.string.optional({ format: 'url' }),
+  NODE_ENV: Env.schema.enum(['development', 'production', 'test'] as const),
+  ASSET_DOMAIN: Env.schema.string.optional({ format: 'url' }),
   LOG_LEVEL: Env.schema.string(),
   IDENTITY_SECRET: Env.schema.string(),
 
@@ -47,10 +47,10 @@ export default await Env.create(new URL('../', import.meta.url), {
   DB_DATABASE: Env.schema.string(),
 
   // @adonisjs/mail
-	SMTP_HOST: Env.schema.string({ format: 'host' }),
-	SMTP_PORT: Env.schema.number(),
-	SMTP_USERNAME: Env.schema.string(),
-	SMTP_PASSWORD: Env.schema.string(),
+  SMTP_HOST: Env.schema.string({ format: 'host' }),
+  SMTP_PORT: Env.schema.number(),
+  SMTP_USERNAME: Env.schema.string(),
+  SMTP_PASSWORD: Env.schema.string(),
 
   // @adonisjs/redis
   REDIS_ENABLED: Env.schema.boolean(),
@@ -58,27 +58,27 @@ export default await Env.create(new URL('../', import.meta.url), {
   REDIS_PORT: Env.schema.number(),
 
   // @adonisjs/drive-gcs
-	GCS_KEY_FILENAME: Env.schema.string(),
-	GCS_BUCKET: Env.schema.string(),
+  GCS_KEY_FILENAME: Env.schema.string(),
+  GCS_BUCKET: Env.schema.string(),
 
   // @adonisjs/ally
-	GOOGLE_CLIENT_ID: Env.schema.string(),
-	GOOGLE_CLIENT_SECRET: Env.schema.string(),
-	GITHUB_CLIENT_ID: Env.schema.string(),
-	GITHUB_CLIENT_SECRET: Env.schema.string(),
+  GOOGLE_CLIENT_ID: Env.schema.string(),
+  GOOGLE_CLIENT_SECRET: Env.schema.string(),
+  GITHUB_CLIENT_ID: Env.schema.string(),
+  GITHUB_CLIENT_SECRET: Env.schema.string(),
 
-	TURNSTILE_ENABLED: Env.schema.boolean(),
-	TURNSTILE_SITE_KEY: Env.schema.string(),
-	TURNSTILE_SECRET_KEY: Env.schema.string(),
+  TURNSTILE_ENABLED: Env.schema.boolean(),
+  TURNSTILE_SITE_KEY: Env.schema.string(),
+  TURNSTILE_SECRET_KEY: Env.schema.string(),
 
-	NOTION_SECRET: Env.schema.string(),
-	NOTION_VERSION: Env.schema.string(),
+  NOTION_SECRET: Env.schema.string(),
+  NOTION_VERSION: Env.schema.string(),
 
-	STRIPE_ENABLED: Env.schema.boolean(),
-	STRIPE_PUBLISHABLE_KEY: Env.schema.string(),
-	STRIPE_SECRET_KEY: Env.schema.string(),
-	STRIPE_WEBHOOK_SECRET: Env.schema.string(),
+  STRIPE_ENABLED: Env.schema.boolean(),
+  STRIPE_PUBLISHABLE_KEY: Env.schema.string(),
+  STRIPE_SECRET_KEY: Env.schema.string(),
+  STRIPE_WEBHOOK_SECRET: Env.schema.string(),
 
-	PLAUSIBLE_API_KEY: Env.schema.string.optional(),
-	DISCORD_WEBHOOK: Env.schema.string.optional()
+  PLAUSIBLE_API_KEY: Env.schema.string.optional(),
+  DISCORD_WEBHOOK: Env.schema.string.optional()
 })

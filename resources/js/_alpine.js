@@ -146,7 +146,6 @@ Alpine.data('videoAutoPlayNext', (enabled = true, nextLessonUrl) => {
 Alpine.data('proseBody', function() {
   return {
     init() {
-      console.log('here')
       this.registerAnchors()
     },
 

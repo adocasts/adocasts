@@ -71,7 +71,7 @@ export default class Up {
       // this.ctx.response.response.setHeader(h, headers[header])
       this.ctx.response.header(h, headers[header])
     })
-console.log({ headers })
+
     if (this.getStatus()) {
       this.ctx.response.response.statusCode = parseInt(this.getStatus())
     }

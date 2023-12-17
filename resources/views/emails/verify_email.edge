@@ -1,0 +1,27 @@
+@layout.email({ title: 'Action Required: Please verify your email address' })
+
+  @emails.paragraph()
+    Hi {{ user.username }},
+  @end
+
+  @emails.paragraph()
+    Thank you for being a member of the Adocasts community! 
+    To ensure the security of your account and the delivery of important updates,
+    we kindly ask that you take a second to verify your email address.
+  @end
+
+  @emails.paragraph()
+    To complete the verification process, please click the verification link below.
+  @end
+
+  @emails.button({ href })
+    Confirm Email Address
+  @end
+
+  @!emails.signature()
+
+  @emails.paragraph()
+    <a href="{{ href }}">{{ href }}</a>
+  @end
+
+@end

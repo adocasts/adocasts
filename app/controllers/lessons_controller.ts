@@ -106,7 +106,7 @@ export default class LessonsController {
       userProgression
     })
 
-    // emitter.emit('post:sync', { post, views })
+    emitter.emit('post:sync', { post, views })
 
     return view.render('pages/lessons/show', { comments, commentCount, views })
   }

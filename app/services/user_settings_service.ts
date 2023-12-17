@@ -62,16 +62,14 @@ export default class UserSettingsService {
     })
 
     const signedUrl = router.makeSignedUrl('users.revert.email', {
-      params: {
-        id: user.id,
-        oldEmail: user.email,
-        newEmail: data.email
-      },
-      expiresIn: '168h'
-    });
+      id: user.id,
+      oldEmail: user.email,
+      newEmail: data.email
+    }, { expiresIn: '168h' })
 
     try {
-      await user.verifyPasswordForAuth(data.password)
+      const result = await user.verifyPasswordForAuth(data.password)
+      console.log({ result })
     } catch (error) {
       await AuthAttemptService.recordChangeEmailAttempt(user.email)
 
