@@ -66,11 +66,10 @@ export default class UserSettingsService {
       oldEmail: user.email,
       newEmail: data.email
     }, { expiresIn: '168h' })
-
-    try {
-      const result = await user.verifyPasswordForAuth(data.password)
-      console.log({ result })
-    } catch (error) {
+    
+    const isPasswordCorrect = await user.verifyPasswordForAuth(data.password)
+    
+    if (!isPasswordCorrect) {
       await AuthAttemptService.recordChangeEmailAttempt(user.email)
 
       const message = authAttemptsRemaining < 2

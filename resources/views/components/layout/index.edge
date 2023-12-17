@@ -12,7 +12,7 @@
 
   @vite(['resources/js/app.js'])
 </head>
-<body class="h-full bg-body text-slate-900 overflow-x-hidden subpixel-antialiased" layout-root up-theme>
+<body x-data class="h-full bg-body text-slate-900 overflow-x-hidden subpixel-antialiased" layout-root up-theme>
   <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>
 
   <div class="relative z-[101] {{ postClass }}" up-header>
@@ -44,6 +44,8 @@
   <div up-player>
     @!post.player()
   </div>
+
+  @!toast()
 
   <div id="portal"></div>
 
