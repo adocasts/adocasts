@@ -15,6 +15,8 @@
 <body x-data class="h-full bg-body text-slate-900 overflow-x-hidden subpixel-antialiased" layout-root up-theme>
   <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>
 
+  @!toast()
+
   <div class="relative z-[101] {{ postClass }}" up-header>
     @!layout.header()
   </div>
@@ -29,6 +31,8 @@
     <div {{ html.attrs({ class: utils.classes('page relative z-20', [up.isPage ? 'mt-8' : '!px-0']), ...($props.attrs || {}) }) }}>
       {{{ await $slots.main() }}}
     </div>
+
+    @!toast.flash()
   </main>
 
   <div class="{{ postClass }}" up-footer>
@@ -44,8 +48,6 @@
   <div up-player>
     @!post.player()
   </div>
-
-  @!toast()
 
   <div id="portal"></div>
 

@@ -62,7 +62,7 @@ export default class UserSettingsController {
     }
 
     const { success, message, redirect } = await UserSettingsService.updateEmail(auth.user!, request.body())
-    console.log({ success, message })
+    
     if (!success) {
       session.flash('error', message)
       return redirect

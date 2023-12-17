@@ -69,8 +69,10 @@
               {{ plan.name }}
             </button>
             {{--  @!form({ id: 'stripePortalForm', action: route('stripe.portal') })  --}}
-            @profile.link({ user: auth.user, class: 'text-xs anchor relative -top-0.5' })
-              View Your Profile
+            @if (auth.user.isEnabledProfile)
+              @profile.link({ user: auth.user, class: 'text-xs anchor relative -top-0.5' })
+                View Your Profile
+              @end
             @end
           @else
             <p class="text-xs text-slate-700 flex items-center gap-1.5">

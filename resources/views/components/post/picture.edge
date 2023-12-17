@@ -13,8 +13,8 @@
     lazy
   })
     @cannot('PostPolicy.view', item)
-      <div class="absolute bottom-2 left-2 text-slate-base-50 flex items-center w-full">
-        <div class="w-5 h-5 bg-slate-base-50 rounded-md text-slate-base-700 flex items-center justify-center">
+      <div class="absolute bottom-2 left-2 bg-slate-base-900/80 backdrop-blur-md text-slate-base-50 flex items-center rounded-md">
+        <div class="w-5 h-5 rounded-md text-slate-base-200 flex items-center justify-center">
           @if (item.paywallTypeId === PaywallTypes.DELAYED_RELEASE)
             @svg('ph:clock-countdown-fill', { class: 'w-3 h-3' })
           @else
@@ -22,7 +22,7 @@
           @endif
         </div>
         @if (item.paywallTypeId === PaywallTypes.DELAYED_RELEASE)
-          <div class="text-2xs ml-1 uppercase font-bold bg-slate-base-900/50 px-1 py-0.5 rounded-md backdrop-blur-lg">
+          <div class="text-2xs uppercase font-bold pr-1 py-0.5">
             {{ item.paywallTimeAgo }} 
           </div>
         @endif

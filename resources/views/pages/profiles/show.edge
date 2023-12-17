@@ -65,6 +65,17 @@
       @!stat.bar.item({ title: 'Hours Watched', value: hoursWatchedSum.toLocaleString('en-US', { maximumFractionDigits: 2 }) })
     @end
 
+    @if (!user.isEnabledProfile)
+      @alert({ 
+        icon: 'ph:warning-circle-fill',
+        variant: 'yellow', 
+        title: 'Your Profile is Private', 
+      })
+        Your profile is private and can only be seen by you. 
+        You can change this anytime within your <a href="{{ route('users.settings.index', { section: 'account' }) }}" class="underline" up-follow>account settings</a>.
+      @end
+    @endif
+
     <p class="font-semibold uppercase tracking-wider pt-8 mt-8 border-t border-slate-200">
       Recent Activity
     </p>

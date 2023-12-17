@@ -15,7 +15,7 @@ export default class ProfilesController {
       .firstOrFail()
 
     if (!user.isEnabledProfile && auth.user?.id !== user.id) {
-      session.flash('warning', 'Their profile is currently set to private.')
+      session.flash('warning', 'The requested profile is currently set to private.')
       return response.redirect('/')
     }
 

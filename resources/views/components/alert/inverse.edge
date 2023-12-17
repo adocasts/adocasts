@@ -1,0 +1,14 @@
+@let(variant = $props.variant ?? 'blue')
+@let(variants = {
+  blue: `border-transparent bg-blue-50 text-blue-600`,
+  red: `border-transparent bg-red-50 text-red-600`,
+  green: `border-transparent bg-green-50 text-green-600`,
+  yellow: `border-transparent bg-yellow-50 text-yellow-600`,
+})
+
+@!alert({
+  ...$props,
+  $slots,
+  variant,
+  variants
+})
