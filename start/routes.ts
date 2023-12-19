@@ -9,12 +9,12 @@
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
-import logger from '#services/logger_service'
 const HomeController = () => import('#controllers/home_controller')
 const AuthSignInController = () => import('#controllers/auth/sign_in_controller')
 const AuthSignUpController = () => import('#controllers/auth/sign_up_controller')
 const AuthSignOutController = () => import('#controllers/auth/sign_out_controller')
 const AuthSocialController = () => import('#controllers/auth/social_controller')
+const AuthPasswordResetController = () => import('#controllers/auth/password_reset_controller')
 const UsersController = () => import('#controllers/users_controller')
 const UserSettingsController = () => import('#controllers/user_settings_controller')
 const PreferencesController = () => import('#controllers/preferences_controller')
@@ -33,13 +33,9 @@ const LessonRequestsController = () => import('#controllers/lesson_requests_cont
 const GoController = () => import('#controllers/go_controller')
 
 router.get('/', [HomeController, 'index']).as('home')
-router.get('/test', async () => {
-  logger.info('this is a test')
-  return true
-})
 
 /**
- * auth
+ * sign up, in, out
  */
 router.get('/signin', [AuthSignInController, 'create']).as('auth.signin.create')
 router.post('/signin', [AuthSignInController, 'store']).as('auth.signin.store')
@@ -53,6 +49,15 @@ router.post('/signout', [AuthSignOutController, 'handle']).as('auth.signout')
 router.get('/:provider/redirect', [AuthSocialController, 'redirect']).as('auth.social.redirect')
 router.get('/:provider/callback', [AuthSocialController, 'callback']).as('auth.social.callback')
 router.get('/:provider/unlink', [AuthSocialController, 'unlink']).as('auth.social.unlink')//.middleware(['auth'])
+
+/**
+ * password reset
+ */
+router.get('/forgot-password', [AuthPasswordResetController, 'forgotPassword']).as('auth.password.forgot');
+router.get('/forgot-password/sent', [AuthPasswordResetController, 'forgotPasswordSent']).as('auth.password.forgot.sent')
+router.post('/forgot-password', [AuthPasswordResetController, 'forgotPasswordSend']).as('auth.password.forgot.send')//.middleware('turnstile')
+router.get('/reset-password/:email', [AuthPasswordResetController, 'resetPassword']).as('auth.password.reset');
+router.post('/reset-password', [AuthPasswordResetController, 'resetPasswordStore']).as('auth.password.reset.store')
 
 /**
  * users

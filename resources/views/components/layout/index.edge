@@ -21,7 +21,7 @@
     @!layout.header()
   </div>
 
-  <div class="relative z-20 {{ postClass }}" up-hero>
+  <div id="upHero" class="relative z-20 {{ postClass }}" up-hungry up-hero>
     @if ($slots.hero)
       {{{ await $slots.hero() }}}
     @endif
@@ -39,7 +39,7 @@
     @!layout.footer()
   </div>
 
-  <div up-list>
+  <div id="upList" up-hungry up-list>
     @if (isPostOnDeck && $slots.list)
       {{{ await $slots.list() }}}
     @endif

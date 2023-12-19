@@ -1,7 +1,7 @@
 import { defineConfig, drivers } from '@adonisjs/core/hash'
 
 const hashConfig = defineConfig({
-  default: 'scrypt',
+  default: 'argon',
 
   list: {
     scrypt: drivers.scrypt({

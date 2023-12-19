@@ -1,8 +1,8 @@
 import db from "@adonisjs/lucid/services/db";
-// import DiscordLogger from "@ioc:Logger/Discord";
 import States from "#enums/states";
 import User from "#models/user";
 import StripeService from "./stripe_service.js";
+import logger from "./logger_service.js";
 
 export default class UserService {
   /**
@@ -41,13 +41,12 @@ export default class UserService {
           await stripeService.cancelCustomerSubscriptions(user)
         }
       } catch (error) {
-        // await DiscordLogger.error(`UserService.destroy.cancelCustomerSubscriptions > An error occurred for user id: ${user.id}, stripe customer id ${user.stripeCustomerId}`)
+        await logger.error(`UserService.destroy.cancelCustomerSubscriptions > An error occurred for user id: ${user.id}, stripe customer id ${user.stripeCustomerId}`)
       }
 
       return true
     } catch (error) {
-      // Logger.error(error.message)
-      // DiscordLogger.error(`Failed to delete user id: ${user.id}`, error.message)
+      logger.error(`Failed to delete user id: ${user.id}`, error.message)
       await trx.rollback()
       return false
     }

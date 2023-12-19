@@ -33,6 +33,29 @@ export default class AccountListener {
     })
   }
 
+  public async onPasswordReset({ user, signedUrl }: { user: User, signedUrl: string }) {
+    const href = env.get('APP_DOMAIN') + signedUrl
+    const html = await edge.render('emails/password_reset', { user, href })
+
+    await mail.sendLater(message => {
+      message
+        .to(user.email)
+        .subject('[Adocasts] Reset your password')
+        .html(html)
+    })
+  }
+
+  public async onPasswordResetSuccess({ user }: { user: User }) {
+    const html = await edge.render('emails/password_reset_success', { user })
+
+    await mail.sendLater(message => {
+      message
+        .to(user.email)
+        .subject('[Adocasts] Your password has been successfully reset')
+        .html(html)
+    })
+  }
+
   public async onNewDevice({ user, log }: { user: User, log: SessionLog }) {
     const href = env.get('APP_DOMAIN') + router.makeUrl('users.settings.index', { section: 'account' })
     const html = await edge.render('emails/new_device', { user, log, href })

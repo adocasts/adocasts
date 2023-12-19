@@ -101,7 +101,7 @@ export default class SessionService {
     }
 
     if (!known && !skipNewDevice && user.profile.emailOnNewDeviceLogin && !app.inTest) {
-      emitter.emit('email:new_device', { user, log })
+      await emitter.emit('email:new_device', { user, log })
     }
 
     this.response.encryptedCookie(this.cookieName, token, {

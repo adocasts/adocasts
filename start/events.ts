@@ -10,6 +10,8 @@ const NotificationListener = () => import('#listeners/notification_listener')
 declare module '@adonisjs/core/types' {
   interface EventsList {
     'post:sync': { post: Post, views: number }
+    'email:password_reset': { user: User, signedUrl: string }
+    'email:password_reset_success': { user: User }
     'email:changed': { user: User, oldEmail: string, signedUrl: string }
     'email:reverted': { user: User }
     'email:new_device': { user: User, log: SessionLog }
@@ -19,6 +21,8 @@ declare module '@adonisjs/core/types' {
 }
 
 emitter.on('post:sync', [PostListener, 'onViewSync'])
+emitter.on('email:password_reset', [AccountListener, 'onPasswordReset'])
+emitter.on('email:password_reset_success', [AccountListener, 'onPasswordResetSuccess'])
 emitter.on('email:changed', [AccountListener, 'onEmailChanged'])
 emitter.on('email:reverted', [AccountListener, 'onEmailReverted'])
 emitter.on('email:new_device', [AccountListener, 'onNewDevice'])

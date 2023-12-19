@@ -91,7 +91,7 @@ export default class UserSettingsService {
     await user.save()
     await AuthAttemptService.clearAttempts(data.email)
 
-    emitter.emit('email:changed', {
+    await emitter.emit('email:changed', {
       user: user,
       oldEmail: emailHistory.emailFrom,
       signedUrl

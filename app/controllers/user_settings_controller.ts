@@ -89,7 +89,7 @@ export default class UserSettingsController {
     await user.merge({ email: oldEmail }).save()
     await user.related('emailHistory').query().where({ emailFrom: oldEmail, emailTo: newEmail }).delete()
 
-    emitter.emit('email:reverted', { user })
+    await emitter.emit('email:reverted', { user })
 
     const signedUrl = router.makeSignedUrl('auth.password.reset', {
       params: { email: oldEmail },
