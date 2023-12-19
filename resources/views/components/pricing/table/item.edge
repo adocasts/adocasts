@@ -3,7 +3,8 @@
 
 <div {{ html.attrs({ class: classNames, ...attrs }) }}>
   <div class="p-4 lg:p-8">
-    <h3 class="m-0 text-2xl leading-tight tracking-tight font-black border-0 border-solid {{ theme ? 'text-slate-900' : 'text-slate-base-100' }}">
+    <img class="h-3 w-auto" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts Plus" />
+    <h3 class="m-0 text-xl leading-tight tracking-wide uppercase font-black border-0 border-solid {{ theme ? 'text-slate-900' : 'text-slate-base-100' }}">
       {{ title }}
     </h3>
     
@@ -11,16 +12,16 @@
       <p class="box-border m-0 text-4xl lg:text-6xl font-semibold leading-none border-0 {{ theme ? 'border-slate-200' : 'border-slate-base-800'}}">
         ${{ price }}
       </p>
-      <p class="box-border m-0 border-solid" style="border-image: initial;">
+      <p class="box-border m-0 border-solid text-slate-base-400" style="border-image: initial;">
         / {{ period }}
       </p>
     </div>
 
-    <p class="mt-3 leading-7 border-0 border-solid mb-4 text-sm lg:text-base {{ theme ? 'text-slate-900' : 'text-slate-base-100' }}">
+    <p class="mt-3 leading-7 border-0 border-solid mb-8 text-slate-base-400 text-sm lg:text-base {{ theme ? 'text-slate-900' : 'text-slate-base-100' }}">
       {{ description }}
     </p>
 
-    @button({ href: '#', block: true })
+    @button({ variant: 'lightBase', href: '#', block: true })
       Get Started
     @end
   </div>

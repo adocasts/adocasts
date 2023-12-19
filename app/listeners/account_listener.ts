@@ -78,7 +78,7 @@ export default class AccountListener {
 
     href = env.get('APP_DOMAIN') + href
 
-    const html = await edge.render('emails/new_device', { user, href })
+    const html = await edge.render('emails/verify_email', { user, href })
 
     await mail.send(mailer => {
       mailer

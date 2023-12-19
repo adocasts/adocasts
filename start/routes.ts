@@ -20,6 +20,7 @@ const UserSettingsController = () => import('#controllers/user_settings_controll
 const PreferencesController = () => import('#controllers/preferences_controller')
 const SessionsController = () => import('#controllers/sessions_controller')
 const ProfilesController = () => import('#controllers/profiles_controller')
+const EmailVerificationsController = () => import('#controllers/email_verifications_controller')
 const TopicsController = () => import('#controllers/topics_controller')
 const SeriesController = () => import('#controllers/series_controller')
 const LessonsController = () => import('#controllers/lessons_controller')
@@ -58,6 +59,12 @@ router.get('/forgot-password/sent', [AuthPasswordResetController, 'forgotPasswor
 router.post('/forgot-password', [AuthPasswordResetController, 'forgotPasswordSend']).as('auth.password.forgot.send')//.middleware('turnstile')
 router.get('/reset-password/:email', [AuthPasswordResetController, 'resetPassword']).as('auth.password.reset');
 router.post('/reset-password', [AuthPasswordResetController, 'resetPasswordStore']).as('auth.password.reset.store')
+
+/**
+ * email verification
+ */
+router.post('/verification/email/send', [EmailVerificationsController, 'send']).as('verification.email.send').use(middleware.auth())
+router.get('/verification/email/:email', [EmailVerificationsController, 'verify']).as('verification.email.verify')
 
 /**
  * users

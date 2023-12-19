@@ -16,6 +16,10 @@
   <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>
 
   @!toast()
+  
+  <div id="banners" up-hungry>
+    @!banner.verifyEmail()
+  </div>
 
   <div class="relative z-[101] {{ postClass }}" up-header>
     @!layout.header()

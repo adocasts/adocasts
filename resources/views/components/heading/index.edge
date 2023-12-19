@@ -17,9 +17,11 @@
 
 <div {{ html.attrs({ class: utils.classes('grid', [{ 'sm:grid-cols-2': description || cta || $slots.action }], $props.class), ...($props.attrs || {}) }) }}>
   <div>
-    <h2 class="{{ html.classNames([sizes[size].title, ...($props.class?.title || [])]) }}">
-      {{ title }}
-    </h2>
+    @if (title)
+      <h2 class="{{ html.classNames([sizes[size].title, ...($props.class?.title || [])]) }}">
+        {{ title }}
+      </h2>
+    @endif
     @if (subtitle)
       <h5 class="{{ html.classNames([sizes[size].subtitle, ...($props.class?.subtitle || [])]) }}">
         {{ subtitle }}
