@@ -7,6 +7,7 @@ import { Request } from "@adonisjs/core/http"
 import app from "@adonisjs/core/services/app"
 import { DateTime } from "luxon"
 import Stripe from 'stripe'
+import logger from "./logger_service.js"
 
 export default class StripeService {
   public static isActive: boolean = !!(env.get('STRIPE_ENABLED') ?? true)
@@ -147,7 +148,7 @@ export default class StripeService {
       const checkout = await this.createCheckoutSession(user, planSlug)
 
       if (!checkout.url) {
-        // DiscordLogger.error('StripeService.tryCreateCheckoutSession > checkout session returned without a redirect url')
+        logger.error('StripeService.tryCreateCheckoutSession > checkout session returned without a redirect url')
         return {
           status: 'error',
           message: "Something went wrong and we couldn't create a payment link for you."
@@ -160,7 +161,7 @@ export default class StripeService {
         checkout
       }
     } catch (error) {
-      // DiscordLogger.error('StripeService.tryCreateCheckoutSession > caught the following error', error.message)
+      logger.error('StripeService.tryCreateCheckoutSession > caught the following error', error.message)
       return {
         status: 'error',
         message: "Something went wrong and we couldn't create a payment link for you."
@@ -295,7 +296,7 @@ export default class StripeService {
     const itemIds = await this.getCheckoutSessionLineItemIds(data.id)
 
     if (!itemIds?.length) {
-      // DiscordLogger.info(`StripeService.onCheckoutCompleted > [${data.id}] no line items returned`)
+      logger.info(`StripeService.onCheckoutCompleted > [${data.id}] no line items returned`)
       return
     }
     

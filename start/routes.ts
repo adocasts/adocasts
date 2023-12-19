@@ -9,6 +9,7 @@
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+import logger from '#services/logger_service'
 const HomeController = () => import('#controllers/home_controller')
 const AuthSignInController = () => import('#controllers/auth/sign_in_controller')
 const AuthSignUpController = () => import('#controllers/auth/sign_up_controller')
@@ -32,6 +33,10 @@ const LessonRequestsController = () => import('#controllers/lesson_requests_cont
 const GoController = () => import('#controllers/go_controller')
 
 router.get('/', [HomeController, 'index']).as('home')
+router.get('/test', async () => {
+  logger.info('this is a test')
+  return true
+})
 
 /**
  * auth

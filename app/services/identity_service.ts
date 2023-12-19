@@ -7,6 +7,7 @@ import { uniqueNamesGenerator, NumberDictionary, animals, colors, names, starWar
 import db from '@adonisjs/lucid/services/db';
 import CacheService from './cache_service.js';
 import env from '#start/env';
+import logger from './logger_service.js';
 
 export default class IdentityService {
   protected static key: string = env.get('IDENTITY_SECRET')
@@ -28,7 +29,7 @@ export default class IdentityService {
 
       return data
     } catch (error) {
-      // await DiscordLogger.error('IdentityService.getLocation', error.message)
+      await logger.error('IdentityService.getLocation', error.message)
       return fallback
     }
   }
