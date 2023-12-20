@@ -1,4 +1,6 @@
+import UtilityService from '#services/utility_service'
 import vine from '@vinejs/vine'
+import { exists, unique } from './helpers/db.js'
 
 export const usernameRule = vine
   .string()
@@ -6,7 +8,7 @@ export const usernameRule = vine
   .minLength(3)
   .regex(/^[a-zA-Z0-9-_.]+$/)
   .notIn(['admin', 'super', 'power', 'adocasts', 'adocast', 'Adocasts', 'AdoCasts', 'AdoCast', 'Adocast', 'jagr', 'jagrco', '_jagr', '_jagrco', 'jagr_', 'jagrco_', 'jagr-co', 'moderator', 'public', 'dev', 'alpha', 'mail'])
-  //.unique({ table: 'users', column: 'username', caseInsensitive: true }) // TODO
+  .unique(unique('users', 'username', { caseInsensitive: true }))
 
 export const signInValidator = vine.compile(
   vine.object({
@@ -15,24 +17,24 @@ export const signInValidator = vine.compile(
     rememberMe: vine.accepted().optional(),
     forward: vine.string().optional(),
     action: vine.string().optional(),
-    plan: vine.string().optional()//.unique({ table: 'plans', column: 'slug' }) // TODO
+    plan: vine.string().unique(unique('plans', 'slug')).optional()
   })
 )
 
 export const signUpValidator = vine.compile(
   vine.object({
     username: usernameRule,
-    email: vine.string().trim().email(),//.unique({ table: 'users', column: 'email' }), // TODO
+    email: vine.string().trim().email().unique(unique('users', 'email', { caseInsensitive: true })),
     password: vine.string().minLength(8),
     forward: vine.string().optional(),
-    plan: vine.string()/*.exists({ table: 'plans', column: 'slug' })*/.optional()
+    plan: vine.string().exists(exists('plans', 'slug')).optional()
   })
 )
 
 export const passwordResetValidator = vine.compile(
   vine.object({
     token: vine.string(),
-    email: vine.string().trim(),//.exists({ table: 'users', column: 'email' }), // TODO
+    email: vine.string().trim().exists(exists('users', 'email')),
     password: vine.string().minLength(8),
   })
 )

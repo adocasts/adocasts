@@ -1,0 +1,28 @@
+<div 
+  x-data="countdown({ dateTime: {{ js.stringify(dateTime) }} })"
+  class="grid grid-flow-col gap-5 text-center auto-cols-max">
+  <div class="flex flex-col">
+    <span class="countdown font-mono text-4xl md:text-5xl">
+      <span :style="{ '--value': days }"></span>
+    </span>
+    <span x-text="days > 1 ? 'days' : 'day'"></span>
+  </div> 
+  <div class="flex flex-col">
+    <span class="countdown font-mono text-4xl md:text-5xl">
+      <span :style="{ '--value': hours }"></span>
+    </span>
+    <span x-text="hours > 1 ? 'hours' : 'hour'"></span>
+  </div> 
+  <div class="flex flex-col">
+    <span class="countdown font-mono text-4xl md:text-5xl">
+      <span :style="{ '--value': minutes }"></span>
+    </span>
+    <span x-text="minutes > 1 ? 'mins' : 'min'"></span>
+  </div> 
+  <div class="flex flex-col">
+    <span class="countdown font-mono text-4xl md:text-5xl">
+      <span :style="{ '--value': seconds }"></span>
+    </span>
+    <span x-text="seconds > 1 ? 'secs' : 'sec'"></span>
+  </div>
+</div>

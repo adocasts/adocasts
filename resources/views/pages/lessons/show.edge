@@ -13,16 +13,16 @@
       <div id="videoPlayerContainer">
         <div class="app-container !px-0">
           @if (!bounce.canViewPost(post))
-            <div class="no-access relative aspect-video bg-slate-base-900 text-slate-base-100 bg-gradient-to-br from-accent-base-800/25 to-brand-base-900/25 p-12 flex items-center justify-center w-full h-full">
-              <img class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full object-cover opacity-10" src="/img/brand/bg-texture-1.jpg" />
-
-              @!plus.postCta({ 
-                post, 
-                plusMonthly, 
-                outlineVariant: 'base-light', 
-                size: 'lg', 
-                countdown: true 
-              })
+            <div class="no-access relative aspect-video bg-slate-base-900 text-slate-base-100 bg-gradient-to-br from-accent-base-800/25 to-brand-base-900/25 w-full h-full">
+              @starfield({ class: 'w-full h-full p-12 flex items-center justify-center', bg: 'bg-gradient-to-br from-slate-base-950/25 to-slate-base-800/0', dotsClass: 'opacity-50', mountain: false, lines: false })
+                @!plus.postCta({ 
+                  post, 
+                  plusMonthly, 
+                  outlineVariant: 'lightBase', 
+                  size: 'lg', 
+                  countdown: true 
+                })
+              @end
             </div>
           @else
             <div class="bg-slate-100 bg-gradient-to-br from-slate-base-800/50 to-slate-base-900/50">
@@ -204,17 +204,21 @@
     </div>
   </div>
 
-  <article x-data="proseBody" id="proseBody" class="prose mx-auto post-type-{{ post.postTypeId }} relative">
+  <div class="relative max-w-prose mx-auto">
     @can('PostPolicy.view', post)
+    <article x-data="proseBody" id="proseBody" class="prose post-type-{{ post.postTypeId }} relative">
       {{{ await parser.highlight(post.body) }}}
+    </article>
     @else
-      {{{ await parser.getPreview(post.body) }}}
+      <article x-data="proseBody" id="proseBody" class="prose post-type-{{ post.postTypeId }} relative">
+        {{{ await parser.getPreview(post.body) }}}
+      </article>
       <div class="w-full absolute bottom-0 left-0 h-full bg-gradient-to-b from-slate-100/0 via-slate-100/75 to-slate-100 z-10"></div>
       <div class="bg-slate-200 rounded-xl p-6 shadow-xl relative z-20 {{ post.body.length ? '-mt-16' : '' }}">
         @!plus.postCta({ post, plusMonthly, outlineVariant: 'base-light' })
       </div>
     @endcan
-  </article>
+  </div>
 
   <div id="comments" class="max-w-prose mx-auto mt-8">
     @!comments.base({ postId: post.id, comments, commentCount, class: '-mx-4' })

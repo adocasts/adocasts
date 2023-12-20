@@ -2,6 +2,7 @@ import string from '@adonisjs/core/helpers/string'
 import { parse } from 'node-html-parser'
 import { DateTime } from 'luxon'
 import dinero, { Currency } from 'dinero.js'
+import { Database } from '@adonisjs/lucid/database'
 
 export default class UtilityService {
   /**

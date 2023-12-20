@@ -1,0 +1,54 @@
+@let(plusMonthly = $props.plusMonthly || await Plan.findOrFail(Plans.PLUS_MONTHLY))
+@let(isDelayedRelease = post.paywallTypeId === PaywallTypes.DELAYED_RELEASE)
+@let(size = $props.size ?? 'base')
+@let(sizes = {
+  base: {
+    heading: 'font-black text-xl !mt-0 !mb-2',
+    p: 'max-w-lg text-sm',
+    action: 'mt-3 flex flex-wrap items-center gap-6'
+  },
+  lg: {
+    heading: `font-black uppercase text-xl lg:text-3xl tracking-wider ${isDelayedRelease ? 'border-t border-brand-300/75 mt-6 pt-6' : ''}`,
+    p: 'lg:text-lg max-w-lg mt-3 mb-10',
+    action: 'mt-10 flex flex-wrap items-center gap-6'
+  }
+})
+
+@let(classes = sizes[size])
+
+@if (isDelayedRelease)
+  <div class="relative z-10">
+    @if (countdown)
+      @!countdown({ dateTime: post.publishAt.plus({ days: 14 }).toISO() })
+    @endif
+    <h3 class="{{ classes.heading }}">
+      Adocasts+ Timed Exclusive
+    </h3>
+    <p class="{{ classes.p }}">
+      @if (auth.user)
+        Please check back {{ post.paywallTimeAgo }}. Get immediate access to this lesson and more by joining Adocasts+ for {{ plusMonthly.displayPrice }}/mo.
+      @else
+        Please check back {{ post.paywallTimeAgo }}. Get immediate access to this lesson and more by joining Adocasts+ for {{ plusMonthly.displayPrice }}/mo or signing into your existing Adocasts+ account.
+      @endif
+    </p>
+    <div class="{{ classes.action }}">
+      @!plus.cta({ outlineVariant, plusMonthly })
+    </div>
+  </div>
+@else
+  <div class="relative z-10">
+    <h3 class="{{ classes.heading }}">
+      Ready to get started?
+    </h3>
+    <p class="{{ classes.p }}">
+      @if (auth.user)
+        Join Adocasts+ for {{ plusMonthly.displayPrice }}/mo to get immediate access to this lesson and more.
+      @else
+        Join Adocasts+ for {{ plusMonthly.displayPrice }}/mo or sign into your account to get access to all of our lessons.
+      @endif
+    </p>
+    <div class="{{ classes.action }}">
+      @!plus.cta({ outlineVariant, plusMonthly })
+    </div>
+  </div>
+@endif

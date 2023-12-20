@@ -61,7 +61,11 @@ export default defineConfig({
     () => import('./start/up/index.js'),
     () => import('./start/globals.js'),
     () => import('./start/events.js'),
-    () => import('./start/validator.js')
+    () => import('./start/validator.js'),
+    {
+      file: () => import('./start/context.js'),
+      environment: ['web', 'test'],
+    }
   ],
 
   /*

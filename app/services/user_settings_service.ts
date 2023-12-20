@@ -7,6 +7,7 @@ import vine from "@vinejs/vine";
 import { usernameRule } from "#validators/auth_validator";
 import AuthAttemptService from "./auth_attempt_service.js";
 import { Infer } from '@vinejs/vine/types';
+import { unique } from "#validators/helpers/db";
 
 export default class UserSettingsService {
   /**
@@ -55,7 +56,7 @@ export default class UserSettingsService {
 
     const data = await vine.validate({
       schema: vine.object({
-        email: vine.string().trim(),//.unique({ table: 'users', column: 'email' }), // TODO
+        email: vine.string().trim().unique(unique('users', 'email', { caseInsensitive: true })),
         password: vine.string()
       }),
       data: payload

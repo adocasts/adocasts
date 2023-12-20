@@ -1,4 +1,4 @@
-@let(classNames = utils.classes('relative bg-gradient-to-br from-slate-base-950 to-slate-base-800', $props.class))
+@let(classNames = utils.classes('relative', $props.bg || 'bg-gradient-to-br from-slate-base-950 to-slate-base-800', $props.class))
 @let(attrs = $props.attrs || {})
 @let(mountain = $props.mountain ?? true)
 @let(clouds = $props.clouds ?? mountain)
@@ -19,7 +19,7 @@
   @endif
 
   @if (lines)
-    <canvas x-ref="canvasLine" class="w-full h-full absolute top-0 left-0"></canvas>
+    <canvas x-ref="canvasLine" class="w-full h-full absolute top-0 left-0 {{ $props.linesClass }}"></canvas>
   @endif
   
   @if (clouds) 
@@ -35,6 +35,6 @@
   @endif
   
   @if (dots)
-    <canvas x-ref="canvasDot" class="w-full h-full absolute top-0 left-0"></canvas>
+    <canvas x-ref="canvasDot" class="w-full h-full absolute top-0 left-0 {{ $props.dotsClass }}"></canvas>
   @endif
 </section>
