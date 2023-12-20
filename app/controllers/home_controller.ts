@@ -1,3 +1,5 @@
+import Plans from '#enums/plans'
+import Plan from '#models/plan'
 import CollectionService from '#services/collection_service'
 import PostService from '#services/post_service'
 import TaxonomyService from '#services/taxonomy_service'
@@ -29,6 +31,12 @@ export default class HomeController {
       const topicCount = await this.taxonomyService.getCount()
 
       view.share({ lessonCount, lessonDuration, seriesCount, topicCount })
+    } else {
+      const plusMonthly = await Plan.findOrFail(Plans.PLUS_MONTHLY)
+      const plusAnnual = await Plan.findOrFail(Plans.PLUS_ANNUAL)
+      const plusForever = await Plan.findOrFail(Plans.FOREVER)
+
+      view.share({ plusMonthly, plusAnnual, plusForever })
     }
 
     return view.render('pages/home', { 

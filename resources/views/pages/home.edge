@@ -99,47 +99,10 @@
     </div>
   @end
 
-  <div class="break mt-8 lg:mt-12 -mb-16">
-    @starfield({ class: 'max-w-8xl mx-auto px-4 lg:px-8 pt-[6rem] pb-[8rem] sm:pb-[12rem] md:pb-[16rem] lg:pt-[8rem] lg:pb-[18rem] xl:pt-[10rem] xl:pb-[22rem] overflow-hidden', lines: false, mountain: false })
-      <div class="page">
-        <div class="flex flex-col justify-center items-center text-center">
-          <img class="w-auto max-w-full" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts Plus" />
-          @!heading({
-            subtitle: 'Unlock All Content',
-            class: 'text-center text-slate-base-100',
-          })
-        </div>
-  
-        <div class="relative z-10 flex justify-center items-center mt-4 lg:mt-6">
-          <div class="bg-gradient-to-br from-slate-base-900 to-slate-base-900/0 p-4 lg:p-8 backdrop-blur-sm rounded-md w-full md:w-3/5 lg:w-1/2 xl:w-2/5">
-            <ul role="list" class="space-y-3 text-sm leading-6 text-slate-base-400">
-              @!pricing.feature.item({ text: 'Unlock all series, lessons, and assets' })
-              @!pricing.feature.item({ text: '2 weeks early access to new lessons' })
-              @!pricing.feature.item({ text: 'Ad-free experience' })
-              @!pricing.feature.item({ text: 'Renewal reminders; cancel anytime' })
-            </ul>
-          </div>
-        </div>
-  
-        @!pricing.table({ class: 'mt-4 md:mt-6 relative z-10', theme: false })
-      </div>
+  @if (auth.user)
 
-      <div class="absolute w-full h-auto top-6 left-0 z-20 pointer-events-none">
-        <img src="/imgs/planets-top-front.svg" class="w-full" />
-      </div>
-
-      <div class="absolute w-full h-auto top-0 left-0 z-20 pointer-events-none">
-        <img src="/imgs/planets-top.svg" class="w-full" />
-      </div>
-      
-      <div class="absolute w-full h-auto bottom-0 left-0 z-20 pointer-events-none">
-        <img src="/imgs/planets-bottom.svg" class="w-full" />
-      </div>
-
-      <div class="absolute w-full h-auto bottom-0 left-0 z-0 pointer-events-none">
-        <img src="/imgs/planets-bottom-behind.svg" class="w-full" />
-      </div>
-    @end
-  </div>
+  @else
+    @!pricing.home()
+  @endif
 
 @end

@@ -21,6 +21,10 @@
 }}>
   {{ csrfField() }}
 
+  @if (turnstile)
+    @!turnstile()
+  @endif
+
   @if (lessonRequest)
     <input type="hidden" name="lessonRequestId" value="{{ lessonRequest.id }}" />
   @else

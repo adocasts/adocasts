@@ -10,7 +10,7 @@
     
     <div class="flex items-end justify-start mt-4 leading-7 border-0 border-solid sm:mt-6 {{ theme ? 'text-slate-900' : 'text-slate-base-100' }}">
       <p class="box-border m-0 text-4xl lg:text-6xl font-semibold leading-none border-0 {{ theme ? 'border-slate-200' : 'border-slate-base-800'}}">
-        ${{ price }}
+        ${{ utils.centsToDollars(plan.price) }}
       </p>
       <p class="box-border m-0 border-solid text-slate-base-400" style="border-image: initial;">
         / {{ period }}
@@ -21,8 +21,15 @@
       {{ description }}
     </p>
 
-    @button({ variant: 'lightBase', href: '#', block: true })
-      Get Started
-    @end
+    @if (auth.user)
+      @button({ variant: 'lightBase', form: `plus_${plan.id}`, type: 'submit', block: true })
+        Get Started
+      @end
+      @!form({ id: `plus_${plan.id}`, action: form.post('stripe.checkout', { slug: plan.slug }) })
+    @else
+      @button({ variant: 'lightBase', href: route('auth.signup.create', {}, { qs: { plan: plan.slug } }), 'up-layer': 'new', 'up-size': 'grow', block: true })
+        Get Started
+      @end
+    @endif
   </div>
 </div>

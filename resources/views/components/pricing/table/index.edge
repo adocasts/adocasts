@@ -3,27 +3,27 @@
 
 <div {{ html.attrs({ class: utils.classes('grid sm:grid-cols-2 md:grid-cols-3 rounded-md border-4 border-slate-300', $props.class || '', theme ? 'bg-slate-100' : 'bg-slate-base-900'), ...attrs }) }}>
   @!pricing.table.item({
+    plan: plusMonthly,
     title: 'Monthly',
-    price: 8,
     period: 'month',
     description: 'Take things month-by-month with one low price to unlock everything!',
     theme
   })
 
   @!pricing.table.item({
+    plan: plusAnnual,
     class: '-mx-[4px] sm:mx-0 sm:-my-[4px] relative z-10',
     primary: true,
     title: 'Annually',
-    price: 80,
     period: 'year',
     description: 'Take things year-by-year with one low price to unlock everything!',
     theme
   })
 
   @!pricing.table.item({
+    plan: plusForever,
     class: 'border-t-4 border-slate-300 md:border-t-0 rounded-t-none md:rounded-t-md sm:col-span-2 md:col-span-1',
     title: 'Forever',
-    price: 285,
     period: 'lifetime',
     description: 'Hate subscriptions? Me too! Pay once, then never again with our forever plan.',
     theme

@@ -27,15 +27,15 @@
           </div>
         @endif
 
-        {{--  @if (request.qs().plan)
+        @if (request.qs().plan)
           <div role="alert" class="bg-slate-200 text-slate-800 text-xs rounded p-3 mb-4 flex gap-3">
-            @!icons.infoSquareRoundedFilled({ className: 'w-8 h-8' })
+            @svg('ph:info-fill', { class: 'w-8 h-8' })
             <span>
-              First sign into your account,
+              Please create an account,
               then we'll get you set up with <span class="lowercase">{{ (await Plan.findBy('slug', request.qs().plan))?.name }}</span>!
             </span>
           </div>
-        @endif  --}}
+        @endif
 
         @form.field({ label: 'Username', name: 'username', hint: 'Min of 3, consisting of letters, numbers, _, ., or -' })
           @!form.input({
