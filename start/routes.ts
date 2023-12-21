@@ -34,6 +34,7 @@ const LessonRequestsController = () => import('#controllers/lesson_requests_cont
 const GoController = () => import('#controllers/go_controller')
 
 router.get('/', [HomeController, 'index']).as('home')
+router.get('/pricing', [HomeController, 'pricing']).as('pricing')
 
 /**
  * sign up, in, out

@@ -213,9 +213,11 @@
       <article x-data="proseBody" id="proseBody" class="prose post-type-{{ post.postTypeId }} relative">
         {{{ await parser.getPreview(post.body) }}}
       </article>
-      <div class="w-full absolute bottom-0 left-0 h-full bg-gradient-to-b from-slate-100/0 via-slate-100/75 to-slate-100 z-10"></div>
-      <div class="bg-slate-200 rounded-xl p-6 shadow-xl relative z-20 {{ post.body.length ? '-mt-16' : '' }}">
-        @!plus.postCta({ post, plusMonthly, outlineVariant: 'base-light' })
+      <div class="w-full absolute bottom-0 left-0 h-full bg-gradient-to-b from-slate-100/0 via-slate-100/75 to-body z-10"></div>
+      <div class="-mx-4">
+        <div class="bg-slate-100 rounded-md p-6 shadow-xl relative z-20 {{ post.body.length ? '-mt-16' : '' }}">
+          @!plus.postCta({ post, plusMonthly, outlineVariant: 'dark' })
+        </div>
       </div>
     @endcan
   </div>

@@ -47,4 +47,14 @@ export default class HomeController {
       snippets
     })
   }
+
+  public async pricing({ view }: HttpContext) {
+    const plusMonthly = await Plan.findOrFail(Plans.PLUS_MONTHLY)
+    const plusAnnual = await Plan.findOrFail(Plans.PLUS_ANNUAL)
+    const plusForever = await Plan.findOrFail(Plans.FOREVER)
+
+    view.share({ plusMonthly, plusAnnual, plusForever })
+
+    return view.render('pages/pricing')
+  }
 }

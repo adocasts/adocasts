@@ -1,0 +1,11 @@
+<div x-data="{ 
+      activeAccordion: '', 
+      setActiveAccordion(id) { 
+          this.activeAccordion = (this.activeAccordion == id) ? '' : id 
+      } 
+  }"
+  class="relative w-full mx-auto overflow-hidden font-normal bg-slate-100 divide-y divide-slate-200 rounded-md {{ $props.class }}">
+  
+  {{{ await $slots.main() }}}
+  
+</div>
