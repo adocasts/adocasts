@@ -14,7 +14,7 @@
     </div>
   @endif
 
-  @if (up.isUnpolyRequest)
+  @if (up.getTarget() === '#unreadNotifications')
     @!toast.flash()
   @endif
 </div>
