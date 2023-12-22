@@ -22,16 +22,14 @@
       <div class="flex lg:hidden my-2.5">
         <button @click="showMobileMenu = true" type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-slate-700">
           <span class="sr-only">Open main menu</span>
-          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-          </svg>
+          @svg('ph:list-fill', { class: 'w-6 h-6' })
         </button>
       </div>
     </div>
     <div class="w-[200px] relative">
-      <a 
-        href="/" 
-        up-follow 
+      <a
+        href="/"
+        up-follow
         class="absolute top-0 left-1/2 -translate-x-1/2 w-full bg-body duration-300 hover:bg-slate-200 flex justify-center items-center border-t-0 border-slate-200 shadow-xl"
         :class="[$store.app.videoPlaying && !$store.app.videoSmall ? 'h-full' : 'h-[calc(100%+.5rem)] border rounded-b-md']">
         <span class="sr-only">Adocasts</span>
@@ -47,10 +45,13 @@
       @!theme.selector()
 
       @if (auth.user)
-        <a href="{{ route('users.menu') }}" up-layer="new" up-target="[up-main]" up-mode="drawer" up-position="right" up-size="large" class="text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
-          <img class="w-7 h-7 md:h-8 md:w-8 rounded-md" src="{{ auth.user.avatar }}" />
-          <span class="sr-only">{{ auth.user.username }}</span>
-        </a>
+        <div class="relative">
+          @!layout.header.notifications()
+          <a href="{{ route('users.menu') }}" up-layer="new" up-target="[up-main]" up-mode="drawer" up-position="right" up-size="large" class="text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
+            <img class="w-7 h-7 md:h-8 md:w-8 rounded-md" src="{{ auth.user.avatar }}" />
+            <span class="sr-only">{{ auth.user.username }}</span>
+          </a>
+        </div>
       @else
         <a href="{{ route('auth.signin.create') }}" up-layer="new" up-target="[up-main]" class="hidden md:block text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5 ml-4">
           Sign in

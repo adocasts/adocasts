@@ -10,6 +10,7 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 const HomeController = () => import('#controllers/home_controller')
+const AssetsController = () => import('#controllers/assets_controller')
 const AuthSignInController = () => import('#controllers/auth/sign_in_controller')
 const AuthSignUpController = () => import('#controllers/auth/sign_up_controller')
 const AuthSignOutController = () => import('#controllers/auth/sign_out_controller')
@@ -32,6 +33,10 @@ const ProgressionsController = () => import('#controllers/progressions_controlle
 const SearchesController = () => import('#controllers/searches_controller')
 const LessonRequestsController = () => import('#controllers/lesson_requests_controller')
 const GoController = () => import('#controllers/go_controller')
+const FragmentsController = () => import('#controllers/fragments_controller')
+
+router.get('/img/:userId/:filename', [AssetsController, 'show']).as('userimg')
+router.get('/img/*', [AssetsController, 'show']).where('path', /.*/).as('img')
 
 router.get('/', [HomeController, 'index']).as('home')
 router.get('/pricing', [HomeController, 'pricing']).as('pricing')
@@ -50,7 +55,7 @@ router.post('/signout', [AuthSignOutController, 'handle']).as('auth.signout')
  */
 router.get('/:provider/redirect', [AuthSocialController, 'redirect']).as('auth.social.redirect')
 router.get('/:provider/callback', [AuthSocialController, 'callback']).as('auth.social.callback')
-router.get('/:provider/unlink', [AuthSocialController, 'unlink']).as('auth.social.unlink')//.middleware(['auth'])
+router.get('/:provider/unlink', [AuthSocialController, 'unlink']).as('auth.social.unlink').use(middleware.auth())
 
 /**
  * password reset
@@ -75,6 +80,8 @@ router.get('/users/menu', [UsersController, 'menu']).as('users.menu')
 router.get('/users/watchlist/:tab?', [UsersController, 'watchlist']).as('users.watchlist').use(middleware.auth())
 router.get('/users/history/:tab?', [UsersController, 'history']).as('users.history').use(middleware.auth())
 router.put('/api/users/theme', [UsersController, 'theme']).as('api.users.theme')
+router.get('/api/user/check', [UsersController, 'check']).as('api.user.check')
+router.patch('/api/users/billto', [UsersController, 'billto']).as('api.users.billto').use(middleware.auth())
 
 /**
  * user settings
@@ -107,20 +114,20 @@ router.post('/search', [SearchesController, 'search']).as('search.search')
  * content
  */
 router.get('/topics', [TopicsController, 'index']).as('topics.index')
-router.get('/topcis/:slug', [TopicsController, 'show']).as('topics.show')
+router.get('/topics/:slug', [TopicsController, 'show']).as('topics.show')
 router.get('/series', [SeriesController, 'index']).as('series.index')
 router.get('/series/:slug', [SeriesController, 'show']).as('series.show')
-router.get('/series/:collectionSlug/lessons/:slug', [LessonsController, 'show']).as('series.lessons.show')
-router.get('/series/:collectionSlug/streams/:slug', [LessonsController, 'show']).as('series.streams.show')
+router.get('/series/:collectionSlug/lessons/:slug', [LessonsController, 'show']).as('series.lessons.show').use(middleware.postTypeCheck())
+router.get('/series/:collectionSlug/streams/:slug', [LessonsController, 'show']).as('series.streams.show').use(middleware.postTypeCheck())
 router.get('/lessons', [LessonsController, 'index']).as('lessons.index')
-router.get('/lessons/:slug', [LessonsController, 'show']).as('lessons.show')
+router.get('/lessons/:slug', [LessonsController, 'show']).as('lessons.show').use(middleware.postTypeCheck())
 router.get('/streams', [LessonsController, 'streams']).as('streams.index')
-router.get('/streams/:slug', [LessonsController, 'show']).as('streams.show')
+router.get('/streams/:slug', [LessonsController, 'show']).as('streams.show').use(middleware.postTypeCheck())
 router.get('/blog', [BlogsController, 'index']).as('blog.index')
-router.get('/blog/:slug', [LessonsController, 'show']).as('blog.show')
-router.get('/news/:slug', [LessonsController, 'show']).as('news.show')
+router.get('/blog/:slug', [LessonsController, 'show']).as('blog.show').use(middleware.postTypeCheck())
+router.get('/news/:slug', [LessonsController, 'show']).as('news.show').use(middleware.postTypeCheck())
 router.get('/snippets', [SnippetsController, 'index']).as('snippets.index')
-router.get('/snippets/:slug', [LessonsController, 'show']).as('snippets.show')
+router.get('/snippets/:slug', [LessonsController, 'show']).as('snippets.show').use(middleware.postTypeCheck())
 
 /**
  * comments
@@ -160,3 +167,8 @@ router.get('/go/posts/:id/comment/:commentId', [GoController, 'postComment']).as
 router.get('/go/post/:id/comment/:commentId', [GoController, 'postComment']).as('go.post.comment')
 router.get('/go/requests/lessons/:id/comment/:commentId', [GoController, 'lessonRequestComment']).as('go.requests.lessons.comment')
 router.get('/go/auth/reset', [GoController, 'authReset']).as('go.auth.reset')
+
+/**
+ * fragments
+ */
+router.get('/fragments/layout/header/notifications', [FragmentsController, 'headerNotifications']).as('fragments.header.notifications')

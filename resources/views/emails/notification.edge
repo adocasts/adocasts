@@ -1,4 +1,4 @@
-@layout({ title: notification.title })
+@layout.email({ title: notification.title })
 
   @emails.paragraph()
     Hi {{ user.username }},
@@ -10,7 +10,7 @@
 
   @emails.paragraph()
     <strong>Comment:</strong><br/>
-    {{ stripHTML(notification.body) }}
+    {{ utils.stripHTML(notification.body) }}
   @end
 
   @emails.button({ href })

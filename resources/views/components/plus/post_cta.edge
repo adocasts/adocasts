@@ -3,14 +3,14 @@
 @let(size = $props.size ?? 'base')
 @let(sizes = {
   base: {
-    heading: 'font-black text-xl !mt-0 !mb-2',
-    p: 'max-w-lg text-sm',
-    action: 'mt-3 flex flex-wrap items-center gap-6'
+    heading: 'font-black text-xl !mt-0 !mb-2 relative z-10',
+    p: 'max-w-lg text-sm relative z-10',
+    action: 'mt-3 flex flex-wrap items-center gap-6 relative z-10'
   },
   lg: {
-    heading: `font-black uppercase text-xl lg:text-3xl tracking-wider ${isDelayedRelease ? 'border-t border-brand-300/75 mt-6 pt-6' : ''}`,
-    p: 'lg:text-lg max-w-lg mt-3 mb-10',
-    action: 'mt-10 flex flex-wrap items-center gap-6'
+    heading: `font-black uppercase text-xl lg:text-3xl tracking-wider relative z-10 ${isDelayedRelease ? 'border-t border-brand-300/75 mt-6 pt-6' : ''}`,
+    p: 'lg:text-lg max-w-lg mt-3 mb-10 relative z-10',
+    action: 'mt-10 flex flex-wrap items-center gap-6 relative z-10'
   }
 })
 
@@ -34,6 +34,12 @@
     <div class="{{ classes.action }}">
       @!plus.cta({ outlineVariant, plusMonthly })
     </div>
+
+    @if (size === 'lg')
+      <div class="absolute -left-36 -bottom-28 w-28 h-full">
+        <img class="animation-float" src="/imgs/robot/slice1.svg" alt="robot mascot smiling" />
+      </div>
+    @endif
   </div>
 @else
   <div class="relative z-10">
@@ -50,5 +56,11 @@
     <div class="{{ classes.action }}">
       @!plus.cta({ outlineVariant, plusMonthly })
     </div>
+
+    @if (size === 'lg')
+      <div class="absolute -left-36 bottom-4 w-28 h-full">
+        <img class="animation-float" src="/imgs/robot/slice1.svg" alt="robot mascot smiling" />
+      </div>
+    @endif
   </div>
 @endif

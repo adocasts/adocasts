@@ -46,7 +46,13 @@
     @endif
   </div>
   
-  <main class="{{ postClass }}" data-post-class="{{ postClassString }}" data-sync-to="[up-header], [up-hero], [up-footer]" up-main>
+  <main 
+    x-data
+    x-init="window.isAuthenticated = {{ !!auth.user }}"
+    class="{{ postClass }}" 
+    data-post-class="{{ postClassString }}" 
+    data-sync-to="[up-header], [up-hero], [up-footer]" 
+    up-main>
     <div {{ html.attrs({ class: utils.classes('page relative z-20', [up.isPage ? 'mt-8' : '!px-0']), ...($props.attrs || {}) }) }}>
       {{{ await $slots.main() }}}
     </div>
@@ -73,5 +79,11 @@
   @if (!up.isUnpolyRequest)
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   @endif
+
+  <div up-pricing>
+    @if (isPricingPage)
+      <script src='https://cdn.paritydeals.com/banner.js'></script>
+    @endif
+  </div>
 </body>
 </html>

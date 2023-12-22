@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>{{ title }} - {{ env('APP_BRAND') }}</title>
+
+  @vite(['resources/js/pdf.js'])
+
+  <style>
+    @page {
+      size: A4,
+      margin: 0,
+    }
+
+    @media print {
+      html, body {
+        width: 8.23in;
+        height: 99.9%;
+      }
+    }
+
+    @media print and (width: 8in) and (height: 11in) {
+      @page {
+        size: letter;
+        margin: 0;
+      }
+
+      page[size="letter"],
+      html, body {
+        width: 8in;
+        height: 99.9%;
+      }
+    }
+
+    @media not print {
+      .pdf-page {
+        --scale: 1;
+      }
+
+      .pdf-page.scaled {
+        transform: scale(var(--scale, 1));
+        margin-right: 8px;
+        margin-left: 8px;
+      }
+    }
+
+    *[contenteditable]:hover:not(:focus) {
+      background-color: antiquewhite;
+    }
+  </style>
+</head>
+<body x-data="pdf({{ js.stringify(data) }})" class="bg-slate-base-100 print:bg-[#fff]">
+  <div class="print:hidden sticky top-0 z-10">
+    @if ($slots.sticky)
+      {{{ await $slots.sticky() }}}
+    @endif
+  </div>
+
+  <div class="print:hidden">
+    @if ($slots.before)
+      {{{ await $slots.before() }}}
+    @endif
+  </div>
+
+  <page size="A4" x-ref="page" class="origin-top-left pdf-page relative block w-[8.27in] h-[11.69in] print:w-full print:h-full bg-[#fff] text-[#000] p-[.5in] mx-auto mt-6 print:mt-0">
+    {{{ await $slots.main() }}}
+  </page>
+
+  <div class="print:hidden mt-8">
+    @if ($slots.after)
+      {{{ await $slots.after() }}}
+    @endif
+  </div>
+</body>
+</html>

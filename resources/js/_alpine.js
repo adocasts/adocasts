@@ -2,6 +2,7 @@ import Alpine from 'alpinejs'
 import intersect from '@alpinejs/intersect'
 import { setupEditor } from './tiptap/basic'
 import { chain } from 'mathjs'
+import { DateTime } from 'luxon'
 
 Alpine.plugin(intersect)
 
@@ -175,7 +176,7 @@ Alpine.data('proseBody', function() {
   }
 })
 
-window.countdown = function ({ dateTime }) {
+Alpine.data('countdown', ({ dateTime }) => {
   return {
     target: dateTime,
     interval: null,
@@ -204,6 +205,6 @@ window.countdown = function ({ dateTime }) {
       clearInterval(this.interval)
     }
   }
-}
+})
 
 Alpine.start()

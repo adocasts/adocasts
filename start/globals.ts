@@ -1,28 +1,28 @@
-import UtilityService from "#services/utility_service"
+import UtilityService from '#services/utility_service'
 import env from '#start/env'
-import edge from "edge.js"
+import edge from 'edge.js'
 import { edgeIconify, addCollection } from 'edge-iconify'
 import { icons as phicons } from '@iconify-json/ph'
 import { icons as simpleicons } from '@iconify-json/simple-icons'
 import { icons as svgspinners } from '@iconify-json/svg-spinners'
-import { DateTime } from "luxon"
-import NotificationService from "#services/notification_service"
-import Roles from "#enums/roles"
-import PostTypes from "#enums/post_types"
-import States from "#enums/states"
-import Status from "#enums/status"
-import Plans from "#enums/plans"
-import Plan from "#models/plan"
-import VideoTypes from "#enums/video_types"
-import PaywallTypes from "#enums/paywall_types"
-import StripeSubscriptionStatuses from "#enums/stripe_subscription_statuses"
-import CouponDurations from "#enums/coupon_durations"
+import { DateTime } from 'luxon'
+import NotificationService from '#services/notification_service'
+import Roles from '#enums/roles'
+import PostTypes from '#enums/post_types'
+import States from '#enums/states'
+import Status from '#enums/status'
+import Plans from '#enums/plans'
+import Plan from '#models/plan'
+import VideoTypes from '#enums/video_types'
+import PaywallTypes from '#enums/paywall_types'
+import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
+import CouponDurations from '#enums/coupon_durations'
 import string from '@adonisjs/core/helpers/string'
-import FormService from "#services/form_service"
-import HtmlParser from "#services/html_parser"
-import Tab from "../app/view_models/tab.js"
-import CollectionService from "#services/collection_service"
-import StripeService from "#services/stripe_service"
+import FormService from '#services/form_service'
+import HtmlParser from '#services/html_parser'
+import Tab from '../app/view_models/tab.js'
+import CollectionService from '#services/collection_service'
+import StripeService from '#services/stripe_service'
 
 addCollection(phicons)
 addCollection(simpleicons)

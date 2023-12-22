@@ -1,9 +1,22 @@
+import axios from 'axios'
+import Cookies from 'js-cookie'
+import { DateTime } from 'luxon'
 import '../css/app.css'
 import './_unpoly'
 import './_stars'
 import './_alpine'
 import './_prose'
 import './_player'
+
+Cookies.set('timezone', DateTime.now().zoneName)
+
+window.onfocus = async function() {
+  const { data: isAuthenticated } = await axios.get('/api/user/check')
+
+  if (window.isAuthenticated && !isAuthenticated) {
+    window.location = '/go/auth/reset'
+  }
+}
 
 /**
  * Global shortcuts

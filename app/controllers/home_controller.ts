@@ -53,7 +53,7 @@ export default class HomeController {
     const plusAnnual = await Plan.findOrFail(Plans.PLUS_ANNUAL)
     const plusForever = await Plan.findOrFail(Plans.FOREVER)
 
-    view.share({ plusMonthly, plusAnnual, plusForever })
+    view.share({ plusMonthly, plusAnnual, plusForever, isPricingPage: true })
 
     return view.render('pages/pricing')
   }

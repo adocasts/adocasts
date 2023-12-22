@@ -9,6 +9,7 @@ import Post from '#models/post'
 import PostTypes from '#enums/post_types'
 import CollectionBuilder from '#builders/collection_builder'
 import PostBuilder from '#builders/post_builder'
+import { billtoValidator } from '#validators/user_validator'
 
 export default class UsersController {
   public async menu({ view, auth }: HttpContext) {
@@ -29,6 +30,21 @@ export default class UsersController {
     up.setTarget('[up-theme]')
 
     return response.redirect().back()
+  }
+
+  public async billto({ request, response, auth }: HttpContext) {
+    let clearedBillTo = false
+    let { billToInfo } = await request.validateUsing(billtoValidator)
+    let user = auth.user!
+
+    if (billToInfo == '\n') {
+      billToInfo = null
+      clearedBillTo = true
+    }
+
+    await user.merge({ billToInfo }).save()
+
+    return response.status(200).json({ clearedBillTo, billToInfo })
   }
 
   public async watchlist({ view, request, auth, params }: HttpContext) {
