@@ -4,6 +4,7 @@ import Asset from '#models/asset';
 import app from '@adonisjs/core/services/app';
 import { AllyUserContract, GithubToken, GoogleToken } from '@adonisjs/ally/types';
 import storage from './storage_service.js';
+import crossFetch from 'cross-fetch'
 
 export class ImageOptions {
   declare width: number
@@ -99,8 +100,8 @@ export default class AssetService {
 
   public static async refreshAvatar(user: User, socialUser: AllyUserContract<GithubToken | GoogleToken>) {
     if (!socialUser.avatarUrl || user.avatarUrl?.startsWith(`${user.id}/profile/`)) return
-
-    const response = await fetch(socialUser.avatarUrl)
+    
+    const response = await crossFetch(socialUser.avatarUrl)
     const arrayBuffer = await response.arrayBuffer()
     const buffer = new Buffer(arrayBuffer)
     const filename = this.getAvatarFilename(user, socialUser.avatarUrl)

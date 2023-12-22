@@ -3,6 +3,7 @@ import { parse } from 'node-html-parser'
 import { DateTime } from 'luxon'
 import dinero, { Currency } from 'dinero.js'
 import { Database } from '@adonisjs/lucid/database'
+import { LucidModel } from '@adonisjs/lucid/types/model'
 
 export default class UtilityService {
   /**

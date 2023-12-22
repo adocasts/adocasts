@@ -30,6 +30,7 @@ import PaywallTypes from '#enums/paywall_types'
 import VideoTypes from '#enums/video_types'
 import UtilityService from '#services/utility_service'
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
+import SlugService from '#services/slug_service'
 
 export default class Post extends AppBaseModel {
   public serializeExtras = true
@@ -462,6 +463,14 @@ export default class Post extends AppBaseModel {
         return Route.makeUrl(`${namePrefix}snippets.show`, params)
       default:
         return Route.makeUrl(`${namePrefix}lessons.show`, params)
+    }
+  }
+
+  @beforeSave()
+  public static async slugifyUsername(post: Post) {
+    if (post.$dirty.title && !post.$dirty.slug) {
+      const slugify = new SlugService<typeof Post>({ strategy: 'dbIncrement', fields: ['title'] })
+      post.title = await slugify.make(Post, 'title', post.title)
     }
   }
 

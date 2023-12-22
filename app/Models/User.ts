@@ -27,6 +27,7 @@ import Plans from '#enums/plans'
 import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
 import hash from '@adonisjs/core/services/hash'
 import env from '#start/env'
+import SlugService from '#services/slug_service'
 
 export default class User extends AppBaseModel {
   @column({ isPrimary: true })
@@ -141,7 +142,7 @@ export default class User extends AppBaseModel {
         return this.avatarUrl
       }
       
-      return `${env.get('ASSET_DOMAIN')}/img/${this.avatarUrl}`
+      return `${env.get('ASSET_DOMAIN') || ''}/img/${this.avatarUrl}`
     }
 
     return gravatar.url(this.email, { s: '60' })
@@ -154,7 +155,7 @@ export default class User extends AppBaseModel {
         return this.avatarUrl
       }
       
-      return `${env.get('ASSET_DOMAIN')}/img/${this.avatarUrl}`
+      return `${env.get('ASSET_DOMAIN') || ''}/img/${this.avatarUrl}`
     }
 
     return gravatar.url(this.email, { s: '250' })
@@ -191,6 +192,14 @@ export default class User extends AppBaseModel {
   public static async hashPassword (user: User) {
     if (user.$dirty.password && !user.$extras.rehash) {
       user.password = await Hash.make(user.password)
+    }
+  }
+
+  @beforeSave()
+  public static async slugifyUsername(user: User) {
+    if (user.$dirty.username) {
+      const slugify = new SlugService<typeof User>({ strategy: 'dbIncrement', fields: ['username'] })
+      user.username = await slugify.make(User, 'username', user.username)
     }
   }
 

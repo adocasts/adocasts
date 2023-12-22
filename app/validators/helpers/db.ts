@@ -15,13 +15,14 @@ const query = (db: Database, table: string, column: string, value: string, optio
 export const exists = (table: string, column: string, options?: DbOptions) => {
   return async (db: Database, value: string, _field: FieldContext) => {
     const result = await query(db, table, column, value, options)
-    return !!result
+    return !!result.length
   }
 }
 
 export const unique = (table: string, column: string, options?: DbOptions) => {
   return async (db: Database, value: string, _field: FieldContext) => {
     const result = await query(db, table, column, value, options)
-    return result ? false : true
+    console.log({ result, table, column, value, options })
+    return result.length ? false : true
   }
 }

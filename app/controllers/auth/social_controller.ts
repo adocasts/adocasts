@@ -1,6 +1,19 @@
+import Profile from '#models/profile'
+import AuthSocialService from '#services/auth_social_service'
+import SessionService from '#services/session_service'
+import StripeService from '#services/stripe_service'
+import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
+import router from '@adonisjs/core/services/router'
 
+@inject()
 export default class SocialController {
+  constructor(
+    protected authSocialService: AuthSocialService,
+    protected sessionService: SessionService,
+    protected stripeService: StripeService,
+  ) {}
+
   public async redirect ({ request, session, ally, params }: HttpContext) {
     const plan = request.qs().plan
     
@@ -11,24 +24,23 @@ export default class SocialController {
     await ally.use(params.provider).redirect()
   }
 
-  public async callback ({ request, response, auth, ally, params, session }: HttpContext) {
+  public async callback ({ response, auth, params, session }: HttpContext) {
     const wasAuthenticated = !!auth.user
-    const { success, user, message } = await AuthSocialService.getUser(auth, ally, params.provider)
+    const { success, user, message } = await this.authSocialService.getUser(params.provider)
 
     if (!success) {
       session.flash('errors', { form: message })
       return response.redirect().toRoute('auth.signin.create')
     }
 
-    await auth.login(user!, true)
+    await auth.use('web').login(user!, true)
 
     const hasProfile = await Profile.findBy('userId', user!.id)
     if (!hasProfile) {
       await user?.related('profile').create({})
     }
 
-    const sessionLogService = new SessionLogService(request, response)
-    await sessionLogService.onSignInSuccess(user!, true)
+    await this.sessionService.onSignInSuccess(user!, true)
 
     if (wasAuthenticated) {
       session.flash('success', `Your ${params.provider} account has been successfully linked`)
@@ -51,20 +63,21 @@ export default class SocialController {
   }
 
   public async unlink ({ response, auth, params, session }: HttpContext) {
-    // if (!auth.user!.password) {
-    //   const signedUrl = Route.makeSignedUrl('auth.password.reset', {
-    //     params: { email: auth.user!.email },
-    //     expiresIn: '1h'
-    //   });
+    if (!auth.user!.password) {
+      const signedUrl = router.makeSignedUrl('auth.password.reset', {
+        email: auth.user!.email
+      }, { 
+        expiresIn: '1h' 
+      });
 
-    //   session.flash('error', `Please create a password for your account by following the password reset flow before unlinking ${params.provider}`)
-    //   return response.redirect(signedUrl)
-    // }
+      session.flash('error', `Please create a password for your account by following the password reset flow before unlinking ${params.provider}`)
+      return response.redirect(signedUrl)
+    }
 
-    // await AuthSocialService.unlink(auth.user!, params.provider)
+    await this.authSocialService.unlink(auth.user!, params.provider)
 
-    // session.flash('success', `Your ${params.provider} account was unlinked from your account`)
+    session.flash('success', `Your ${params.provider} account was unlinked from your account`)
 
-    // return response.redirect().back()
+    return response.redirect().back()
   }
 }

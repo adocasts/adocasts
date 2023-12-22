@@ -30,11 +30,10 @@ class StorageService {
 
   public async store(filename: string, data: Buffer, options?: SaveOptions) {
     const file = this.bucket.file(filename)
-    await file.makePublic()
     await file.save(data, options)
   }
 
-  public async destroy(filename: string, options?: DeleteFileOptions) {
+  public async destroy(filename: string, options: DeleteFileOptions = { ignoreNotFound: true }) {
     return this.bucket.file(filename).delete(options)
   }
 

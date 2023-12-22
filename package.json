@@ -94,6 +94,7 @@
     "alpinejs": "^3.13.3",
     "argon2": "^0.31.2",
     "axios": "^1.6.2",
+    "cross-fetch": "^4.0.0",
     "dinero.js": "^1.9.1",
     "edge-iconify": "^2.0.0",
     "edge.js": "^6.0.0",

@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { belongsTo, column, hasMany, manyToMany, scope } from '@adonisjs/lucid/orm'
+import { beforeSave, belongsTo, column, hasMany, manyToMany, scope } from '@adonisjs/lucid/orm'
 import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 // import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
 import Database from '@adonisjs/lucid/services/db'
@@ -12,6 +12,7 @@ import States from '#enums/states'
 import History from '#models/history'
 import HistoryTypes from '#enums/history_types'
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
+import SlugService from '#services/slug_service'
 
 export default class Taxonomy extends AppBaseModel {
   @column({ isPrimary: true })
@@ -98,6 +99,14 @@ export default class Taxonomy extends AppBaseModel {
     pivotTable: 'collection_taxonomies'
   })
   declare collections: ManyToMany<typeof Collection>
+
+  @beforeSave()
+  public static async slugifyUsername(taxonomy: Taxonomy) {
+    if (taxonomy.$dirty.name && !taxonomy.$dirty.slug) {
+      const slugify = new SlugService<typeof Taxonomy>({ strategy: 'dbIncrement', fields: ['name'] })
+      taxonomy.name = await slugify.make(Taxonomy, 'name', taxonomy.name)
+    }
+  }
 
   public static roots() {
     return this.query().whereNull('parentId')

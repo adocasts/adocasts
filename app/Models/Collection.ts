@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
 import {
+  beforeSave,
   belongsTo,
   column, computed, hasMany,
   manyToMany, scope
@@ -19,7 +20,8 @@ import States from '#enums/states'
 import Watchlist from '#models/watchlist'
 import History from '#models/history'
 import HistoryTypes from '#enums/history_types'
-import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
+import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
+import SlugService from '#services/slug_service'
 
 export default class Collection extends AppBaseModel {
   @column({ isPrimary: true })
@@ -154,6 +156,14 @@ export default class Collection extends AppBaseModel {
     onQuery: q => q.where('historyTypeId', HistoryTypes.PROGRESSION)
   })
   declare progressionHistory: HasMany<typeof History>
+
+  @beforeSave()
+  public static async slugifyUsername(collection: Collection) {
+    if (collection.$dirty.name && !collection.$dirty.slug) {
+      const slugify = new SlugService<typeof Collection>({ strategy: 'dbIncrement', fields: ['name'] })
+      collection.name = await slugify.make(Collection, 'name', collection.name)
+    }
+  }
 
   public static series() {
     return this.query().where('collectionTypeId', CollectionTypes.SERIES)
