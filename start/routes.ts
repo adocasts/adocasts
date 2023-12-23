@@ -10,6 +10,7 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 const HomeController = () => import('#controllers/home_controller')
+const SyndicationsController = () => import('#controllers/syndications_controller')
 const AssetsController = () => import('#controllers/assets_controller')
 const AuthSignInController = () => import('#controllers/auth/sign_in_controller')
 const AuthSignUpController = () => import('#controllers/auth/sign_up_controller')
@@ -40,6 +41,7 @@ router.get('/img/*', [AssetsController, 'show']).where('path', /.*/).as('img')
 
 router.get('/', [HomeController, 'index']).as('home')
 router.get('/pricing', [HomeController, 'pricing']).as('pricing')
+router.get('/rss', [SyndicationsController, 'rss']).as('rss')
 
 /**
  * sign up, in, out
