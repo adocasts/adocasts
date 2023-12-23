@@ -1,9 +1,11 @@
 @import '_theme.css';
+@import '_fonts.css';
 @import '_modal.css';
 @import '_drawer.css';
 @import '_lesson.css';
 @import '_prose.css';
 @import '_player.css';
+
 
 @tailwind base;
 @tailwind components;

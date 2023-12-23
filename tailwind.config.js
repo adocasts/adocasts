@@ -204,8 +204,7 @@ export default {
       },
 
       fontFamily: {
-        heading: ['var(--font-heading)'],
-        body: ['var(--font-body)'],
+        sans: ['var(--font-body)'],
       },
 
       backgroundSize: {
