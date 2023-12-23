@@ -11,6 +11,8 @@ import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 const HomeController = () => import('#controllers/home_controller')
 const SyndicationsController = () => import('#controllers/syndications_controller')
+const StripeWebhooksController = () => import('#controllers/stripe_webhooks_controller')
+const StripeSubscriptionsController = () => import('#controllers/stripe_subscriptions_controller')
 const AssetsController = () => import('#controllers/assets_controller')
 const AuthSignInController = () => import('#controllers/auth/sign_in_controller')
 const AuthSignUpController = () => import('#controllers/auth/sign_up_controller')
@@ -42,6 +44,14 @@ router.get('/img/*', [AssetsController, 'show']).where('path', /.*/).as('img')
 router.get('/', [HomeController, 'index']).as('home')
 router.get('/pricing', [HomeController, 'pricing']).as('pricing')
 router.get('/rss', [SyndicationsController, 'rss']).as('rss')
+
+/**
+ * stripe routes
+*/
+router.post('/stripe/webhook', [StripeWebhooksController, 'handle'])
+router.get('/stripe/subscription/success', [StripeSubscriptionsController, 'success']).as('stripe.success')
+router.post('/stripe/subscription/checkout/:slug', [StripeSubscriptionsController, 'checkout']).as('stripe.checkout').use(middleware.auth())
+router.post('/stripe/subscription/portal', [StripeSubscriptionsController, 'portal']).as('stripe.portal').use(middleware.auth())
 
 /**
  * sign up, in, out

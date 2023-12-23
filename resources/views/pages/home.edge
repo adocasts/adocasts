@@ -99,7 +99,7 @@
     </div>
   @end
 
-  @if (auth.user)
+  @if (auth.user && !auth.user.isFreeTier)
 
   @else
     @!pricing.home({ class: '-mb-16' })

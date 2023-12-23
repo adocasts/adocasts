@@ -31,7 +31,9 @@ export default class HomeController {
       const topicCount = await this.taxonomyService.getCount()
 
       view.share({ lessonCount, lessonDuration, seriesCount, topicCount })
-    } else {
+    } 
+    
+    if (!auth.user || auth.user.isFreeTier) {
       const plusMonthly = await Plan.findOrFail(Plans.PLUS_MONTHLY)
       const plusAnnual = await Plan.findOrFail(Plans.PLUS_ANNUAL)
       const plusForever = await Plan.findOrFail(Plans.FOREVER)

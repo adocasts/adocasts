@@ -12,7 +12,7 @@
         </p>
       </div>
 
-      @form({ action: route('auth.signup.store'), upSubmit: true })
+      @form({ action: route('auth.signup.store'), upSubmit: !request.qs().plan })
         @if (request.qs().plan)
           <input type="hidden" name="plan" value="{{ request.qs().plan }}" />
         @endif
