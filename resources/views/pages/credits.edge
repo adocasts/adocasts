@@ -26,79 +26,83 @@
         @credit.group()
           @!credit.item({
             title: 'Created By',
-            value: 'Tom Gobich'
+            value: 'Tom Gobich',
+            href: '/@tomgobich'
           })
         @end
 
         @credit.group()
           @!credit.item({ 
             title: 'Educators', 
-            value: authors.map(a => `${a.profile.name || a.username} ${a.isEnabledProfile ? `(${a.handle})` : ''}`.trim()) 
+            value: authors.map(a => ({
+              text: `${a.profile.name || a.username} ${a.isEnabledProfile ? `(${a.handle})` : ''}`.trim(),
+              href: a.isEnabledProfile && `/${a.handle}`
+            })) 
           })
         @end
 
         @credit.group({ title: 'Tech Stack' })
-          @!credit.item({ title: 'Backend Framework', value: 'AdonisJS' })
-          @!credit.item({ title: 'Template Engine', value: 'EdgeJS' })
-          @!credit.item({ title: 'Testing Framework', value: 'Japa' })
-          @!credit.item({ title: 'Fragment Navigation', value: 'Unpoly' })
-          @!credit.item({ title: 'Client Reactivity', value: 'AlpineJS' })
-          @!credit.item({ title: 'CSS Framework', value: 'Tailwind CSS' })
+          @!credit.item({ title: 'Backend Framework', value: 'AdonisJS', href: 'https://adonisjs.com' })
+          @!credit.item({ title: 'Template Engine', value: 'EdgeJS', href: 'https://edgejs.dev' })
+          @!credit.item({ title: 'Testing Framework', value: 'Japa', href: 'https://japa.dev' })
+          @!credit.item({ title: 'Fragment Navigation', value: 'Unpoly', href: 'https://unpoly.com' })
+          @!credit.item({ title: 'Client Reactivity', value: 'AlpineJS', href: 'https://alpinejs.dev' })
+          @!credit.item({ title: 'CSS Framework', value: 'Tailwind CSS', href: 'https://tailwindcss.com' })
         @end
 
         @credit.group({ title: 'Hosting' })
-          @!credit.item({ title: 'Server', value: 'Vultr' })
-          @!credit.item({ title: 'Adocasts Plus Videos', value: 'Bunny Stream' })
-          @!credit.item({ title: 'Free Videos', value: 'YouTube' })
-          @!credit.item({ title: 'Images', value: 'Google Cloud Storage' })
+          @!credit.item({ title: 'Server', value: 'Vultr', href: 'https://www.vultr.com/' })
+          @!credit.item({ title: 'Adocasts Plus Videos', value: 'Bunny Stream', href: 'https://bunny.net/stream' })
+          @!credit.item({ title: 'Free Videos', value: 'YouTube', href: 'https://youtube.com/adocasts' })
+          @!credit.item({ title: 'Images', value: 'Google Cloud Storage', href: 'https://cloud.google.com/storage' })
         @end
 
         @credit.group({ title: 'Services' })
-          @!credit.item({ title: 'Billing & Subscriptions', value: 'Stripe' })
-          @!credit.item({ title: 'CI & Server Management', value: 'Cleavr' })
-          @!credit.item({ title: 'Newsletter', value: 'ConvertKit' })
-          @!credit.item({ title: 'Emails', value: 'Mailjet' })
-          @!credit.item({ title: 'Code Tracking', value: 'GitHub' })
+          @!credit.item({ title: 'Billing & Subscriptions', value: 'Stripe', href: 'https://stripe.com/' })
+          @!credit.item({ title: 'CI & Server Management', value: 'Cleavr', href: 'https://cleavr.io/?via=adocasts' })
+          @!credit.item({ title: 'Newsletter', value: 'ConvertKit', href: 'https://convertkit.com/' })
+          @!credit.item({ title: 'Emails', value: 'Mailjet', href: 'https://www.mailjet.com/' })
+          @!credit.item({ title: 'Code Tracking', value: 'GitHub', href: 'https://github.com' })
         @end
 
         @credit.group({ title: 'Hardware' })
-          @!credit.item({ title: 'Computer', value: '14" 2023 Mackbook Pro' })
-          @!credit.item({ title: 'Monitor', value: '34" Z-Edge 4K IPS' })
-          @!credit.item({ title: 'Camera', value: 'Sony ZV-1F' })
-          @!credit.item({ title: 'Microphone', value: 'Blue Yeti' })
-          @!credit.item({ title: 'Keyboard', value: 'Keychron K2 Pro' })
-          @!credit.item({ title: 'Mouse', value: 'Apple Magic Trackpad 2' })
+          @!credit.item({ title: 'Computer', value: '14" 2023 Mackbook Pro', href: 'https://www.theverge.com/22751921/apple-macbook-pro-14-16-inch-2021-m1-pro-max-review' })
+          @!credit.item({ title: 'Monitor', value: '34" Z-Edge 4K IPS', href: 'https://www.amazon.com/dp/B09LM5TQ9T' })
+          @!credit.item({ title: 'Camera', value: 'Sony ZV-1F', href: 'https://www.amazon.com/Sony-Camera-Content-Creators-Vloggers/dp/B0BHKKHNHM' })
+          @!credit.item({ title: 'Microphone', value: 'Blue Yeti', href: 'https://www.bluemic.com/en-us/products/yeti/' })
+          @!credit.item({ title: 'Keyboard', value: 'Keychron K2 Pro', href: 'https://www.keychron.com/products/keychron-k2-pro-qmk-via-wireless-mechanical-keyboard' })
+          @!credit.item({ title: 'Mouse', value: 'Apple Magic Trackpad 2', href: 'https://www.apple.com/shop/product/MK2D3AM/A/magic-trackpad-white-multi-touch-surface' })
         @end
 
         @credit.group({ title: 'Software' })
-          @!credit.item({ title: 'Browser', value: 'Firefox Developer Edition' })
-          @!credit.item({ title: 'Video Editing', value: 'Final Cut Pro' })
-          @!credit.item({ title: 'Video Recording', value: 'OBS' })
-          @!credit.item({ title: 'Vector Editing', value: 'Affinity Designer 2' })
-          @!credit.item({ title: 'Raster Editing', value: 'Affinity Photo 2' })
-          @!credit.item({ title: 'Print Editing', value: 'Affinity Publisher 2' })
-          @!credit.item({ title: 'Terminal', value: 'Hyper' })
-          @!credit.item({ title: 'Database Management', value: 'TablePlus' })
-          @!credit.item({ title: 'REST Client', value: 'Insomnia' })
-          @!credit.item({ title: 'Content Planning', value: 'Notion' })
-          @!credit.item({ title: 'Grammer & Spelling', value: 'Grammerly' })
+          @!credit.item({ title: 'Browser', value: 'Firefox Developer Edition', href: 'https://www.mozilla.org/en-US/firefox/developer/' })
+          @!credit.item({ title: 'Video Editing', value: 'Final Cut Pro', href: 'https://www.apple.com/final-cut-pro/' })
+          @!credit.item({ title: 'Video Recording', value: 'OBS', href: 'https://obsproject.com/' })
+          @!credit.item({ title: 'Vector Editing', value: 'Affinity Designer 2', href: 'https://affinity.serif.com/en-us/designer' })
+          @!credit.item({ title: 'Raster Editing', value: 'Affinity Photo 2', href: 'https://affinity.serif.com/en-us/photo/' })
+          @!credit.item({ title: 'Print Editing', value: 'Affinity Publisher 2', href: 'https://affinity.serif.com/en-us/publisher/' })
+          @!credit.item({ title: 'Terminal', value: 'Hyper', href: 'https://hyper.is/' })
+          @!credit.item({ title: 'Database Management', value: 'TablePlus', href: 'https://tableplus.com/' })
+          @!credit.item({ title: 'REST Client', value: 'Insomnia', href: 'https://insomnia.rest/' })
+          @!credit.item({ title: 'Content Planning', value: 'Notion', href: 'https://www.notion.so' })
+          @!credit.item({ title: 'Grammer & Spelling', value: 'Grammerly', href: 'https://www.grammarly.com' })
         @end
 
         @credit.group({ title: 'Editor & Extensions' })
-          @!credit.item({ title: 'Text Editor', value: 'Video Studio Code' })
-          @!credit.item({ title: 'Color Theme', value: 'GitHub Dark' })
-          @!credit.item({ title: 'File Icons', value: 'Bearded Icons' })
+          @!credit.item({ title: 'Text Editor', value: 'Video Studio Code', href: 'https://code.visualstudio.com/' })
+          @!credit.item({ title: 'Color Theme', value: 'GitHub Dark', href: 'https://marketplace.visualstudio.com/items?itemName=GitHub.github-vscode-theme' })
+          @!credit.item({ title: 'File Icons', value: 'Bearded Icons', href: 'https://marketplace.visualstudio.com/items?itemName=BeardedBear.beardedicons' })
           @!credit.item({ title: 'Extensions', value: [
-              'AdonisJS Extension', 
-              'Edge template syntax highligher', 
-              'Japa Extension',
-              'Stripe',
-              'Tailwind CSS IntelliSense',
-              'Vue Language Features',
-              'Codeium',
-              'Quokka.js',
-              'Better Comments',
-              'Lipsum Generator',
+              { text: 'AdonisJS Extension', href: 'https://marketplace.visualstudio.com/items?itemName=jripouteau.adonis-vscode-extension' }, 
+              { text: 'Edge template syntax highligher',  href: 'https://marketplace.visualstudio.com/items?itemName=AdonisJS.vscode-edge' },
+              { text: 'Japa Extension', href: 'https://marketplace.visualstudio.com/items?itemName=jripouteau.japa-vscode' },
+              { text: 'Stripe', href: 'https://marketplace.visualstudio.com/items?itemName=Stripe.vscode-stripe' },
+              { text: 'Tailwind CSS IntelliSense', href: 'https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss' },
+              { text: 'Vue Language Features', href: 'https://marketplace.visualstudio.com/items?itemName=Vue.volar' },
+              { text: 'Codeium', href: 'https://marketplace.visualstudio.com/items?itemName=Codeium.codeium' },
+              { text: 'Quokka.js', href: 'https://marketplace.visualstudio.com/items?itemName=WallabyJs.quokka-vscode' },
+              { text: 'Better Comments', href: 'https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments' },
+              { text: 'Lipsum Generator', href: 'https://marketplace.visualstudio.com/items?itemName=MrAwesomeRocks.lipsum-generator' },
             ] 
           })
         @end
@@ -133,7 +137,7 @@
             @each (user in subscribers)
               <div>
                 @if (user.isEnabledProfile)
-                  {{ user.profile.name || user.username }}
+                  <a href="/{{ user.handle }}" up-follow>{{ user.profile.name || user.username }}</a>
                 @else
                   {{ user.username }}
                 @endif

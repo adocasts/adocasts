@@ -4,10 +4,24 @@
   @if (Array.isArray(value))
     <div class="w-1/2 flex flex-col gap-4">
       @each(item in value)
-        <dd class="text-left text-slate-base-300">{{ item }}</dd>
+        <dd class="text-left text-slate-base-300">
+          @if (typeof item === 'string')
+            {{ item }}
+          @elseif (item.href)
+            <a href="{{ item.href }}">{{ item.text }}</a>
+          @endif
+        </dd>
       @endeach
     </div>
   @else
-    <dd class="w-1/2 text-left text-slate-base-300">{{ value }}</dd>
+    @let(text = typeof value === 'string' ? value : value.text)
+    @let(href = typeof $props.href === 'string' ? $props.href : value.href)
+    <dd class="w-1/2 text-left text-slate-base-300">
+      @if (!href)
+        {{ value }}
+      @else
+        <a href="{{ href }}" {{ href.startsWith('http') ? 'target=_blank' : 'up-follow' }}>{{ text }}</a>
+      @endif
+    </dd>
   @endif
 </div>
