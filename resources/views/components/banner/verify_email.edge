@@ -1,12 +1,12 @@
 @if (auth.user && !auth.user.isEmailVerified && up.isPage)
 
-  <div class="w-[450px] max-w-full fixed bottom-0 left-0 sm:bottom-3 sm:left-3 z-[100]">
-    <div class="bg-brand-400 p-3 border-b border-brand-200 border-opacity-40 relative sm:rounded-xl">
+  <div class="w-[400px] max-w-full fixed bottom-0 left-0 sm:bottom-3 sm:left-3 z-[100]">
+    <div class="bg-brand-400 text-sm p-2 border-b border-brand-200 border-opacity-40 relative sm:rounded-xl">
       @form({ action: form.post('verification.email.send'), upSubmit: true })
         <div class="flex items-center justify-between flex-wrap">
           <div class="flex justify-center sm:justify-start items-center">
-            @svg('ph:at-bold', { class: 'w-6 h-6 ml-3' })
-            <p class="ml-3 text-brand-950 truncate">
+            @svg('ph:at-bold', { class: 'w-4 h-4 ml-2' })
+            <p class="ml-2 text-brand-950 truncate">
               <span class="inline">
                 Please verify your email address
               </span>
