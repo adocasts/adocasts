@@ -368,6 +368,7 @@ pre.shiki.github-dark,
 
   [style="color: #6A737D"] {
     color: theme('colors.slate-base.500') !important;
+    font-style: italic;
   }
 }
 /* purgecss end ignore */

@@ -205,6 +205,7 @@ export default {
 
       fontFamily: {
         sans: ['var(--font-body)'],
+        mono: ['var(--font-mono)'],
       },
 
       backgroundSize: {

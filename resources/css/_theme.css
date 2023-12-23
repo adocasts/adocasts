@@ -1,7 +1,8 @@
 @layer base {
   :root {
-    --font-heading: 'pipe', apple system, sans-serif;
-    --font-body: 'pipe', apple system, sans-serif;
+    --font-heading: 'Poppins', apple system, sans-serif;
+    --font-body: 'Poppins', apple system, sans-serif;
+    --font-mono: 'Dank Mono', monospace;
 
     --white: 255 255 255;
     --black: 17 24 39;
