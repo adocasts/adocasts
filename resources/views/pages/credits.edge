@@ -1,0 +1,152 @@
+@layout()
+
+  @slot('hero')
+    @!starfield({ class: '!fixed w-full h-full top-0 left-0', mountain: false, clouds: false, lines: false })
+  @endslot
+    
+  <div
+    x-data="{ play: true, containerHeight: 600 }"
+    :class="['absolute h-[calc(100%+4rem)] w-full z-10 credits overflow-scroll -mt-8 -mb-16', { play }]"
+    x-init="containerHeight = $el.parentElement.clientHeight; setInterval(() => play && ($el.scrollTop += 10), 60)"
+    @mouseenter="play = false"
+    @mouseleave="play = true">
+    <div class="max-w-3xl mx-auto">
+      <div class="max-w-xs mx-auto" :style="{ marginTop: containerHeight + 'px' }">
+        <span class="sr-only">Adocasts</span>
+        <img class="logo-white max-w-full" src="/imgs/logo-white.svg" alt="Adocasts" />
+        <img class="logo-black max-w-full" src="/imgs/logo-black.svg" alt="Adocasts" />
+      </div>
+
+      @!heading({ 
+        subtitle: 'Credits',
+        class: 'text-center mb-12'
+      })
+
+      <dl class="flex flex-col items-center gap-12 text-slate-base-50 text-justify pb-16">
+        @credit.group()
+          @!credit.item({
+            title: 'Created By',
+            value: 'Tom Gobich'
+          })
+        @end
+
+        @credit.group()
+          @!credit.item({ 
+            title: 'Educators', 
+            value: authors.map(a => `${a.profile.name || a.username} ${a.isEnabledProfile ? `(${a.handle})` : ''}`.trim()) 
+          })
+        @end
+
+        @credit.group({ title: 'Tech Stack' })
+          @!credit.item({ title: 'Backend Framework', value: 'AdonisJS' })
+          @!credit.item({ title: 'Template Engine', value: 'EdgeJS' })
+          @!credit.item({ title: 'Testing Framework', value: 'Japa' })
+          @!credit.item({ title: 'Fragment Navigation', value: 'Unpoly' })
+          @!credit.item({ title: 'Client Reactivity', value: 'AlpineJS' })
+          @!credit.item({ title: 'CSS Framework', value: 'Tailwind CSS' })
+        @end
+
+        @credit.group({ title: 'Hosting' })
+          @!credit.item({ title: 'Server', value: 'Vultr' })
+          @!credit.item({ title: 'Adocasts Plus Videos', value: 'Bunny Stream' })
+          @!credit.item({ title: 'Free Videos', value: 'YouTube' })
+          @!credit.item({ title: 'Images', value: 'Google Cloud Storage' })
+        @end
+
+        @credit.group({ title: 'Services' })
+          @!credit.item({ title: 'Billing & Subscriptions', value: 'Stripe' })
+          @!credit.item({ title: 'CI & Server Management', value: 'Cleavr' })
+          @!credit.item({ title: 'Newsletter', value: 'ConvertKit' })
+          @!credit.item({ title: 'Emails', value: 'Mailjet' })
+          @!credit.item({ title: 'Code Tracking', value: 'GitHub' })
+        @end
+
+        @credit.group({ title: 'Hardware' })
+          @!credit.item({ title: 'Computer', value: '14" 2023 Mackbook Pro' })
+          @!credit.item({ title: 'Monitor', value: '34" Z-Edge 4K IPS' })
+          @!credit.item({ title: 'Camera', value: 'Sony ZV-1F' })
+          @!credit.item({ title: 'Microphone', value: 'Blue Yeti' })
+          @!credit.item({ title: 'Keyboard', value: 'Keychron K2 Pro' })
+          @!credit.item({ title: 'Mouse', value: 'Apple Magic Trackpad 2' })
+        @end
+
+        @credit.group({ title: 'Software' })
+          @!credit.item({ title: 'Browser', value: 'Firefox Developer Edition' })
+          @!credit.item({ title: 'Video Editing', value: 'Final Cut Pro' })
+          @!credit.item({ title: 'Video Recording', value: 'OBS' })
+          @!credit.item({ title: 'Vector Editing', value: 'Affinity Designer 2' })
+          @!credit.item({ title: 'Raster Editing', value: 'Affinity Photo 2' })
+          @!credit.item({ title: 'Print Editing', value: 'Affinity Publisher 2' })
+          @!credit.item({ title: 'Terminal', value: 'Hyper' })
+          @!credit.item({ title: 'Database Management', value: 'TablePlus' })
+          @!credit.item({ title: 'REST Client', value: 'Insomnia' })
+          @!credit.item({ title: 'Content Planning', value: 'Notion' })
+          @!credit.item({ title: 'Grammer & Spelling', value: 'Grammerly' })
+        @end
+
+        @credit.group({ title: 'Editor & Extensions' })
+          @!credit.item({ title: 'Text Editor', value: 'Video Studio Code' })
+          @!credit.item({ title: 'Color Theme', value: 'GitHub Dark' })
+          @!credit.item({ title: 'File Icons', value: 'Bearded Icons' })
+          @!credit.item({ title: 'Extensions', value: [
+              'AdonisJS Extension', 
+              'Edge template syntax highligher', 
+              'Japa Extension',
+              'Stripe',
+              'Tailwind CSS IntelliSense',
+              'Vue Language Features',
+              'Codeium',
+              'Quokka.js',
+              'Better Comments',
+              'Lipsum Generator',
+            ] 
+          })
+        @end
+
+        @credit.group({ title: 'Image Assets' })
+          <div class="grid md:grid-cols-3 gap-4 text-slate-base-300">
+            @each (asset in assets)
+              <div>{{ asset.credit.replace('Left image by', '').replace('Left photo by', '').trim() }}</div>
+            @endeach
+          </div>
+        @end
+
+        @credit.group({ title: 'Icon Assets' })
+          <div class="grid md:grid-cols-2 gap-4 text-slate-base-300">
+            <a href="https://www.flaticon.com/free-icons/command-prompt" title="command prompt icons">Command Prompt by Hopstarter - Flaticon</a></li>
+            <a href="https://www.flaticon.com/free-icons/biometric-identification" title="biometric identification icons">Biometric by Freepik - Flaticon</a></li>
+            <a href="https://www.flaticon.com/free-icons/id-card" title="id-card icons">Id Card by Smashicons - Flaticon</a></li>
+            <a href="https://www.flaticon.com/free-icons/ui" title="ui icons">Lock by Smashicons - Flaticon</a></li>
+            <a href="https://www.flaticon.com/free-icons/component" title="component icons">Component by Freepik - Flaticon</a></li>
+            <a href="https://www.flaticon.com/free-icons/computing" title="computing icons">Hard Drive by Freepik - Flaticon</a></li>
+            <a href="https://www.flaticon.com/free-icons/email" title="email icons">Email by DinosoftLabs - Flaticon</a></li>
+            <a href="https://www.flaticon.com/free-icons/computing" title="computing icons">Folder by Freepik - Flaticon</a></li>
+            <a href="https://www.flaticon.com/free-icons/database" title="database icons">Database by Smashicons - Flaticon</a></li>
+            <a href="https://www.flaticon.com/free-icons/computing" title="computing icons">Router by Freepik - Flaticon</a></li>
+            <a href="https://www.flaticon.com/free-icons/idea" title="idea icons">Idea by Freepik - Flaticon</a></li>
+            <a href="https://www.flaticon.com/free-icons/settings" title="settings icons">Settings by DinosoftLabs - Flaticon</a></li>
+          </div>
+        @end
+
+        @credit.group({ title: 'Adocasts Plus Subscribers' })
+          <div class="grid md:grid-cols-3 gap-4 text-slate-base-300">
+            @each (user in subscribers)
+              <div>
+                @if (user.isEnabledProfile)
+                  {{ user.profile.name || user.username }}
+                @else
+                  {{ user.username }}
+                @endif
+              </div>
+            @endeach
+          </div>
+        @end
+
+        <img class="w-48 mx-auto animation-float mt-12 -mb-8" src="/imgs/robot/slice1.svg" alt="happy robot" />
+        @!heading({ subtitle: 'Made possible by contributions from members like you' })
+        @!heading({ title: 'Thank you!', class: '-mt-8' })
+      </dl>
+    </div>
+  </div>
+
+@end

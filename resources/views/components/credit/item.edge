@@ -1,0 +1,13 @@
+<div class="w-full flex justify-center gap-4 mx-auto">
+  <dt class="font-black text-right sticky top-6 w-1/2">{{ title }}</dt>
+  
+  @if (Array.isArray(value))
+    <div class="w-1/2 flex flex-col gap-4">
+      @each(item in value)
+        <dd class="text-left text-slate-base-300">{{ item }}</dd>
+      @endeach
+    </div>
+  @else
+    <dd class="w-1/2 text-left text-slate-base-300">{{ value }}</dd>
+  @endif
+</div>

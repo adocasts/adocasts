@@ -4,7 +4,7 @@
 @let(theme = auth.user?.theme || session.get('theme'))
 
 <!DOCTYPE html>
-<html lang="en" class="{{ theme ?? 'system' }}">
+<html lang="en" class="{{ theme ?? 'system' }} h-full">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,7 +27,7 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0874550857266190" crossorigin="anonymous"></script>
   @endcan
 </head>
-<body x-data class="h-full bg-body text-slate-900 overflow-x-hidden subpixel-antialiased" layout-root up-theme>
+<body x-data class="flex flex-col h-full bg-body text-slate-900 overflow-x-hidden subpixel-antialiased" layout-root up-theme>
   <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>
 
   @!toast()
@@ -49,18 +49,18 @@
   <main 
     x-data
     x-init="window.isAuthenticated = {{ !!auth.user }}"
-    class="{{ postClass }}" 
+    class="{{ postClass }} flex-1" 
     data-post-class="{{ postClassString }}" 
     data-sync-to="[up-header], [up-hero], [up-footer]" 
     up-main>
-    <div {{ html.attrs({ class: utils.classes('page relative z-20', [up.isPage ? 'mt-8' : '!px-0']), ...($props.attrs || {}) }) }}>
+    <div {{ html.attrs({ class: utils.classes('page h-full relative z-20', [up.isPage ? 'mt-8' : '!px-0']), ...($props.attrs || {}) }) }}>
       {{{ await $slots.main() }}}
     </div>
 
     @!toast.flash()
   </main>
 
-  <div class="{{ postClass }}" up-footer>
+  <div class="{{ postClass }} relative z-30" up-footer>
     @!layout.footer()
   </div>
 

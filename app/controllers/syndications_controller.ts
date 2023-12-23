@@ -4,6 +4,12 @@ import CacheService from '#services/cache_service'
 import env from '#start/env'
 import type { HttpContext } from '@adonisjs/core/http'
 import HtmlParser from '#services/html_parser';
+import Collection from '#models/collection'
+import Taxonomy from '#models/taxonomy'
+import States from '#enums/states'
+import SyndicationService from '#services/syndication_service'
+import { SitemapStream } from 'sitemap'
+import { createGzip } from 'zlib'
 
 export default class SyndicationsController {
   public async rss({ view, response }: HttpContext) {
@@ -28,5 +34,45 @@ export default class SyndicationsController {
         content
       })
     }, CacheService.fiveMinutes)
+  }
+
+  public async sitemap({ view }: HttpContext) {
+    const series = await Collection.series()
+      .preload('children')
+      .where('stateId', States.PUBLIC)
+      .whereNull('parentId')
+      .orderBy('name', 'asc')
+
+    const topics = await Taxonomy.roots()
+      .preload('children')
+      .orderBy('name', 'asc')
+
+    return view.render('pages/sitemap', { series, topics })
+  }
+
+  public async xml({ response }: HttpContext) {
+    let urls = await SyndicationService.getCachedSitemapUrls()
+
+    response.header('Content-Type', 'application/xml')
+    response.header('Content-Encoding', 'gzip')
+
+    try {
+      const sitemapStream = new SitemapStream({ hostname: 'https://adocasts.com' })
+      const pipeline = sitemapStream.pipe(createGzip())
+
+      if (!urls) {
+        urls = await SyndicationService.getSitemapUrls()
+        await SyndicationService.setCacheSitemapUrls(urls)
+      }
+
+      urls.map(url => sitemapStream.write(url))
+
+      sitemapStream.end()
+
+      response.stream(pipeline)
+    } catch (e) {
+      console.error(e)
+      response.status(500)
+    }
   }
 }

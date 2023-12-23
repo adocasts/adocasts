@@ -13,6 +13,10 @@
   {{ $props.except(['upSubmit', 'target', 'fragment']).merge({ method: 'POST' }).toAttrs() }}>
   {{ csrfField() }}
 
+  @if (turnstile)
+    @!turnstile()
+  @endif
+
   @if (fragment)
     <input type="hidden" name="fragment" value="{{ fragment }}" />
   @endif

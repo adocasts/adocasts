@@ -10,7 +10,10 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 const HomeController = () => import('#controllers/home_controller')
+const ContactController = () => import('#controllers/contact_controller')
 const SyndicationsController = () => import('#controllers/syndications_controller')
+const CreditsController = () => import('#controllers/credits_controller')
+const LegalsController = () => import('#controllers/legals_controller')
 const StripeWebhooksController = () => import('#controllers/stripe_webhooks_controller')
 const StripeSubscriptionsController = () => import('#controllers/stripe_subscriptions_controller')
 const AssetsController = () => import('#controllers/assets_controller')
@@ -42,8 +45,31 @@ router.get('/img/:userId/:filename', [AssetsController, 'show']).as('userimg')
 router.get('/img/*', [AssetsController, 'show']).where('path', /.*/).as('img')
 
 router.get('/', [HomeController, 'index']).as('home')
+
+/**
+ * redirects
+ */
+router.on('/uses').redirectToPath('/credits')
+router.on('/attributions').redirect('/credits')
+
+/**
+ * company routes
+ */
+router.get('/credits', [CreditsController, 'handle']).as('credits')
 router.get('/pricing', [HomeController, 'pricing']).as('pricing')
 router.get('/rss', [SyndicationsController, 'rss']).as('rss')
+router.get('/sitemap', [SyndicationsController, 'sitemap']).as('sitemap')
+router.get('/sitemap.xml', [SyndicationsController, 'xml']).as('sitemap.xml')
+router.get('/contact', [ContactController, 'index']).as('contact.index')
+router.post('/contact', [ContactController, 'store']).as('contact.store').use(middleware.turnstile())
+
+/**
+ * legal routes
+ */
+router.get('/cookies', [LegalsController, 'cookies']).as('legals.cookies')
+router.get('/privacy', [LegalsController, 'privacy']).as('legals.privacy')
+router.get('/terms', [LegalsController, 'terms']).as('legals.terms')
+router.get('/guidelines', [LegalsController, 'guidelines']).as('legals.guidelines')
 
 /**
  * stripe routes
