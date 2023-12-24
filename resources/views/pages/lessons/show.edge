@@ -55,6 +55,7 @@
       <div class="w-full lg:flex-1 flex flex-col md:flex-row justify-center gap-2 order-2 lg:order-1">
         @if (series)
           @button({ 
+            class: 'lg:hidden',
             '@click': `document.getElementById('boxSeries').dispatchEvent(new CustomEvent('toggle'))`
           })
             @svg('ph:list-bullets-bold', { class: 'w-5 h-5' })
