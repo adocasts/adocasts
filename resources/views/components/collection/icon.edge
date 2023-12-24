@@ -7,7 +7,7 @@
     loading="lazy" 
   />
 @else
-  <div class="text-2xl font-semibold flex items-center justify-center mb-3 aspect-square w-[122px] rounded-full bg-gradient-to-br from-accent-400 to-brand-500 text-brand-800 {{ className }}">
+  <div class="font-semibold flex items-center justify-center mb-3 aspect-square rounded-full bg-gradient-to-br from-accent-400 to-brand-500 text-brand-100 {{ $props.class }}">
     {{ utils.getAbbrev(item.name) }}
   </div>
 @endif

@@ -1,9 +1,9 @@
 @layout({
-  title: series.name,
+  title: item.name,
   meta: {
-    url: route('series.show', { slug: series.slug }),
-    desc: string.excerpt(series.description, 180),
-    asset: series.assets,
+    url: route('series.show', { slug: item.slug }),
+    desc: string.excerpt(item.description, 180),
+    asset: item.assets,
     index: true
   }
 })
