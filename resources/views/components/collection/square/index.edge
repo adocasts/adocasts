@@ -1,11 +1,11 @@
 <div class="{{ html.classNames(['flex flex-col justify-center items-center bg-slate-100 rounded-md relative overflow-hidden group', ...($props.class || [])]) }}">
   <div class="p-4 lg:p-6 flex-col duration-300 z-10 w-full h-full">
-    <div class="flex items-center rounded-md bg-slate-base-900 relative z-10 mb-2 overflow-hidden">
-      <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 group-hover:opacity-75 duration-300 z-10"></div>
+    <div class="flex items-center rounded-md bg-slate-100 relative z-10 mb-2 overflow-hidden">
+      <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-100/0 via-slate-100/40 to-slate-100/95 group-hover:opacity-75 duration-300 z-10"></div>
 
       @if (item.asset)
         <div 
-          class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit opacity-50 group-hover:opacity-100 duration-300"
+          class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit opacity-50 group-hover:opacity-75 duration-300"
           style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
         </div>
       @endif
@@ -15,14 +15,14 @@
           @!collection.icon({ item, class: 'w-full' })
         </div>
         <div class="w-3/4 space-y-1.5">
-          <h3 class="font-bold text-slate-base-50 text-xl lg:text-2xl">
-            <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="anchor-expand anchor-target current-color hover:current-color">
+          <h3 class="font-bold text-slate-900 text-xl lg:text-2xl">
+            <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="anchor-expand">
               {{ item.name }}
             </a>
           </h3>
 
           <div class="relative">
-            <div class="flex items-center gap-3 text-slate-base-300 text-sm group-hover:translate-y-full group-hover:opacity-0 duration-300">
+            <div class="flex items-center gap-3 text-slate-700 text-sm group-hover:translate-y-full group-hover:opacity-0 duration-300">
               <div class="flex items-center gap-1.5">
                 @svg('ph:graduation-cap-fill')
                 <span>
@@ -38,7 +38,7 @@
             </div>
 
             <div class="absolute w-full top-0 left-0 opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 duration-300 text-center drop-shadow-lg">
-              @button({ variant: 'lightBase', block: true, class: 'gap-1.5', href: route('series.show', { slug: item.slug }) })
+              @button({ variant: 'dark', block: true, class: 'gap-1.5', href: route('series.show', { slug: item.slug }) })
                 View Series
                 @svg('ph:arrow-circle-right-fill')
               @end

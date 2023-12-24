@@ -1,7 +1,7 @@
 @layer base {
   :root {
-    --font-heading: 'Poppins', apple system, sans-serif;
-    --font-body: 'Poppins', apple system, sans-serif;
+    --font-heading: 'Karla', apple system, sans-serif;
+    --font-body: 'Karla', apple system, sans-serif;
     --font-mono: 'Dank Mono', monospace;
 
     --white: 255 255 255;

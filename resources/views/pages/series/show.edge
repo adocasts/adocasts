@@ -13,8 +13,8 @@
       x-intersect:enter="$store.app.heroVisible = true"
       x-intersect:leave="$store.app.heroVisible = false" 
       x-init="$store.app.heroHeight = $el.clientHeight"
-      class="bg-gradient-to-br from-slate-base-900 to-slate-base-950 relative">
-      <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 group-hover:opacity-0 duration-300 z-10"></div>
+      class="bg-gradient-to-br from-slate-100 to-slate-50 relative">
+      <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-100/0 via-slate-100/40 to-slate-100/95 group-hover:opacity-0 duration-300 z-10"></div>
 
       @if (item.asset)
         <div 
@@ -28,9 +28,9 @@
           @!collection.icon({ item, class: 'w-24 lg:w-full max-w-[250px] order-1 md:order-2 md:hidden border-2 md:border-4 border-brand-base-800' })
 
           <div class="sm:flex-1 mb-4 sm:my-4 md:mr-4 xl:mr-8 order-2 md:order-1">
-            @!heading({ title: item.name, class: 'text-slate-base-100' })
+            @!heading({ title: item.name, class: 'text-slate-900' })
 
-            <div class="flex items-center gap-3 text-slate-base-400 mt-4">
+            <div class="flex items-center gap-3 text-slate-600 mt-4">
               <div class="flex items-center gap-1.5">
                 @svg('ph:graduation-cap-fill')
                 <span>
@@ -45,7 +45,7 @@
             </div>
 
             @if (item.description)
-              <p class="xl:font-lg leading-7 mt-2 max-w-prose text-slate-base-100">
+              <p class="xl:font-lg leading-7 mt-2 max-w-prose text-slate-900">
                 {{ item.description }}
               </p>
             @endif
@@ -62,7 +62,7 @@
 
             <div class="flex flex-wrap gap-4 mt-4 lg:mt-6">
               @if (nextLesson)
-                @button({ variant: 'lightBase', href: nextLesson.routeUrl, class: ['gap-2'] })
+                @button({ variant: 'dark', href: nextLesson.routeUrl, class: ['gap-2'] })
                   @svg('ph:play-fill')
                   {{ nextLesson.id === item.postsFlattened.at(0)?.id ? 'Start Series' : 'Continue Series' }}
                 @end
@@ -92,7 +92,7 @@
         <div class="relative overflow-hidden rounded-xl" :class="[$store.app.heroVisible ? 'mb-8' : 'mb-4']">
           <div 
             x-show="!$store.app.heroVisible || {{ item.children?.length ?? 0 }}"
-            class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 group-hover:opacity-0 duration-300 z-10"
+            class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-100/0 via-slate-100/40 to-slate-100/95 group-hover:opacity-0 duration-300 z-10"
           ></div>
           @if (item.asset)
             <div 
@@ -101,7 +101,7 @@
               style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
             </div>
           @endif
-          <div class="flex justify-center items-center duration-300 h-full p-4 relative z-20" :class="{ 'backdrop-blur-xl bg-slate-base-900/50 group-hover:bg-slate-base-900/0': !$store.app.heroVisible || {{ item.children?.length ?? 0 }} }">
+          <div class="flex justify-center items-center duration-300 h-full p-4 relative z-20" :class="{ 'backdrop-blur-xl bg-slate-100/50 group-hover:bg-slate-100/0': !$store.app.heroVisible || {{ item.children?.length ?? 0 }} }">
             @!collection.icon({ item, class: 'w-2/3 mx-auto shadow-lg' })
           </div>
         </div>

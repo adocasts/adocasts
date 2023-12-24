@@ -16,11 +16,11 @@
         @if (!isActive)
           <div class="absolute top-0 left-0 w-8 h-8 opacity-0 group-hover:opacity-100 transition duration-300 z-20 overflow-hidden">
             <div class="w-full h-full absolute top-0 left-0 bg-brand-500 bg-gradient-to-br from-accent-500/50 to-brand-500 text-brand-base-100 rounded-full"></div>
-            @svg('ph:play-fill', { class: 'w-4 h-4 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 relative z-10' })
+            @svg('ph:play-fill', { class: 'w-4 h-4 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 relative text-slate-base-50 z-10' })
           </div>
         @endif
 
-        <div class="w-8 h-8 relative z-10 rounded-full flex items-center justify-center text-xs duration-300 {{ isActive ? 'bg-brand-500 bg-gradient-to-br from-accent-500/50 to-brand-500 text-brand-950' : 'bg-slate-200 text-slate-700 group-hover:opacity-0' }}">
+        <div class="w-8 h-8 relative z-10 rounded-full flex items-center justify-center text-xs duration-300 {{ isActive ? 'bg-brand-500 bg-gradient-to-br from-accent-500/50 to-brand-500 text-brand-base-50' : 'bg-slate-200 text-slate-700 group-hover:opacity-0' }}">
           @can('PostPolicy.view', item)
             @if (similar)
               {{ i + 1 }}

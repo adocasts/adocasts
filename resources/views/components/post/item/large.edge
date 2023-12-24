@@ -24,7 +24,7 @@
     'w-full px-4': !img
   }, ...($props.classContent || [])]) }}">
 
-    <div class="mb-1 relative z-10">
+    <div class="relative z-10">
       @!post.seriesBar({ item, display })
     </div>
 
@@ -38,7 +38,7 @@
 
     @if (item.description)
       <p class="{{ html.classNames([
-        'mb-2 mt-3 text-sm text-slate-600 group-hover:text-slate-700 duration-300 line-clamp-4', 
+        'mb-2 mt-2 text-sm text-slate-600 group-hover:text-slate-700 duration-300 line-clamp-4', 
         ...($props.classDescription || [])
       ]) }}">
         {{ item.description }}

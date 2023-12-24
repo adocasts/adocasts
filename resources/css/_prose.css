@@ -160,6 +160,19 @@ code {
   counter-increment: delStep 0;
 }
 
+.prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::before,
+.prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::after {
+  content: none !important;
+}
+
+.prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  @apply bg-brand-400/20 text-brand-950 font-mono;
+  word-wrap: break-word;
+  box-decoration-break: clone;
+  padding: .1rem .3rem .2rem;
+  border-radius: .2rem;
+}
+
 code .line:before {
   @apply text-slate-base-700;
   width: 2.5rem;

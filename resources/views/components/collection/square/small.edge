@@ -1,15 +1,15 @@
 <div class="flex flex-col justify-center items-center bg-slate-100 p-4 lg:p-6 rounded-md relative overflow-hidden group min-h-[225px]">
   <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="flex anchor-expand absolute top-0 left-0 w-full h-full">
     <div class="p-4 flex flex-col justify-end duration-300 z-10 w-full h-full bg-gradient-to-b from-slate-100/0 via-slate-100/40 to-slate-100/95 backdrop-blur-xl">
-      <div class="relative overflow-hidden bg-slate-base-900 rounded-md flex-1 h-fit">
-        <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-base-900/0 via-slate-base-900/40 to-slate-base-900/95 group-hover:opacity-0 duration-300 z-10"></div>
+      <div class="relative overflow-hidden bg-slate-100 rounded-md flex-1 h-fit">
+        <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-100/0 via-slate-100/40 to-slate-100/95 group-hover:opacity-0 duration-300 z-10"></div>
         @if (item.asset)
           <div 
             class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit group-hover:scale-[175%] duration-300"
             style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
           </div>
         @endif
-        <div class="flex justify-center items-center duration-300 flex-1 h-full backdrop-blur-xl bg-slate-base-900/50 group-hover:bg-slate-base-900/0 p-4 relative z-20">
+        <div class="flex justify-center items-center duration-300 flex-1 h-full backdrop-blur-xl bg-slate-100/50 group-hover:bg-slate-100/0 p-4 relative z-20">
           @!collection.icon({ item, class: 'h-full mx-auto shadow-lg' })
         </div>
       </div>
