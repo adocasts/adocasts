@@ -116,12 +116,12 @@
 
           <div class="flex video-small-actions items-center gap-3 md:mt-6">
             @button({ href: post.routeUrl, 'up-follow': true, block: true, size: 'xs' })
-              @!icons.externalLink({ className: 'w-4 h-4 rotate-50 gap-3' })
+              @svg('ph:folder-notch-open-fill', { class: 'w-4 h-4' })
               Re-Open
             @end
 
             @button({ type: 'button', block: true, size: 'xs', '@click': 'close' })
-              @!icons.x({ className: 'w-4 h-4 gap-3' })
+              @svg('ph:x-bold', { class: 'w-4 h-4' })
               Close
             @end
           </div>

@@ -3,7 +3,7 @@ import Collection from "#models/collection"
 import Post from "#models/post"
 import { inject } from "@adonisjs/core"
 import { HttpContext } from "@adonisjs/core/http"
-import User from '../models/user';
+import User from '#models/user';
 
 @inject()
 export default class CollectionService {
