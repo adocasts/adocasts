@@ -51,6 +51,9 @@ router.get('/', [HomeController, 'index']).as('home')
  */
 router.on('/uses').redirectToPath('/credits')
 router.on('/attributions').redirect('/credits')
+router.on('/topics/adonisjs-5').redirectToPath('/topics/adonisjs')
+router.on('/topics/adonis-5').redirectToPath('/topics/adonisjs')
+router.on('/series/lets-learn-adonis-5').redirectToPath('/series/lets-learn-adonisjs-5')
 
 /**
  * company routes
