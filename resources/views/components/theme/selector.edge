@@ -1,4 +1,8 @@
-@dropdown()
+@dropdown({
+  attrs: {
+    'up-theme-selector': true
+  }
+})
   @slot('triggerManual', props)
     @button({ class: 'theme-selector', '@click': props.handler, square: true })
       <span class="theme-icon theme-icon-light text-slate-600 group-hover:text-slate-900">

@@ -21,7 +21,7 @@
   },`)
 @endif
 
-<div @click.away="close" class="group relative flex-shrink-0 {{ className }}" x-data="{ {{{ xData }}} }" {{{ attrs }}}>
+<div @click.away="close" class="group relative flex-shrink-0 {{ $props.class }}" x-data="{ {{{ xData }}} }" {{ html.attrs($props.attrs) }}>
   <div>
     @if ($slots.triggerManual)
       {{{ await $slots.triggerManual({ handler: 'toggle' }) }}}

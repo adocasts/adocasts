@@ -20,16 +20,14 @@ export default class UsersController {
     return view.render('pages/users/menu', { notifications })
   }
 
-  public async theme({ request, response, auth, session, up }: HttpContext) {
+  public async theme({ request, view, auth, session }: HttpContext) {
     const { theme } = await request.validateUsing(themeValidator)
     
     await auth.user?.merge({ theme }).save()
 
     session.put('theme', theme)
 
-    up.setTarget('[up-theme]')
-
-    return response.redirect().back()
+    return view.render('components/theme/selector')
   }
 
   public async billto({ request, response, auth }: HttpContext) {
