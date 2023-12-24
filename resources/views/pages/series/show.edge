@@ -45,7 +45,7 @@
             @if (item.taxonomies)
               <div class="flex flex-wrap gap-4 mt-2">
                 @each (topic in item.taxonomies)
-                  <a href="#" class="font-medium anchor" up-follow>
+                  <a href="{{ route('topics.show', { slug: topic.slug }) }}" class="font-medium anchor" up-follow>
                     #{{ topic.slug }}
                   </a>
                 @endeach

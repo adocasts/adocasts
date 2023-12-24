@@ -5,10 +5,7 @@
 @let(lines = $props.lines ?? true)
 @let(dots = $props.dots ?? true)
 
-<section 
-  x-data 
-  x-init="starfield($refs.canvasLine, $refs.canvasDot)" 
-  {{ html.attrs({ class: classNames, ...attrs }) }}>
+<section x-data="starfield" {{ html.attrs({ class: classNames, ...attrs }) }}>
   
   {{{ await $slots.main() }}}
   
