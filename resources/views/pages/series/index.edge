@@ -11,7 +11,7 @@
         @if ([0].includes(i))
           @!collection.square.large({ item, class: ['sm:col-span-2 md:col-span-4 lg:col-span-5'] })
         @elseif (i === 1)
-          @!collection.square({ item, class: ['sm:col-span-2 md:col-span-1 lg:col-span-2 md:row-span-3 lg:row-span-2']})
+          @!collection.square({ item, class: ['sm:col-span-2 md:col-span-2 lg:col-span-2 md:row-span-3 lg:row-span-2']})
         @else
           @!collection.square.small({ item })
         @endif
@@ -27,11 +27,11 @@
 
     <section class="grid md:gap-4 lg:gap-8 mt-8">
       @each ((item, i) in series)
-        <div class="grid lg:grid-cols-4 bg-slate-100 rounded-md">
+        <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-slate-100 rounded-md">
           @!collection.square.tall({ item, class: ['bg-slate-200'] })
 
-          @each (post in item.postsFlattened)
-            @!post.item({ item: post, col: true, class: 'p-4', display: { seriesName: false } })
+          @each ((post, i) in item.postsFlattened)
+            @!post.item({ item: post, col: true, class: `p-4 ${i > 0 ? 'sm:hidden' : ''} ${i == 2 ? 'md:hidden lg:flex' : 'md:flex'}`, display: { seriesName: false } })
           @endeach
         </div>
       @endeach

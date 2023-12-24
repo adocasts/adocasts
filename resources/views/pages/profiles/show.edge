@@ -9,7 +9,7 @@
     <div class="max-w-prose mx-auto flex gap-6 relative z-10">
       @if (user.avatar)
         <div class="-mt-24 h-full relative">
-          <img class="w-48 h-48 rounded-full border-8 border-body bg-slate-100 overflow-hidden" src="{{ user.avatar }}" />
+          <img class="w-36 h-36 md:w-48 md:h-48 rounded-full border-8 border-body bg-slate-100 overflow-hidden" src="{{ user.avatar }}" />
 
           @if (!user.isFreeTier)
             <div class="w-2/3 absolute bottom-0 left-1/2 -translate-x-1/2 bg-gradient-to-br from-brand-400 to-brand-600 px-2 xl:px-3 py-1 xl:py-2 rounded-full">
@@ -19,7 +19,7 @@
         </div>
       @endif
 
-      <div class="flex justify-end h-full flex-1">
+      <div class="flex justify-end h-full flex-1 pr-2 -mt-2">
         @!user.links({ user })
       </div>
     </div>
@@ -38,12 +38,12 @@
     </div>
 
     @if (user.profile.biography)
-      <p class="text-slate-900 max-w-prose mt-4 mb-6">
+      <p class="text-slate-900 max-w-prose mt-4 mb-6 text-sm lg:text-base">
         {{ user.profile.biography }}
       </p>
     @endif
 
-    <div class="flex flex-wrap gap-4">
+    <div class="flex flex-wrap gap-4 text-sm lg:text-base">
       @if (user.profile.company)
         <p class="flex items-center gap-1.5 truncate">
           @svg('ph:buildings-fill')
@@ -79,7 +79,7 @@
     <p class="font-semibold uppercase tracking-wider pt-8 mt-8 border-t border-slate-200">
       Recent Activity
     </p>
-    <p class="text-slate-600">
+    <p class="text-slate-600 text-sm">
       Here's what {{ user.handle }} has been up to this past year
     </p>
 

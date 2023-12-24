@@ -17,7 +17,7 @@
         @if ([0].includes(i))
           @!collection.square.large({ item, class: ['sm:col-span-2 md:col-span-4 lg:col-span-5'] })
         @elseif (i === 1)
-          @!collection.square({ item, class: ['sm:col-span-2 md:col-span-1 lg:col-span-2 md:row-span-3 lg:row-span-2']})
+          @!collection.square({ item, class: ['sm:col-span-2 md:col-span-2 lg:col-span-2 md:row-span-3 lg:row-span-2']})
         @else
           @!collection.square.small({ item })
         @endif

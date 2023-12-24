@@ -18,14 +18,14 @@
               </div>
               <p class="text-sm text-slate-500">
                 @if (item.titleDescriptor)
-                  {{ item.titleDescriptor }}
+                  <span class="truncate">{{ item.titleDescriptor }}</span>
                 @endif
                 @if (item.title && item.href)
-                  <a href="{{ item.href }}" class="font-medium !text-slate-900 anchor anchor-inv anchor-thin anchor-current" up-follow>
+                  <a href="{{ item.href }}" class="font-medium truncate !text-slate-900 anchor anchor-inv anchor-thin anchor-current" up-follow>
                     {{ item.title }}
                   </a>
                 @elseif (item.title)
-                  <span class="font-medium text-slate-900">
+                  <span class="font-medium text-slate-900 truncate">
                     {{ item.title }}
                   </span>
                 @endif

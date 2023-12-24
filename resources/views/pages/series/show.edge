@@ -16,10 +16,10 @@
       @endif
 
       <div class="relative z-10 backdrop-blur-2xl lg:backdrop-blur-3xl">
-        <div class="page flex flex-wrap items-center py-4 xl:py-8">
-          @!collection.icon({ item, class: 'w-full max-w-[250px] order-1 md:order-2 md:hidden border-4 border-brand-base-800' })
+        <div class="page flex flex-wrap items-start lg:items-center pt-8 pb-4 xl:py-8 gap-6">
+          @!collection.icon({ item, class: 'w-24 lg:w-full max-w-[250px] order-1 md:order-2 md:hidden border-2 md:border-4 border-brand-base-800' })
 
-          <div class="flex-1 my-4 md:mr-4 xl:mr-8 order-2 md:order-1">
+          <div class="sm:flex-1 mb-4 sm:my-4 md:mr-4 xl:mr-8 order-2 md:order-1">
             @!heading({ title: item.name, class: 'text-slate-base-100' })
 
             <div class="flex items-center gap-3 text-slate-base-400 mt-4">
@@ -37,7 +37,7 @@
             </div>
 
             @if (item.description)
-              <p class="lg:font-lg leading-7 mt-2 max-w-prose text-slate-base-100">
+              <p class="xl:font-lg leading-7 mt-2 max-w-prose text-slate-base-100">
                 {{ item.description }}
               </p>
             @endif
@@ -75,10 +75,10 @@
     </div>
   @end
 
-  <div class="flex flex-wrap -mx-4 lg:-mx-8 relative" style="--aside-width: 385px;">
+  <div class="flex flex-wrap -mx-2 xl:-mx-8 relative" style="--aside-width: 385px;">
     <aside 
       x-data="{ top: $store.app.heroHeight * -1 - 20 + 'px' }"
-      class="w-full px-4 xl:px-8 lg:w-[var(--aside-width)] lg:absolute lg:h-[calc(100%-var(--top-offset))] top-[var(--top-offset)] right-0 z-20 order-1 md:order-2" 
+      class="hidden lg:block w-full px-4 xl:px-8 lg:w-[var(--aside-width)] lg:absolute lg:h-[calc(100%-var(--top-offset))] top-[var(--top-offset)] right-0 z-20 order-1 md:order-2" 
       :style="{ '--top-offset': top }">
       <div class="sticky top-4 lg:p-8 rounded-xl" :class="{ 'lg:bg-slate-100': !$store.app.heroVisible || {{ item.children?.length ?? 0 }} }">
         <div class="relative overflow-hidden rounded-xl" :class="[$store.app.heroVisible ? 'mb-8' : 'mb-4']">
@@ -147,7 +147,7 @@
       </div>
     </aside>
 
-    <main class="w-full lg:w-[calc(100%-var(--aside-width))] px-4 xl:px-8 order-2 md:order-1">
+    <main class="w-full lg:w-[calc(100%-var(--aside-width))] px-4 lg:px-6 xl:px-8 order-2 md:order-1">
       @if (nextLesson.$extras.pivot_root_sort_order > 0)
         <div class="-mx-4 bg-slate-100 mb-4 rounded-xl">
           <div class="bg-slate-100 px-4 mb-4">

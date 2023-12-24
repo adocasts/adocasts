@@ -35,41 +35,24 @@
       </div>
     @endif
 
-    @if (series)
-      <div class="page lg:hidden">
-        <div class="flex mb-6 space-x-3">
-          @if (prevLesson)
-            @button({ href: prevLesson.routeUrl })
-              @svg('ph:caret-circle-left-fill', { class: 'w-6 h-6' })
-            @end
-          @endif
-
-          @button({ 
-            block: true, 
-            '@click': `document.getElementById('boxSeries').dispatchEvent(new CustomEvent('toggle'))`
-          })
-            @svg('ph:list-bullets-bold', { class: 'w-6 h-6' })
-            Series Details
-          @end
-
-          @if (nextLesson)
-            @button({ href: nextLesson.routeUrl })
-              @svg('ph:caret-circle-right-fill', { class: 'w-6 h-6' })
-            @end
-          @endif
-        </div>
-      </div>
-    @endif
-
-    <div class="bg-slate-100 px-4 py-4 flex items-center gap-8">
-      <div class="hidden lg:block w-36">
+    <div class="bg-slate-100 px-4 py-4 flex flex-wrap lg:flex-nowrap items-center gap-4 lg:gap-8 justify-between">
+      <div class="w-36 order-0">
         @button({ href: prevLesson?.routeUrl, attrs: 'up-follow', class: 'gap-2', disabled: !prevLesson?.routeUrl })
           @svg('ph:caret-circle-left-fill', { class: 'w-5 h-5' })
           Previous
         @end
       </div>
 
-      <div class="flex-1 flex justify-center gap-2">
+      <div class="w-full lg:flex-1 flex flex-col md:flex-row justify-center gap-2 order-2 lg:order-1">
+        @if (series)
+          @button({ 
+            '@click': `document.getElementById('boxSeries').dispatchEvent(new CustomEvent('toggle'))`
+          })
+            @svg('ph:list-bullets-bold', { class: 'w-5 h-5' })
+            Series Details
+          @end
+        @endif
+
         @if (auth.user && [PostTypes.LESSON, PostTypes.LIVESTREAM].includes(post.postTypeId))
           @!post.completed()
         @endif
@@ -77,7 +60,7 @@
         @!watchlist.toggle({ active: parseInt(post.$extras.watchlist_count ?? 0), postId: post.id })
 
         @if (!auth.user)
-          @button({ href: route('auth.signup.create'), class: 'gap-2' })
+          @button({ href: route('auth.signup.create'), class: 'gap-2', 'up-layer': 'new' })
             @svg('ph:sign-in-fill', { class: 'w-5 h-5' })
             Sign Up to Track Progress
           @end
@@ -91,7 +74,7 @@
         @endif
       </div>
   
-      <div class="hidden lg:flex w-36 justify-end">
+      <div class="flex w-36 justify-end order-1 lg:order-2">
         @button({ href: nextLesson?.routeUrl, class: 'gap-2', disabled: !nextLesson?.routeUrl })
           Next
           @svg('ph:caret-circle-right-fill', { class: 'w-5 h-5' })
@@ -100,7 +83,7 @@
     </div>
   @endslot
 
-  <div class="max-w-prose mx-auto mt-8 lg:mt-12 mb-8">
+  <div class="max-w-prose xl:max-w-[70ch] mx-auto mt-8 lg:mt-12 mb-8">
     <div class="flex items-center text-xs gap-x-4 mb-2">
       @each (topic in post.taxonomies)
         <a href="{{ route('topics.show', { slug: topic.slug }) }}" class="relative z-10 font-medium link text-slate-600" up-follow>
@@ -112,7 +95,7 @@
     @!heading({ title: post.title, size: 'sm' })
     
     @if (post.description)
-      <p class="text-slate-600 text-lg mt-2">
+      <p class="text-slate-600 text-sm lg:text-base xl:text-lg mt-2">
         {{ post.description }}
       </p>
     @endif
@@ -136,16 +119,16 @@
           @end
           @!stat.bar.item({ title: 'Published', value: post.publishAtDisplay })
           @!stat.bar.item({ title: 'Duration', value: post.watchMinutes })
-          @!stat.bar.item({ title: 'Comments', value: commentCount, href: '#comments' })
+          @!stat.bar.item({ title: 'Comments', value: commentCount, href: '#comments', class: 'hidden sm:flex' })
         @end
 
         @if (author.profile.biography)
-          <p class="text-slate-600 text-sm my-2">
+          <p class="text-slate-600 text-xs lg:text-sm my-2">
             {{ author.profile.biography }}
           </p>
         @endif
 
-        <div class="text-sm text-slate-600 tracking-wider pt-2 flex flex-wrap justify-between gap-4">
+        <div class="text-xs lg:text-sm text-slate-600 tracking-wider pt-2 flex flex-wrap justify-between gap-4">
           <div class="flex flex-wrap gap-4">
             @if (author.profile.company)
               <p class="flex items-center gap-1.5 truncate">
@@ -204,7 +187,7 @@
     </div>
   </div>
 
-  <div class="relative max-w-prose mx-auto">
+  <div class="relative max-w-prose xl:max-w-[70ch] mx-auto">
     @can('PostPolicy.view', post)
     <article x-data="proseBody" id="proseBody" class="prose post-type-{{ post.postTypeId }} relative">
       {{{ await parser.highlight(post.body) }}}
@@ -222,8 +205,8 @@
     @endcan
   </div>
 
-  <div id="comments" class="max-w-prose mx-auto mt-8">
-    @!comments.base({ postId: post.id, comments, commentCount, class: '-mx-4' })
+  <div id="comments" class="max-w-prose xl:max-w-[70ch] mx-auto mt-8">
+    @!comments.base({ postId: post.id, comments, commentCount, class: 'md:-mx-4' })
   </div>
 
 @end

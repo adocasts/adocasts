@@ -20,7 +20,7 @@
   @endif
   
   @if (clouds) 
-    <div x-data="mouseParallax(['one', 'two'], 'scale(50%)')">
+    <div x-data="mouseParallax(['one', 'two'], 'scale(50%)')" class="hidden md:block">
       <div x-ref="one" class="absolute scale-50 right-8 top-8">
         @!illustration.cloudOne({ class: 'text-slate-base-50/50' })
       </div>

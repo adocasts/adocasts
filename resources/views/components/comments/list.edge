@@ -12,7 +12,7 @@
 
     <li class="relative" id="comment{{ comment.id }}" up-comment="{{ comment.id }}">
       <div 
-        class="duration-300 rounded-md p-2 lg:p-4 mb-6 group relative" 
+        class="duration-300 rounded-md p-4 mb-6 group relative" 
         :class="[
           window.location.hash == `#comment{{ comment.id }}` ? 'border border-brand-600' : '',
           editId === {{ comment.id }} ? 'bg-slate-200' : 'bg-slate-100'
@@ -29,7 +29,7 @@
               <h6 class="text-base font-semibold">
                 Anonymous <span class="text-sm font-normal">({{ comment.name ?? 'Deleted' }})</span>
               </h6>
-              <div class="text-slate-400 text-xs">
+              <div class="text-slate-600 text-xs">
                 Commented <span datetime="{{ comment.createdAt }}">{{ comment.timeago }}</span>
               </div>
             </div>

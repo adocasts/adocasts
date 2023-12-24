@@ -18,13 +18,13 @@
     @endif
   @elseif (canComment)
     <div class="bg-slate-100 rounded-xl p-6 mt-6">
-      <h4 class="font-semibold text-lg mb-2">
+      <h4 class="font-semibold lg:text-lg mb-2">
         Join The Discussion!
-        <span class="text-slate-600 ml-2 font-normal">
+        <span class="text-xs lg:text-inherit text-slate-600 ml-2 font-normal">
           ({{ commentCount }} {{ string.pluralize(descriptor, commentCount) }})
         </span>
       </h4>
-      <p>
+      <p class="text-sm lg:text-base">
         Please
         <a href="{{ route('auth.signin.create') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
           sign in

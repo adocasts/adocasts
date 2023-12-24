@@ -21,11 +21,11 @@
 
     <section class="grid md:gap-4 lg:gap-8 mt-8">
       @each ((item, i) in topics)
-        <div class="grid lg:grid-cols-4 bg-slate-100 rounded-md">
+        <div class="grid sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4 bg-slate-100 rounded-md">
           @!taxonomy.card.tall({ item, class: ['bg-slate-200'] })
 
-          @each (post in item.posts)
-            @!post.item({ item: post, col: true, class: 'p-4' })
+          @each ((post, i) in item.posts)
+            @!post.item({ item: post, col: true, class: `p-4 ${i > 0 ? 'sm:hidden' : ''} ${i == 2 ? 'md:hidden lg:flex' : 'md:flex'}` })
           @endeach
         </div>
       @endeach

@@ -38,8 +38,8 @@
   ]
 )
 
-<div class="flex items-center justify-between w-full h-16 px-3 border-t border-slate-200">
-  <p class="pl-2 text-sm text-slate-700">
+<div class="flex items-center justify-between w-full h-16 px-1 md:px-2 border-t border-slate-200">
+  <p class="pl-2 text-xs md:text-sm text-slate-700">
     Showing 
     <span class="font-medium">{{ items.currentPage * items.perPage - (items.perPage - 1) }}</span> 
     to 
@@ -50,7 +50,7 @@
   </p>
 
   <nav>
-      <ul class="flex items-center text-sm leading-tight bg-slate-100 border border-slate-200/70 rounded h-[34px] text-slate-500">
+      <ul class="flex items-center text-sm leading-tight bg-slate-100 border border-slate-200/70 rounded h-[34px] text-slate-600">
           <li class="h-full">
               <a
                 @if (hasPrevious)

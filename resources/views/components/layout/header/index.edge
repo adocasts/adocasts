@@ -79,19 +79,24 @@
             </svg>
           </button>
         </div>
-        <a href="/" up-follow class="-m-1.5 p-1.5">
+        <a href="/" up-follow @click="showMobileMenu = false" class="-m-1.5 p-1.5">
           <span class="sr-only">Adocasts</span>
           <img class="logo-white w-auto h-6 md:h-7" src="/imgs/logo-white.svg" alt="Adocasts" width="146px" height="28px" />
           <img class="logo-black w-auto h-6 md:h-7" src="/imgs/logo-black.svg" alt="Adocasts" width="146px" height="28px" />
         </a>
-        <div class="flex flex-1 justify-end">
-          <a href="#" class="text-sm font-semibold leading-6 text-slate-900">Sign in <span aria-hidden="true">&rarr;</span></a>
+        <div class="flex flex-1 justify-end gap-4">
+          <a href="{{ route('auth.signin.create') }}" up-layer="new" @click="showMobileMenu = false" class="text-sm font-semibold leading-6 text-slate-900">Sign in</a>
+          <a href="{{ route('auth.signup.create') }}" up-layer="new" @click="showMobileMenu = false" class="text-sm font-semibold leading-6 text-slate-900">Sign Up</a>
         </div>
       </div>
       <div class="mt-6 space-y-2">
-        <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-50">Paths</a>
-        <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-50">Series</a>
-        <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-50">Topics</a>
+        {{--  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-50">Paths</a>  --}}
+        <a up-follow href="{{ route('series.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Series</a>
+        <a up-follow href="{{ route('topics.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Topics</a>
+        <a up-follow href="{{ route('lessons.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Lessons</a>
+        <a up-follow href="{{ route('streams.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Livestreams</a>
+        <a up-follow href="{{ route('blog.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Blog</a>
+        <a up-follow href="{{ route('snippets.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Snippets</a>
       </div>
     </div>
   </div>

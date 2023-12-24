@@ -6,7 +6,7 @@
     
   <div
     x-data="credits"
-    :class="['absolute h-[calc(100%+4rem)] w-full z-10 credits overflow-scroll -mt-8 -mb-16', { play }]"
+    :class="['absolute h-[calc(100%+4rem)] w-full left-0 z-10 credits overflow-scroll -mt-8 -mb-16', { play }]"
     @mouseenter="play = false"
     @mouseleave="play = true">
     <div class="max-w-3xl mx-auto">
@@ -107,7 +107,7 @@
         @end
 
         @credit.group({ title: 'Image Assets' })
-          <div class="grid md:grid-cols-3 gap-4 text-slate-base-300">
+          <div class="grid md:grid-cols-3 gap-4 text-slate-base-300 text-center lg:text-left">
             @each (asset in assets)
               <div>{{ asset.credit.replace('Left image by', '').replace('Left photo by', '').trim() }}</div>
             @endeach
@@ -115,7 +115,7 @@
         @end
 
         @credit.group({ title: 'Icon Assets' })
-          <div class="grid md:grid-cols-2 gap-4 text-slate-base-300">
+          <div class="grid md:grid-cols-2 gap-4 text-slate-base-300 text-center lg:flex-left">
             <a href="https://www.flaticon.com/free-icons/command-prompt" title="command prompt icons">Command Prompt by Hopstarter - Flaticon</a></li>
             <a href="https://www.flaticon.com/free-icons/biometric-identification" title="biometric identification icons">Biometric by Freepik - Flaticon</a></li>
             <a href="https://www.flaticon.com/free-icons/id-card" title="id-card icons">Id Card by Smashicons - Flaticon</a></li>
@@ -132,7 +132,7 @@
         @end
 
         @credit.group({ title: 'Adocasts Plus Subscribers' })
-          <div class="grid md:grid-cols-3 gap-4 text-slate-base-300">
+          <div class="grid md:grid-cols-3 gap-4 text-slate-base-300 text-center lg:text-left">
             @each (user in subscribers)
               <div>
                 @if (user.isEnabledProfile)

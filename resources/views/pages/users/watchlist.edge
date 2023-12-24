@@ -12,11 +12,11 @@
         @!heading({ title: 'Series.', size: 'sm' })
 
         @each ((item, i) in series)
-          <div class="grid lg:grid-cols-4 bg-slate-100 rounded-md mt-4">
+          <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-slate-100 rounded-md mt-4">
             @!collection.square.tall({ item, class: ['bg-slate-200'] })
 
-            @each (post in item.postsFlattened)
-              @!post.item({ item: post, col: true, class: 'p-4', display: { seriesName: false } })
+            @each ((post, i) in item.postsFlattened)
+              @!post.item({ item: post, col: true, class: `p-4  ${i > 0 ? 'sm:hidden' : ''} ${i == 2 ? 'md:hidden lg:flex' : 'md:flex'}`, display: { seriesName: false } })
             @endeach
           </div>
         @endeach

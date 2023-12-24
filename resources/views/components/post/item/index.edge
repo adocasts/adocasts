@@ -8,7 +8,7 @@
   ...($props.attrs || {})
 }) }}>
   @if (img)
-    <div class="mb-2 {{ html.classNames([{ 'md:mb-0 w-full sm:w-2/5 md:w-1/2 lg:w-2/5 mx-2': !col }]) }}">
+    <div class="mb-2 {{ html.classNames([{ 'md:mb-0 w-full sm:w-2/5 md:w-1/2 lg:w-2/5 px-2': !col }]) }}">
       <div class="{{ html.classNames(['w-full relative duration-300', ...(imgClassName || [])]) }}">
         @!post.picture({ item, class: 'h-full', lazy: lazyItem })
       </div>
@@ -16,7 +16,7 @@
   @endif
 
   <div class="{{ html.classNames([{
-    'sm:w-3/5 md:w-1/2 lg:w-3/5 mx-2': img && !col,
+    'sm:w-3/5 md:w-1/2 lg:w-3/5 px-2': img && !col,
     'w-full mx-4': !img
   }, ...($props.classContent || [])]) }}">
 
