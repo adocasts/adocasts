@@ -50,6 +50,29 @@ Alpine.data('mouseParallax', function (refNames = [], transforms = '') {
   }
 })
 
+Alpine.data('credits', function () {
+  let interval = null
+
+  return {
+    exists: true,
+    play: true,
+
+    init() {
+      setTimeout(() => {
+        interval = setInterval(() => {
+          if (this.play && this.$el.scrollTop !== this.$el.scrollTopMax) this.$el.scrollTop += 10
+        }, 60)
+
+        this.$watch('exists', (value) => !value && this.destroy())
+      }, 2500)
+    },
+
+    destroy() {
+      clearInterval(interval)
+    }
+  }
+})
+
 Alpine.data('comments', function () {
   return {
     editId: null,

@@ -5,13 +5,12 @@
   @endslot
     
   <div
-    x-data="{ play: true, containerHeight: 600 }"
+    x-data="credits"
     :class="['absolute h-[calc(100%+4rem)] w-full z-10 credits overflow-scroll -mt-8 -mb-16', { play }]"
-    x-init="containerHeight = $el.parentElement.clientHeight; setInterval(() => play && ($el.scrollTop += 10), 60)"
     @mouseenter="play = false"
     @mouseleave="play = true">
     <div class="max-w-3xl mx-auto">
-      <div class="max-w-xs mx-auto" :style="{ marginTop: containerHeight + 'px' }">
+      <div class="max-w-xs mx-auto pt-12">
         <span class="sr-only">Adocasts</span>
         <img class="logo-white max-w-full" src="/imgs/logo-white.svg" alt="Adocasts" />
         <img class="logo-black max-w-full" src="/imgs/logo-black.svg" alt="Adocasts" />
