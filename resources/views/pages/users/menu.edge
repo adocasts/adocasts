@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: "Your Menu",
+  meta: {
+    url: route('users.menu'),
+    desc: `View your latest notifications and just to pages specifically for you`,
+    asset: null,
+    index: true
+  }
+})
 
   <div class="max-w-[100vw] flex gap-x-3 md:gap-x-6 p-3 md:p-6" x-data x-init="document.getElementById('unreadNotifications').dispatchEvent(new CustomEvent('read'))">
     <nav class="flex flex-col sticky top-6 -mx-2 group">

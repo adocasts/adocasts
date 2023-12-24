@@ -1,6 +1,14 @@
-@layout()
+@layout({
+  title: "Profile Settings",
+  meta: {
+    url: route('users.settings.index', { section: 'profile' }),
+    desc: `Update your user profile`,
+    asset: null,
+    index: false
+  }
+})
 
-  <div x-data="{ active: 'account' }" class="flex flex-col lg:flex-row gap-3 lg:gap-6">
+  <div x-data="{ active: 'profile' }" class="flex flex-col lg:flex-row gap-3 lg:gap-6">
     @!settings.nav()
 
     <div class="w-full lg:w-3/4">

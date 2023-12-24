@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: 'Code Snippets',
+  meta: {
+    url: route('snippets.index'),
+    desc: `A helpful resource of code snippets for AdonisJS, NodeJS, and more`,
+    asset: null,
+    index: true
+  }
+})
 
   @section()
     <div class="flex -mx-4">

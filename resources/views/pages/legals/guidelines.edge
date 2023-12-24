@@ -1,14 +1,12 @@
-@layout()
-
-  {{--  @slot('meta')
-    @!meta.tags({
-      url: route('legals.guidelines'),
-      title: "Content Guidelines",
-      desc: "Content contribution guidelines for the Adocasts platform.",
-      asset: null,
-      index: true
-    })
-  @endslot  --}}
+@layout({
+  title: "Content Guidelines",
+  meta: {
+    url: route('legals.guidelines'),
+    desc: "Content contribution guidelines for the Adocasts platform.",
+    asset: null,
+    index: true
+  }
+})
 
   @!heading({
     title: `Content Guidelines`

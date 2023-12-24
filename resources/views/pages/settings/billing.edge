@@ -1,6 +1,14 @@
-@layout()
+@layout({
+  title: "Billing Settings",
+  meta: {
+    url: route('users.settings.index', { section: 'billing' }),
+    desc: `Update your subscription and view your invoices`,
+    asset: null,
+    index: false
+  }
+})
 
-  <div x-data="{ active: 'account' }" class="flex flex-col lg:flex-row gap-3 lg:gap-6">
+  <div x-data="{ active: 'billing' }" class="flex flex-col lg:flex-row gap-3 lg:gap-6">
     @!settings.nav()
 
     <div class="w-full lg:w-3/4">

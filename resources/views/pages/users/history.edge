@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: "Your Progression History",
+  meta: {
+    url: route('users.history'),
+    desc: `Browse the series, lessons, and posts you've recently watched`,
+    asset: null,
+    index: false
+  }
+})
 
   @!heading({ title: 'Progression History.', subtitle: "Here's what you've been up to", class: 'mb-8' })
 

@@ -1,6 +1,14 @@
 @let(skipAccent = true)
 
-@layout()
+@layout({
+  title: lessonRequest.name,
+  meta: {
+    url: route('requests.lessons.index'),
+    desc: utils.stripHTML(string.excerpt(lessonRequest.body, 200)),
+    asset: null,
+    index: true
+  }
+})
   <div class="app-container relative z-10 mb-6">
     <a href="{{ route('requests.lessons.index') }}" class="anchor" up-follow>
       <span class="inline-flex items-center gap-1.5">

@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: series.name,
+  meta: {
+    url: route('series.show', { slug: series.slug }),
+    desc: string.excerpt(series.description, 180),
+    asset: series.assets,
+    index: true
+  }
+})
 
   @slot('hero')
     <div 

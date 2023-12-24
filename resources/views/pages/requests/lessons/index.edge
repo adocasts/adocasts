@@ -1,6 +1,14 @@
 @let(skipAccent = true)
 
-@layout()
+@layout({
+  title: "Lesson Requests",
+  meta: {
+    url: route('requests.lessons.index'),
+    desc: `Track, submit, and vote for lesson requests to see a topic covered on Adocasts`,
+    asset: null,
+    index: true
+  }
+})
 
   @heading({ title: 'Lesson Requests.', subtitle: 'Submit & Vote for Lessons'})
     @slot('action')

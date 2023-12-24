@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: "Your Watchlist",
+  meta: {
+    url: route('users.watchlist'),
+    desc: `Browse all the lessons, posts, and series you've added to your watchlist.`,
+    asset: null,
+    index: false
+  }
+})
 
   @!heading({ title: 'Watchlist.', subtitle: "You're Keeping An Eye on These", class: 'mb-8' })
 

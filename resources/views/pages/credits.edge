@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: "Credits",
+  meta: {
+    url: route('credits'),
+    desc: "Credits for the people, technologies, and services that make Adocasts possible",
+    asset: null,
+    index: true
+  }
+})
 
   @slot('hero')
     @!starfield({ class: '!fixed w-full h-full top-0 left-0', mountain: false, clouds: false, lines: false })

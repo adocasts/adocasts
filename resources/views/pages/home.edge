@@ -1,5 +1,12 @@
-@layout()
-
+@layout({
+  title: "Your Ultimate Resource for AdonisJS Lessons and Videos",
+  meta: {
+    url: '/',
+    desc: `Take your AdonisJS skills to the next level with Adocasts. Our comprehensive video lessons cover everything from the basics to advanced topics. Join our community today and start learning!`,
+    asset: null,
+    index: true
+  }
+})
   @slot('hero')
     @!hero.home()
   @endslot

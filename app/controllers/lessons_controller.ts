@@ -1,6 +1,4 @@
 import HttpStatus from '#enums/http_statuses'
-import Collection from '#models/collection'
-import Post from '#models/post'
 import AnalyticsService from '#services/analytics_service'
 import CollectionService from '#services/collection_service'
 import HistoryService from '#services/history_service'
@@ -31,7 +29,7 @@ export default class LessonsController {
         .getLatestLessons()
         .where('publishAt', '>=', recentDate)
 
-      view.share({ recent })
+      view.share({ title: 'Lessons', recent })
     }
 
     const items = await this.postService
@@ -51,7 +49,7 @@ export default class LessonsController {
         .getLatestStreams()
         .where('publishAt', '>=', recentDate)
 
-      view.share({ recent })
+      view.share({ title: 'Livestreams', recent })
     }
 
     const items = await this.postService

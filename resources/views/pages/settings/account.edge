@@ -1,4 +1,12 @@
-@layout() 
+@layout({
+  title: "Account Settings",
+  meta: {
+    url: route('users.settings.index', { section: 'account' }),
+    desc: `Update your username, social connections, notifications, and more`,
+    asset: null,
+    index: false
+  }
+}) 
 
   <div x-data="{ active: 'account' }" class="flex flex-col lg:flex-row gap-3 lg:gap-6">
     @!settings.nav()

@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: 'Blog & News',
+  meta: {
+    url: route('blog.index'),
+    desc: `Browse the Adocasts blog, news, shared linkes, and more`,
+    asset: null,
+    index: true
+  }
+})
 
   @section()
     <div class="flex -mx-4">

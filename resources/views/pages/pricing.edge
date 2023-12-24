@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: "Your Ultimate Resource for AdonisJS Lessons and Videos",
+  meta: {
+    url: '/pricing',
+    desc: `Take your AdonisJS skills to the next level with Adocasts. Our comprehensive video lessons cover everything from the basics to advanced topics. Join our community today and start learning!`,
+    asset: null,
+    index: true
+  }
+})
   @slot('hero')
     <div class="-mt-12">
       @!pricing.home()

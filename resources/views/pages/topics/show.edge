@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: topic.name,
+  meta: {
+    url: route('topics.show', { slug: topic.slug }),
+    desc: string.excerpt(topic.description),
+    asset: topic.asset,
+    index: true
+  }
+})
 
   @slot('hero')
     <div 

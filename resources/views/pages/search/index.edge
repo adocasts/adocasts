@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: 'Search',
+  meta: {
+    url: route('search.index', {}, { qs: { term } }),
+    desc: 'Search all Adocasts lessons, series, and topics',
+    asset: null,
+    index: false
+  }
+})
 
   <div class="p-6 w-full {{ up.isPage ? '' : 'md:max-w-[600px] lg:min-w-[900px] max-w-2xl bg-white border border-slate-200 rounded-xl shadow-xl p-6' }}">
     <div class="w-full sticky top-0 z-50 rounded-xl {{ up.isPage ? 'bg-slate-100/50 backdrop-blur-md' : '' }}">

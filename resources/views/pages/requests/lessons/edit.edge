@@ -1,6 +1,13 @@
 @let(skipAccent = true)
 
-@layout()
+@layout({
+  title: "Edit Your Lesson Requests",
+  meta: {
+    url: route('requests.lessons.index'),
+    asset: null,
+    index: true
+  }
+})
   <div class="app-container relative z-10 mb-6">
     <a href="{{ route('requests.lessons.show', { id: lessonRequest.id }) }}" class="anchor" up-follow>
       <span class="inline-flex items-center gap-1.5">

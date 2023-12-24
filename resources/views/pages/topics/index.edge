@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: 'Topics',
+  meta: {
+    url: route('topics.index'),
+    desc: `Explore a wide range of AdonisJS topics with Adocasts. Our content covers everything from routing to authentication, helping you master this powerful Node.js framework. Browse our collection of video lessons today and take your AdonisJS skills to the next level`,
+    asset: null,
+    index: true
+  }
+})
 
   @section()
     @!heading({
