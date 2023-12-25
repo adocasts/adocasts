@@ -7,6 +7,7 @@ import router from '@adonisjs/core/services/router'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
 import mail from '@adonisjs/mail/services/main'
 import { DateTime } from 'luxon'
+import { setTimeout } from "timers/promises"
 
 export default class WatchlistNotifications extends BaseCommand {
   static commandName = 'watchlist:notifications'
@@ -54,7 +55,8 @@ export default class WatchlistNotifications extends BaseCommand {
     this.logger.info(`Sending notifications to ${users.length} users`)
 
     // send a notification email for each user linking to new post(s)
-    const promises = users.map(async (user) => {
+    for (let index = 0; index < users.length; index++) {
+      const user = users[index]
       const posts = newPosts.filter(post => sendables[user.id].includes(post.id))
       const turnOffFieldHref = router
         .builder()
@@ -76,19 +78,25 @@ export default class WatchlistNotifications extends BaseCommand {
       const title = 'New content has landed in your watchlist'
 
       try {
+        this.logger.info(`Sending email to ${user.id}`)
+
         await mail.send(mailer => {
           mailer
             .to(user.email)
             .subject(title)
             .htmlView('emails/watchlist', { title, user, posts, turnOffFieldHref, turnOffHref })
         })
+
+        this.logger.info(`Email sent to ${user.id}`)
       } catch (error) {
         this.logger.error(error)
+        this.logger.info(`Email failed to send to ${user.id}`)
       }
-    })
 
-    const results = await Promise.allSettled(promises)
+      this.logger.info(`Waiting 2.1 seconds...`)
+      await setTimeout(2100)
+    }
 
-    this.logger.info(`Notifications sent to ${results.length} users`)
+    this.logger.info('Finished "WatchlistNotifications"')
   }
 }
