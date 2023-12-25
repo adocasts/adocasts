@@ -65,6 +65,9 @@ export default class Profile extends AppBaseModel {
   @column()
   declare emailOnNewDeviceLogin: boolean
 
+  @column()
+  declare emailOnWatchlist: boolean
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

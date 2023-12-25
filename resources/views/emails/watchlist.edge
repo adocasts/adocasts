@@ -1,0 +1,41 @@
+@layout.email({ title })
+
+  @emails.paragraph()
+    Hi {{ user.username }},
+  @end
+
+  @emails.paragraph()
+    {{ title }}
+  @end
+
+  @emails.paragraph()
+    <strong>New Posts:</strong>
+    <ul>
+      @each (post in posts)
+        <li style="margin-bottom: 1rem;">
+          <h5>
+            <a href="{{ env('APP_DOMAIN') }}{{ post.routeUrl }}">
+              {{ post.title }}
+            </a>
+          </h5>
+          <p>
+            {{ post.description }}
+          </p>
+        </li>
+      @endeach
+    </ul>
+  @end
+
+  @emails.button({ href: `{{ domain }}/users/watchlist` })
+    View Watchlist
+  @end
+  
+  @!emails.signature()
+
+  @emails.paragraph({ style: 'font-size: .75rem; opacity: .65;' })
+    Email notifications can be disabled at any time within your account settings. 
+    Alternatively, you can <a href="{{ turnOffFieldHref }}">click here to turn off watchlist emails</a>.
+    Or, <a href="{{ turnOffHref }}">click here to turn off all activity based emails</a>.
+  @end
+
+@end

@@ -12,7 +12,6 @@ import PostSnapshot from '#models/post_snapshot'
 import User from '#models/user'
 import Comment from '#models/comment'
 // import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
-import Route from '@adonisjs/core/services/router'
 import State from '#enums/states'
 import Taxonomy from "#models/taxonomy"
 import ReadService from '#services/read_service'
@@ -31,6 +30,7 @@ import VideoTypes from '#enums/video_types'
 import UtilityService from '#services/utility_service'
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 import SlugService from '#services/slug_service'
+import router from '@adonisjs/core/services/router'
 
 export default class Post extends AppBaseModel {
   public serializeExtras = true
@@ -452,17 +452,23 @@ export default class Post extends AppBaseModel {
       }
     }
 
+    const builder = router.builder().disableRouteLookup().params(params)
+
     switch (this.postTypeId) {
       case PostType.BLOG:
-        return Route.makeUrl(`${namePrefix}blog.show`, params)
+        return builder.make('/blog/:slug')
       case PostType.NEWS:
-        return Route.makeUrl(`${namePrefix}news.show`, params)
-      case PostType.LIVESTREAM:
-        return Route.makeUrl(`${namePrefix}streams.show`, params)
+        return builder.make('/news/:slug')
       case PostType.SNIPPET:
-        return Route.makeUrl(`${namePrefix}snippets.show`, params)
+        return builder.make('/snippets/:slug')
+      case PostType.LIVESTREAM:
+        return params.collectionSlug
+          ? builder.make('/series/:collectionSlug/streams/:slug')
+          : builder.make('/streams/:slug')
       default:
-        return Route.makeUrl(`${namePrefix}lessons.show`, params)
+        return params.collectionSlug
+          ? builder.make('/series/:collectionSlug/lessons/:slug')
+          : builder.make('/lessons/:slug')
     }
   }
 

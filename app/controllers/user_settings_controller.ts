@@ -124,7 +124,8 @@ export default class UserSettingsController {
     const notificationFields = [
       { field: 'emailOnComment', message: `You'll no longer recieve emails when someone comments on your content` }, 
       { field: 'emailOnCommentReply', message: `You'll no longer recieve emails when someone replies to your comments` }, 
-      { field: 'emailOnAchievement', message: `You'll no longer recieve emails when you unlock achievements` }
+      { field: 'emailOnAchievement', message: `You'll no longer recieve emails when you unlock achievements` },
+      { field: 'emailOnWatchlist', message: `You'll no longer recieve emails when your watchlist items are updated` }
     ]
     const field = notificationFields.find(({ field }) => field === params.field)
 
@@ -155,6 +156,8 @@ export default class UserSettingsController {
     profile.emailOnAchievement = false
     profile.emailOnComment = false
     profile.emailOnCommentReply = false
+    profile.emailOnNewDeviceLogin = false
+    profile.emailOnWatchlist = false
 
     await profile.save()
 

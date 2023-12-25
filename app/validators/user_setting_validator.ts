@@ -5,7 +5,8 @@ export const emailNotificationValidator = vine.compile(
     emailOnComment: vine.accepted().optional(),
     emailOnCommentReply: vine.accepted().optional(),
     emailOnAchievement: vine.accepted().optional(),
-    emailOnNewDeviceLogin: vine.accepted().optional()
+    emailOnNewDeviceLogin: vine.accepted().optional(),
+    emailOnWatchlist: vine.accepted().optional()
   })
 )
 

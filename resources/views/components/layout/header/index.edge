@@ -18,6 +18,14 @@
           Lessons
           @!highlight.underline()
         </a>
+        <a href="{{ route('blog.index') }}" up-follow class="text-sm flex items-center font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
+          Blog
+          @!highlight.underline()
+        </a>
+        <a href="{{ route('snippets.index') }}" up-follow class="text-sm flex items-center font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
+          Snippets
+          @!highlight.underline()
+        </a>
       </div>
       <div class="flex lg:hidden my-2.5">
         <button @click="showMobileMenu = true" type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-slate-700">
