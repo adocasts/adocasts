@@ -24,6 +24,8 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
       .withPostCount()
       .withTotalMinutes()
       .withProgressCount()
+      .query
+      .if(this.user, query => query.withCount('progressionHistory', query => query.where('userId', this.user!.id).where('isCompleted', true).as('postCompletedCount')))
 
     return this
   }
@@ -97,7 +99,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
   }
 
   public withProgressCount() {
-    if (!this.user) return
+    if (!this.user) return this
     this.query.withCount('progressionHistory', query => query.where('userId', this.user!.id))
     return this
   }

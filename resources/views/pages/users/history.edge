@@ -21,7 +21,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-8 pt-4">
           @each (item in series)
-            @!collection.square.small({ item })
+            @!collection.square.progression({ item })
           @endeach
         </div>
       @end
