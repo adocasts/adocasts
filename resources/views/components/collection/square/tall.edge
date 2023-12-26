@@ -40,6 +40,22 @@
             {{ item.description }}
           </p>
         @endif
+
+        @if (withProgression)
+          <div class="w-full text-slate-600 text-xs pt-4 flex flex-wrap justify-between relative z-10">
+            @let(percentCompleted = Math.floor((item.meta.postCompletedCount / item.meta.postsFlattened_count) * 100))
+            <div class="flex items-baseline gap-1.5 uppercase tracking-wider pr-2 {{ percentCompleted >= 100 ? 'text-green-600' : '' }}">
+              <span class="text-xs">{{ percentCompleted }}%</span>
+              <span class="text-xs">Completed</span>
+            </div>
+    
+            @let(watchDisplay = utils.secondsForDisplay(item.meta.videoSecondsSum))
+            <div class="flex items-baseline gap-1.5 uppercase tracking-wider">
+              <span class="text-xs">{{ item.meta.postCompletedCount }} / {{ item.meta.postsFlattened_count }}</span>
+              <span class="text-xs">{{ pluralize('lesson', item.meta.postCount) }}</span>
+            </div>
+          </div>
+        @endif
       </div>
     </div>
   </a>
