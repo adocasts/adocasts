@@ -3,6 +3,10 @@
     aspect-ratio: 16 / 9;
   }
 
+  .plyr {
+    height: 100%;
+  }
+
   @screen lg {
     .aspect-video {
       aspect-ratio: 16 / 9;

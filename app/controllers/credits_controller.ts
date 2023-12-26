@@ -11,6 +11,8 @@ export default class CreditsController {
     const assets = await Asset.query().whereNotNull('credit').where('credit', '!=', '').distinct('credit')
     const subscribers = await User.query().preload('profile').where('planId', '!=', Plans.FREE).where('roleId', '!=', Roles.ADMIN)
 
+    view.share({ hFull: true })
+
     return view.render('pages/credits', { 
       authors,
       subscribers,

@@ -185,11 +185,11 @@ class VideoPlayer {
       ],
       settings: ['captions', 'quality', 'speed', 'loop']
     }
-
+    console.log({ isHlsVideo: this.isHlsVideo })
     const player = this.isHlsVideo 
       ? await this.#initPlyrPlayerHls(config) 
       : this.#initPlyrPlayerStandard(config)
-
+    console.log('player', player)
     window.player = player
 
     return player
