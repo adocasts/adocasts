@@ -22,7 +22,6 @@ export const exists = (table: string, column: string, options?: DbOptions) => {
 export const unique = (table: string, column: string, options?: DbOptions) => {
   return async (db: Database, value: string, _field: FieldContext) => {
     const result = await query(db, table, column, value, options)
-    console.log({ result, table, column, value, options })
     return result.length ? false : true
   }
 }

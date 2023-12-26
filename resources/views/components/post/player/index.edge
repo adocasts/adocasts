@@ -9,7 +9,7 @@
       class="bg-[rgb(0,0,0)] fixed bottom-0 right-0 z-[100]"
       data-post-id="{{ post.id }}"
       @close="close"
-      @open="open" up-keep="progression_{{ userProgression?.id }}">
+      @open="open">
       <div id="videoContents" class="flex flex-col">
         @if (post.livestreamUrl && post.isLive)
           <div class="mb-3">

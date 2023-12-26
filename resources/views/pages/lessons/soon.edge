@@ -1,0 +1,77 @@
+@layout({
+  title: post.page_title ?? post.title,
+  meta: {
+    url: post.routeUrl,
+    series: series,
+    desc: string.excerpt(post.meta_description ?? post.description, 180),
+    asset: post.thumbnails && post.thumbnails[0],
+    index: post.isPublished
+  }
+})
+
+  @slot('list')
+    @if (series)
+      @!post.list.series()
+    @elseif (similarLessons)
+      @!post.list.similar({ posts: similarLessons })
+    @endif
+  @endslot
+
+  @slot('hero')
+    <div id="videoPlayerContainer" class="-mb-24">
+      <div class="app-container !px-0">
+        @starfield({ mountain: false, clouds: false, lines: false })
+          <div class="no-access relative aspect-video bg-slate-100 p-12 flex items-center justify-center w-full h-full">
+            <div class="relative z-10">
+              <h3 class="font-black uppercase text-xl lg:text-3xl tracking-wider">
+                This Lesson Is Coming Soon
+              </h3>
+              <p class="lg:text-lg max-w-lg mt-3 mb-10">
+                Please check back {{ utils.timeago(post.publishAt) }}
+              </p>
+              @!countdown({ dateTime: post.publishAt.toISO() })
+            </div>
+          </div>
+        @end
+      </div>
+    </div>
+
+    <div class="bg-slate-100 px-4 py-4 flex flex-wrap lg:flex-nowrap items-center gap-4 lg:gap-8 justify-between">
+      <div class="w-36 order-0">
+        @button({ href: prevLesson?.routeUrl, attrs: 'up-follow', class: 'gap-2', disabled: !prevLesson?.routeUrl })
+          @svg('ph:caret-circle-left-fill', { class: 'w-5 h-5' })
+          Previous
+        @end
+      </div>
+
+      <div class="w-full lg:flex-1 flex flex-col md:flex-row justify-center gap-2 order-2 lg:order-1">
+        @if (series)
+          @button({ 
+            class: 'lg:hidden',
+            '@click': `document.getElementById('boxSeries').dispatchEvent(new CustomEvent('toggle'))`
+          })
+            @svg('ph:list-bullets-bold', { class: 'w-5 h-5' })
+            Series Details
+          @end
+        @endif
+
+        @!watchlist.toggle({ active: parseInt(post.$extras.watchlist_count ?? 0), postId: post.id })
+
+        @if (!auth.user)
+          @button({ href: route('auth.signup.create'), class: 'gap-2', 'up-layer': 'new' })
+            @svg('ph:sign-in-fill', { class: 'w-5 h-5' })
+            Sign Up to Track Progress
+          @end
+        @endif
+      </div>
+  
+      <div class="flex w-36 justify-end order-1 lg:order-2">
+        @button({ href: nextLesson?.routeUrl, class: 'gap-2', disabled: !nextLesson?.routeUrl })
+          Next
+          @svg('ph:caret-circle-right-fill', { class: 'w-5 h-5' })
+        @end
+      </div>
+    </div>
+  @endslot
+
+@end

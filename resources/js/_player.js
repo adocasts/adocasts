@@ -416,6 +416,8 @@ class VideoPlayer {
       watchPercent,
       watchSeconds: Math.floor(currentTime)
     })
+    
+    if (typeof data !== 'object') return
 
     const isCompleted = data.progression.isCompleted
     

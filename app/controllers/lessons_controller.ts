@@ -70,6 +70,7 @@ export default class LessonsController {
     if (post.isNotViewable && !auth.user?.isAdmin && !post.authors.some(a => a.id === auth.user?.id)) {
       throw new Exception('this post is not currently available to the public', { status: HttpStatus.NOT_FOUND })
     } else if (!post.isViewable && this.permissionService.canViewFutureDated()) {
+      view.share({ nextLesson, prevLesson, post, series })
       return view.render('pages/lessons/soon', { post, series })
     }
 
