@@ -25,17 +25,17 @@ export default class SignInController {
       return response.redirect('/forgot-password')
     }
 
-    // try {
+    try {
       await auth.use('web').attempt(uid, password, rememberMe)
       await sessionService.onSignInSuccess(auth.user!, rememberMe)
       await AuthAttempt.clear(uid)
-    // } catch (error) {
-    //   await AuthAttempt.recordBadLogin(uid)
+    } catch (error) {
+      await AuthAttempt.recordBadLogin(uid)
 
-    //   session.flash('errors', { form: 'The provided username/email or password is incorrect' })
+      session.flash('errors', { form: 'The provided username/email or password is incorrect' })
 
-    //   return response.redirect().toRoute('auth.signin.create')
-    // }
+      return response.redirect().toRoute('auth.signin.create')
+    }
 
     switch (action) {
       case 'email_verification':

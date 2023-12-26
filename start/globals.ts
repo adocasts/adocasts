@@ -23,12 +23,18 @@ import HtmlParser from '#services/html_parser'
 import Tab from '../app/view_models/tab.js'
 import CollectionService from '#services/collection_service'
 import StripeService from '#services/stripe_service'
+import app from '@adonisjs/core/services/app'
 
 addCollection(phicons)
 addCollection(simpleicons)
 addCollection(svgspinners)
 
 edge.use(edgeIconify)
+
+// we're not registering csrf in test env, so we'll just stub it's method
+if (app.inTest) {
+  edge.global('csrfField', () => '')
+}
 
 edge.global('DateTime', DateTime)
 edge.global('string', string)

@@ -2,7 +2,7 @@ import HttpStatus from "#enums/http_statuses"
 import { Exception } from "@adonisjs/core/exceptions"
 import string from "@adonisjs/core/helpers/string"
 import db from "@adonisjs/lucid/services/db"
-import { LucidModel, LucidRow } from "@adonisjs/lucid/types/model"
+import { LucidModel } from "@adonisjs/lucid/types/model"
 
 /**
  * Slug service

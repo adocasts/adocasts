@@ -1,3 +1,4 @@
+import env from '#start/env'
 import { defineConfig } from '@adonisjs/shield'
 
 export default defineConfig({
@@ -16,7 +17,7 @@ export default defineConfig({
    * to learn more
    */
   csrf: {
-    enabled: true,
+    enabled: env.get('NODE_ENV') !== 'test',
     exceptRoutes: ['/stripe/webhook'],
     enableXsrfCookie: false,
     methods: ['POST', 'PUT', 'PATCH', 'DELETE'],

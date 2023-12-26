@@ -19,16 +19,25 @@ export default class PasswordResetController {
     return view.render('pages/auth/password/sent')
   }
 
-  public async forgotPasswordSend({ request, response }: HttpContext) {
-    const email = request.input('email')
-    const user = await User.findBy('email', email)
-    const signedUrl = router.makeSignedUrl('auth.password.reset', { email }, { expiresIn: '1h' })
-    
-    if (user) {
-      await emitter.emit('email:password_reset', { user, signedUrl })
-    }
+  public async forgotPasswordSend({ request, response, session }: HttpContext) {
+    try {
+      const email = request.input('email')
+      const user = await User.findByOrFail('email', email)
+      const signedUrl = router.makeSignedUrl('auth.password.reset', { email }, { expiresIn: '1h' })
+      
+      if (user) {
+        await emitter.emit('email:password_reset', { user, signedUrl })
+      }
 
-    return response.redirect().toRoute('auth.password.forgot.sent');
+      return response.redirect().toRoute('auth.password.forgot.sent')
+    } catch (error) {
+      const email = request.input('email')
+
+      logger.error('AuthController.forgotPasswordSend', { email, error })
+      session.flash('error', "Account couldn't be found for this email");
+
+      return response.redirect().back()
+    }
   }
 
   public async resetPassword({ request, view, params }: HttpContext) {

@@ -85,10 +85,10 @@ router.post('/stripe/subscription/portal', [StripeSubscriptionsController, 'port
 /**
  * sign up, in, out
  */
-router.get('/signin', [AuthSignInController, 'create']).as('auth.signin.create')
-router.post('/signin', [AuthSignInController, 'store']).as('auth.signin.store')
-router.get('/signup', [AuthSignUpController, 'create']).as('auth.signup.create')
-router.post('/signup', [AuthSignUpController, 'store']).as('auth.signup.store')
+router.get('/signin', [AuthSignInController, 'create']).as('auth.signin.create').use(middleware.guest())
+router.post('/signin', [AuthSignInController, 'store']).as('auth.signin.store').use(middleware.guest()).use(middleware.turnstile())
+router.get('/signup', [AuthSignUpController, 'create']).as('auth.signup.create').use(middleware.guest())
+router.post('/signup', [AuthSignUpController, 'store']).as('auth.signup.store').use(middleware.guest()).use(middleware.turnstile())
 router.post('/signout', [AuthSignOutController, 'handle']).as('auth.signout')
 
 /**
@@ -103,7 +103,7 @@ router.get('/:provider/unlink', [AuthSocialController, 'unlink']).as('auth.socia
  */
 router.get('/forgot-password', [AuthPasswordResetController, 'forgotPassword']).as('auth.password.forgot');
 router.get('/forgot-password/sent', [AuthPasswordResetController, 'forgotPasswordSent']).as('auth.password.forgot.sent')
-router.post('/forgot-password', [AuthPasswordResetController, 'forgotPasswordSend']).as('auth.password.forgot.send')//.middleware('turnstile')
+router.post('/forgot-password', [AuthPasswordResetController, 'forgotPasswordSend']).as('auth.password.forgot.send').use(middleware.turnstile())
 router.get('/reset-password/:email', [AuthPasswordResetController, 'resetPassword']).as('auth.password.reset');
 router.post('/reset-password', [AuthPasswordResetController, 'resetPasswordStore']).as('auth.password.reset.store')
 
@@ -117,7 +117,7 @@ router.get('/verification/email/:email', [EmailVerificationsController, 'verify'
  * users
  */
 router.get('/:username', [ProfilesController, 'show']).as('profiles.show').where('username', /^@/)
-router.get('/users/menu', [UsersController, 'menu']).as('users.menu')
+router.get('/users/menu', [UsersController, 'menu']).as('users.menu').use(middleware.auth())
 router.get('/users/watchlist/:tab?', [UsersController, 'watchlist']).as('users.watchlist').use(middleware.auth())
 router.get('/users/history/:tab?', [UsersController, 'history']).as('users.history').use(middleware.auth())
 router.put('/api/users/theme', [UsersController, 'theme']).as('api.users.theme')
@@ -135,7 +135,7 @@ router.get('/users/revert/:id/:oldEmail/:newEmail', [UserSettingsController, 're
 router.put('/users/notifications/email', [UserSettingsController, 'updateNotificationEmails']).as('users.notifications.email')
 router.get('/users/:userId/notifications/:field/off', [UserSettingsController, 'disableNotificationField']).as('users.notifications.disable.field')
 router.get('/users/:userId/notifications/off', [UserSettingsController, 'disableNotifications']).as('users.notifications.disable')
-router.delete('/users/delete', [UserSettingsController, 'deleteAccount']).as('users.destroy')
+router.delete('/users/delete', [UserSettingsController, 'deleteAccount']).as('users.destroy').use(middleware.auth())
 router.put('/users/profile', [ProfilesController, 'update']).as('users.profiles.update').use(middleware.auth())
 router.put('/users/preferences', [PreferencesController, 'update']).as('users.preferences.update').use(middleware.auth())
 router.delete('/users/sessions/:id?', [SessionsController, 'destroy']).as('users.sessions.destroy').use(middleware.auth())
@@ -143,7 +143,7 @@ router.delete('/users/sessions/:id?', [SessionsController, 'destroy']).as('users
 /**
  * watchlists
  */
-router.patch('/watchlist/toggle', [WatchlistsController, 'toggle']).as('watchlists.toggle')
+router.patch('/watchlist/toggle', [WatchlistsController, 'toggle']).as('watchlists.toggle').use(middleware.auth())
 
 /**
  * search

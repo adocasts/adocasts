@@ -37,7 +37,7 @@ export default class AccountListener {
     const href = env.get('APP_DOMAIN') + signedUrl
     const html = await edge.render('emails/password_reset', { user, href })
 
-    await mail.sendLater(message => {
+    await mail.send(message => {
       message
         .to(user.email)
         .subject('[Adocasts] Reset your password')
@@ -48,7 +48,7 @@ export default class AccountListener {
   public async onPasswordResetSuccess({ user }: { user: User }) {
     const html = await edge.render('emails/password_reset_success', { user })
 
-    await mail.sendLater(message => {
+    await mail.send(message => {
       message
         .to(user.email)
         .subject('[Adocasts] Your password has been successfully reset')

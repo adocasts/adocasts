@@ -20,7 +20,7 @@ export default class EmailVerificationsController {
 
     if (!auth.user) {
       session.put('email_verification', request.url(true))
-      return response.redirect().toRoute('auth.signin', {}, { 
+      return response.redirect().toRoute('auth.signin.create', {}, { 
         qs: { 
           action: 'email_verification'
         } 

@@ -14,7 +14,7 @@
         </p>
       </div>
 
-      @form({ action: route('auth.signup.store'), upSubmit: !request.qs().plan })
+      @form({ action: route('auth.signup.store'), upSubmit: !request.qs().plan, turnstile: true })
         @if (request.qs().plan)
           <input type="hidden" name="plan" value="{{ request.qs().plan }}" />
         @endif
