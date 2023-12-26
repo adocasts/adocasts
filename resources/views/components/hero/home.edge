@@ -44,11 +44,13 @@
           @end
           
           @button.outline({ variant: 'lightBase', href: route('series.show', { slug: 'lets-learn-adonisjs-5' }) })
-            New to AdonisJS? Start here <span aria-hidden="true">&rarr;</span>
+            New to AdonisJS? Start here 
+            @svg('ph:arrow-right-bold')
           @end
         @else
           @button({ variant: 'lightBase', href: route('series.show', { slug: 'lets-learn-adonisjs-5' }) })
-            New to AdonisJS? Start here <span aria-hidden="true">&rarr;</span>
+            New to AdonisJS? Start here 
+            @svg('ph:arrow-right-bold')
           @end
         @endif
       </div>

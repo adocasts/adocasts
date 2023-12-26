@@ -39,7 +39,8 @@
       
       @if (href)
         <a href="{{ href }}" up-follow class="{{ html.classNames([sizes[size].cta, ...($props.class?.cta || [])]) }}">
-          {{ cta }} <span aria-hidden="true">&rarr;</span>
+          {{ cta }} 
+          @svg('ph:arrow-right-bold')
         </a>
       @endif
     </div>
