@@ -47,22 +47,31 @@
   <div class="relative z-[101] {{ postClass }}" up-header>
     @!layout.header()
   </div>
-
-  <div id="upHero" class="relative z-20 {{ postClass }}" up-hungry up-hero>
-    @if ($slots.hero)
-      {{{ await $slots.hero() }}}
-    @endif
-  </div>
   
   <main 
     x-data
     x-init="window.isAuthenticated = {{ !!auth.user }}"
-    class="{{ postClass }} flex-1" 
-    data-post-class="{{ postClassString }}" 
-    data-sync-to="[up-header], [up-hero], [up-footer]" 
     up-main>
-    <div {{ html.attrs({ class: utils.classes('page h-full relative z-20', [up.isPage ? 'mt-8' : '!px-0']), ...($props.attrs || {}) }) }}>
-      {{{ await $slots.main() }}}
+    <div id="upHero" class="relative z-20 {{ postClass }}" up-hero>
+      @if ($slots.hero)
+        {{{ await $slots.hero() }}}
+      @endif
+    </div>
+
+    <div 
+      up-main-content
+      data-post-class="{{ postClassString }}" 
+      data-sync-to="[up-header], [up-hero], [up-footer]" 
+      {{ html.attrs({ class: utils.classes('h-full relative z-20', postClass, [up.isPage ? 'mt-8' : '!px-0']), ...($props.attrs || {}) }) }}>
+      <div class="page h-full relative">
+        {{{ await $slots.main() }}}
+      </div>
+    </div>
+
+    <div id="upList" up-list>
+      @if (isPostOnDeck && $slots.list)
+        {{{ await $slots.list() }}}
+      @endif
     </div>
 
     @!toast.flash()
@@ -70,12 +79,6 @@
 
   <div class="{{ postClass }} relative z-30" up-footer>
     @!layout.footer()
-  </div>
-
-  <div id="upList" up-hungry up-list>
-    @if (isPostOnDeck && $slots.list)
-      {{{ await $slots.list() }}}
-    @endif
   </div>
 
   <div up-player>

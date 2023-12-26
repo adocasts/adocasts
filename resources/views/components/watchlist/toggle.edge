@@ -1,30 +1,31 @@
-@if (auth.user)
-  @form({ 
-    action: form.patch('watchlists.toggle'), 
-    target: 'up-watchlist-toggle', 
-    fragment: 'components/watchlist/toggle.edge',
-    'up-disable': 'button',
-    'x-data': '{ loading: false }',
-    '@submit': 'loading = true'
-  })
-    @if (postId)
-      <input type="hidden" name="postId" value="{{ postId }}" />
-    @elseif (collectionId)
-      <input type="hidden" name="collectionId" value="{{ collectionId }}" />
-    @elseif (taxonomyId)
-      <input type="hidden" name="taxonomyId" value="{{ taxonomyId }}" />
-    @endif
+<div x-data="{ loading: false }" class="{{ html.classNames([{ 'hidden': !auth.user }])}}" up-watchlist-toggle>
+  @if (auth.user)
+    @form({ 
+      action: form.patch('watchlists.toggle'), 
+      'up-target': '[up-watchlist-toggle]',
+      'up-submit': true,
+      fragment: 'components/watchlist/toggle.edge',
+      '@submit': 'loading = true'
+    })
+      @if (postId)
+        <input type="hidden" name="postId" value="{{ postId }}" />
+      @elseif (collectionId)
+        <input type="hidden" name="collectionId" value="{{ collectionId }}" />
+      @elseif (taxonomyId)
+        <input type="hidden" name="taxonomyId" value="{{ taxonomyId }}" />
+      @endif
 
-    @if (active)
-      @button({ variant: 'green', type: 'submit', class: ['gap-2'] })
-        @svg('ph:bookmark-simple-fill', { class: 'w-5 h-5' })
-        In Watchlist
-      @end
-    @else
-      @button.outline({ type: 'submit', class: ['gap-2'] })
-        @svg('ph:bookmark-fill', { class: 'w-5 h-5' })
-        Add to Watchlist
-      @end
-    @endif
-  @end
-@endif
+      @if (active)
+        @button({ variant: 'green', type: 'submit', class: ['gap-2'] })
+          @svg('ph:bookmark-simple-fill', { class: 'w-5 h-5' })
+          In Watchlist
+        @end
+      @else
+        @button.outline({ type: 'submit', class: ['gap-2'] })
+          @svg('ph:bookmark-fill', { class: 'w-5 h-5' })
+          Add to Watchlist
+        @end
+      @endif
+    @end
+  @endif
+</div>

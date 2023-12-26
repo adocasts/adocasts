@@ -588,7 +588,7 @@ up.on('up:location:changed', function(event) {
 // change to small player if the page doesn't contain it's positioning element
 up.on('up:fragment:loaded', event => {
   setTimeout(() => {
-    const main = document.querySelector('[up-main]')
+    const main = document.querySelector('[up-main-content]')
     const sync = Array.from(document.querySelectorAll(main.dataset.syncTo))
 
     if (main.classList.contains(main.dataset.postClass)) {

@@ -2,6 +2,7 @@ import 'unpoly'
 import 'unpoly/unpoly.css'
 
 // up.log.enable()
+// up.network.config.autoCache = () => false
 // up.fragment.config.mainTargets = ['[up-main], [up-hero], [up-list]']
 up.layer.config.modal.openAnimation = 'move-from-top'
 up.layer.config.modal.class = 'adocasts-modal'
