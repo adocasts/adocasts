@@ -130,7 +130,7 @@ export default class HistoryService {
    * @returns 
    */
   public async recordProgression(data: Infer<typeof historyValidator>) {
-    const progression = await this.getProgressionOrNew(user, routeName, data)
+    const progression = await this.getProgressionOrNew(data)
 
     // if new value is less than previously recorded value, ditch new value
     if (typeof data.watchSeconds === 'number' && progression.watchSeconds && data.watchSeconds < progression.watchSeconds) {

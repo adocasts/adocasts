@@ -414,7 +414,8 @@ class VideoPlayer {
     const { data } = await axios[this.http.method](this.http.url, {
       ...this.http.payload,
       watchPercent,
-      watchSeconds: Math.floor(currentTime)
+      watchSeconds: Math.floor(currentTime),
+      _csrf: document.forms.csrf._csrf.value
     })
     
     if (typeof data !== 'object') return

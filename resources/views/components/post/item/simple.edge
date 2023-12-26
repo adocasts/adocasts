@@ -4,7 +4,7 @@
       {{ item.publishAtDisplay }}
     </time>
     @each (topic in item.taxonomies)
-      <a href="#" class="relative z-10 font-medium link text-slate-600" up-follow>
+      <a href="{{ route('topics.show', { slug: topic.slug }) }}" class="relative z-10 font-medium link text-slate-600" up-follow>
         #{{ topic.slug }}
       </a>
     @endeach

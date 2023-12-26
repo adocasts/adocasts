@@ -15,7 +15,7 @@
     @let(series = item.rootSeries.at(0))
     <h5 class="uppercase flex items-center text-accent-500 hover:text-accent-600 tracking-wide font-sans text-xs">
       @if (display.seriesName)
-        <a href="#" up-follow class="anchor truncate" {{ html.attrs(upAttrs) }}>
+        <a href="{{ route('series.show', { slug: series.slug }) }}" up-follow class="anchor truncate" {{ html.attrs(upAttrs) }}>
           {{ series.name }}
         </a>
       @endif
@@ -28,9 +28,9 @@
     @set(path = item.rootPaths.at(0))
     <h5 class="uppercase flex items-center text-accent-500 tracking-wide font-sans text-xs">
       @if (display.pathName)
-        <a href="#" up-follow class="anchor truncate" {{ html.attrs(upAttrs) }}>
+        {{--  <a href="#" up-follow class="anchor truncate" {{ html.attrs(upAttrs) }}>
           {{ path.name }}
-        </a>
+        </a>  --}}
       @endif
       <span class="{{ html.classNames(['text-slate-600 group-hover:text-slate-700 duration-150', { 'ml-2': display.pathName }]) }}">
         {{ display.pathName ? '#' : 'Lesson' }}
@@ -40,21 +40,21 @@
   @elseif (display.type && item.postTypeId === PostTypes.NEWS)
     @assign(hasSeries = true)
     <h5 class="uppercase inline-flex items-center text-brand-500 tracking-wide  font-sans text-xs">
-      <a href="#" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
+      <a href="{{ route('blog.index') }}" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
         NEWS
       </a>
     </h5>
   @elseif (display.type && item.postTypeId === PostTypes.LIVESTREAM)
     @assign(hasSeries = true)
     <h5 class="uppercase inline-flex items-center text-brand-500  tracking-wide  font-sans text-xs">
-      <a href="#" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
+      <a href="{{ route('streams.index') }}" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
         LIVESTREAM
       </a>
     </h5>
   @elseif (display.type && item.postTypeId === PostTypes.BLOG)
     @assign(hasSeries = true)
     <h5 class="uppercase inline-flex items-center text-brand-500  tracking-wide  font-sans text-xs">
-      <a href="#" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
+      <a href="{{ route('blog.index') }}" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
         BLOG
       </a>
     </h5>
