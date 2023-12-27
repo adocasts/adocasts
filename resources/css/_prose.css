@@ -359,6 +359,10 @@ pre.shiki {
   }
 }
 
+.profile pre.shiki > code {
+  @apply !px-0 !pb-0;
+}
+
 pre.shiki.github-dark,
 .code-block pre {
   background-color: theme('colors.slate-base.900') !important;

@@ -2,6 +2,8 @@ import env from '#start/env'
 import { Bucket, DeleteFileOptions, DownloadOptions, SaveOptions, Storage } from '@google-cloud/storage'
 import { ImageOptions } from './asset_service.js'
 import sharp, { AvailableFormatInfo, FormatEnum } from 'sharp'
+import { MultipartFile } from '@adonisjs/core/bodyparser'
+import fs from 'fs'
 
 class StorageService {
   private bucket: Bucket
@@ -31,6 +33,26 @@ class StorageService {
   public async store(filename: string, data: Buffer, options?: SaveOptions) {
     const file = this.bucket.file(filename)
     await file.save(data, options)
+  }
+
+  public async storeFromTmp(location: string, filename: string, file: MultipartFile) {
+    return new Promise<void>((resolve, reject) => {
+      try {
+        fs.readFile(file.tmpPath!, async (error, data) => {
+          if (error) {
+            reject(error)
+          }
+
+          await this.store(location + filename, data)
+
+          file.markAsMoved('/img/' + filename, location)
+
+          resolve()
+        })
+      } catch (error) {
+        console.log({ error })
+      }
+    })
   }
 
   public async destroy(filename: string, options: DeleteFileOptions = { ignoreNotFound: true }) {

@@ -31,7 +31,7 @@
                 @endif
               </p>
               @if (['comment', 'reply'].includes(item.type) && item.body)
-                <div class="w-full prose-sm !max-w-full text-slate-700 mt-3 bg-slate-100 p-3 lg:p-6 rounded-xl">
+                <div class="w-full profile !max-w-full text-slate-700 mt-3 bg-slate-100 p-3 lg:p-6 rounded-xl">
                   {{{ await parser.highlight(item.body) }}}
                 </div>
               @endif

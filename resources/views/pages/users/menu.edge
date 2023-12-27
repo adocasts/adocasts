@@ -56,7 +56,7 @@
           </figure>
         @end
         <div>
-          <h3 class="text-lg mb-0.5">
+          <h3 class="text-lg mb-0.5 font-black">
             @profile.link({ user: auth.user })
               {{ auth.user.username }}
             @end
@@ -76,7 +76,7 @@
               @endif
               {{ plan.name }}
             </button>
-            {{--  @!form({ id: 'stripePortalForm', action: route('stripe.portal') })  --}}
+            @!form({ id: 'stripePortalForm', action: route('stripe.portal') })
             @if (auth.user.isEnabledProfile)
               @profile.link({ user: auth.user, class: 'text-xs anchor relative -top-0.5' })
                 View Your Profile

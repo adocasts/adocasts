@@ -10,6 +10,11 @@
     {{ target }}
   @endif
 
+  @if (loadable)
+    x-data="{ sending: false }"
+    @submit="sending = true"
+  @endif
+
   {{ $props.except(['upSubmit', 'target', 'fragment']).merge({ method: 'POST' }).toAttrs() }}>
   {{ csrfField() }}
 

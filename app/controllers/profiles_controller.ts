@@ -3,6 +3,8 @@ import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 import { chain } from 'mathjs'
 import ProfileActivityService from '#services/profile_activity_service';
+import { profileUpdateValidator } from '#validators/profile_validator';
+import storage from '#services/storage_service';
 
 export default class ProfilesController {
   
@@ -29,6 +31,33 @@ export default class ProfilesController {
     return view.render('pages/profiles/show', { user, activity, completedLessonsCount, commentCount, hoursWatchedSum })
   }
   
-  async update({}: HttpContext) {}
+  async update({ request, response, auth, session, up }: HttpContext) {
+    const { avatar, ...data } = await request.validateUsing(profileUpdateValidator)
+
+    if (avatar) {
+      const avatarUrl = auth.user!.avatarUrl
+      const location = `${auth.user!.id}/profile/`
+      const filename = `avatar_${new Date().getTime()}.${avatar.extname}`
+      
+      // upload and set new avatar
+      await storage.storeFromTmp(location, filename, avatar)
+      await auth.user!.merge({ avatarUrl: location + filename }).save()
+
+      // remove old if we were hosting it (wouldn't start with https if we were)
+      if (avatarUrl && !avatarUrl.startsWith('https') && avatarUrl !== (location + filename)) {
+        console.log({ avatarUrl, newUrl: location + filename })
+        await storage.destroy(avatarUrl)
+      }
+
+      // tell unpoly to update the header so their avatar updates
+      up.setTarget('[up-main], [up-header]')
+    }
+    
+    await auth.user!.related('profile').query().update(data)
+
+    session.flash('success', 'Your profile has been successfully updated')
+    
+    return response.redirect().back()
+  }
   
 }
