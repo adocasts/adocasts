@@ -1,6 +1,7 @@
 import app from '@adonisjs/core/services/app'
 import { HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import { errors } from '@vinejs/vine'
+import logger from '#services/logger_service'
 
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
@@ -37,6 +38,12 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * @note You should not attempt to send a response from this method.
    */
   async report(error: unknown, ctx: HttpContext) {
+    logger.error('Too many requests', {
+      url: ctx.request.url(true),
+      userId: ctx.auth?.user?.id,
+      ip: ctx.request.ip()
+    })
+
     return super.report(error, ctx)
   }
 }

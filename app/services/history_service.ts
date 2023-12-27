@@ -29,8 +29,12 @@ export default class HistoryService {
    * @returns 
    */
   public async getPostProgression(post: Post) {
-    if (!this.user) return
-    return post.related('progressionHistory').query().where('userId', this.user!.id).orderBy('updatedAt', 'desc').first()
+    return HistoryService.getPostProgression(this.user, post)
+  }
+
+  public static async getPostProgression(user: User | undefined, post: Post) {
+    if (!user) return
+    return post.related('progressionHistory').query().where('userId', user!.id).orderBy('updatedAt', 'desc').first()
   }
 
   /**

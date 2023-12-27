@@ -285,6 +285,8 @@ export default class SlugService<Model extends LucidModel> extends SimpleStrateg
     const dialectName = dialect.name
     const dialectVersion = Number(dialect.version)
 
+    slug = this.makeSlug(model, field, slug)
+
     switch (dialectName) {
       case 'postgres':
       case 'redshift':

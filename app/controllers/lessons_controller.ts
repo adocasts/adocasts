@@ -60,7 +60,7 @@ export default class LessonsController {
     return view.render('pages/lessons/index', { type: 'Livestreams', items })
   }
   
-  async show({ view, request, params, session, auth, up, route }: HttpContext) {
+  async show({ view, request, params, session, auth, up, route, bouncer }: HttpContext) {
     const post = await this.postService.findBy('slug', params.slug)
     const series = await this.collectionService.findForPost(post, params.collectionSlug)
     
@@ -69,11 +69,11 @@ export default class LessonsController {
 
     if (post.isNotViewable && !auth.user?.isAdmin && !post.authors.some(a => a.id === auth.user?.id)) {
       throw new Exception('this post is not currently available to the public', { status: HttpStatus.NOT_FOUND })
-    } else if (!post.isViewable && this.permissionService.canViewFutureDated()) {
+    } else if (!post.isViewable && await bouncer.with('PostPolicy').denies('viewFutureDated')) {
       view.share({ nextLesson, prevLesson, post, series })
       return view.render('pages/lessons/soon', { post, series })
     }
-
+    
     const userProgression = post.progressionHistory?.at(0)
     const comments = post.comments
     const commentCount = post.$extras.comments_count

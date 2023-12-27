@@ -1,6 +1,6 @@
 @if (env('STRIPE_ENABLED'))
   @let(plusMonthly = $props.plusMonthly || await Plan.findOrFail(Plans.PLUS_MONTHLY))
-  @let(block = block || false)
+  @let(block = $props.block || false)
 
   @button({ variant: 'dark', form: 'plusMonthlyForm', type: 'submit', block: true })
     {{ cta ?? 'Get Started Today' }}

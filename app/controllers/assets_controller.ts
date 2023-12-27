@@ -31,7 +31,6 @@ export default class AssetsController {
       return response.stream(storage.get(isSkipResize ? path : tempName))
     }
 
-
     return image
   }
 }

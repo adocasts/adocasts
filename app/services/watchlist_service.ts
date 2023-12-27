@@ -3,6 +3,7 @@ import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 import States from '#enums/states'
 import UnauthorizedException from '#exceptions/unauthorized_exception'
+import User from '#models/user'
 
 @inject()
 export default class WatchlistService {
@@ -62,13 +63,17 @@ export default class WatchlistService {
    * @returns 
    */
   public async toggle(data: Partial<Watchlist>) {
-    if (!this.user) throw new UnauthorizedException('Watchlists require an authenticated user')
+    return WatchlistService.toggle(this.user, data)
+  }
 
-    const record = await Watchlist.query().where(data).where({ userId: this.user.id }).first()
+  public static async toggle(user: User | undefined, data: Partial<Watchlist>) {
+    if (!user) throw new UnauthorizedException('Watchlists require an authenticated user')
+
+    const record = await Watchlist.query().where(data).where({ userId: user.id }).first()
 
     const watchlist = record
       ? await record.delete()
-      : await Watchlist.create({ ...data, userId: this.user.id })
+      : await Watchlist.create({ ...data, userId: user.id })
 
     return { watchlist, wasDeleted: !!record }
   }
