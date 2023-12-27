@@ -41,7 +41,7 @@ export default class SessionService {
   }
 
   public get token() {
-    return this.ctx.session.sessionId
+    return this.request.encryptedCookie(this.cookieName)
   }
 
   public getCookieName() {
@@ -83,6 +83,7 @@ export default class SessionService {
     const { ipAddress, userAgent } = this
     const { city, countryLong, countryShort } = await IdentityService.getLocation(ipAddress)
     const known = await this.getIsKnown(user)
+    const token = string.generateRandom(16)
 
     await this.signOutTimedOut(user)
     
@@ -93,7 +94,7 @@ export default class SessionService {
       isRememberSession,
       country: countryLong,
       countryCode: countryShort,
-      token: this.token,
+      token: token,
       loginAt: DateTime.now(),
       loginSuccessful: true,
       lastTouchedAt: DateTime.now()
@@ -106,6 +107,11 @@ export default class SessionService {
     if (!known && !skipNewDevice && user.profile.emailOnNewDeviceLogin && !app.inTest) {
       await emitter.emit('email:new_device', { user, log })
     }
+
+    this.response.encryptedCookie(this.cookieName, token, {
+      maxAge: this.cookieExpiry,
+      httpOnly: true,
+    })
 
     return log
   }

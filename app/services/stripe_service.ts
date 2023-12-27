@@ -195,6 +195,9 @@ export default class StripeService {
       mode,
       discounts,
       customer: customerId!,
+      automatic_tax: {
+        enabled: true
+      },
       line_items: [{ 
         price: plan.priceId!, 
         quantity: 1 

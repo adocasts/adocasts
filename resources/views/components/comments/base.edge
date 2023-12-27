@@ -42,6 +42,15 @@
     @!comments.list({ postId, lessonRequest, comments, nodeComments: rootComments, canComment })
   </div>
 
+  @if (!comments.length)
+    <div class="border-2 border-dashed border-slate-300 rounded-md bg-slate-100 px-4 py-12 flex flex-col items-center">
+      <img class="w-36" src="/imgs/robot/slice5.svg" alt="robot comment bubble" />
+      <p class="uppercase tracking-wide">
+        Be the first to comment!
+      </p>
+    </div>
+  @endif
+
   @if (auth.user && lessonRequest && canComment)
     @!comments.form({ postId, lessonRequest, includeScript: true })
   @endif

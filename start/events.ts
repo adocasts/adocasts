@@ -3,6 +3,7 @@ import Post from "#models/post"
 import User from "#models/user"
 import SessionLog from "#models/session_log"
 import Notification from "#models/notification"
+const SessionListener = () => import('#listeners/session_listener')
 const PostListener = () => import("#listeners/post_listener")
 const AccountListener = () => import('#listeners/account_listener')
 const NotificationListener = () => import('#listeners/notification_listener')
@@ -20,6 +21,7 @@ declare module '@adonisjs/core/types' {
   }
 }
 
+emitter.on('session:migrated', [SessionListener, 'onMigrated'])
 emitter.on('post:sync', [PostListener, 'onViewSync'])
 emitter.on('email:password_reset', [AccountListener, 'onPasswordReset'])
 emitter.on('email:password_reset_success', [AccountListener, 'onPasswordResetSuccess'])

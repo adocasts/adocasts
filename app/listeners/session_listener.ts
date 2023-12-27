@@ -1,8 +1,8 @@
-import SessionLog from "#models/session_log"
+// import SessionLog from "#models/session_log"
 
 export default class SessionListener {
-  async onMigrated({ fromSessionId, toSessionId }: OnSessionMigrated) {
-    await SessionLog.query().where('sessionId', fromSessionId).update({ sessionId: toSessionId })
+  async onMigrated(_event: OnSessionMigrated) {
+    // await SessionLog.query().where('token', fromSessionId).update({ token: toSessionId })
   }
 }
 
