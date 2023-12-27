@@ -26,6 +26,8 @@ export default await Env.create(new URL('../', import.meta.url), {
   ASSET_DOMAIN: Env.schema.string.optional({ format: 'url' }),
   LOG_LEVEL: Env.schema.string(),
   IDENTITY_SECRET: Env.schema.string(),
+  IPLOCATION_V4: Env.schema.string({ format: 'url' }),
+  IPLOCATION_V6: Env.schema.string({ format: 'url' }),
 
   /*
   |----------------------------------------------------------
