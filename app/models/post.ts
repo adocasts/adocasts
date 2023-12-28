@@ -369,7 +369,7 @@ export default class Post extends AppBaseModel {
     // note: bunny stream only provides direct mp4 files up to 720p
     // but that's okay because these are fallbacks in the event hls isn't support by the user
     const baseUrl = `https://videos.adocasts.com/${this.videoBunnyId}`
-    const heights = ['240', '360', '480', '720']
+    const heights = ['480', '720']
 
     return heights.map(height => ({ height, src: `${baseUrl}/play_${height}p.mp4` }))
   }
