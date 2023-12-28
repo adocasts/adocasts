@@ -600,8 +600,8 @@ up.on('up:fragment:loaded', event => {
       sync.map(m => m.classList.remove(main.dataset.postClass))
     }
   }, 300)
-
-  const exitPaths = ['/users/menu', '/signin', '/signup', '/histories/', '/watchlist/']
+  
+  const exitPaths = ['/users/menu', '/signin', '/signup', '/histories/', '/watchlist/', '/fragments']
   const requestUrl = event.request.url.toLowerCase()
   if (exitPaths.some(path => requestUrl.includes(path))) return
 
