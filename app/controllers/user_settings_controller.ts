@@ -112,6 +112,25 @@ export default class UserSettingsController {
     return response.redirect().back()
   }
 
+  public async updateWatchlistNotificationEmails({ request, response, view, auth, session }: HttpContext) {
+    const { emailOnWatchlist } = await request.validateUsing(emailNotificationValidator)
+    const { fragment } = await request.qs()
+    const profile = await auth.user!.related('profile').query().firstOrFail()
+
+    profile.emailOnWatchlist = emailOnWatchlist ?? false
+
+    await profile.save()
+
+    if (fragment) {
+      view.share({ success: emailOnWatchlist ? "Watchlist notifications have been turned on" : "Watchlist notifications have been turned off" })
+      return view.render('components/settings/email_on_watchlist', { isFragment: true })
+    }
+
+    session.flash('success', "Your email notification settings have been updated")
+
+    return response.redirect().back()
+  }
+
   public async disableNotificationField({ request, response, params, auth, session }: HttpContext) {
     const forwardTo = auth.user ? 'users.settings.index' : 'home.index'
 

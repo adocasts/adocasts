@@ -8,7 +8,11 @@
   }
 })
 
-  @!heading({ title: 'Watchlist.', subtitle: "You're Keeping An Eye on These", class: 'mb-8' })
+  @heading({ title: 'Watchlist.', subtitle: "You're Keeping An Eye on These", class: 'mb-8' })
+    @slot('action')
+      @!settings.emailOnWatchlist()
+    @endslot
+  @end
 
   @tabs.data({ tabs, tabIndex, class: 'mb-8' })
     @!tabs.buttons({ 'up-target': '[up-tab-content]', ':up-location': 'tabHref' })

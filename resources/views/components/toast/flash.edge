@@ -1,28 +1,28 @@
 <div id="toastFlash" up-hungry>
-  @if(flashMessages.has('success'))
+  @if(success || flashMessages.has('success'))
       <div 
-          x-data="{ type: 'success', message: {{ js.stringify(flashMessages.get('success')) }} }"
+          x-data="{ type: 'success', message: {{ js.stringify(success || flashMessages.get('success')) }} }"
           x-init="toast(message, { type })"
       ></div>
   @endif
 
-  @if(flashMessages.has('info'))
+  @if(info || flashMessages.has('info'))
       <div 
-          x-data="{ type: 'info', message: {{ js.stringify(flashMessages.get('info')) }} }"
+          x-data="{ type: 'info', message: {{ js.stringify(info || flashMessages.get('info')) }} }"
           x-init="toast(message, { type })"
       ></div>
   @endif
 
-  @if(flashMessages.has('error'))
+  @if(error || flashMessages.has('error'))
       <div 
-          x-data="{ type: 'error', message: {{ js.stringify(flashMessages.get('error')) }} }"
+          x-data="{ type: 'error', message: {{ js.stringify(error || flashMessages.get('error')) }} }"
           x-init="toast(message, { type })"
       ></div>
   @endif
 
-  @if(flashMessages.has('warning'))
+  @if(warning || flashMessages.has('warning'))
       <div 
-          x-data="{ type: 'warning', message: {{ js.stringify(flashMessages.get('warning')) }} }"
+          x-data="{ type: 'warning', message: {{ js.stringify(warning || flashMessages.get('warning')) }} }"
           x-init="toast(message, { type })"
       ></div>
   @endif

@@ -5,7 +5,7 @@
   id="unreadNotifications" 
   class="relative z-30" 
   up-source="{{ route('fragments.header.notifications', {}, { qs: { unreadCount }}) }}" 
-  up-poll 
+  up-poll="{{ !!auth.user }}"
   up-interval="120000"
   @read="$el.innerHTML = ''">
   @if (unreadCount)

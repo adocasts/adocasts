@@ -1,0 +1,19 @@
+<div up-user-notifications class="flex items-end">
+  @form({ action: form.put('users.notifications.watchlist', {}, { qs: { 'fragment': 'email_on_watchlist' } }), 'up-autosubmit': true, 'up-target': '[up-user-notifications]' })
+    @let(profile = auth.user.profile || await auth.user.related('profile').query().first())
+    <div class="flex flex-col">
+      @form.switch({ name: 'emailOnWatchlist', value: profile.emailOnWatchlist, upSubmit: true })
+        <div class="flex flex-col ml-3">
+          <strong>Notify Me</strong>
+          <p class="text-slate-700 text-xs">
+            Get notified via email when new lessons land in your watchlist
+          </p>
+        </div>
+      @end
+    </div>
+  @end
+
+  @if (isFragment)
+    @!toast.flash()
+  @endif
+</div>

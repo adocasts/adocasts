@@ -4,3 +4,12 @@ up-modal.adocasts-modal {
     padding: 0;
   }
 }
+
+up-modal .page {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+up-modal-dismiss {
+  z-index: 100;
+}
