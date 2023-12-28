@@ -1,0 +1,71 @@
+@layout()
+
+  <div class="max-w-prose mx-auto">
+    <div class="flex justify-between">
+      <div>
+        <a href="{{ route('feed.index') }}" class="anchor" up-follow>
+          <span class="inline-flex items-center gap-1.5">
+            @svg('ph:arrow-left-bold')
+            Feed
+          </span>
+        </a>
+      </div>
+
+      <div class="flex items-end gap-1.5">
+        @if (item.user.id === auth.user?.id)
+          @button({ href: route('feed.edit', { slug: item.slug }), 'up-layer': 'new', 'up-size': 'medium' })
+            @svg('ph:note-pencil-fill')
+            Edit
+          @end
+
+          @form({ action: route('feed.destroy', { id: item.id }), upSubmit: true, 'up-confirm': 'This will permanantly delete this discussion, would you like to continue?' })
+            @button({ variant: 'red', type: 'submit' })
+              @svg('ph:trash-fill')
+              Delete
+            @end
+          @end
+        @else
+
+        @endif
+      </div>
+    </div>
+
+    <div class="-mx-4 mb-8 mt-4">
+      <div class="bg-slate-100 rounded-md px-4 py-2">
+        @let(author = item.user)
+        @stat.bar({ size: 'small', display: 'flex' })
+          @stat.bar.item({ title: 'Posted By' })
+            @slot('prefix')
+              @if (author.avatar)
+                @profile.link({ user: author })
+                  <img class="rounded-md w-10 h-10 border-1 border-slate-900 border-opacity-20 bg-slate-100" src="{{ author.avatar }}" />
+                @end
+              @endif
+            @endslot
+
+            @profile.link({ user: author })
+              {{ author.profile.name || author.username }} 
+              <span class="text-slate-600 text-xs">({{ author.handle }})</span>
+            @end
+          @end
+          @!stat.bar.item({ title: 'Published', value: item.createdAtDisplay })
+          @if (item.createdAt !== item.updatedAt)
+            @!stat.bar.item({ title: 'Updated', value: item.updatedAtDisplay })
+          @endif
+          @!stat.bar.item({ title: 'Replies', value: commentCount, href: '#comments', class: 'hidden sm:flex' })
+        @end
+      </div>
+    </div>
+
+    @!heading({ title: item.title, size: 'sm', class: 'mb-6' })
+
+    <article x-data="proseBody" id="proseBody" class="prose relative">
+      {{{ await parser.highlight(item.body) }}}
+    </article>
+    
+    <div id="comments" class="max-w-prose mx-auto mt-8">
+      @!comments.base({ discussionId: item.id, comments, commentCount, descriptor: 'Reply', class: 'md:-mx-4' })
+    </div>
+  </div>
+
+@end

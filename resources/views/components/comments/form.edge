@@ -24,8 +24,10 @@
     @!turnstile()
   @endif
 
-  @if (lessonRequest)
-    <input type="hidden" name="lessonRequestId" value="{{ lessonRequest.id }}" />
+  @if (lessonRequestId)
+    <input type="hidden" name="lessonRequestId" value="{{ lessonRequestId }}" />
+  @elseif (discussionId)
+    <input type="hidden" name="discussionId" value="{{ discussionId }}" />
   @else
     <input type="hidden" name="postId" value="{{ postId }}" />
   @endif

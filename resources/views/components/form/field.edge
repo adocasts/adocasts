@@ -3,7 +3,7 @@
 
 @inject({ ...data, model })
 
-<label x-data="{{ js.stringify(data) }}" class="flex flex-col mb-6 relative">
+<label x-data="{{ js.stringify(data) }}" class="flex flex-col mb-6 relative {{ $props.class }}">
   @if (label)
     <span class="block text-sm font-medium leading-6 text-slat-900">{{ label }}</span>
   @endif

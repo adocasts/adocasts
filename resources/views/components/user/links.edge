@@ -1,4 +1,4 @@
-<div class="flex flex-wrap h-full gap-1 pt-6">
+<div class="flex flex-wrap gap-1 {{ $props.class }}">
   @if (user.profile.githubUrl)
     @button({ href: user.profile.githubUrl, target: '_blank', square: true })
       @svg('simple-icons:github')

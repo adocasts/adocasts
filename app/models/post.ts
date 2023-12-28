@@ -474,7 +474,7 @@ export default class Post extends AppBaseModel {
 
   @beforeSave()
   public static async slugifySlug(post: Post) {
-    if (post.$dirty.title && !post.$dirty.slug) {
+    if (post.$dirty.title && !post.$dirty.slug && !post.slug) {
       const slugify = new SlugService<typeof Post>({ strategy: 'dbIncrement', fields: ['title'] })
       post.slug = await slugify.make(Post, 'title', post.title)
     }

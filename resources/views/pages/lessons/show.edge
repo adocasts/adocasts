@@ -154,44 +154,7 @@
             @endif
           </div>
 
-          <div class="flex flex-wrap gap-1">
-            @if (author.profile.githubUrl)
-              @button({ href: author.profile.githubUrl, target: '_blank', square: true })
-                @svg('simple-icons:github')
-              @end
-            @endif
-            @if (author.profile.youtubeUrl)
-              @button({ href: author.profile.youtubeUrl, target: '_blank', square: true })
-                @svg('simple-icons:youtube')
-              @end
-            @endif
-            @if (author.profile.twitterUrl)
-              @button({ href: author.profile.twitterUrl, target: '_blank', square: true })
-                @svg('simple-icons:twitter')
-              @end
-            @endif
-            @if (author.profile.facebookUrl)
-              @button({ href: author.profile.facebookUrl, target: '_blank', square: true })
-                @svg('simple-icons:facebook')
-              @end
-            @endif
-            @if (author.profile.instagramUrl)
-              @button({ href: author.profile.instagramUrl, target: '_blank', square: true })
-                @svg('simple-icons:instagram')
-              @end
-            @endif
-            @if (author.profile.threadsUrl)
-              @button({ href: author.profile.threadsUrl, target: '_blank', square: true })
-                @svg('simple-icons:threads')
-              @end
-            @endif
-            @if (author.profile.website)
-              @button({ href: author.profile.website, target: '_blank', class: 'text-xs gap-1.5' })
-                @svg('ph:globe-hemisphere-west-fill', { class: 'text-sm' })
-                Visit Website
-              @end
-            @endif
-          </div>
+          @!user.links({ user: author })
         </div>
       </div>
     </div>

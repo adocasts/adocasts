@@ -4,14 +4,14 @@ import UnauthorizedException from "#exceptions/unauthorized_exception";
 import Comment from "#models/comment";
 import NotificationService from "./notification_service.js";
 import sanitizeHtml from 'sanitize-html'
-// import Logger from "@ioc:Logger/Discord";
 import IdentityService from "./identity_service.js";
-import CommentTypes from "#enums/comment_types";
 import { DateTime } from "luxon";
 import { HttpContext } from "@adonisjs/core/http";
 import { inject } from "@adonisjs/core";
 import { commentValidator } from '#validators/comment_validator'
 import { Infer } from '@vinejs/vine/types';
+import logger from "./logger_service.js";
+import UtilityService from "./utility_service.js";
 
 @inject()
 export default class CommentService {
@@ -21,7 +21,7 @@ export default class CommentService {
     return this.ctx.auth.user
   }
 
-  public async store({ body, ...data }: Infer<typeof commentValidator>) {
+  public async store(data: Infer<typeof commentValidator>) {
     if (!this.user) throw new UnauthorizedException('You must be signed in to create comments.')
 
     const trx = await db.transaction()
@@ -32,9 +32,9 @@ export default class CommentService {
 
     comment.merge({
       ...data,
-      commentTypeId: data.lessonRequestId ? CommentTypes.LESSON_REQUEST : CommentTypes.POST,
+      commentTypeId: Comment.getTypeId(data),
       identity,
-      body: sanitizeHtml(body, { allowedAttributes: false }),
+      body: sanitizeHtml(data.body, { allowedAttributes: false }),
       userId: this.user.id,
       stateId: States.PUBLIC
     })
@@ -51,11 +51,11 @@ export default class CommentService {
 
     await trx.commit()
 
-    // await Logger.info('NEW COMMENT', {
-    //   postId: comment.postId,
-    //   body: UtilityService.truncate(comment.body, 100),
-    //   go: NotificationService.getGoPath(comment)
-    // })
+    await logger.info('NEW COMMENT', {
+      postId: comment.postId,
+      body: UtilityService.truncate(comment.body, 100),
+      go: NotificationService.getGoPath(comment)
+    })
 
     return comment
   }

@@ -13,8 +13,8 @@
       </span>
     </h4>
 
-    @if (postId)
-      @!comments.form({ postId, lessonRequest, includeScript: true })
+    @if (postId || discussionId)
+      @!comments.form({ postId, lessonRequest, discussionId, includeScript: true })
     @endif
   @elseif (canComment)
     <div class="bg-slate-100 rounded-xl p-6 mt-6">
@@ -39,7 +39,7 @@
   @endif
 
   <div class="mt-6">
-    @!comments.list({ postId, lessonRequest, comments, nodeComments: rootComments, canComment })
+    @!comments.list({ postId, lessonRequest, discussionId, comments, nodeComments: rootComments, canComment })
   </div>
 
   @if (!comments.length)
@@ -52,6 +52,6 @@
   @endif
 
   @if (auth.user && lessonRequest && canComment)
-    @!comments.form({ postId, lessonRequest, includeScript: true })
+    @!comments.form({ postId, lessonRequest, discussionId, includeScript: true })
   @endif
 </div>

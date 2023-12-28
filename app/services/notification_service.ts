@@ -9,6 +9,8 @@ import Post from '#models/post'
 import LessonRequest from '#models/lesson_request'
 import NotImplementedException from '#exceptions/not_implemented_exception'
 import { DateTime } from 'luxon'
+import logger from './logger_service.js'
+import Discussion from '#models/discussion'
 
 export default class NotificationService {
   /**
@@ -130,6 +132,8 @@ export default class NotificationService {
   ) {
     if (comment.lessonRequestId) {
       return this.onLessonRequestCommentCreate(comment, user, trx)
+    } else if (comment.discussionId) {
+      return this.onDiscussionCommentCreate(comment, user, trx)
     } else if (comment.postId) {
       return this.onPostCommentCreate(comment, user, trx)
     }
@@ -175,10 +179,10 @@ export default class NotificationService {
         await notification.trySendEmail(post.authors[i].id, trx)
       }
     } catch (error) {
-      // await Logger.error('Failed to create post comment notification', {
-      //   comment: JSON.stringify(comment),
-      //   error
-      // })
+      await logger.error('Failed to create post comment notification', {
+        comment: JSON.stringify(comment),
+        error
+      })
     }
   }
 
@@ -211,10 +215,46 @@ export default class NotificationService {
       await notification.save()
       await notification.trySendEmail(lessonRequest.userId, trx)
     } catch (error) {
-      // await Logger.error('Failed to create lesson request comment notification', {
-      //   comment: JSON.stringify(comment),
-      //   error
-      // })
+      await logger.error('Failed to create lesson request comment notification', {
+        comment: JSON.stringify(comment),
+        error
+      })
+    }
+  }
+
+  static async onDiscussionCommentCreate(
+    comment: Comment,
+    user?: User,
+    trx: TransactionClientContract | null = null
+  ) {
+    try {
+      const discussion = await Discussion.findOrFail(comment.lessonRequestId)
+      const notification = new Notification()
+
+      if (trx) {
+        notification.useTransaction(trx)
+      }
+
+      notification.merge({
+        userId: discussion.userId,
+        initiatorUserId: user?.id,
+        notificationTypeId: NotificationTypes.COMMENT,
+        table: Comment.table,
+        tableId: comment.id,
+        title: user
+          ? `${user.username} commented on your discussion`
+          : 'Someone commented on your discussion',
+        body: UtilityService.truncate(comment.body),
+        href: this.getGoPath(comment),
+      })
+
+      await notification.save()
+      await notification.trySendEmail(discussion.userId, trx)
+    } catch (error) {
+      await logger.error('Failed to create lesson request comment notification', {
+        comment: JSON.stringify(comment),
+        error
+      })
     }
   }
 
@@ -260,10 +300,10 @@ export default class NotificationService {
       await notification.save()
       await notification.trySendEmail(userId, trx)
     } catch (error) {
-      // await Logger.error('Failed to create comment reply notification', {
-      //   comment: JSON.stringify(comment),
-      //   error
-      // })
+      await logger.error('Failed to create comment reply notification', {
+        comment: JSON.stringify(comment),
+        error
+      })
     }
   }
 
@@ -275,6 +315,10 @@ export default class NotificationService {
   static getGoPath(comment: Comment) {
     if (comment.lessonRequestId) {
       return `/go/requests/lessons/${comment.lessonRequestId}/comment/${comment.id}`
+    }
+
+    if (comment.discussionId) {
+      return `/go/discussions/${comment.discussionId}/comment/${comment.id}`
     }
 
     return `/go/posts/${comment.postId}/comment/${comment.id}`

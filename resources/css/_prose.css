@@ -316,6 +316,10 @@ pre ul.filepath-list {
   min-height: 150px;
 }
 
+.prose-comment.feed .ProseMirror {
+  @apply rounded-md border-none pt-4 px-6 pb-4;
+}
+
 .comment-form.with-bio .prose-comment .ProseMirror {
   @apply pt-16 px-4;
 }

@@ -8,6 +8,9 @@ import State from '#enums/states'
 import AppBaseModel from '#models/app_base_model'
 import CommentTypes from '#enums/comment_types'
 import UtilityService from '#services/utility_service'
+import Discussion from './discussion.js'
+import { Infer } from '@vinejs/vine/types'
+import { commentValidator } from '#validators/comment_validator'
 
 export default class Comment extends AppBaseModel {
   @column({ isPrimary: true })
@@ -21,6 +24,9 @@ export default class Comment extends AppBaseModel {
 
   @column()
   declare lessonRequestId: number | null
+
+  @column()
+  declare discussionId: number | null
 
   @column()
   declare replyTo: number | null
@@ -67,6 +73,9 @@ export default class Comment extends AppBaseModel {
   @belongsTo(() => LessonRequest)
   declare lessonRequest: BelongsTo<typeof LessonRequest>
 
+  @belongsTo(() => Discussion)
+  declare discussion: BelongsTo<typeof Discussion>
+
   @hasMany(() => Comment, { foreignKey: 'replyTo' })
   declare responses: HasMany<typeof Comment>
 
@@ -84,5 +93,11 @@ export default class Comment extends AppBaseModel {
 
   public get timeago() {
     return UtilityService.timeago(this.createdAt)
+  }
+
+  public static getTypeId(comment: Comment | Infer<typeof commentValidator>) {
+    if (comment.lessonRequestId) return CommentTypes.LESSON_REQUEST
+    if (comment.discussionId) return CommentTypes.DISCUSSION
+    return CommentTypes.POST
   }
 }

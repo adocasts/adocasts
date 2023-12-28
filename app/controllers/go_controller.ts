@@ -1,4 +1,5 @@
 import Comment from '#models/comment'
+import Discussion from '#models/discussion'
 import LessonRequest from '#models/lesson_request'
 import Post from '#models/post'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -42,6 +43,26 @@ export default class GoController {
     }
 
     return response.redirect(`/requests/lessons/${lessonRequest.id}#comment${commentId}`)
+  }
+
+  public async discussionComment({ response, params, session }: HttpContext) {
+    const { id, commentId } = params
+    const discussion = await Discussion.find(id)
+    const comment = await Comment.find(commentId)
+
+    if (!discussion || !comment) {
+      session.flash('error', !discussion
+        ? "The discussion associated with this comment could not be found & may have been deleted."
+        : "The comment could not be found & may have been deleted.")
+
+      return response.redirect().back()
+    }
+
+    if (!comment.isPublic) {
+      return response.redirect(`https://studio.adocasts.com/comments#comment${commentId}`)
+    }
+
+    return response.redirect(`/feed/${discussion.slug}#comment${commentId}`)
   }
 
   public async authReset({ response, session }: HttpContext) {

@@ -28,6 +28,7 @@ import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
 import hash from '@adonisjs/core/services/hash'
 import env from '#start/env'
 import SlugService from '#services/slug_service'
+import Discussion from './discussion.js'
 
 export default class User extends AppBaseModel {
   @column({ isPrimary: true })
@@ -216,6 +217,9 @@ export default class User extends AppBaseModel {
 
   @hasMany(() => Comment)
   declare comments: HasMany<typeof Comment>
+
+  @hasMany(() => Discussion)
+  declare discussions: HasMany<typeof Discussion>
 
   @hasOne(() => Profile)
   declare profile: HasOne<typeof Profile>

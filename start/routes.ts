@@ -34,6 +34,7 @@ const LessonsController = () => import('#controllers/lessons_controller')
 const BlogsController = () => import('#controllers/blogs_controller')
 const SnippetsController = () => import('#controllers/snippets_controller')
 const WatchlistsController = () => import('#controllers/watchlists_controller')
+const DiscussionsController = () => import('#controllers/discussions_controller')
 const CommentsController = () => import('#controllers/comments_controller')
 const ProgressionsController = () => import('#controllers/progressions_controller')
 const SearchesController = () => import('#controllers/searches_controller')
@@ -174,6 +175,17 @@ router.get('/snippets', [SnippetsController, 'index']).as('snippets.index')
 router.get('/snippets/:slug', [LessonsController, 'show']).as('snippets.show').use(middleware.postTypeCheck())
 
 /**
+ * discussions
+ */
+router.get('/feed', [DiscussionsController, 'index']).as('feed.index')
+router.get('/feed/create', [DiscussionsController, 'create']).as('feed.create')
+router.post('/feed', [DiscussionsController, 'store']).as('feed.store')
+router.get('/feed/:slug', [DiscussionsController, 'show']).as('feed.show')
+router.get('/feed/:slug/edit', [DiscussionsController, 'edit']).as('feed.edit')
+router.put('/feed/:id', [DiscussionsController, 'update']).as('feed.update')
+router.delete('/feed', [DiscussionsController, 'destroy']).as('feed.destroy')
+
+/**
  * comments
  */
 router.post('/comments', [CommentsController, 'store']).as('comments.store')
@@ -210,6 +222,7 @@ router.get('/fragments/requests/lessons/:id/:fragment', [LessonRequestsControlle
 router.get('/go/posts/:id/comment/:commentId', [GoController, 'postComment']).as('go.posts.comment')
 router.get('/go/post/:id/comment/:commentId', [GoController, 'postComment']).as('go.post.comment')
 router.get('/go/requests/lessons/:id/comment/:commentId', [GoController, 'lessonRequestComment']).as('go.requests.lessons.comment')
+router.get('/go/discussions/:id/comment/:commentId', [GoController, 'discussionComment']).as('go.discussions.comment')
 router.get('/go/auth/reset', [GoController, 'authReset']).as('go.auth.reset')
 
 /**

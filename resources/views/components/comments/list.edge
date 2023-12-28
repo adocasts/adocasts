@@ -147,6 +147,7 @@
           @!comments.form({
             postId,
             lessonRequestId,
+            discussionId,
             rootParentId,
             replyTo,
             reply: comment,
@@ -160,6 +161,7 @@
         @!comments.list({
           postId,
           lessonRequestId,
+          discussionId,
           rootParentId,
           parentId: comment.id,
           comments,

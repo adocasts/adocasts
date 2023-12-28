@@ -95,7 +95,7 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
       .whereIn('stateId', [States.PUBLIC, States.ARCHIVED])
       .preload('user')
       .preload('userVotes', query => query.select('id'))
-      .orderBy('createdAt', 'desc')
+      .orderBy('createdAt')
     )
     return this
   }
