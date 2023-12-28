@@ -3,7 +3,7 @@
     @heading({ title: 'The Feed', subtitle: 'Converse, Share, and Discuss' })
       @slot('action')
         <div class="flex items-end">
-          @button({ href: route('feed.create'), 'up-layer': 'new', 'up-size': 'medium' })
+          @button({ href: route('feed.create'), 'up-layer': 'new', 'up-size': 'medium', 'up-class': 'discussion-modal' })
             @svg('ph:plus-bold')
             New Post
           @end
@@ -12,13 +12,13 @@
     @end
 
     @form({
-      action: form.post('requests.lessons.search'),
+      action: form.post('feed.search'),
       'up-autosubmit': true,
-      'up-target': '[up-request-list]',
+      'up-target': '[up-discussion-list]',
       'up-delay': '500'
     })
       <div class="flex flex-wrap items-center gap-3 md:gap-6 mt-6">
-        @form.field({ name: 'state' })
+        @form.field({ name: 'topic' })
           @form.select()
             <option value="">All</option>
             @each (topic in topics)
@@ -33,76 +33,7 @@
       </div>
     @end
 
-    <ul role="list" class="divide-y divide-slate-100">
-      @each (item in items)
-        <li class="flex flex-wrap gap-x-4 py-4 px-4 relative bg-slate-100 hover:bg-slate-200 duration-300 group mb-4 rounded-md">
-          @profile.link({ user: item.user })
-            <img class="rounded-md w-12 h-12 border-1 border-slate-900 border-opacity-20 bg-slate-100 relative z-10" src="{{ item.user.avatar }}" alt="{{ item.user.handle }}" />
-          @end
-          <div class="flex-1 duration-300 relative">
-            @if (item.comments.length > 1)
-              <div class="absolute -left-10 w-[3px] h-full rounded-full bg-slate-300/50"></div>
-            @endif
-
-            <div class="mb-2 relative z-10">
-              <div class="flex items-baseline justify-between gap-x-4">
-                <div class="flex items-baseline gap-1">
-                  @profile.link({ user: item.user, class: 'text-sm flex items-baseline gap-1' })
-                    {{ item.user.profile.name || item.user.profile.username }} 
-                    <span class="text-slate-600">
-                      {{ item.user.handle }}
-                    </span>
-                  @end
-
-                  <div class="relative top-1">
-                    @svg('ph:dot')
-                  </div>
-    
-                  <p class="flex-none text-sm text-slate-600">
-                    <time datetime="{{ item.createdAt.toISO() }}">{{ item.timeago }}</time>
-                  </p>
-                </div>
-              </div>
-            </div>
-            
-            <h4 class="font-black text-slate-900 text-lg mb-1">
-              <a href="{{ route('feed.show', { slug: item.slug }) }}" up-follow class="anchor-expand">
-                {{ item.title }}
-              </a>
-            </h4>
-
-            <p class="line-clamp-5 text-slate-800">
-              {{ string.excerpt(item.body, 350) }}
-            </p>
-          </div>
-          <div class="w-full flex items-baseline gap-4 justify-between text-sm mt-4 text-slate-600">
-            <div class="flex items-center gap-4">
-              @if (item.comments.length > 1)
-                <div class="flex -space-x-2 ml-4">
-                  @each (comment in item.comments.reverse())
-                    <img class="inline-block h-5 w-5 rounded-full ring-2 ring-white dark:ring-gray-800" src="{{ comment.user.avatar }}" alt="{{ comment.user.handle }}">
-                  @endeach
-                </div>
-              @else
-                <div class="ml-12"></div>
-              @endif
-              <div>
-                {{ item.$extras.commentCount }}
-                {{ string.pluralize('Reply', parseInt(item.$extras.commentCount)) }}
-              </div>
-            </div>
-
-            @if (item.taxonomy)
-              <div>
-                @button({ href: route('feed.index', {}, { qs: { topic: item.taxonomy.slug } }), size: 'xs' })
-                  {{ item.taxonomy.name }}
-                @end
-              </div>
-            @endif
-          </div>
-        </li>
-      @endeach
-    </ul>
+    @!discussion.list({ items })
   </div>
   
 @end

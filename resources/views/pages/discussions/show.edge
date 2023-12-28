@@ -48,9 +48,9 @@
               <span class="text-slate-600 text-xs">({{ author.handle }})</span>
             @end
           @end
-          @!stat.bar.item({ title: 'Published', value: item.createdAtDisplay })
+          @!stat.bar.item({ title: 'Posted', value: item.createdAgo })
           @if (item.createdAt !== item.updatedAt)
-            @!stat.bar.item({ title: 'Updated', value: item.updatedAtDisplay })
+            @!stat.bar.item({ title: 'Updated', value: item.updatedAgo })
           @endif
           @!stat.bar.item({ title: 'Replies', value: commentCount, href: '#comments', class: 'hidden sm:flex' })
         @end

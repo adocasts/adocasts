@@ -221,6 +221,11 @@ export default class User extends AppBaseModel {
   @hasMany(() => Discussion)
   declare discussions: HasMany<typeof Discussion>
 
+  @manyToMany(() => Discussion, {
+    pivotTable: 'discussion_votes'
+  })
+  declare discussionVotes: ManyToMany<typeof Discussion>
+
   @hasOne(() => Profile)
   declare profile: HasOne<typeof Profile>
 

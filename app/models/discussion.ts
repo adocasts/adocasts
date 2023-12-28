@@ -1,11 +1,12 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeSave, belongsTo, column, computed, hasMany } from '@adonisjs/lucid/orm'
+import { BaseModel, beforeSave, belongsTo, column, computed, hasMany, manyToMany } from '@adonisjs/lucid/orm'
 import User from './user.js'
 import Comment from './comment.js'
-import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import Taxonomy from './taxonomy.js'
 import SlugService from '#services/slug_service'
 import UtilityService from '#services/utility_service'
+import DiscussionVote from './discussion_vote.js'
 
 export default class Discussion extends BaseModel {
   @column({ isPrimary: true })
@@ -61,8 +62,13 @@ export default class Discussion extends BaseModel {
   }
 
   @computed()
-  public get timeago() {
+  public get createdAgo() {
     return UtilityService.timeago(this.createdAt)
+  }
+
+  @computed()
+  public get updatedAgo() {
+    return UtilityService.timeago(this.updatedAt)
   }
 
   @belongsTo(() => User)
@@ -73,6 +79,11 @@ export default class Discussion extends BaseModel {
 
   @hasMany(() => Comment)
   declare comments: HasMany<typeof Comment>
+
+  @manyToMany(() => User, {
+    pivotTable: 'discussion_votes',
+  })
+  declare votes: ManyToMany<typeof User>
 
   @beforeSave()
   public static async slugify(discussion: Discussion) {

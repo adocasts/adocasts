@@ -1,4 +1,5 @@
-up-modal.adocasts-modal {
+up-modal.adocasts-modal,
+up-modal.discussion-modal {
   up-modal-box {
     background-color: transparent;
     padding: 0;
@@ -12,4 +13,9 @@ up-modal .page {
 
 up-modal-dismiss {
   z-index: 100;
+}
+
+up-modal.discussion-modal up-modal-dismiss {
+  top: 1rem;
+  right: 1rem;
 }

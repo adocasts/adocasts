@@ -178,12 +178,14 @@ router.get('/snippets/:slug', [LessonsController, 'show']).as('snippets.show').u
  * discussions
  */
 router.get('/feed', [DiscussionsController, 'index']).as('feed.index')
-router.get('/feed/create', [DiscussionsController, 'create']).as('feed.create')
-router.post('/feed', [DiscussionsController, 'store']).as('feed.store')
+router.post('/feed/search', [DiscussionsController, 'search']).as('feed.search')
+router.get('/feed/create', [DiscussionsController, 'create']).as('feed.create').use(middleware.auth())
+router.post('/feed', [DiscussionsController, 'store']).as('feed.store').use(middleware.auth())
 router.get('/feed/:slug', [DiscussionsController, 'show']).as('feed.show')
-router.get('/feed/:slug/edit', [DiscussionsController, 'edit']).as('feed.edit')
-router.put('/feed/:id', [DiscussionsController, 'update']).as('feed.update')
-router.delete('/feed', [DiscussionsController, 'destroy']).as('feed.destroy')
+router.get('/feed/:slug/edit', [DiscussionsController, 'edit']).as('feed.edit').use(middleware.auth())
+router.put('/feed/:id', [DiscussionsController, 'update']).as('feed.update').use(middleware.auth())
+router.delete('/feed', [DiscussionsController, 'destroy']).as('feed.destroy').use(middleware.auth())
+router.patch('/feed/:id/vote', [DiscussionsController, 'vote']).as('feed.vote').use(middleware.auth())
 
 /**
  * comments
