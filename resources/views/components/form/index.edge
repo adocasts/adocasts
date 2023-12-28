@@ -1,11 +1,9 @@
 <form 
   @if (upSubmit)
     up-submit
-    up-scroll="preserve"
     up-layer="root"
   @elseif (target)
     up-submit
-    up-scroll="preserve"
     up-target="[{{ target }}]"
     {{ target }}
   @endif

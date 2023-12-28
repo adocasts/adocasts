@@ -1,5 +1,7 @@
 import PostBuilder from "#builders/post_builder";
 import PostTypes from "#enums/post_types";
+import States from "#enums/states";
+import Comment from "#models/comment";
 import Post from "#models/post";
 import { inject } from "@adonisjs/core";
 import { HttpContext } from "@adonisjs/core/http";
@@ -201,5 +203,22 @@ export default class PostService {
       .if(term, builder => builder.search(term!))
       .orderPublished()
       .limit(limit)
+  }
+
+  public static async getCommentReload(postId: number) {
+    const query = Comment.query().where({ postId })
+    const comments = await query.clone()
+      .whereIn('stateId', [States.PUBLIC, States.ARCHIVED])
+      .preload('user')
+      .preload('userVotes', query => query.select(['id']))
+      .orderBy('createdAt', 'desc')
+
+    const commentCount = (await query.clone()
+      .where('stateId', States.PUBLIC)
+      .count('*', 'total')
+      .first())
+      ?.$extras.total
+
+    return { comments, commentCount }
   }
 }

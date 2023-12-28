@@ -104,6 +104,23 @@ export default class LessonRequestService {
       .orderBy('createdAt', 'desc')
   }
 
+  public static async getCommentsReload(lessonRequestId: number) {
+    const query = Comment.query().where({ lessonRequestId })
+    const comments = await query.clone()
+      .where(query => query.where('stateId', States.PUBLIC).orWhere('stateId', States.ARCHIVED))
+      .preload('user')
+      .preload('userVotes', query => query.select(['id']))
+      .orderBy('createdAt', 'desc')
+
+    const commentCount = (await query.clone()
+      .where('stateId', States.PUBLIC)
+      .count('*', 'total')
+      .first())
+      ?.$extras.total
+
+    return { comments, commentCount }
+  }
+
   /**
    * returns a count of the comments tied to the post
    * @param post 

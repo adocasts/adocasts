@@ -1,0 +1,24 @@
+@let(userLiked = comment.userVotes.find(v => v.meta.pivot_user_id === auth.user?.id))
+
+@if (auth.user && comment.stateId !== States.ARCHIVED)
+  @form({ action: form.patch('comments.like', { id: comment.id }), upSubmit: true, 'up-target': `[up-comment-like='${comment.id}']`, 'up-comment-like': comment.id })
+    <button 
+      type="submit" 
+      class="btn-hover-fill text-slate-600 hover:text-slate-950 transition flex items-center text-sm bg-slate-200 rounded-md py-1 px-2" 
+      :class="[{ 'bg-brand-100': {{ !!userLiked }} }]"
+      @click="$el.classList.toggle('active'); $el.querySelector('.btn-count').textContent = '⌁';">
+      <div x-data="{ liked: {{ !!userLiked }} }" class="w-5 h-5 mr-1.5 relative">
+        @svg('ph:heart-fill', { class: 'w-5 h-5 text-brand-600', 'x-show': js.stringify(!!userLiked) })
+        @svg('ph:heart-bold', { class: 'w-5 h-5', 'x-show': js.stringify(!(!!userLiked)) })
+      </div>
+      <span class="btn-count">{{ comment.userVotes.length }}</span>
+    </button>
+  @end
+@elseif (comment.stateId !== States.ARCHIVED)
+  <div up-comment-like="{{ comment.id }}" class="btn-hover-fill text-slate-900 transition flex items-center text-sm bg-slate-200 opacity-50 rounded-lg py-1 px-3">
+    <div class="w-5 h-5 mr-1.5 relative text-slate-600 dark:text-slate-400">
+      @svg('ph:heartbeat-fill', { class: 'btn-filled w-5 h-5 text-slate-600' })
+    </div>
+    <span class="btn-count">{{ comment.userVotes.length }}</span>
+  </div>
+@endif
