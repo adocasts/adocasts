@@ -6,7 +6,6 @@ import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relat
 import Taxonomy from './taxonomy.js'
 import SlugService from '#services/slug_service'
 import UtilityService from '#services/utility_service'
-import DiscussionVote from './discussion_vote.js'
 
 export default class Discussion extends BaseModel {
   @column({ isPrimary: true })

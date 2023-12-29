@@ -32,7 +32,7 @@
       <div class="flex justify-between px-6 mt-4 py-4 border-t-2 border-slate-200">
         <div>
           @form.select({ name: 'taxonomyId', value: item.taxonomyId })
-            <option value="">Topic</option>
+          <option value="" disabled hidden>Select Topic</option>
             @each (topic in topics)
               <option value="{{ topic.id }}">{{ topic.name }}</option>
             @endeach

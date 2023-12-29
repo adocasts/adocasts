@@ -1,10 +1,12 @@
 import Alpine from 'alpinejs'
 import intersect from '@alpinejs/intersect'
+import ajax from '@imacrayon/alpine-ajax'
 import { setupEditor } from './tiptap/basic'
 import { chain } from 'mathjs'
 import { DateTime } from 'luxon'
 
 Alpine.plugin(intersect)
+Alpine.plugin(ajax)
 
 window.Alpine = Alpine
 

@@ -11,7 +11,11 @@ export default class extends BaseSchema {
     })
 
     this.defer(async () => {
-      await CommentType.create({ id: CommentTypes.DISCUSSION, name: 'discussion' })
+      const discussionType = await CommentType.find(CommentTypes.DISCUSSION)
+      
+      if (!discussionType) {
+        await CommentType.create({ id: CommentTypes.DISCUSSION, name: 'discussion' })
+      }
     })
   }
 

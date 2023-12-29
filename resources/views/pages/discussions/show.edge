@@ -45,11 +45,11 @@
 
             @profile.link({ user: author })
               {{ author.profile.name || author.username }} 
-              <span class="text-slate-600 text-xs">({{ author.handle }})</span>
+              <span class="text-slate-600 text-xs font-normal">({{ author.handle }})</span>
             @end
           @end
           @!stat.bar.item({ title: 'Posted', value: item.createdAgo })
-          @if (item.createdAt !== item.updatedAt)
+          @if (item.createdAgo !== item.updatedAgo)
             @!stat.bar.item({ title: 'Updated', value: item.updatedAgo })
           @endif
           @!stat.bar.item({ title: 'Replies', value: commentCount, href: '#comments', class: 'hidden sm:flex' })

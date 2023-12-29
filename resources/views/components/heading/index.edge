@@ -8,14 +8,14 @@
     cta: `text-base font-bold link current ${theme ? 'text-slate-600 hover:text-slate-950' : 'text-slate-base-400 hover:text-slate-base-900'}`,
   },
   base: {
-    title: `text-4xl md:text-5xl xl:text-6xl font-black tracking-tight`,
-    subtitle: `xl:text-lg font-bold text-brand-600 uppercase relative z-10`,
+    title: `text-3xl md:text-4xl xl:text-5xl font-black tracking-tight mb-1.5`,
+    subtitle: `font-bold text-brand-600 uppercase relative z-10`,
     description: `text-xl leading-tight text-justify ${theme ? 'text-slate-600' : 'text-slate-base-400'}`,
-    cta: `xl:text-lg font-bold link current ${theme ? 'text-slate-600 hover:text-slate-950' : 'text-slate-base-400 hover:text-slate-base-100'}`,
+    cta: `font-bold link current ${theme ? 'text-slate-600 hover:text-slate-950' : 'text-slate-base-400 hover:text-slate-base-100'}`,
   }
 })
 
-<div {{ html.attrs({ class: utils.classes('grid', [{ 'sm:grid-cols-2': description || cta || $slots.action }], $props.class), ...($props.attrs || {}) }) }}>
+<div {{ html.attrs({ class: utils.classes('grid', 'mb-4', [{ 'sm:grid-cols-2': description || cta || $slots.action }], $props.class), ...($props.attrs || {}) }) }}>
   <div>
     @if (title)
       <h2 class="{{ html.classNames([sizes[size].title, ...($props.class?.title || [])]) }}">

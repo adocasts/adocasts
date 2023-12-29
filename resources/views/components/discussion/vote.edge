@@ -4,7 +4,7 @@
   @form({ action: form.patch('feed.vote', { id: item.id }), upSubmit: true, 'up-target': `[up-discussion-like='${item.id}']`, 'up-discussion-like': item.id })
     <button 
       type="submit" 
-      class="btn-hover-fill text-slate-600 hover:text-slate-950 transition flex items-center text-sm bg-slate-200 rounded-md py-1 px-2" 
+      class="btn-hover-fill text-slate-600 hover:text-slate-950 transition flex items-center text-sm bg-slate-200 duration-300 rounded-md py-1 px-2" 
       :class="[{ 'bg-brand-100': {{ !!userLiked }} }]"
       @click="$el.classList.toggle('active'); $el.querySelector('.btn-count').textContent = '⌁';">
       <div x-data="{ liked: {{ !!userLiked }} }" class="w-4 h-4 mr-1.5 relative">
