@@ -5,11 +5,16 @@ import { chain } from 'mathjs'
 import ProfileActivityService from '#services/profile_activity_service';
 import { profileUpdateValidator } from '#validators/profile_validator';
 import storage from '#services/storage_service';
+import Tab from '../view_models/tab.js';
+import router from '@adonisjs/core/services/router';
+import Discussion from '#models/discussion';
+import ActivityVM from '../view_models/activity.js';
+import DiscussionService from '#services/discussion_service';
 
 export default class ProfilesController {
   
   @inject()
-  async show({ view, response, params, session, auth }: HttpContext, activityService: ProfileActivityService) {
+  async show({ view, request, response, params, session, auth, up }: HttpContext, activityService: ProfileActivityService, discussionService: DiscussionService) {
     const username = params.username.replace(/^@/, '')
     const user = await User.query()
       .whereILike('username', username)
@@ -21,14 +26,45 @@ export default class ProfilesController {
       return response.redirect('/')
     }
 
+    const keys = {
+      FEED: 'feed',
+      ACTIVITY: 'activity'
+    }
+    let tab = params.tab || keys.FEED
+    let tabs = Object.values(keys).map(key => Tab.profile(user.handle, key))
+
     const completedLessonsCount = parseInt((await user.related('completedPosts').query().count('*', 'total').first())?.$extras.total ?? 0)
     const commentCount = parseInt((await user.related('comments').query().count('*', 'total').first())?.$extras.total ?? 0)
     const secondsWatchedSum = parseInt((await user.related('watchedPosts').query().sum('watch_seconds', 'sum').first())?.$extras.sum ?? 0)
     const hoursWatchedSum = chain(secondsWatchedSum).divide(3600).done()
     
-    const activity = await activityService.get(user)
+    let feed: Discussion[] = []
+    let activity: ActivityVM[] = []
 
-    return view.render('pages/profiles/show', { user, activity, completedLessonsCount, commentCount, hoursWatchedSum })
+    if (tab === keys.FEED) {
+      feed = await discussionService.getUserPaginated(user.id, request.qs())
+    }
+
+    if (tab === keys.ACTIVITY || (!feed.length && !params.tab)) {
+      activity = await activityService.get(user)
+      tab = keys.ACTIVITY
+    }
+
+    const tabIndex = tabs.findIndex(_tab => _tab.key === tab)
+
+    up.setLocation(router.makeUrl('profiles.show', { username: user.handle, tab }))
+
+    return view.render('pages/profiles/show', { 
+      user, 
+      tab,
+      tabs,
+      tabIndex,
+      feed,
+      activity, 
+      completedLessonsCount, 
+      commentCount, 
+      hoursWatchedSum 
+    })
   }
   
   async update({ request, response, auth, session, up }: HttpContext) {

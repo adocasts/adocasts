@@ -117,6 +117,7 @@ export default class UserSettingsService {
     profile.emailOnCommentReply = data.emailOnCommentReply ?? false
     profile.emailOnAchievement = data.emailOnAchievement ?? false
     profile.emailOnWatchlist = data.emailOnWatchlist ?? false
+    profile.emailOnMention = data.emailOnMention ?? false
 
     await profile.save()
 

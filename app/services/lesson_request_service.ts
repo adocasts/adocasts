@@ -140,13 +140,13 @@ export default class LessonRequestService {
    * @param param1 
    * @returns 
    */
-  public async store(user: User, { nonDuplicate, ...data }: Infer<typeof lessonRequestStoreValidator>) {
+  public async store(user: User, { nonDuplicate, ...data }: Infer<typeof lessonRequestStoreValidator>, trx: TransactionClientContract | undefined = undefined) {
     return LessonRequest.create({
       ...data,
       userId: user.id,
       stateId: States.IN_REVIEW,
       priority: RequestPriorities.NORMAL // TODO: use elevated when from a subscription user
-    })
+    }, { client: trx })
   }
 
   /**

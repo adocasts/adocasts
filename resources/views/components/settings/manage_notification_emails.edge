@@ -3,6 +3,7 @@
 @let(emailOnCommentReply = flashMessages.get('emailOnCommentReply') ?? profile.emailOnCommentReply)
 @let(emailOnAchievement = flashMessages.get('emailOnAchievement') ?? profile.emailOnAchievement)
 @let(emailOnWatchlist = flashMessages.get('emailOnWatchlist') ?? profile.emailOnWatchlist)
+@let(emailOnMention = flashMessages.get('emailOnMention') ?? profile.emailOnMention)
 @let(checkboxClass = 'class="h-4 w-4 text-brand-600 bg-slate-100 focus:ring-slate-500 border-slate-300 rounded mr-2 mt-1"')
 
 @form.section({ title: 'Email Notifications', description: 'Would you like to be notified via email for anything?', borderBottom })
@@ -50,6 +51,18 @@
           <div class="text-sm font-semibold">Watchlist</div>
           <div class="text-slate-600 text-xs">
             Get notified via email when new lessons land in your watchlist
+          </div>
+        </div>
+      </label>
+    </div>
+
+    <div class="mb-3">
+      <label class="inline-flex">
+        <input type="checkbox" name="emailOnMention" class="{{ checkboxClass }}" {{ emailOnMention && 'checked=checked' }}>
+        <div>
+          <div class="text-sm font-semibold">Mention</div>
+          <div class="text-slate-600 text-xs">
+            Get notified via email when others mention you in their content
           </div>
         </div>
       </label>

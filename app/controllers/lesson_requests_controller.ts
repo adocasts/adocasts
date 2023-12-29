@@ -1,10 +1,14 @@
 import States from '#enums/states'
 import LessonRequest from '#models/lesson_request'
 import LessonRequestService from '#services/lesson_request_service'
+import logger from '#services/logger_service'
+import MentionService from '#services/mention_service'
+import NotificationService from '#services/notification_service'
 import { lessonRequestSearchValidator, lessonRequestStoreValidator, lessonRequestUpdateValidator } from '#validators/lesson_request_validator'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 import router from '@adonisjs/core/services/router'
+import db from '@adonisjs/lucid/services/db'
 
 @inject()
 export default class LessonRequestsController {
@@ -32,13 +36,25 @@ export default class LessonRequestsController {
 
   public async store({ request, response, auth, session, bouncer }: HttpContext) {
     await bouncer.with('LessonRequestPolicy').authorize('store')
+    const trx = await db.transaction()
 
-    const data = await request.validateUsing(lessonRequestStoreValidator)
-    const lessonRequest = await this.lessonRequestService.store(auth.user!, data)
+    try {
+      const data = await request.validateUsing(lessonRequestStoreValidator)
+      const lessonRequest = await this.lessonRequestService.store(auth.user!, data, trx)
 
-    session.flash('success', 'Your request has been submitted')
+      await MentionService.checkForLessonRequestMention(lessonRequest, auth.user!, trx)
+      await trx.commit()
+      await logger.info('NEW LESSON REQUEST', { id: lessonRequest.id, name: lessonRequest.name })
 
-    return response.redirect().toRoute('requests.lessons.show', { id: lessonRequest.id })
+      session.flash('success', 'Your request has been submitted')
+
+      return response.redirect().toRoute('requests.lessons.show', { id: lessonRequest.id })
+    } catch (error) {
+      await trx.rollback()
+      await logger.error('LessonRequestController:store', error)
+      session.flash('error', 'Something went wrong. Please try again later.')
+      return response.redirect().back()
+    }
   }
 
   public async edit({ view, params, bouncer }: HttpContext) {
@@ -49,23 +65,43 @@ export default class LessonRequestsController {
     return view.render('pages/requests/lessons/edit', { lessonRequest })
   }
 
-  public async update({ request, response, params, session, bouncer }: HttpContext) {
+  public async update({ request, response, auth, params, session, bouncer }: HttpContext) {
     const lessonRequest = await this.lessonRequestService.get(params.id)
 
     await bouncer.with('LessonRequestPolicy').authorize('update', lessonRequest)
 
     const data = await request.validateUsing(lessonRequestUpdateValidator)
-    let stateId = lessonRequest.stateId
+    const trx = await db.transaction()
+    
+    try {
+      lessonRequest.useTransaction(trx)
 
-    if (stateId === States.IN_PROGRESS) {
-      stateId = States.IN_REVIEW
+      const oldBody = lessonRequest.body
+      let stateId = lessonRequest.stateId
+
+      if (stateId === States.IN_PROGRESS) {
+        stateId = States.IN_REVIEW
+      }
+
+      await lessonRequest.merge({ ...data, stateId }).save()
+      
+      const newMentions = await MentionService.checkTextForNewMentions(oldBody, lessonRequest.body)
+
+      if (newMentions.length) {
+        await NotificationService.onLessonRequestMention(lessonRequest, newMentions, auth.user!, trx)
+      }
+
+      await trx.commit()
+    
+      session.flash('success', 'Your request has been updated')
+
+      return response.redirect().toRoute('requests.lessons.show', { id: lessonRequest.id })
+    } catch (error) {
+      await trx.rollback()
+      await logger.error('LessonRequestController:update', error)
+      session.flash('error', 'Something went wrong. Please try again later.')
+      return response.redirect().back()
     }
-
-    await lessonRequest.merge({ ...data, stateId }).save()
-  
-    session.flash('success', 'Your request has been updated')
-
-    return response.redirect().toRoute('requests.lessons.show', { id: lessonRequest.id })
   }
 
   public async destroy({ response, params, session, bouncer }: HttpContext) {

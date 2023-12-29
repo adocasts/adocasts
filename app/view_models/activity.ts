@@ -11,6 +11,8 @@ import Post from "#models/post";
 import PostTypes, { PostTypeDesc } from "#enums/post_types";
 import RequestVote from "#models/request_vote";
 import CommentVote from "#models/comment_vote";
+import Discussion from '#models/discussion';
+import DiscussionVote from '#models/discussion_vote';
 
 class Types {
   public static COMMENT = 'comment'
@@ -21,6 +23,7 @@ class Types {
   public static POST = 'post'
   public static ANNIVERSARY = 'anniversary'
   public static VOTE = 'vote'
+  public static DISCUSSION = 'discussion'
 
   public static icon(type: Types) {
     switch (type) {
@@ -40,6 +43,8 @@ class Types {
         return 'ph:cake-fill'
       case this.VOTE:
         return 'ph:heart-fill'
+      case this.DISCUSSION:
+        return 'ph:chats-circle-fill'
       default:
         return 'ph:barricade-fill'
     }
@@ -53,6 +58,8 @@ interface ActivityModel {
   history?: History
   lessonRequest?: LessonRequest
   requestVote?: RequestVote
+  discussion?: Discussion
+  discussionVote?: DiscussionVote
   user?: User
 }
 
@@ -81,6 +88,10 @@ export default class ActivityVM {
       this.buildForLessonRequest(activity.lessonRequest)
     } else if (activity?.requestVote) {
       this.buildForRequestVote(activity.requestVote)
+    } else if (activity?.discussion) {
+      this.buildForDiscussion(activity.discussion)
+    } else if (activity?.discussionVote) {
+      this.buildForDiscussionVote(activity.discussionVote)
     }
   }
 
@@ -125,7 +136,7 @@ export default class ActivityVM {
 
   private buildForComment(comment: Comment) {
     this.type = Types.COMMENT
-    this.titleDescriptor = comment.lessonRequest ? 'Commented on request' : 'Commented on post'
+    this.titleDescriptor = comment.lessonRequest ? 'Commented on request' : comment.discussion ? 'Replied to discussion' : 'Commented on post'
     this.body = comment.body
     this.createdAt = comment.createdAt
     this.icon = Types.icon(this.type)
@@ -143,10 +154,14 @@ export default class ActivityVM {
       this.title = comment.lessonRequest.name
       this.href = router.makeUrl('requests.lessons.show', { id: comment.lessonRequestId })
       return
+    } else if (comment.discussion) {
+      this.title = comment.discussion.title
+      this.href = router.makeUrl('feed.show', { slug: comment.discussion.slug })
+      return
     }
     
-    this.title = comment.post.title
-    this.href = comment.post.routeUrl
+    this.title = comment.post?.title
+    this.href = comment.post?.routeUrl
   }
 
   private buildForHistory(history: History) {
@@ -173,6 +188,24 @@ export default class ActivityVM {
     this.titleDescriptor = 'Upvoted lesson request'
     this.title = vote.lessonRequest.name
     this.href = router.makeUrl('requests.lessons.show', { id: vote.lessonRequestId })
+    this.createdAt = vote.createdAt
+    this.icon = Types.icon(this.type)
+  }
+
+  private buildForDiscussion(discussion: Discussion) {
+    this.type = Types.DISCUSSION
+    this.titleDescriptor = 'Started discussion'
+    this.title = discussion.title
+    this.href = router.makeUrl('feed.show', { slug: discussion.slug })
+    this.createdAt = discussion.createdAt
+    this.icon = Types.icon(this.type)
+  }
+
+  private buildForDiscussionVote(vote: DiscussionVote) {
+    this.type = Types.VOTE
+    this.titleDescriptor = 'Upvoted discussion'
+    this.title = vote.discussion.title
+    this.href = router.makeUrl('feed.show', { slug: vote.discussion.slug })
     this.createdAt = vote.createdAt
     this.icon = Types.icon(this.type)
   }

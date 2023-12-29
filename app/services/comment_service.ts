@@ -12,6 +12,7 @@ import { commentValidator } from '#validators/comment_validator'
 import { Infer } from '@vinejs/vine/types';
 import logger from "./logger_service.js";
 import UtilityService from "./utility_service.js";
+import MentionService from "./mention_service.js";
 
 @inject()
 export default class CommentService {
@@ -49,6 +50,8 @@ export default class CommentService {
       ? await NotificationService.onCommentReply(comment, this.user, trx)
       : await NotificationService.onCommentCreate(comment, this.user, trx)
 
+    await MentionService.checkForCommentMention(comment, this.user, trx)
+
     await trx.commit()
 
     await logger.info('NEW COMMENT', {
@@ -67,6 +70,7 @@ export default class CommentService {
    */
   public async update(comment: Comment, body: string) {
     const trx = await db.transaction()
+    const oldBody = comment.body
 
     comment.useTransaction(trx)
 
@@ -74,6 +78,13 @@ export default class CommentService {
 
     await comment.merge({ body }).save()
     await NotificationService.onUpdate(Comment.table, comment.id, comment.body, trx)
+
+    const newMentions = MentionService.checkTextForNewMentions(oldBody, body)
+
+    if (newMentions.length) {
+      await NotificationService.onCommentMention(comment, newMentions, this.user!, trx)
+    }
+
     await trx.commit()
 
     return comment

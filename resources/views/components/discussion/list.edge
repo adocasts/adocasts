@@ -75,7 +75,11 @@
       <li class="border-2 border-dashed border-slate-300 rounded-md bg-slate-100 px-4 py-12 flex flex-col items-center">
         <img class="w-36" src="/imgs/robot/slice4.svg" alt="robot comment bubble" />
         <p class="uppercase tracking-wide">
-          Sorry, we couldn't find anything matching your search
+          @if (Object.keys(request.qs()).length)
+            Sorry, we couldn't find anything matching your search
+          @else
+            No feed discussions found
+          @endif
         </p>
       </li>
     @endif

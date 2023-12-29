@@ -2,6 +2,7 @@ import stringHelpers from "@adonisjs/core/helpers/string"
 import router from "@adonisjs/core/services/router"
 
 export default class Tab {
+  private params: Record<string, any> = {}
   declare routeIdentifier: string
 
   constructor(public key: string, public name?: string | undefined, private url?: string | undefined) {
@@ -15,7 +16,7 @@ export default class Tab {
       return this.url
     }
 
-    return router.makeUrl(this.routeIdentifier, { tab: this.key })
+    return router.makeUrl(this.routeIdentifier, { ...this.params, tab: this.key })
   }
 
   public static history(key: string, name?: string | undefined) {
@@ -27,6 +28,13 @@ export default class Tab {
   public static watchlist(key: string, name?: string | undefined) {
     const tab = new Tab(key, name)
     tab.routeIdentifier = 'users.watchlist'
+    return tab
+  }
+
+  public static profile(handle: string, key: string, name?: string | undefined) {
+    const tab = new Tab(key, name)
+    tab.params.username = handle
+    tab.routeIdentifier = 'profiles.show'
     return tab
   }
 }

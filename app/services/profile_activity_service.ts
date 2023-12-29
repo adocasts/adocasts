@@ -5,6 +5,7 @@ import ActivityVM from "../view_models/activity.js";
 import { DateTime } from "luxon";
 import { HttpContext } from "@adonisjs/core/http";
 import User from "#models/user";
+import DiscussionVote from "#models/discussion_vote";
 
 @inject()
 export default class ProfileActivityService {
@@ -23,6 +24,8 @@ export default class ProfileActivityService {
     
     const account = await this.getAccountActivity()
     const posts = await this.getPostActivity()
+    const discussions = await this.getDiscussionActivity()
+    const discussionVotes = await this.getDiscussionUpvotes()
     const comments = await this.getCommentActivity()
     const commentVotes = await this.getCommentUpvotes()
     const completedLessons = await this.getCompletedLessons()
@@ -32,6 +35,8 @@ export default class ProfileActivityService {
     return [
       ...account,
       ...posts,
+      ...discussions,
+      ...discussionVotes,
       ...comments,
       ...commentVotes,
       ...completedLessons,
@@ -68,11 +73,29 @@ export default class ProfileActivityService {
     return posts.map(post => new ActivityVM({ post }))
   }
 
+  public async getDiscussionActivity() {
+    const discussions = await this.user!.related('discussions').query()
+      .where('createdAt', '>=', this.startSql!)
+      .where('stateId', States.PUBLIC)
+      
+    return discussions.map(discussion => new ActivityVM({ discussion }))
+  }
+
+  public async getDiscussionUpvotes() {
+    const votes = await DiscussionVote.query()
+      .where('userId', this.user!.id)
+      .where('createdAt', '>=', this.startSql!)
+      .preload('discussion')
+    
+    return votes.map(discussionVote => new ActivityVM({ discussionVote }))
+  }
+
   public async getCommentActivity() {
     const comments = await this.user!.related('comments').query()
       .where('createdAt', '>=', this.startSql!)
       .preload('post')
       .preload('lessonRequest')
+      .preload('discussion')
       .preload('parent', query => query.preload('user'))
 
     return comments.map(comment => new ActivityVM({ comment }))

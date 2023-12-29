@@ -42,7 +42,7 @@
     @!comments.list({ postId, lessonRequest, discussionId, comments, nodeComments: rootComments, canComment })
   </div>
 
-  @if (!comments.length)
+  @if (!lessonRequest && !comments.length)
     <div class="border-2 border-dashed border-slate-300 rounded-md bg-slate-100 px-4 py-12 flex flex-col items-center">
       <img class="w-36" src="/imgs/robot/slice5.svg" alt="robot comment bubble" />
       <p class="uppercase tracking-wide">
@@ -53,5 +53,14 @@
 
   @if (auth.user && lessonRequest && canComment)
     @!comments.form({ postId, lessonRequest, discussionId, includeScript: true })
+  @endif
+
+  @if (lessonRequest && !comments.length)
+    <div class="border-2 border-dashed border-slate-300 rounded-md bg-slate-100 px-4 py-12 flex flex-col items-center mt-6">
+      <img class="w-36" src="/imgs/robot/slice5.svg" alt="robot comment bubble" />
+      <p class="uppercase tracking-wide">
+        Be the first to {{ descriptor }}!
+      </p>
+    </div>
   @endif
 </div>

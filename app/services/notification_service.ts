@@ -11,6 +11,7 @@ import NotImplementedException from '#exceptions/not_implemented_exception'
 import { DateTime } from 'luxon'
 import logger from './logger_service.js'
 import Discussion from '#models/discussion'
+import router from '@adonisjs/core/services/router'
 
 export default class NotificationService {
   /**
@@ -228,7 +229,7 @@ export default class NotificationService {
     trx: TransactionClientContract | null = null
   ) {
     try {
-      const discussion = await Discussion.findOrFail(comment.lessonRequestId)
+      const discussion = await Discussion.findOrFail(comment.discussionId)
       const notification = new Notification()
 
       if (trx) {
@@ -242,8 +243,8 @@ export default class NotificationService {
         table: Comment.table,
         tableId: comment.id,
         title: user
-          ? `${user.username} commented on your discussion`
-          : 'Someone commented on your discussion',
+          ? `${user.username} replied to your discussion`
+          : 'Someone replied to your discussion',
         body: UtilityService.truncate(comment.body),
         href: this.getGoPath(comment),
       })
@@ -251,7 +252,7 @@ export default class NotificationService {
       await notification.save()
       await notification.trySendEmail(discussion.userId, trx)
     } catch (error) {
-      await logger.error('Failed to create lesson request comment notification', {
+      await logger.error('Failed to create discussion comment notification', {
         comment: JSON.stringify(comment),
         error
       })
@@ -302,6 +303,186 @@ export default class NotificationService {
     } catch (error) {
       await logger.error('Failed to create comment reply notification', {
         comment: JSON.stringify(comment),
+        error
+      })
+    }
+  }
+
+  static async onCommentMention(
+    comment: Comment,
+    usernames: string[],
+    user: User,
+    trx: TransactionClientContract | null = null
+  ) {
+    try {
+      for (let i = 0; i < usernames.length; i++) {
+        const notification = new Notification()
+        const mentioned = await User.query().whereILike('username', usernames[i]).first()
+
+        if (!mentioned) {
+          await logger.warn(`Failed to find username ${usernames[i]} mentioned in comment ${comment.id}`)
+          continue
+        }
+
+        if (trx) {
+          notification.useTransaction(trx)
+        }
+
+        notification.merge({
+          userId: mentioned.id,
+          initiatorUserId: user.id,
+          notificationTypeId: NotificationTypes.MENTION,
+          table: Comment.table,
+          tableId: comment.id,
+          title: user
+            ? `${user.username} mentioned you in their comment`
+            : 'Someone mentioned you in their comment',
+          body: UtilityService.truncate(comment.body),
+          href: this.getGoPath(comment),
+        })
+
+        await notification.save()
+        await notification.trySendEmail(mentioned.id, trx)
+      }
+    } catch (error) {
+      await logger.error('Failed to create comment mention notification', {
+        commentId: comment.id,
+        usernames,
+        error
+      })
+    }
+  }
+
+  static async onPostMention(
+    post: Post,
+    usernames: string[],
+    user: User,
+    trx: TransactionClientContract | null = null
+  ) {
+    try {
+      for (let i = 0; i < usernames.length; i++) {
+        const notification = new Notification()
+        const mentioned = await User.query().whereILike('username', usernames[i]).first()
+
+        if (!mentioned) {
+          await logger.warn(`Failed to find username ${usernames[i]} mentioned in post ${post.id}`)
+          continue
+        }
+
+        if (trx) {
+          notification.useTransaction(trx)
+        }
+
+        notification.merge({
+          userId: mentioned.id,
+          initiatorUserId: user.id,
+          notificationTypeId: NotificationTypes.MENTION,
+          table: Post.table,
+          tableId: post.id,
+          title: user
+            ? `${user.username} mentioned you in their post`
+            : 'Someone mentioned you in their post',
+          body: post.body ? UtilityService.truncate(post.body) : '',
+          href: post.routeUrl,
+        })
+
+        await notification.save()
+        await notification.trySendEmail(mentioned.id, trx)
+      }
+    } catch (error) {
+      await logger.error('Failed to create comment mention notification', {
+        postId: post.id,
+        usernames,
+        error
+      })
+    }
+  }
+
+  static async onDiscussionMention(
+    discussion: Discussion,
+    usernames: string[],
+    user: User,
+    trx: TransactionClientContract | null = null
+  ) {
+    try {
+      for (let i = 0; i < usernames.length; i++) {
+        const notification = new Notification()
+        const mentioned = await User.query().whereILike('username', usernames[i]).first()
+
+        if (!mentioned) {
+          await logger.warn(`Failed to find username ${usernames[i]} mentioned in discussion ${discussion.id}`)
+          continue
+        }
+
+        if (trx) {
+          notification.useTransaction(trx)
+        }
+
+        notification.merge({
+          userId: mentioned.id,
+          initiatorUserId: user.id,
+          notificationTypeId: NotificationTypes.MENTION,
+          table: Discussion.table,
+          tableId: discussion.id,
+          title: user
+            ? `${user.username} mentioned you in their discussion`
+            : 'Someone mentioned you in their discussion',
+          body: discussion.body ? UtilityService.truncate(discussion.body) : '',
+          href: router.makeUrl('feed.show', { slug: discussion.slug }),
+        })
+
+        await notification.save()
+        await notification.trySendEmail(mentioned.id, trx)
+      }
+    } catch (error) {
+      await logger.error('Failed to create comment mention notification', {
+        discussionId: discussion.id,
+        usernames,
+        error
+      })
+    }
+  }
+
+  static async onLessonRequestMention(
+    request: LessonRequest,
+    usernames: string[],
+    user: User,
+    trx: TransactionClientContract | null = null
+  ) {
+    try {
+      for (let i = 0; i < usernames.length; i++) {
+        const notification = new Notification()
+        const mentioned = await User.query().whereILike('username', usernames[i]).first()
+
+        if (!mentioned) {
+          await logger.warn(`Failed to find username ${usernames[i]} mentioned in lesson request ${request.id}`)
+          continue
+        }
+
+        if (trx) {
+          notification.useTransaction(trx)
+        }
+
+        notification.merge({
+          userId: mentioned.id,
+          initiatorUserId: user.id,
+          notificationTypeId: NotificationTypes.MENTION,
+          table: LessonRequest.table,
+          tableId: request.id,
+          title: user
+            ? `${user.username} mentioned you in their lesson request`
+            : 'Someone mentioned you in their lesson request',
+          body: request.body ? UtilityService.truncate(request.body) : '',
+          href: router.makeUrl('requests.lessons.show', { id: request.id }),
+        })
+
+        await notification.save()
+        await notification.trySendEmail(mentioned.id, trx)
+      }
+    } catch (error) {
+      await logger.error('Failed to create comment mention notification', {
+        lessonRequestId: request.id,
+        usernames,
         error
       })
     }

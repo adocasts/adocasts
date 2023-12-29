@@ -1,9 +1,13 @@
 import Discussion from '#models/discussion'
 import DiscussionService from '#services/discussion_service'
+import logger from '#services/logger_service'
+import MentionService from '#services/mention_service'
+import NotificationService from '#services/notification_service'
 import { discussionCreateValidator, discussionSearchValidator } from '#validators/discussion_validator'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 import router from '@adonisjs/core/services/router'
+import db from '@adonisjs/lucid/services/db'
 
 @inject()
 export default class DiscussionsController {
@@ -34,13 +38,24 @@ export default class DiscussionsController {
     return view.render('pages/discussions/create', { topics })
   }
 
-  public async store({ request, response, auth, bouncer }: HttpContext) {
+  public async store({ request, response, auth, session, bouncer }: HttpContext) {
     await bouncer.with('DiscussionPolicy').authorize('store')
+    const trx = await db.transaction()
 
-    const data = await request.validateUsing(discussionCreateValidator)
-    const discussion = await auth.user!.related('discussions').create(data)
+    try {
+      const data = await request.validateUsing(discussionCreateValidator)
+      const discussion = await auth.user!.related('discussions').create(data, { client: trx })
 
-    return response.redirect().toRoute('feed.show', { slug: discussion.slug })
+      await MentionService.checkForDiscussionMention(discussion, auth.user!, trx)
+      await trx.commit()
+
+      return response.redirect().toRoute('feed.show', { slug: discussion.slug })
+    } catch (error) {
+      await trx.rollback()
+      await logger.error('DiscussionController:store', error)
+      session.flash('error', 'Something went wrong. Please try again later.')
+      return response.redirect().back()
+    }
   }
 
   public async show({ view, params }: HttpContext) {
@@ -60,16 +75,35 @@ export default class DiscussionsController {
     return view.render('pages/discussions/edit', { item, topics })
   }
 
-  public async update({ request, response, params, bouncer }: HttpContext) {
+  public async update({ request, response, params, session, auth, bouncer }: HttpContext) {
     const item = await Discussion.findOrFail(params.id)
 
     await bouncer.with('DiscussionPolicy').authorize('update', item)
+    const trx = await db.transaction()
 
-    const data = await request.validateUsing(discussionCreateValidator)
+    try {
+      item.useTransaction(trx) 
+      
+      const data = await request.validateUsing(discussionCreateValidator)
+      const oldBody = item.body
 
-    await item.merge(data).save()
+      await item.merge(data).save()
 
-    return response.redirect().toRoute('feed.show', { slug: item.slug })
+      const newMentions = MentionService.checkTextForNewMentions(oldBody, item.body)
+
+      if (newMentions.length) {
+        await NotificationService.onDiscussionMention(item, newMentions, auth.user!, trx)
+      }
+
+      await trx.commit()
+
+      return response.redirect().toRoute('feed.show', { slug: item.slug })
+    } catch (error) {
+      await trx.rollback()
+      await logger.error(`DiscussionController:update@${item.id}`, error)
+      session.flash('error', 'Something went wrong. Please try again later.')
+      return response.redirect().back()
+    }
   }
 
   public async destroy({ response, params, bouncer }: HttpContext) {

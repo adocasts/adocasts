@@ -62,6 +62,8 @@ export default class Notification extends AppBaseModel {
         return 'emailOnComment'
       case NotificationTypes.COMMENT_REPLY:
         return 'emailOnCommentReply'
+      case NotificationTypes.MENTION:
+        return 'emailOnMention'
       default:
         throw new NotImplementedException(`Settings field for type ${this.notificationTypeId} has not been defined`)
     }
@@ -74,6 +76,8 @@ export default class Notification extends AppBaseModel {
         return 'comments on your content'
       case NotificationTypes.COMMENT_REPLY:
         return 'replies to one of your comments'
+      case NotificationTypes.MENTION:
+        return 'others mention you in their content'
       default:
         throw new NotImplementedException(`Settings field for type ${this.notificationTypeId} has not been defined`)
     }
@@ -85,6 +89,8 @@ export default class Notification extends AppBaseModel {
         return profile.emailOnComment
       case NotificationTypes.COMMENT_REPLY:
         return profile.emailOnCommentReply
+      case NotificationTypes.MENTION:
+        return profile.emailOnMention
       default:
         throw new NotImplementedException(`Email handler for type ${this.notificationTypeId} has not been defined`)
     }

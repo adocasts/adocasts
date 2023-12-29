@@ -65,6 +65,25 @@ export default class DiscussionService {
       .paginate(page, 20)
   }
 
+  public async getUserPaginated(userId: number, filters?: Record<string,any>) {
+    const page = filters?.page ?? 1
+    return Discussion.query()
+      .if(filters?.pattern, query => query.where(query => query
+        .whereILike('title', `%${filters!.pattern}%`)
+        .orWhereILike('body', `%${filters!.pattern}%`)  
+      ))
+      .if(filters?.topic, query => query.whereHas('taxonomy', query => query.where('slug', filters!.topic!)))
+      .preload('user', query => query.preload('profile'))
+      .preload('taxonomy', query => query.preload('asset'))
+      .preload('votes', query => query.select('id'))
+      .where('stateId', States.PUBLIC)
+      .where('userId', userId)
+      .withCount('comments', query => query.where('stateId', States.PUBLIC).as('commentCount'))
+      .preload('comments', query => query.preload('user').where('stateId', States.PUBLIC).orderBy('createdAt', 'desc').groupLimit(2))
+      .orderBy('createdAt', 'desc')
+      .paginate(page, 20)
+  }
+
   /**
    * Retrieves the topics from the database.
    *

@@ -3,12 +3,21 @@
   <div class="max-w-prose mx-auto">
     <div class="flex justify-between">
       <div>
-        <a href="{{ route('feed.index') }}" class="anchor" up-follow>
-          <span class="inline-flex items-center gap-1.5">
-            @svg('ph:arrow-left-bold')
-            Feed
-          </span>
-        </a>
+        @if (request.header('referer') && request.header('referer').includes(`/${item.user.handle}`))
+          <a href="{{ route('profiles.show', { username: item.user.handle }) }}" class="anchor" up-follow>
+            <span class="inline-flex items-center gap-1.5">
+              @svg('ph:arrow-left-bold')
+              Profile
+            </span>
+          </a>
+        @else
+          <a href="{{ route('feed.index') }}" class="anchor" up-follow>
+            <span class="inline-flex items-center gap-1.5">
+              @svg('ph:arrow-left-bold')
+              Feed
+            </span>
+          </a>
+        @endif
       </div>
 
       <div class="flex items-end gap-1.5">

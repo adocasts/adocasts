@@ -1,6 +1,11 @@
 @let(tabs = $context.tabs || $props.tabs)
+@let(colClass = 
+    tabs.length === 4 ? 'grid-cols-4'
+  : tabs.length === 3 ? 'grid-cols-3'
+  : tabs.length === 2 ? 'grid-cols-2'
+  : 'grid-cols-1')
 
-<div x-ref="tabButtons" class="relative inline-grid items-center justify-center w-full h-10 grid-cols-3 p-1 text-slate-600 bg-slate-100 rounded-lg select-none">
+<div x-ref="tabButtons" class="relative inline-grid items-center justify-center w-full h-10 {{ colClass }} p-1 text-slate-600 bg-slate-100 rounded-lg select-none">
   @each(tab in tabs)
     @let(el = tab.href ? 'a' : 'button')
 

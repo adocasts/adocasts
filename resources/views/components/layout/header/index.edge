@@ -22,8 +22,8 @@
           Blog
           @!highlight.underline()
         </a>
-        <a href="{{ route('snippets.index') }}" up-follow class="text-sm flex items-center font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
-          Snippets
+        <a href="{{ route('feed.index') }}" up-follow class="text-sm flex items-center font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
+          The Feed
           @!highlight.underline()
         </a>
       </div>
@@ -103,6 +103,7 @@
         <a up-follow href="{{ route('series.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Series</a>
         <a up-follow href="{{ route('topics.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Topics</a>
         <a up-follow href="{{ route('lessons.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Lessons</a>
+        <a up-follow href="{{ route('feed.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">The Feed</a>
         <a up-follow href="{{ route('streams.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Livestreams</a>
         <a up-follow href="{{ route('blog.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Blog</a>
         <a up-follow href="{{ route('snippets.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Snippets</a>

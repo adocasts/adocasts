@@ -117,7 +117,7 @@ router.get('/verification/email/:email', [EmailVerificationsController, 'verify'
 /**
  * users
  */
-router.get('/:username', [ProfilesController, 'show']).as('profiles.show').where('username', /^@/)
+router.get('/:username/:tab?', [ProfilesController, 'show']).as('profiles.show').where('username', /^@/)
 router.get('/users/menu', [UsersController, 'menu']).as('users.menu').use(middleware.auth())
 router.get('/users/watchlist/:tab?', [UsersController, 'watchlist']).as('users.watchlist').use(middleware.auth())
 router.get('/users/history/:tab?', [UsersController, 'history']).as('users.history').use(middleware.auth())

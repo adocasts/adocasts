@@ -40,7 +40,7 @@
         @!heading({ title: user.profile.name || user.handle, size: 'sm' })
         
         @if (user.profile.name)
-          <p class="text-slate-600 text-sm lg:text-base mb-3">
+          <p class="text-slate-600 text-sm lg:text-base mb-3 -mt-4">
             {{ user.handle }}
           </p>
         @endif
@@ -94,15 +94,34 @@
       @end
     @endif
 
-    <p class="font-semibold uppercase tracking-wider pt-8 mt-8 border-t border-slate-200">
-      Recent Activity
-    </p>
-    <p class="text-slate-600 text-sm">
-      Here's what {{ user.handle }} has been up to this past year
-    </p>
+    <div class="pt-8 mt-8 border-t border-slate-200">
+      @tabs.data({ tabs, tabIndex, class: 'mb-8' })
+        @!tabs.buttons({ 'up-target': '[up-tab-content]', ':up-location': 'tabHref' })
+      @end
 
-    <div class="mt-6">
-      @!user.activity.list({ activity })
+      <div up-tab-content>
+        @if (tab === 'activity')
+          <p class="font-semibold uppercase tracking-wider">
+            Recent Activity
+          </p>
+          <p class="text-slate-600 text-sm">
+            Here's what {{ user.handle }} has been up to this past year
+          </p>
+      
+          <div class="mt-6">
+            @!user.activity.list({ activity })
+          </div>
+        @elseif (tab === 'feed')
+          <p class="font-semibold uppercase tracking-wider">
+            Feed Discussions
+          </p>
+          <p class="text-slate-600 text-sm mb-6">
+            Discussions {{ user.handle }} has started
+          </p>
+
+          @!discussion.list({ items: feed })
+        @endif
+      </div>
     </div>
   </div>
 
