@@ -27,6 +27,15 @@
           </p>
         </div>
       @end
+
+      @form.switch({ name: 'isEnabledMentions', value: auth.user.isEnabledMentions, upSubmit: true })
+        <div class="flex flex-col ml-3">
+          <strong>Mentions</strong>
+          <p class="text-slate-700 text-xs">
+            Allow others to mention (via {{ auth.user.handle }}) you in comments and discussions
+          </p>
+        </div>
+      @end
     </div>
   @end
 </div>

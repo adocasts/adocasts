@@ -9,7 +9,9 @@ import Post from '#models/post'
 import PostTypes from '#enums/post_types'
 import CollectionBuilder from '#builders/collection_builder'
 import PostBuilder from '#builders/post_builder'
-import { billtoValidator } from '#validators/user_validator'
+import { billtoValidator, mentionListValidator } from '#validators/user_validator'
+import User from '#models/user'
+import Plans from '#enums/plans'
 
 export default class UsersController {
   public async menu({ view, auth }: HttpContext) {
@@ -140,5 +142,21 @@ export default class UsersController {
 
   public async check({ auth }: HttpContext) {
     return !!auth.user
+  }
+
+  public async mentionsList({ request, response, auth }: HttpContext) {
+    const { pattern } = await request.validateUsing(mentionListValidator)
+    const users = await User.query()
+      .if(pattern, query => query.whereILike('username', `%${pattern}%`))
+      .where('isEnabledMentions', true)
+      .whereNot('id', auth.user!.id)
+      .select('username', 'planId')
+      .orderBy([
+        { column: 'planId', order: 'desc' },
+        { column: 'username', order: 'asc' },
+      ])
+      .limit(10)
+
+    return response.json(users.map(user => user.username.toLowerCase()).sort((a, b) => a.localeCompare(b)))
   }
 }

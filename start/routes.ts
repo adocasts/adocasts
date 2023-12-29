@@ -124,6 +124,7 @@ router.get('/users/history/:tab?', [UsersController, 'history']).as('users.histo
 router.put('/api/users/theme', [UsersController, 'theme']).as('api.users.theme')
 router.get('/api/user/check', [UsersController, 'check']).as('api.user.check')
 router.patch('/api/users/billto', [UsersController, 'billto']).as('api.users.billto').use(middleware.auth())
+router.post('/api/mentions/list', [UsersController, 'mentionsList']).as('api.mentions.list').use(middleware.auth())
 
 /**
  * user settings

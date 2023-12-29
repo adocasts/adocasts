@@ -13,6 +13,8 @@ import Dropcursor from '@tiptap/extension-dropcursor'
 import HardBreak from '@tiptap/extension-hard-break'
 import Image from '@tiptap/extension-image'
 import { Typography } from '@tiptap/extension-typography'
+import { Mention } from './mentions'
+import mentionSuggestions from './mentions/suggestions'
 
 export const setupEditor = function(content) {
   let editor;
@@ -66,6 +68,22 @@ export const setupEditor = function(content) {
             closeDoubleQuote: false,
             openSingleQuote: false,
             closeSingleQuote: false,
+          }),
+          Mention.configure({
+            HTMLAttributes: {
+              class: 'mention'
+            },
+            suggestion: mentionSuggestions,
+            renderHTML({ node, HTMLAttributes }) {
+              return [
+                  'a',
+                  mergeAttributes({ 'data-type': this.name }, { 'href': `/${HTMLAttributes['data-id']}`, 'up-follow': true }, this.options.HTMLAttributes, HTMLAttributes),
+                  this.options.renderLabel({
+                      options: this.options,
+                      node,
+                  }),
+              ]
+          },
           }),
           CodeBlock.configure({
             languageClassPrefix: 'language-',

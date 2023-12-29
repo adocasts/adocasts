@@ -1,16 +1,11 @@
 import tippy from 'tippy.js'
-import { commandList } from './list'
+import axios from 'axios'
 
-export const getSuggestions = ({ isBasic = true }) => ({
-  items: ({ query }) => {
-    return [
-      ...commandList
-    ].filter(item => {
-      const isTitleMatch = item.title.toLowerCase().startsWith(query.toLowerCase())
-      const isNameMatch = item.name.toLowerCase().startsWith(query.toLowerCase())
-      const isBasicMatch = isBasic ? item.basic !== false : true
-      return isBasicMatch && (isTitleMatch || isNameMatch)
-    })
+export default {
+  items: async ({ query }) => {
+    const _csrf = document.forms.csrf._csrf.value
+    const { data } = await axios.post('/api/mentions/list', { _csrf, pattern: query })
+    return data
   },
 
   render: () => {
@@ -41,7 +36,7 @@ export const getSuggestions = ({ isBasic = true }) => ({
             const item = this.items[index]
 
             if (item) {
-              state.command(item)
+              state.command({ id: item })
             }
           },
           onKeyDown({ event }) {
@@ -77,18 +72,11 @@ export const getSuggestions = ({ isBasic = true }) => ({
           <div class="items flex flex-col bg-slate-200/90 backdrop-blur-lg border border-slate-300/50 shadow-xl rounded-md p-2">
             <template x-for="(item, index) in state.tiptapCommand.items" :key="index">
               <button class="item flex items-center gap-1.5 w-full pl-1 py-1 pr-12 rounded-lg text-left" :class="{ 'bg-slate-300': state.tiptapCommand.selectedIndex === index }" @click="state.tiptapCommand.onClick(index)" class="block py-1">
-                <template x-if="item.icon">
-                  <div 
-                    class="w-6 h-6 flex items-center justify-center bg-slate-300 rounded-md" 
-                    :class="{ 'bg-slate-400': state.tiptapCommand.selectedIndex === index }"
-                    x-html="item.icon"
-                  ></div>
-                </template>
-                <div class="title" class="text-left" x-text="item.title"></div>
+                <div class="title" class="text-left" x-text="item"></div>
               </button>
             </template>
             <div x-show="!state.tiptapCommand.items.length" class="text-slate-600">
-              No results found
+              No users found
             </div>
           </div>
         `
@@ -134,5 +122,5 @@ export const getSuggestions = ({ isBasic = true }) => ({
         popup.destroy()
       },
     }
-  },
-})
+  }
+}

@@ -5,3 +5,9 @@ export const billtoValidator = vine.compile(
     billToInfo: vine.string().maxLength(500).nullable().optional()
   })
 )
+
+export const mentionListValidator = vine.compile(
+  vine.object({
+    pattern: vine.string().trim().toLowerCase().optional()
+  })
+)

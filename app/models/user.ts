@@ -108,6 +108,9 @@ export default class User extends AppBaseModel {
   declare isEnabledAutoplayNext: boolean
 
   @column()
+  declare isEnabledMentions: boolean
+
+  @column()
   declare emailVerified: string | null
 
   @column.dateTime()

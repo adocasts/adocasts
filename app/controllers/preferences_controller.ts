@@ -9,6 +9,7 @@ export default class PreferencesController {
     user.isEnabledProfile = !!data.isEnabledProfile
     user.isEnabledMiniPlayer = !!data.isEnabledMiniPlayer
     user.isEnabledAutoplayNext = !!data.isEnabledAutoplayNext
+    user.isEnabledMentions = !!data.isEnabledMentions
 
     await user.save()
 
