@@ -11,15 +11,21 @@ import { languages } from '../syntax/languages'
 import Blockquote from '@tiptap/extension-blockquote'
 import Dropcursor from '@tiptap/extension-dropcursor'
 import HardBreak from '@tiptap/extension-hard-break'
+import CharacterCount from '@tiptap/extension-character-count'
+import YouTube from '@tiptap/extension-youtube'
 import Image from '@tiptap/extension-image'
 import { Typography } from '@tiptap/extension-typography'
 import { Mention } from './mentions'
 import mentionSuggestions from './mentions/suggestions'
+import UploadImage from './upload_image'
+import axios from 'axios'
 
-export const setupEditor = function(content) {
+export const setupEditor = function(content, isFreeUser = true) {
   let editor;
 
   return {
+    editor: null, 
+
     isInitialized: false,
     isFocused: false,
     content: content,
@@ -27,6 +33,9 @@ export const setupEditor = function(content) {
 
     language: 'ts',
     languages: [...languages ],
+
+    characterLimit: isFreeUser ? 500 : null,
+    characterCount: 0,
 
     isActive(type, opts = {}) {
       return editor.isActive(type, opts)
@@ -41,9 +50,24 @@ export const setupEditor = function(content) {
     },
 
     init() {
-      editor = new Editor({
+      const tieredExtensions = isFreeUser ? [
+        CharacterCount.configure({
+          limit: this.characterLimit
+        }),
+      ] : [
+        YouTube.configure({
+          width: 1280,
+          height: 720
+        }),
+        UploadImage.configure({
+          uploadFn: this.uploadImage
+        })
+      ]
+
+      this.editor = new Editor({
         element: this.$refs.element,
         extensions: [
+          ...tieredExtensions,
           StarterKit,
           BubbleMenu.configure({
             element: document.querySelector('.bubble-menu'),
@@ -69,6 +93,7 @@ export const setupEditor = function(content) {
             openSingleQuote: false,
             closeSingleQuote: false,
           }),
+
           Mention.configure({
             HTMLAttributes: {
               class: 'mention'
@@ -128,12 +153,16 @@ export const setupEditor = function(content) {
             }
           }),
           Commands.configure({
-            suggestion: getSuggestions({ isBasic: true })
+            suggestion: getSuggestions({ isBasic: true, isFreeUser })
           })
         ],
         content: this.content,
         onUpdate: ({ editor }) => {
           this.content = editor.getHTML()
+          
+          if (this.characterLimit) {
+            this.characterCount = editor.storage.characterCount.characters()
+          }
         },
         onFocus: () => {
           this.isFocused = true
@@ -147,6 +176,33 @@ export const setupEditor = function(content) {
       })
 
       this.isInitialized = true
+      
+      if (this.characterLimit) {
+        this.characterCount = this.editor.storage.characterCount.characters()
+      }
     },
+
+    async uploadImage(file) {
+      const payload = new FormData()
+      const _csrf = document.forms.csrf._csrf.value
+
+      payload.append("file", file)
+      payload.append("_csrf", _csrf)
+
+      try {
+        const { data } = await axios.post('/api/image/upload', payload, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          }
+        })
+  
+        return data.url
+      } catch (error) {
+        if (error.response?.data?.errors?.length) {
+          return window.toast(error.response.data.errors[0].message, { type: 'error' })
+        }
+        window.toast(error.message, { type: 'error' })
+      }
+    }
   }
 }

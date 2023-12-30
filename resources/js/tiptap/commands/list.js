@@ -70,6 +70,28 @@ export const commandList = [
     },
   },
   {
+    name: 'link',
+    title: 'Link',
+    icon: '<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><path fill="currentColor" d="M136.37 187.53a12 12 0 0 1 0 17l-5.94 5.94a60 60 0 0 1-84.88-84.88l24.12-24.11A60 60 0 0 1 152 99a12 12 0 1 1-16 18a36 36 0 0 0-49.37 1.47l-24.1 24.08a36 36 0 0 0 50.92 50.92l5.94-5.94a12 12 0 0 1 16.98 0m74.08-142a60.09 60.09 0 0 0-84.88 0l-5.94 5.94a12 12 0 0 0 17 17l5.94-5.94a36 36 0 0 1 50.92 50.92l-24.11 24.12A36 36 0 0 1 120 139a12 12 0 1 0-16 18a60 60 0 0 0 82.3-2.43l24.12-24.11a60.09 60.09 0 0 0 .03-84.91Z"/></svg>',
+    inline: true,
+    command: ({ editor, range }) => {
+      const previousUrl = editor.getAttributes('link').href
+      const url = window.prompt('Enter your link URL', previousUrl)
+
+      if (url === null) return
+
+      let callList = editor.chain().focus()
+      if (range) callList.deleteRange(range)
+
+      if (url === '') {
+        callList.extendMarkRange('link').unsetLink().run()
+        return
+      }
+
+      callList.extendMarkRange('link').setLink({ href: url }).run()
+    }
+  },
+  {
     name: 'blockquote',
     title: 'Blockquote',
     icon: '<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><path fill="currentColor" d="M116 72v88a48.05 48.05 0 0 1-48 48a8 8 0 0 1 0-16a32 32 0 0 0 32-32v-8H40a16 16 0 0 1-16-16V72a16 16 0 0 1 16-16h60a16 16 0 0 1 16 16m100-16h-60a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h60v8a32 32 0 0 1-32 32a8 8 0 0 0 0 16a48.05 48.05 0 0 0 48-48V72a16 16 0 0 0-16-16"/></svg>',
@@ -115,7 +137,7 @@ export const commandList = [
   },
   {
     name: 'img',
-    title: 'Image',
+    title: 'Image URL',
     icon: '<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><path fill="currentColor" d="M216 40H40a16 16 0 0 0-16 16v144a16 16 0 0 0 16 16h176a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16m-60 48a12 12 0 1 1-12 12a12 12 0 0 1 12-12M40 200v-28l52-52l80 80Zm176 0h-21.37l-36-36l20-20L216 181.38z"/></svg>',
     inline: false,
     command: ({ editor, range }) => {
@@ -128,25 +150,32 @@ export const commandList = [
     },
   },
   {
-    name: 'link',
-    title: 'Link',
-    icon: '<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><path fill="currentColor" d="M136.37 187.53a12 12 0 0 1 0 17l-5.94 5.94a60 60 0 0 1-84.88-84.88l24.12-24.11A60 60 0 0 1 152 99a12 12 0 1 1-16 18a36 36 0 0 0-49.37 1.47l-24.1 24.08a36 36 0 0 0 50.92 50.92l5.94-5.94a12 12 0 0 1 16.98 0m74.08-142a60.09 60.09 0 0 0-84.88 0l-5.94 5.94a12 12 0 0 0 17 17l5.94-5.94a36 36 0 0 1 50.92 50.92l-24.11 24.12A36 36 0 0 1 120 139a12 12 0 1 0-16 18a60 60 0 0 0 82.3-2.43l24.12-24.11a60.09 60.09 0 0 0 .03-84.91Z"/></svg>',
-    inline: true,
+    isPlusOnly: true,
+    name: 'imgUpload',
+    title: 'Image Upload',
+    icon: '<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><path fill="currentColor" d="M216 40H40a16 16 0 0 0-16 16v144a16 16 0 0 0 16 16h176a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16m-60 48a12 12 0 1 1-12 12a12 12 0 0 1 12-12M40 200v-28l52-52l80 80Zm176 0h-21.37l-36-36l20-20L216 181.38z"/></svg>',
+    inline: false,
     command: ({ editor, range }) => {
-      const previousUrl = editor.getAttributes('link').href
-      const url = window.prompt('Enter your link URL', previousUrl)
+      let callList = editor.chain().focus()
+      if (range) callList.deleteRange(range)
+      return callList.addImage().run()
+    }
+  },
+  {
+    isPlusOnly: true,
+    name: 'youtube',
+    title: 'YouTube Embed',
+    icon: '<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><path fill="currentColor" d="M234.33 69.52a24 24 0 0 0-14.49-16.4C185.56 39.88 131 40 128 40s-57.56-.12-91.84 13.12a24 24 0 0 0-14.49 16.4C19.08 79.5 16 97.74 16 128s3.08 48.5 5.67 58.48a24 24 0 0 0 14.49 16.41C69 215.56 120.4 216 127.34 216h1.32c6.94 0 58.37-.44 91.18-13.11a24 24 0 0 0 14.49-16.41c2.59-10 5.67-28.22 5.67-58.48s-3.08-48.5-5.67-58.48m-72.11 61.81l-48 32A4 4 0 0 1 108 160V96a4 4 0 0 1 6.22-3.33l48 32a4 4 0 0 1 0 6.66"/></svg>',
+    inline: false,
+    command: ({ editor, range }) => {
+      const url = window.prompt('Enter the URL of the YouTube video you want to embed')
 
       if (url === null) return
 
       let callList = editor.chain().focus()
       if (range) callList.deleteRange(range)
 
-      if (url === '') {
-        callList.extendMarkRange('link').unsetLink().run()
-        return
-      }
-
-      callList.extendMarkRange('link').setLink({ href: url }).run()
+      callList.setYoutubeVideo({ src: url }).run()
     }
   },
   {

@@ -1,6 +1,7 @@
 import AssetService from '#services/asset_service';
 import CacheService from '#services/cache_service';
 import storage from '#services/storage_service';
+import { assetStoreValidator } from '#validators/asset_validator';
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class AssetsController {
@@ -32,5 +33,18 @@ export default class AssetsController {
     }
 
     return image
+  }
+
+  public async store({ request, response, auth, bouncer }: HttpContext) {
+    await bouncer.with('AssetPolicy').authorize('store')
+
+    const { file } = await request.validateUsing(assetStoreValidator)
+    const location = `${auth.user!.id}/uploads/`
+    const filename = `upload_${new Date().getTime()}.${file.extname}`
+    
+    // upload and set new avatar
+    await storage.storeFromTmp(location, filename, file)
+
+    return response.json({ url: '/img/' + location + filename })
   }
 }

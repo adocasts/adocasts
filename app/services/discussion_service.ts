@@ -52,7 +52,8 @@ export default class DiscussionService {
     return Discussion.query()
       .if(filters?.pattern, query => query.where(query => query
         .whereILike('title', `%${filters!.pattern}%`)
-        .orWhereILike('body', `%${filters!.pattern}%`)  
+        .orWhereILike('body', `%${filters!.pattern}%`)
+        .if(filters!.pattern.startsWith('@'), query => query.orWhereHas('user', query => query.whereILike('username', `%${filters!.pattern.replace('@', '')}%`)))
       ))
       .if(filters?.topic, query => query.whereHas('taxonomy', query => query.where('slug', filters!.topic!)))
       .preload('user', query => query.preload('profile'))

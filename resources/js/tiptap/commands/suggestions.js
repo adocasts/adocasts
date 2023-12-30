@@ -1,10 +1,10 @@
 import tippy from 'tippy.js'
 import { commandList } from './list'
 
-export const getSuggestions = ({ isBasic = true }) => ({
+export const getSuggestions = ({ isBasic = true, isFreeUser = true }) => ({
   items: ({ query }) => {
     return [
-      ...commandList
+      ...commandList.filter(cmd => typeof cmd.isPlusOnly !== 'boolean' || !isFreeUser)
     ].filter(item => {
       const isTitleMatch = item.title.toLowerCase().startsWith(query.toLowerCase())
       const isNameMatch = item.name.toLowerCase().startsWith(query.toLowerCase())

@@ -44,6 +44,7 @@ const FragmentsController = () => import('#controllers/fragments_controller')
 
 router.get('/img/:userId/:filename', [AssetsController, 'show']).as('userimg')
 router.get('/img/*', [AssetsController, 'show']).where('path', /.*/).as('img')
+router.post('/api/image/upload', [AssetsController, 'store']).as('img.store').use(middleware.auth())
 
 router.get('/', [HomeController, 'index']).as('home')
 

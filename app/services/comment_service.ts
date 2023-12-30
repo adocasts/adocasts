@@ -18,6 +18,16 @@ import MentionService from "./mention_service.js";
 export default class CommentService {
   constructor(protected ctx: HttpContext) {}
 
+  private allowedTags = [
+    "address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4",
+    "h5", "h6", "hgroup", "main", "nav", "section", "blockquote", "dd", "div",
+    "dl", "dt", "figcaption", "figure", "hr", "li", "main", "ol", "p", "pre",
+    "ul", "a", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn",
+    "em", "i", "kbd", "mark", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp",
+    "small", "span", "strong", "sub", "sup", "time", "u", "var", "wbr", "caption",
+    "col", "colgroup", "table", "tbody", "td", "tfoot", "th", "thead", "tr", "iframe", "img"
+  ]
+
   public get user() {
     return this.ctx.auth.user
   }
@@ -35,7 +45,10 @@ export default class CommentService {
       ...data,
       commentTypeId: Comment.getTypeId(data),
       identity,
-      body: sanitizeHtml(data.body, { allowedAttributes: false }),
+      body: sanitizeHtml(data.body, { 
+        allowedAttributes: false,
+        allowedTags: this.allowedTags
+      }),
       userId: this.user.id,
       stateId: States.PUBLIC
     })
@@ -74,7 +87,10 @@ export default class CommentService {
 
     comment.useTransaction(trx)
 
-    body = sanitizeHtml(body, { allowedAttributes: false })
+    body = sanitizeHtml(body, { 
+      allowedAttributes: false,
+      allowedTags: this.allowedTags
+    })
 
     await comment.merge({ body }).save()
     await NotificationService.onUpdate(Comment.table, comment.id, comment.body, trx)

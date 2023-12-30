@@ -1,7 +1,7 @@
 @let(submittable = $props.submittable ?? true)
 @let(showBio = typeof $props.showBio !== 'undefined' ? $props.showBio : !submittable ? false : auth.user && !update)
 
-<div x-data="setupEditor({{ js.stringify(value ?? '') }})">
+<div x-data="setupEditor({{ js.stringify(value ?? '') }}, {{ auth.user.isFreeTier }})">
   <div class="bubble-menu bg-slate-100 text-slate-700 text-sm py-1 px-2 rounded-md">
     <template x-if="typeof isInitialized === 'boolean'">
       <div class="flex items-center space-x-2">
@@ -47,6 +47,14 @@
     @endif
     @if (submittable)
       <div class="absolute bottom-4 right-4 flex items-center gap-2 z-10">
+        <template x-if="editor && characterLimit">
+          <div class="text-sm text-slate-600 mr-4">
+            <span x-text="characterCount"></span>
+            of
+            <span x-text="characterLimit"></span>
+          </div>
+        </template>
+
         @if (cancelable)
           @button({ type: 'button', class: 'gap-1.5', size: 'sm', '@click': onCancel ? onCancel : '' })
             @svg('ph:x-bold')
@@ -67,6 +75,16 @@
             {{ update ? 'Update' : 'Create' }} Comment
           @endif
         @end
+      </div>
+    @else
+      <div class="absolute bottom-0 right-0 z-10">
+        <template x-if="editor && characterLimit">
+          <div class="text-sm text-slate-600 mr-4">
+            <span x-text="characterCount"></span>
+            of
+            <span x-text="characterLimit"></span>
+          </div>
+        </template>
       </div>
     @endif
     <div x-ref="element" class="{{ className ?? `prose prose-comment rounded-xl text-slate-900 !max-w-full flex-1 ${$props.class}` }}"></div>

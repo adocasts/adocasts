@@ -9,7 +9,7 @@
     <h4 class="font-semibold mt-6 mb-6 p-6 flex rounded-xl bg-slate-100 {{ className }}">
       {{ cta }}
       <span class="text-slate-600 ml-2 font-normal">
-        ({{ commentCount }} {{ string.pluralize(descriptor, commentCount) }})
+        ({{ commentCount }} {{ string.pluralize(descriptor, typeof commentCount === 'number' ? commentCount : parseInt(commentCount)) }})
       </span>
     </h4>
 
