@@ -1,9 +1,17 @@
-@let(aside = $props.aside ?? false)
+@assign(aside = aside ?? false)
 
 <div up-discussion-list>
   <ul id="list" role="list" class="divide-y divide-slate-100" {{ html.attrs({ 'x-merge': !aside && 'append' }) }}>
     @each (item in items)
-      <li class="flex flex-wrap gap-x-4 py-4 px-4 relative bg-slate-100 hover:bg-slate-200/50 duration-300 group mb-4 rounded-md">
+      <li 
+        id="feed_{{ item.id }}"
+        x-intersect.once="$ajax('{{ route('feed.impression', { id: item.id }) }}', { 
+          method: 'POST', 
+          body: {
+            _csrf: document.forms.csrf._csrf.value
+          }
+        })"
+        class="flex flex-wrap gap-x-4 py-4 px-4 relative bg-slate-100 hover:bg-slate-200/50 duration-300 group mb-4 rounded-md">
         @if (!aside)
           @profile.link({ user: item.user, class: 'h-full' })
             <img class="rounded-md w-12 h-12 border-1 border-slate-900 border-opacity-20 bg-slate-100 relative z-10" src="{{ item.user.avatar }}" alt="{{ item.user.handle }}" />
@@ -66,12 +74,21 @@
             @elseif (!aside)
               <div class="ml-14"></div>
             @endif
-            <a href="{{ route('feed.show', { slug: item.slug }) }}#comments" up-follow class="text-sm bg-slate-200 hover:text-slate-950 duration-300 rounded-md py-1 px-2">
-              {{ item.$extras.commentCount }}
-              {{ string.pluralize('Reply', parseInt(item.$extras.commentCount)) }}
-            </a>
+            @tooltip({ text: `${parseInt(item.$extras.commentCount).toLocaleString()} ${string.pluralize('Reply', parseInt(item.$extras.commentCount))}`, position: 'bottom' })
+              <a href="{{ route('feed.show', { slug: item.slug }) }}#comments" up-follow class="flex items-center gap-1.5 text-sm bg-slate-200 hover:text-slate-950 duration-300 rounded-md py-1 px-2">
+                @svg('ph:chats-circle-fill')
+                {{ parseInt(item.$extras.commentCount).toLocaleString() }}
+              </a>
+            @end
 
             @!discussion.vote({ item })
+
+            @tooltip({ text: `${parseInt(item.$extras.impressions_count).toLocaleString()} ${string.pluralize('Impression', parseInt(item.$extras.impressions_count))}`, position: 'bottom' })
+              <div class="text-sm bg-slate-200 text-slate-900 opacity-50 duration-300 rounded-md py-1 px-2 flex items-center gap-1.5">
+                @svg('ph:eye-fill', { class: 'text-slate-600' })
+                {{ parseInt(item.$extras.impressions_count).toLocaleString() }}
+              </div>
+            @end
           </div>
 
           @if (item.taxonomy)

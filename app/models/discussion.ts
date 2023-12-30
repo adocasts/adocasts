@@ -6,6 +6,8 @@ import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relat
 import Taxonomy from './taxonomy.js'
 import SlugService from '#services/slug_service'
 import UtilityService from '#services/utility_service'
+import DiscussionView from './discussion_view.js'
+import DiscussionViewTypes from '#enums/discussion_view_types'
 
 export default class Discussion extends BaseModel {
   @column({ isPrimary: true })
@@ -28,9 +30,6 @@ export default class Discussion extends BaseModel {
 
   @column()
   declare body: string
-
-  @column()
-  declare views: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -78,6 +77,16 @@ export default class Discussion extends BaseModel {
 
   @hasMany(() => Comment)
   declare comments: HasMany<typeof Comment>
+
+  @hasMany(() => DiscussionView, {
+    onQuery(query) {
+      query.where('typeId', DiscussionViewTypes.VIEW)
+    }
+  })
+  declare views: HasMany<typeof DiscussionView>
+
+  @hasMany(() => DiscussionView)
+  declare impressions: HasMany<typeof DiscussionView>
 
   @manyToMany(() => User, {
     pivotTable: 'discussion_votes',

@@ -188,6 +188,7 @@ router.get('/feed/:slug/edit', [DiscussionsController, 'edit']).as('feed.edit').
 router.put('/feed/:id', [DiscussionsController, 'update']).as('feed.update').use(middleware.auth())
 router.delete('/feed', [DiscussionsController, 'destroy']).as('feed.destroy').use(middleware.auth())
 router.patch('/feed/:id/vote', [DiscussionsController, 'vote']).as('feed.vote').use(middleware.auth())
+router.post('/feed/:id/impression', [DiscussionsController, 'impression']).as('feed.impression')
 
 /**
  * comments

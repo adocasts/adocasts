@@ -1,13 +1,16 @@
+import DiscussionViewTypes from '#enums/discussion_view_types'
 import Discussion from '#models/discussion'
 import DiscussionService from '#services/discussion_service'
 import logger from '#services/logger_service'
 import MentionService from '#services/mention_service'
 import NotificationService from '#services/notification_service'
+import SessionService from '#services/session_service'
 import { discussionCreateValidator, discussionSearchValidator } from '#validators/discussion_validator'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 import router from '@adonisjs/core/services/router'
 import db from '@adonisjs/lucid/services/db'
+import { DateTime } from 'luxon'
 
 @inject()
 export default class DiscussionsController {
@@ -58,10 +61,22 @@ export default class DiscussionsController {
     }
   }
 
-  public async show({ view, params }: HttpContext) {
+  @inject()
+  public async show({ view, params, auth }: HttpContext, sessionService: SessionService) {
     const item = await this.discussionService.getBySlug(params.slug)
     const comments = await this.discussionService.getComments(item)
     const commentCount = item.$extras.commentsCount
+
+    const data = {
+      typeId: DiscussionViewTypes.VIEW,
+      ipAddress: sessionService.ipAddress,
+      userAgent: sessionService.userAgent,
+    }
+    
+    await item.related('views').create({
+      ...data,
+      userId: auth.user?.id
+    })
 
     return view.render('pages/discussions/show', { item, comments, commentCount })
   }
@@ -113,6 +128,34 @@ export default class DiscussionsController {
     await item.delete()
 
     return response.redirect().toRoute('feed.index')
+  }
+
+  @inject()
+  public async impression({ response, params, auth }: HttpContext, sessionService: SessionService) {
+    const item = await Discussion.query()
+      .where('id', params.id)
+      .preload('impressions', query => query
+        .where('ipAddress', sessionService.ipAddress!)
+        .where('userAgent', sessionService.userAgent!)
+        .where('createdAt', '>=', DateTime.now().minus({ minute: 1 }).toSQL())
+        .orderBy('createdAt', 'desc')
+        .groupLimit(1)
+      )
+      .firstOrFail()
+
+    // if user provided impression in the past 1 min, do nothing
+    if (item.impressions.length) {
+      return response.status(204)
+    }
+
+    await item.related('views').create({
+      userId: auth.user?.id,
+      typeId: DiscussionViewTypes.IMPRESSION,
+      ipAddress: sessionService.ipAddress,
+      userAgent: sessionService.userAgent
+    })
+
+    return response.status(204)
   }
 
   public async vote({ view, auth, params, bouncer }: HttpContext) {

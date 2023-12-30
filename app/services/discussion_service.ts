@@ -1,12 +1,11 @@
+import DiscussionViewTypes from "#enums/discussion_view_types"
 import Plans from "#enums/plans"
 import States from "#enums/states"
 import Discussion from "#models/discussion"
 import Taxonomy from "#models/taxonomy"
 import User from "#models/user"
-import { discussionSearchValidator } from "#validators/discussion_validator"
 import { inject } from "@adonisjs/core"
 import { HttpContext } from "@adonisjs/core/http"
-import { Infer } from "@vinejs/vine/types"
 import { DateTime } from "luxon"
 
 @inject()
@@ -25,6 +24,8 @@ export default class DiscussionService {
       .preload('taxonomy', query => query.preload('asset'))
       .preload('votes', query => query.select('id'))
       .withCount('comments', query => query.where('stateId', States.PUBLIC).as('commentsCount'))
+      .withCount('views')
+      .withCount('impressions')
       .where('slug', slug)
       .where('stateId', States.PUBLIC)
       .firstOrFail()
@@ -57,6 +58,8 @@ export default class DiscussionService {
       .whereHas('user', query => query.where('planId', '!=', Plans.FREE))
       .where('stateId', States.PUBLIC)
       .withCount('comments', query => query.where('stateId', States.PUBLIC).as('commentCount'))
+      .withCount('views')
+      .withCount('impressions')
       .preload('comments', query => query.preload('user').where('stateId', States.PUBLIC).orderBy('createdAt', 'desc').groupLimit(2))
       .orderBy('createdAt', 'desc')
       .limit(limit)
@@ -71,6 +74,8 @@ export default class DiscussionService {
         .preload('votes', query => query.select('id'))
         .where('stateId', States.PUBLIC)
         .withCount('comments', query => query.where('stateId', States.PUBLIC).as('commentCount'))
+        .withCount('views')
+        .withCount('impressions')
         .preload('comments', query => query.preload('user').where('stateId', States.PUBLIC).orderBy('createdAt', 'desc').groupLimit(2))
         .orderBy('createdAt', 'desc')
         .limit(limit - discussions.length)
@@ -95,6 +100,8 @@ export default class DiscussionService {
       .preload('votes', query => query.select('id'))
       .where('stateId', States.PUBLIC)
       .withCount('comments', query => query.where('stateId', States.PUBLIC).as('commentCount'))
+      .withCount('views')
+      .withCount('impressions')
       .preload('comments', query => query.preload('user').where('stateId', States.PUBLIC).orderBy('createdAt', 'desc').groupLimit(2))
       .orderBy('createdAt', 'desc')
       .paginate(page, 20)
@@ -114,6 +121,8 @@ export default class DiscussionService {
       .where('stateId', States.PUBLIC)
       .where('userId', userId)
       .withCount('comments', query => query.where('stateId', States.PUBLIC).as('commentCount'))
+      .withCount('views')
+      .withCount('impressions')
       .preload('comments', query => query.preload('user').where('stateId', States.PUBLIC).orderBy('createdAt', 'desc').groupLimit(2))
       .orderBy('createdAt', 'desc')
       .paginate(page, 20)
@@ -151,5 +160,16 @@ export default class DiscussionService {
     await discussion.loadCount('votes')
 
     return discussion
+  }
+
+  public async incrementImpressions(discussions: Discussion[]) {
+    const data = this.ctx.auth.user ? { 
+      userId: this.ctx.auth.user.id,
+      typeId: DiscussionViewTypes.IMPRESSION
+    } : {
+      typeId: DiscussionViewTypes.IMPRESSION
+    }
+    
+    return Promise.all(discussions.map(item => item.related('impressions').create(data)))
   }
 }

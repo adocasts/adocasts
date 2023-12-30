@@ -14,6 +14,7 @@ export default class extends BaseSchema {
       table.string('slug', 200).notNullable().unique()
       table.text('body').notNullable().defaultTo('')
       table.integer('views').unsigned().notNullable().defaultTo(0)
+      table.integer('impressions').unsigned().notNullable().defaultTo(0)
 
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })

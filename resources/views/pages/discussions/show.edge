@@ -58,9 +58,7 @@
             @end
           @end
           @!stat.bar.item({ title: 'Posted', value: item.createdAgo })
-          @if (item.createdAgo !== item.updatedAgo)
-            @!stat.bar.item({ title: 'Updated', value: item.updatedAgo })
-          @endif
+          @!stat.bar.item({ title: 'Impressions', value: parseInt(item.$extras.impressions_count).toLocaleString() })
           @!stat.bar.item({ title: 'Replies', value: commentCount, href: '#comments', class: 'hidden sm:flex' })
         @end
       </div>
