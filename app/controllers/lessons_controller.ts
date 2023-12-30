@@ -1,6 +1,7 @@
 import HttpStatus from '#enums/http_statuses'
 import AnalyticsService from '#services/analytics_service'
 import CollectionService from '#services/collection_service'
+import DiscussionService from '#services/discussion_service'
 import HistoryService from '#services/history_service'
 import PermissionService from '#services/permission_service'
 import PostService from '#services/post_service'
@@ -18,6 +19,7 @@ export default class LessonsController {
     protected collectionService: CollectionService,
     protected permissionService: PermissionService,
     protected historyService: HistoryService,
+    protected discussionService: DiscussionService
   ) {}
   
   async index({ view, request, params }: HttpContext) {
@@ -37,7 +39,9 @@ export default class LessonsController {
       .orderBy(sortBy, sort)
       .paginate(page, 20, router.makeUrl('lessons.index', params))
 
-    return view.render('pages/lessons/index', { type: 'Lessons', items })
+    const feed = await this.discussionService.getAsideList()
+
+    return view.render('pages/lessons/index', { type: 'Lessons', items, feed })
   }
 
   async streams({ view, request, params }: HttpContext) {
@@ -57,7 +61,9 @@ export default class LessonsController {
       .orderBy(sortBy, sort)
       .paginate(page, 20, router.makeUrl('lessons.index', params))
 
-    return view.render('pages/lessons/index', { type: 'Livestreams', items })
+    const feed = await this.discussionService.getAsideList()
+
+    return view.render('pages/lessons/index', { type: 'Livestreams', items, feed })
   }
   
   async show({ view, request, params, session, auth, up, route, bouncer }: HttpContext) {

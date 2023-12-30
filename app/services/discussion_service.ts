@@ -1,3 +1,4 @@
+import Plans from "#enums/plans"
 import States from "#enums/states"
 import Discussion from "#models/discussion"
 import Taxonomy from "#models/taxonomy"
@@ -45,6 +46,39 @@ export default class DiscussionService {
       ])
       .preload('user')
       .preload('userVotes', query => query.select('id'))
+  }
+
+  public async getAsideList(limit: number = 10, taxonomyIds?: number[]) {
+    const discussions = await Discussion.query()
+      .if(taxonomyIds, query => query.whereIn('taxonomyId', taxonomyIds!))
+      .preload('user', query => query.preload('profile'))
+      .preload('taxonomy', query => query.preload('asset'))
+      .preload('votes', query => query.select('id'))
+      .whereHas('user', query => query.where('planId', '!=', Plans.FREE))
+      .where('stateId', States.PUBLIC)
+      .withCount('comments', query => query.where('stateId', States.PUBLIC).as('commentCount'))
+      .preload('comments', query => query.preload('user').where('stateId', States.PUBLIC).orderBy('createdAt', 'desc').groupLimit(2))
+      .orderBy('createdAt', 'desc')
+      .limit(limit)
+
+    if (discussions.length < limit) {
+      const ids = discussions.map(discussion => discussion.id)
+      const moreDiscussions = await await Discussion.query()
+        .if(taxonomyIds, query => query.whereIn('taxonomyId', taxonomyIds!))
+        .whereNotIn('id', ids)
+        .preload('user', query => query.preload('profile'))
+        .preload('taxonomy', query => query.preload('asset'))
+        .preload('votes', query => query.select('id'))
+        .where('stateId', States.PUBLIC)
+        .withCount('comments', query => query.where('stateId', States.PUBLIC).as('commentCount'))
+        .preload('comments', query => query.preload('user').where('stateId', States.PUBLIC).orderBy('createdAt', 'desc').groupLimit(2))
+        .orderBy('createdAt', 'desc')
+        .limit(limit - discussions.length)
+
+      discussions.push(...moreDiscussions)
+    }
+
+    return discussions
   }
 
   public async getPaginated(filters?: Record<string,any>) {

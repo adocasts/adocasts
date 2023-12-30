@@ -22,7 +22,9 @@
   max-width: 100%;
 }
 
-.prose [data-youtube-video] {
+.prose [data-youtube-video],
+.prose-sm [data-youtube-video],
+.prose-xs [data-youtube-video] { 
   position: relative;
   padding-bottom: 56.25%;
 
