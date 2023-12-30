@@ -11,7 +11,6 @@ import CollectionBuilder from '#builders/collection_builder'
 import PostBuilder from '#builders/post_builder'
 import { billtoValidator, mentionListValidator } from '#validators/user_validator'
 import User from '#models/user'
-import Plans from '#enums/plans'
 
 export default class UsersController {
   public async menu({ view, auth }: HttpContext) {

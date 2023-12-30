@@ -26,6 +26,7 @@ export default class UserService {
       await user.related('sessions').query().delete()
       await this.destroyComments(user)
       await this.destroyLessonRequests(user)
+      await this.destroyDiscussions(user)
 
       // purge profile
       await user.related('profile').query().delete()
@@ -89,6 +90,20 @@ export default class UserService {
       await request.related('comments').query().delete()
       await request.related('votes').query().delete()
       await request.delete()
+    }
+  }
+
+  public static async destroyDiscussions(user: User) {
+    const discussions = await user.related('discussions').query()
+
+    await user.related('discussionVotes').query().update({ userId: null })
+
+    for (let i = 0; i < discussions.length; i++) {
+      const discussion = discussions[i]
+
+      await discussion.related('comments').query().delete()
+      await discussion.related('votes').query().delete()
+      await discussion.delete()
     }
   }
 }
