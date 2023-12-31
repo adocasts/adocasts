@@ -1,7 +1,7 @@
 @layout()
 
   <div class="max-w-prose mx-auto">
-    <div class="flex justify-between">
+    <div class="flex justify-between items-center">
       <div>
         @if (request.header('referer') && request.header('referer').includes(`/${item.user.handle}`))
           <a href="{{ route('profiles.show', { username: item.user.handle }) }}" class="anchor" up-follow>

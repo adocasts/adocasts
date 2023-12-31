@@ -14,11 +14,11 @@
         class="flex flex-wrap gap-x-4 py-4 px-4 relative bg-slate-100 hover:bg-slate-200/50 duration-300 group mb-4 rounded-md">
         @if (!aside)
           @profile.link({ user: item.user, class: 'h-full' })
-            <img class="rounded-md w-12 h-12 border-1 border-slate-900 border-opacity-20 bg-slate-100 relative z-10" src="{{ item.user.avatar }}" alt="{{ item.user.handle }}" />
+            <img loading="lazy" class="rounded-md w-12 h-12 border-1 border-slate-900 border-opacity-20 bg-slate-100 relative z-10" src="{{ item.user.avatar }}" alt="{{ item.user.handle }}" />
           @end
         @endif
 
-        <div class="flex-1 duration-300 relative">
+        <div class="{{ aside ? 'w-full' : 'w-[calc(100%-4rem)]' }} duration-300 relative">
           @if (!aside && item.comments.length > 1)
             <div class="absolute -left-10 w-[3px] h-full rounded-full bg-slate-300/50"></div>
           @endif
@@ -59,11 +59,11 @@
             </a>
           </h4>
 
-          <div class="{{ aside ? 'prose-sm' : 'prose' }} line-clamp-5 text-slate-800">
-            {{{ string.truncate(item.body, 350) }}}
+          <div class="{{ aside ? 'prose-sm' : 'prose' }} feed-body line-clamp-5 text-slate-800">
+            {{{ string.truncate(await parser.highlight(item.body), 350) }}}
           </div>
         </div>
-        <div class="w-full flex items-baseline gap-4 justify-between text-sm mt-4 text-slate-600">
+        <div class="w-full flex items-end gap-4 justify-between text-sm mt-4 text-slate-600">
           <div class="flex items-center gap-2">
             @if (item.comments.length > 1)
               <div class="flex -space-x-2 {{ aside ? '' : 'ml-3 mr-3' }}">

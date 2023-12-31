@@ -404,7 +404,7 @@ pre ul.filepath-list {
   background-image: none;
 }
 
-pre.shiki {
+:not(.feed-body) > pre.shiki {
   @apply -mx-4 !px-0 !pb-0 overflow-hidden;
 
   > code {

@@ -57,7 +57,7 @@ export default class SignInController {
     session.flash('success', `Welcome back, ${auth.user!.username}`)
 
     up.setTarget('[up-theme]')
-
+    
     if (forward?.includes('signin') || forward?.includes('signup') || forward?.includes('users/menu')) {
       forward = '/'
     }

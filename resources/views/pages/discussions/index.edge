@@ -3,10 +3,23 @@
     @heading({ title: 'The Feed', subtitle: 'Converse, Share, and Discuss' })
       @slot('action')
         <div class="flex items-end">
-          @button({ href: route('feed.create'), 'up-layer': 'new', 'up-size': 'medium', 'up-class': 'discussion-modal' })
-            @svg('ph:plus-bold')
-            New Post
-          @end
+          @can('DiscussionPolicy.store')
+            @button({ href: route('feed.create'), 'up-layer': 'new', 'up-size': 'medium', 'up-class': 'discussion-modal' })
+              @svg('ph:plus-bold')
+              New Post
+            @end
+          @else
+            <p class="text-xs">
+              <a href="{{ route('auth.signin.create') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+                Sign in
+              </a>
+              or 
+              <a href="{{ route('auth.signup.create') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+                sign up
+              </a>
+              to join in on the dicussion
+            </p>
+          @endcan
         </div>
       @endslot
     @end
