@@ -6,6 +6,7 @@ export default class CacheService {
   public static enabled = env.get('REDIS_ENABLED')
   public static fiveMinutes = 300
   public static oneDay = 86_400
+  public static oneMonth = 2_592_000
   public static stdTTL = CacheService.oneDay
 
   public static get globalKeys() {

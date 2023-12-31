@@ -8,6 +8,7 @@ import { DateTime } from 'luxon'
 Alpine.plugin(intersect)
 Alpine.plugin(ajax)
 
+window.DateTime = DateTime
 window.Alpine = Alpine
 
 Alpine.store('app', {

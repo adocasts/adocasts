@@ -1,0 +1,13 @@
+@if (item.status === 'In progress')
+  <div class="bg-blue-400 text-center text-black text-sm px-2 py-1 rounded-full">
+    {{ string.capitalCase(item.status) }}
+  </div>
+@elseif (item.status === 'Done')
+  <div class="bg-green-400 text-center text-black text-sm px-2 py-1 rounded-full">
+    {{ string.capitalCase(item.status) }}
+  </div>
+@else
+  <div class="bg-slate-100 text-center text-black text-sm px-2 py-1 rounded-full">
+    {{ string.capitalCase(item.status) }}
+  </div>
+@endif

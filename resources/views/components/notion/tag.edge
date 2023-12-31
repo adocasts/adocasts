@@ -1,0 +1,16 @@
+@if (item.tag === 'Intermediate')
+  <div class="bg-slate-100 text-center text-blue-500 text-sm px-2 py-1 rounded-full flex items-center justify-center gap-1.5">
+    @svg('ph:cell-signal-medium-fill')
+    {{ string.capitalCase(item.tag) }}
+  </div>
+@elseif (item.tag === 'Beginner')
+  <div class="bg-slate-100 text-center text-green-500 text-sm px-2 py-1 rounded-full flex items-center justify-center gap-1.5">
+    @svg('ph:cell-signal-low-fill')
+    {{ string.capitalCase(item.tag) }}
+  </div>
+@else
+  <div class="bg-slate-100 text-center text-red-500 text-sm px-2 py-1 rounded-full flex items-center justify-center gap-1.5">
+    @svg('ph:cell-signal-full-fill')
+    {{ string.capitalCase(item.tag) }}
+  </div>
+@endif

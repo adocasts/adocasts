@@ -39,6 +39,7 @@ const CommentsController = () => import('#controllers/comments_controller')
 const ProgressionsController = () => import('#controllers/progressions_controller')
 const SearchesController = () => import('#controllers/searches_controller')
 const LessonRequestsController = () => import('#controllers/lesson_requests_controller')
+const SchedulesController = () => import('#controllers/schedules_controller')
 const GoController = () => import('#controllers/go_controller')
 const FragmentsController = () => import('#controllers/fragments_controller')
 
@@ -220,6 +221,11 @@ router.patch('/requests/lessons/:id/approve', [LessonRequestsController, 'approv
 router.patch('/requests/lessons/:id/reject', [LessonRequestsController, 'reject']).as('requests.lessons.reject').use(middleware.auth())
 router.patch('/requests/lessons/:id/complete', [LessonRequestsController, 'complete']).as('requests.lessons.complete').use(middleware.auth())
 router.get('/fragments/requests/lessons/:id/:fragment', [LessonRequestsController, 'fragment']).as('requests.lessons.fragment')
+
+/**
+ * content schedule
+ */
+router.get('/schedule/:year?/:month?', [SchedulesController, 'index']).as('schedules.index').where('year', router.matchers.number()).where('month', router.matchers.number())
 
 /**
  * go
