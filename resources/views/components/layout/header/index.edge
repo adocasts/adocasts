@@ -78,7 +78,7 @@
   <div x-cloak x-show="showMobileMenu" class="lg:hidden" role="dialog" aria-modal="true">
     <!-- Background backdrop, show/hide based on slide-over state. -->
     <div class="fixed inset-0 z-10"></div>
-    <div class="fixed inset-y-0 left-0 z-10 w-full overflow-y-auto bg-white px-6 py-6">
+    <div class="fixed inset-y-0 left-0 z-10 w-full overflow-y-auto bg-white px-6 py-4">
       <div class="flex items-center justify-between">
         <div class="flex flex-1">
           <button @click="showMobileMenu = false" type="button" class="-m-2.5 rounded-md p-2.5 text-slate-700">
@@ -93,8 +93,7 @@
           <img class="logo-white w-auto h-6 md:h-7" src="/imgs/logo-white.svg" alt="Adocasts" width="146px" height="28px" />
           <img class="logo-black w-auto h-6 md:h-7" src="/imgs/logo-black.svg" alt="Adocasts" width="146px" height="28px" />
         </a>
-        <div class="flex flex-1 justify-end gap-4">
-          <a href="{{ route('auth.signin.create') }}" up-layer="new" @click="showMobileMenu = false" class="text-sm font-semibold leading-6 text-slate-900">Sign in</a>
+        <div class="flex flex-col flex-1 items-end gap-4">
           <a href="{{ route('auth.signup.create') }}" up-layer="new" @click="showMobileMenu = false" class="text-sm font-semibold leading-6 text-slate-900">Sign Up</a>
         </div>
       </div>
@@ -107,6 +106,9 @@
         <a up-follow href="{{ route('streams.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Livestreams</a>
         <a up-follow href="{{ route('blog.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Blog</a>
         <a up-follow href="{{ route('snippets.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Snippets</a>
+        <div class="w-full h-px bg-slate-300 my-4"></div>
+        <a up-follow href="{{ route('auth.signin.create') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Sign In</a>
+        <a up-follow href="{{ route('auth.signup.create') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Sign Up</a>
       </div>
     </div>
   </div>
