@@ -1,4 +1,4 @@
-@if (item.status === 'In progress')
+@if (item.status === 'In progress' || item.status === 'Planning')
   <div class="bg-blue-400 text-center text-black text-sm px-2 py-1 rounded-full">
     {{ string.capitalCase(item.status) }}
   </div>
@@ -7,7 +7,7 @@
     {{ string.capitalCase(item.status) }}
   </div>
 @else
-  <div class="bg-slate-100 text-center text-black text-sm px-2 py-1 rounded-full">
+  <div class="bg-slate-200 text-center text-black text-sm px-2 py-1 rounded-full">
     {{ string.capitalCase(item.status) }}
   </div>
 @endif

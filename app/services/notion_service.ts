@@ -16,14 +16,16 @@ class NotionService {
   }
 
   public async getSchedule(year: number = DateTime.now().year, month: number = DateTime.now().month) {
-    const series = await this.getSeries()
     const modules = await this.getModules()
+    const series = await this.getSeries(modules)
     const posts = await this.getPosts(series, modules, year, month)
+
+    series.map(item => item.posts = posts.filter(post => post.seriesId === item.id))
 
     return { posts, modules, series }
   }
 
-  public async getSeries() {
+  public async getSeries(modules: NotionModuleVM[] = []): Promise<NotionSeriesVM[]> {
     return CacheService.try('NOTION_SERIES', async () => {
       const series = await this.client.databases.query({
         database_id: env.get('NOTION_DB_SERIES'),
@@ -39,11 +41,11 @@ class NotionService {
         }
       })
   
-      return series.results.map(item => new NotionSeriesVM(item as DatabaseObjectResponse))
+      return series.results.map(item => new NotionSeriesVM(item as DatabaseObjectResponse, modules))
     }, CacheService.oneDay)
   }
 
-  public async getModules() {
+  public async getModules(): Promise<NotionModuleVM[]> {
     return CacheService.try('NOTION_MODULES', async () => {
       const modules = await this.client.databases.query({
         database_id: env.get('NOTION_DB_MODULES'),
@@ -54,7 +56,7 @@ class NotionService {
     }, CacheService.oneDay)
   }
 
-  public async getPosts(series: NotionSeriesVM[], modules: NotionModuleVM[], year: number, month: number) {
+  public async getPosts(series: NotionSeriesVM[], modules: NotionModuleVM[], year: number, month: number): Promise<NotionPostVM[]> {
     const posts = await CacheService.try(`NOTION_POSTS_${year}_${month}`, async () => {
       const dte = DateTime.fromObject({ year, month })
       const posts = await this.client.databases.query({
