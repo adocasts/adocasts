@@ -16,6 +16,8 @@
   selfDestructTimeout: selfDestructTimeout || 5000
 })
 
+@let(mainSlot = await slots.main())
+
 <div 
   x-data="{{ js.stringify(data) }}"
   x-show="show"
@@ -37,7 +39,7 @@
   @endif
 
   @if (title || slots.title)
-    <h5 class="mb-1 font-bold leading-none tracking-tight">
+    <h5 class="{{ message || mainSlot ? 'mb-1' : '' }} font-bold leading-none tracking-tight">
       @if (title)
         {{ title }}
       @elseif (slots.title)
@@ -46,7 +48,6 @@
     </h5>
   @endif
 
-  @let(mainSlot = await slots.main())
   @if (message || mainSlot)
     <div class="text-sm opacity-70">
       @if (message)

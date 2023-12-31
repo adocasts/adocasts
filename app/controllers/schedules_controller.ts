@@ -14,6 +14,11 @@ export default class SchedulesController {
     if (month && !this.months.includes(month)) month = DateTime.now().month
 
     const calendar = CalendarService.getMonth(year, month)
+    const scheduleStartDate = DateTime.fromObject({ year: 2024, month: 1, day: 1 })
+
+    if (calendar.current < scheduleStartDate) {
+      view.share({ isBeforeStart: true, scheduleStartDate })
+    }
 
     const data = await notion.getSchedule(year, month)
     return view.render('pages/schedules/index', { calendar, ...data })

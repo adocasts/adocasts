@@ -132,6 +132,15 @@
       </div>
     @endslot
   @end
+
+  @if (isBeforeStart)
+    @!alert({ 
+      variant: 'yellow', 
+      icon: 'ph:warning-fill',
+      title: `This schedule was started ${scheduleStartDate.toFormat('MMM d, yyyy')}.`, 
+      class: 'mb-4' 
+    })
+  @endif
   
   <div class="w-full mb-5">
     <div class="relative w-full">
