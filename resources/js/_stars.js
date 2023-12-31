@@ -2,8 +2,10 @@ import Starback from 'starback'
 import Alpine from 'alpinejs'
 
 Alpine.data('starfield', () => {
+  const isReducedMotion = window.matchMedia(`(prefers-reduced-motion: reduce)`) === true || window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true
   return {
     init() {
+      if (isReducedMotion) return
       if (this.$refs.canvasLine) {
         new Starback(this.$refs.canvasLine, {
           type: 'line',

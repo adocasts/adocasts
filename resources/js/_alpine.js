@@ -5,6 +5,8 @@ import { setupEditor } from './tiptap/basic'
 import { chain } from 'mathjs'
 import { DateTime } from 'luxon'
 
+const isReducedMotion = window.matchMedia(`(prefers-reduced-motion: reduce)`) === true || window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true
+
 Alpine.plugin(intersect)
 Alpine.plugin(ajax)
 
@@ -27,6 +29,8 @@ Alpine.data('mouseParallax', function (refNames = [], transforms = '') {
     exists: true,
 
     init() {
+      if (isReducedMotion) return
+
       onMouseMove = this.onMove.bind(this)
       document.addEventListener('mousemove', onMouseMove)
 
@@ -61,6 +65,8 @@ Alpine.data('credits', function () {
     play: true,
 
     init() {
+      if (isReducedMotion) return
+      
       setTimeout(() => {
         interval = setInterval(() => {
           if (this.play && this.$el.scrollTop !== this.$el.scrollTopMax) this.$el.scrollTop += 10
