@@ -46,6 +46,9 @@ export default class Collection extends AppBaseModel {
   declare stateId: State
 
   @column()
+  declare difficultyId: number | null
+
+  @column()
   declare assetId: number | null
 
   @column()

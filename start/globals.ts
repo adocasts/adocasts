@@ -24,6 +24,7 @@ import Tab from '../app/view_models/tab.js'
 import CollectionService from '#services/collection_service'
 import StripeService from '#services/stripe_service'
 import app from '@adonisjs/core/services/app'
+import Difficulties from '#enums/difficulties'
 
 addCollection(phicons)
 addCollection(simpleicons)
@@ -57,5 +58,6 @@ edge.global('VideoTypes', VideoTypes)
 edge.global('PaywallTypes', PaywallTypes)
 edge.global('StripeSubscriptionStatuses', StripeSubscriptionStatuses)
 edge.global('CouponDurations', CouponDurations)
+edge.global('Difficulties', Difficulties)
 
 edge.global('NotificationService', NotificationService)

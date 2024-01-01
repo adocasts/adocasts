@@ -1,0 +1,21 @@
+@if (item.difficultyId)
+  <div class="{{ 
+    html.classNames([
+      'flex items-center gap-1.5', 
+      { 
+        'text-green-500': item.difficultyId === Difficulties.BEGINNER,
+        'text-blue-500': item.difficultyId === Difficulties.INTERMEDIATE,
+        'text-red-500': item.difficultyId === Difficulties.ADVANCED
+      }
+    ]) 
+  }}">
+    @if (item.difficultyId === Difficulties.BEGINNER)
+      @svg('ph:cell-signal-low-fill')
+    @elseif (item.difficultyId === Difficulties.INTERMEDIATE)
+      @svg('ph:cell-signal-medium-fill')
+    @else
+      @svg('ph:cell-signal-full-fill')
+    @endif
+    {{ string.capitalCase(Difficulties[item.difficultyId]) }}
+  </div>
+@endif

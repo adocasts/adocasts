@@ -30,7 +30,8 @@
           <div class="sm:flex-1 mb-4 sm:my-4 md:mr-4 xl:mr-8 order-2 md:order-1">
             @!heading({ title: item.name, class: 'text-slate-900' })
 
-            <div class="flex items-center gap-3 text-slate-600 mt-4">
+            <div class="flex items-center gap-4 xl:gap-6 text-slate-800 -mt-4">
+              @!difficulty({ item })
               <div class="flex items-center gap-1.5">
                 @svg('ph:graduation-cap-fill')
                 <span>
@@ -45,7 +46,7 @@
             </div>
 
             @if (item.description)
-              <p class="xl:font-lg leading-7 mt-2 max-w-prose text-slate-900">
+              <p class="xl:font-lg leading-7 mt-4 max-w-prose text-slate-900">
                 {{ item.description }}
               </p>
             @endif
