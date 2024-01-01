@@ -1,0 +1,22 @@
+@layout()
+
+  @heading({ title: 'Advertisements', subtitle: 'Your Ads on Adocasts' })
+    @slot('action')
+      <div class="flex items-end">
+        @button({ href: route('advertisements.create'), 'up-layer': 'new', 'up-size': 'large', 'up-class': 'discussion-modal' })
+          @svg('ph:plus-bold')
+          New Ad
+        @end
+      </div>
+    @endslot
+  @end
+
+  <!-- Grid -->
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    @each (ad in ads)
+      @!ad.card({ ad })
+    @endeach
+  </div>
+  <!-- End Grid -->
+
+@end

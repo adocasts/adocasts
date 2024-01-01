@@ -1,0 +1,115 @@
+@let(size = sizes.at(0))
+
+@layout()
+  <div class="{{ html.classNames(['bg-white border border-slate-200 rounded-xl shadow-xl']) }}">
+    @form({ action: route('advertisements.store'), upSubmit: true, loadable: true })
+      <div x-data="{ src: '', url: '', sizeId: '{{ size.id }}', sizes: {{ js.stringify(sizes) }}, size: {{ js.stringify(size) }} }" class="p-6 pb-0">
+        @!heading({ title: 'Create Advertisement', size: 'xs' })
+
+        @form.field({ label: 'Advertisement Size', name: 'sizeId', model: 'sizeId', class: 'w-72 max-w-full' })
+          @form.select({ '@change': 'e => size = sizes.find(size => size.id == e.target.value)' })
+            @each (size in sizes)
+              <option value="{{ size.id }}">
+                {{ size.name }} ({{ size.width }}px by {{ size.height }}px)
+              </option>
+            @endeach
+          @end
+        @end
+
+        @form.field({ label: 'Advertisement Link URL', name: 'url', model: 'url', maxlength: 250, class: 'max-w-lg' })
+          @!form.input({ type: 'url' })
+        @end
+
+        <div class="flex flex-wrap items-end gap-4">
+          @form.field({ label: 'Start Date', name: 'startAt', el: 'div' })
+            @!form.input({ 
+              type: 'date', 
+              value: DateTime.now().toFormat('yyyy-MM-dd'),
+              min: DateTime.now().toFormat('yyyy-MM-dd'),
+              max: DateTime.now().toFormat('yyyy-MM-dd'),
+            })
+          @end
+
+          @form.field({ label: 'End Date', name: 'endAt', el: 'div' })
+            @!form.input({ 
+              type: 'date', 
+              value: DateTime.now().plus({ months: 1 }).toFormat('yyyy-MM-dd'),
+              min: DateTime.now().toFormat('yyyy-MM-dd'),
+              max: DateTime.now().plus({ months: 6 }).toFormat('yyyy-MM-dd'),
+            })
+          @end
+
+          <span class="text-xs text-slate-600 mb-8">Max end date is 6 months from today ({{ DateTime.now().plus({ months: 6 }).toFormat('MMM d, yyyy') }})</span>
+        </div>
+        
+        @form.field({ label: 'Advertisement Image' })
+          <div class="flex flex-col lg:flex-row lg:items-center gap-6">
+            <div>
+              <template x-if="size && src">
+                <img 
+                  class="bg-slate-300 max-w-full object-cover object-center" 
+                  :style="{ width: size.width + 'px', height: size.height + 'px' }" 
+                  :src="src" 
+                />
+              </template>
+              <template x-if="size && !src">
+                <div 
+                  class="bg-slate-300 max-w-full object-cover object-center flex flex-col items-center justify-center text-sm text-slate-600" 
+                  :style="{ width: size.width + 'px', height: size.height + 'px' }" 
+                >
+                  <span>Upload Your Ad's Image</span>
+                  <span class="flex items-center gap-1.5">
+                    <span x-text="size.width"></span>x<span x-text="size.height"></span>
+                  </span>
+                </div>
+              </template>
+            </div>
+            <label class="cursor-pointer">
+              <span class="rounded-md bg-slate-300 px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm hover:bg-slate-400">Change asset</span>
+              <p class="mt-2 text-xs leading-5 text-gray-400">JPG, PNG, SVG, or GIF. 1MB max.</p>
+              @if (flashMessages.has('errors.asset'))
+                <p class="mt-1 text-sm text-red-600" id="asset-error">
+                  {{ string.sentenceCase(flashMessages.get('errors.asset').join(', ')) }}
+                </p>
+              @endif
+              <input 
+                type="file" 
+                name="asset" 
+                class="hidden" 
+                accept="image/png, image/jpeg, image/jpg, image/gif" 
+                @change="e => src = e.target.files.length ? URL.createObjectURL(e.target.files[0]) : src"
+              />
+            </label>
+          </div>
+        @end
+
+        <div class="flex flex-wrap gap-4">
+          @form.field({ 
+            label: 'Alt Text', 
+            name: 'altText', 
+            class: 'w-full md:w-1/2 lg:w-1/4', 
+            maxlength: 50 
+          })
+            @!form.input()
+          @end
+        </div>
+      </div>
+
+      <div class="flex justify-between px-6 mt-4 py-4 border-t-2 border-slate-200">
+        <div>
+        </div>
+        <div>
+          @button({ type: 'submit', variant: 'dark', ':disabled': 'sending' })
+            @slot('loading')
+              @svg('svg-spinners:blocks-shuffle-3')
+              Saving ...
+            @endslot
+            
+            @svg('ph:image-fill')
+            Run Advertisement
+          @end
+        </div>
+      </div>
+    @end
+  </div>
+@end

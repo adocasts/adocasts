@@ -29,6 +29,7 @@ import hash from '@adonisjs/core/services/hash'
 import env from '#start/env'
 import SlugService from '#services/slug_service'
 import Discussion from './discussion.js'
+import Advertisement from './advertisement.js'
 
 export default class User extends AppBaseModel {
   @column({ isPrimary: true })
@@ -217,6 +218,9 @@ export default class User extends AppBaseModel {
     foreignKey: 'ownerId'
   })
   declare collections: HasMany<typeof Collection>
+
+  @hasMany(() => Advertisement)
+  declare ads: HasMany<typeof Advertisement>
 
   @hasMany(() => Comment)
   declare comments: HasMany<typeof Comment>

@@ -1,0 +1,107 @@
+<!-- Card -->
+<div class="group flex flex-col h-full bg-white border border-slate-200 shadow-sm rounded-xl" advertisement="{{ ad.id }}">
+  <div class="h-52 flex flex-col justify-center items-center bg-slate-200 rounded-t-xl p-4">
+    <img 
+      class="object-cover object-center max-h-full w-auto" 
+      {{ 
+        html.attrs({ 
+          src: '/img/' + ad.asset.filename,
+          alt: ad.asset.altText, 
+          width: `${ad.size.width}px`, 
+          height: `${ad.size.height}px` 
+        }) 
+      }} 
+    />
+  </div>
+  <div class="p-4 md:p-6">
+    <div class="flex flex-wrap gap-4 text-sm">
+      <div class="flex-1">
+        <span class="block mb-1 text-xs font-semibold uppercase text-slate-600">
+          Date Range
+        </span>
+        <div class="flex items-center gap-1.5">
+          <span>{{ ad.startAt.toFormat('MMM d, yyyy') }}</span>
+          @svg('ph:arrow-right-bold')
+          <span>{{ ad.endAt.toFormat('MMM d, yyyy') }}</span>
+        </div>
+      </div>
+
+      <div class="min-w-[6rem]">
+        <span class="block mb-1 text-xs font-semibold uppercase text-slate-600">
+          Ad Size
+        </span>
+        <div>
+          {{ ad.size.name }}
+        </div>
+      </div>
+    </div>
+    
+    <div class="mt-4">
+      @if (ad.isActive)
+        <div class="bg-slate-200 w-auto text-center rounded-full text-green-500 px-4 py-1">
+          Active
+        </div>
+      @else
+        <div class="bg-slate-200 w-auto text-center rounded-full text-slate-600 px-4 py-1">
+          Inactive
+        </div>
+      @endif
+    </div>
+  </div>
+  <div class="mt-auto flex border-t border-slate-200 divide-x divide-slate-200 ">
+    <a href="{{ route('advertisements.edit', { id: ad.id }) }}" up-follow up-layer="new" up-size="large" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-es-xl bg-white text-slate-800 shadow-sm hover:bg-slate-50 disabled:opacity-50 disabled:pointer-events-none">
+      Edit
+    </a>
+
+    @if (ad.isActive)
+      @form({ 
+        action: form.patch('advertisements.end', { id: ad.id }), 
+        upSubmit: true, 
+        'up-target': `[advertisement='${ad.id}']`, class: 'w-full',
+        'up-confirm': `This will immediately end this advertisement, would you like to continue?`
+      })
+        <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium bg-white text-blue-500 shadow-sm hover:bg-slate-50 disabled:opacity-50 disabled:pointer-events-none">
+          End Now
+        </button>
+      @end
+    @elseif (ad.endDate < DateTime.now())
+      @form({ 
+        action: form.patch('advertisements.start', { id: ad.id }), 
+        upSubmit: true, 
+        class: 'w-full',
+        'up-target': `[advertisement='${ad.id}']`, 
+        'up-confirm': `This will start the advertisement again for another ${ad.rangeDays} days, would you like to continue?`
+      })
+        <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium bg-white text-green-500 shadow-sm hover:bg-slate-50 disabled:opacity-50 disabled:pointer-events-none">
+          Re-Run
+        </button>
+      @end
+    @else
+      @form({ 
+        action: form.patch('advertisements.start', { id: ad.id }), 
+        class: 'w-full' ,
+        upSubmit: true, 
+        'up-target': `[advertisement='${ad.id}']`, 
+        'up-confirm': ad.startAt > DateTime.now() 
+          ? `This will start the advertisement today instead of ${ad.startAt.toFormat('MMM d, yyyy')}, would you like to continue?`
+          : `This will change the advertisement from inactive to active, would you like to continue?`
+      })
+        <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium bg-white text-green-500 shadow-sm hover:bg-slate-50 disabled:opacity-50 disabled:pointer-events-none">
+          Start Now
+        </button>
+      @end
+    @endif
+    
+    @form({ 
+      action: form.delete('advertisements.destroy', { id: ad.id }), 
+      class: 'w-full',
+      upSubmit: true, 
+      'up-confirm': `Are you sure you want to delete this advertisement? This cannot be undone.`
+    })
+      <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-ee-xl bg-white text-red-500 shadow-sm hover:bg-slate-50 disabled:opacity-50 disabled:pointer-events-none">
+        Delete
+      </button>
+    @end
+  </div>
+</div>
+<!-- End Card -->
