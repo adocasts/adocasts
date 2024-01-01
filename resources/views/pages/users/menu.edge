@@ -11,20 +11,20 @@
   <div class="max-w-[100vw] flex gap-x-3 md:gap-x-6 p-3 md:p-6" x-data x-init="document.getElementById('unreadNotifications').dispatchEvent(new CustomEvent('read'))">
     <nav class="flex flex-col sticky top-6 -mx-2 group">
       <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mb-2">Content</p>
-      @!menu.link({ text: 'Watchlist', href: route('users.watchlist') })
-      @!menu.link({ text: 'Progression', href: route('users.history') })
+      @!menu.link({ text: 'Watchlist', href: route('users.watchlist'), 'up-follow': true, 'up-layer': 'root' })
+      @!menu.link({ text: 'Progression', href: route('users.history'), 'up-follow': true, 'up-layer': 'root' })
       
       <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8 mb-2">Settings</p>
 
-      @!menu.link({ text: 'Account', href: route('users.settings.index', { section: 'account' }) })
-      @!menu.link({ text: 'Profile', href: route('users.settings.index', { section: 'profile' }) })
+      @!menu.link({ text: 'Account', href: route('users.settings.index', { section: 'account' }), 'up-follow': true, 'up-layer': 'root' })
+      @!menu.link({ text: 'Profile', href: route('users.settings.index', { section: 'profile' }), 'up-follow': true, 'up-layer': 'root' })
 
       @if (env('STRIPE_ENABLED'))
-        @!menu.link({ text: 'Billing', href: route('users.settings.index', { section: 'billing' }) })
+        @!menu.link({ text: 'Billing', href: route('users.settings.index', { section: 'billing' }), 'up-follow': true, 'up-layer': 'root' })
       @endif
 
-      @!menu.link({ text: 'Notifications', href: route('users.settings.index', { section: 'notifications' }) })
-      @!menu.link({ text: 'Data', href: route('users.settings.index', { section: 'data' }) })
+      @!menu.link({ text: 'Notifications', href: route('users.settings.index', { section: 'notifications' }), 'up-follow': true, 'up-layer': 'root' })
+      @!menu.link({ text: 'Data', href: route('users.settings.index', { section: 'data' }), 'up-follow': true, 'up-layer': 'root' })
 
       @if (auth.user?.isAdmin)
         <p class="font-semibold text-xs uppercase tracking-wider text-slate-400 mt-8 mb-2">Studio</p>
@@ -50,14 +50,14 @@
 
     <section class="flex flex-col gap-y-3">
       <div class="flex items-center gap-x-3">
-        @profile.link({ user: auth.user })
+        @profile.link({ user: auth.user, 'up-layer': 'root' })
           <figure>
             <img class="w-16 h-16 rounded shadow-xl" src="{{ auth.user.avatar }}" alt="{{ auth.user.username }}" />
           </figure>
         @end
         <div>
           <h3 class="text-lg mb-0.5 font-black">
-            @profile.link({ user: auth.user })
+            @profile.link({ user: auth.user, 'up-layer': 'root' })
               {{ auth.user.username }}
             @end
           </h3>
@@ -77,7 +77,7 @@
             </button>
             @!form({ id: 'stripePortalForm', action: route('stripe.portal') })
             @if (auth.user.isEnabledProfile)
-              @profile.link({ user: auth.user, class: 'text-xs anchor relative -top-0.5' })
+              @profile.link({ user: auth.user, class: 'text-xs anchor relative -top-0.5', 'up-layer': 'root' })
                 View Your Profile
               @end
             @end
