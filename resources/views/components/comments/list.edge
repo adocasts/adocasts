@@ -3,7 +3,7 @@
 @let(levelIndex = $props.levelIndex ? $props.levelIndex + 1 : 1)
 
 <ol class="{{ html.classNames(['list-none relative', { 'pl-4': levelIndex > 1 }]) }}">
-  @each(comment in nodeComments)
+  @each((comment, i) in nodeComments)
     @let(childComments = comments.filter(c => c.replyTo === comment.id))
     @let(rootParentId = comment.replyTo ? $props.rootParentId : comment.id)
     @let(replyTo = comment.id)
@@ -12,14 +12,19 @@
 
     <li class="relative" id="comment{{ comment.id }}" up-comment="{{ comment.id }}">
       <div 
-        class="duration-300 rounded-md p-4 mb-6 group relative" 
+        class="duration-300 rounded-md p-4 mb-6 group" 
         :class="[
           window.location.hash == `#comment{{ comment.id }}` ? 'border border-brand-600' : '',
           editId === {{ comment.id }} ? 'bg-slate-200' : 'bg-slate-100'
         ]">
         @if (levelIndex > 1)
           <div class="absolute -top-6 -left-2 w-10 h-10 rounded-bl-md border-l-2 border-b-2 border-slate-200 -z-10 pointer-events-none"></div>
+
+          @if (i + 1 !== nodeComments.length)
+            <div class="absolute -top-6 -left-2 w-10 h-[calc(100%+1.5rem)] border-l-2 border-slate-200 -z-10 pointer-events-none"></div>
+          @endif
         @endif
+
         <div class="mb-4 flex items-center">
           @if (isAnon)
             <div class="w-14 h-14 rounded-xl mr-3 bg-slate-200 overflow-hidden relative">
