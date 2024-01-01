@@ -1,3 +1,4 @@
+import AdService from '#services/ad_service';
 import DiscussionService from '#services/discussion_service';
 import PostService from '#services/post_service';
 import { inject } from '@adonisjs/core';
@@ -19,9 +20,10 @@ export default class SnippetsController {
       .orderBy(sortBy, sort)
       .paginate(page, 20, router.makeUrl('blog.index', params))
 
+    const adAside = await AdService.getMediumRectangles()
     const feed = await this.discussionService.getAsideList(Math.ceil(items.length / 2))
 
-    return view.render('pages/snippets/index', { items, feed })
+    return view.render('pages/snippets/index', { items, feed, adAside })
   }
   
   async show({}: HttpContext) {}

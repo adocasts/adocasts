@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { BaseModel, column, computed } from '@adonisjs/lucid/orm'
 
 export default class AdvertisementSize extends BaseModel {
   @column({ isPrimary: true })
@@ -19,4 +19,9 @@ export default class AdvertisementSize extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  @computed()
+  public get aspectRatio() {
+    return this.width / this.height
+  }
 }

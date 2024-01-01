@@ -161,12 +161,18 @@
   </div>
 
   <div class="relative max-w-prose xl:max-w-[70ch] mx-auto">
+    @can('AdPolicy.view')
+      @if (adLeaderboard)
+        @!ad.display({ ad: adLeaderboard, class: 'mb-8' })
+      @endif
+    @endcan
+
     @can('PostPolicy.view', post)
-    <article x-data="proseBody" id="proseBody" class="prose post-type-{{ post.postTypeId }} relative">
+    <article x-data="proseBody" id="proseBody" class="prose !max-w-full post-type-{{ post.postTypeId }} relative">
       {{{ await parser.highlight(post.body) }}}
     </article>
     @else
-      <article x-data="proseBody" id="proseBody" class="prose post-type-{{ post.postTypeId }} relative">
+      <article x-data="proseBody" id="proseBody" class="prose !max-w-full post-type-{{ post.postTypeId }} relative">
         {{{ await parser.getPreview(post.body) }}}
       </article>
       <div class="w-full absolute bottom-0 left-0 h-full bg-gradient-to-b from-slate-100/0 via-slate-100/75 to-body z-10"></div>
@@ -175,6 +181,18 @@
           @!plus.postCta({ post, plusMonthly, outlineVariant: 'dark' })
         </div>
       </div>
+    @endcan
+
+    @can('AdPolicy.view')
+      @if (adAside?.length)
+        <div class="my-8">
+          <div class="w-full grid grid-cols-2 place-items-center gap-6">
+            @each (ad in adAside)
+              @!ad.display({ ad })
+            @endeach
+          </div>
+        </div>
+      @endif
     @endcan
   </div>
 

@@ -1,17 +1,7 @@
 <!-- Card -->
 <div class="group flex flex-col h-full bg-white border border-slate-200 shadow-sm rounded-xl" advertisement="{{ ad.id }}">
   <div class="h-52 flex flex-col justify-center items-center bg-slate-200 rounded-t-xl p-4">
-    <img 
-      class="object-cover object-center max-h-full w-auto" 
-      {{ 
-        html.attrs({ 
-          src: '/img/' + ad.asset.filename,
-          alt: ad.asset.altText, 
-          width: `${ad.size.width}px`, 
-          height: `${ad.size.height}px` 
-        }) 
-      }} 
-    />
+    @!ad.image({ ad, class: 'max-h-full w-auto' })
   </div>
   <div class="p-4 md:p-6">
     <div class="flex flex-wrap gap-4 text-sm">

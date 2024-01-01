@@ -1,0 +1,10 @@
+<div class="w-full {{ $props.class }}" style="max-width: {{ ad.size.width }}px;">
+  <a href="{{ ad.url }}" target="_blank" rel="nofollow" class="w-full overflow-hidden" style="max-height: {{ ad.size.height }}px;">
+    @!ad.image({ ad })
+  </a>
+  <span class="text-2xs flex items-center gap-1.5 mt-0.5 justify-end text-slate-600">
+    @tooltip({ position: 'left', text: "Adocasts Plus subscriber advertisement", class: 'flex items-center gap-1.5' })
+      <img class="h-3" src="/imgs/plus-badge-100.png" alt="Adocasts Plus" /> Advertisement
+    @end
+  </span>
+</div>

@@ -1,4 +1,5 @@
 import HttpStatus from '#enums/http_statuses'
+import AdService from '#services/ad_service'
 import AnalyticsService from '#services/analytics_service'
 import CollectionService from '#services/collection_service'
 import DiscussionService from '#services/discussion_service'
@@ -39,9 +40,10 @@ export default class LessonsController {
       .orderBy(sortBy, sort)
       .paginate(page, 20, router.makeUrl('lessons.index', params))
 
-    const feed = await this.discussionService.getAsideList()
+    const adAside = await AdService.getMediumRectangles()
+    const feed = await this.discussionService.getAsideList(4)
 
-    return view.render('pages/lessons/index', { type: 'Lessons', items, feed })
+    return view.render('pages/lessons/index', { type: 'Lessons', items, feed, adAside })
   }
 
   async streams({ view, request, params }: HttpContext) {
@@ -61,9 +63,10 @@ export default class LessonsController {
       .orderBy(sortBy, sort)
       .paginate(page, 20, router.makeUrl('lessons.index', params))
 
+    const adAside = await AdService.getMediumRectangles()
     const feed = await this.discussionService.getAsideList()
 
-    return view.render('pages/lessons/index', { type: 'Livestreams', items, feed })
+    return view.render('pages/lessons/index', { type: 'Livestreams', items, feed, adAside })
   }
   
   async show({ view, request, params, session, auth, up, route, bouncer }: HttpContext) {
@@ -84,6 +87,8 @@ export default class LessonsController {
     const comments = post.comments
     const commentCount = post.$extras.comments_count
     const views = await AnalyticsService.getPageViews(request.url())
+    const adLeaderboard = await AdService.getLeaderboard()
+    const adAside = await AdService.getMediumRectangles(2)
 
     if (!series) {
       const similarLessons = await this.postService.getSimilarPosts(post)
@@ -113,7 +118,7 @@ export default class LessonsController {
 
     await emitter.emit('post:sync', { post, views })
 
-    return view.render('pages/lessons/show', { comments, commentCount, views })
+    return view.render('pages/lessons/show', { comments, commentCount, views, adLeaderboard, adAside })
   }
   
 }
