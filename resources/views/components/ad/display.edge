@@ -1,5 +1,23 @@
 <div class="w-full {{ $props.class }}" style="max-width: {{ ad.size.width }}px;">
-  <a href="{{ ad.url }}" target="_blank" rel="nofollow" class="w-full overflow-hidden" style="max-height: {{ ad.size.height }}px;">
+  <a 
+    id="advertisement_{{ ad.id }}"
+    href="{{ ad.url }}" 
+    target="_blank" 
+    rel="nofollow" 
+    class="w-full overflow-hidden" 
+    style="max-height: {{ ad.size.height }}px;"
+    x-intersect.once="$ajax('{{ route('api.advertisements.impression', { id: ad.id }) }}', { 
+      method: 'POST', 
+      body: {
+        _csrf: document.forms.csrf._csrf.value
+      }
+    })"
+    @click="$ajax('{{ route('api.advertisements.click', { id: ad.id }) }}', {
+      method: 'POST',
+      body: {
+        _csrf: document.forms.csrf._csrf.value
+      }
+    })">
     @!ad.image({ ad })
   </a>
   <span class="text-2xs flex items-center gap-1.5 mt-0.5 justify-end text-slate-600">

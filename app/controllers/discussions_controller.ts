@@ -137,7 +137,7 @@ export default class DiscussionsController {
       .preload('impressions', query => query
         .where('ipAddress', sessionService.ipAddress!)
         .where('userAgent', sessionService.userAgent!)
-        .where('createdAt', '>=', DateTime.now().minus({ minute: 1 }).toSQL())
+        .where('createdAt', '>=', DateTime.now().minus({ seconds: 30 }).toSQL())
         .orderBy('createdAt', 'desc')
         .groupLimit(1)
       )

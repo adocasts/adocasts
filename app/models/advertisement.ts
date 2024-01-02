@@ -1,10 +1,12 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeSave, belongsTo, column, computed } from '@adonisjs/lucid/orm'
+import { BaseModel, beforeSave, belongsTo, column, computed, hasMany } from '@adonisjs/lucid/orm'
 import User from './user.js'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import AdvertisementSize from '#models/advertisement_size';
 import Asset from './asset.js';
 import States from '#enums/states';
+import AdvertisementEvent from './advertisement_event.js';
+import AnalyticTypes from '#enums/analytic_types';
 
 export default class Advertisement extends BaseModel {
   @column({ isPrimary: true })
@@ -69,4 +71,18 @@ export default class Advertisement extends BaseModel {
 
   @belongsTo(() => Asset)
   declare asset: BelongsTo<typeof Asset>
+
+  @hasMany(() => AdvertisementEvent, {
+    onQuery(query) {
+      query.where('typeId', AnalyticTypes.IMPRESSION)
+    }
+  })
+  declare impressions: HasMany<typeof AdvertisementEvent>
+
+  @hasMany(() => AdvertisementEvent, {
+    onQuery(query) {
+      query.where('typeId', AnalyticTypes.CLICK)
+    }
+  })
+  declare clicks: HasMany<typeof AdvertisementEvent>
 }

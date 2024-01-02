@@ -25,6 +25,26 @@
         </div>
       </div>
     </div>
+
+    <div class="flex flex-wrap gap-4 text-sm mt-4">
+      <div class="flex-1">
+        <span class="block mb-1 text-xs font-semibold uppercase text-slate-600">
+          Impressions
+        </span>
+        <div class="flex items-center gap-1.5">
+          {{ parseInt(ad.$extras.impressions_count).toLocaleString() }}
+        </div>
+      </div>
+
+      <div class="min-w-[6rem]">
+        <span class="block mb-1 text-xs font-semibold uppercase text-slate-600">
+          Clicks
+        </span>
+        <div>
+          {{ parseInt(ad.$extras.clicks_count).toLocaleString() }}
+        </div>
+      </div>
+    </div>
     
     <div class="mt-4">
       @if (ad.isActive)

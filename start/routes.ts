@@ -17,6 +17,7 @@ const LegalsController = () => import('#controllers/legals_controller')
 const StripeWebhooksController = () => import('#controllers/stripe_webhooks_controller')
 const StripeSubscriptionsController = () => import('#controllers/stripe_subscriptions_controller')
 const AdvertisementsController = () => import('#controllers/advertisements_controller')
+const AdvertisementEventsController = () => import('#controllers/advertisement_events_controller')
 const AssetsController = () => import('#controllers/assets_controller')
 const AuthSignInController = () => import('#controllers/auth/sign_in_controller')
 const AuthSignUpController = () => import('#controllers/auth/sign_up_controller')
@@ -211,6 +212,12 @@ router.put('/advertisements/:id', [AdvertisementsController, 'update']).as('adve
 router.delete('/advertisements/:id', [AdvertisementsController, 'destroy']).as('advertisements.destroy').use(middleware.auth())
 router.patch('/advertisements/:id/start', [AdvertisementsController, 'start']).as('advertisements.start').use(middleware.auth())
 router.patch('/advertisements/:id/end', [AdvertisementsController, 'end']).as('advertisements.end').use(middleware.auth())
+
+/**
+ * analytic events
+ */
+router.post('/api/advertisements/:id/impression', [AdvertisementEventsController, 'impression']).as('api.advertisements.impression')
+router.post('/api/advertisements/:id/click', [AdvertisementEventsController, 'click']).as('api.advertisements.click')
 
 /**
  * progression

@@ -16,6 +16,8 @@ export default class AdvertisementsController {
     const ads = await auth.user!.related('ads').query()
       .preload('size')
       .preload('asset')
+      .withCount('impressions')
+      .withCount('clicks')
       .orderBy('created_at', 'desc')
 
     return view.render('pages/advertisements/index', { ads })
