@@ -18,6 +18,8 @@ export default class AdvertisementsController {
       .preload('asset')
       .withCount('impressions')
       .withCount('clicks')
+      .withAggregate('impressions', query => query.countDistinct('identity').as('unique_impressions_count'))
+      .withAggregate('clicks', query => query.countDistinct('identity').as('unique_clicks_count'))
       .orderBy('created_at', 'desc')
 
     return view.render('pages/advertisements/index', { ads })

@@ -14,7 +14,7 @@
     
   <div
     x-data="credits"
-    :class="['absolute h-[calc(100%+4rem)] w-full left-0 z-10 credits overflow-scroll -mt-8 -mb-16', { play }]"
+    :class="['absolute h-[calc(100%+4rem)] min-h-[600px] w-full left-0 z-10 credits overflow-scroll -mt-8 -mb-16', { play }]"
     @mouseenter="play = false"
     @mouseleave="play = true">
     <div class="max-w-3xl mx-auto">
