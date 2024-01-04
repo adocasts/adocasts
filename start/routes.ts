@@ -204,14 +204,14 @@ router.delete('/comments/:id', [CommentsController, 'destroy']).as('comments.des
 /**
  * advertisements
  */
-router.get('/advertisements', [AdvertisementsController, 'index']).as('advertisements.index').use(middleware.auth())
-router.get('/advertisements/create', [AdvertisementsController, 'create']).as('advertisements.create').use(middleware.auth())
-router.post('/advertisements', [AdvertisementsController, 'store']).as('advertisements.store').use(middleware.auth())
-router.get('/advertisements/:id/edit', [AdvertisementsController, 'edit']).as('advertisements.edit').use(middleware.auth())
-router.put('/advertisements/:id', [AdvertisementsController, 'update']).as('advertisements.update').use(middleware.auth())
-router.delete('/advertisements/:id', [AdvertisementsController, 'destroy']).as('advertisements.destroy').use(middleware.auth())
-router.patch('/advertisements/:id/start', [AdvertisementsController, 'start']).as('advertisements.start').use(middleware.auth())
-router.patch('/advertisements/:id/end', [AdvertisementsController, 'end']).as('advertisements.end').use(middleware.auth())
+router.get('/advertisements', [AdvertisementsController, 'index']).as('advertisements.index').use(middleware.auth()).use(middleware.plus())
+router.get('/advertisements/create', [AdvertisementsController, 'create']).as('advertisements.create').use(middleware.auth()).use(middleware.plus())
+router.post('/advertisements', [AdvertisementsController, 'store']).as('advertisements.store').use(middleware.auth()).use(middleware.plus())
+router.get('/advertisements/:id/edit', [AdvertisementsController, 'edit']).as('advertisements.edit').use(middleware.auth()).use(middleware.plus())
+router.put('/advertisements/:id', [AdvertisementsController, 'update']).as('advertisements.update').use(middleware.auth()).use(middleware.plus())
+router.delete('/advertisements/:id', [AdvertisementsController, 'destroy']).as('advertisements.destroy').use(middleware.auth()).use(middleware.plus())
+router.patch('/advertisements/:id/start', [AdvertisementsController, 'start']).as('advertisements.start').use(middleware.auth()).use(middleware.plus())
+router.patch('/advertisements/:id/end', [AdvertisementsController, 'end']).as('advertisements.end').use(middleware.auth()).use(middleware.plus())
 
 /**
  * analytic events
