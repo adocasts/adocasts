@@ -16,7 +16,7 @@
       @endif
     </dt>
     <dd class="{{ html.classNames(['font-semibold tracking-tight text-slate-900', size.dd]) }}">
-      @if (value)
+      @if (typeof value === 'string' || typeof value === 'number')
         {{ value }}
       @else
         {{{ await $slots.main() }}}

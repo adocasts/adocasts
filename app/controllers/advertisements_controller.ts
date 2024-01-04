@@ -1,7 +1,10 @@
 import AdvertisementSizes from '#enums/advertisement_sizes'
+import AnalyticTypes from '#enums/analytic_types'
 import AssetTypes from '#enums/asset_types'
 import States from '#enums/states'
+import AdService from '#services/ad_service'
 import Advertisement from '#models/advertisement'
+import AdvertisementEvent from '#models/advertisement_event'
 import AdvertisementSize from '#models/advertisement_size'
 import Asset from '#models/asset'
 import logger from '#services/logger_service'
@@ -22,7 +25,13 @@ export default class AdvertisementsController {
       .withAggregate('clicks', query => query.countDistinct('identity').as('unique_clicks_count'))
       .orderBy('created_at', 'desc')
 
-    return view.render('pages/advertisements/index', { ads })
+    const adIds = await ads.map(ad => ad.id)
+    const stats = await AdService.getTotalStats(adIds)
+
+    return view.render('pages/advertisements/index', { 
+      ads, 
+      ...stats
+    })
   }
 
   public async create({ view }: HttpContext) {

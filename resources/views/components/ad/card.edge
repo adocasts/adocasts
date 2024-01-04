@@ -1,6 +1,6 @@
 <!-- Card -->
-<div class="group flex flex-col h-full bg-white border border-slate-200 shadow-sm rounded-xl" advertisement="{{ ad.id }}">
-  <div class="h-52 flex flex-col justify-center items-center bg-slate-200 rounded-t-xl p-4">
+<div class="group flex flex-col h-full bg-white border border-slate-200 shadow-sm rounded-md" advertisement="{{ ad.id }}">
+  <div class="h-52 flex flex-col justify-center items-center bg-slate-200 rounded-t-md p-4">
     @!ad.image({ ad, class: 'max-h-full w-auto' })
   </div>
   <div class="p-4 md:p-6">
@@ -40,13 +40,13 @@
     </div>
 
     <div class="mt-4 -mx-2">
-      <div class="flex items-center justify-between bg-slate-200 px-2 py-1 rounded-md">
+      <div class="flex items-center justify-around bg-slate-200 px-2 py-1 rounded-md">
         <div class="flex flex-col justify-center items-center">
-          <div class="text-slate-600 text-xs">Impressions</div>
+          <div class="text-slate-600 text-xs">Impr.</div>
           <div class="font-bold text-sm">{{ parseInt(ad.$extras.impressions_count).toLocaleString() }}</div>
         </div>
         <div class="flex-col justify-center items-center hidden xl:flex">
-          <div class="text-slate-600 text-xs">Unique Impressions</div>
+          <div class="text-slate-600 text-xs">Unique Impr.</div>
           <div class="font-bold text-sm">{{ parseInt(ad.$extras.unique_impressions_count || 0).toLocaleString() }}</div>
         </div>
         <div class="flex flex-col justify-center items-center">
@@ -61,7 +61,7 @@
     </div>
   </div>
   <div class="mt-auto flex border-t border-slate-200 divide-x divide-slate-200 ">
-    <a href="{{ route('advertisements.edit', { id: ad.id }) }}" up-follow up-layer="new" up-size="large" class="gap-1.5 w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-es-xl bg-white text-slate-800 shadow-sm hover:bg-slate-50 disabled:opacity-50 disabled:pointer-events-none">
+    <a href="{{ route('advertisements.edit', { id: ad.id }) }}" up-follow up-layer="new" up-size="large" class="gap-1.5 w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-es-md bg-white text-slate-800 shadow-sm hover:bg-slate-200 duration-300 disabled:opacity-50 disabled:pointer-events-none">
       @svg('ph:note-pencil-fill')
       Edit
     </a>
@@ -73,7 +73,7 @@
         'up-target': `[advertisement='${ad.id}']`, class: 'w-full',
         'up-confirm': `This will immediately end this advertisement, would you like to continue?`
       })
-        <button type="submit" class="gap-1.5 w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium bg-white text-blue-500 shadow-sm hover:bg-slate-50 disabled:opacity-50 disabled:pointer-events-none">
+        <button type="submit" class="gap-1.5 w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium bg-white text-blue-500 shadow-sm hover:bg-slate-200 duration-300 disabled:opacity-50 disabled:pointer-events-none">
           @svg('ph:calendar-x-fill')
           End Now
         </button>
@@ -86,7 +86,7 @@
         'up-target': `[advertisement='${ad.id}']`, 
         'up-confirm': `This will start the advertisement again for another ${ad.rangeDays} days, would you like to continue?`
       })
-        <button type="submit" class="gap-1.5 w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium bg-white text-green-500 shadow-sm hover:bg-slate-50 disabled:opacity-50 disabled:pointer-events-none">
+        <button type="submit" class="gap-1.5 w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium bg-white text-green-500 shadow-sm hover:bg-slate-200 duration-300 disabled:opacity-50 disabled:pointer-events-none">
           @svg('ph:calendar-plus-fill')
           Re-Run
         </button>
@@ -101,7 +101,7 @@
           ? `This will start the advertisement today instead of ${ad.startAt.toFormat('MMM d, yyyy')}, would you like to continue?`
           : `This will change the advertisement from inactive to active, would you like to continue?`
       })
-        <button type="submit" class="gap-1.5 w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium bg-white text-green-500 shadow-sm hover:bg-slate-50 disabled:opacity-50 disabled:pointer-events-none">
+        <button type="submit" class="gap-1.5 w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium bg-white text-green-500 shadow-sm hover:bg-slate-200 duration-300 disabled:opacity-50 disabled:pointer-events-none">
           @svg('ph:calendar-plus-fill')
           Start Now
         </button>
@@ -114,7 +114,7 @@
       upSubmit: true, 
       'up-confirm': `Are you sure you want to delete this advertisement? This cannot be undone.`
     })
-      <button type="submit" class="gap-1.5 w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-ee-xl bg-white text-red-500 shadow-sm hover:bg-slate-50 disabled:opacity-50 disabled:pointer-events-none">
+      <button type="submit" class="gap-1.5 w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-ee-md bg-white text-red-500 shadow-sm hover:bg-slate-200 duration-300 disabled:opacity-50 disabled:pointer-events-none">
         @svg('ph:trash-fill')
         Delete
       </button>

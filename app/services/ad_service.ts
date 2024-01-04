@@ -1,7 +1,9 @@
 import AdvertisementSizes from "#enums/advertisement_sizes";
+import AnalyticTypes from "#enums/analytic_types";
 import Plans from "#enums/plans";
 import States from "#enums/states";
 import Advertisement from "#models/advertisement";
+import AdvertisementEvent from "#models/advertisement_event";
 import User from "#models/user";
 
 export default class AdService {
@@ -64,5 +66,20 @@ export default class AdService {
       )
       .orderByRaw('RANDOM()')
       .limit(limit)
+  }
+
+  public static async getTotalStats(adIds: number[]) {
+    const query = AdvertisementEvent.query().whereIn('advertisementId', adIds)
+    const totalImpressions = await query.clone().where('typeId', AnalyticTypes.IMPRESSION).count('id').first()
+    const totalClicks = await query.clone().where('typeId', AnalyticTypes.CLICK).count('id').first()
+    const uniqueImpressions = await query.clone().where('typeId', AnalyticTypes.IMPRESSION).countDistinct(['advertisement_id', 'identity'], 'unique_impressions_count').first()
+    const uniqueClicks = await query.clone().where('typeId', AnalyticTypes.CLICK).countDistinct(['advertisement_id', 'identity'], 'unique_clicks_count').first()
+  
+    return { 
+      totalImpressions: totalImpressions?.$extras.count ?? 0, 
+      totalClicks: totalClicks?.$extras.count ?? 0,
+      uniqueImpressions: uniqueImpressions?.$extras.unique_impressions_count ?? 0,
+      uniqueClicks: uniqueClicks?.$extras.unique_clicks_count ?? 0
+    }
   }
 }
