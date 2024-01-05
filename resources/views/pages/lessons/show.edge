@@ -10,11 +10,17 @@
 })
 
   @slot('list')
-    @if (series)
-      @!post.list.series()
-    @elseif (similarLessons)
-      @!post.list.similar({ posts: similarLessons })
-    @endif
+    <div class="flex flex-col">
+      @if (post.transcriptUrl)
+        @!post.transcript()
+      @endif
+
+      @if (series)
+        @!post.list.series()
+      @elseif (similarLessons)
+        @!post.list.similar({ posts: similarLessons })
+      @endif
+    </div>
   @endslot
 
   @slot('hero')
@@ -60,6 +66,15 @@
           })
             @svg('ph:list-bullets-bold', { class: 'w-5 h-5' })
             Series Details
+          @end
+        @endif
+
+        @if (transcript)
+          @button({
+            '@click': `document.getElementById('boxTranscript').dispatchEvent(new CustomEvent('toggle'))`
+          })
+            @svg('ph:scroll-fill', { class: 'w-5 h-5' })
+            Transcript
           @end
         @endif
 
@@ -161,6 +176,7 @@
   </div>
 
   <div class="relative max-w-prose xl:max-w-[70ch] mx-auto">
+    {{ inspect(transcript) }}
     @can('AdPolicy.view')
       @if (adLeaderboard)
         @!ad.display({ ad: adLeaderboard, class: 'mb-8' })

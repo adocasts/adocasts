@@ -1,6 +1,7 @@
 import HttpStatus from '#enums/http_statuses'
 import AdService from '#services/ad_service'
 import AnalyticsService from '#services/analytics_service'
+import CacheService from '#services/cache_service'
 import CollectionService from '#services/collection_service'
 import DiscussionService from '#services/discussion_service'
 import HistoryService from '#services/history_service'
@@ -11,7 +12,9 @@ import { Exception } from '@adonisjs/core/exceptions'
 import type { HttpContext } from '@adonisjs/core/http'
 import emitter from '@adonisjs/core/services/emitter'
 import router from '@adonisjs/core/services/router'
+import axios from 'axios'
 import { DateTime } from 'luxon'
+import VttService from '#services/vtt_service'
 
 @inject()
 export default class LessonsController {
@@ -96,6 +99,15 @@ export default class LessonsController {
       nextLesson = similarLessons.at(0)
 
       view.share({ similarLessons })
+    }
+
+    if (post.transcriptUrl) {
+      const transcript = await CacheService.try(`TRANSCRIPT:${post.id}`, async () => {
+        const { data: vtt } = await axios.get(post.transcriptUrl!)
+        return VttService.parse(vtt)
+      }, CacheService.oneDay)
+
+      view.share({ transcript })
     }
 
     const hasPlayerId = session.has('videoPlayerId')

@@ -387,6 +387,13 @@ export default class Post extends AppBaseModel {
   }
 
   @computed()
+  public get transcriptUrl() {
+    if (this.videoTypeId !== VideoTypes.BUNNY) return
+
+    return this.bunnySubtitleUrls?.at(0)?.src
+  }
+
+  @computed()
   public get streamId() {
     if (!this.livestreamUrl) return '';
 

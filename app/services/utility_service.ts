@@ -2,8 +2,6 @@ import string from '@adonisjs/core/helpers/string'
 import { parse } from 'node-html-parser'
 import { DateTime } from 'luxon'
 import dinero, { Currency } from 'dinero.js'
-import { Database } from '@adonisjs/lucid/database'
-import { LucidModel } from '@adonisjs/lucid/types/model'
 
 export default class UtilityService {
   /**
@@ -126,6 +124,29 @@ export default class UtilityService {
     }
 
     return `${hours}h ${minutes}m`
+  }
+
+  public static secondsToTime(totalSeconds: number | string) {
+    if (typeof totalSeconds === 'string') {
+      totalSeconds = Number(totalSeconds)
+    }
+
+    const hours = Math.floor(totalSeconds / 3600)
+
+    totalSeconds %= 3600
+
+    const minutes = Math.floor(totalSeconds / 60)
+    
+    totalSeconds %= 60
+    
+    const seconds = Math.floor(totalSeconds)
+    const short = `${(minutes + '').padStart(2, '0')}:${(seconds + '').padStart(2, '0')}`
+
+    if (!hours) {
+      return short
+    }
+
+    return `${(hours + '').padStart(2, '0')}:${short}`
   }
 
   /**

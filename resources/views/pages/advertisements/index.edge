@@ -12,10 +12,10 @@
   @end
 
   @stat.bar({ class: 'mb-8' })
-    @!stat.bar.item({ title: 'Total Impressions', value: totalImpressions })
-    @!stat.bar.item({ title: 'Total Unique Impressions', value: uniqueImpressions })
-    @!stat.bar.item({ title: 'Total Clicks', value: totalClicks })
-    @!stat.bar.item({ title: 'Total Unique Clicks', value: uniqueClicks })
+    @!stat.bar.item({ title: 'Total Impressions', value: totalImpressions.toLocaleString() })
+    @!stat.bar.item({ title: 'Total Unique Impressions', value: uniqueImpressions.toLocaleString() })
+    @!stat.bar.item({ title: 'Total Clicks', value: totalClicks.toLocaleString() })
+    @!stat.bar.item({ title: 'Total Unique Clicks', value: uniqueClicks.toLocaleString() })
   @end
 
   <!-- Grid -->

@@ -18,6 +18,7 @@ Alpine.store('app', {
   heroHeight: 0, 
   videoSmall: false,
   videoHeight: 0,
+  videoTimestamp: 0,
   videoPlaying: false
 })
 
@@ -66,7 +67,7 @@ Alpine.data('credits', function () {
 
     init() {
       if (isReducedMotion) return
-      
+
       setTimeout(() => {
         interval = setInterval(() => {
           if (this.play && this.$el.scrollTop !== this.$el.scrollTopMax) this.$el.scrollTop += 10

@@ -1,0 +1,115 @@
+<div 
+  id="boxTranscript" 
+  x-data="{ 
+    slideOverOpen: false,
+    transcript: {{ js.stringify(transcript) }},
+    active: null,
+    setActive(value = $store.app.videoTimestamp) {
+      const cue = this.transcript.cues.find(cue => {
+        const cueStart = Math.ceil(cue.start)
+        const cueEnd = Math.ceil(cue.end)
+        return cueStart >= value && cueEnd <= cueEnd
+      })
+
+      if (!cue) return
+      
+      const item = document.getElementById(`cue_${cue.identifier}`)
+
+      if (item) {
+        this.active = cue
+        item.scrollIntoView({
+          behavior: 'auto',
+          block: 'center',
+          inline: 'center'
+        })
+      }
+    }
+  }" 
+  class="relative z-[110] w-auto h-auto flex-1" 
+  @hide="slideOverOpen = false" 
+  @toggle="slideOverOpen = !slideOverOpen; $nextTick(() => slideOverOpen && setActive());">
+  <template x-teleport="body">
+    <div x-show="slideOverOpen" @keydown.window.escape="slideOverOpen=false" class="relative z-[110]">
+      <div x-show="slideOverOpen" x-transition.opacity.duration.600ms @click="slideOverOpen = false" class="fixed inset-0 bg-black bg-opacity-10 lg:hidden"></div>
+      <div class="fixed inset-0 overflow-hidden lg:left-[unset] lg:!right-0 lg:max-w-[var(--lesson-list-width)]">
+        <div class="absolute inset-0 overflow-hidden">
+          <div class="fixed inset-y-0 right-0 flex max-w-full pl-10 lg:pl-0">
+            <div 
+              x-show="slideOverOpen" 
+              @click="slideOverOpen = false"
+              x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
+              x-transition:enter-start="translate-x-full" 
+              x-transition:enter-end="translate-x-0"
+              x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
+              x-transition:leave-start="translate-x-0" 
+              x-transition:leave-end="translate-x-full"
+              class="w-screen max-w-md lg:max-w-[var(--lesson-list-width)]">
+              <div 
+                class="flex flex-col pt-5 bg-white border-l shadow-lg border-slate-100/70"
+                :style="{ height: $store.app.videoSmall ? `calc(100% - ${$store.app.videoHeight}px)` : '100%'}">
+                <div class="px-4 pb-4">
+                  <div class="flex items-start justify-between pb-1">
+                    <div class="mt-2">
+                      <h5 class="uppercase tracking-wide text-xs font-semibold text-slate-600" id="slide-over-title">
+                        Transcript
+                      </h5>
+                      <h2 class="text-sm">
+                        {{ post.title }}
+                      </h2>
+                    </div>
+
+                    <div class="flex items-center h-auto ml-3">
+                      <button @click="slideOverOpen=false"
+                        class="absolute top-0 right-0 z-30 flex items-center justify-center px-3 py-2 mt-2 mr-2 space-x-1 text-2xs font-medium uppercase border rounded-md border-slate-200 text-slate-600 hover:bg-slate-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                          stroke="currentColor" class="w-4 h-4">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        <span>Close</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="relative flex-1 px-2 sm:px-5">
+                  <ol 
+                    x-data
+                    x-init="setActive($store.app.videoTimestamp); $watch('$store.app.videoTimestamp', (value) => setActive(value))"
+                    class="absolute inset-0 px-2 pb-6 flex-1 list-none m-0 p-0 top-0 left-0 overflow-y-auto hide-scrollbar -mt-3 md:mt-0">
+                    @each((cue, i) in transcript.cues)
+                      <li
+                        id="cue_{{ cue.identifier }}"
+                        class="flex flex-col text-left items-start w-full p-2 mb-1 rounded-md transition duration-300 group"
+                        :class="[{{ cue.start }} === active?.start ? 'active bg-slate-200' : 'hover:bg-slate-200']"
+                      >
+                        <button 
+                          type="button"
+                          x-data 
+                          @click="window.embed.startAtTime({{ cue.start }})"
+                          class="w-full text-xs group-hover:text-brand-600 flex items-center justify-between gap-1.5 uppercase tracking-wide mb-1">
+                          <div class="font-bold">{{ utils.secondsToTime(cue.start) }}</div>
+                          <div x-show.transition="{{ cue.start }} === active?.start && $store.app.videoPlaying" class="items-center gap-1.5 flex duration-300 bg-slate-100 text-brand-600 rounded-full px-2 text-2xs">
+                            @svg('svg-spinners:bars-scale')
+                          </div>
+                          <template x-if="{{ cue.start }} !== active?.start">
+                            <div class="items-center gap-1.5 flex opacity-0 group-hover:opacity-100 duration-300 bg-slate-100 rounded-full px-2 text-2xs">
+                              @svg('ph:play-fill')
+                              <span>Play From Here</span>
+                            </div>
+                          </template>
+                        </button>
+                        <p class="text-[0.825rem] text-slate-700">
+                          {{ cue.text }}
+                        </p>
+                      </li>
+                    @endeach
+
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+</div>

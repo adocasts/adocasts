@@ -64,6 +64,7 @@ export default class DiscussionService {
       .orderBy('createdAt', 'desc')
       .limit(limit)
 
+    // not enough plus posts to fill space? pull in from everyone else
     if (discussions.length < limit) {
       const ids = discussions.map(discussion => discussion.id)
       const moreDiscussions = await await Discussion.query()

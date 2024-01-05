@@ -42,6 +42,10 @@ class VideoPlayer {
       delete window.$params.autoplay
     }
 
+    if (watchSeconds) {
+      Alpine.store('app').videoTimestamp = watchSeconds
+    }
+
     this.onInitVideo()
   }
 
@@ -110,9 +114,7 @@ class VideoPlayer {
     // loadedmetadata is need for bunny stream videos when loaded via unpoly (setting in ready is ignored for some reason)
     this.player.on('loadedmetadata', () => setInitialTime())
 
-    if (this.nextUpEl) {
-      this.player.on('timeupdate', this.#onPlayerTimeUpdate.bind(this))
-    }
+    this.player.on('timeupdate', this.#onPlayerTimeUpdate.bind(this))
   }
 
   /**
@@ -185,11 +187,11 @@ class VideoPlayer {
       ],
       settings: ['captions', 'quality', 'speed', 'loop']
     }
-    console.log({ isHlsVideo: this.isHlsVideo })
+    
     const player = this.isHlsVideo 
       ? await this.#initPlyrPlayerHls(config) 
       : this.#initPlyrPlayerStandard(config)
-    console.log('player', player)
+    
     window.player = player
 
     return player
@@ -276,8 +278,6 @@ class VideoPlayer {
    * @returns 
    */
   #onPlayerTimeUpdate(event) {
-    if (!this.nextUpEl) return
-
     let currentTime, duration
 
     const player = this.player
@@ -294,10 +294,14 @@ class VideoPlayer {
 
     this.lastTimeUpdate = currentTime
 
+    Alpine.store('app').videoTimestamp = currentTime
+
     // don't dispatch to nextUp if player isn't actively playing
     if (!isVideoPlaying) return
 
-    this.nextUpEl.dispatchEvent(new CustomEvent('timeupdate', { detail: { currentTime, duration } }))
+    if (this.nextUpEl) {
+      this.nextUpEl.dispatchEvent(new CustomEvent('timeupdate', { detail: { currentTime, duration } }))
+    }
   }
 
   // #endregion
@@ -355,7 +359,7 @@ class VideoPlayer {
 
     Alpine.store('app').videoPlaying = isVideoPlaying
 
-    if (isVideoPlaying && this.nextUpEl) {
+    if (isVideoPlaying) {
       nextUpInterval = setInterval(() => this.#onPlayerTimeUpdate(), 1000)
     } else {
       clearInterval(nextUpInterval)
@@ -456,6 +460,15 @@ class VideoPlayer {
       }, 0)
     }
 
+    this.startAtTime(duration)
+
+    window.scrollTo({
+      top: this.element.offsetTop,
+      behavior: 'smooth'
+    })
+  }
+
+  startAtTime(duration) {
     // youtube... setting currentTime then calling play mutes the video for some reason
     // so this is a workaround that
     if (this.isYouTube) {
@@ -471,11 +484,6 @@ class VideoPlayer {
         ? this.player.playVideo() 
         : this.player.play()
     }
-
-    window.scrollTo({
-      top: this.element.offsetTop,
-      behavior: 'smooth'
-    })
   }
 
   // #endregion
@@ -501,7 +509,7 @@ up.compiler('#lessonVideoEmbed', function(element) {
     positionVideoPlaceholder()
 
     // kick-off video initialization
-    new VideoPlayer({
+    window.embed = new VideoPlayer({
       el: 'lessonVideoEmbed',
       isLive: data.isLive == "true",
       isCompleted: data.isCompleted == "true",

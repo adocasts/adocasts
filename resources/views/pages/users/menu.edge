@@ -14,9 +14,11 @@
       @!menu.link({ text: 'Watchlist', href: route('users.watchlist'), 'up-follow': true, 'up-layer': 'root' })
       @!menu.link({ text: 'Progression', href: route('users.history'), 'up-follow': true, 'up-layer': 'root' })
 
-      <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8 mb-2 white">Plus</p>
-      @!menu.link({ text: 'Ad Portal', href: route('advertisements.index'), 'up-follow': true, 'up-layer': 'root' })
-      
+      @if (!auth.user.isFreeTier)
+        <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8 mb-2 white">Plus</p>
+        @!menu.link({ text: 'Ad Portal', href: route('advertisements.index'), 'up-follow': true, 'up-layer': 'root' })
+      @endif
+
       <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8 mb-2">Settings</p>
 
       @!menu.link({ text: 'Account', href: route('users.settings.index', { section: 'account' }), 'up-follow': true, 'up-layer': 'root' })
