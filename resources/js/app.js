@@ -1,16 +1,14 @@
+import '../css/app.css'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { DateTime } from 'luxon'
-import '../css/app.css'
-import './_unpoly'
 import './_stars'
-import './_alpine'
 import './_prose'
 import './_player'
 
 Cookies.set('timezone', DateTime.now().zoneName)
 
-window.onfocus = async function() {
+window.onfocus = async function () {
   const { data: isAuthenticated } = await axios.get('/api/user/check')
 
   if (window.isAuthenticated && !isAuthenticated) {
@@ -61,4 +59,7 @@ function storeAndClearQueryStrings(href) {
 
 // handle query strings on both initial load and when unpoly changes the location
 storeAndClearQueryStrings(location.href)
-up.on('up:location:changed', (event) => event.target?.location && storeAndClearQueryStrings(event.target.location.href))
+up.on(
+  'up:location:changed',
+  (event) => event.target?.location && storeAndClearQueryStrings(event.target.location.href)
+)

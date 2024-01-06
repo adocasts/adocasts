@@ -61,7 +61,7 @@
     "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.2.2",
-    "vite": "^5.0.11"
+    "vite": "^5.0.10"
   },
   "dependencies": {
     "@adonisjs/ally": "^5.0.0-8",
@@ -74,7 +74,7 @@
     "@adonisjs/session": "^7.0.0-15",
     "@adonisjs/shield": "^8.0.0-10",
     "@adonisjs/static": "^1.0.4",
-    "@adonisjs/vite": "^2.0.2-0",
+    "@adonisjs/vite": "^2.0.1",
     "@alpinejs/intersect": "^3.13.3",
     "@google-cloud/storage": "^7.7.0",
     "@iconify-json/ph": "^1.1.9",

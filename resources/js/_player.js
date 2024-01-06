@@ -13,7 +13,18 @@ let keepPlayer = false
 let nextUpInterval = null
 
 class VideoPlayer {
-  constructor({ el = 'ytEmbed', autoEmbed = true, videoId, httpMethod = 'post', httpUrl, httpPayload = {}, watchSeconds = 0, isCompleted = false, isLive = false, autoplay = false } = {}) {
+  constructor({
+    el = 'ytEmbed',
+    autoEmbed = true,
+    videoId,
+    httpMethod = 'post',
+    httpUrl,
+    httpPayload = {},
+    watchSeconds = 0,
+    isCompleted = false,
+    isLive = false,
+    autoplay = false,
+  } = {}) {
     this.element = document.getElementById(el)
     this.progressionInterval = 5000
     this.autoplay = autoplay
@@ -31,7 +42,7 @@ class VideoPlayer {
     this.http = {
       method: httpMethod,
       url: httpUrl,
-      payload: httpPayload
+      payload: httpPayload,
     }
 
     Cookies.remove('playingId')
@@ -61,8 +72,8 @@ class VideoPlayer {
 
   /**
    * Initialize the video player and it's event listeners
-   * @param {boolean} playOnReady 
-   * @param {number} skipToSeconds 
+   * @param {boolean} playOnReady
+   * @param {number} skipToSeconds
    */
   async onInitVideo(playOnReady = this.autoplay, skipToSeconds = this.watchSeconds) {
     keepPlayerPostId = this.http.payload.postId
@@ -76,14 +87,14 @@ class VideoPlayer {
     clearInterval(nextUpInterval)
 
     await this.#initPlayer(playOnReady, skipToSeconds)
-    
+
     this.bodyContent?.addEventListener('click', this.#onTimestampClick.bind(this))
   }
 
   /**
    * initializes either the youtube or plyr player
-   * @param {boolean} playOnReady 
-   * @returns 
+   * @param {boolean} playOnReady
+   * @returns
    */
   async #initPlayer(playOnReady, skipToSeconds) {
     if (this.isYouTube) {
@@ -119,8 +130,8 @@ class VideoPlayer {
 
   /**
    * initializes the youtube player
-   * @param {boolean} playOnReady 
-   * @returns 
+   * @param {boolean} playOnReady
+   * @returns
    */
   async #initYouTubePlayer(playOnReady) {
     return new Promise((resolve) => {
@@ -131,7 +142,7 @@ class VideoPlayer {
           rel: 0,
           showinfo: 0,
           ecver: 2,
-          start: this.watchSeconds
+          start: this.watchSeconds,
         }
 
         if (this.isLive) {
@@ -142,9 +153,9 @@ class VideoPlayer {
           videoId: this.videoId,
           playerVars,
           events: {
-            'onReady': (event) => this.startMuted && event.target.mute(),
-            'onStateChange': this.#onYouTubeStateChange.bind(this)
-          }
+            onReady: (event) => this.startMuted && event.target.mute(),
+            onStateChange: this.#onYouTubeStateChange.bind(this),
+          },
         })
 
         window.player = player
@@ -154,7 +165,7 @@ class VideoPlayer {
 
       if (isInitialLoad) {
         const tag = document.createElement('script')
-        tag.src = "https://www.youtube.com/iframe_api"
+        tag.src = 'https://www.youtube.com/iframe_api'
         document.body.appendChild(tag)
         isInitialLoad = false
       } else {
@@ -165,33 +176,33 @@ class VideoPlayer {
 
   /**
    * initializes the plyr player for the needed video type
-   * @param {boolean} playOnReady 
-   * @returns 
+   * @param {boolean} playOnReady
+   * @returns
    */
   async #initPlyrPlayer(playOnReady) {
     const config = {
       muted: this.startMuted,
       volume: window.player?.volume ?? 1,
       controls: [
-        'play-large', 
+        'play-large',
         'play',
-        'progress', 
-        'duration', 
-        'mute', 
-        'volume', 
+        'progress',
+        'duration',
+        'mute',
+        'volume',
         'captions',
         'settings',
         'pip',
         'airplay',
-        'fullscreen'
+        'fullscreen',
       ],
-      settings: ['captions', 'quality', 'speed', 'loop']
+      settings: ['captions', 'quality', 'speed', 'loop'],
     }
-    
-    const player = this.isHlsVideo 
-      ? await this.#initPlyrPlayerHls(config) 
+
+    const player = this.isHlsVideo
+      ? await this.#initPlyrPlayerHls(config)
       : this.#initPlyrPlayerStandard(config)
-    
+
     window.player = player
 
     return player
@@ -199,17 +210,17 @@ class VideoPlayer {
 
   /**
    * initializes the plyr video specifically for an HLS Stream (how we're handling Bunny Stream videos)
-   * @param {Partial<Plyr.Options>|undefined} config 
-   * @returns 
+   * @param {Partial<Plyr.Options>|undefined} config
+   * @returns
    */
   #initPlyrPlayerHls(config) {
     if (!Hls.isSupported()) {
       this.element.src = this.element.dataset.hlsUrl
-      
+
       // create the plyr instance
       const player = this.#initPlyrPlayerStandard(config)
 
-      return new Promise(resolve => resolve(player))
+      return new Promise((resolve) => resolve(player))
     }
 
     const hls = new Hls()
@@ -220,7 +231,9 @@ class VideoPlayer {
 
     // when hls auto updates the level, update our auto selection to show current quality
     hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
-      const autoOptionEl = document.querySelector('.plyr__menu__container [data-plyr="quality"][value="AUTO"] span')
+      const autoOptionEl = document.querySelector(
+        '.plyr__menu__container [data-plyr="quality"][value="AUTO"] span'
+      )
       autoOptionEl.textContent = hls.autoLevelEnabled
         ? `Auto (${hls.levels[data.level].height}p)`
         : `Auto`
@@ -231,13 +244,13 @@ class VideoPlayer {
     return new Promise((resolve) => {
       hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
         // get available quality options for video from hls, prefixing with auto option
-        const qualities = ['AUTO', ...hls.levels.map(l => l.height)]
-        
+        const qualities = ['AUTO', ...hls.levels.map((l) => l.height)]
+
         config.quality = {
           default: 'AUTO',
           options: qualities,
           forced: true,
-          onChange: quality => {
+          onChange: (quality) => {
             // when auto is selected in plyr, enable it within hls
             if (quality === 'AUTO') {
               hls.currentLevel = -1
@@ -249,14 +262,16 @@ class VideoPlayer {
               if (level.height !== quality) return
               hls.currentLevel = index
             })
-          }
+          },
         }
 
         // create the plyr instance
         const player = this.#initPlyrPlayerStandard(config)
-        
+
         // when subtitle language is changed, update it within hls
-        player.on('languagechange', () => setTimeout(() => hls.subtitleTrack = player.currentTrack, 50))
+        player.on('languagechange', () =>
+          setTimeout(() => (hls.subtitleTrack = player.currentTrack), 50)
+        )
 
         resolve(player)
       })
@@ -265,8 +280,8 @@ class VideoPlayer {
 
   /**
    * simple initialization of plyr
-   * @param {Partial<Plyr.Options>|undefined} config 
-   * @returns 
+   * @param {Partial<Plyr.Options>|undefined} config
+   * @returns
    */
   #initPlyrPlayerStandard(config) {
     return new Plyr(this.element, config)
@@ -274,11 +289,12 @@ class VideoPlayer {
 
   /**
    * dispatches times updates to the nextUp element
-   * @param {CustomEvent} event 
-   * @returns 
+   * @param {CustomEvent} event
+   * @returns
    */
   #onPlayerTimeUpdate(event) {
-    let currentTime, duration
+    let currentTime
+    let duration
 
     const player = this.player
 
@@ -300,7 +316,9 @@ class VideoPlayer {
     if (!isVideoPlaying) return
 
     if (this.nextUpEl) {
-      this.nextUpEl.dispatchEvent(new CustomEvent('timeupdate', { detail: { currentTime, duration } }))
+      this.nextUpEl.dispatchEvent(
+        new CustomEvent('timeupdate', { detail: { currentTime, duration } })
+      )
     }
   }
 
@@ -309,8 +327,8 @@ class VideoPlayer {
 
   /**
    * handles player state changes (play, pause, end, etc)
-   * @param {CustomEvent} event 
-   * @returns 
+   * @param {CustomEvent} event
+   * @returns
    */
   #onPlyrStateChange(event) {
     const player = event.detail.plyr
@@ -364,7 +382,7 @@ class VideoPlayer {
     } else {
       clearInterval(nextUpInterval)
     }
-    
+
     // only update keepPlayer when on video's designated page
     if (location.pathname === this.placeholder.dataset.path) {
       keepPlayer = isVideoPlaying
@@ -407,25 +425,25 @@ class VideoPlayer {
 
   /**
    * store's the user's current progress for the video
-   * @param {number} currentTime 
-   * @param {number} duration 
-   * @returns 
+   * @param {number} currentTime
+   * @param {number} duration
+   * @returns
    */
   async #storeWatchingProgression(currentTime, duration) {
     if (!window.isAuthenticated) return
 
-    const watchPercent = Math.ceil(currentTime / duration * 100)
+    const watchPercent = Math.ceil((currentTime / duration) * 100)
     const { data } = await axios[this.http.method](this.http.url, {
       ...this.http.payload,
       watchPercent,
       watchSeconds: Math.floor(currentTime),
-      _csrf: document.forms.csrf._csrf.value
+      _csrf: document.forms.csrf._csrf.value,
     })
-    
+
     if (typeof data !== 'object') return
 
     const isCompleted = data.progression.isCompleted
-    
+
     if (!this.btnCompleted || !this.btnNotCompleted) return
 
     if (isCompleted) {
@@ -440,8 +458,8 @@ class VideoPlayer {
 
   /**
    * handles when a timestamp has been clicked within the body copy (jumps to position in video)
-   * @param {MouseEvent} event 
-   * @returns 
+   * @param {MouseEvent} event
+   * @returns
    */
   #onTimestampClick(event) {
     const isTarget = event.target.classList.contains('timestamp')
@@ -456,7 +474,7 @@ class VideoPlayer {
 
     if (splits.length > 1) {
       duration = splits.reduce((x, s, i) => {
-        return i == splits.length - 1 ? x + parseInt(s) : x + (parseInt(s) * 60)
+        return i == splits.length - 1 ? x + Number.parseInt(s) : x + Number.parseInt(s) * 60
       }, 0)
     }
 
@@ -464,7 +482,7 @@ class VideoPlayer {
 
     window.scrollTo({
       top: this.element.offsetTop,
-      behavior: 'smooth'
+      behavior: 'smooth',
     })
   }
 
@@ -480,9 +498,7 @@ class VideoPlayer {
     }
 
     if (!isVideoPlaying) {
-      this.isYouTube 
-        ? this.player.playVideo() 
-        : this.player.play()
+      this.isYouTube ? this.player.playVideo() : this.player.play()
     }
   }
 
@@ -491,14 +507,14 @@ class VideoPlayer {
 
 let lessonVideoIntersection
 let lessonVideoResize
-let wasIntersecting = undefined
+let wasIntersecting
 
-up.compiler('#lessonVideoEmbed', function(element) {
+up.compiler('#lessonVideoEmbed', function (element) {
   // wait for next tick so that other required elements can populate
   setTimeout(() => {
     const postPaths = ['/lessons/', '/posts/', '/blog/', '/news/', '/snippet/', '/streams/']
     const isInitialized = !!window.player
-    const isPostPage = postPaths.some(path => window.location.pathname.includes(path))
+    const isPostPage = postPaths.some((path) => window.location.pathname.includes(path))
 
     // if not post page and player is already initialized, do nothing
     if (!isPostPage && isInitialized) return
@@ -511,20 +527,20 @@ up.compiler('#lessonVideoEmbed', function(element) {
     // kick-off video initialization
     window.embed = new VideoPlayer({
       el: 'lessonVideoEmbed',
-      isLive: data.isLive == "true",
-      isCompleted: data.isCompleted == "true",
+      isLive: data.isLive == 'true',
+      isCompleted: data.isCompleted == 'true',
       videoId: data.videoId,
-      watchSeconds: parseInt(data.watchSeconds || '0'),
+      watchSeconds: Number.parseInt(data.watchSeconds || '0'),
       httpUrl: data.httpUrl,
       httpPayload: {
         postId: data.payloadPostId,
         collectionId: data.payloadCollectionId,
         userId: data.payloadUserId,
-        route: data.payloadRoute
-      }
+        route: data.payloadRoute,
+      },
     })
 
-    if (!!window.ResizeObserver) {
+    if (window.ResizeObserver) {
       let observer = new ResizeObserver((entries) => {
         if (typeof wasIntersecting !== 'undefined') {
           positionVideoPlaceholder(!wasIntersecting)
@@ -537,8 +553,8 @@ up.compiler('#lessonVideoEmbed', function(element) {
   })
 })
 
-up.compiler('#videoPlayerPosition', position => {
-  if (typeof lessonVideoIntersection == 'function') {
+up.compiler('#videoPlayerPosition', (position) => {
+  if (typeof lessonVideoIntersection === 'function') {
     lessonVideoIntersection()
   }
 
@@ -554,20 +570,23 @@ up.compiler('#videoPlayerPosition', position => {
   }
 
   // move to small position when primary position is out of view
-  if(!!window.IntersectionObserver) {
-    let observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        wasIntersecting = entry.isIntersecting
-        positionVideoPlaceholder(!entry.isIntersecting)
-      });
-    }, { rootMargin: "0px" });
+  if (window.IntersectionObserver) {
+    let observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          wasIntersecting = entry.isIntersecting
+          positionVideoPlaceholder(!entry.isIntersecting)
+        })
+      },
+      { rootMargin: '0px' }
+    )
 
     observer.observe(position)
     lessonVideoIntersection = () => observer.unobserve(position)
   }
 })
 
-up.on('up:location:changed', function(event) {
+up.on('up:location:changed', function (event) {
   const exitPaths = ['/users/menu', '/signin', '/signup', '/histories/', '/watchlist/']
   const placeholder = document.querySelector('[video-placeholder]')
   const isPlayerInitialized = !!window.player
@@ -583,9 +602,9 @@ up.on('up:location:changed', function(event) {
   if (!isPlayerInitialized) return
 
   // if opening one of the exit paths, don't do anything
-  if (exitPaths.some(path => event.location.toLowerCase().includes(path))) return
+  if (exitPaths.some((path) => event.location.toLowerCase().includes(path))) return
 
-  const isEnabledMiniPlayer = placeholder.dataset.isEnabledMiniPlayer === "true"
+  const isEnabledMiniPlayer = placeholder.dataset.isEnabledMiniPlayer === 'true'
   const videoPath = placeholder.dataset.path
   const isVideoPath = videoPath == location.pathname
   const isSamePost = !keepPlayerPostId || keepPlayerPostId == placeholder.dataset.postId
@@ -597,21 +616,28 @@ up.on('up:location:changed', function(event) {
 })
 
 // change to small player if the page doesn't contain it's positioning element
-up.on('up:fragment:loaded', event => {
+up.on('up:fragment:loaded', (event) => {
   setTimeout(() => {
     const main = document.querySelector('[up-main-content]')
     const sync = Array.from(document.querySelectorAll(main.dataset.syncTo))
 
     if (main.classList.contains(main.dataset.postClass)) {
-      sync.map(m => m.classList.add(main.dataset.postClass))
+      sync.map((m) => m.classList.add(main.dataset.postClass))
     } else {
-      sync.map(m => m.classList.remove(main.dataset.postClass))
+      sync.map((m) => m.classList.remove(main.dataset.postClass))
     }
   }, 300)
-  
-  const exitPaths = ['/users/menu', '/signin', '/signup', '/histories/', '/watchlist/', '/fragments']
+
+  const exitPaths = [
+    '/users/menu',
+    '/signin',
+    '/signup',
+    '/histories/',
+    '/watchlist/',
+    '/fragments',
+  ]
   const requestUrl = event.request.url.toLowerCase()
-  if (exitPaths.some(path => requestUrl.includes(path))) return
+  if (exitPaths.some((path) => requestUrl.includes(path))) return
 
   const isLayer = ['modal', 'drawer'].includes(event.request.mode)
   const isSmallPlayer = !event.response.text.includes('id="videoPlayerPosition"')
@@ -639,13 +665,14 @@ up.on('up:fragment:loaded', event => {
 
 function positionVideoPlaceholder(isSmallPlayer = false) {
   const placeholder = document.querySelector('[video-placeholder]')
-  
+
   if (!placeholder) return
-  
-  const isEnabledMiniPlayer = placeholder.dataset.isEnabledMiniPlayer === "true"
+
+  const isEnabledMiniPlayer = placeholder.dataset.isEnabledMiniPlayer === 'true'
   const videoPath = placeholder.dataset.path
   const isVideoPath = videoPath == location.pathname
-  const useSmallPlayer = isSmallPlayer && isEnabledMiniPlayer && !placeholder.classList.contains('no-access')
+  const useSmallPlayer =
+    isSmallPlayer && isEnabledMiniPlayer && !placeholder.classList.contains('no-access')
 
   setTimeout(() => {
     Alpine.store('app').videoSmall = useSmallPlayer
@@ -681,11 +708,11 @@ function positionVideoPlaceholder(isSmallPlayer = false) {
 
 function offset(el) {
   if (!el) return
-  const rect = el.getBoundingClientRect();
+  const rect = el.getBoundingClientRect()
   return {
     top: rect.top + window.scrollY,
     left: rect.left + window.scrollX,
     width: rect.width,
-    height: rect.height
-  };
+    height: rect.height,
+  }
 }

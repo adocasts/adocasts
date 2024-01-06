@@ -5,7 +5,9 @@ import { setupEditor } from './tiptap/basic'
 import { chain } from 'mathjs'
 import { DateTime } from 'luxon'
 
-const isReducedMotion = window.matchMedia(`(prefers-reduced-motion: reduce)`) === true || window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true
+const isReducedMotion =
+  window.matchMedia(`(prefers-reduced-motion: reduce)`) === true ||
+  window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true
 
 Alpine.plugin(intersect)
 Alpine.plugin(ajax)
@@ -14,12 +16,12 @@ window.DateTime = DateTime
 window.Alpine = Alpine
 
 Alpine.store('app', {
-  heroVisible: true, 
-  heroHeight: 0, 
+  heroVisible: true,
+  heroHeight: 0,
   videoSmall: false,
   videoHeight: 0,
   videoTimestamp: 0,
-  videoPlaying: false
+  videoPlaying: false,
 })
 
 Alpine.data('setupEditor', setupEditor)
@@ -43,18 +45,18 @@ Alpine.data('mouseParallax', function (refNames = [], transforms = '') {
     },
 
     onMove(event) {
-      refNames.map(ref => {
+      refNames.map((ref) => {
         const el = this.$refs[ref]
 
         if (!el) this.destroy()
 
-        const position = el.getAttribute("value") || 5
+        const position = el.getAttribute('value') || 5
         const x = (window.innerWidth - event.pageX * position) / 90
         const y = (window.innerHeight - event.pageY * position) / 90
 
         el.style.transform = `${transforms} translateX(${x}px) translateY(${y}px)`
       })
-    }
+    },
   }
 })
 
@@ -79,7 +81,7 @@ Alpine.data('credits', function () {
 
     destroy() {
       clearInterval(interval)
-    }
+    },
   }
 })
 
@@ -98,7 +100,7 @@ Alpine.data('comments', function () {
     cancel() {
       this.editId = null
       this.createId = null
-    }
+    },
   }
 })
 
@@ -107,9 +109,9 @@ Alpine.data('turnstile', function () {
     onRender(sitekey) {
       turnstile.render(this.$el, {
         sitekey,
-        callback: function(token) {},
+        callback: function (token) {},
       })
-    }
+    },
   }
 })
 
@@ -130,7 +132,7 @@ Alpine.data('videoPlaceholder', () => {
 
     close() {
       console.log('closing video player')
-      
+
       if (typeof window.player?.pause === 'function') {
         window.player.pause()
       } else if (typeof window.player?.stopVideo === 'function') {
@@ -138,7 +140,7 @@ Alpine.data('videoPlaceholder', () => {
       }
 
       document.querySelector('[video-placeholder]').classList.add('hidden')
-    }
+    },
   }
 })
 
@@ -172,12 +174,11 @@ Alpine.data('videoAutoPlayNext', (enabled = true, nextLessonUrl) => {
     onCancel() {
       this.enabled = false
       this.displayed = false
-    }
+    },
   }
 })
 
-
-Alpine.data('proseBody', function() {
+Alpine.data('proseBody', function () {
   return {
     init() {
       this.registerAnchors()
@@ -185,14 +186,19 @@ Alpine.data('proseBody', function() {
 
     registerAnchors() {
       const article = document.getElementById('proseBody')
-      const postAnchorLinks = Array.from(article.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]'))
-  
-      postAnchorLinks.map(heading => {
+      const postAnchorLinks = Array.from(
+        article.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]')
+      )
+
+      postAnchorLinks.map((heading) => {
         const anchor = document.createElement('a')
         anchor.setAttribute('aria-hidden', 'true')
         anchor.setAttribute('tabindex', '-1')
         anchor.setAttribute('href', `#${heading.id}`)
-        anchor.setAttribute('class', 'hidden md:block md:absolute md:-left-8 top-2 opacity-0 group-hover:opacity-100 text-slate-600 duration-300')
+        anchor.setAttribute(
+          'class',
+          'hidden md:block md:absolute md:-left-8 top-2 opacity-0 group-hover:opacity-100 text-slate-600 duration-300'
+        )
         anchor.innerHTML = `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.938l1-4H9.031z" clip-rule="evenodd"></path></svg>`
         heading.classList.add('relative')
         heading.classList.add('group')
@@ -204,8 +210,8 @@ Alpine.data('proseBody', function() {
       const transcriptBtn = document.getElementById('transcriptCutoffBtn')
       const transcriptCutoff = Array.from(document.querySelectorAll('.prose .transcript.cutoff'))
       transcriptBtn.parentElement.classList.toggle('active')
-      transcriptCutoff.map(el => el.classList.toggle('active'))
-    }
+      transcriptCutoff.map((el) => el.classList.toggle('active'))
+    },
   }
 })
 
@@ -223,7 +229,7 @@ Alpine.data('countdown', ({ dateTime }) => {
 
       this.interval = setInterval(() => {
         const { milliseconds } = target.diff(DateTime.now(), ['milliseconds'])
-        
+
         this.days = Math.floor(milliseconds / (1000 * 60 * 60 * 24))
         this.hours = Math.floor((milliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
         this.minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60))
@@ -236,7 +242,7 @@ Alpine.data('countdown', ({ dateTime }) => {
     },
     destroy() {
       clearInterval(this.interval)
-    }
+    },
   }
 })
 

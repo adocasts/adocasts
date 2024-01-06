@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./resources/**/*.{edge,js,ts,jsx,tsx,vue}",
-    "./app/view_models/**/*.ts"
-  ],
+  content: ['./resources/**/*.{edge,js,ts,jsx,tsx,vue}', './app/view_models/**/*.ts'],
   theme: {
     extend: {
       colors: {
@@ -208,26 +205,20 @@ export default {
 
       backgroundSize: {
         'icon-fit': '140%',
-        'icon-fit-zoomed': '160%'
+        'icon-fit-zoomed': '160%',
       },
 
       boxShadow: {
-        glow: [
-          "0 0px 20px rgba(255,255, 255, 0.35)",
-          "0 0px 65px rgba(255, 255,255, 0.2)"
-        ]
+        glow: ['0 0px 20px rgba(255,255, 255, 0.35)', '0 0px 65px rgba(255, 255,255, 0.2)'],
       },
 
       dropShadow: {
-        glow: [
-          "0 0px 20px rgba(255,255, 255, 0.35)",
-          "0 0px 65px rgba(255, 255,255, 0.2)"
-        ]
+        glow: ['0 0px 20px rgba(255,255, 255, 0.35)', '0 0px 65px rgba(255, 255,255, 0.2)'],
       },
 
       fontSize: {
-        '2xs': '0.65rem'
-      }
+        '2xs': '0.65rem',
+      },
     },
   },
   plugins: [
@@ -236,4 +227,3 @@ export default {
     // require('@tailwindcss/aspect-ratio'),
   ],
 }
-
