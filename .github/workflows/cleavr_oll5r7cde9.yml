@@ -1,0 +1,55 @@
+
+
+# This GitHub Actions workflow is generated and deployed by https://cleavr.io
+# The filename, cleavr_oll5r7cde9, of this workflow is tracked from within Cleavr,
+# please don't change the name. Though, feel free to add your own steps or tweak
+# the existing ones except anything listed below the warning message.
+# Read more about Cleavr's GitHub Actions integration feature at: https://docs.cleavr.io/github-actions
+
+name: Deploy uonahymyhrvidqy54073.cleavr.one App with Cleavr
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      # This is the branch that gets deployed when a push is made to this repository.
+      # If you change the default branch in Cleavr under the Webapp's settings, make sure to change it here as well.
+      - next
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - uses: bahmutov/npm-install@v1
+
+      - name: Build app
+        run: npm run build --production
+
+### ---  PLEASE DO NOT MODIFY ANYTHING BELOW THIS LINE --- ###
+
+      - name: Generate artifact name
+        id: artifact
+        uses: josStorer/get-current-time@v2.0.2
+        with:
+          format: YYYYMMDDHHmmss
+          utcOffset: "+08:00"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: '${{ steps.artifact.outputs.formattedTime }}'
+          path: build/
+          if-no-files-found: error
+
+      - name: Start Cleavr Deployment
+        uses: fjogeleit/http-request-action@master
+        with:
+          url: '${{ secrets.DEPLOY_TRIGGER_HOOK_cleavr_oll5r7cde9 }}'
+          method: 'POST'
+          timeout: 60000
+          customHeaders: '{"artifact": "${{ steps.artifact.outputs.formattedTime }}"}'
+
