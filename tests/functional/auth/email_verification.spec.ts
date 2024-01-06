@@ -30,12 +30,16 @@ test.group('Auth email verification', (group) => {
 
   test('should verify the users email', async ({ client, assert }) => {
     const user = await UserFactory.merge({ password: 'Password!01' }).create()
-    const location = router.makeSignedUrl('verification.email.verify', {
-      email: user.email
-    }, { 
-      expiresIn: '24h', 
-      purpose: 'email_verification' 
-    })
+    const location = router.makeSignedUrl(
+      'verification.email.verify',
+      {
+        email: user.email,
+      },
+      {
+        expiresIn: '24h',
+        purpose: 'email_verification',
+      }
+    )
 
     const response = await client.get(location).loginAs(user).redirects(0)
 
@@ -51,15 +55,19 @@ test.group('Auth email verification', (group) => {
 
   test('should redirect to sign in page if not authenticated', async ({ client }) => {
     const user = await UserFactory.merge({ password: 'Password!01' }).with('profile').create()
-    const location = router.makeSignedUrl('verification.email.verify', {
-      email: user.email
-    }, { 
-      expiresIn: '24h', 
-      purpose: 'email_verification' 
-    })
+    const location = router.makeSignedUrl(
+      'verification.email.verify',
+      {
+        email: user.email,
+      },
+      {
+        expiresIn: '24h',
+        purpose: 'email_verification',
+      }
+    )
 
     const response = await client.get(location).redirects(0)
-    
+
     response.assertStatus(HttpStatus.FOUND)
     response.assertHeader('location', '/signin?action=email_verification')
     response.assertSession('email_verification', location)

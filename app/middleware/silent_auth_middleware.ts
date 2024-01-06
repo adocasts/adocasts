@@ -7,6 +7,7 @@ export default class SilentAuthMiddleware {
     /**
      * Middleware logic goes here (before the next call)
      */
+    await ctx.auth.use('web').check()
     const permissionService = new PermissionService(ctx)
 
     ctx.view.share({ bounce: permissionService })

@@ -17,11 +17,11 @@ import testUtils from '@adonisjs/core/services/test_utils'
  * Learn more - https://japa.dev/docs/runner-config#plugins-optional
  */
 export const plugins: Config['plugins'] = [
-  assert(), 
-  apiClient(), 
-  pluginAdonisJS(app), 
+  assert(),
+  apiClient(),
+  pluginAdonisJS(app),
   sessionApiClient(app),
-  authApiClient(app)
+  authApiClient(app),
 ]
 
 /**

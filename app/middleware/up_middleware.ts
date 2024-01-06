@@ -19,4 +19,3 @@ export default class UpMiddleware {
     return output
   }
 }
-
