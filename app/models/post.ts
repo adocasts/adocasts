@@ -119,6 +119,9 @@ export default class Post extends AppBaseModel {
   declare repositoryUrl: string
 
   @column()
+  declare isWatchlistSent: boolean
+
+  @column()
   declare timezone: string | null
 
   @column()

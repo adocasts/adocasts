@@ -13,7 +13,7 @@ export default class SeriesController {
   ) {}
 
   async index({ view }: HttpContext) {
-    const features = await this.collectionService.getLastUpdated(8, true)
+    const features = await this.collectionService.getLastUpdated(7, true)
     const series = await this.collectionService.getList(true).orderBy('name')
 
     return view.render('pages/series/index', { features, series })
@@ -49,4 +49,3 @@ export default class SeriesController {
     return response.redirect().withQs().toPath(lesson.routeUrl!)
   }
 }
-

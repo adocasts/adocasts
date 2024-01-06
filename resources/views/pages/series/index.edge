@@ -16,9 +16,7 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 pb-8 pt-4">
       @each ((item, i) in features)
-        @if ([0].includes(i))
-          @!collection.square.large({ item, class: ['sm:col-span-2 md:col-span-4 lg:col-span-5'] })
-        @elseif (i === 1)
+        @if (i === 0)
           @!collection.square({ item, class: ['sm:col-span-2 md:col-span-2 lg:col-span-2 md:row-span-3 lg:row-span-2']})
         @else
           @!collection.square.small({ item })
