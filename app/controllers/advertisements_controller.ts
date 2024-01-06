@@ -118,10 +118,6 @@ export default class AdvertisementsController {
     const oldAssetFilename = assetRecord.filename
     const trx = await db.transaction()
 
-    console.log({
-      data,
-    })
-
     try {
       if (asset) {
         const location = `${auth.user!.id}/ads/`

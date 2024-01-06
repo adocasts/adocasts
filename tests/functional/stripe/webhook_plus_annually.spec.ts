@@ -1,12 +1,12 @@
 import { test } from '@japa/runner'
-import { MockPlusAnnuallyCustomerSubscriptionUpdated } from '../../mocks/plus-annually/on-subscription-created/02-customer-subscription-updated.js'
-import { MockPlusAnnuallyCustomerSubscriptionCreated } from '../../mocks/plus-annually/on-subscription-created/01-customer-subscription-created.js'
-import { MockPlusAnnuallyCheckoutSessionCompleted } from '../../mocks/plus-annually/on-subscription-created/03-checkout-session-completed.js'
-import { MockPlusAnnuallyCancelAtEndOfBillingPeriod } from '../../mocks/plus-annually/on-cancel-end-of-billing-period/01-customer-subscription-updated.js'
-import { MockPlusAnnuallyCustomerSubscriptionDeleted } from '../../mocks/plus-annually/on-cancel-end-of-billing-period/01-customer-subscription-deleted.js'
-import { MockPlusAnnuallyDowngradeToMonthly } from '../../mocks/plus-annually/on-downgrade-to-monthly/01-customer-subscription-updated.js'
-import { MockPlusAnnuallyUpgradeToForever } from '../../mocks/plus-annually/on-upgrade-to-forever/01-checkout-session-completed.js'
-import { MockPlusAnnuallyUpgradeToForeverCustomerSubscriptionDeleted } from '../../mocks/plus-annually/on-upgrade-to-forever/02-customer-subscription-deleted.js'
+import { MockPlusAnnuallyCustomerSubscriptionUpdated } from '#mocks/plus_annually/on_subscription_created/02_customer_subscription_updated'
+import { MockPlusAnnuallyCustomerSubscriptionCreated } from '#mocks/plus_annually/on_subscription_created/01_customer_subscription_created'
+import { MockPlusAnnuallyCheckoutSessionCompleted } from '#mocks/plus_annually/on_subscription_created/03_checkout_session_completed'
+import { MockPlusAnnuallyCancelAtEndOfBillingPeriod } from '#mocks/plus_annually/on_cancel_end_of_billing_period/01_customer_subscription_updated'
+import { MockPlusAnnuallyCustomerSubscriptionDeleted } from '#mocks/plus_annually/on_cancel_end_of_billing_period/01_customer_subscription_deleted'
+import { MockPlusAnnuallyDowngradeToMonthly } from '#mocks/plus_annually/on_downgrade_to_monthly/01_customer_subscription_updated'
+import { MockPlusAnnuallyUpgradeToForever } from '#mocks/plus_annually/on_upgrade_to_forever/01_checkout_session_completed'
+import { MockPlusAnnuallyUpgradeToForeverCustomerSubscriptionDeleted } from '#mocks/plus_annually/on_upgrade_to_forever/02_customer_subscription_deleted'
 import db from '@adonisjs/lucid/services/db'
 import Plans from '#enums/plans'
 import StripeService from '#services/stripe_service'
@@ -35,19 +35,31 @@ test.group('Stripe webhook plus annually', (group) => {
 
     assert.equal(user.planId, Plans.PLUS_ANNUAL)
     assert.equal(user.stripeSubscriptionStatus, StripeSubscriptionStatuses.INCOMPLETE)
-    assert.equal(user.planPeriodStart?.toSeconds(), mockCustomerSubscriptionCreated.object.current_period_start)
-    assert.equal(user.planPeriodEnd?.toSeconds(), mockCustomerSubscriptionCreated.object.current_period_end)
+    assert.equal(
+      user.planPeriodStart?.toSeconds(),
+      mockCustomerSubscriptionCreated.object.current_period_start
+    )
+    assert.equal(
+      user.planPeriodEnd?.toSeconds(),
+      mockCustomerSubscriptionCreated.object.current_period_end
+    )
 
     // 2. customer.subscription.updated, handled by onSubscriptionUpdated
     const mockCustomerSubscriptionUpdated = MockPlusAnnuallyCustomerSubscriptionUpdated(user)
     await stripeService.onSubscriptionUpdated({ data: mockCustomerSubscriptionUpdated })
     await user.refresh()
-    
+
     assert.equal(user.planId, Plans.PLUS_ANNUAL)
     assert.equal(user.stripeSubscriptionStatus, StripeSubscriptionStatuses.ACTIVE)
-    assert.equal(user.planPeriodStart?.toSeconds(), mockCustomerSubscriptionUpdated.object.current_period_start)
-    assert.equal(user.planPeriodEnd?.toSeconds(), mockCustomerSubscriptionUpdated.object.current_period_end)
-    
+    assert.equal(
+      user.planPeriodStart?.toSeconds(),
+      mockCustomerSubscriptionUpdated.object.current_period_start
+    )
+    assert.equal(
+      user.planPeriodEnd?.toSeconds(),
+      mockCustomerSubscriptionUpdated.object.current_period_end
+    )
+
     // 3. checkout.session.completed, handled by onCheckoutCompleted
     const mockCheckoutSessionCompleted = MockPlusAnnuallyCheckoutSessionCompleted(user)
     await stripeService.onCheckoutCompleted({ data: mockCheckoutSessionCompleted })
@@ -55,26 +67,42 @@ test.group('Stripe webhook plus annually', (group) => {
 
     assert.equal(user.planId, Plans.PLUS_ANNUAL)
     assert.equal(user.stripeSubscriptionStatus, StripeSubscriptionStatuses.ACTIVE)
-    assert.equal(user.planPeriodStart?.toSeconds(), mockCustomerSubscriptionUpdated.object.current_period_start)
-    assert.equal(user.planPeriodEnd?.toSeconds(), mockCustomerSubscriptionUpdated.object.current_period_end)
+    assert.equal(
+      user.planPeriodStart?.toSeconds(),
+      mockCustomerSubscriptionUpdated.object.current_period_start
+    )
+    assert.equal(
+      user.planPeriodEnd?.toSeconds(),
+      mockCustomerSubscriptionUpdated.object.current_period_end
+    )
   })
 
   test('should handle renewed plus annually subscription', async ({ assert }) => {
     const stripeMockService = new StripeMockService()
     const stripeService = new StripeService()
     const { user } = await stripeMockService.createPlusAnnualUser()
-    const mockCustomerSubscriptionUpdated = MockPlusAnnuallyCustomerSubscriptionUpdated(user, { year: 1 })
+    const mockCustomerSubscriptionUpdated = MockPlusAnnuallyCustomerSubscriptionUpdated(user, {
+      year: 1,
+    })
 
     await stripeService.onSubscriptionUpdated({ data: mockCustomerSubscriptionUpdated })
     await user.refresh()
 
     assert.equal(user.planId, Plans.PLUS_ANNUAL)
     assert.equal(user.stripeSubscriptionStatus, StripeSubscriptionStatuses.ACTIVE)
-    assert.equal(user.planPeriodStart?.toSeconds(), mockCustomerSubscriptionUpdated.object.current_period_start)
-    assert.equal(user.planPeriodEnd?.toSeconds(), mockCustomerSubscriptionUpdated.object.current_period_end)
+    assert.equal(
+      user.planPeriodStart?.toSeconds(),
+      mockCustomerSubscriptionUpdated.object.current_period_start
+    )
+    assert.equal(
+      user.planPeriodEnd?.toSeconds(),
+      mockCustomerSubscriptionUpdated.object.current_period_end
+    )
   })
 
-  test('should handle request to cancel at end of plus annually billing period', async ({ assert }) => {
+  test('should handle request to cancel at end of plus annually billing period', async ({
+    assert,
+  }) => {
     const stripeMockService = new StripeMockService()
     const stripeService = new StripeService()
     const { user } = await stripeMockService.createPlusAnnualUser()
@@ -86,11 +114,20 @@ test.group('Stripe webhook plus annually', (group) => {
     // should still be member of plan
     assert.equal(user.planId, Plans.PLUS_ANNUAL)
     assert.equal(user.stripeSubscriptionStatus, StripeSubscriptionStatuses.ACTIVE)
-    assert.equal(user.planPeriodStart?.toSeconds(), mockCancelAtEndOfBillingPeriod.object.current_period_start)
-    assert.equal(user.planPeriodEnd?.toSeconds(), mockCancelAtEndOfBillingPeriod.object.current_period_end)
+    assert.equal(
+      user.planPeriodStart?.toSeconds(),
+      mockCancelAtEndOfBillingPeriod.object.current_period_start
+    )
+    assert.equal(
+      user.planPeriodEnd?.toSeconds(),
+      mockCancelAtEndOfBillingPeriod.object.current_period_end
+    )
 
     // should know cancellation is coming
-    assert.equal(user.stripeSubscriptionCanceledAt?.toSeconds(), mockCancelAtEndOfBillingPeriod.object.created)
+    assert.equal(
+      user.stripeSubscriptionCanceledAt?.toSeconds(),
+      mockCancelAtEndOfBillingPeriod.object.created
+    )
   })
 
   test('should handle cancellation of plus annually', async ({ assert }) => {
@@ -119,8 +156,14 @@ test.group('Stripe webhook plus annually', (group) => {
 
     assert.equal(user.planId, Plans.PLUS_MONTHLY)
     assert.equal(user.stripeSubscriptionStatus, StripeSubscriptionStatuses.ACTIVE)
-    assert.equal(user.planPeriodStart?.toSeconds(), mockCustomerSubscriptionUpdated.object.current_period_start)
-    assert.equal(user.planPeriodEnd?.toSeconds(), mockCustomerSubscriptionUpdated.object.current_period_end)
+    assert.equal(
+      user.planPeriodStart?.toSeconds(),
+      mockCustomerSubscriptionUpdated.object.current_period_start
+    )
+    assert.equal(
+      user.planPeriodEnd?.toSeconds(),
+      mockCustomerSubscriptionUpdated.object.current_period_end
+    )
   })
 
   test('should handle upgrade from plus annually to forever', async ({ assert }) => {
@@ -137,7 +180,8 @@ test.group('Stripe webhook plus annually', (group) => {
     assert.isNotNull(user.planPeriodStart)
     assert.isNull(user.planPeriodEnd)
 
-    const mockCustomerSubscriptionDeleted = MockPlusAnnuallyUpgradeToForeverCustomerSubscriptionDeleted(user)
+    const mockCustomerSubscriptionDeleted =
+      MockPlusAnnuallyUpgradeToForeverCustomerSubscriptionDeleted(user)
     await stripeService.onSubscriptionDeleted({ data: mockCustomerSubscriptionDeleted })
     await user.refresh()
 

@@ -18,6 +18,7 @@ test.group('Auth email verification', (group) => {
 
     const response = await client
       .post('/verification/email/send')
+      .withGuard('web')
       .loginAs(user)
       .header('Referer', '/contact')
       .form({})
@@ -41,7 +42,7 @@ test.group('Auth email verification', (group) => {
       }
     )
 
-    const response = await client.get(location).loginAs(user).redirects(0)
+    const response = await client.get(location).withGuard('web').loginAs(user).redirects(0)
 
     response.assertStatus(HttpStatus.FOUND)
     response.assertHeader('location', '/')

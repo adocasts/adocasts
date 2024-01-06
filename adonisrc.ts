@@ -14,7 +14,7 @@ export default defineConfig({
     () => import('@adonisjs/core/commands'),
     () => import('@adonisjs/lucid/commands'),
     () => import('@adonisjs/bouncer/commands'),
-    () => import('@adonisjs/mail/commands')
+    () => import('@adonisjs/mail/commands'),
   ],
 
   /*
@@ -44,7 +44,7 @@ export default defineConfig({
     () => import('@adonisjs/redis/redis_provider'),
     () => import('@adonisjs/bouncer/bouncer_provider'),
     () => import('@adonisjs/mail/mail_provider'),
-    () => import('@adonisjs/ally/ally_provider')
+    () => import('@adonisjs/ally/ally_provider'),
   ],
 
   /*
@@ -66,7 +66,7 @@ export default defineConfig({
     {
       file: () => import('./start/context.js'),
       environment: ['web', 'test'],
-    }
+    },
   ],
 
   /*

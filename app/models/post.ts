@@ -438,7 +438,6 @@ export default class Post extends AppBaseModel {
   get routeUrl() {
     if (this.redirectUrl) return this.redirectUrl
 
-    let namePrefix = ''
     let params: { collectionSlug?: string; slug: string } = { slug: this.slug }
 
     if (
@@ -449,11 +448,9 @@ export default class Post extends AppBaseModel {
 
       switch (series?.collectionTypeId) {
         case CollectionTypes.SERIES:
-          namePrefix = 'series.'
           params.collectionSlug = series.slug
           break
         case CollectionTypes.PATH:
-          namePrefix = 'paths.'
           params.collectionSlug = series.slug
           break
       }

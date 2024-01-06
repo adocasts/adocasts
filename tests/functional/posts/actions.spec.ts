@@ -17,11 +17,15 @@ test.group('Posts actions', (group) => {
 
   test('should be able to mark a lesson as complete', async ({ client, assert }) => {
     const user = await UserFactory.with('profile').create()
-    const post = await PostFactory.with('authors', 1, (user) => user.with('profile')).create()
-    const response = await client.patch(`/histories/progression/toggle`).loginAs(user).form({
-      postId: post.id,
-      route: 'lessons.show',
-    })
+    const post = await PostFactory.with('authors', 1, (authors) => authors.with('profile')).create()
+    const response = await client
+      .patch(`/histories/progression/toggle`)
+      .withGuard('web')
+      .loginAs(user)
+      .form({
+        postId: post.id,
+        route: 'lessons.show',
+      })
 
     const progression = await HistoryService.getPostProgression(user, post)
 
@@ -33,7 +37,7 @@ test.group('Posts actions', (group) => {
 
   test('should be able to mark a lesson as incomplete', async ({ client, assert }) => {
     const user = await UserFactory.with('profile').create()
-    const post = await PostFactory.with('authors', 1, (user) => user.with('profile')).create()
+    const post = await PostFactory.with('authors', 1, (authors) => authors.with('profile')).create()
 
     const history = await History.create({
       userId: user.id,
@@ -45,10 +49,14 @@ test.group('Posts actions', (group) => {
 
     assert.isTrue(history.isCompleted)
 
-    const response = await client.patch(`/histories/progression/toggle`).loginAs(user).form({
-      postId: post.id,
-      route: 'lessons.show',
-    })
+    const response = await client
+      .patch(`/histories/progression/toggle`)
+      .withGuard('web')
+      .loginAs(user)
+      .form({
+        postId: post.id,
+        route: 'lessons.show',
+      })
 
     const progression = await HistoryService.getPostProgression(user, post)
 
@@ -60,9 +68,9 @@ test.group('Posts actions', (group) => {
 
   test('should be able to add a lesson to watchlist', async ({ client }) => {
     const user = await UserFactory.with('profile').create()
-    const post = await PostFactory.with('authors', 1, (user) => user.with('profile')).create()
+    const post = await PostFactory.with('authors', 1, (authors) => authors.with('profile')).create()
 
-    const response = await client.patch('/watchlist/toggle').loginAs(user).form({
+    const response = await client.patch('/watchlist/toggle').withGuard('web').loginAs(user).form({
       postId: post.id,
       fragment: 'components/watchlist/toggle.edge',
     })
@@ -73,13 +81,13 @@ test.group('Posts actions', (group) => {
 
   test('should be able to remove a lesson from watchlist', async ({ client, assert }) => {
     const user = await UserFactory.with('profile').create()
-    const post = await PostFactory.with('authors', 1, (user) => user.with('profile')).create()
+    const post = await PostFactory.with('authors', 1, (authors) => authors.with('profile')).create()
 
     const { watchlist } = await WatchlistService.toggle(user, { postId: post.id })
 
     assert.instanceOf(watchlist, Watchlist)
 
-    const response = await client.patch('/watchlist/toggle').loginAs(user).form({
+    const response = await client.patch('/watchlist/toggle').withGuard('web').loginAs(user).form({
       postId: post.id,
       fragment: 'components/watchlist/toggle.edge',
     })
@@ -88,4 +96,3 @@ test.group('Posts actions', (group) => {
     response.assertTextIncludes('Add to Watchlist')
   })
 })
-

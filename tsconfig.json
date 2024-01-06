@@ -19,7 +19,8 @@
       "#validators/*": ["./app/validators/*.js"],
       "#factories/*": ["./database/factories/*.js"],
       "#start/*": ["./start/*.js"],
-      "#config/*": ["./config/*.js"]
+      "#config/*": ["./config/*.js"],
+      "#mocks/*": ["./tests/mocks/*.js"]
     }
   }
 }

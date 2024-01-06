@@ -224,7 +224,7 @@ class HtmlParser {
             .map((line, i) => (line.startsWith('++') ? i + 1 : undefined))
             .filter(Boolean)
           const codeLessChange = code.replaceAll('\r\n--', '\r\n').replaceAll('\r\n++', '\r\n')
-          let highlighted = await highlighter.codeToHtml(codeLessChange, lang, shikiTheme, {
+          let highlighted = highlighter.codeToHtml(codeLessChange, lang, shikiTheme, {
             lang,
             lineOptions: [
               ...delLineNumbers.map((x) => ({ line: x!, classes: ['del'] })),
@@ -249,7 +249,7 @@ class HtmlParser {
                 .map((item) => `<li>${item}</li>`)
                 .join('')}</ul></span>`
             )
-            const rawInnerText = h.firstChild.rawText
+            const rawInnerText = h.firstChild?.rawText ?? ''
             const rawText = rawInnerText + filePathHtml.outerHTML
 
             highlightedCode = highlighted.replace(rawInnerText, rawText)

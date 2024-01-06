@@ -1,4 +1,3 @@
-import States from '#enums/states'
 import Comment from '#models/comment'
 import CommentService from '#services/comment_service'
 import { commentValidator } from '#validators/comment_validator'
@@ -67,4 +66,3 @@ export default class CommentsController {
     return response.redirect().back()
   }
 }
-

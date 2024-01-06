@@ -23,11 +23,14 @@ test.group('Auth sign in', (group) => {
 
   test('should fail to sign in a user with invalid credentials', async ({ client, route }) => {
     const user = await UserFactory.merge({ password: 'Password!01' }).with('profile').create()
-    
-    const response = await client.post('/signin').form({
-      uid: user.email,
-      password: 'Password!02',
-    }).header('Referer', '/signin')
+
+    const response = await client
+      .post('/signin')
+      .form({
+        uid: user.email,
+        password: 'Password!02',
+      })
+      .header('Referer', '/signin')
 
     response.assertStatus(HttpStatus.OK)
     response.assertRedirectsTo(route('auth.signin.create'))
@@ -39,7 +42,7 @@ test.group('Auth sign in', (group) => {
 
     const response = await client.post('/signin').header('Referer', '/signin').form({
       email: user.email, // expected field is 'uid'
-      password: 'Password!01'
+      password: 'Password!01',
     })
 
     response.assertStatus(HttpStatus.OK)
@@ -48,7 +51,11 @@ test.group('Auth sign in', (group) => {
 
   test('should redirect authenticated user away from sign in page', async ({ client }) => {
     const user = await UserFactory.merge({ password: 'Password!01' }).create()
-    const response = await client.get('/signin').header('Referer', '/contact').loginAs(user)
+    const response = await client
+      .get('/signin')
+      .header('Referer', '/contact')
+      .withGuard('web')
+      .loginAs(user)
 
     response.assertRedirectsTo('/contact')
     response.assertTextIncludes('You are already signed in')

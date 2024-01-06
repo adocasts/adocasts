@@ -50,7 +50,11 @@ test.group('Auth signup', (group) => {
 
   test('should redirect authenticated user away from sign up page', async ({ client }) => {
     const user = await UserFactory.merge({ password: 'Password!01' }).with('profile').create()
-    const response = await client.get('/signup').header('Referer', '/contact').loginAs(user)
+    const response = await client
+      .get('/signup')
+      .header('Referer', '/contact')
+      .withGuard('web')
+      .loginAs(user)
 
     response.assertRedirectsTo('/contact')
     response.assertTextIncludes('You are already signed in')

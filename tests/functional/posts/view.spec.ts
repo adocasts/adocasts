@@ -43,11 +43,11 @@ test.group('Posts view', (group) => {
 
   test('should be able to view a future dated lesson as admin', async ({ client }) => {
     const user = await UserFactory.with('profile').apply('admin').create()
-    const post = await PostFactory.with('authors', 1, (user) => user.with('profile'))
+    const post = await PostFactory.with('authors', 1, (authors) => authors.with('profile'))
       .apply('futureDated')
       .create()
     const body = await HtmlParser.highlight(post.body!)
-    const response = await client.get(`/lessons/${post.slug}`).loginAs(user)
+    const response = await client.get(`/lessons/${post.slug}`).withGuard('web').loginAs(user)
 
     response.assertStatus(HttpStatus.OK)
     response.assertTextIncludes(body)
@@ -55,11 +55,11 @@ test.group('Posts view', (group) => {
 
   test('should be able to view a future dated lesson as contributor lvl 2', async ({ client }) => {
     const user = await UserFactory.with('profile').apply('contributorLvl2').create()
-    const post = await PostFactory.with('authors', 1, (user) => user.with('profile'))
+    const post = await PostFactory.with('authors', 1, (authors) => authors.with('profile'))
       .apply('futureDated')
       .create()
     const body = await HtmlParser.highlight(post.body!)
-    const response = await client.get(`/lessons/${post.slug}`).loginAs(user)
+    const response = await client.get(`/lessons/${post.slug}`).withGuard('web').loginAs(user)
 
     response.assertStatus(HttpStatus.OK)
     response.assertTextIncludes(body)
@@ -67,11 +67,11 @@ test.group('Posts view', (group) => {
 
   test('should be able to view a future dated lesson as contributor lvl 1', async ({ client }) => {
     const user = await UserFactory.with('profile').apply('contributorLvl1').create()
-    const post = await PostFactory.with('authors', 1, (user) => user.with('profile'))
+    const post = await PostFactory.with('authors', 1, (authors) => authors.with('profile'))
       .apply('futureDated')
       .create()
     const body = await HtmlParser.highlight(post.body!)
-    const response = await client.get(`/lessons/${post.slug}`).loginAs(user)
+    const response = await client.get(`/lessons/${post.slug}`).withGuard('web').loginAs(user)
 
     response.assertStatus(HttpStatus.OK)
     response.assertTextIncludes(body)
@@ -113,10 +113,10 @@ test.group('Posts view', (group) => {
     client,
   }) => {
     const user = await UserFactory.with('profile').create()
-    const post = await PostFactory.with('authors', 1, (user) => user.with('profile'))
+    const post = await PostFactory.with('authors', 1, (authors) => authors.with('profile'))
       .apply('paywalled')
       .create()
-    const response = await client.get(`/lessons/${post.slug}`).loginAs(user)
+    const response = await client.get(`/lessons/${post.slug}`).withGuard('web').loginAs(user)
 
     response.assertStatus(HttpStatus.OK)
     response.assertTextIncludes('Ready to get started?')
@@ -126,11 +126,11 @@ test.group('Posts view', (group) => {
     client,
   }) => {
     const user = await UserFactory.with('profile').apply('plusMonthly').create()
-    const post = await PostFactory.with('authors', 1, (user) => user.with('profile'))
+    const post = await PostFactory.with('authors', 1, (authors) => authors.with('profile'))
       .apply('paywalled')
       .create()
     const body = await HtmlParser.highlight(post.body!)
-    const response = await client.get(`/lessons/${post.slug}`).loginAs(user)
+    const response = await client.get(`/lessons/${post.slug}`).withGuard('web').loginAs(user)
 
     response.assertStatus(HttpStatus.OK)
     response.assertTextIncludes(body)
@@ -140,11 +140,11 @@ test.group('Posts view', (group) => {
     client,
   }) => {
     const user = await UserFactory.with('profile').apply('plusAnnually').create()
-    const post = await PostFactory.with('authors', 1, (user) => user.with('profile'))
+    const post = await PostFactory.with('authors', 1, (authors) => authors.with('profile'))
       .apply('paywalled')
       .create()
     const body = await HtmlParser.highlight(post.body!)
-    const response = await client.get(`/lessons/${post.slug}`).loginAs(user)
+    const response = await client.get(`/lessons/${post.slug}`).withGuard('web').loginAs(user)
 
     response.assertStatus(HttpStatus.OK)
     response.assertTextIncludes(body)
@@ -154,11 +154,11 @@ test.group('Posts view', (group) => {
     client,
   }) => {
     const user = await UserFactory.with('profile').apply('plusForever').create()
-    const post = await PostFactory.with('authors', 1, (user) => user.with('profile'))
+    const post = await PostFactory.with('authors', 1, (authors) => authors.with('profile'))
       .apply('paywalled')
       .create()
     const body = await HtmlParser.highlight(post.body!)
-    const response = await client.get(`/lessons/${post.slug}`).loginAs(user)
+    const response = await client.get(`/lessons/${post.slug}`).withGuard('web').loginAs(user)
 
     response.assertStatus(HttpStatus.OK)
     response.assertTextIncludes(body)

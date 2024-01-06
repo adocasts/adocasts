@@ -67,7 +67,6 @@ export default class PasswordResetController {
 
       return response.redirect('/')
     } catch (error) {
-      console.log({ error, message: error.message })
       const { email } = request.only(['email'])
       logger.error('AuthController.resetPasswordStore', { email, error })
 

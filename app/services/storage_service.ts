@@ -10,6 +10,7 @@ import { ImageOptions } from './asset_service.js'
 import sharp, { AvailableFormatInfo, FormatEnum } from 'sharp'
 import { MultipartFile } from '@adonisjs/core/bodyparser'
 import fs from 'node:fs'
+import logger from './logger_service.js'
 
 class StorageService {
   private bucket: Bucket
@@ -57,6 +58,7 @@ class StorageService {
         })
       } catch (error) {
         console.log({ error })
+        logger.error('StorageService.storeFromTmp', error)
       }
     })
   }
