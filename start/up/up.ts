@@ -19,7 +19,7 @@ const UNPOLY_HEADERS = [
   'X-Up-Reload-From-Time',
   'X-Up-Target',
   'X-Full-Reload',
-  'X-Up-Status'
+  'X-Up-Status',
 ]
 
 export default class Up {
@@ -67,13 +67,16 @@ export default class Up {
    */
   private setHeadersAsResponse(headers: Record<string, string>) {
     Object.keys(headers).forEach((header) => {
-      const h = header.split('-').map(h => string.capitalCase(h)).join('-')
+      const h = header
+        .split('-')
+        .map((text) => string.capitalCase(text))
+        .join('-')
       // this.ctx.response.response.setHeader(h, headers[header])
       this.ctx.response.header(h, headers[header])
     })
 
     if (this.getStatus()) {
-      this.ctx.response.response.statusCode = parseInt(this.getStatus())
+      this.ctx.response.response.statusCode = Number.parseInt(this.getStatus())
     }
   }
 
@@ -82,7 +85,7 @@ export default class Up {
   /**
    * Commit response
    */
-  public commit() {
+  commit() {
     const headers = Object.assign(
       UNPOLY_HEADERS.reduce((result, header) => {
         const value = this.ctx.session.flashMessages.get(this.headerToFlashKey(header))
@@ -101,167 +104,168 @@ export default class Up {
     }
   }
 
-  public get isPage() {
+  get isPage() {
     return this.getMode() === 'root'
   }
 
-  public get isLayoutUpdate() {
+  get isLayoutUpdate() {
     return this.getTarget() === 'body'
   }
 
-  public get isUnpolyRequest() {
+  get isUnpolyRequest() {
     return !!this.getContext()
   }
 
-  public getLayer() {
+  getLayer() {
     return this.getProperty('X-Up-Accept-Layer')
   }
 
-  public getCache() {
+  getCache() {
     return this.getProperty('X-Up-Clear-Cache')
   }
 
-  public getContext() {
+  getContext() {
     return this.getProperty('X-Up-Context')
   }
 
-  public getDismissLayer() {
+  getDismissLayer() {
     return this.getProperty('X-Up-Dismiss-Layer')
   }
 
-  public getEvents() {
+  getEvents() {
     return this.getProperty('X-Up-Events')
   }
 
-  public getFailContext() {
+  getFailContext() {
     return this.getProperty('X-Up-Fail-Context')
   }
 
-  public getFailMode() {
+  getFailMode() {
     return this.getProperty('X-Up-Fail-Mode')
   }
 
-  public getFailTarget() {
+  getFailTarget() {
     return this.getProperty('X-Up-Fail-Target')
   }
 
-  public getLocation() {
+  getLocation() {
     return this.getProperty('X-Up-Location')
   }
 
-  public getMethod() {
+  getMethod() {
     return this.getProperty('X-Up-Method')
   }
 
-  public getMode() {
+  getMode() {
     return this.getProperty('X-Up-Mode') || 'root'
   }
 
-  public getReloadFromTime() {
+  getReloadFromTime() {
     return this.getProperty('X-Up-Reload-From-Time')
   }
 
-  public getTarget() {
+  getTarget() {
     return this.getProperty('X-Up-Target') || 'body'
   }
 
-  public targetIncludes(selector: string): boolean {
+  targetIncludes(selector: string): boolean {
     const target = this.getTarget()
       .split(',')
       .map((value) => value.trim())
     return target.includes('body') ? true : target.includes(selector)
   }
 
-  public getStatus() {
+  getStatus() {
     return this.getProperty('X-Up-Status')
   }
 
-  public getTitle() {
+  getTitle() {
     return this.getProperty('X-Up-Title')
   }
 
-  public getValidate() {
+  getValidate() {
     return this.getProperty('X-Up-Validate')
   }
 
-  public getVersion() {
+  getVersion() {
     return this.getProperty('X-Up-Version')
   }
 
-  public setLayer(value: string) {
+  setLayer(value: string) {
     return this.setProperty('X-Up-Accept-Layer', value)
   }
 
-  public setCache(value: string) {
+  setCache(value: string) {
     return this.setProperty('X-Up-Clear-Cache', value)
   }
 
-  public setContext(value: string) {
+  setContext(value: string) {
     return this.setProperty('X-Up-Context', value)
   }
 
-  public setDismissLayer(value: string) {
+  setDismissLayer(value: string) {
     return this.setProperty('X-Up-Dismiss-Layer', value)
   }
 
-  public setEvents(value: string) {
+  setEvents(value: string) {
     return this.setProperty('X-Up-Events', value)
   }
 
-  public setFailContext(value: string) {
+  setFailContext(value: string) {
     return this.setProperty('X-Up-Fail-Context', value)
   }
 
-  public setFailMode(value: string) {
+  setFailMode(value: string) {
     return this.setProperty('X-Up-Fail-Mode', value)
   }
 
-  public setFailTarget(value: string) {
+  setFailTarget(value: string) {
     return this.setProperty('X-Up-Fail-Target', value)
   }
 
-  public setLocation(value: string) {
+  setLocation(value: string) {
     return this.setProperty('X-Up-Location', value)
   }
 
-  public setMethod(value: string) {
+  setMethod(value: string) {
     return this.setProperty('X-Up-Method', value)
   }
 
-  public setMode(value: string) {
+  setMode(value: string) {
     return this.setProperty('X-Up-Mode', value)
   }
 
-  public setReloadFromTime(value: string) {
+  setReloadFromTime(value: string) {
     return this.setProperty('X-Up-Reload-From-Time', value)
   }
 
-  public setTarget(value: string) {
+  setTarget(value: string) {
     return this.setProperty('X-Up-Target', value)
   }
 
-  public addTarget(...value: string[]) {
+  addTarget(...value: string[]) {
     const current = this.getProperty('X-Up-Target')?.split(',') ?? []
     this.setProperty('X-Up-Target', [...new Set([...current, ...value])].join(', '))
   }
 
-  public setStatus(status: number) {
+  setStatus(status: number) {
     return this.setProperty('X-Up-Status', status + '')
   }
 
-  public setTitle(value: string) {
+  setTitle(value: string) {
     return this.setProperty('X-Up-Title', value)
   }
 
-  public setValidate(value: string) {
+  setValidate(value: string) {
     return this.setProperty('X-Up-Validate', value)
   }
 
-  public setVersion(value: string) {
+  setVersion(value: string) {
     return this.setProperty('X-Up-Version', value)
   }
 
-  public fullReload() {
+  fullReload() {
     return this.setProperty('X-Full-Reload', 'true')
   }
 }
+
