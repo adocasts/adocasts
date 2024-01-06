@@ -45,6 +45,10 @@ const SchedulesController = () => import('#controllers/schedules_controller')
 const GoController = () => import('#controllers/go_controller')
 const FragmentsController = () => import('#controllers/fragments_controller')
 
+// ignore formatting, easier to visually scan single-line routes
+/* prettier-ignore-start */
+/* eslint-disable */
+
 router.get('/img/:userId/:filename', [AssetsController, 'show']).as('userimg')
 router.get('/img/*', [AssetsController, 'show']).where('path', /.*/).as('img')
 router.post('/api/image/upload', [AssetsController, 'store']).as('img.store').use(middleware.auth())
@@ -91,7 +95,7 @@ router.post('/stripe/subscription/portal', [StripeSubscriptionsController, 'port
  * sign up, in, out
  */
 router.get('/signin', [AuthSignInController, 'create']).as('auth.signin.create').use(middleware.guest())
-router.post('/signin', [AuthSignInController, 'store']).as('auth.signin.store').use(middleware.guest()).use(middleware.turnstile())
+router.post('/signin', [AuthSignInController, 'store']).as('auth.signin.store').use(middleware.guest())
 router.get('/signup', [AuthSignUpController, 'create']).as('auth.signup.create').use(middleware.guest())
 router.post('/signup', [AuthSignUpController, 'store']).as('auth.signup.store').use(middleware.guest()).use(middleware.turnstile())
 router.post('/signout', [AuthSignOutController, 'handle']).as('auth.signout')
@@ -260,3 +264,6 @@ router.get('/go/auth/reset', [GoController, 'authReset']).as('go.auth.reset')
  * fragments
  */
 router.get('/fragments/layout/header/notifications', [FragmentsController, 'headerNotifications']).as('fragments.header.notifications')
+
+/* prettier-ignore-end */
+/* eslint-enable */
