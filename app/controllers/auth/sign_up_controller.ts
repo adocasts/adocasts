@@ -58,4 +58,3 @@ export default class SignUpController {
     return response.redirect().toPath(forward ?? '/')
   }
 }
-

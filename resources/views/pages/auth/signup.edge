@@ -18,7 +18,7 @@
         @if (request.qs().plan)
           <input type="hidden" name="plan" value="{{ request.qs().plan }}" />
         @endif
-
+      
         @if (request.header('referrer'))
           <input type="hidden" name="forward" value="{{ request.header('referrer') }}" />
         @endif

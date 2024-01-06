@@ -16,8 +16,8 @@
   {{{ await $slots.main() }}}
 
   <div x-data="{{ js.stringify(data) }}">
-    @error(name)
-      <span class="text-xs text-red-600">{{ messages.join(', ') }}</span>
+    @if(flashMessages.has(`errors.${name}`))
+      <span class="text-xs text-red-600">{{ flashMessages.get(`errors.${name}`).join(', ') }}</span>
     @elseif(hint)
       <div class="text-xs text-right pt-1 absolute right-0 text-slate-400" style="bottom: -1rem">
         {{ hint }}

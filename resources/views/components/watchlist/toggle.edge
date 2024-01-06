@@ -1,4 +1,4 @@
-<div x-data="{ loading: false }" class="{{ html.classNames([$props.class, { 'hidden': !auth.user }])}}" up-watchlist-toggle>
+<div x-data="{ loading: false }" class="{{ html.classNames([($props || {}).class || '', { 'hidden': !auth.user }])}}" up-watchlist-toggle>
   @if (auth.user)
     @form({ 
       class: 'w-full md:w-auto flex flex-col md:flex-row justify-center',
