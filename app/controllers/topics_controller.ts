@@ -1,4 +1,5 @@
 import CollectionService from '#services/collection_service'
+import DiscussionService from '#services/discussion_service'
 import HistoryService from '#services/history_service'
 import PostService from '#services/post_service'
 import TaxonomyService from '#services/taxonomy_service'
@@ -12,7 +13,8 @@ export default class TopicsController {
     protected taxonomyService: TaxonomyService,
     protected postService: PostService,
     protected collectionService: CollectionService,
-    protected historyService: HistoryService
+    protected historyService: HistoryService,
+    protected discussionService: DiscussionService
   ) {}
 
   async index({ view }: HttpContext) {
@@ -24,11 +26,15 @@ export default class TopicsController {
   async show({ view, request, params, route }: HttpContext) {
     const { page = '1' } = request.qs()
     const item = await this.taxonomyService.getBySlug(params.slug)
+    let childIds: number[] = []
 
     if (page === '1') {
       const children = await this.taxonomyService.getChildren(item)
       const series = await this.collectionService.getLastUpdated().whereHasTaxonomy(item)
       const snippets = await this.postService.getLatestSnippets().whereHasTaxonomy(item)
+
+      childIds = children.map((child) => child.id)
+
       view.share({ children, series, snippets })
     }
 
@@ -37,9 +43,11 @@ export default class TopicsController {
       .whereHasTaxonomy(item)
       .paginate(page, 20, router.makeUrl('topics.show', params))
 
+    const taxonomyIds = [item.id, ...childIds]
+    const feed = await this.discussionService.getAsideList(5, taxonomyIds)
+
     await this.historyService.recordView(item, route?.name)
 
-    return view.render('pages/topics/show', { item, posts })
+    return view.render('pages/topics/show', { item, posts, feed })
   }
 }
-

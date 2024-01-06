@@ -73,7 +73,7 @@
               @!watchlist.toggle({ active: parseInt(item.$extras.watchlist_count ?? 0), collectionId: item.id })
 
               @if (item.repositoryUrl)
-                @button.outline({ href: item.repositoryUrl, class: ['gap-2'] })
+                @button({ href: item.repositoryUrl, class: ['gap-2'] })
                   @svg('simple-icons:github')
                   Repository
                 @end

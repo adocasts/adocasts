@@ -145,6 +145,13 @@
         @end
       @endif
 
+      @if (feed?.length)
+        @section()
+          @!heading({ title: 'From The Feed', size: 'sm' })
+          @!discussion.list({ items: feed, aside: true })
+        @end
+      @endif
+
       @if (snippets?.length)
         @section()
           @!heading({ title: 'Snippets.', size: 'sm' })
