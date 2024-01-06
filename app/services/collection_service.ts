@@ -1,39 +1,37 @@
-import CollectionBuilder from "#builders/collection_builder"
-import Collection from "#models/collection"
-import Post from "#models/post"
-import { inject } from "@adonisjs/core"
-import { HttpContext } from "@adonisjs/core/http"
-import User from '#models/user';
+import CollectionBuilder from '#builders/collection_builder'
+import Collection from '#models/collection'
+import Post from '#models/post'
+import { inject } from '@adonisjs/core'
+import { HttpContext } from '@adonisjs/core/http'
+import User from '#models/user'
 
 @inject()
 export default class CollectionService {
-  
   constructor(protected ctx: HttpContext) {}
 
-  public get user() {
+  get user() {
     return this.ctx.auth.user
   }
 
   /**
    * Returns a new instance of the collection builder
-   * @returns 
+   * @returns
    */
-  public builder() {
+  builder() {
     return new CollectionBuilder(this.user)
   }
 
   /**
    * Search for collections by a term
-   * @param term 
-   * @param limit 
-   * @returns 
+   * @param term
+   * @param limit
+   * @returns
    */
-  public async search(term: string | undefined, limit: number = 8) {
-    return this
-      .builder()
+  async search(term: string | undefined, limit: number = 8) {
+    return this.builder()
       .display()
       .root()
-      .if(term, builder => builder.search(term!))
+      .if(term, (builder) => builder.search(term!))
       .orderLatestUpdated()
       .limit(limit)
   }
@@ -42,58 +40,58 @@ export default class CollectionService {
 
   /**
    * returns the next lesson after the provided post in the series (if there is one)
-   * @param series 
-   * @param post 
-   * @returns 
+   * @param series
+   * @param post
+   * @returns
    */
-  public findNextSeriesLesson(series: Collection | null, post: Post) {
+  findNextSeriesLesson(series: Collection | null, post: Post) {
     if (!series) return
     if (!post?.rootSeries?.length || !series?.postsFlattened?.length) return
 
     const postRootIndex = post.rootSeries[0].$extras.pivot_root_sort_order
-    return series?.postsFlattened.find(p => p.$extras.pivot_root_sort_order === postRootIndex + 1)
+    return series?.postsFlattened.find((p) => p.$extras.pivot_root_sort_order === postRootIndex + 1)
   }
 
   /**
    * returns the next lesson after the provided post in the path (if there is one)
-   * @param series 
-   * @param post 
-   * @returns 
+   * @param series
+   * @param post
+   * @returns
    */
-  public findNextPathLesson(series: Collection | null, post: Post) {
+  findNextPathLesson(series: Collection | null, post: Post) {
     if (!series) return
     if (!post?.rootPaths?.length || !series?.postsFlattened?.length) return
 
     const postRootIndex = post.rootPaths[0].$extras.pivot_root_sort_order
-    return series?.postsFlattened.find(p => p.$extras.pivot_root_sort_order === postRootIndex + 1)
+    return series?.postsFlattened.find((p) => p.$extras.pivot_root_sort_order === postRootIndex + 1)
   }
 
   /**
    * returns the previous lesson before the provided post in the series (if there is one)
-   * @param series 
-   * @param post 
-   * @returns 
+   * @param series
+   * @param post
+   * @returns
    */
-  public findPrevSeriesLesson(series: Collection | null, post: Post) {
+  findPrevSeriesLesson(series: Collection | null, post: Post) {
     if (!series) return
     if (!post?.rootSeries?.length || !series?.postsFlattened?.length) return
 
     const postRootIndex = post.rootSeries[0].$extras.pivot_root_sort_order
-    return series?.postsFlattened.find(p => p.$extras.pivot_root_sort_order === postRootIndex - 1)
+    return series?.postsFlattened.find((p) => p.$extras.pivot_root_sort_order === postRootIndex - 1)
   }
 
   /**
    * returns the previous lesson before the provided post in the path (if there is one)
-   * @param series 
-   * @param post 
-   * @returns 
+   * @param series
+   * @param post
+   * @returns
    */
-  public findPrevPathLesson(series: Collection | null, post: Post) {
+  findPrevPathLesson(series: Collection | null, post: Post) {
     if (!series) return
     if (!post?.rootPaths?.length || !series?.postsFlattened?.length) return
 
     const postRootIndex = post.rootPaths[0].$extras.pivot_root_sort_order
-    return series?.postsFlattened.find(p => p.$extras.pivot_root_sort_order === postRootIndex - 1)
+    return series?.postsFlattened.find((p) => p.$extras.pivot_root_sort_order === postRootIndex - 1)
   }
 
   //#endregion
@@ -102,22 +100,21 @@ export default class CollectionService {
 
   /**
    * Returns a series by id for display
-   * @param id 
-   * @returns 
+   * @param id
+   * @returns
    */
-  public find(id: number) {
+  find(id: number) {
     return this.findBy('id', id)
   }
 
   /**
    * Returns a series for display
-   * @param column 
-   * @param value 
-   * @returns 
+   * @param column
+   * @param value
+   * @returns
    */
-  public findBy(column: string, value: string | number) {
-    return this
-      .builder()
+  findBy(column: string, value: string | number) {
+    return this.builder()
       .where(column, value)
       .root()
       .series()
@@ -127,16 +124,15 @@ export default class CollectionService {
       .withChildren()
       .firstOrFail()
   }
-  
+
   /**
    * Returns a post's collection
-   * @param post 
-   * @param collectionSlug 
-   * @returns 
+   * @param post
+   * @param collectionSlug
+   * @returns
    */
-  public findForPost(post: Post, collectionSlug: string | undefined = undefined) {
-    return this
-      .builder()
+  findForPost(post: Post, collectionSlug: string | undefined = undefined) {
+    return this.builder()
       .whereHasPost(post, collectionSlug)
       .root()
       .series()
@@ -147,13 +143,15 @@ export default class CollectionService {
       .first()
   }
 
-  public findNextLesson(collection: Collection) {
+  findNextLesson(collection: Collection) {
     return CollectionService.findNextLesson(this.user, collection)
   }
 
-  public static findNextLesson(user: User|undefined, collection: Collection) {
+  static findNextLesson(user: User | undefined, collection: Collection) {
     let next = user
-      ? collection.postsFlattened.find(post => !post.progressionHistory?.length || !post.progressionHistory?.at(0)?.isCompleted)
+      ? collection.postsFlattened.find(
+          (post) => !post.progressionHistory?.length || !post.progressionHistory?.at(0)?.isCompleted
+        )
       : null
 
     if (!next) next = collection.postsFlattened.at(0)
@@ -167,36 +165,30 @@ export default class CollectionService {
 
   /**
    * Returns the number of public root series
-   * @returns 
+   * @returns
    */
-  public async getSeriesCount() {
-    return this
-      .builder()
-      .series()
-      .public()
-      .root()
-      .count()
+  async getSeriesCount() {
+    return this.builder().series().public().root().count()
   }
 
   /**
    * Returns the most recently updated series
-   * @returns 
+   * @returns
    */
-  public async getFeatured() {
+  async getFeatured() {
     const latest = await this.getLastUpdated(1, true, undefined, 4)
     return latest.at(0)
   }
 
   /**
    * returns a collection query builder to retrieve a list of series
-   * @param withPosts 
-   * @param excludeIds 
-   * @param postLimit 
-   * @returns 
+   * @param withPosts
+   * @param excludeIds
+   * @param postLimit
+   * @returns
    */
-  public getList(withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 3) {
-    return this
-      .builder()
+  getList(withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 3) {
+    return this.builder()
       .series()
       .if(withPosts, (builder) => builder.withPosts('pivot_root_sort_order', 'desc', postLimit))
       .if(excludeIds, (builder) => builder.exclude(excludeIds))
@@ -212,12 +204,17 @@ export default class CollectionService {
    * @param postLimit
    * @returns
    */
-  public getLastUpdated(limit: number | undefined = undefined, withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 4) {
-    return this
-      .queryGetLastUpdated(withPosts, excludeIds, postLimit)
-      .if(limit, builder => builder.limit(limit!))
+  getLastUpdated(
+    limit: number | undefined = undefined,
+    withPosts: boolean = true,
+    excludeIds: number[] = [],
+    postLimit: number = 4
+  ) {
+    return this.queryGetLastUpdated(withPosts, excludeIds, postLimit).if(limit, (builder) =>
+      builder.limit(limit!)
+    )
   }
-  
+
   /**
    * returns query used to get the latest updated series collections
    * @param limit
@@ -226,7 +223,11 @@ export default class CollectionService {
    * @param postLimit
    * @returns
    */
-  private queryGetLastUpdated(withPosts: boolean = true, excludeIds: number[] = [], postLimit: number = 3) {
+  private queryGetLastUpdated(
+    withPosts: boolean = true,
+    excludeIds: number[] = [],
+    postLimit: number = 3
+  ) {
     return this.getList(withPosts, excludeIds, postLimit).orderLatestUpdated()
   }
 

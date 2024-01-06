@@ -1,6 +1,6 @@
-import { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints.js";
-import NotionModuleVM from "./notion_module.js";
-import NotionPostVM from "./notion_post.js";
+import { DatabaseObjectResponse } from '@notionhq/client/build/src/api-endpoints.js'
+import NotionModuleVM from './notion_module.js'
+import NotionPostVM from './notion_post.js'
 
 export default class NotionSeriesVM {
   declare id: string
@@ -17,6 +17,7 @@ export default class NotionSeriesVM {
     this.name = properties['Name'].title[0].plain_text
     this.status = properties['Status'].status?.name
     this.difficulty = properties['Difficulty'].select?.name
-    this.modules = modules.filter(module => module.seriesId === this.id)
+    this.modules = modules.filter((module) => module.seriesId === this.id)
   }
 }
+

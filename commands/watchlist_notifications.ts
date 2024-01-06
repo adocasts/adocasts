@@ -7,13 +7,13 @@ import router from '@adonisjs/core/services/router'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
 import mail from '@adonisjs/mail/services/main'
 import { DateTime } from 'luxon'
-import { setTimeout } from "timers/promises"
+import { setTimeout } from 'node:timers/promises'
 
 export default class WatchlistNotifications extends BaseCommand {
   static commandName = 'watchlist:notifications'
   static description = 'Check for and send new watchlist notifications'
   static options: CommandOptions = {
-    startApp: true
+    startApp: true,
   }
 
   async run() {
@@ -29,15 +29,22 @@ export default class WatchlistNotifications extends BaseCommand {
       .where('stateId', States.PUBLIC)
       .whereBetween('publishAt', [start.toSQL(), end.toSQL()])
       .preload('watchlist')
-      .preload('rootSeries', query => query.preload('watchlist'))
+      .preload('rootSeries', (query) => query.preload('watchlist'))
 
-    newPosts.map(post => {
-      const postUserIds = post.watchlist.map(item => item.userId)
-      const collectionUserIds = [...new Set(post.rootSeries.reduce((arr: number[], series) => [...arr, ...series.watchlist.map(item => item.userId)], []))]
+    newPosts.map((post) => {
+      const postUserIds = post.watchlist.map((item) => item.userId)
+      const collectionUserIds = [
+        ...new Set(
+          post.rootSeries.reduce(
+            (arr: number[], series) => [...arr, ...series.watchlist.map((item) => item.userId)],
+            []
+          )
+        ),
+      ]
       const userIds = [...new Set([...postUserIds, ...collectionUserIds])]
 
       // build map of userId to array of postIds user is watching
-      userIds.map(id => {
+      userIds.map((id) => {
         if (Array.isArray(sendables[id])) {
           return sendables[id].push(post.id)
         }
@@ -47,27 +54,26 @@ export default class WatchlistNotifications extends BaseCommand {
     })
 
     // we'll need only the users with watchlist notifications on
-    const userIds = Object.keys(sendables).map(id => parseInt(id))
+    const userIds = Object.keys(sendables).map((id) => Number.parseInt(id))
     const users = await User.query()
       .whereIn('id', userIds)
-      .whereHas('profile', query => query.where('emailOnWatchlist', true))
+      .whereHas('profile', (query) => query.where('emailOnWatchlist', true))
 
     this.logger.info(`Sending notifications to ${users.length} users`)
 
     // send a notification email for each user linking to new post(s)
-    for (let index = 0; index < users.length; index++) {
-      const user = users[index]
-      const posts = newPosts.filter(post => sendables[user.id].includes(post.id))
+    for (const user of users) {
+      const posts = newPosts.filter((post) => sendables[user.id].includes(post.id))
       const turnOffFieldHref = router
         .builder()
         .prefixUrl(domain)
         .disableRouteLookup()
         .params({
           userId: user.id,
-          field: 'emailOnWatchlist'
+          field: 'emailOnWatchlist',
         })
         .makeSigned('/users/:userId/notifications/:field/off')
-  
+
       const turnOffHref = router
         .builder()
         .prefixUrl(domain)
@@ -80,7 +86,7 @@ export default class WatchlistNotifications extends BaseCommand {
       try {
         this.logger.info(`Sending email to ${user.id}`)
 
-        await mail.send(mailer => {
+        await mail.send((mailer) => {
           mailer
             .to(user.email)
             .subject(title)

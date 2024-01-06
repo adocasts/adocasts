@@ -2,7 +2,7 @@ enum Status {
   IN_PROGRESS = 1,
   COMPLETE = 2,
   OUTDATED = 3,
-  ARCHIVED = 4
+  ARCHIVED = 4,
 }
 
 export const StatusDesc = {
@@ -12,4 +12,4 @@ export const StatusDesc = {
   4: 'Archived',
 }
 
-export default Status;
+export default Status

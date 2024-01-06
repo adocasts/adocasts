@@ -13,7 +13,7 @@ import { billtoValidator, mentionListValidator } from '#validators/user_validato
 import User from '#models/user'
 
 export default class UsersController {
-  public async menu({ view, auth }: HttpContext) {
+  async menu({ view, auth }: HttpContext) {
     const notifications = await NotificationService.getForUser(auth.user)
 
     await NotificationService.markAsRead(notifications.unread)
@@ -21,9 +21,9 @@ export default class UsersController {
     return view.render('pages/users/menu', { notifications })
   }
 
-  public async theme({ request, view, auth, session }: HttpContext) {
+  async theme({ request, view, auth, session }: HttpContext) {
     const { theme } = await request.validateUsing(themeValidator)
-    
+
     await auth.user?.merge({ theme }).save()
 
     session.put('theme', theme)
@@ -31,12 +31,12 @@ export default class UsersController {
     return view.render('components/theme/selector')
   }
 
-  public async billto({ request, response, auth }: HttpContext) {
+  async billto({ request, response, auth }: HttpContext) {
     let clearedBillTo = false
     let { billToInfo } = await request.validateUsing(billtoValidator)
     let user = auth.user!
 
-    if (billToInfo == '\n') {
+    if (billToInfo === '\n') {
       billToInfo = null
       clearedBillTo = true
     }
@@ -46,7 +46,7 @@ export default class UsersController {
     return response.status(200).json({ clearedBillTo, billToInfo })
   }
 
-  public async watchlist({ view, request, auth, params }: HttpContext) {
+  async watchlist({ view, request, auth, params }: HttpContext) {
     const { page = 1 } = request.qs()
 
     const keys = {
@@ -56,18 +56,17 @@ export default class UsersController {
     }
 
     const tab = params.tab || keys.series
-    const tabs = Object.values(keys).map(key => Tab.watchlist(key))
-    const tabIndex = tabs.findIndex(_tab => _tab.key === tab)
+    const tabs = Object.values(keys).map((key) => Tab.watchlist(key))
+    const tabIndex = tabs.findIndex((_tab) => _tab.key === tab)
     const route = router.makeUrl('users.watchlist', { tab })
 
-    let series: Collection[]|undefined
-    let lessons: Post[]|undefined
-    let posts: Post[]|undefined
+    let series: Collection[] | undefined
+    let lessons: Post[] | undefined
+    let posts: Post[] | undefined
 
     switch (tab) {
       case keys.series:
-        series = await CollectionBuilder
-          .new(auth.user)
+        series = await CollectionBuilder.new(auth.user)
           .series()
           .display()
           .whereInWatchlist()
@@ -75,8 +74,7 @@ export default class UsersController {
           .paginate(page, 15, route)
         break
       case keys.lessons:
-        lessons = await PostBuilder
-          .new(auth.user)
+        lessons = await PostBuilder.new(auth.user)
           .whereLesson()
           .whereInWatchlist()
           .display()
@@ -84,8 +82,7 @@ export default class UsersController {
         break
       case keys.posts:
         const postTypes = [PostTypes.BLOG, PostTypes.LINK, PostTypes.NEWS, PostTypes.SNIPPET]
-        posts = await PostBuilder
-          .new(auth.user)
+        posts = await PostBuilder.new(auth.user)
           .whereType(postTypes)
           .whereInWatchlist()
           .display()
@@ -96,7 +93,7 @@ export default class UsersController {
     return view.render('pages/users/watchlist', { tab, tabs, tabIndex, series, lessons, posts })
   }
 
-  public async history({ view, request, auth, params }: HttpContext) {
+  async history({ view, request, auth, params }: HttpContext) {
     const { page = 1 } = request.qs()
 
     const keys = {
@@ -106,47 +103,44 @@ export default class UsersController {
     }
 
     const tab = params.tab || keys.series
-    const tabs = Object.values(keys).map(key => Tab.history(key))
-    const tabIndex = tabs.findIndex(_tab => _tab.key === tab)
+    const tabs = Object.values(keys).map((key) => Tab.history(key))
+    const tabIndex = tabs.findIndex((_tab) => _tab.key === tab)
     const route = router.makeUrl('users.history', { tab })
 
-    let series: Collection[]|undefined
-    let lessons: Post[]|undefined
-    let posts: Post[]|undefined
+    let series: Collection[] | undefined
+    let lessons: Post[] | undefined
+    let posts: Post[] | undefined
 
     switch (tab) {
       case keys.series:
-        series = await HistoryBuilder
-          .new(auth.user)
+        series = await HistoryBuilder.new(auth.user)
           .progressions()
-          .collections(builder => builder.series().display().paginate(page, 30, route))
+          .collections((builder) => builder.series().display().paginate(page, 30, route))
         break
       case keys.lessons:
-        lessons = await HistoryBuilder
-          .new(auth.user)
+        lessons = await HistoryBuilder.new(auth.user)
           .progressions()
-          .posts(builder => builder.whereLesson().display().paginate(page, 20, route))
+          .posts((builder) => builder.whereLesson().display().paginate(page, 20, route))
         break
       case keys.posts:
         const postTypes = [PostTypes.BLOG, PostTypes.LINK, PostTypes.NEWS, PostTypes.SNIPPET]
-        posts = await HistoryBuilder
-          .new(auth.user)
+        posts = await HistoryBuilder.new(auth.user)
           .progressions()
-          .posts(builder => builder.whereType(postTypes).display().paginate(page, 20, route))
+          .posts((builder) => builder.whereType(postTypes).display().paginate(page, 20, route))
         break
     }
 
     return view.render('pages/users/history', { tab, tabs, tabIndex, series, lessons, posts })
   }
 
-  public async check({ auth }: HttpContext) {
+  async check({ auth }: HttpContext) {
     return !!auth.user
   }
 
-  public async mentionsList({ request, response, auth }: HttpContext) {
+  async mentionsList({ request, response, auth }: HttpContext) {
     const { pattern } = await request.validateUsing(mentionListValidator)
     const users = await User.query()
-      .if(pattern, query => query.whereILike('username', `%${pattern}%`))
+      .if(pattern, (query) => query.whereILike('username', `%${pattern}%`))
       .where('isEnabledMentions', true)
       .whereNot('id', auth.user!.id)
       .select('username', 'planId')
@@ -156,6 +150,9 @@ export default class UsersController {
       ])
       .limit(10)
 
-    return response.json(users.map(user => user.username.toLowerCase()).sort((a, b) => a.localeCompare(b)))
+    return response.json(
+      users.map((user) => user.username.toLowerCase()).sort((a, b) => a.localeCompare(b))
+    )
   }
 }
+

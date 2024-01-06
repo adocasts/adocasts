@@ -2,19 +2,19 @@ import striptags from 'striptags'
 import readingTime from 'reading-time'
 import Post from '#models/post'
 
-interface IReadingTime {
-  text: string,
-  minutes: number,
-  time: number,
+interface ReadingTime {
+  text: string
+  minutes: number
+  time: number
   words: number
 }
 
 class ReadTime {
-  public minutes: number
-  public time: number
-  public words: number
+  minutes: number
+  time: number
+  words: number
 
-  constructor({ minutes, time, words }: IReadingTime) {
+  constructor({ minutes, time, words }: ReadingTime) {
     this.minutes = Math.round(minutes)
     this.time = Math.round(time)
     this.words = Math.round(words)
@@ -22,12 +22,12 @@ class ReadTime {
 }
 
 class ReadService {
-  public static getReadCounts(body: string | null): ReadTime {
+  static getReadCounts(body: string | null): ReadTime {
     const cleanBody = striptags(body ?? '')
     return new ReadTime(readingTime(cleanBody))
   }
 
-  public static async confirmReadCount(post: Post): Promise<Post> {
+  static async confirmReadCount(post: Post): Promise<Post> {
     if (post.readMinutes || post.readTime || post.wordCount) return post
 
     const readTime = this.getReadCounts(post.body)
@@ -38,8 +38,8 @@ class ReadService {
 
     await post.save()
 
-    return post;
+    return post
   }
 }
 
-export default ReadService;
+export default ReadService

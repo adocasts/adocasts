@@ -3,7 +3,7 @@ import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class SessionsController {
-  public async set({ request, response, session }: HttpContext) {
+  async set({ request, response, session }: HttpContext) {
     const { target, value } = request.body()
 
     session.put(target, value)
@@ -12,15 +12,16 @@ export default class SessionsController {
   }
 
   @inject()
-  public async destroy({ response, params, session, auth }: HttpContext, sessionService: SessionService) {
+  async destroy({ response, params, session, auth }: HttpContext, sessionService: SessionService) {
     if (params.id) {
       await sessionService.onSignOutForce(auth.user!, params.id)
       session.flash('success', 'Session has been terminated')
     } else {
       await sessionService.onSignOutForceAll(auth.user!)
-      session.flash('success', "All sessions, except your current session, have been terminated")
+      session.flash('success', 'All sessions, except your current session, have been terminated')
     }
 
     return response.redirect().back()
   }
 }
+

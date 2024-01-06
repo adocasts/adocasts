@@ -5,33 +5,34 @@ import { AuthorizerResponse } from '@adonisjs/bouncer/types'
 import States from '#enums/states'
 
 export default class CommentPolicy extends BasePolicy {
-  public reply(user: User, comment: Comment): AuthorizerResponse {
-		if (comment.stateId === States.ARCHIVED) return false
-		if (this.isAdmin(user)) return true
+  reply(user: User, comment: Comment): AuthorizerResponse {
+    if (comment.stateId === States.ARCHIVED) return false
+    if (this.isAdmin(user)) return true
 
-		return !!user
-	}
+    return !!user
+  }
 
-	public update(user: User, comment: Comment): AuthorizerResponse {
-		if (comment.stateId === States.ARCHIVED) return false
-		if (this.isAdmin(user)) return true
+  update(user: User, comment: Comment): AuthorizerResponse {
+    if (comment.stateId === States.ARCHIVED) return false
+    if (this.isAdmin(user)) return true
 
-		const isOwner = comment.userId === user.id
-		return isOwner
-	}
+    const isOwner = comment.userId === user.id
+    return isOwner
+  }
 
-	public delete(user: User, comment: Comment): AuthorizerResponse {
-		if (comment.stateId === States.ARCHIVED) return false
-		if (this.isAdmin(user)) return true
+  delete(user: User, comment: Comment): AuthorizerResponse {
+    if (comment.stateId === States.ARCHIVED) return false
+    if (this.isAdmin(user)) return true
 
-		const isOwner = comment.userId === user.id
-		return isOwner
-	}
+    const isOwner = comment.userId === user.id
+    return isOwner
+  }
 
-  public async state(user: User, comment: Comment): Promise<AuthorizerResponse> {
-		if (this.isAdmin(user)) return true
+  async state(user: User, comment: Comment): Promise<AuthorizerResponse> {
+    if (this.isAdmin(user)) return true
 
-    await comment.load('post', query => query.preload('authors'))
-    return !!comment.post.authors.find(a => a.id === user.id)
+    await comment.load('post', (query) => query.preload('authors'))
+    return !!comment.post.authors.find((a) => a.id === user.id)
   }
 }
+

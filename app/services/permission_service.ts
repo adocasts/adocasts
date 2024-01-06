@@ -1,9 +1,9 @@
-import PaywallTypes from "#enums/paywall_types";
-import Plans from "#enums/plans";
-import Roles from "#enums/roles";
-import Post from "#models/post";
-import { inject } from "@adonisjs/core";
-import { HttpContext } from "@adonisjs/core/http";
+import PaywallTypes from '#enums/paywall_types'
+import Plans from '#enums/plans'
+import Roles from '#enums/roles'
+import Post from '#models/post'
+import { inject } from '@adonisjs/core'
+import { HttpContext } from '@adonisjs/core/http'
 
 @inject()
 export default class PermissionService {
@@ -11,27 +11,27 @@ export default class PermissionService {
 
   //#region Helpers
 
-  public get user() {
+  get user() {
     return this.ctx.auth.user
   }
 
-  public get isAdmin() {
+  get isAdmin() {
     return this.user?.isAdmin
   }
 
-  public get isContributorLvl1() {
+  get isContributorLvl1() {
     return this.user?.roleId === Roles.CONTRIBUTOR_LVL_1
   }
 
-  public get isContributorLvl2() {
+  get isContributorLvl2() {
     return this.user?.roleId === Roles.CONTRIBUTOR_LVL_2
   }
 
-  public get isElevatedRole() {
+  get isElevatedRole() {
     return this.isAdmin || this.isContributorLvl1 || this.isContributorLvl2
   }
 
-  public get isPlus() {
+  get isPlus() {
     return this.user?.planId !== Plans.FREE
   }
 
@@ -39,15 +39,15 @@ export default class PermissionService {
 
   //#region Post
 
-  public canViewPost(post: Post) {
+  canViewPost(post: Post) {
     if (this.user && this.user.planId !== Plans.FREE) return true
-		if (post.paywallTypeId === PaywallTypes.NONE) return true
-		if (post.paywallTypeId === PaywallTypes.FULL) return false
-		
-		return !post.isPaywalled
+    if (post.paywallTypeId === PaywallTypes.NONE) return true
+    if (post.paywallTypeId === PaywallTypes.FULL) return false
+
+    return !post.isPaywalled
   }
 
-  public canViewFutureDated() {
+  canViewFutureDated() {
     return this.isElevatedRole
   }
 

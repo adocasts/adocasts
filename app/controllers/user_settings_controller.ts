@@ -4,7 +4,10 @@ import User from '#models/user'
 import UserSettingsService from '#services/user_settings_service'
 import router from '@adonisjs/core/services/router'
 import emitter from '@adonisjs/core/services/emitter'
-import { confirmUsernameValidator, emailNotificationValidator } from '#validators/user_setting_validator'
+import {
+  confirmUsernameValidator,
+  emailNotificationValidator,
+} from '#validators/user_setting_validator'
 import StripeService from '#services/stripe_service'
 import UserService from '#services/user_service'
 import SessionService from '#services/session_service'
@@ -12,7 +15,7 @@ import { inject } from '@adonisjs/core'
 
 export default class UserSettingsController {
   @inject()
-  public async index({ view, auth, params }: HttpContext, sessionService: SessionService) {
+  async index({ view, auth, params }: HttpContext, sessionService: SessionService) {
     if (!params.section) {
       params.section = 'account'
     }
@@ -21,7 +24,7 @@ export default class UserSettingsController {
 
     if (params.section === 'account') {
       const sessions = await sessionService.getList(auth.user!)
-      
+
       view.share({ sessions })
     }
 
@@ -37,13 +40,13 @@ export default class UserSettingsController {
   }
 
   @inject()
-  public async invoice({ view, params, auth }: HttpContext, stripeService: StripeService) {
-    const invoice  = await stripeService.getInvoice(auth.user!, params.invoice)
-    
+  async invoice({ view, params, auth }: HttpContext, stripeService: StripeService) {
+    const invoice = await stripeService.getInvoice(auth.user!, params.invoice)
+
     return view.render('pages/settings/invoices/show', { invoice })
   }
 
-  public async updateUsername({ request, response, auth, session }: HttpContext) {
+  async updateUsername({ request, response, auth, session }: HttpContext) {
     const { username } = request.only(['username'])
     const { flashStatus, message } = await UserSettingsService.updateUsername(auth.user!, username)
 
@@ -52,8 +55,8 @@ export default class UserSettingsController {
     return response.redirect().back()
   }
 
-  public async updateEmail({ request, response, auth, session }: HttpContext) {
-    const { email } = request.only([ 'email' ])
+  async updateEmail({ request, response, auth, session }: HttpContext) {
+    const { email } = request.only(['email'])
     const hasChanged = auth.user!.email !== email
 
     if (!hasChanged) {
@@ -61,13 +64,14 @@ export default class UserSettingsController {
       return response.redirect().back()
     }
 
-    const { success, message, redirect } = await UserSettingsService.updateEmail(auth.user!, request.body())
-    
+    const { success, message, redirect } = await UserSettingsService.updateEmail(
+      auth.user!,
+      request.body()
+    )
+
     if (!success) {
       session.flash('error', message)
-      return redirect
-        ? response.redirect(redirect)
-        : response.redirect().back()
+      return redirect ? response.redirect(redirect) : response.redirect().back()
     }
 
     session.flash('success', message)
@@ -75,44 +79,54 @@ export default class UserSettingsController {
     return response.redirect().back()
   }
 
-  public async revertEmail({ request, response, params, session }: HttpContext) {
+  async revertEmail({ request, response, params, session }: HttpContext) {
     const isValid = request.hasValidSignature()
     const { id, oldEmail, newEmail } = params
 
     if (!isValid) {
-      session.flash('error', 'Your email revert link has expired. Please contact support for assistance.')
+      session.flash(
+        'error',
+        'Your email revert link has expired. Please contact support for assistance.'
+      )
       return response.redirect().toRoute('auth.signin.show')
     }
 
     const user = await User.findOrFail(id)
 
     await user.merge({ email: oldEmail }).save()
-    await user.related('emailHistory').query().where({ emailFrom: oldEmail, emailTo: newEmail }).delete()
+    await user
+      .related('emailHistory')
+      .query()
+      .where({ emailFrom: oldEmail, emailTo: newEmail })
+      .delete()
 
     await emitter.emit('email:reverted', { user })
 
     const signedUrl = router.makeSignedUrl('auth.password.reset', {
       params: { email: oldEmail },
-      expiresIn: '15m'
+      expiresIn: '15m',
     })
 
-    session.flash('success', 'Your email has been successfully reverted. Please resecure your account by changing your password.')
+    session.flash(
+      'success',
+      'Your email has been successfully reverted. Please resecure your account by changing your password.'
+    )
     return signedUrl
       ? response.redirect(signedUrl)
       : response.redirect().toRoute('auth.password.forgot')
   }
 
-  public async updateNotificationEmails({ request, response, auth, session }: HttpContext) {
+  async updateNotificationEmails({ request, response, auth, session }: HttpContext) {
     const data = await request.validateUsing(emailNotificationValidator)
 
     await UserSettingsService.updateEmailNotifications(auth.user, data)
 
-    session.flash('success', "Your email notification settings have been updated")
+    session.flash('success', 'Your email notification settings have been updated')
 
     return response.redirect().back()
   }
 
-  public async updateWatchlistNotificationEmails({ request, response, view, auth, session }: HttpContext) {
+  async updateWatchlistNotificationEmails({ request, response, view, auth, session }: HttpContext) {
     const { emailOnWatchlist } = await request.validateUsing(emailNotificationValidator)
     const { fragment } = await request.qs()
     const profile = await auth.user!.related('profile').query().firstOrFail()
@@ -122,33 +136,55 @@ export default class UserSettingsController {
     await profile.save()
 
     if (fragment) {
-      view.share({ success: emailOnWatchlist ? "Watchlist notifications have been turned on" : "Watchlist notifications have been turned off" })
+      view.share({
+        success: emailOnWatchlist
+          ? 'Watchlist notifications have been turned on'
+          : 'Watchlist notifications have been turned off',
+      })
       return view.render('components/settings/email_on_watchlist', { isFragment: true })
     }
 
-    session.flash('success', "Your email notification settings have been updated")
+    session.flash('success', 'Your email notification settings have been updated')
 
     return response.redirect().back()
   }
 
-  public async disableNotificationField({ request, response, params, auth, session }: HttpContext) {
+  async disableNotificationField({ request, response, params, auth, session }: HttpContext) {
     const forwardTo = auth.user ? 'users.settings.index' : 'home.index'
 
-    if (!request.hasValidSignature() || (auth.user && params.userId != auth.user.id)) {
+    if (!request.hasValidSignature() || (auth.user && params.userId !== auth.user.id.toString())) {
       session.flash('error', 'Link signature is expired or invalid')
       return response.redirect().toRoute(forwardTo)
     }
 
     const profile = await Profile.findByOrFail('userId', params.userId)
     const notificationFields = [
-      { field: 'emailOnComment', message: `You'll no longer recieve emails when someone comments on your content` }, 
-      { field: 'emailOnCommentReply', message: `You'll no longer recieve emails when someone replies to your comments` }, 
-      { field: 'emailOnAchievement', message: `You'll no longer recieve emails when you unlock achievements` },
-      { field: 'emailOnWatchlist', message: `You'll no longer recieve emails when your watchlist items are updated` },
-      { field: `emailOnNewDeviceLogin`, message: `You'll no longer recieve emails when you log in from a new device` },
-      { field: `emailOnMention`, message: `You'll no longer recieve emails when someone mentions you` }
+      {
+        field: 'emailOnComment',
+        message: `You'll no longer recieve emails when someone comments on your content`,
+      },
+      {
+        field: 'emailOnCommentReply',
+        message: `You'll no longer recieve emails when someone replies to your comments`,
+      },
+      {
+        field: 'emailOnAchievement',
+        message: `You'll no longer recieve emails when you unlock achievements`,
+      },
+      {
+        field: 'emailOnWatchlist',
+        message: `You'll no longer recieve emails when your watchlist items are updated`,
+      },
+      {
+        field: `emailOnNewDeviceLogin`,
+        message: `You'll no longer recieve emails when you log in from a new device`,
+      },
+      {
+        field: `emailOnMention`,
+        message: `You'll no longer recieve emails when someone mentions you`,
+      },
     ]
-    const field = notificationFields.find(({ field }) => field === params.field)
+    const field = notificationFields.find((item) => item.field === params.field)
 
     if (!field) {
       session.flash('error', 'Provided field is invalid, please try again.')
@@ -164,10 +200,10 @@ export default class UserSettingsController {
     return response.redirect().toRoute(forwardTo)
   }
 
-  public async disableNotifications({ request, response, params, auth, session }: HttpContext) {
+  async disableNotifications({ request, response, params, auth, session }: HttpContext) {
     const forwardTo = auth.user ? 'users.settings.index' : 'home.index'
 
-    if (!request.hasValidSignature() || (auth.user && params.userId != auth.user.id)) {
+    if (!request.hasValidSignature() || (auth.user && params.userId !== auth.user.id.toString())) {
       session.flash('error', 'Link signature is expired or invalid')
       return response.redirect().toRoute(forwardTo)
     }
@@ -188,19 +224,22 @@ export default class UserSettingsController {
     return response.redirect().toRoute(forwardTo)
   }
 
-  public async deleteAccount({ request, response, auth, session }: HttpContext) {
+  async deleteAccount({ request, response, auth, session }: HttpContext) {
     await request.validateUsing(confirmUsernameValidator)
-    
+
     const success = await UserService.destroy(auth.user!)
 
     if (!success) {
-      session.flash('error', 'Apologies, but something went wrong. Please email tom@adocasts.com if this persists.')
+      session.flash(
+        'error',
+        'Apologies, but something went wrong. Please email tom@adocasts.com if this persists.'
+      )
       return response.redirect().back()
     }
-    
+
     await auth.use('web').logout()
 
-    session.flash('success', "Your account has been successfully deleted.")
+    session.flash('success', 'Your account has been successfully deleted.')
 
     return response.redirect().toPath('/')
   }

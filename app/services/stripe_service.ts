@@ -1,31 +1,31 @@
-import Plans from "#enums/plans"
-import StripeSubscriptionStatuses from "#enums/stripe_subscription_statuses"
-import Plan from "#models/plan"
-import User from "#models/user"
-import env from "#start/env"
-import { Request } from "@adonisjs/core/http"
-import app from "@adonisjs/core/services/app"
-import { DateTime } from "luxon"
+import Plans from '#enums/plans'
+import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
+import Plan from '#models/plan'
+import User from '#models/user'
+import env from '#start/env'
+import { Request } from '@adonisjs/core/http'
+import app from '@adonisjs/core/services/app'
+import { DateTime } from 'luxon'
 import Stripe from 'stripe'
-import logger from "./logger_service.js"
+import logger from './logger_service.js'
 
 export default class StripeService {
-  public static isActive: boolean = !!(env.get('STRIPE_ENABLED') ?? true)
+  static isActive: boolean = !!(env.get('STRIPE_ENABLED') ?? true)
   private stripe: Stripe
   private inTest: boolean = app.inTest
-  
+
   // interface with stripe-mock within tests
   // https://github.com/stripe/stripe-mock#homebrew
   private testConfig: Stripe.StripeConfig = {
     host: 'localhost',
     protocol: 'http',
     port: 12111,
-    apiVersion: '2023-10-16'
+    apiVersion: '2023-10-16',
   }
 
   // use the real deal otherwise
   private realConfig: Stripe.StripeConfig = {
-    apiVersion: '2023-10-16'
+    apiVersion: '2023-10-16',
   }
 
   constructor() {
@@ -33,24 +33,28 @@ export default class StripeService {
     this.stripe = new Stripe(env.get('STRIPE_SECRET_KEY'), config)
   }
 
-  public get client() {
+  get client() {
     return this.stripe
   }
 
-  public static toDateTime(seconds: number | undefined) {
-    if (!seconds) return 
+  static toDateTime(seconds: number | undefined) {
+    if (!seconds) return
     return DateTime.fromSeconds(seconds, { zone: 'UTC' })
-  } 
-
-  public async connectToWebhook(request: Request) {
-    const sig = request.header('stripe-signature')
-    return this.stripe.webhooks.constructEvent(request.raw() || '', sig || '', env.get('STRIPE_WEBHOOK_SECRET'))
   }
 
-  public async createCustomer(user: User) {
+  async connectToWebhook(request: Request) {
+    const sig = request.header('stripe-signature')
+    return this.stripe.webhooks.constructEvent(
+      request.raw() || '',
+      sig || '',
+      env.get('STRIPE_WEBHOOK_SECRET')
+    )
+  }
+
+  async createCustomer(user: User) {
     const customer = await this.stripe.customers.create({
       email: user.email,
-      description: `adocasts_user_id=${user.id}`
+      description: `adocasts_user_id=${user.id}`,
     })
 
     user.stripeCustomerId = customer.id
@@ -59,18 +63,20 @@ export default class StripeService {
     return customer
   }
 
-  public async getCustomer(user: User) {
+  async getCustomer(user: User) {
     if (!user.stripeCustomerId) return this.createCustomer(user)
     return this.stripe.customers.retrieve(user.stripeCustomerId)
   }
 
-  public async getInvoices(user: User) {
+  async getInvoices(user: User) {
     if (!user.stripeCustomerId) return []
     const { data } = await this.stripe.invoices.list({ customer: user.stripeCustomerId })
-    return data.filter((invoice: any) => invoice.status && ['void', 'paid'].includes(invoice.status))
+    return data.filter(
+      (invoice: any) => invoice.status && ['void', 'paid'].includes(invoice.status)
+    )
   }
 
-  public async getInvoice(user: User, invoiceNumber: string) {
+  async getInvoice(user: User, invoiceNumber: string) {
     const ado = await user.related('invoices').query().where({ invoiceNumber }).first()
 
     if (!ado) {
@@ -80,96 +86,104 @@ export default class StripeService {
     return this.stripe.invoices.retrieve(ado.invoiceId)
   }
 
-  public async searchForInvoice(user: User, invoiceNumber: string) {
+  async searchForInvoice(user: User, invoiceNumber: string) {
     const results = await this.stripe.invoices.search({
       query: `number:"${invoiceNumber}" AND customer:"${user.stripeCustomerId}"`,
-      limit: 1
+      limit: 1,
     })
 
     return results.data.at(0)
   }
 
-  public async getCharges(user: User) {
+  async getCharges(user: User) {
     if (!user.stripeCustomerId) return []
     const { data } = await this.stripe.charges.list({ customer: user.stripeCustomerId })
     return data
   }
 
-  public async getSubscriptions(user: User) {
+  async getSubscriptions(user: User) {
     if (!user.stripeCustomerId) return []
     const { data } = await this.stripe.subscriptions.list({ customer: user.stripeCustomerId })
     return data
   }
 
-  public async getPlan(priceId: string) {
+  async getPlan(priceId: string) {
     return this.stripe.plans.retrieve(priceId)
   }
 
-  public async getPlanByAdocastsId(id: number) {
+  async getPlanByAdocastsId(id: number) {
     const plan = await Plan.findOrFail(id)
     return this.getPlan(plan.priceId!)
   }
 
-  public async getAdocastPlan(stripePriceId: string) {
+  async getAdocastPlan(stripePriceId: string) {
     return env.get('NODE_ENV') === 'production'
       ? Plan.findByOrFail('stripePriceId', stripePriceId)
       : Plan.findByOrFail('stripePriceTestId', stripePriceId)
   }
 
-  public async getCheckoutSession(sessionId: string) {
+  async getCheckoutSession(sessionId: string) {
     return this.stripe.checkout.sessions.retrieve(sessionId)
   }
 
-  public async getCheckoutSessionLineItemIds(sessionId: string) {
-    if (this.inTest) return [(await Plan.findOrFail(Plans.FOREVER)).priceId]
+  async getCheckoutSessionLineItemIds(sessionId: string) {
+    if (this.inTest) {
+      const forever = await Plan.findOrFail(Plans.FOREVER)
+      return [forever.priceId]
+    }
 
     const session = await this.stripe.checkout.sessions.retrieve(sessionId, {
-      expand: ['line_items.data.price.product']
+      expand: ['line_items.data.price.product'],
     })
 
     return session.line_items?.data.map((item: any) => item.price?.id).filter(Boolean)
   }
 
-  public async getSubscription(subscriptionId: string) {
+  async getSubscription(subscriptionId: string) {
     return this.stripe.subscriptions.retrieve(subscriptionId)
   }
 
-  public async tryCreateCheckoutSession(user: User, planSlug: string) {
+  async tryCreateCheckoutSession(user: User, planSlug: string) {
     try {
       // if user is already a forever member, stop and prevent.
       // note: stripe will restrict to a single subscription and gracefully handle those
       if (user.planId === Plans.FOREVER) {
-        return { 
+        return {
           status: 'warning',
-          message: "You're already a member of our forever plan, so you're all set!" 
+          message: "You're already a member of our forever plan, so you're all set!",
         }
       }
 
       const checkout = await this.createCheckoutSession(user, planSlug)
 
       if (!checkout.url) {
-        logger.error('StripeService.tryCreateCheckoutSession > checkout session returned without a redirect url')
+        logger.error(
+          'StripeService.tryCreateCheckoutSession > checkout session returned without a redirect url'
+        )
         return {
           status: 'error',
-          message: "Something went wrong and we couldn't create a payment link for you."
+          message: "Something went wrong and we couldn't create a payment link for you.",
         }
       }
 
       return {
         status: 'success',
         message: '',
-        checkout
+        checkout,
       }
     } catch (error) {
-      logger.error('StripeService.tryCreateCheckoutSession > caught the following error', error.message)
+      logger.error(
+        'StripeService.tryCreateCheckoutSession > caught the following error',
+        error.message
+      )
       return {
         status: 'error',
-        message: "Something went wrong and we couldn't create a payment link for you."
+        message: "Something went wrong and we couldn't create a payment link for you.",
       }
     }
   }
 
-  public async createCheckoutSession(user: User, planSlug: string) {
+  async createCheckoutSession(user: User, planSlug: string) {
     const plan = await Plan.findByOrFail('slug', planSlug)
     const discounts: Stripe.Checkout.SessionCreateParams.Discount[] = []
     let customerId = user.stripeCustomerId
@@ -184,11 +198,14 @@ export default class StripeService {
     }
 
     const mode = plan.id === Plans.FOREVER ? 'payment' : 'subscription'
-    const baseConfig = mode !== 'payment' ? {} : {
-      invoice_creation: {
-        enabled: plan.id === Plans.FOREVER
-      },
-    }
+    const baseConfig =
+      mode !== 'payment'
+        ? {}
+        : {
+            invoice_creation: {
+              enabled: plan.id === Plans.FOREVER,
+            },
+          }
 
     return this.stripe.checkout.sessions.create({
       ...baseConfig,
@@ -196,38 +213,42 @@ export default class StripeService {
       discounts,
       customer: customerId!,
       automatic_tax: {
-        enabled: true
+        enabled: true,
       },
-      line_items: [{ 
-        price: plan.priceId!, 
-        quantity: 1 
-      }],
+      line_items: [
+        {
+          price: plan.priceId!,
+          quantity: 1,
+        },
+      ],
       tax_id_collection: {
-        enabled: true
+        enabled: true,
       },
       customer_update: {
         name: 'auto',
-        address: 'auto'
+        address: 'auto',
       },
-      success_url: `${env.get('APP_DOMAIN')}/stripe/subscription/success?session_id={CHECKOUT_SESSION_ID}&plan_id=${plan.id}`,
-      cancel_url: `${env.get('APP_DOMAIN')}`
+      success_url: `${env.get(
+        'APP_DOMAIN'
+      )}/stripe/subscription/success?session_id={CHECKOUT_SESSION_ID}&plan_id=${plan.id}`,
+      cancel_url: `${env.get('APP_DOMAIN')}`,
     })
   }
 
-  public async createCustomerPortalSession(user: User) {
+  async createCustomerPortalSession(user: User) {
     const customer = await this.getCustomer(user)
-    
+
     return this.stripe.billingPortal.sessions.create({
       customer: customer.id,
-      return_url: env.get('APP_DOMAIN')
+      return_url: env.get('APP_DOMAIN'),
     })
   }
 
-  public async cancelCustomerSubscriptions(user: User) {
-    const { data } = await this.stripe.subscriptions.list({ 
-      limit: 1, 
-      status: 'active', 
-      customer: user.stripeCustomerId! 
+  async cancelCustomerSubscriptions(user: User) {
+    const { data } = await this.stripe.subscriptions.list({
+      limit: 1,
+      status: 'active',
+      customer: user.stripeCustomerId!,
     })
 
     if (!data?.length) return
@@ -235,11 +256,11 @@ export default class StripeService {
     await this.stripe.subscriptions.cancel(data[0].id)
   }
 
-  public async onSubscriptionCreated(event: any) {
+  async onSubscriptionCreated(event: any) {
     const data = event.data.object
     const user = await User.findByOrFail('stripeCustomerId', data.customer)
     const plan = await this.getAdocastPlan(data.plan.id)
-    
+
     user.planId = plan.id
     user.stripeSubscriptionStatus = data.status
     user.planPeriodStart = DateTime.fromMillis(data.current_period_start * 1000)
@@ -248,11 +269,11 @@ export default class StripeService {
     await user.save()
   }
 
-  public async onSubscriptionUpdated(event: any) {
+  async onSubscriptionUpdated(event: any) {
     const data = event.data.object
     const user = await User.findByOrFail('stripeCustomerId', data.customer)
     const plan = await this.getAdocastPlan(data.plan.id)
-    
+
     // forever is forever
     if (user.planId === Plans.FOREVER) return
 
@@ -275,7 +296,7 @@ export default class StripeService {
     await user.save()
   }
 
-  public async onSubscriptionDeleted(event: any) {
+  async onSubscriptionDeleted(event: any) {
     const data = event.data.object
     const user = await User.findByOrFail('stripeCustomerId', data.customer)
 
@@ -290,10 +311,10 @@ export default class StripeService {
     await user.save()
   }
 
-  public async onCheckoutCompleted(event: any) {
+  async onCheckoutCompleted(event: any) {
     // let subscription hooks handle subscriptions
     if (event.data.object.mode !== 'payment') return
-    
+
     const data = event.data.object
     const user = await User.findByOrFail('stripeCustomerId', data.customer)
     const itemIds = await this.getCheckoutSessionLineItemIds(data.id)
@@ -302,7 +323,7 @@ export default class StripeService {
       logger.info(`StripeService.onCheckoutCompleted > [${data.id}] no line items returned`)
       return
     }
-    
+
     const plan = await this.getAdocastPlan(itemIds[0]!)
     const previousPlanId = user.planId
 
@@ -318,21 +339,24 @@ export default class StripeService {
     }
   }
 
-  public async onInvoicePaymentSucceeded(event: any) {
+  async onInvoicePaymentSucceeded(event: any) {
     const data = event.data.object
     const user = await User.findByOrFail('stripeCustomerId', data.customer)
 
-    await user.related('invoices').updateOrCreate({ invoiceId: data.id }, {
-      invoiceId: data.id,
-      invoiceNumber: data.number,
-      chargeId: data.charge,
-      amountDue: data.amount_due,
-      amountPaid: data.amount_paid,
-      amountRemaining: data.amount_remaining,
-      status: data.status,
-      paid: data.paid,
-      periodStartAt: data.period_start ? DateTime.fromSeconds(data.period_start) : null,
-      periodEndAt: data.period_end ? DateTime.fromSeconds(data.period_end) : null
-    })
+    await user.related('invoices').updateOrCreate(
+      { invoiceId: data.id },
+      {
+        invoiceId: data.id,
+        invoiceNumber: data.number,
+        chargeId: data.charge,
+        amountDue: data.amount_due,
+        amountPaid: data.amount_paid,
+        amountRemaining: data.amount_remaining,
+        status: data.status,
+        paid: data.paid,
+        periodStartAt: data.period_start ? DateTime.fromSeconds(data.period_start) : null,
+        periodEndAt: data.period_end ? DateTime.fromSeconds(data.period_end) : null,
+      }
+    )
   }
 }

@@ -1,4 +1,4 @@
-import { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints.js";
+import { DatabaseObjectResponse } from '@notionhq/client/build/src/api-endpoints.js'
 
 export default class NotionModuleVM {
   declare id: string
@@ -15,3 +15,4 @@ export default class NotionModuleVM {
     this.seriesId = properties['Series'].relation.at(0)?.id
   }
 }
+

@@ -57,7 +57,7 @@ export default class History extends AppBaseModel {
   declare taxonomy: BelongsTo<typeof Taxonomy>
 
   @computed()
-  public get hasActivity() {
+  get hasActivity() {
     return (this.readPercent && this.readPercent > 0) || this.watchSeconds > 0
   }
 }

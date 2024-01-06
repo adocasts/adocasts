@@ -14,7 +14,7 @@ export default class LessonRequest extends BaseModel {
   declare userId: number
 
   @column()
-  declare stateId: number
+  declare stateId: States
 
   @column()
   declare approveCommentId: number | null
@@ -30,10 +30,10 @@ export default class LessonRequest extends BaseModel {
 
   @column()
   declare body: string
-  public bodyDisplay: string = ''
+  bodyDisplay: string = ''
 
   @column()
-  public priority: number = RequestPriorities.NORMAL
+  priority: number = RequestPriorities.NORMAL
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -62,11 +62,11 @@ export default class LessonRequest extends BaseModel {
   declare votes: ManyToMany<typeof User>
 
   @computed()
-  public get state() {
+  get state() {
     if (this.stateId === States.PUBLIC) {
-      return "Completed"
+      return 'Completed'
     }
-    
+
     return StateDesc[this.stateId]
   }
 }

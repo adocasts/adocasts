@@ -17,11 +17,19 @@ export default class SignInController {
    * Handle form submission for the create action
    */
   @inject()
-  async store({ request, response, auth, session, up }: HttpContext, sessionService: SessionService, stripeService: StripeService) {
-    let { uid, password, rememberMe, forward, action, plan } = await request.validateUsing(signInValidator)
-    
+  async store(
+    { request, response, auth, session, up }: HttpContext,
+    sessionService: SessionService,
+    stripeService: StripeService
+  ) {
+    let { uid, password, rememberMe, forward, action, plan } =
+      await request.validateUsing(signInValidator)
+
     if (await AuthAttempt.disallows(uid)) {
-      session.flash('error', 'Your account has been locked due to repeated bad login attempts. Please reset your password')
+      session.flash(
+        'error',
+        'Your account has been locked due to repeated bad login attempts. Please reset your password'
+      )
       return response.redirect('/forgot-password')
     }
 
@@ -44,7 +52,10 @@ export default class SignInController {
     }
 
     if (plan) {
-      const { status, message, checkout } = await stripeService.tryCreateCheckoutSession(auth.user!, plan)
+      const { status, message, checkout } = await stripeService.tryCreateCheckoutSession(
+        auth.user!,
+        plan
+      )
 
       if (status === 'warning' || status === 'error') {
         session.flash(status, message)
@@ -57,11 +68,16 @@ export default class SignInController {
     session.flash('success', `Welcome back, ${auth.user!.username}`)
 
     up.setTarget('[up-theme]')
-    
-    if (forward?.includes('signin') || forward?.includes('signup') || forward?.includes('users/menu')) {
+
+    if (
+      forward?.includes('signin') ||
+      forward?.includes('signup') ||
+      forward?.includes('users/menu')
+    ) {
       forward = '/'
     }
-    
+
     return response.redirect().toPath(forward ?? '/')
   }
 }
+

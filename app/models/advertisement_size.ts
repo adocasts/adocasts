@@ -21,7 +21,8 @@ export default class AdvertisementSize extends BaseModel {
   declare updatedAt: DateTime
 
   @computed()
-  public get aspectRatio() {
+  get aspectRatio() {
     return this.width / this.height
   }
 }
+

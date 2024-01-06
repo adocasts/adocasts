@@ -26,7 +26,7 @@ export default class Question extends BaseModel {
   declare user: BelongsTo<typeof User>
 
   @manyToMany(() => User, {
-    pivotTable: 'question_votes'
+    pivotTable: 'question_votes',
   })
   declare userVotes: ManyToMany<typeof User>
 }

@@ -1,40 +1,45 @@
 import AdvertisementSizes from '#enums/advertisement_sizes'
-import AnalyticTypes from '#enums/analytic_types'
 import AssetTypes from '#enums/asset_types'
 import States from '#enums/states'
 import AdService from '#services/ad_service'
 import Advertisement from '#models/advertisement'
-import AdvertisementEvent from '#models/advertisement_event'
 import AdvertisementSize from '#models/advertisement_size'
 import Asset from '#models/asset'
 import logger from '#services/logger_service'
 import storage from '#services/storage_service'
-import { advertisementStoreValidator, advertisementUpdateValidator } from '#validators/advertisement_validator'
+import {
+  advertisementStoreValidator,
+  advertisementUpdateValidator,
+} from '#validators/advertisement_validator'
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import { DateTime } from 'luxon'
 
 export default class AdvertisementsController {
-  public async index({ view, auth }: HttpContext) {
-    const ads = await auth.user!.related('ads').query()
+  async index({ view, auth }: HttpContext) {
+    const ads = await auth
+      .user!.related('ads')
+      .query()
       .preload('size')
       .preload('asset')
       .withCount('impressions')
       .withCount('clicks')
-      .withAggregate('impressions', query => query.countDistinct('identity').as('unique_impressions_count'))
-      .withAggregate('clicks', query => query.countDistinct('identity').as('unique_clicks_count'))
+      .withAggregate('impressions', (query) =>
+        query.countDistinct('identity').as('unique_impressions_count')
+      )
+      .withAggregate('clicks', (query) => query.countDistinct('identity').as('unique_clicks_count'))
       .orderBy('created_at', 'desc')
 
-    const adIds = await ads.map(ad => ad.id)
+    const adIds = ads.map((ad) => ad.id)
     const stats = await AdService.getTotalStats(adIds)
 
-    return view.render('pages/advertisements/index', { 
-      ads, 
-      ...stats
+    return view.render('pages/advertisements/index', {
+      ads,
+      ...stats,
     })
   }
 
-  public async create({ view }: HttpContext) {
+  async create({ view }: HttpContext) {
     const sizes = await AdvertisementSize.query()
       .whereNot('id', AdvertisementSizes.SKYSCRAPER)
       .orderBy('id')
@@ -42,25 +47,30 @@ export default class AdvertisementsController {
     return view.render('pages/advertisements/create', { sizes })
   }
 
-  public async store({ request, response, auth, session }: HttpContext) {
-    const { asset, altText, credit, ...data } = await request.validateUsing(advertisementStoreValidator)
+  async store({ request, response, auth, session }: HttpContext) {
+    const { asset, altText, credit, ...data } = await request.validateUsing(
+      advertisementStoreValidator
+    )
     const trx = await db.transaction()
 
     try {
       if (asset) {
         const location = `${auth.user!.id}/ads/`
         const filename = `ad_${new Date().getTime()}.${asset.extname}`
-        
+
         // upload and set new asset
         await storage.storeFromTmp(location, filename, asset)
-        const record = await Asset.create({ 
-          assetTypeId: AssetTypes.ADVERTISEMENT,
-          byteSize: asset.size,
-          altText,
-          credit,
-          filename: location + filename
-        }, { client: trx })
-        
+        const record = await Asset.create(
+          {
+            assetTypeId: AssetTypes.ADVERTISEMENT,
+            byteSize: asset.size,
+            altText,
+            credit,
+            filename: location + filename,
+          },
+          { client: trx }
+        )
+
         data.assetId = record.id
       }
 
@@ -78,12 +88,14 @@ export default class AdvertisementsController {
     }
   }
 
-  public async edit({ view, auth, params }: HttpContext) {
+  async edit({ view, auth, params }: HttpContext) {
     const sizes = await AdvertisementSize.query()
       .whereNot('id', AdvertisementSizes.SKYSCRAPER)
       .orderBy('id')
 
-    const ad = await auth.user!.related('ads').query()
+    const ad = await auth
+      .user!.related('ads')
+      .query()
       .where('id', params.id)
       .preload('asset')
       .preload('size')
@@ -92,15 +104,22 @@ export default class AdvertisementsController {
     return view.render('pages/advertisements/edit', { ad, sizes })
   }
 
-  public async update({ request, response, session, auth, params }: HttpContext) {
-    const { asset, altText, credit, ...data } = await request.validateUsing(advertisementUpdateValidator)
-    const ad = await auth.user!.related('ads').query().preload('asset').where('id', params.id).firstOrFail()
+  async update({ request, response, session, auth, params }: HttpContext) {
+    const { asset, altText, credit, ...data } = await request.validateUsing(
+      advertisementUpdateValidator
+    )
+    const ad = await auth
+      .user!.related('ads')
+      .query()
+      .preload('asset')
+      .where('id', params.id)
+      .firstOrFail()
     const assetRecord = ad.asset
     const oldAssetFilename = assetRecord.filename
     const trx = await db.transaction()
 
     console.log({
-      data
+      data,
     })
 
     try {
@@ -109,15 +128,17 @@ export default class AdvertisementsController {
         const filename = `ad_${new Date().getTime()}.${asset.extname}`
 
         assetRecord.useTransaction(trx)
-        
+
         // upload and set new asset info
         await storage.storeFromTmp(location, filename, asset)
-        await assetRecord.merge({
-          filename: location + filename,
-          byteSize: asset.size,
-          altText,
-          credit,
-        }).save()
+        await assetRecord
+          .merge({
+            filename: location + filename,
+            byteSize: asset.size,
+            altText,
+            credit,
+          })
+          .save()
       }
 
       ad.useTransaction(trx)
@@ -137,10 +158,8 @@ export default class AdvertisementsController {
     }
   }
 
-  public async start({ response, session, auth, params }: HttpContext) {
-    const ad = await auth.user!.related('ads').query()
-      .where('id', params.id)
-      .firstOrFail()
+  async start({ response, session, auth, params }: HttpContext) {
+    const ad = await auth.user!.related('ads').query().where('id', params.id).firstOrFail()
 
     const data: Partial<Advertisement> = {
       stateId: States.PUBLIC,
@@ -160,26 +179,26 @@ export default class AdvertisementsController {
     return response.redirect().toRoute('advertisements.index')
   }
 
-  public async end({ response, session, auth, params }: HttpContext) {
-    const ad = await auth.user!.related('ads').query()
-      .where('id', params.id)
-      .firstOrFail()
+  async end({ response, session, auth, params }: HttpContext) {
+    const ad = await auth.user!.related('ads').query().where('id', params.id).firstOrFail()
 
-    await ad.merge({
-      stateId: States.PRIVATE
-    }).save()
+    await ad
+      .merge({
+        stateId: States.PRIVATE,
+      })
+      .save()
 
     session.flash('success', 'Your advertisement has been ended!')
 
     return response.redirect().toRoute('advertisements.index')
   }
 
-  public async destroy({ response, session, auth, params }: HttpContext) {
+  async destroy({ response, session, auth, params }: HttpContext) {
     const ad = await auth.user!.related('ads').query().where('id', params.id).firstOrFail()
     const asset = await ad.related('asset').query().first()
-    
+
     const trx = await db.transaction()
-    
+
     try {
       ad.useTransaction(trx)
       asset?.useTransaction(trx)
@@ -187,7 +206,7 @@ export default class AdvertisementsController {
       await ad.delete()
       await asset?.delete()
       await trx.commit()
-      
+
       if (asset) {
         // await storage.destroy(asset.filename)
       }

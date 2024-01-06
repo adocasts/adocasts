@@ -9,15 +9,15 @@ enum States {
   IN_PROGRESS = 8,
 }
 
-export const StateDesc = {
-  1: 'Draft',
-  2: 'In Review',
-  3: 'Unlisted',
-  4: 'Private',
-  5: 'Public',
-  6: 'Archived',
-  7: 'Declined',
-  8: 'In Progress',
+export const StateDesc: Record<States, string> = {
+  [States.DRAFT]: 'Draft',
+  [States.IN_REVIEW]: 'In Review',
+  [States.UNLISTED]: 'Unlisted',
+  [States.PRIVATE]: 'Private',
+  [States.PUBLIC]: 'Public',
+  [States.ARCHIVED]: 'Archived',
+  [States.DECLINED]: 'Declined',
+  [States.IN_PROGRESS]: 'In Progress',
 }
 
-export default States;
+export default States

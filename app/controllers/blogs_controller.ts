@@ -1,7 +1,7 @@
-import AdService from '#services/ad_service';
-import DiscussionService from '#services/discussion_service';
-import PostService from '#services/post_service';
-import { inject } from '@adonisjs/core';
+import AdService from '#services/ad_service'
+import DiscussionService from '#services/discussion_service'
+import PostService from '#services/post_service'
+import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 import router from '@adonisjs/core/services/router'
 
@@ -11,7 +11,7 @@ export default class BlogsController {
     protected postService: PostService,
     protected discussionService: DiscussionService
   ) {}
-  
+
   async index({ view, request, params }: HttpContext) {
     const { page = 1, sortBy = 'publishAt', sort = 'desc' } = request.qs()
 
@@ -25,7 +25,7 @@ export default class BlogsController {
 
     return view.render('pages/blogs/index', { items, feed, adAside })
   }
-  
+
   async show({}: HttpContext) {}
-  
 }
+

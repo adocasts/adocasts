@@ -12,7 +12,7 @@ export default class SearchesController {
     protected collectionService: CollectionService,
     protected taxonomyService: TaxonomyService
   ) {}
-  
+
   async index({ view, request }: HttpContext) {
     const pattern = request.input('pattern')
     const posts = await this.postService.search(pattern)
@@ -23,10 +23,10 @@ export default class SearchesController {
       pattern,
       posts,
       series,
-      topics
+      topics,
     })
   }
-  
+
   async search({ view, request, response }: HttpContext) {
     const pattern = await request.input('pattern')
     const posts = await this.postService.search(pattern)
@@ -40,8 +40,8 @@ export default class SearchesController {
       pattern,
       posts,
       series,
-      topics
+      topics,
     })
   }
-  
 }
+

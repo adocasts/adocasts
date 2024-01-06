@@ -14,7 +14,7 @@ import { Exception } from '@adonisjs/core/exceptions'
 |
 */
 export default class NotImplementedException extends Exception {
-  constructor(message: string = "The provided code path has not been implemented yet.") {
+  constructor(message: string = 'The provided code path has not been implemented yet.') {
     super(message, { status: HttpStatus.INTERNAL_SERVER_ERROR, code: 'E_NOT_IMPLEMENTED' })
   }
 }

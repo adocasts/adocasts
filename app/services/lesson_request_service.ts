@@ -2,10 +2,10 @@ import RequestPriorities from '#enums/request_priorities'
 import States from '#enums/states'
 import LessonRequest from '#models/lesson_request'
 import User from '#models/user'
-import { 
-  lessonRequestSearchValidator, 
-  lessonRequestStoreValidator, 
-  lessonRequestUpdateStateValidator, 
+import {
+  lessonRequestSearchValidator,
+  lessonRequestStoreValidator,
+  lessonRequestUpdateStateValidator,
 } from '#validators/lesson_request_validator'
 import Comment from '#models/comment'
 import CommentTypes from '#enums/comment_types'
@@ -17,20 +17,20 @@ import db from '@adonisjs/lucid/services/db'
 import { TransactionClientContract } from '@adonisjs/lucid/types/database'
 import sanitizeHtml from 'sanitize-html'
 import { DateTime } from 'luxon'
-import { Infer } from '@vinejs/vine/types';
+import { Infer } from '@vinejs/vine/types'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 
 @inject()
 export default class LessonRequestService {
-  public static perPage = 3
+  static perPage = 3
 
   constructor(protected ctx: HttpContext) {}
 
   private getDisplayBaseQuery() {
     return LessonRequest.query()
       .preload('user')
-      .preload('votes', query => query.select('id'))
+      .preload('votes', (query) => query.select('id'))
       .withCount('votes')
       .withCount('comments')
       .orderBy('updatedAt', 'desc')
@@ -38,29 +38,27 @@ export default class LessonRequestService {
 
   /**
    * returns list of lesson requests
-   * @param limit 
-   * @returns 
+   * @param limit
+   * @returns
    */
-  public async getList(limit = 20) {
+  async getList(limit = 20) {
     const query = new LessonRequestQueryBuilder()
     return query.setLimit(limit).build()
   }
 
   /**
    * returns lesson request matching given id
-   * @param id 
-   * @returns 
+   * @param id
+   * @returns
    */
-  public async get(id: number) {
-    return this.getDisplayBaseQuery()
-      .where({ id })
-      .firstOrFail()
+  async get(id: number) {
+    return this.getDisplayBaseQuery().where({ id }).firstOrFail()
   }
 
   /**
    * returns paginated list of lesson requests
    */
-  public async getPaginatedList(records: Record<string, any>, baseUrl?: string) {
+  async getPaginatedList(records: Record<string, any>, baseUrl?: string) {
     const { page = 1, pattern = '', sortBy = 'updatedAt_desc', state = null } = records
     const query = new LessonRequestPaginatedQueryBuilder(baseUrl)
 
@@ -76,99 +74,118 @@ export default class LessonRequestService {
 
   /**
    * returns lesson requests matching search payload
-   * @param param0 
-   * @returns 
+   * @param param0
+   * @returns
    */
-  public async search({ pattern, sortBy, state }: Infer<typeof lessonRequestSearchValidator>, baseUrl?: string) {
+  async search(
+    { pattern, sortBy, state }: Infer<typeof lessonRequestSearchValidator>,
+    baseUrl?: string
+  ) {
     const query = new LessonRequestPaginatedQueryBuilder(baseUrl)
 
-    return query
-      .setSort(sortBy)
-      .wherePattern(pattern)
-      .whereState(state)
-      .preloadRelations()
-      .build()
+    return query.setSort(sortBy).wherePattern(pattern).whereState(state).preloadRelations().build()
   }
 
   /**
    * returns comments for post
-   * @param auth 
-   * @param post 
-   * @returns 
+   * @param auth
+   * @param post
+   * @returns
    */
-  public async getComments(lessonRequest: LessonRequest) {
-    return lessonRequest.related('comments').query()
-      .where(query => query.where('stateId', States.PUBLIC).orWhere('stateId', States.ARCHIVED))
+  async getComments(lessonRequest: LessonRequest) {
+    return lessonRequest
+      .related('comments')
+      .query()
+      .where((query) => query.where('stateId', States.PUBLIC).orWhere('stateId', States.ARCHIVED))
       .preload('user')
-      .preload('userVotes', query => query.select(['id']))
+      .preload('userVotes', (query) => query.select(['id']))
       .orderBy('createdAt', 'desc')
   }
 
-  public static async getCommentsReload(lessonRequestId: number) {
+  static async getCommentsReload(lessonRequestId: number) {
     const query = Comment.query().where({ lessonRequestId })
-    const comments = await query.clone()
-      .where(query => query.where('stateId', States.PUBLIC).orWhere('stateId', States.ARCHIVED))
+    const comments = await query
+      .clone()
+      .where((q2) => q2.where('stateId', States.PUBLIC).orWhere('stateId', States.ARCHIVED))
       .preload('user')
-      .preload('userVotes', query => query.select(['id']))
+      .preload('userVotes', (votes) => votes.select(['id']))
       .orderBy('createdAt', 'desc')
 
-    const commentCount = (await query.clone()
+    const commentCountResult = await query
+      .clone()
       .where('stateId', States.PUBLIC)
       .count('*', 'total')
-      .first())
-      ?.$extras.total
+      .first()
+
+    const commentCount = commentCountResult?.$extras.total
 
     return { comments, commentCount }
   }
 
   /**
    * returns a count of the comments tied to the post
-   * @param post 
-   * @returns 
+   * @param post
+   * @returns
    */
-  public async getCommentsCount(lessonRequest: LessonRequest) {
-    return (await lessonRequest.related('comments').query()
+  async getCommentsCount(lessonRequest: LessonRequest) {
+    const totalResult = await lessonRequest
+      .related('comments')
+      .query()
       .where('stateId', States.PUBLIC)
       .count('*', 'total')
-      .first())
-      ?.$extras.total
+      .first()
+
+    return totalResult?.$extras.total
   }
 
   /**
    * create a new lesson request
-   * @param user 
-   * @param param1 
-   * @returns 
+   * @param user
+   * @param param1
+   * @returns
    */
-  public async store(user: User, { nonDuplicate, ...data }: Infer<typeof lessonRequestStoreValidator>, trx: TransactionClientContract | undefined = undefined) {
-    return LessonRequest.create({
-      ...data,
-      userId: user.id,
-      stateId: States.IN_REVIEW,
-      priority: RequestPriorities.NORMAL // TODO: use elevated when from a subscription user
-    }, { client: trx })
+  async store(
+    user: User,
+    { nonDuplicate, ...data }: Infer<typeof lessonRequestStoreValidator>,
+    trx: TransactionClientContract | undefined = undefined
+  ) {
+    return LessonRequest.create(
+      {
+        ...data,
+        userId: user.id,
+        stateId: States.IN_REVIEW,
+        priority: RequestPriorities.NORMAL, // TODO: use elevated when from a subscription user
+      },
+      { client: trx }
+    )
   }
 
   /**
    * toggles users vote state on request
-   * @param user 
-   * @param id 
-   * @returns 
+   * @param user
+   * @param id
+   * @returns
    */
-  public async toggleVote(user: User, id: number) {
+  async toggleVote(user: User, id: number) {
     const lessonRequest = await LessonRequest.findOrFail(id)
-    const hasVoted = (await lessonRequest.related('votes').query().where('users.id', user.id).select('id')).length
+    const hasVotedResult = await lessonRequest
+      .related('votes')
+      .query()
+      .where('users.id', user.id)
+      .select('id')
+
+    const hasVoted = hasVotedResult.length
 
     hasVoted
       ? await lessonRequest.related('votes').detach([user.id])
       : await lessonRequest.related('votes').attach({
-        [user.id]: {
-          created_at: DateTime.now().toSQL(),
-          updated_at: DateTime.now().toSQL()
-        }
-      })
-      
-    await lessonRequest.load('votes', query => query.select('id'))
+          [user.id]: {
+            created_at: DateTime.now().toSQL(),
+            updated_at: DateTime.now().toSQL(),
+          },
+        })
+
+    await lessonRequest.load('votes', (query) => query.select('id'))
     await lessonRequest.loadCount('votes')
 
     return lessonRequest
@@ -176,34 +193,34 @@ export default class LessonRequestService {
 
   /**
    * approves the provided lesson request
-   * @param lessonRequest 
+   * @param lessonRequest
    */
-  public async approve(lessonRequest: LessonRequest) {
+  async approve(lessonRequest: LessonRequest) {
     return this.updateState(lessonRequest, States.IN_PROGRESS)
   }
 
   /**
    * rejects the provided lesson request
-   * @param lessonRequest 
+   * @param lessonRequest
    */
-  public async reject(lessonRequest: LessonRequest) {
+  async reject(lessonRequest: LessonRequest) {
     return this.updateState(lessonRequest, States.DECLINED)
   }
 
   /**
    * marks the provided lesson request as completed
-   * @param lessonRequest 
+   * @param lessonRequest
    */
-  public async complete(lessonRequest: LessonRequest) {
+  async complete(lessonRequest: LessonRequest) {
     return this.updateState(lessonRequest, States.PUBLIC)
   }
 
   /**
    * updates the lesson request state and, if provided, attaches an update comment
-   * @param request 
-   * @param user 
-   * @param lessonRequest 
-   * @param stateId 
+   * @param request
+   * @param user
+   * @param lessonRequest
+   * @param stateId
    */
   private async updateState(lessonRequest: LessonRequest, stateId: States) {
     const data = await this.ctx.request.validateUsing(lessonRequestUpdateStateValidator)
@@ -212,47 +229,55 @@ export default class LessonRequestService {
     let commentId: null | number = null
 
     lessonRequest.useTransaction(trx)
-    
+
     if (data.comment) {
       const comment = await this.comment(lessonRequest, data.comment, trx)
       commentId = comment.id
     }
 
-    await lessonRequest.merge({
-      [commentColumn]: commentId,
-      stateId
-    }).save()
+    await lessonRequest
+      .merge({
+        [commentColumn]: commentId,
+        stateId,
+      })
+      .save()
 
     await trx.commit()
   }
 
   /**
    * returns the appropriate lesson request column for the provided state id
-   * @param stateId 
-   * @returns 
+   * @param stateId
+   * @returns
    */
   private async getStateCommentColumn(stateId: States) {
     switch (stateId) {
       case States.PUBLIC:
-        return "completeCommentId"
+        return 'completeCommentId'
       case States.DECLINED:
-        return "rejectCommentId"
+        return 'rejectCommentId'
       case States.IN_PROGRESS:
-        return "approveCommentId"
+        return 'approveCommentId'
       default:
-        throw new NotImplementedException(`Lesson requests have not yet implemented the state ${stateId}`)
+        throw new NotImplementedException(
+          `Lesson requests have not yet implemented the state ${stateId}`
+        )
     }
   }
 
   /**
    * creates comment for the provided lesson request state change
-   * @param request 
-   * @param user 
-   * @param body 
-   * @param trx 
-   * @returns 
+   * @param request
+   * @param user
+   * @param body
+   * @param trx
+   * @returns
    */
-  private async comment(lessonRequest: LessonRequest, body: string, trx: TransactionClientContract) {
+  private async comment(
+    lessonRequest: LessonRequest,
+    body: string,
+    trx: TransactionClientContract
+  ) {
     const comment = new Comment()
     const identity = await IdentityService.getRequestIdentity(this.ctx.request)
 
@@ -264,7 +289,7 @@ export default class LessonRequestService {
       identity,
       body: sanitizeHtml(body),
       userId: this.ctx.auth.user!.id,
-      stateId: States.PUBLIC
+      stateId: States.PUBLIC,
     })
 
     await comment.save()

@@ -17,7 +17,11 @@ export default class SignUpController {
    * Handle form submission for the create action
    */
   @inject()
-  async store({ request, response, auth, session, up }: HttpContext, sessionService: SessionService, stripeService: StripeService) {
+  async store(
+    { request, response, auth, session, up }: HttpContext,
+    sessionService: SessionService,
+    stripeService: StripeService
+  ) {
     let { forward, plan, ...data } = await request.validateUsing(signUpValidator)
     const user = await User.create(data)
 
@@ -26,7 +30,10 @@ export default class SignUpController {
     await sessionService.onSignInSuccess(user)
 
     if (plan) {
-      const { status, message, checkout } = await stripeService.tryCreateCheckoutSession(auth.user!, plan)
+      const { status, message, checkout } = await stripeService.tryCreateCheckoutSession(
+        auth.user!,
+        plan
+      )
 
       if (status === 'warning' || status === 'error') {
         session.flash(status, message)
@@ -40,10 +47,15 @@ export default class SignUpController {
 
     up.setTarget('[up-theme]')
 
-    if (forward?.includes('signin') || forward?.includes('signup') || forward?.includes('users/menu')) {
+    if (
+      forward?.includes('signin') ||
+      forward?.includes('signup') ||
+      forward?.includes('users/menu')
+    ) {
       forward = '/'
     }
 
     return response.redirect().toPath(forward ?? '/')
   }
 }
+

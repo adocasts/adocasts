@@ -15,3 +15,4 @@ export default class PlusMiddleware {
     return output
   }
 }
+

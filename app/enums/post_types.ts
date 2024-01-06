@@ -13,7 +13,7 @@ export const PostTypeDesc = {
   3: 'Link',
   4: 'News',
   5: 'Livestream',
-  6: 'Snippet'
+  6: 'Snippet',
 }
 
 export default PostTypes

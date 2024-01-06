@@ -48,7 +48,7 @@ export default class Comment extends AppBaseModel {
 
   @column()
   declare body: string
-  public bodyDisplay: string = ''
+  bodyDisplay: string = ''
 
   @column({ serializeAs: null })
   declare identity: string
@@ -60,7 +60,7 @@ export default class Comment extends AppBaseModel {
   declare updatedAt: DateTime
 
   @computed()
-  public get isPublic() {
+  get isPublic() {
     return this.stateId === State.PUBLIC
   }
 
@@ -83,19 +83,19 @@ export default class Comment extends AppBaseModel {
   declare parent: BelongsTo<typeof Comment>
 
   @manyToMany(() => User, {
-    pivotTable: 'comment_votes'
+    pivotTable: 'comment_votes',
   })
   declare userVotes: ManyToMany<typeof User>
 
-  public get createdAtCalendar() {
-    return this.createdAt?.toRelativeCalendar();
+  get createdAtCalendar() {
+    return this.createdAt?.toRelativeCalendar()
   }
 
-  public get timeago() {
+  get timeago() {
     return UtilityService.timeago(this.createdAt)
   }
 
-  public static getTypeId(comment: Comment | Infer<typeof commentValidator>) {
+  static getTypeId(comment: Comment | Infer<typeof commentValidator>) {
     if (comment.lessonRequestId) return CommentTypes.LESSON_REQUEST
     if (comment.discussionId) return CommentTypes.DISCUSSION
     return CommentTypes.POST

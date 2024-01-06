@@ -25,15 +25,13 @@ export default class LessonsController {
     protected historyService: HistoryService,
     protected discussionService: DiscussionService
   ) {}
-  
-  async index({ view, request, params }: HttpContext) {
-    const { page = 1, sortBy = 'publishAt', sort = 'desc' } = request.qs()
 
-    if (page == 1 && sortBy === 'publishAt') {
+  async index({ view, request, params }: HttpContext) {
+    const { page = '1', sortBy = 'publishAt', sort = 'desc' } = request.qs()
+
+    if (page === '1' && sortBy === 'publishAt') {
       const recentDate = DateTime.now().minus({ days: 30 }).startOf('day')
-      const recent = await this.postService
-        .getLatestLessons()
-        .where('publishAt', '>=', recentDate)
+      const recent = await this.postService.getLatestLessons().where('publishAt', '>=', recentDate)
 
       view.share({ title: 'Lessons', recent })
     }
@@ -50,13 +48,11 @@ export default class LessonsController {
   }
 
   async streams({ view, request, params }: HttpContext) {
-    const { page = 1, sortBy = 'publishAt', sort = 'desc' } = request.qs()
+    const { page = '1', sortBy = 'publishAt', sort = 'desc' } = request.qs()
 
-    if (page == 1 && sortBy === 'publishAt') {
+    if (page === '1' && sortBy === 'publishAt') {
       const recentDate = DateTime.now().minus({ days: 30 }).startOf('day')
-      const recent = await this.postService
-        .getLatestStreams()
-        .where('publishAt', '>=', recentDate)
+      const recent = await this.postService.getLatestStreams().where('publishAt', '>=', recentDate)
 
       view.share({ title: 'Livestreams', recent })
     }
@@ -71,21 +67,27 @@ export default class LessonsController {
 
     return view.render('pages/lessons/index', { type: 'Livestreams', items, feed, adAside })
   }
-  
+
   async show({ view, request, params, session, auth, up, route, bouncer }: HttpContext) {
     const post = await this.postService.findBy('slug', params.slug)
     const series = await this.collectionService.findForPost(post, params.collectionSlug)
-    
+
     let nextLesson = this.collectionService.findNextSeriesLesson(series, post)
     let prevLesson = this.collectionService.findPrevSeriesLesson(series, post)
 
-    if (post.isNotViewable && !auth.user?.isAdmin && !post.authors.some(a => a.id === auth.user?.id)) {
-      throw new Exception('this post is not currently available to the public', { status: HttpStatus.NOT_FOUND })
-    } else if (!post.isViewable && await bouncer.with('PostPolicy').denies('viewFutureDated')) {
+    if (
+      post.isNotViewable &&
+      !auth.user?.isAdmin &&
+      !post.authors.some((a) => a.id === auth.user?.id)
+    ) {
+      throw new Exception('this post is not currently available to the public', {
+        status: HttpStatus.NOT_FOUND,
+      })
+    } else if (!post.isViewable && (await bouncer.with('PostPolicy').denies('viewFutureDated'))) {
       view.share({ nextLesson, prevLesson, post, series })
       return view.render('pages/lessons/soon', { post, series })
     }
-    
+
     const userProgression = post.progressionHistory?.at(0)
     const comments = post.comments
     const commentCount = post.$extras.comments_count
@@ -102,17 +104,25 @@ export default class LessonsController {
     }
 
     if (post.transcriptUrl) {
-      const transcript = await CacheService.try(`TRANSCRIPT:${post.id}`, async () => {
-        const { data: vtt } = await axios.get(post.transcriptUrl!)
-        return VttService.parse(vtt)
-      }, CacheService.oneDay)
+      const transcript = await CacheService.try(
+        `TRANSCRIPT:${post.id}`,
+        async () => {
+          const { data: vtt } = await axios.get(post.transcriptUrl!)
+          return VttService.parse(vtt)
+        },
+        CacheService.oneDay
+      )
 
       view.share({ transcript })
     }
 
     const hasPlayerId = session.has('videoPlayerId')
 
-    if (!up.isUnpolyRequest || !hasPlayerId || (hasPlayerId && session.get('videoPlayerId') !== post.id)) {
+    if (
+      !up.isUnpolyRequest ||
+      !hasPlayerId ||
+      (hasPlayerId && session.get('videoPlayerId') !== post.id)
+    ) {
       up.addTarget('[up-player]')
     }
 
@@ -125,12 +135,18 @@ export default class LessonsController {
       prevLesson,
       post,
       series,
-      userProgression
+      userProgression,
     })
 
     await emitter.emit('post:sync', { post, views })
 
-    return view.render('pages/lessons/show', { comments, commentCount, views, adLeaderboard, adAside })
+    return view.render('pages/lessons/show', {
+      comments,
+      commentCount,
+      views,
+      adLeaderboard,
+      adAside,
+    })
   }
-  
 }
+

@@ -22,7 +22,7 @@ export default class AuthSocialService {
     const social = this.ctx.ally.use(provider)
     let success = true
     let message = ''
-    
+
     if (social.accessDenied()) {
       success = false
       message = 'Access was denied'
@@ -42,9 +42,9 @@ export default class AuthSocialService {
 
     const user = await social.user()
     const username = await this.getUniqueUsername(user.name)
-    const userIdKey = provider == 'github' ? 'githubId' : `googleId`
-    const userEmailKey = provider == 'github' ? 'githubEmail' : `googleEmail`
-    const tokenKey = provider == 'github' ? 'githubAccessToken' : `googleAccessToken`
+    const userIdKey = provider === 'github' ? 'githubId' : `googleId`
+    const userEmailKey = provider === 'github' ? 'githubEmail' : `googleEmail`
+    const tokenKey = provider === 'github' ? 'githubAccessToken' : `googleAccessToken`
 
     let userMatch = await User.query()
       .if(user.email, (query) => query.where('email', user.email!))
@@ -52,7 +52,8 @@ export default class AuthSocialService {
       .first()
 
     if (!userMatch) {
-      let avatarUrl = user.avatarUrl && user.avatarUrl.length > 500 ? '' : user.avatarUrl ?? undefined
+      let avatarUrl =
+        user.avatarUrl && user.avatarUrl.length > 500 ? '' : user.avatarUrl ?? undefined
       userMatch = await User.create({
         username,
         email: user.email!,

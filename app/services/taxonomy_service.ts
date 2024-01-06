@@ -1,72 +1,57 @@
-import TaxonomyBuilder from "#builders/taxonomy_builder";
-import CollectionTypes from "#enums/collection_types";
-import Taxonomy from "#models/taxonomy";
+import TaxonomyBuilder from '#builders/taxonomy_builder'
+import Taxonomy from '#models/taxonomy'
 
 export default class TaxonomyService {
   /**
    * Returns a new instance of the taxonomy builder
-   * @returns 
+   * @returns
    */
-  public builder() {
+  builder() {
     return TaxonomyBuilder.new()
   }
 
   /**
    * Returns the total number of topics
-   * @returns 
+   * @returns
    */
-  public getCount() {
-    return this
-      .builder()
-      .public()
-      .count()
+  getCount() {
+    return this.builder().public().count()
   }
 
   /**
    * Returns displayable list of topics
-   * @param postLimit 
-   * @returns 
+   * @param postLimit
+   * @returns
    */
-  public getList(postLimit: number = 0) {
-    return this
-      .builder()
-      .if(postLimit, builder => builder.withPosts(postLimit))
+  getList(postLimit: number = 0) {
+    return this.builder()
+      .if(postLimit, (builder) => builder.withPosts(postLimit))
       .display()
       .order()
   }
 
   /**
    * Returns a taxonomy for display by slug
-   * @param slug 
-   * @returns 
+   * @param slug
+   * @returns
    */
-  public getBySlug(slug: string) {
-    return this
-      .builder()
-      .display()
-      .withTotalMinutes()
-      .where('slug', slug)
-      .firstOrFail()
+  getBySlug(slug: string) {
+    return this.builder().display().withTotalMinutes().where('slug', slug).firstOrFail()
   }
 
   /**
    * Returns a taxonomies children for display
-   * @param taxonomy 
-   * @returns 
+   * @param taxonomy
+   * @returns
    */
-  public getChildren(taxonomy: Taxonomy) {
-    return this
-      .builder()
-      .where('parent_id', taxonomy.id)
-      .display()
-      .order()
+  getChildren(taxonomy: Taxonomy) {
+    return this.builder().where('parent_id', taxonomy.id).display().order()
   }
 
-  public async search(term: string | undefined, limit: number = 8) {
-    return this
-      .builder()
+  async search(term: string | undefined, limit: number = 8) {
+    return this.builder()
       .display()
-      .if(term, builder => builder.search(term!))
+      .if(term, (builder) => builder.search(term!))
       .order()
       .limit(limit)
   }

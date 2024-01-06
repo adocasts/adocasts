@@ -4,7 +4,11 @@ import LessonRequestService from '#services/lesson_request_service'
 import logger from '#services/logger_service'
 import MentionService from '#services/mention_service'
 import NotificationService from '#services/notification_service'
-import { lessonRequestSearchValidator, lessonRequestStoreValidator, lessonRequestUpdateValidator } from '#validators/lesson_request_validator'
+import {
+  lessonRequestSearchValidator,
+  lessonRequestStoreValidator,
+  lessonRequestUpdateValidator,
+} from '#validators/lesson_request_validator'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 import router from '@adonisjs/core/services/router'
@@ -14,13 +18,13 @@ import db from '@adonisjs/lucid/services/db'
 export default class LessonRequestsController {
   constructor(protected lessonRequestService: LessonRequestService) {}
 
-  public async index({ view, request }: HttpContext) {
+  async index({ view, request }: HttpContext) {
     const lessonRequests = await this.lessonRequestService.getPaginatedList(request.qs())
 
     return view.render('pages/requests/lessons/index', { lessonRequests })
   }
 
-  public async show({ params, view }: HttpContext) {
+  async show({ params, view }: HttpContext) {
     const lessonRequest = await this.lessonRequestService.get(params.id)
     const comments = await this.lessonRequestService.getComments(lessonRequest)
     const commentsCount = await this.lessonRequestService.getCommentsCount(lessonRequest)
@@ -28,13 +32,13 @@ export default class LessonRequestsController {
     return view.render('pages/requests/lessons/show', { lessonRequest, comments, commentsCount })
   }
 
-  public async create({ view, bouncer }: HttpContext) {
+  async create({ view, bouncer }: HttpContext) {
     await bouncer.with('LessonRequestPolicy').authorize('store')
 
     return view.render('pages/requests/lessons/create')
   }
 
-  public async store({ request, response, auth, session, bouncer }: HttpContext) {
+  async store({ request, response, auth, session, bouncer }: HttpContext) {
     await bouncer.with('LessonRequestPolicy').authorize('store')
     const trx = await db.transaction()
 
@@ -57,22 +61,22 @@ export default class LessonRequestsController {
     }
   }
 
-  public async edit({ view, params, bouncer }: HttpContext) {
+  async edit({ view, params, bouncer }: HttpContext) {
     const lessonRequest = await this.lessonRequestService.get(params.id)
-    
+
     await bouncer.with('LessonRequestPolicy').authorize('update', lessonRequest)
 
     return view.render('pages/requests/lessons/edit', { lessonRequest })
   }
 
-  public async update({ request, response, auth, params, session, bouncer }: HttpContext) {
+  async update({ request, response, auth, params, session, bouncer }: HttpContext) {
     const lessonRequest = await this.lessonRequestService.get(params.id)
 
     await bouncer.with('LessonRequestPolicy').authorize('update', lessonRequest)
 
     const data = await request.validateUsing(lessonRequestUpdateValidator)
     const trx = await db.transaction()
-    
+
     try {
       lessonRequest.useTransaction(trx)
 
@@ -84,15 +88,20 @@ export default class LessonRequestsController {
       }
 
       await lessonRequest.merge({ ...data, stateId }).save()
-      
+
       const newMentions = await MentionService.checkTextForNewMentions(oldBody, lessonRequest.body)
 
       if (newMentions.length) {
-        await NotificationService.onLessonRequestMention(lessonRequest, newMentions, auth.user!, trx)
+        await NotificationService.onLessonRequestMention(
+          lessonRequest,
+          newMentions,
+          auth.user!,
+          trx
+        )
       }
 
       await trx.commit()
-    
+
       session.flash('success', 'Your request has been updated')
 
       return response.redirect().toRoute('requests.lessons.show', { id: lessonRequest.id })
@@ -104,33 +113,35 @@ export default class LessonRequestsController {
     }
   }
 
-  public async destroy({ response, params, session, bouncer }: HttpContext) {
+  async destroy({ response, params, session, bouncer }: HttpContext) {
     const lessonRequest = await this.lessonRequestService.get(params.id)
 
     await bouncer.with('LessonRequestPolicy').authorize('delete', lessonRequest)
 
-    await lessonRequest.merge({ 
-      name: '[deleted]',
-      body: '[deleted]',
-      stateId: States.ARCHIVED 
-    }).save()
+    await lessonRequest
+      .merge({
+        name: '[deleted]',
+        body: '[deleted]',
+        stateId: States.ARCHIVED,
+      })
+      .save()
 
     session.flash('success', 'Your request has been successfully deleted')
 
     return response.redirect().toRoute('requests.lessons.index')
   }
 
-  public async search({ view, request, response }: HttpContext) {
+  async search({ view, request, response }: HttpContext) {
     const data = await request.validateUsing(lessonRequestSearchValidator)
     const lessonRequests = await this.lessonRequestService.search(data)
     const newPath = router.makeUrl('requests.lessons.index', {}, { qs: data })
 
     response.header('X-Up-Location', newPath)
-    
+
     return view.render('components/request/list', { lessonRequests })
   }
 
-  public async vote({ view, auth, params, bouncer }: HttpContext) {
+  async vote({ view, auth, params, bouncer }: HttpContext) {
     await bouncer.with('LessonRequestPolicy').authorize('vote')
 
     const lessonRequest = await this.lessonRequestService.toggleVote(auth.user!, params.id)
@@ -138,7 +149,7 @@ export default class LessonRequestsController {
     return view.render('components/request/vote', { lessonRequest })
   }
 
-  public async approve({ response, params, bouncer }: HttpContext) {
+  async approve({ response, params, bouncer }: HttpContext) {
     const lessonRequest = await LessonRequest.findOrFail(params.id)
 
     await bouncer.with('LessonRequestPolicy').authorize('approve', lessonRequest)
@@ -148,7 +159,7 @@ export default class LessonRequestsController {
     return response.redirect().back()
   }
 
-  public async reject({ response, params, bouncer }: HttpContext) {
+  async reject({ response, params, bouncer }: HttpContext) {
     const lessonRequest = await LessonRequest.findOrFail(params.id)
 
     await bouncer.with('LessonRequestPolicy').authorize('reject', lessonRequest)
@@ -158,7 +169,7 @@ export default class LessonRequestsController {
     return response.redirect().back()
   }
 
-  public async complete({ response, params, bouncer }: HttpContext) {
+  async complete({ response, params, bouncer }: HttpContext) {
     const lessonRequest = await LessonRequest.findOrFail(params.id)
 
     await bouncer.with('LessonRequestPolicy').authorize('complete', lessonRequest)
@@ -168,9 +179,10 @@ export default class LessonRequestsController {
     return response.redirect().back()
   }
 
-  public async fragment({ view, params }: HttpContext) {
+  async fragment({ view, params }: HttpContext) {
     const lessonRequest = await LessonRequest.findOrFail(params.id)
 
     return view.render(`components/request/${params.fragment}`, { lessonRequest })
   }
 }
+

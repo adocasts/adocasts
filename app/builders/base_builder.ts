@@ -1,21 +1,21 @@
-import { LucidModel, LucidRow, ModelQueryBuilderContract } from "@adonisjs/lucid/types/model"
-import { StrictValues } from "@adonisjs/lucid/types/querybuilder"
+import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
+import { StrictValues } from '@adonisjs/lucid/types/querybuilder'
 
 export default class BaseBuilder<Model extends LucidModel, Record extends LucidRow> {
-  public query: ModelQueryBuilderContract<Model, Record>
+  query: ModelQueryBuilderContract<Model, Record>
 
   constructor(protected model: Model) {
     this.query = model.query()
   }
 
-  public if(condition: any, cb: (self: this) => this) {
+  if(condition: any, cb: (self: this) => this) {
     if (condition) {
       return cb(this)
     }
     return this
   }
 
-  public where(column: string, operator?: any, value?: any) {
+  where(column: string, operator?: any, value?: any) {
     if (value !== undefined) {
       this.query.where(column, operator, value)
       return this
@@ -25,53 +25,53 @@ export default class BaseBuilder<Model extends LucidModel, Record extends LucidR
     return this
   }
 
-  public whereIn(column: string, values: StrictValues[]) {
+  whereIn(column: string, values: StrictValues[]) {
     this.query.whereIn(column, values)
     return this
   }
 
-  public limit(limit: number) {
+  limit(limit: number) {
     this.query.limit(limit)
     return this
   }
 
-  public first() {
+  first() {
     return this.query.first()
   }
 
-  public firstOrFail() {
+  firstOrFail() {
     return this.query.firstOrFail()
   }
 
-  public exclude(values: any[], column: string = 'id') {
+  exclude(values: any[], column: string = 'id') {
     this.query.whereNotIn(column, values)
     return this
   }
 
-  public orderBy(column: string, direction: 'asc' | 'desc' = 'asc') {
+  orderBy(column: string, direction: 'asc' | 'desc' = 'asc') {
     this.query.orderBy(column, direction)
     return this
   }
 
-  public async paginate(page: number, perPage?: number | undefined, url: string | undefined = undefined) {
+  async paginate(page: number, perPage?: number | undefined, url: string | undefined = undefined) {
     const result = await this.query.paginate(page, perPage)
-    
+
     if (url) result.baseUrl(url)
 
     return result
   }
 
-  public async count(column: string = '*') {
+  async count(column: string = '*') {
     const result = await this.query.count(column, 'total').first()
     return result?.$extras.total ?? 0
   }
 
-  public async sum(column: string) {
+  async sum(column: string) {
     const result = await this.query.sum(column, 'sum').first()
     return result?.$extras.sum ?? 0
   }
 
-  public then(
+  then(
     onfulfilled?: ((value: Record[]) => Record[] | PromiseLike<Record[]>) | null | undefined,
     onrejected?: ((reason: any) => PromiseLike<never>) | null | undefined
   ) {

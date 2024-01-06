@@ -12,14 +12,13 @@ export default class SessionCheckMiddleware {
       await next()
       return
     }
-    
+
     if (!auth.user) {
       response.clearCookie(this.sessionService.getCookieName())
       await next()
       return
     }
 
-    
     const user = auth.user
     const isOk = await this.sessionService.check(user)
 
@@ -34,3 +33,4 @@ export default class SessionCheckMiddleware {
     return output
   }
 }
+

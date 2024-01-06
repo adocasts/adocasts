@@ -22,23 +22,23 @@ export default class AuthAttempt extends AppBaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 
-  public static async allows(uid: string) {
+  static async allows(uid: string) {
     return AuthAttemptService.hasAttempts(uid)
   }
 
-  public static async disallows(uid: string) {
-    return !await AuthAttemptService.hasAttempts(uid)
+  static async disallows(uid: string) {
+    return !(await AuthAttemptService.hasAttempts(uid))
   }
 
-  public static async clear(uid: string) {
+  static async clear(uid: string) {
     return AuthAttemptService.clearAttempts(uid)
   }
 
-  public static async recordBadLogin(uid: string) {
+  static async recordBadLogin(uid: string) {
     return AuthAttemptService.recordLoginAttempt(uid)
   }
 
-  public static async recordBadEmailChange(uid: string) {
+  static async recordBadEmailChange(uid: string) {
     return AuthAttemptService.recordChangeEmailAttempt(uid)
   }
 }

@@ -11,3 +11,4 @@ type OnSessionMigrated = {
   fromSessionId: string
   toSessionId: string
 }
+

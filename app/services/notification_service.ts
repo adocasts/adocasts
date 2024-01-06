@@ -182,7 +182,7 @@ export default class NotificationService {
     } catch (error) {
       await logger.error('Failed to create post comment notification', {
         comment: JSON.stringify(comment),
-        error
+        error,
       })
     }
   }
@@ -218,7 +218,7 @@ export default class NotificationService {
     } catch (error) {
       await logger.error('Failed to create lesson request comment notification', {
         comment: JSON.stringify(comment),
-        error
+        error,
       })
     }
   }
@@ -254,7 +254,7 @@ export default class NotificationService {
     } catch (error) {
       await logger.error('Failed to create discussion comment notification', {
         comment: JSON.stringify(comment),
-        error
+        error,
       })
     }
   }
@@ -303,7 +303,7 @@ export default class NotificationService {
     } catch (error) {
       await logger.error('Failed to create comment reply notification', {
         comment: JSON.stringify(comment),
-        error
+        error,
       })
     }
   }
@@ -315,12 +315,14 @@ export default class NotificationService {
     trx: TransactionClientContract | null = null
   ) {
     try {
-      for (let i = 0; i < usernames.length; i++) {
+      for (const username of usernames) {
         const notification = new Notification()
-        const mentioned = await User.query().whereILike('username', usernames[i]).first()
+        const mentioned = await User.query().whereILike('username', username).first()
 
         if (!mentioned) {
-          await logger.warn(`Failed to find username ${usernames[i]} mentioned in comment ${comment.id}`)
+          await logger.warn(
+            `Failed to find username ${username} mentioned in comment ${comment.id}`
+          )
           continue
         }
 
@@ -348,7 +350,7 @@ export default class NotificationService {
       await logger.error('Failed to create comment mention notification', {
         commentId: comment.id,
         usernames,
-        error
+        error,
       })
     }
   }
@@ -360,12 +362,12 @@ export default class NotificationService {
     trx: TransactionClientContract | null = null
   ) {
     try {
-      for (let i = 0; i < usernames.length; i++) {
+      for (const username of usernames) {
         const notification = new Notification()
-        const mentioned = await User.query().whereILike('username', usernames[i]).first()
+        const mentioned = await User.query().whereILike('username', username).first()
 
         if (!mentioned) {
-          await logger.warn(`Failed to find username ${usernames[i]} mentioned in post ${post.id}`)
+          await logger.warn(`Failed to find username ${username} mentioned in post ${post.id}`)
           continue
         }
 
@@ -393,7 +395,7 @@ export default class NotificationService {
       await logger.error('Failed to create comment mention notification', {
         postId: post.id,
         usernames,
-        error
+        error,
       })
     }
   }
@@ -405,12 +407,14 @@ export default class NotificationService {
     trx: TransactionClientContract | null = null
   ) {
     try {
-      for (let i = 0; i < usernames.length; i++) {
+      for (const username of usernames) {
         const notification = new Notification()
-        const mentioned = await User.query().whereILike('username', usernames[i]).first()
+        const mentioned = await User.query().whereILike('username', username).first()
 
         if (!mentioned) {
-          await logger.warn(`Failed to find username ${usernames[i]} mentioned in discussion ${discussion.id}`)
+          await logger.warn(
+            `Failed to find username ${username} mentioned in discussion ${discussion.id}`
+          )
           continue
         }
 
@@ -438,7 +442,7 @@ export default class NotificationService {
       await logger.error('Failed to create comment mention notification', {
         discussionId: discussion.id,
         usernames,
-        error
+        error,
       })
     }
   }
@@ -450,12 +454,14 @@ export default class NotificationService {
     trx: TransactionClientContract | null = null
   ) {
     try {
-      for (let i = 0; i < usernames.length; i++) {
+      for (const username of usernames) {
         const notification = new Notification()
-        const mentioned = await User.query().whereILike('username', usernames[i]).first()
+        const mentioned = await User.query().whereILike('username', username).first()
 
         if (!mentioned) {
-          await logger.warn(`Failed to find username ${usernames[i]} mentioned in lesson request ${request.id}`)
+          await logger.warn(
+            `Failed to find username ${username} mentioned in lesson request ${request.id}`
+          )
           continue
         }
 
@@ -483,7 +489,7 @@ export default class NotificationService {
       await logger.error('Failed to create comment mention notification', {
         lessonRequestId: request.id,
         usernames,
-        error
+        error,
       })
     }
   }

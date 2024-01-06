@@ -10,13 +10,13 @@ export default class UtilityService {
    * @param count
    * @returns
    */
-  public static getSingularOrPlural(str: string, count: string | number | any[]) {
+  static getSingularOrPlural(str: string, count: string | number | any[]) {
     let isPlural = false
 
     if (Array.isArray(count)) {
-      isPlural = count.length == 0 || count.length > 1
+      isPlural = count.length === 0 || count.length > 1
     } else {
-      isPlural = count == 0 || count != 1
+      isPlural = count === 0 || count !== 1
     }
 
     return isPlural ? string.pluralize(str) : str
@@ -27,7 +27,7 @@ export default class UtilityService {
    * @param html
    * @returns
    */
-  public static stripHTML(html: string) {
+  static stripHTML(html: string) {
     return parse(html).textContent
   }
 
@@ -38,8 +38,8 @@ export default class UtilityService {
    * @param stripHTML
    * @returns
    */
-  public static truncate(string: string, length: number = 255, stripHTML: boolean = true) {
-    const str = stripHTML ? this.stripHTML(string) : string
+  static truncate(text: string, length: number = 255, stripHTML: boolean = true) {
+    const str = stripHTML ? this.stripHTML(text) : text
     return str.length > length ? str.slice(0, length) + '...' : str
   }
 
@@ -48,15 +48,19 @@ export default class UtilityService {
    * @param text
    * @returns
    */
-  public static getAbbrev(text: string) {
-    if (typeof text != 'string' || !text) {
-      return '';
+  static getAbbrev(text: string) {
+    if (typeof text !== 'string' || !text) {
+      return ''
     }
     const acronym = text
       .match(/\b([A-Z])/g)
-      ?.reduce((previous, next) => previous + ((+next === 0 || parseInt(next)) ? parseInt(next): next[0] || ''), '')
+      ?.reduce(
+        (previous, next) =>
+          previous + (+next === 0 || Number.parseInt(next) ? Number.parseInt(next) : next[0] || ''),
+        ''
+      )
       .toUpperCase()
-    return acronym;
+    return acronym
   }
 
   /**
@@ -64,11 +68,11 @@ export default class UtilityService {
    * @param totalSeconds
    * @returns
    */
-  public static secondsForDisplay(totalSeconds: number) {
-    const seconds = Math.floor(totalSeconds % 60);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
-    const days = Math.floor(totalSeconds / (3600 * 24));
+  static secondsForDisplay(totalSeconds: number) {
+    const seconds = Math.floor(totalSeconds % 60)
+    const minutes = Math.floor((totalSeconds % 3600) / 60)
+    const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600)
+    const days = Math.floor(totalSeconds / (3600 * 24))
 
     let maxDisplay = days
     let maxDisplayKey = 'day'
@@ -94,11 +98,11 @@ export default class UtilityService {
       minutes,
       seconds,
       maxDisplay,
-      maxDisplayKey
+      maxDisplayKey,
     }
   }
 
-  public static secondsToTimestring(totalSeconds: number | string, verbose: boolean = false) {
+  static secondsToTimestring(totalSeconds: number | string, verbose: boolean = false) {
     if (typeof totalSeconds === 'string') {
       totalSeconds = Number(totalSeconds)
     }
@@ -108,15 +112,13 @@ export default class UtilityService {
     totalSeconds %= 3600
 
     const minutes = Math.floor(totalSeconds / 60)
-    
+
     totalSeconds %= 60
-    
+
     const seconds = Math.floor(totalSeconds)
 
     if (!hours) {
-      return verbose
-        ? `${minutes} minutes ${seconds} seconds`
-        : `${minutes}m ${seconds}s`
+      return verbose ? `${minutes} minutes ${seconds} seconds` : `${minutes}m ${seconds}s`
     }
 
     if (verbose) {
@@ -126,7 +128,7 @@ export default class UtilityService {
     return `${hours}h ${minutes}m`
   }
 
-  public static secondsToTime(totalSeconds: number | string) {
+  static secondsToTime(totalSeconds: number | string) {
     if (typeof totalSeconds === 'string') {
       totalSeconds = Number(totalSeconds)
     }
@@ -136,9 +138,9 @@ export default class UtilityService {
     totalSeconds %= 3600
 
     const minutes = Math.floor(totalSeconds / 60)
-    
+
     totalSeconds %= 60
-    
+
     const seconds = Math.floor(totalSeconds)
     const short = `${(minutes + '').padStart(2, '0')}:${(seconds + '').padStart(2, '0')}`
 
@@ -153,7 +155,7 @@ export default class UtilityService {
    * returns date in relative human readable time ago string
    * @param date
    */
-  public static timeago(date: string | DateTime | null) {
+  static timeago(date: string | DateTime | null) {
     if (typeof date === 'string') {
       date = DateTime.fromISO(date)
     }
@@ -161,28 +163,32 @@ export default class UtilityService {
     return date ? date.toRelative() : ''
   }
 
-  public static formatNumber(number: number) {
+  static formatNumber(number: number) {
     return number.toLocaleString()
   }
 
-  public static formatCurrency(amount: number, currencyCode: Currency | undefined = 'USD') {
+  static formatCurrency(amount: number, currencyCode: Currency | undefined = 'USD') {
     return dinero({ amount, currency: currencyCode }).toFormat('$0,0.00')
   }
 
-  public static centsToDollars(amount: number, showChange: boolean = false, currencyCode: Currency | undefined = 'USD') {
+  static centsToDollars(
+    amount: number,
+    showChange: boolean = false,
+    currencyCode: Currency | undefined = 'USD'
+  ) {
     const format = showChange ? '0,0.00' : '0,0'
     return dinero({ amount, currency: currencyCode }).toFormat(format)
   }
 
-  public static displaySocialUrl(url: string) {
+  static displaySocialUrl(url: string) {
     return url.replace('https://', '').replace('http://', '')
   }
 
-  public static getRandom<T>(array: T[]) {
-    return array[Math.floor(Math.random() * array.length)];
+  static getRandom<T>(array: T[]) {
+    return array[Math.floor(Math.random() * array.length)]
   }
 
-  public static classes(...args: string[] | string[][]) {
+  static classes(...args: string[] | string[][]) {
     return args.filter(Boolean).reduce((list, item) => {
       if (Array.isArray(item)) {
         return [...list, ...item]

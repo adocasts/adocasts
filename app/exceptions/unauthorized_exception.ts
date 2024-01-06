@@ -1,4 +1,4 @@
-import HttpStatus from '#enums/http_statuses';
+import HttpStatus from '#enums/http_statuses'
 import { Exception } from '@adonisjs/core/exceptions'
 
 /*

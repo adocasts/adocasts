@@ -1,9 +1,9 @@
-import User from '#models/user';
+import User from '#models/user'
 import sharp, { AvailableFormatInfo, FormatEnum } from 'sharp'
-import Asset from '#models/asset';
-import app from '@adonisjs/core/services/app';
-import { AllyUserContract, GithubToken, GoogleToken } from '@adonisjs/ally/types';
-import storage from './storage_service.js';
+import Asset from '#models/asset'
+import app from '@adonisjs/core/services/app'
+import { AllyUserContract, GithubToken, GoogleToken } from '@adonisjs/ally/types'
+import storage from './storage_service.js'
 import crossFetch from 'cross-fetch'
 
 export class ImageOptions {
@@ -15,13 +15,13 @@ export class ImageOptions {
 }
 
 export default class AssetService {
-  public static getAssetUrl(filename: string) {
+  static getAssetUrl(filename: string) {
     return `/img/${filename}`
   }
 
-  public static getParamFilename(params: Array<string> | Record<string, any>): string {
+  static getParamFilename(params: Array<string> | Record<string, any>): string {
     if (Array.isArray(params)) {
-      return params.join('/');
+      return params.join('/')
     }
 
     if (params['*']) {
@@ -31,27 +31,27 @@ export default class AssetService {
     return Object.values(params).join('/')
   }
 
-  public static getFileExtension(file: any): string {
-    const contentType = file.headers['content-type'];
-    const subtype = contentType.slice(contentType.lastIndexOf('/') + 1);
-    let extension = subtype.split('+')[0];
-    return extension;
+  static getFileExtension(file: any): string {
+    const contentType = file.headers['content-type']
+    const subtype = contentType.slice(contentType.lastIndexOf('/') + 1)
+    let extension = subtype.split('+')[0]
+    return extension
   }
 
-  public static getFilenameExtension(filename: string, defaultValue: string = 'jpg') {
+  static getFilenameExtension(filename: string, defaultValue: string = 'jpg') {
     const name = filename.split('/').pop()
-    
+
     if (!name) return defaultValue
 
     return name.includes('.') ? name.split('.').pop() : defaultValue
   }
 
-  public static getAlteredImage(file: Buffer | string, options: ImageOptions) {
+  static getAlteredImage(file: Buffer | string, options: ImageOptions) {
     if (options.format === 'svg+xml') return
-    let image = sharp(file);
-    return image.metadata().then(metadata => {
-      const toOptions = options.quality ? { quality: options.quality } : {};
-      
+    let image = sharp(file)
+    return image.metadata().then((metadata) => {
+      const toOptions = options.quality ? { quality: options.quality } : {}
+
       image
         .resize(options.width || metadata.width)
         .toFormat(options.format as keyof FormatEnum | AvailableFormatInfo, toOptions)
@@ -59,48 +59,48 @@ export default class AssetService {
       if (options.blur) {
         image = image.blur(options.blur)
       }
-        
+
       return image.toBuffer()
-    });
+    })
   }
 
-  public static getImageOptions(queries: Record<string, string>, path: string): ImageOptions {
-    const isSVG = path.endsWith('.svg');
-    let options = new ImageOptions();
+  static getImageOptions(queries: Record<string, string>, path: string): ImageOptions {
+    const isSVG = path.endsWith('.svg')
+    let options = new ImageOptions()
 
     for (let key in queries) {
       switch (key) {
         case 'w':
         case 'width':
-          options.width = parseInt(queries[key]);
-          break;
+          options.width = Number.parseInt(queries[key])
+          break
         case 'q':
         case 'quality':
-          options.quality = parseInt(queries[key]);
-          break;
+          options.quality = Number.parseInt(queries[key])
+          break
         case 'f':
         case 'format':
-          options.format = queries[key] as keyof FormatEnum | AvailableFormatInfo | 'svg+xml';
-          break;
+          options.format = queries[key] as keyof FormatEnum | AvailableFormatInfo | 'svg+xml'
+          break
         case 'blur':
-          options.blur = parseInt(queries[key] || '0')
+          options.blur = Number.parseInt(queries[key] || '0')
           break
       }
     }
 
     if (!options.format) {
-      const [_, format] = path.split('.');
-      options.format = isSVG ? 'svg' : format as keyof FormatEnum;
+      const format = path.split('.').at(1)
+      options.format = isSVG ? 'svg' : (format as keyof FormatEnum)
     }
 
     options.name = `width_${options.width}__quality_${options.quality}.${options.format}`
 
-    return options;
+    return options
   }
 
-  public static async refreshAvatar(user: User, socialUser: AllyUserContract<GithubToken | GoogleToken>) {
+  static async refreshAvatar(user: User, socialUser: AllyUserContract<GithubToken | GoogleToken>) {
     if (!socialUser.avatarUrl || user.avatarUrl?.startsWith(`${user.id}/profile/`)) return
-    
+
     const response = await crossFetch(socialUser.avatarUrl)
     const arrayBuffer = await response.arrayBuffer()
     const buffer = new Buffer(arrayBuffer)
@@ -108,7 +108,7 @@ export default class AssetService {
 
     if (user.avatarUrl === filename) return
 
-    if (app.inProduction && await storage.exists(filename)) {
+    if (app.inProduction && (await storage.exists(filename))) {
       await storage.destroy(filename)
     }
 
@@ -119,13 +119,18 @@ export default class AssetService {
     await user.save()
   }
 
-  public static getAvatarFilename(user: User, url: string) {
+  static getAvatarFilename(user: User, url: string) {
     const prefix = app.inProduction ? '' : 'local/'
-    const extension = this.getFilenameExtension(url, 'jpg');
-    return `${prefix}${user.id}/avatar.${extension}`;
+    const extension = this.getFilenameExtension(url, 'jpg')
+    return `${prefix}${user.id}/avatar.${extension}`
   }
 
-  public static async syncAssetTypes(assetIds: number[] | undefined, assetTypeIds: number[] | undefined, altTexts: (string | undefined)[] | undefined, credits: (string | undefined)[] | undefined) {
+  static async syncAssetTypes(
+    assetIds: number[] | undefined,
+    assetTypeIds: number[] | undefined,
+    altTexts: (string | undefined)[] | undefined,
+    credits: (string | undefined)[] | undefined
+  ) {
     if (!assetIds || !assetTypeIds) return
 
     const promises = assetIds.map((id, i) => {
@@ -138,3 +143,4 @@ export default class AssetService {
     await Promise.all(promises)
   }
 }
+

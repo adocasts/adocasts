@@ -11,7 +11,7 @@
 
   @slot('list')
     <div class="flex flex-col">
-      @if (post.transcriptUrl)
+      @if (transcript)
         @!post.transcript()
       @endif
 
@@ -82,7 +82,11 @@
           @!post.completed()
         @endif
 
-        @!watchlist.toggle({ active: parseInt(post.$extras.watchlist_count ?? 0), postId: post.id })
+        @!watchlist.toggle({ 
+          active: parseInt(post.$extras.watchlist_count ?? 0), 
+          postId: post.id,
+          class: 'w-full md:w-auto'
+        })
 
         @if (!auth.user)
           @button({ href: route('auth.signup.create'), class: 'gap-2', 'up-layer': 'new' })
@@ -176,7 +180,6 @@
   </div>
 
   <div class="relative max-w-prose xl:max-w-[70ch] mx-auto">
-    {{ inspect(transcript) }}
     @can('AdPolicy.view')
       @if (adLeaderboard)
         @!ad.display({ ad: adLeaderboard, class: 'mb-8' })

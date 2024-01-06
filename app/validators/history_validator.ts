@@ -9,6 +9,7 @@ export const historyValidator = vine.compile(
     readPercent: vine.number().positive().optional(),
     watchPercent: vine.number().positive().optional(),
     watchSeconds: vine.number().positive().optional(),
-    isCompleted: vine.boolean().optional()
+    isCompleted: vine.boolean().optional(),
   })
 )
+

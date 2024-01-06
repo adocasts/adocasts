@@ -37,7 +37,7 @@ export default class CommentsController {
       up.setLocation(`${referrer.split('#')[0]}#comment${comment.id}`)
     }
 
-    session.flash('success', "Your comment has been updated")
+    session.flash('success', 'Your comment has been updated')
 
     return referrer
       ? response.redirect(`${referrer.split('#')[0]}#comment${comment.id}`)
@@ -50,7 +50,7 @@ export default class CommentsController {
     const comment = await Comment.findOrFail(params.id)
 
     await comment.load('user')
-    await comment.load('userVotes', query => query.select('id'))
+    await comment.load('userVotes', (query) => query.select('id'))
 
     return view.render('components/comments/like', { comment })
   }
@@ -62,8 +62,9 @@ export default class CommentsController {
 
     await this.commentService.destroy(comment)
 
-    session.flash('success', "Your comment has been deleted")
+    session.flash('success', 'Your comment has been deleted')
 
     return response.redirect().back()
   }
 }
+

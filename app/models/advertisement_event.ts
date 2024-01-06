@@ -37,7 +37,7 @@ export default class AdvertisementEvent extends BaseModel {
 
   @column()
   declare os: string
-  
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
@@ -47,3 +47,4 @@ export default class AdvertisementEvent extends BaseModel {
   @belongsTo(() => Advertisement)
   declare advertisement: BelongsTo<typeof Advertisement>
 }
+

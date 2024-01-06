@@ -1,31 +1,31 @@
 import string from '@adonisjs/core/helpers/string'
-import NotificationService from '#services/notification_service';
-import router from '@adonisjs/core/services/router';
-import { DateTime } from "luxon";
-import Comment from "#models/comment";
-import History from "#models/history";
-import UtilityService from "#services/utility_service";
-import LessonRequest from "#models/lesson_request";
-import User from "#models/user";
-import Post from "#models/post";
-import PostTypes, { PostTypeDesc } from "#enums/post_types";
-import RequestVote from "#models/request_vote";
-import CommentVote from "#models/comment_vote";
-import Discussion from '#models/discussion';
-import DiscussionVote from '#models/discussion_vote';
+import NotificationService from '#services/notification_service'
+import router from '@adonisjs/core/services/router'
+import { DateTime } from 'luxon'
+import Comment from '#models/comment'
+import History from '#models/history'
+import UtilityService from '#services/utility_service'
+import LessonRequest from '#models/lesson_request'
+import User from '#models/user'
+import Post from '#models/post'
+import PostTypes, { PostTypeDesc } from '#enums/post_types'
+import RequestVote from '#models/request_vote'
+import CommentVote from '#models/comment_vote'
+import Discussion from '#models/discussion'
+import DiscussionVote from '#models/discussion_vote'
 
 class Types {
-  public static COMMENT = 'comment'
-  public static REPLY = 'reply'
-  public static LESSON_REQUEST = 'lessonRequest'
-  public static LESSON_COMPLETED = 'lessonCompleted'
-  public static ACCOUNT_CREATED = 'accountCreated'
-  public static POST = 'post'
-  public static ANNIVERSARY = 'anniversary'
-  public static VOTE = 'vote'
-  public static DISCUSSION = 'discussion'
+  static COMMENT = 'comment'
+  static REPLY = 'reply'
+  static LESSON_REQUEST = 'lessonRequest'
+  static LESSON_COMPLETED = 'lessonCompleted'
+  static ACCOUNT_CREATED = 'accountCreated'
+  static POST = 'post'
+  static ANNIVERSARY = 'anniversary'
+  static VOTE = 'vote'
+  static DISCUSSION = 'discussion'
 
-  public static icon(type: Types) {
+  static icon(type: Types) {
     switch (type) {
       case this.COMMENT:
         return 'ph:chat-circle-text-fill'
@@ -64,7 +64,7 @@ interface ActivityModel {
 }
 
 export default class ActivityVM {
-  public titleLength = 60
+  titleLength = 60
 
   declare type: Types
   declare titleDescriptor: string
@@ -73,7 +73,7 @@ export default class ActivityVM {
   declare body: string
   declare icon: string
   declare createdAt: DateTime
-  public color: string = 'bg-slate-200 text-slate-600'
+  color: string = 'bg-slate-200 text-slate-600'
 
   constructor(public activity?: ActivityModel) {
     if (activity?.post) {
@@ -95,7 +95,7 @@ export default class ActivityVM {
     }
   }
 
-  public get createdAtDisplay() {
+  get createdAtDisplay() {
     if (this.createdAt.year !== DateTime.now().year) {
       return this.createdAt.toFormat('MMM dd, yyyy')
     }
@@ -136,7 +136,11 @@ export default class ActivityVM {
 
   private buildForComment(comment: Comment) {
     this.type = Types.COMMENT
-    this.titleDescriptor = comment.lessonRequest ? 'Commented on request' : comment.discussion ? 'Replied to discussion' : 'Commented on post'
+    this.titleDescriptor = comment.lessonRequest
+      ? 'Commented on request'
+      : comment.discussion
+        ? 'Replied to discussion'
+        : 'Commented on post'
     this.body = comment.body
     this.createdAt = comment.createdAt
     this.icon = Types.icon(this.type)
@@ -144,7 +148,9 @@ export default class ActivityVM {
     if (comment.replyTo) {
       this.type = Types.REPLY
       this.titleDescriptor = 'Replied to'
-      this.title = string.excerpt(UtilityService.stripHTML(comment.parent.body), this.titleLength, { completeWords: true })
+      this.title = string.excerpt(UtilityService.stripHTML(comment.parent.body), this.titleLength, {
+        completeWords: true,
+      })
       this.href = NotificationService.getGoPath(comment)
       this.icon = Types.icon(this.type)
       return
@@ -159,7 +165,7 @@ export default class ActivityVM {
       this.href = router.makeUrl('feed.show', { slug: comment.discussion.slug })
       return
     }
-    
+
     this.title = comment.post?.title
     this.href = comment.post?.routeUrl
   }
@@ -213,13 +219,15 @@ export default class ActivityVM {
   private buildForVoteCommentVote(vote: CommentVote) {
     this.type = Types.VOTE
     this.titleDescriptor = 'Upvoted comment'
-    this.title = string.excerpt(UtilityService.stripHTML(vote.comment.body), this.titleLength, { completeWords: true })
+    this.title = string.excerpt(UtilityService.stripHTML(vote.comment.body), this.titleLength, {
+      completeWords: true,
+    })
     this.href = NotificationService.getGoPath(vote.comment)
     this.createdAt = vote.createdAt
     this.icon = Types.icon(this.type)
   }
 
-  public static getForUserCreated(user: User) {
+  static getForUserCreated(user: User) {
     const activity = new ActivityVM()
     activity.type = Types.ACCOUNT_CREATED
     activity.titleDescriptor = 'Account created'
@@ -230,7 +238,7 @@ export default class ActivityVM {
     return activity
   }
 
-  public static getForUserAnniversary(user: User, years: number) {
+  static getForUserAnniversary(user: User, years: number) {
     const activity = new ActivityVM()
     let titleDescriptor = 'Anniversary'
     let title = `Thanks for being an Acocasts member for ${years} year${years > 1 ? 's' : ''}`
@@ -241,7 +249,7 @@ export default class ActivityVM {
     } else if (years % 5 === 0) {
       titleDescriptor = `Anniversary milestone`
       title = `Thanks for spending ${years} years with Adocasts!`
-    } 
+    }
 
     activity.type = Types.ANNIVERSARY
     activity.titleDescriptor = titleDescriptor
@@ -253,3 +261,4 @@ export default class ActivityVM {
     return activity
   }
 }
+

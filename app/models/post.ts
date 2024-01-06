@@ -1,11 +1,5 @@
 import { DateTime } from 'luxon'
-import {
-  beforeSave,
-  column,
-  computed,
-  hasMany,
-  manyToMany, scope
-} from '@adonisjs/lucid/orm'
+import { beforeSave, column, computed, hasMany, manyToMany, scope } from '@adonisjs/lucid/orm'
 import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import Asset from '#models/asset'
 import PostSnapshot from '#models/post_snapshot'
@@ -13,7 +7,7 @@ import User from '#models/user'
 import Comment from '#models/comment'
 // import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
 import State from '#enums/states'
-import Taxonomy from "#models/taxonomy"
+import Taxonomy from '#models/taxonomy'
 import ReadService from '#services/read_service'
 import BodyTypes from '#enums/body_types'
 import PostType from '#enums/post_types'
@@ -33,7 +27,7 @@ import SlugService from '#services/slug_service'
 import router from '@adonisjs/core/services/router'
 
 export default class Post extends AppBaseModel {
-  public serializeExtras = true
+  serializeExtras = true
 
   @column({ isPrimary: true })
   declare id: number
@@ -62,7 +56,7 @@ export default class Post extends AppBaseModel {
 
   @column()
   declare body: string | null
-  public bodyDisplay: string = ''
+  bodyDisplay: string = ''
 
   @column()
   declare bodyBlocks: object | string | null
@@ -141,21 +135,21 @@ export default class Post extends AppBaseModel {
 
   @manyToMany(() => Asset, {
     pivotTable: 'asset_posts',
-    pivotColumns: ['sort_order']
+    pivotColumns: ['sort_order'],
   })
   declare assets: ManyToMany<typeof Asset>
 
   @manyToMany(() => Asset, {
     pivotTable: 'asset_posts',
     pivotColumns: ['sort_order'],
-    onQuery: q => q.where('assetTypeId', AssetTypes.THUMBNAIL)
+    onQuery: (q) => q.where('assetTypeId', AssetTypes.THUMBNAIL),
   })
   declare thumbnails: ManyToMany<typeof Asset>
 
   @manyToMany(() => Asset, {
     pivotTable: 'asset_posts',
     pivotColumns: ['sort_order'],
-    onQuery: q => q.where('assetTypeId', AssetTypes.COVER)
+    onQuery: (q) => q.where('assetTypeId', AssetTypes.COVER),
   })
   declare covers: ManyToMany<typeof Asset>
 
@@ -167,13 +161,13 @@ export default class Post extends AppBaseModel {
 
   @manyToMany(() => User, {
     pivotTable: 'author_posts',
-    pivotColumns: ['author_type_id']
+    pivotColumns: ['author_type_id'],
   })
   declare authors: ManyToMany<typeof User>
 
   @manyToMany(() => Taxonomy, {
     pivotTable: 'post_taxonomies',
-    pivotColumns: ['sort_order']
+    pivotColumns: ['sort_order'],
   })
   declare taxonomies: ManyToMany<typeof Taxonomy>
 
@@ -181,7 +175,7 @@ export default class Post extends AppBaseModel {
     onQuery(query) {
       query.where('collectionTypeId', CollectionTypes.SERIES)
     },
-    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
+    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order'],
   })
   declare series: ManyToMany<typeof Collection>
 
@@ -190,7 +184,7 @@ export default class Post extends AppBaseModel {
       query.where('collectionTypeId', CollectionTypes.SERIES)
     },
     pivotRelatedForeignKey: 'root_collection_id',
-    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
+    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order'],
   })
   declare rootSeries: ManyToMany<typeof Collection>
 
@@ -199,7 +193,7 @@ export default class Post extends AppBaseModel {
       query.where('collectionTypeId', CollectionTypes.PATH)
     },
     pivotRelatedForeignKey: 'root_collection_id',
-    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
+    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order'],
   })
   declare rootPaths: ManyToMany<typeof Collection>
 
@@ -207,7 +201,7 @@ export default class Post extends AppBaseModel {
     onQuery(query) {
       query.where('collectionTypeId', CollectionTypes.COURSE)
     },
-    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
+    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order'],
   })
   declare courses: ManyToMany<typeof Collection>
 
@@ -215,7 +209,7 @@ export default class Post extends AppBaseModel {
     onQuery(query) {
       query.where('collectionTypeId', CollectionTypes.PLAYLIST)
     },
-    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
+    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order'],
   })
   declare playlists: ManyToMany<typeof Collection>
 
@@ -223,22 +217,22 @@ export default class Post extends AppBaseModel {
     onQuery(query) {
       query.where('collectionTypeId', CollectionTypes.PATH)
     },
-    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
+    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order'],
   })
   declare paths: ManyToMany<typeof Collection>
 
   @manyToMany(() => Collection, {
-    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
+    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order'],
   })
   declare collections: ManyToMany<typeof Collection>
 
   @hasMany(() => History, {
-    onQuery: q => q.where('historyTypeId', HistoryTypes.VIEW)
+    onQuery: (q) => q.where('historyTypeId', HistoryTypes.VIEW),
   })
   declare viewHistory: HasMany<typeof History>
 
   @hasMany(() => History, {
-    onQuery: q => q.where('historyTypeId', HistoryTypes.PROGRESSION)
+    onQuery: (q) => q.where('historyTypeId', HistoryTypes.PROGRESSION),
   })
   declare progressionHistory: HasMany<typeof History>
 
@@ -246,7 +240,7 @@ export default class Post extends AppBaseModel {
   declare watchlist: HasMany<typeof Watchlist>
 
   @computed()
-  public get publishAtDisplay() {
+  get publishAtDisplay() {
     if (!this.publishAt) return ''
 
     if (DateTime.now().year === this.publishAt.year) {
@@ -257,7 +251,7 @@ export default class Post extends AppBaseModel {
   }
 
   @computed()
-  public get publishAtDateString() {
+  get publishAtDateString() {
     let dte = this.publishAt
 
     if (dte && this.timezone) {
@@ -269,7 +263,7 @@ export default class Post extends AppBaseModel {
   }
 
   @computed()
-  public get publishAtTimeString() {
+  get publishAtTimeString() {
     let dte = this.publishAt
 
     if (dte && this.timezone) {
@@ -281,7 +275,7 @@ export default class Post extends AppBaseModel {
   }
 
   @computed()
-  public get isPublished(): boolean {
+  get isPublished(): boolean {
     const isdeclare = this.stateId === State.PUBLIC
 
     if (!this.publishAt) {
@@ -294,8 +288,8 @@ export default class Post extends AppBaseModel {
   }
 
   @computed()
-  public get isViewable(): boolean {
-    const isdeclareOrUnlisted = this.stateId === State.PUBLIC || this.stateId === State.UNLISTED;
+  get isViewable(): boolean {
+    const isdeclareOrUnlisted = this.stateId === State.PUBLIC || this.stateId === State.UNLISTED
 
     if (!this.publishAt) {
       return isdeclareOrUnlisted
@@ -307,32 +301,32 @@ export default class Post extends AppBaseModel {
   }
 
   @computed()
-  public get isNotViewable() {
-    return this.stateId !== State.PUBLIC && this.stateId !== State.UNLISTED;
+  get isNotViewable() {
+    return this.stateId !== State.PUBLIC && this.stateId !== State.UNLISTED
   }
 
   @computed()
-  public get paywallDaysRemaining() {
+  get paywallDaysRemaining() {
     const { days } = this.publishAt!.plus({ days: 14 }).diffNow('days')
     return days
   }
 
   @computed()
-  public get paywallTimeAgo() {
+  get paywallTimeAgo() {
     if (!this.publishAt) return
     return UtilityService.timeago(this.publishAt.plus({ days: 14 }))
   }
 
   @computed()
-  public get isPaywalled() {
+  get isPaywalled() {
     if (this.paywallTypeId === PaywallTypes.NONE) return false
     if (this.paywallTypeId === PaywallTypes.FULL) return true
-    
+
     return this.paywallDaysRemaining > 0
   }
 
   @computed()
-  public get rootSortOrder() {
+  get rootSortOrder() {
     if (!this.series || !this.series.length) {
       return undefined
     }
@@ -341,76 +335,76 @@ export default class Post extends AppBaseModel {
   }
 
   @computed()
-  public get videoId() {
+  get videoId() {
     if (this.videoTypeId === VideoTypes.BUNNY) {
       return this.videoBunnyId
     }
 
-    if (!this.videoUrl) return '';
+    if (!this.videoUrl) return ''
 
     return this.videoUrl
       .replace('https://www.', 'https://')
       .replace('https://youtube.com/watch?v=', '')
       .replace('https://youtube.com/embed/', '')
-      .replace('https://youtu.be/', '');
+      .replace('https://youtu.be/', '')
   }
 
   @computed()
-  public get bunnyHlsUrl() {
+  get bunnyHlsUrl() {
     if (this.videoTypeId !== VideoTypes.BUNNY) return
 
     return `https://videos.adocasts.com/${this.videoBunnyId}/playlist.m3u8`
   }
 
   @computed()
-  public get bunnyFallbackUrls() {
+  get bunnyFallbackUrls() {
     if (this.videoTypeId !== VideoTypes.BUNNY) return
-    
+
     // note: bunny stream only provides direct mp4 files up to 720p
     // but that's okay because these are fallbacks in the event hls isn't support by the user
     const baseUrl = `https://videos.adocasts.com/${this.videoBunnyId}`
     const heights = ['480', '720']
 
-    return heights.map(height => ({ height, src: `${baseUrl}/play_${height}p.mp4` }))
+    return heights.map((height) => ({ height, src: `${baseUrl}/play_${height}p.mp4` }))
   }
 
   @computed()
-  public get bunnySubtitleUrls() {
+  get bunnySubtitleUrls() {
     if (this.videoTypeId !== VideoTypes.BUNNY) return
 
     const langs = [{ label: 'English', code: 'en' }]
 
-    return langs.map(lang => ({
+    return langs.map((lang) => ({
       ...lang,
-      src: `https://videos.adocasts.com/${this.videoBunnyId}/captions/${lang.code}.vtt`
+      src: `https://videos.adocasts.com/${this.videoBunnyId}/captions/${lang.code}.vtt`,
     }))
   }
 
   @computed()
-  public get transcriptUrl() {
+  get transcriptUrl() {
     if (this.videoTypeId !== VideoTypes.BUNNY) return
 
     return this.bunnySubtitleUrls?.at(0)?.src
   }
 
   @computed()
-  public get streamId() {
-    if (!this.livestreamUrl) return '';
+  get streamId() {
+    if (!this.livestreamUrl) return ''
 
     return this.livestreamUrl
       .replace('https://www.', 'https://')
       .replace('https://youtube.com/watch?v=', '')
       .replace('https://youtube.com/embed/', '')
-      .replace('https://youtu.be/', '');
+      .replace('https://youtu.be/', '')
   }
 
   @computed()
-  public get hasVideo() {
+  get hasVideo() {
     return this.videoUrl || this.livestreamUrl || this.videoBunnyId
   }
 
   @computed()
-  public get isInWatchlist() {
+  get isInWatchlist() {
     if (!this.$extras.watchlist_count) {
       return false
     }
@@ -419,34 +413,37 @@ export default class Post extends AppBaseModel {
   }
 
   @computed()
-  public get timeago() {
+  get timeago() {
     return UtilityService.timeago(this.publishAt)
   }
 
   @computed()
-  public get watchMinutes() {
+  get watchMinutes() {
     if (!this.videoSeconds) return 0
     return UtilityService.secondsToTimestring(this.videoSeconds)
   }
 
   @computed()
-  public get readMinutesDisplay() {
+  get readMinutesDisplay() {
     if (!this.readTime) return 0
-    const minutes = Math.floor(this.readTime / 60000);
-    const seconds = ((this.readTime % 60000) / 1000).toFixed(0);
-    return `${minutes}:${(parseInt(seconds) < 10 ? "0" : "")}${seconds}`;
+    const minutes = Math.floor(this.readTime / 60000)
+    const seconds = ((this.readTime % 60000) / 1000).toFixed(0)
+    return `${minutes}:${Number.parseInt(seconds) < 10 ? '0' : ''}${seconds}`
   }
 
   @computed()
-  public get routeUrl() {
+  get routeUrl() {
     if (this.redirectUrl) return this.redirectUrl
 
     let namePrefix = ''
-    let params: { collectionSlug?: string, slug: string } = { slug: this.slug }
-    
-    if (typeof this.$extras.pivot_sort_order != undefined && (this.rootSeries?.length || this.rootPaths?.length)) {
+    let params: { collectionSlug?: string; slug: string } = { slug: this.slug }
+
+    if (
+      typeof this.$extras.pivot_sort_order !== 'undefined' &&
+      (this.rootSeries?.length || this.rootPaths?.length)
+    ) {
       const series = this.rootPaths?.length ? this.rootPaths.at(0) : this.rootSeries.at(0)
-      
+
       switch (series?.collectionTypeId) {
         case CollectionTypes.SERIES:
           namePrefix = 'series.'
@@ -480,7 +477,7 @@ export default class Post extends AppBaseModel {
   }
 
   @beforeSave()
-  public static async slugifySlug(post: Post) {
+  static async slugifySlug(post: Post) {
     if (post.$dirty.title && !post.$dirty.slug && !post.slug) {
       const slugify = new SlugService<typeof Post>({ strategy: 'dbIncrement', fields: ['title'] })
       post.slug = await slugify.make(Post, 'title', post.title)
@@ -488,7 +485,7 @@ export default class Post extends AppBaseModel {
   }
 
   @beforeSave()
-  public static async setReadTimeValues(post: Post) {
+  static async setReadTimeValues(post: Post) {
     if (post.$dirty.bodyBlocks) {
       // post.bodyTypeId = BodyTypes.JSON
       // await EditorBlockParser.parse(post)
@@ -503,10 +500,10 @@ export default class Post extends AppBaseModel {
   }
 
   @computed()
-  public get lessonIndexDisplay() {
+  get lessonIndexDisplay() {
     const path = this.rootPaths?.length && this.paths[0]
     const series = this.series?.length && this.series[0]
-    
+
     if (path) {
       return !path.parentId
         ? `${path.$extras.pivot_sort_order + 1}.0`
@@ -524,8 +521,8 @@ export default class Post extends AppBaseModel {
     return `${series.sortOrder + 1}.${series.$extras.pivot_sort_order}`
   }
 
-  public getIndexDisplay(series: Collection | undefined) {
-    const postSeries = this.series?.find(s => s.id === series?.id)
+  getIndexDisplay(series: Collection | undefined) {
+    const postSeries = this.series?.find((s) => s.id === series?.id)
 
     if (!postSeries) return ''
 
@@ -536,97 +533,125 @@ export default class Post extends AppBaseModel {
     return `${postSeries.sortOrder + 1}.${postSeries.$extras.pivot_sort_order}`
   }
 
-  public static lessons() {
+  static lessons() {
     return this.query().where('postTypeId', PostType.LESSON)
   }
 
-  public static blogs() {
+  static blogs() {
     return this.query().where('postTypeId', PostType.BLOG)
   }
 
-  public static news() {
+  static news() {
     return this.query().where('postTypeId', PostType.NEWS)
   }
 
-  public static livestreams() {
+  static livestreams() {
     return this.query().where('postTypeId', PostType.LIVESTREAM)
   }
 
-  public static links() {
+  static links() {
     return this.query().where('postTypeId', PostType.LINK)
   }
 
-  public static snippets() {
+  static snippets() {
     return this.query().where('postTypeId', PostType.SNIPPET)
   }
 
-  public static loadForDisplay() {
-    return this.query().apply(scope => scope.forDisplay())
+  static loadForDisplay() {
+    return this.query().apply((s) => s.forDisplay())
   }
 
-  public static progression = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query, user: User | undefined = undefined) => {
-    query
-      .if(user, query => query
-        .preload('progressionHistory', query => query
-          .where({ userId: user!.id })
-          .orderBy('updated_at', 'desc')
-          .first()
+  static progression = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>(
+    (query, user: User | undefined = undefined) => {
+      query.if(user, (truthy) =>
+        truthy.preload('progressionHistory', (history) =>
+          history.where({ userId: user!.id }).orderBy('updated_at', 'desc').first()
         )
       )
+    }
+  )
+
+  static published = scope((query) => {
+    query.where('stateId', States.PUBLIC).where('publishAt', '<=', DateTime.now().toSQL()!)
   })
 
-  public static published = scope((query) => {
-    query
-      .where('stateId', States.PUBLIC)
-      .where('publishAt', '<=', DateTime.now().toSQL()!)
-  })
-
-  public static publishedPublic = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query) => {
-    query
-      .where('stateId', States.PUBLIC)
-      .where(query => query
+  static publishedPublic = scope<
+    typeof Post,
+    (query: ModelQueryBuilderContract<typeof Post>) => void
+  >((query) => {
+    query.where('stateId', States.PUBLIC).where((and) =>
+      and
         .where('paywallTypeId', PaywallTypes.DELAYED_RELEASE)
         .where('publishAt', '<=', DateTime.now().minus({ days: 14 }).toSQL()!)
         .orWhere('paywallTypeId', PaywallTypes.NONE)
-      )
+    )
   })
 
-  public static forDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query) => {
+  static forDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>(
+    (query) => {
+      // const ctx = HttpContext.get()
+
+      query
+        // .if(ctx?.auth.user, query => query.withCount('watchlist', query => query.where('userId', ctx!.auth.user!.id)))
+        .preload('thumbnails')
+        .preload('covers')
+        .preload('taxonomies')
+        .preload('rootSeries')
+        .preload('series')
+        .preload('authors', (authors) => authors.preload('profile'))
+    }
+  )
+
+  static forPathDisplay = scope<
+    typeof Post,
+    (query: ModelQueryBuilderContract<typeof Post>) => void
+  >((query, skipPublishCheck: boolean = false) => {
     // const ctx = HttpContext.get()
 
     query
-      // .if(ctx?.auth.user, query => query.withCount('watchlist', query => query.where('userId', ctx!.auth.user!.id)))
-      .preload('thumbnails')
-      .preload('covers')
-      .preload('taxonomies')
-      .preload('rootSeries')
-      .preload('series')
-      .preload('authors', query => query.preload('profile'))
-  })
-
-  public static forPathDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query, skipPublishCheck: boolean = false) => {
-    // const ctx = HttpContext.get()
-
-    query
-      .if(!skipPublishCheck, query => query.apply(scope => scope.published()))
+      .if(!skipPublishCheck, (truthy) => truthy.apply((s) => s.published()))
       // .if(ctx?.auth.user, query => query.withCount('watchlist', query => query.where('userId', ctx!.auth.user!.id)))
       .preload('thumbnails')
       .preload('covers')
       .preload('taxonomies')
       .preload('rootPaths')
       .preload('paths')
-      .preload('authors', query => query.preload('profile'))
+      .preload('authors', (authors) => authors.preload('profile'))
   })
 
-  public static forCollectionDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query, { orderBy, direction }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order', direction: 'asc' | 'desc' } = { orderBy: 'pivot_sort_order', direction: 'asc' }) => {
-    query
-      .apply(scope => scope.forDisplay())
-      .orderBy(orderBy, direction)
-  })
+  static forCollectionDisplay = scope<
+    typeof Post,
+    (query: ModelQueryBuilderContract<typeof Post>) => void
+  >(
+    (
+      query,
+      {
+        orderBy,
+        direction,
+      }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order'; direction: 'asc' | 'desc' } = {
+        orderBy: 'pivot_sort_order',
+        direction: 'asc',
+      }
+    ) => {
+      query.apply((s) => s.forDisplay()).orderBy(orderBy, direction)
+    }
+  )
 
-  public static forCollectionPathDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>((query, { orderBy, direction }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order', direction: 'asc' | 'desc' } = { orderBy: 'pivot_sort_order', direction: 'asc' }) => {
-    query
-      .apply(scope => scope.forPathDisplay())
-      .orderBy(orderBy, direction)
-  })
+  static forCollectionPathDisplay = scope<
+    typeof Post,
+    (query: ModelQueryBuilderContract<typeof Post>) => void
+  >(
+    (
+      query,
+      {
+        orderBy,
+        direction,
+      }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order'; direction: 'asc' | 'desc' } = {
+        orderBy: 'pivot_sort_order',
+        direction: 'asc',
+      }
+    ) => {
+      query.apply((s) => s.forPathDisplay()).orderBy(orderBy, direction)
+    }
+  )
 }

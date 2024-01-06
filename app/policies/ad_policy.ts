@@ -4,7 +4,8 @@ import type { AuthorizerResponse } from '@adonisjs/bouncer/types'
 
 export default class AdPolicy extends BasePolicy {
   @allowGuest()
-  public view(user: User): AuthorizerResponse {
+  view(user: User): AuthorizerResponse {
     return !user || user.isFreeTier
-  } 
+  }
 }
+

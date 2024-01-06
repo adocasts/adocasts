@@ -1,8 +1,7 @@
-import { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints.js";
-import NotionTopicVM from "./notion_series.js";
-import { DateTime } from "luxon";
-import NotionSeriesVM from "./notion_series.js";
-import NotionModuleVM from "./notion_module.js";
+import { DatabaseObjectResponse } from '@notionhq/client/build/src/api-endpoints.js'
+import { DateTime } from 'luxon'
+import NotionSeriesVM from './notion_series.js'
+import NotionModuleVM from './notion_module.js'
 
 export default class NotionPostVM {
   declare id: string
@@ -21,9 +20,9 @@ export default class NotionPostVM {
     this.id = record.id
     this.title = properties['Name'].title[0].plain_text
     this.seriesId = properties['Series'].relation.at(0)?.id
-    this.series = series.find(item => item.id === this.seriesId)
+    this.series = series.find((item) => item.id === this.seriesId)
     this.moduleId = properties['Modules'].relation.at(0)?.id
-    this.module = modules.find(item => item.id === this.moduleId)
+    this.module = modules.find((item) => item.id === this.moduleId)
     this.status = properties['Status'].status?.name
     this.type = properties['Type'].select?.name
 
@@ -32,3 +31,4 @@ export default class NotionPostVM {
     }
   }
 }
+

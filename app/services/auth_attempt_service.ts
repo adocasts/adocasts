@@ -1,50 +1,50 @@
-import AuthAttemptPurposes from "#enums/auth_attempt_purposes"
-import AuthAttempt from "#models/auth_attempt"
-import { DateTime } from "luxon"
+import AuthAttemptPurposes from '#enums/auth_attempt_purposes'
+import AuthAttempt from '#models/auth_attempt'
+import { DateTime } from 'luxon'
 
 export default class AuthAttemptService {
   protected static allowedAttempts = 3
 
   /**
    * Gets the number of bad login attempts for a uid
-   * @param uid 
-   * @returns 
+   * @param uid
+   * @returns
    */
-  public static async badAttempts(uid: string): Promise<number> {
+  static async badAttempts(uid: string): Promise<number> {
     const attempts = await AuthAttempt.query()
       .where({ uid })
       .whereNull('deletedAt')
       .count('id')
       .first()
 
-    return parseInt(attempts?.$extras.count ?? 0)
+    return Number.parseInt(attempts?.$extras.count ?? 0)
   }
 
   /**
    * Gets remaining number of bad attempts before penalty
-   * @param uid 
-   * @returns 
+   * @param uid
+   * @returns
    */
-  public static async remainingAttempts(uid: string) {
+  static async remainingAttempts(uid: string) {
     const attempts = await this.badAttempts(uid)
     return this.allowedAttempts - attempts
   }
 
   /**
    * Gets whether uid has remaining auth attempts
-   * @param uid 
-   * @returns 
+   * @param uid
+   * @returns
    */
-  public static async hasAttempts(uid: string) {
+  static async hasAttempts(uid: string) {
     const remaining = await this.remainingAttempts(uid)
     return remaining >= 0
   }
 
   /**
    * Clears bad auth attempts for uid
-   * @param uid 
+   * @param uid
    */
-  public static async clearAttempts(uid: string) {
+  static async clearAttempts(uid: string) {
     await AuthAttempt.query()
       .where({ uid })
       .whereNull('deletedAt')
@@ -53,23 +53,23 @@ export default class AuthAttemptService {
 
   /**
    * Records a bad login attempt for the uid
-   * @param uid 
+   * @param uid
    */
-  public static async recordLoginAttempt(uid: string) {
+  static async recordLoginAttempt(uid: string) {
     await AuthAttempt.create({
       uid,
-      purposeId: AuthAttemptPurposes.LOGIN
+      purposeId: AuthAttemptPurposes.LOGIN,
     })
   }
 
   /**
    * Records a bad email change attempt for the uid
-   * @param uid 
+   * @param uid
    */
-  public static async recordChangeEmailAttempt(uid: string) {
+  static async recordChangeEmailAttempt(uid: string) {
     await AuthAttempt.create({
       uid,
-      purposeId: AuthAttemptPurposes.CHANGE_EMAIL
+      purposeId: AuthAttemptPurposes.CHANGE_EMAIL,
     })
   }
 }

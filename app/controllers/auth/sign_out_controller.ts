@@ -4,10 +4,13 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 export default class SignOutController {
   @inject()
-  public async handle({ request, response, auth, session, up }: HttpContext, sessionService: SessionService) {
+  async handle(
+    { request, response, auth, session, up }: HttpContext,
+    sessionService: SessionService
+  ) {
     let { forward } = request.only(['forward'])
     const user = auth.user!
-    
+
     await auth.use('web').logout()
     await sessionService.onSignOutSuccess(user)
 
@@ -15,10 +18,15 @@ export default class SignOutController {
 
     up.setTarget('[up-theme]')
 
-    if (forward?.includes('signin') || forward?.includes('signup') || forward?.includes('users/menu')) {
+    if (
+      forward?.includes('signin') ||
+      forward?.includes('signup') ||
+      forward?.includes('users/menu')
+    ) {
       forward = '/'
     }
 
     return response.redirect().toPath(forward ?? '/')
   }
 }
+

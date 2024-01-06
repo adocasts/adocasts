@@ -7,12 +7,13 @@ export const emailNotificationValidator = vine.compile(
     emailOnAchievement: vine.accepted().optional(),
     emailOnNewDeviceLogin: vine.accepted().optional(),
     emailOnWatchlist: vine.accepted().optional(),
-    emailOnMention: vine.accepted().optional()
+    emailOnMention: vine.accepted().optional(),
   })
 )
 
 export const confirmUsernameValidator = vine.compile(
   vine.object({
-    user_username: vine.string().trim().confirmed({ confirmationField: 'username' })
+    user_username: vine.string().trim().confirmed({ confirmationField: 'username' }),
   })
 )
+

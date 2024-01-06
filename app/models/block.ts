@@ -12,13 +12,13 @@ export default class Block extends BaseModel {
 
   @column()
   declare sectionId: number
-  
+
   @column()
   declare ipAddress: string
-  
+
   @column()
   declare reason: string | null
-  
+
   @column.dateTime()
   declare expiresAt: DateTime | null
 

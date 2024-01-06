@@ -1,13 +1,13 @@
-import SessionLog from "#models/session_log"
-import User from "#models/user"
-import { HttpContext } from "@adonisjs/core/http"
-import app from "@adonisjs/core/services/app"
-import emitter from "@adonisjs/core/services/emitter"
-import { DateTime } from "luxon"
+import SessionLog from '#models/session_log'
+import User from '#models/user'
+import { HttpContext } from '@adonisjs/core/http'
+import app from '@adonisjs/core/services/app'
+import emitter from '@adonisjs/core/services/emitter'
+import { DateTime } from 'luxon'
 import string from '@adonisjs/core/helpers/string'
 import ms from 'ms'
-import IdentityService from "./identity_service.js"
-import { inject } from "@adonisjs/core"
+import IdentityService from './identity_service.js'
+import { inject } from '@adonisjs/core'
 
 @inject()
 export default class SessionService {
@@ -16,17 +16,17 @@ export default class SessionService {
 
   constructor(protected ctx: HttpContext) {}
 
-  public get request() {
+  get request() {
     return this.ctx.request
   }
 
-  public get response() {
+  get response() {
     return this.ctx.response
   }
 
-  public get ipAddress() {
+  get ipAddress() {
     const cfConnectingIp = this.request.header('Cf-Connecting-Ip')
-    
+
     if (cfConnectingIp) return cfConnectingIp
 
     const xForwardedFor = this.request.header('X-Forwarded-For')
@@ -36,21 +36,21 @@ export default class SessionService {
     return this.request.ip()
   }
 
-  public get userAgent() {
+  get userAgent() {
     return this.request.header('user-agent')
   }
 
-  public get token() {
+  get token() {
     return this.request.encryptedCookie(this.cookieName)
   }
 
-  public getCookieName() {
+  getCookieName() {
     return this.cookieName
   }
 
-  public async check(user: User) {
+  async check(user: User) {
     const log = await this.getLatest(user)
-    
+
     // don't kill pre-existing sessions, instead log their session
     if (!log) {
       await this.onSignInExisting(user)
@@ -61,32 +61,36 @@ export default class SessionService {
 
     if (log.ipAddress !== this.ipAddress && this.ipAddress) {
       const location = await IdentityService.getLocation(this.ipAddress)
-      
+
       log.ipAddress = this.ipAddress
       log.city = location.city || null
       log.country = location.countryLong || null
       log.countryCode = location.countryShort || null
     }
-    
+
     log.lastTouchedAt = DateTime.now()
     await log.save()
 
     return true
   }
 
-  public async onSignInExisting(user: User) {
+  async onSignInExisting(user: User) {
     const isRememberSession = !!this.request.cookiesList().remember_web
     return this.onSignInSuccess(user, isRememberSession, true)
   }
 
-  public async onSignInSuccess(user: User, isRememberSession: boolean = false, skipNewDevice: boolean = false) {
+  async onSignInSuccess(
+    user: User,
+    isRememberSession: boolean = false,
+    skipNewDevice: boolean = false
+  ) {
     const { ipAddress, userAgent } = this
     const { city, countryLong, countryShort } = await IdentityService.getLocation(ipAddress)
     const known = await this.getIsKnown(user)
     const token = string.generateRandom(16)
 
     await this.signOutTimedOut(user)
-    
+
     const log = await user.related('sessions').create({
       ipAddress,
       userAgent,
@@ -97,7 +101,7 @@ export default class SessionService {
       token: token,
       loginAt: DateTime.now(),
       loginSuccessful: true,
-      lastTouchedAt: DateTime.now()
+      lastTouchedAt: DateTime.now(),
     })
 
     if (!user.profile) {
@@ -116,7 +120,7 @@ export default class SessionService {
     return log
   }
 
-  public async onSignOutSuccess(user: User) {
+  async onSignOutSuccess(user: User) {
     const { ipAddress, userAgent } = this
     let log = await this.getLatest(user)
 
@@ -124,7 +128,7 @@ export default class SessionService {
       log = new SessionLog().merge({
         userId: user.id,
         ipAddress,
-        userAgent
+        userAgent,
       })
     }
 
@@ -137,83 +141,101 @@ export default class SessionService {
     return log
   }
 
-  public async onSignOutForce(user: User, logId: number) {
-    await user.related('sessions').query()
+  async onSignOutForce(user: User, logId: number) {
+    await user
+      .related('sessions')
+      .query()
       .where({ id: logId })
       .where('loginSuccessful', true)
       .update({
         forceLogout: true,
-        logoutAt: DateTime.now()
+        logoutAt: DateTime.now(),
       })
   }
 
-  public async onSignOutForceAll(user: User) {
-    await user.related('sessions').query()
+  async onSignOutForceAll(user: User) {
+    await user
+      .related('sessions')
+      .query()
       .whereNot('token', this.token)
       .where('loginSuccessful', true)
       .update({
         forceLogout: true,
-        logoutAt: DateTime.now()
+        logoutAt: DateTime.now(),
       })
   }
 
-  public async getList(user: User) {
+  async getList(user: User) {
     await this.signOutTimedOut(user)
 
-    const sessions = await user.related('sessions').query()
+    const sessions = await user
+      .related('sessions')
+      .query()
       .where('loginSuccessful', true)
       .where('forceLogout', false)
       .whereNull('logoutAt')
       .orderBy('lastTouchedAt', 'desc')
 
     const token = this.token
-    return sessions.map(session => {
+    return sessions.map((session) => {
       session.isCurrentSession = session.token === token
       return session
     })
   }
 
-  public async getIsKnown(user: User) {
+  async getIsKnown(user: User) {
     const { ipAddress, userAgent, token } = this
-    return user.related('sessions').query()
-      .where(query => query
-        .if(ipAddress && userAgent, query => query.where(query => query.where({ ipAddress, userAgent })))
-        .if(token, query => query.orWhere({ token }))
+    return user
+      .related('sessions')
+      .query()
+      .where((query) =>
+        query
+          .if(ipAddress && userAgent, (truthy) =>
+            truthy.where((q2) => q2.where({ ipAddress, userAgent }))
+          )
+          .if(token, (truthy) => truthy.orWhere({ token }))
       )
       .where('loginSuccessful', true)
       .first()
   }
 
-  public async getLatest(user: User) {
+  async getLatest(user: User) {
     if (!this.token) return
-    return user.related('sessions').query()
+    return user
+      .related('sessions')
+      .query()
       .where('token', this.token)
       .where('loginSuccessful', true)
       .orderBy('loginAt', 'desc')
       .first()
   }
 
-  public async signOutTimedOut(user: User) {
+  async signOutTimedOut(user: User) {
     const expiry = DateTime.now().minus({ milliseconds: ms('2h') })
     const rememberExpiry = DateTime.now().minus({ years: 5 }) // rememberMeToken = 5yr duration
 
     console.log(`Signing out expired sessions for user ${user.id}. Expiry = ${expiry.toString()}`)
 
-    return user.related('sessions').query()
+    return user
+      .related('sessions')
+      .query()
       .where('userId', user.id)
       .whereNull('logoutAt')
-      .where(query => query
-        .where(query => query // not a remembered session & last activity is beyond session duration
-          .where('isRememberSession', false)
-          .where('lastTouchedAt', '<=', expiry.toSQL()!)
-        )
-        .orWhere(query => query // a remembers ession & last activity is beyond remembered duration
-          .where('isRememberSession', true)
-          .where('lastTouchedAt', '<=', rememberExpiry.toSQL()!)
-        )
+      .where((query) =>
+        query
+          .where((q2) =>
+            q2 // not a remembered session & last activity is beyond session duration
+              .where('isRememberSession', false)
+              .where('lastTouchedAt', '<=', expiry.toSQL()!)
+          )
+          .orWhere((q2) =>
+            q2 // a remembers session & last activity is beyond remembered duration
+              .where('isRememberSession', true)
+              .where('lastTouchedAt', '<=', rememberExpiry.toSQL()!)
+          )
       )
       .update({
-        logoutAt: DateTime.now()
+        logoutAt: DateTime.now(),
       })
   }
 }

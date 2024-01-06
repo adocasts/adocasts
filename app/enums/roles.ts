@@ -5,6 +5,12 @@ enum Roles {
   CONTRIBUTOR_LVL_2 = 4, // can also create series & taxonomies & sync taxonomy lessons
 }
 
-export const RoleWeights = [Roles.USER, Roles.CONTRIBUTOR_LVL_1, Roles.CONTRIBUTOR_LVL_2, Roles.ADMIN]
+export const RoleWeights = [
+  Roles.USER,
+  Roles.CONTRIBUTOR_LVL_1,
+  Roles.CONTRIBUTOR_LVL_2,
+  Roles.ADMIN,
+]
 
 export default Roles
+

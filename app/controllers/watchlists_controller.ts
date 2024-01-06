@@ -9,7 +9,7 @@ export default class WatchlistsController {
 
   async index({}: HttpContext) {}
 
-  public async toggle({ response, request, view, params }: HttpContext) {
+  async toggle({ response, request, view, params }: HttpContext) {
     const { fragment, ...data } = await request.validateUsing(watchlistValidator)
     const { wasDeleted } = await this.watchlistService.toggle(data)
 
@@ -18,3 +18,4 @@ export default class WatchlistsController {
       : response.redirect().back()
   }
 }
+

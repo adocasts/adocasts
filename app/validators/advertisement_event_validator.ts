@@ -6,3 +6,4 @@ export const advertisementEventValidator = vine.compile(
     action: vine.string().maxLength(50).optional(),
   })
 )
+

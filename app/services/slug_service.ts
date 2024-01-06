@@ -1,8 +1,8 @@
-import HttpStatus from "#enums/http_statuses"
-import { Exception } from "@adonisjs/core/exceptions"
-import string from "@adonisjs/core/helpers/string"
-import db from "@adonisjs/lucid/services/db"
-import { LucidModel } from "@adonisjs/lucid/types/model"
+import HttpStatus from '#enums/http_statuses'
+import { Exception } from '@adonisjs/core/exceptions'
+import string from '@adonisjs/core/helpers/string'
+import db from '@adonisjs/lucid/services/db'
+import { LucidModel } from '@adonisjs/lucid/types/model'
 
 /**
  * Slug service
@@ -23,8 +23,8 @@ export type SlugifyConfig = {
 } & Record<string, any>
 
 /**
-   * The interface every strategy must adhere to
-   */
+ * The interface every strategy must adhere to
+ */
 export interface SlugifyStrategyContract {
   /**
    * Make slug for a given field and value
@@ -66,7 +66,7 @@ class SimpleStrategy {
   /**
    * Makes the slug out the value string
    */
-  public makeSlug(_: LucidModel, __: string, value: string) {
+  makeSlug(_: LucidModel, __: string, value: string) {
     let baseSlug = string.slug(value, { replacement: this.separator, lower: true })
 
     /**
@@ -85,7 +85,7 @@ class SimpleStrategy {
   /**
    * Returns the slug as it is
    */
-  public async makeSlugUnique(_: LucidModel, __: string, slug: string) {
+  async makeSlugUnique(_: LucidModel, __: string, slug: string) {
     return slug
   }
 }
@@ -102,7 +102,11 @@ export default class SlugService<Model extends LucidModel> extends SimpleStrateg
   /**
    * Makes the slug by inspecting multiple similar rows in JavaScript
    */
-  private makeSlugFromMultipleRows(slug: string, field: Extract<keyof InstanceType<Model>, string>, rows: InstanceType<Model>[]) {
+  private makeSlugFromMultipleRows(
+    slug: string,
+    field: Extract<keyof InstanceType<Model>, string>,
+    rows: InstanceType<Model>[]
+  ) {
     /**
      * No matching rows found and hence no counter is required
      */
@@ -118,7 +122,7 @@ export default class SlugService<Model extends LucidModel> extends SimpleStrateg
       const tokens = value.toLowerCase().split(`${slug}${this.separator}`)
       if (tokens.length === 2) {
         const counter = Number(tokens[1])
-        if (!isNaN(counter)) {
+        if (!Number.isNaN(counter)) {
           result = result.concat(counter)
         }
       }
@@ -209,13 +213,16 @@ export default class SlugService<Model extends LucidModel> extends SimpleStrateg
   /**
    * Returns the slug for MYSQL >= 8.0
    */
-  private async getSlugForMysql(model: Model, _: Extract<keyof InstanceType<Model>, string>, columnName: string, slug: string) {
+  private async getSlugForMysql(
+    model: Model,
+    _: Extract<keyof InstanceType<Model>, string>,
+    columnName: string,
+    slug: string
+  ) {
     const rows = await model
       .query()
       .select(
-        db.raw(
-          `CAST(REGEXP_SUBSTR(${columnName}, '[0-9]+$') AS UNSIGNED) as ${this.counterName}`
-        )
+        db.raw(`CAST(REGEXP_SUBSTR(${columnName}, '[0-9]+$') AS UNSIGNED) as ${this.counterName}`)
       )
       .whereRaw(`?? REGEXP ?`, [columnName, `^${slug}(${this.separator}[0-9]*)?$`])
       .orderBy(this.counterName, 'desc')
@@ -232,7 +239,12 @@ export default class SlugService<Model extends LucidModel> extends SimpleStrateg
    * If you use MSSQL and concerned with performance. Please take out time and
    * help improve the MSSQL query
    */
-  private async getSlugForMssql(model: Model, field: Extract<keyof InstanceType<Model>, string>, _: string, slug: string) {
+  private async getSlugForMssql(
+    model: Model,
+    field: Extract<keyof InstanceType<Model>, string>,
+    _: string,
+    slug: string
+  ) {
     const rows = await model
       .query()
       .select(field)
@@ -246,12 +258,15 @@ export default class SlugService<Model extends LucidModel> extends SimpleStrateg
    * Makes slug for PostgreSQL and redshift both. Redshift is not tested and
    * assumed to be compatible with PG.
    */
-  private async getSlugForPg(model: Model, _: Extract<keyof InstanceType<Model>, string>, columnName: string, slug: string) {
+  private async getSlugForPg(
+    model: Model,
+    _: Extract<keyof InstanceType<Model>, string>,
+    columnName: string,
+    slug: string
+  ) {
     const rows = await model
       .query()
-      .select(
-        db.raw(`SUBSTRING(${columnName} from '[0-9]+$')::INTEGER as ${this.counterName}`)
-      )
+      .select(db.raw(`SUBSTRING(${columnName} from '[0-9]+$')::INTEGER as ${this.counterName}`))
       .whereRaw(`?? ~* ?`, [columnName, `^${slug}(${this.separator}[0-9]*)?$`])
       .orderBy(this.counterName, 'desc')
 
@@ -261,12 +276,15 @@ export default class SlugService<Model extends LucidModel> extends SimpleStrateg
   /**
    * Makes slug for Oracle. Oracle is not tested
    */
-  private async getSlugForOracle(model: Model, _: Extract<keyof InstanceType<Model>, string>, columnName: string, slug: string) {
+  private async getSlugForOracle(
+    model: Model,
+    _: Extract<keyof InstanceType<Model>, string>,
+    columnName: string,
+    slug: string
+  ) {
     const rows = await model
       .query()
-      .select(
-        db.raw(`TO_NUMBER(REGEXP_SUBSTR(${columnName}, '[0-9]+$')) as ${this.counterName}`)
-      )
+      .select(db.raw(`TO_NUMBER(REGEXP_SUBSTR(${columnName}, '[0-9]+$')) as ${this.counterName}`))
       .whereRaw(`REGEXP_LIKE(??, ?)`, [columnName, `^${slug}(${this.separator}[0-9]*)?$`])
       .orderBy(this.counterName, 'desc')
 
@@ -276,7 +294,7 @@ export default class SlugService<Model extends LucidModel> extends SimpleStrateg
   /**
    * Converts an existing slug to a unique slug by inspecting the database
    */
-  public async make(model: Model, field: Extract<keyof InstanceType<Model>, string>, slug: string) {
+  async make(model: Model, field: Extract<keyof InstanceType<Model>, string>, slug: string) {
     model.boot()
 
     const column = model.$columnsDefinitions.get(field)!
@@ -306,7 +324,7 @@ export default class SlugService<Model extends LucidModel> extends SimpleStrateg
           `"${dialectName}" database is not supported for the dbIncrement strategy`,
           {
             code: 'E_UNSUPPORTED_DBINCREMENT_DIALECT',
-            status: HttpStatus.INTERNAL_SERVER_ERROR
+            status: HttpStatus.INTERNAL_SERVER_ERROR,
           }
         )
     }

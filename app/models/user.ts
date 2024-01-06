@@ -1,6 +1,14 @@
 import { DateTime } from 'luxon'
 import Hash from '@adonisjs/core/services/hash'
-import { column, beforeSave, belongsTo, hasMany, hasOne, manyToMany, computed } from '@adonisjs/lucid/orm'
+import {
+  column,
+  beforeSave,
+  belongsTo,
+  hasMany,
+  hasOne,
+  manyToMany,
+  computed,
+} from '@adonisjs/lucid/orm'
 import type { BelongsTo, HasMany, HasOne, ManyToMany } from '@adonisjs/lucid/types/relations'
 // import { slugify } from '@ioc:Adonis/Addons/LucidSlugify' // TODO
 import gravatar from 'gravatar'
@@ -97,7 +105,7 @@ export default class User extends AppBaseModel {
   declare twitterAccessToken: string
 
   @column()
-  public theme: string = Themes.SYSTEM
+  theme: string = Themes.SYSTEM
 
   @column()
   declare isEnabledProfile: boolean
@@ -130,23 +138,23 @@ export default class User extends AppBaseModel {
   declare updatedAt: DateTime
 
   @computed()
-  public get handle() {
+  get handle() {
     return `@${this.username}`
   }
 
   @computed()
-  public get memberDuration() {
+  get memberDuration() {
     if (!this.createdAt) return
     return this.createdAt.toRelative()
   }
 
   @computed()
-  public get avatar() {
+  get avatar() {
     if (this.avatarUrl) {
       if (this.avatarUrl.startsWith('https://')) {
         return this.avatarUrl
       }
-      
+
       return `${env.get('ASSET_DOMAIN') || ''}/img/${this.avatarUrl}`
     }
 
@@ -154,12 +162,12 @@ export default class User extends AppBaseModel {
   }
 
   @computed()
-  public get avatarLarge() {
+  get avatarLarge() {
     if (this.avatarUrl) {
       if (this.avatarUrl.startsWith('https://')) {
         return this.avatarUrl
       }
-      
+
       return `${env.get('ASSET_DOMAIN') || ''}/img/${this.avatarUrl}`
     }
 
@@ -167,43 +175,46 @@ export default class User extends AppBaseModel {
   }
 
   @computed()
-  public get isAdmin() {
+  get isAdmin() {
     return this.roleId === Roles.ADMIN
   }
 
   @computed()
-  public get isSubscriptionActive() {
+  get isSubscriptionActive() {
     if (this.planId === Plans.FOREVER) return true
     return this.stripeSubscriptionStatus === StripeSubscriptionStatuses.ACTIVE
   }
 
   @computed()
-  public get isFreeTier() {
+  get isFreeTier() {
     return this.planId === Plans.FREE || !this.isSubscriptionActive
   }
 
   @computed()
-  public get isEmailVerified() {
+  get isEmailVerified() {
     // has gone through verification flow
-    if (this.emailVerified == this.email && this.emailVerifiedAt) return true
-    
+    if (this.emailVerified === this.email && this.emailVerifiedAt) return true
+
     // using third-party social auth
-    if (this.email == this.githubEmail || this.email == this.googleEmail) return true
+    if (this.email === this.githubEmail || this.email === this.googleEmail) return true
 
     return false
   }
 
   @beforeSave()
-  public static async hashPassword (user: User) {
+  static async hashPassword(user: User) {
     if (user.$dirty.password && !user.$extras.rehash) {
       user.password = await Hash.make(user.password)
     }
   }
 
   @beforeSave()
-  public static async slugifyUsername(user: User) {
+  static async slugifyUsername(user: User) {
     if (user.$dirty.username) {
-      const slugify = new SlugService<typeof User>({ strategy: 'dbIncrement', fields: ['username'] })
+      const slugify = new SlugService<typeof User>({
+        strategy: 'dbIncrement',
+        fields: ['username'],
+      })
       user.username = await slugify.make(User, 'username', user.username)
     }
   }
@@ -215,7 +226,7 @@ export default class User extends AppBaseModel {
   declare plan: BelongsTo<typeof Plan>
 
   @hasMany(() => Collection, {
-    foreignKey: 'ownerId'
+    foreignKey: 'ownerId',
   })
   declare collections: HasMany<typeof Collection>
 
@@ -229,7 +240,7 @@ export default class User extends AppBaseModel {
   declare discussions: HasMany<typeof Discussion>
 
   @manyToMany(() => Discussion, {
-    pivotTable: 'discussion_votes'
+    pivotTable: 'discussion_votes',
   })
   declare discussionVotes: ManyToMany<typeof Discussion>
 
@@ -241,12 +252,12 @@ export default class User extends AppBaseModel {
 
   @manyToMany(() => Post, {
     pivotTable: 'author_posts',
-    pivotColumns: ['author_type_id']
+    pivotColumns: ['author_type_id'],
   })
   declare posts: ManyToMany<typeof Post>
 
   @manyToMany(() => Comment, {
-    pivotTable: 'comment_votes'
+    pivotTable: 'comment_votes',
   })
   declare commentVotes: ManyToMany<typeof Comment>
 
@@ -260,12 +271,20 @@ export default class User extends AppBaseModel {
   declare histories: HasMany<typeof History>
 
   @hasMany(() => History, {
-    onQuery: query => query.where('historyTypeId', HistoryTypes.PROGRESSION).whereNotNull('postId').where('watchSeconds', '>', 0)
+    onQuery: (query) =>
+      query
+        .where('historyTypeId', HistoryTypes.PROGRESSION)
+        .whereNotNull('postId')
+        .where('watchSeconds', '>', 0),
   })
   declare watchedPosts: HasMany<typeof History>
 
   @hasMany(() => History, {
-    onQuery: query => query.where('historyTypeId', HistoryTypes.PROGRESSION).whereNotNull('postId').where('isCompleted', true)
+    onQuery: (query) =>
+      query
+        .where('historyTypeId', HistoryTypes.PROGRESSION)
+        .whereNotNull('postId')
+        .where('isCompleted', true),
   })
   declare completedPosts: HasMany<typeof History>
 
@@ -273,7 +292,7 @@ export default class User extends AppBaseModel {
   declare notifications: HasMany<typeof Notification>
 
   @hasMany(() => Notification, {
-    foreignKey: 'initiatorUserId'
+    foreignKey: 'initiatorUserId',
   })
   declare initiatedNotifications: HasMany<typeof Notification>
 
@@ -287,7 +306,7 @@ export default class User extends AppBaseModel {
   declare requestVotes: HasMany<typeof RequestVote>
 
   @hasMany(() => RequestVote, {
-    onQuery: query => query.whereNotNull('lessonRequestId')
+    onQuery: (query) => query.whereNotNull('lessonRequestId'),
   })
   declare lessonRequestVotes: HasMany<typeof RequestVote>
 
@@ -298,9 +317,9 @@ export default class User extends AppBaseModel {
     return hash.use('argon').verify(this.password, plainTextPassword)
   }
 
-  public static async getUserForAuth(uids: string[], value: string) {
+  static async getUserForAuth(uids: string[], value: string) {
     const query = this.query()
-    uids.map(uid => query.orWhereILike(uid, value))
+    uids.map((uid) => query.orWhereILike(uid, value))
     return query.first()
   }
 }

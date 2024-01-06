@@ -1,15 +1,15 @@
-import db from "@adonisjs/lucid/services/db";
-import States from "#enums/states";
-import User from "#models/user";
-import StripeService from "./stripe_service.js";
-import logger from "./logger_service.js";
+import db from '@adonisjs/lucid/services/db'
+import States from '#enums/states'
+import User from '#models/user'
+import StripeService from './stripe_service.js'
+import logger from './logger_service.js'
 
 export default class UserService {
   /**
    * delete user's account and associated data
-   * @param user 
+   * @param user
    */
-  public static async destroy(user: User) {
+  static async destroy(user: User) {
     const trx = await db.transaction()
 
     user.useTransaction(trx)
@@ -42,7 +42,9 @@ export default class UserService {
           await stripeService.cancelCustomerSubscriptions(user)
         }
       } catch (error) {
-        await logger.error(`UserService.destroy.cancelCustomerSubscriptions > An error occurred for user id: ${user.id}, stripe customer id ${user.stripeCustomerId}`)
+        await logger.error(
+          `UserService.destroy.cancelCustomerSubscriptions > An error occurred for user id: ${user.id}, stripe customer id ${user.stripeCustomerId}`
+        )
       }
 
       return true
@@ -55,17 +57,18 @@ export default class UserService {
 
   /**
    * delete or disassociate user's comments
-   * @param user 
+   * @param user
    */
-  public static async destroyComments(user: User) {
-    const comments = await user.related('comments').query().withCount('responses', q => q.where('stateId', States.PUBLIC))
+  static async destroyComments(user: User) {
+    const comments = await user
+      .related('comments')
+      .query()
+      .withCount('responses', (q) => q.where('stateId', States.PUBLIC))
 
-    for (let i = 0; i < comments.length; i++) {
-      const comment = comments[i]
-
+    for (const comment of comments) {
       if (comment.$extras.responses_count === '0') {
         await comment.delete()
-        continue;
+        continue
       }
 
       comment.stateId = States.ARCHIVED
@@ -77,30 +80,26 @@ export default class UserService {
 
   /**
    * delete user's lesson requests & lesson request votes
-   * @param user 
+   * @param user
    */
-  public static async destroyLessonRequests(user: User) {
+  static async destroyLessonRequests(user: User) {
     const requests = await user.related('lessonRequests').query()
-    
+
     await user.related('lessonRequestVotes').query().delete()
 
-    for (let i = 0; i < requests.length; i++) {
-      const request = requests[i]
-
+    for (const request of requests) {
       await request.related('comments').query().delete()
       await request.related('votes').query().delete()
       await request.delete()
     }
   }
 
-  public static async destroyDiscussions(user: User) {
+  static async destroyDiscussions(user: User) {
     const discussions = await user.related('discussions').query()
 
     await user.related('discussionVotes').query().update({ userId: null })
 
-    for (let i = 0; i < discussions.length; i++) {
-      const discussion = discussions[i]
-
+    for (const discussion of discussions) {
       await discussion.related('comments').query().delete()
       await discussion.related('votes').query().delete()
       await discussion.delete()

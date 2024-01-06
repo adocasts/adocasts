@@ -57,12 +57,12 @@ export default class SessionLog extends BaseModel {
   @belongsTo(() => User)
   declare user: BelongsTo<typeof User>
 
-  public isCurrentSession: boolean = false
+  isCurrentSession: boolean = false
 
   @computed()
-  public get lastTouchedAgo() {
+  get lastTouchedAgo() {
     if (!this.lastTouchedAt && !this.loginAt) return ''
-    
+
     if (!this.lastTouchedAt) {
       return UtilityService.timeago(this.loginAt)
     }
@@ -71,31 +71,29 @@ export default class SessionLog extends BaseModel {
   }
 
   @computed()
-  public get device() {
-    if (!this.userAgent) return {}
+  get device(): uap.IResult | undefined {
+    if (!this.userAgent) return undefined
     return uap(this.userAgent)
   }
 
   @computed()
-  public get browser() {
-    if (!this.device.browser) return '--'
-    
+  get browser() {
+    if (typeof this.browser === 'undefined') return '--'
+    if (!this.device?.browser) return '--'
+
     const info = [
       `${this.device.browser?.name} ${this.device.browser?.version}`,
-      `${this.device.os.name} ${this.device.os.version}`
+      `${this.device.os.name} ${this.device.os.version}`,
     ].filter(Boolean)
-    
+
     return info.join(', ')
   }
 
   @computed()
-  public get location() {
+  get location() {
     if (!this.city && !this.country) return '--'
-    
-    const info = [
-      this.city,
-      this.country
-    ].filter(Boolean).filter(i => i !== '-')
+
+    const info = [this.city, this.country].filter(Boolean).filter((i) => i !== '-')
 
     return info.length ? info.join(', ') : '--'
   }

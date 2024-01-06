@@ -1,6 +1,6 @@
-import LessonRequestSorts from "#enums/lesson_request_sorts"
-import States from "#enums/states"
-import LessonRequest from "#models/lesson_request"
+import LessonRequestSorts from '#enums/lesson_request_sorts'
+import States from '#enums/states'
+import LessonRequest from '#models/lesson_request'
 
 export default class LessonRequestQueryBuilder {
   private limit: number | null = null
@@ -8,10 +8,10 @@ export default class LessonRequestQueryBuilder {
 
   constructor() {}
 
-  public preloadRelations() {
+  preloadRelations() {
     this.query = this.query
       .preload('user')
-      .preload('votes', query => query.select('id'))
+      .preload('votes', (query) => query.select('id'))
       .withCount('votes')
       .withCount('comments')
     return this
@@ -22,12 +22,15 @@ export default class LessonRequestQueryBuilder {
     return this
   }
 
-  setSort(column: LessonRequestSorts | undefined): LessonRequestQueryBuilder;
-  setSort(column: string | undefined, direction: 'asc' | 'desc' | undefined = 'desc'): LessonRequestQueryBuilder {
+  setSort(column: LessonRequestSorts | undefined): LessonRequestQueryBuilder
+  setSort(
+    column: string | undefined,
+    direction: 'asc' | 'desc' | undefined = 'desc'
+  ): LessonRequestQueryBuilder {
     const sorts = Object.values(LessonRequestSorts) as string[]
 
     if (!column) return this
-    
+
     if (typeof column === 'string' && sorts.includes(column)) {
       const [sort, dir] = column.split('_') as [string, 'asc' | 'desc']
       this.query = this.query.orderBy(sort, dir)
@@ -38,29 +41,30 @@ export default class LessonRequestQueryBuilder {
     return this
   }
 
-  public whereState(stateId: string | States | undefined) {
-    this.query = this.query.if(stateId, query => query.where({ stateId }))
+  whereState(stateId: string | States | undefined) {
+    this.query = this.query.if(stateId, (query) => query.where({ stateId }))
     return this
   }
 
-  public whereNotState(stateId: States) {
+  whereNotState(stateId: States) {
     this.query = this.query.whereNot({ stateId })
     return this
   }
 
-  public wherePattern(pattern: string | undefined) {
+  wherePattern(pattern: string | undefined) {
     if (!pattern) return this
 
     const words = pattern?.split(' ')
 
-    this.query = this.query.where(query => {
-      words.map(word => query.orWhereILike('name', `%${word}%`).orWhereILike('body', `%${word}%`))
+    this.query = this.query.where((query) => {
+      words.map((word) => query.orWhereILike('name', `%${word}%`).orWhereILike('body', `%${word}%`))
     })
 
     return this
   }
 
-  public async build() {
-    return this.query.if(this.limit, query => query.limit(this.limit!))
+  async build() {
+    return this.query.if(this.limit, (query) => query.limit(this.limit!))
   }
 }
+

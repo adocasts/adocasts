@@ -8,6 +8,7 @@ export const commentValidator = vine.compile(
     rootParentId: vine.number().optional(),
     replyTo: vine.number().optional(),
     body: vine.string().trim(),
-    levelIndex: vine.number().positive()
+    levelIndex: vine.number().positive(),
   })
 )
+

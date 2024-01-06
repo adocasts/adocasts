@@ -1,6 +1,6 @@
 <div id="boxSeries" x-data="{ slideOverOpen: false }" class="relative z-[105] w-auto h-auto" @hide="slideOverOpen = false" @toggle="slideOverOpen = !slideOverOpen">
   <template x-teleport="body">
-    <div x-show="slideOverOpen" @keydown.window.escape="slideOverOpen=false" class="relative z-[105] lg:!block">
+    <div x-show="slideOverOpen" @keydown.window.escape="slideOverOpen=false" class="relative z-[105] lg:z-[90] lg:!block">
       <div x-show="slideOverOpen" x-transition.opacity.duration.600ms @click="slideOverOpen = false" class="fixed inset-0 bg-black bg-opacity-10"></div>
       <div class="fixed inset-0 overflow-hidden lg:left-[unset] lg:!right-0 lg:max-w-[var(--lesson-list-width)]">
         <div class="absolute inset-0 overflow-hidden">

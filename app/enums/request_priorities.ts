@@ -1,6 +1,7 @@
 enum RequestPriorities {
   NORMAL = 1,
-  ELEVATED = 2
+  ELEVATED = 2,
 }
 
 export default RequestPriorities
+

@@ -6,7 +6,7 @@ import app from '@adonisjs/core/services/app'
 @inject()
 export default class StripeWebhooksController {
   constructor(protected stripeService: StripeService) {}
-  
+
   async handle({ request, response }: HttpContext) {
     let event
     const isProd = app.inProduction
@@ -16,11 +16,11 @@ export default class StripeWebhooksController {
     } catch (error) {
       return response.status(400).send(`Webhook error: ${error.message}`)
     }
-    
+
     // isProd = true, then livemode should be true
     // isProd = false, then livemode should be false
-    if (event.livemode != isProd) return
-    
+    if (event.livemode !== isProd) return
+
     switch (event.type) {
       // occurs whenever a customer is signed up for a new plan
       case 'customer.subscription.created':
@@ -50,10 +50,10 @@ export default class StripeWebhooksController {
         await this.stripeService.onInvoicePaymentSucceeded(event)
         break
       default:
-        console.log(`Unhandled event type ${event.type}`);
+        console.log(`Unhandled event type ${event.type}`)
     }
 
     return
   }
-  
 }
+

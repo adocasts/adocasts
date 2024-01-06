@@ -56,7 +56,7 @@ export default class Notification extends AppBaseModel {
   declare user: BelongsTo<typeof User>
 
   @computed()
-  public get settingsField() {
+  get settingsField() {
     switch (this.notificationTypeId) {
       case NotificationTypes.COMMENT:
         return 'emailOnComment'
@@ -65,12 +65,14 @@ export default class Notification extends AppBaseModel {
       case NotificationTypes.MENTION:
         return 'emailOnMention'
       default:
-        throw new NotImplementedException(`Settings field for type ${this.notificationTypeId} has not been defined`)
+        throw new NotImplementedException(
+          `Settings field for type ${this.notificationTypeId} has not been defined`
+        )
     }
   }
 
   @computed()
-  public get settingsDescriptor() {
+  get settingsDescriptor() {
     switch (this.notificationTypeId) {
       case NotificationTypes.COMMENT:
         return 'comments on your content'
@@ -79,11 +81,13 @@ export default class Notification extends AppBaseModel {
       case NotificationTypes.MENTION:
         return 'others mention you in their content'
       default:
-        throw new NotImplementedException(`Settings field for type ${this.notificationTypeId} has not been defined`)
+        throw new NotImplementedException(
+          `Settings field for type ${this.notificationTypeId} has not been defined`
+        )
     }
   }
 
-  public isEmailEnabled(profile: Profile) {
+  isEmailEnabled(profile: Profile) {
     switch (this.notificationTypeId) {
       case NotificationTypes.COMMENT:
         return profile.emailOnComment
@@ -92,13 +96,18 @@ export default class Notification extends AppBaseModel {
       case NotificationTypes.MENTION:
         return profile.emailOnMention
       default:
-        throw new NotImplementedException(`Email handler for type ${this.notificationTypeId} has not been defined`)
+        throw new NotImplementedException(
+          `Email handler for type ${this.notificationTypeId} has not been defined`
+        )
     }
   }
 
-  public async trySendEmail(userId: number, trx: TransactionClientContract | undefined | null = undefined) {
+  async trySendEmail(
+    userId: number,
+    trx: TransactionClientContract | undefined | null = undefined
+  ) {
     const user = await User.query().where({ id: userId }).preload('profile').firstOrFail()
-    
+
     if (!this.isEmailEnabled(user.profile)) return
     if (!trx) return Emitter.emit('notification:send', { notification: this, user })
 

@@ -12,7 +12,7 @@ import AnalyticTypes from '#enums/analytic_types'
 @inject()
 export default class AdvertisementEventsController {
   constructor(protected sessionService: SessionService) {}
-  public async impression({ request, response, params }: HttpContext) {
+  async impression({ request, response, params }: HttpContext) {
     const { ipAddress, userAgent } = this.sessionService
     const identity = await IdentityService.getIdentity(ipAddress!, userAgent!)
     const payload = await request.validateUsing(advertisementEventValidator)
@@ -22,7 +22,7 @@ export default class AdvertisementEventsController {
       .where('advertisementId', params.id)
       .orderBy('createdAt', 'desc')
       .first()
-    
+
     if (latest) {
       return response.status(204)
     }
@@ -43,13 +43,13 @@ export default class AdvertisementEventsController {
       ...data,
       identity,
       advertisementId: params.id,
-      typeId: AnalyticTypes.IMPRESSION
+      typeId: AnalyticTypes.IMPRESSION,
     })
 
     return response.status(200)
   }
 
-  public async click({ request, response, params }: HttpContext) {
+  async click({ request, response, params }: HttpContext) {
     const { ipAddress, userAgent } = this.sessionService
     const identity = await IdentityService.getIdentity(ipAddress!, userAgent!)
     const payload = await request.validateUsing(advertisementEventValidator)
@@ -69,7 +69,7 @@ export default class AdvertisementEventsController {
       ...data,
       identity,
       advertisementId: params.id,
-      typeId: AnalyticTypes.CLICK
+      typeId: AnalyticTypes.CLICK,
     })
 
     return response.status(200)

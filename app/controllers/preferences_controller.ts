@@ -2,7 +2,7 @@ import { preferencesValidator } from '#validators/preference_validator'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class PreferencesController {
-  public async update({ request, response, auth, session }: HttpContext) {
+  async update({ request, response, auth, session }: HttpContext) {
     const data = await request.validateUsing(preferencesValidator)
     const user = auth.user!
 
@@ -18,3 +18,4 @@ export default class PreferencesController {
     return response.redirect().back()
   }
 }
+

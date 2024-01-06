@@ -6,7 +6,8 @@ enum StripeSubscriptionStatuses {
   INCOMPLETE = 'incomplete',
   INCOMPLETE_EXPIRED = 'incomplete_expired',
   TRIALING = 'trialing',
-  PAUSED = 'paused'
+  PAUSED = 'paused',
 }
 
 export default StripeSubscriptionStatuses
+

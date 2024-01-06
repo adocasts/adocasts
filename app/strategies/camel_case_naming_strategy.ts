@@ -3,7 +3,7 @@ import string from '@adonisjs/core/helpers/string'
 import { LucidModel } from '@adonisjs/lucid/types/model'
 
 export default class CamelCaseNamingStrategy extends SnakeCaseNamingStrategy {
-  public serializedName(_model: typeof BaseModel, propertyName: string) {
+  serializedName(_model: typeof BaseModel, propertyName: string) {
     return string.camelCase(propertyName)
   }
 
@@ -14,3 +14,4 @@ export default class CamelCaseNamingStrategy extends SnakeCaseNamingStrategy {
     return string.snakeCase([relatedModel.name, string.pluralize(model.name)].sort().join('_'))
   }
 }
+

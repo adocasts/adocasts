@@ -36,3 +36,4 @@ export default class DiscussionView extends BaseModel {
   @belongsTo(() => Discussion)
   declare discussion: BelongsTo<typeof Discussion>
 }
+

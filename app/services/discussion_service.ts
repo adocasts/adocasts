@@ -1,12 +1,12 @@
-import DiscussionViewTypes from "#enums/discussion_view_types"
-import Plans from "#enums/plans"
-import States from "#enums/states"
-import Discussion from "#models/discussion"
-import Taxonomy from "#models/taxonomy"
-import User from "#models/user"
-import { inject } from "@adonisjs/core"
-import { HttpContext } from "@adonisjs/core/http"
-import { DateTime } from "luxon"
+import DiscussionViewTypes from '#enums/discussion_view_types'
+import Plans from '#enums/plans'
+import States from '#enums/states'
+import Discussion from '#models/discussion'
+import Taxonomy from '#models/taxonomy'
+import User from '#models/user'
+import { inject } from '@adonisjs/core'
+import { HttpContext } from '@adonisjs/core/http'
+import { DateTime } from 'luxon'
 
 @inject()
 export default class DiscussionService {
@@ -18,12 +18,12 @@ export default class DiscussionService {
    * @param {string} slug - The slug of the discussion.
    * @return {Promise<Discussion>} A promise that resolves to the discussion.
    */
-  public async getBySlug(slug: string) {
+  async getBySlug(slug: string) {
     return Discussion.query()
-      .preload('user', query => query.preload('profile'))
-      .preload('taxonomy', query => query.preload('asset'))
-      .preload('votes', query => query.select('id'))
-      .withCount('comments', query => query.where('stateId', States.PUBLIC).as('commentsCount'))
+      .preload('user', (query) => query.preload('profile'))
+      .preload('taxonomy', (query) => query.preload('asset'))
+      .preload('votes', (query) => query.select('id'))
+      .withCount('comments', (query) => query.where('stateId', States.PUBLIC).as('commentsCount'))
       .withCount('views')
       .withCount('impressions')
       .where('slug', slug)
@@ -37,47 +37,61 @@ export default class DiscussionService {
    * @param {Discussion} discussion - The discussion object for which to retrieve the comments.
    * @return {Promise<Comment[]>} - A promise that resolves to an array of comments.
    */
-  public async getComments(discussion: Discussion) {
-    return discussion.related('comments').query()
-      .withCount('userVotes', query => query.as('voteCount'))
+  async getComments(discussion: Discussion) {
+    return discussion
+      .related('comments')
+      .query()
+      .withCount('userVotes', (query) => query.as('voteCount'))
       .where('stateId', States.PUBLIC)
       .orderBy([
         { column: 'voteCount', order: 'desc' },
         { column: 'createdAt', order: 'asc' },
       ])
       .preload('user')
-      .preload('userVotes', query => query.select('id'))
+      .preload('userVotes', (query) => query.select('id'))
   }
 
-  public async getAsideList(limit: number = 10, taxonomyIds?: number[]) {
+  async getAsideList(limit: number = 10, taxonomyIds?: number[]) {
     const discussions = await Discussion.query()
-      .if(taxonomyIds, query => query.whereIn('taxonomyId', taxonomyIds!))
-      .preload('user', query => query.preload('profile'))
-      .preload('taxonomy', query => query.preload('asset'))
-      .preload('votes', query => query.select('id'))
-      .whereHas('user', query => query.where('planId', '!=', Plans.FREE))
+      .if(taxonomyIds, (query) => query.whereIn('taxonomyId', taxonomyIds!))
+      .preload('user', (query) => query.preload('profile'))
+      .preload('taxonomy', (query) => query.preload('asset'))
+      .preload('votes', (query) => query.select('id'))
+      .whereHas('user', (query) => query.where('planId', '!=', Plans.FREE))
       .where('stateId', States.PUBLIC)
-      .withCount('comments', query => query.where('stateId', States.PUBLIC).as('commentCount'))
+      .withCount('comments', (query) => query.where('stateId', States.PUBLIC).as('commentCount'))
       .withCount('views')
       .withCount('impressions')
-      .preload('comments', query => query.preload('user').where('stateId', States.PUBLIC).orderBy('createdAt', 'desc').groupLimit(2))
+      .preload('comments', (query) =>
+        query
+          .preload('user')
+          .where('stateId', States.PUBLIC)
+          .orderBy('createdAt', 'desc')
+          .groupLimit(2)
+      )
       .orderBy('createdAt', 'desc')
       .limit(limit)
 
     // not enough plus posts to fill space? pull in from everyone else
     if (discussions.length < limit) {
-      const ids = discussions.map(discussion => discussion.id)
+      const ids = discussions.map((discussion) => discussion.id)
       const moreDiscussions = await await Discussion.query()
-        .if(taxonomyIds, query => query.whereIn('taxonomyId', taxonomyIds!))
+        .if(taxonomyIds, (query) => query.whereIn('taxonomyId', taxonomyIds!))
         .whereNotIn('id', ids)
-        .preload('user', query => query.preload('profile'))
-        .preload('taxonomy', query => query.preload('asset'))
-        .preload('votes', query => query.select('id'))
+        .preload('user', (query) => query.preload('profile'))
+        .preload('taxonomy', (query) => query.preload('asset'))
+        .preload('votes', (query) => query.select('id'))
         .where('stateId', States.PUBLIC)
-        .withCount('comments', query => query.where('stateId', States.PUBLIC).as('commentCount'))
+        .withCount('comments', (query) => query.where('stateId', States.PUBLIC).as('commentCount'))
         .withCount('views')
         .withCount('impressions')
-        .preload('comments', query => query.preload('user').where('stateId', States.PUBLIC).orderBy('createdAt', 'desc').groupLimit(2))
+        .preload('comments', (query) =>
+          query
+            .preload('user')
+            .where('stateId', States.PUBLIC)
+            .orderBy('createdAt', 'desc')
+            .groupLimit(2)
+        )
         .orderBy('createdAt', 'desc')
         .limit(limit - discussions.length)
 
@@ -87,44 +101,70 @@ export default class DiscussionService {
     return discussions
   }
 
-  public async getPaginated(filters?: Record<string,any>) {
+  async getPaginated(filters?: Record<string, any>) {
     const page = filters?.page ?? 1
     return Discussion.query()
-      .if(filters?.pattern, query => query.where(query => query
-        .whereILike('title', `%${filters!.pattern}%`)
-        .orWhereILike('body', `%${filters!.pattern}%`)
-        .if(filters!.pattern.startsWith('@'), query => query.orWhereHas('user', query => query.whereILike('username', `%${filters!.pattern.replace('@', '')}%`)))
-      ))
-      .if(filters?.topic, query => query.whereHas('taxonomy', query => query.where('slug', filters!.topic!)))
-      .preload('user', query => query.preload('profile'))
-      .preload('taxonomy', query => query.preload('asset'))
-      .preload('votes', query => query.select('id'))
+      .if(filters?.pattern, (truthy) =>
+        truthy.where((query) =>
+          query
+            .whereILike('title', `%${filters!.pattern}%`)
+            .orWhereILike('body', `%${filters!.pattern}%`)
+            .if(filters!.pattern.startsWith('@'), (startsWith) =>
+              startsWith.orWhereHas('user', (orHas) =>
+                orHas.whereILike('username', `%${filters!.pattern.replace('@', '')}%`)
+              )
+            )
+        )
+      )
+      .if(filters?.topic, (query) =>
+        query.whereHas('taxonomy', (q2) => q2.where('slug', filters!.topic!))
+      )
+      .preload('user', (query) => query.preload('profile'))
+      .preload('taxonomy', (query) => query.preload('asset'))
+      .preload('votes', (query) => query.select('id'))
       .where('stateId', States.PUBLIC)
-      .withCount('comments', query => query.where('stateId', States.PUBLIC).as('commentCount'))
+      .withCount('comments', (query) => query.where('stateId', States.PUBLIC).as('commentCount'))
       .withCount('views')
       .withCount('impressions')
-      .preload('comments', query => query.preload('user').where('stateId', States.PUBLIC).orderBy('createdAt', 'desc').groupLimit(2))
+      .preload('comments', (query) =>
+        query
+          .preload('user')
+          .where('stateId', States.PUBLIC)
+          .orderBy('createdAt', 'desc')
+          .groupLimit(2)
+      )
       .orderBy('createdAt', 'desc')
       .paginate(page, 20)
   }
 
-  public async getUserPaginated(userId: number, filters?: Record<string,any>) {
+  async getUserPaginated(userId: number, filters?: Record<string, any>) {
     const page = filters?.page ?? 1
     return Discussion.query()
-      .if(filters?.pattern, query => query.where(query => query
-        .whereILike('title', `%${filters!.pattern}%`)
-        .orWhereILike('body', `%${filters!.pattern}%`)  
-      ))
-      .if(filters?.topic, query => query.whereHas('taxonomy', query => query.where('slug', filters!.topic!)))
-      .preload('user', query => query.preload('profile'))
-      .preload('taxonomy', query => query.preload('asset'))
-      .preload('votes', query => query.select('id'))
+      .if(filters?.pattern, (query) =>
+        query.where((q2) =>
+          q2
+            .whereILike('title', `%${filters!.pattern}%`)
+            .orWhereILike('body', `%${filters!.pattern}%`)
+        )
+      )
+      .if(filters?.topic, (query) =>
+        query.whereHas('taxonomy', (q2) => q2.where('slug', filters!.topic!))
+      )
+      .preload('user', (query) => query.preload('profile'))
+      .preload('taxonomy', (query) => query.preload('asset'))
+      .preload('votes', (query) => query.select('id'))
       .where('stateId', States.PUBLIC)
       .where('userId', userId)
-      .withCount('comments', query => query.where('stateId', States.PUBLIC).as('commentCount'))
+      .withCount('comments', (query) => query.where('stateId', States.PUBLIC).as('commentCount'))
       .withCount('views')
       .withCount('impressions')
-      .preload('comments', query => query.preload('user').where('stateId', States.PUBLIC).orderBy('createdAt', 'desc').groupLimit(2))
+      .preload('comments', (query) =>
+        query
+          .preload('user')
+          .where('stateId', States.PUBLIC)
+          .orderBy('createdAt', 'desc')
+          .groupLimit(2)
+      )
       .orderBy('createdAt', 'desc')
       .paginate(page, 20)
   }
@@ -134,43 +174,51 @@ export default class DiscussionService {
    *
    * @return {Promise<Array<{id: number, name: string}>>} A promise that resolves to an array of topic objects containing the id and name.
    */
-  public async getTopics() {
+  async getTopics() {
     return Taxonomy.query().orderBy('name').select('id', 'name', 'slug')
   }
 
   /**
    * toggles users vote state on request
-   * @param user 
-   * @param id 
-   * @returns 
+   * @param user
+   * @param id
+   * @returns
    */
-  public async toggleVote(user: User, id: number) {
+  async toggleVote(user: User, id: number) {
     const discussion = await Discussion.findOrFail(id)
-    const hasVoted = (await discussion.related('votes').query().where('users.id', user.id).select('id')).length
+    const hasVotedResult = await discussion
+      .related('votes')
+      .query()
+      .where('users.id', user.id)
+      .select('id')
+
+    const hasVoted = hasVotedResult.length
 
     hasVoted
       ? await discussion.related('votes').detach([user.id])
       : await discussion.related('votes').attach({
-        [user.id]: {
-          created_at: DateTime.now().toSQL(),
-          updated_at: DateTime.now().toSQL()
-        }
-      })
-      
-    await discussion.load('votes', query => query.select('id'))
+          [user.id]: {
+            created_at: DateTime.now().toSQL(),
+            updated_at: DateTime.now().toSQL(),
+          },
+        })
+
+    await discussion.load('votes', (query) => query.select('id'))
     await discussion.loadCount('votes')
 
     return discussion
   }
 
-  public async incrementImpressions(discussions: Discussion[]) {
-    const data = this.ctx.auth.user ? { 
-      userId: this.ctx.auth.user.id,
-      typeId: DiscussionViewTypes.IMPRESSION
-    } : {
-      typeId: DiscussionViewTypes.IMPRESSION
-    }
-    
-    return Promise.all(discussions.map(item => item.related('impressions').create(data)))
+  async incrementImpressions(discussions: Discussion[]) {
+    const data = this.ctx.auth.user
+      ? {
+          userId: this.ctx.auth.user.id,
+          typeId: DiscussionViewTypes.IMPRESSION,
+        }
+      : {
+          typeId: DiscussionViewTypes.IMPRESSION,
+        }
+
+    return Promise.all(discussions.map((item) => item.related('impressions').create(data)))
   }
 }

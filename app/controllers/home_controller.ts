@@ -31,8 +31,8 @@ export default class HomeController {
       const topicCount = await this.taxonomyService.getCount()
 
       view.share({ lessonCount, lessonDuration, seriesCount, topicCount })
-    } 
-    
+    }
+
     if (!auth.user || auth.user.isFreeTier) {
       const plusMonthly = await Plan.findOrFail(Plans.PLUS_MONTHLY)
       const plusAnnual = await Plan.findOrFail(Plans.PLUS_ANNUAL)
@@ -41,16 +41,16 @@ export default class HomeController {
       view.share({ plusMonthly, plusAnnual, plusForever })
     }
 
-    return view.render('pages/home', { 
-      series, 
-      topics, 
+    return view.render('pages/home', {
+      series,
+      topics,
       lessons,
       blogs,
-      snippets
+      snippets,
     })
   }
 
-  public async pricing({ view }: HttpContext) {
+  async pricing({ view }: HttpContext) {
     const plusMonthly = await Plan.findOrFail(Plans.PLUS_MONTHLY)
     const plusAnnual = await Plan.findOrFail(Plans.PLUS_ANNUAL)
     const plusForever = await Plan.findOrFail(Plans.FOREVER)

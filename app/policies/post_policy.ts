@@ -8,17 +8,19 @@ import PaywallTypes from '#enums/paywall_types'
 
 export default class PostPolicy extends BasePolicy {
   @action({ allowGuest: true })
-	public view(user: User, post: Post): AuthorizerResponse {
-		if (user && user.planId !== Plans.FREE) return true
-		if (post.paywallTypeId === PaywallTypes.NONE) return true
-		if (post.paywallTypeId === PaywallTypes.FULL) return false
-		
-		return !post.isPaywalled
-	}
+  view(user: User, post: Post): AuthorizerResponse {
+    if (user && user.planId !== Plans.FREE) return true
+    if (post.paywallTypeId === PaywallTypes.NONE) return true
+    if (post.paywallTypeId === PaywallTypes.FULL) return false
 
-	@action({ allowGuest: true })
-	public viewFutureDated(user: User): AuthorizerResponse {
-		if (this.isAdmin(user) || this.isContributorLvl1(user) || this.isContributorLvl2(user)) return true
-		return false
-	}
+    return !post.isPaywalled
+  }
+
+  @action({ allowGuest: true })
+  viewFutureDated(user: User): AuthorizerResponse {
+    if (this.isAdmin(user) || this.isContributorLvl1(user) || this.isContributorLvl2(user))
+      return true
+    return false
+  }
 }
+

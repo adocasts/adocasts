@@ -62,7 +62,7 @@ export default class Taxonomy extends AppBaseModel {
   declare updatedAt: DateTime
 
   @belongsTo(() => User, {
-    foreignKey: 'ownerId'
+    foreignKey: 'ownerId',
   })
   declare owner: BelongsTo<typeof User>
 
@@ -70,49 +70,52 @@ export default class Taxonomy extends AppBaseModel {
   declare asset: BelongsTo<typeof Asset>
 
   @belongsTo(() => Taxonomy, {
-    foreignKey: 'parentId'
+    foreignKey: 'parentId',
   })
   declare parent: BelongsTo<typeof Taxonomy>
 
   @hasMany(() => Taxonomy, {
-    foreignKey: 'parentId'
+    foreignKey: 'parentId',
   })
   declare children: HasMany<typeof Taxonomy>
 
   @hasMany(() => History, {
-    onQuery: q => q.where('historyTypeId', HistoryTypes.VIEW)
+    onQuery: (q) => q.where('historyTypeId', HistoryTypes.VIEW),
   })
   declare viewHistory: HasMany<typeof History>
 
   @hasMany(() => History, {
-    onQuery: q => q.where('historyTypeId', HistoryTypes.PROGRESSION)
+    onQuery: (q) => q.where('historyTypeId', HistoryTypes.PROGRESSION),
   })
   declare progressionHistory: HasMany<typeof History>
 
   @manyToMany(() => Post, {
-    pivotColumns: ['sort_order']
+    pivotColumns: ['sort_order'],
   })
   declare posts: ManyToMany<typeof Post>
 
   @manyToMany(() => Collection, {
     pivotColumns: ['sort_order'],
-    pivotTable: 'collection_taxonomies'
+    pivotTable: 'collection_taxonomies',
   })
   declare collections: ManyToMany<typeof Collection>
 
   @beforeSave()
-  public static async slugifyUsername(taxonomy: Taxonomy) {
+  static async slugifyUsername(taxonomy: Taxonomy) {
     if (taxonomy.$dirty.name && !taxonomy.$dirty.slug) {
-      const slugify = new SlugService<typeof Taxonomy>({ strategy: 'dbIncrement', fields: ['name'] })
+      const slugify = new SlugService<typeof Taxonomy>({
+        strategy: 'dbIncrement',
+        fields: ['name'],
+      })
       taxonomy.name = await slugify.make(Taxonomy, 'name', taxonomy.name)
     }
   }
 
-  public static roots() {
+  static roots() {
     return this.query().whereNull('parentId')
   }
 
-  public static children(parentId: number | null = null) {
+  static children(parentId: number | null = null) {
     if (parentId) {
       return this.query().where('parentId', parentId)
     }
@@ -120,19 +123,28 @@ export default class Taxonomy extends AppBaseModel {
     return this.query().whereNotNull('parentId')
   }
 
-  public static hasContent = scope<typeof Taxonomy, (query: ModelQueryBuilderContract<typeof Taxonomy>) => void>((query) => {
-    query.where(q => q
-      .orWhereHas('posts', p => p.apply(scope => scope.published()))
-      .orWhereHas('collections', p => p
-        .where({ stateId: States.PUBLIC })
-        .whereHas('postsFlattened', query => query.apply(scope => scope.published()))
-      )
+  static hasContent = scope<
+    typeof Taxonomy,
+    (query: ModelQueryBuilderContract<typeof Taxonomy>) => void
+  >((query) => {
+    query.where((q) =>
+      q
+        .orWhereHas('posts', (p) => p.apply((s) => s.published()))
+        .orWhereHas('collections', (p) =>
+          p
+            .where({ stateId: States.PUBLIC })
+            .whereHas('postsFlattened', (posts) => posts.apply((s) => s.published()))
+        )
     )
   })
 
-  public static withPostLatestPublished = scope<typeof Taxonomy, (query: ModelQueryBuilderContract<typeof Taxonomy>) => void>((query) => {
+  static withPostLatestPublished = scope<
+    typeof Taxonomy,
+    (query: ModelQueryBuilderContract<typeof Taxonomy>) => void
+  >((query) => {
     query.select(
-      Database.rawQuery(`(
+      Database.rawQuery(
+        `(
         select
           p.publish_at
         from
@@ -145,7 +157,9 @@ export default class Taxonomy extends AppBaseModel {
               and p.publish_at <= ?
             order by p.publish_at desc
             limit 1
-      ) as latest_publish_at`, [States.PUBLIC, DateTime.local().toSQL()])
+      ) as latest_publish_at`,
+        [States.PUBLIC, DateTime.local().toSQL()]
+      )
     )
   })
 }

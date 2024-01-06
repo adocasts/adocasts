@@ -15,58 +15,70 @@ export default class WatchlistService {
 
   /**
    * returns latest watchlist posts for user
-   * @param limit 
-   * @param excludeIds 
-   * @returns 
+   * @param limit
+   * @param excludeIds
+   * @returns
    */
-  public async getLatestPosts(limit: number | undefined = undefined, excludeIds: number[] = []) {
+  async getLatestPosts(limit: number | undefined = undefined, excludeIds: number[] = []) {
     if (!this.user) return []
 
-    const results = await this.user.related('watchlist').query()
+    const results = await this.user
+      .related('watchlist')
+      .query()
       .whereNotNull('postId')
-      .if(excludeIds.length, query => query.whereNotIn('postId', excludeIds))
-      .preload('post', query => query.apply(scope => scope.forDisplay()))
+      .if(excludeIds.length, (query) => query.whereNotIn('postId', excludeIds))
+      .preload('post', (query) => query.apply((scope) => scope.forDisplay()))
       .orderBy('createdAt', 'desc')
-      .if(limit, query => query.limit(limit!))
+      .if(limit, (query) => query.limit(limit!))
 
-    return results.map(r => r.post)
+    return results.map((r) => r.post)
   }
 
   /**
    * returns latest watchlsit collections for user
-   * @param limit 
-   * @param excludeIds 
-   * @returns 
+   * @param limit
+   * @param excludeIds
+   * @returns
    */
-  public async getLatestCollections(limit: number | undefined = undefined, excludeIds: number[] = []) {
+  async getLatestCollections(limit: number | undefined = undefined, excludeIds: number[] = []) {
     if (!this.user) return []
 
-    const results = await this.user.related('watchlist').query()
+    const results = await this.user
+      .related('watchlist')
+      .query()
       .whereNotNull('collectionId')
-      .if(excludeIds.length, query => query.whereNotIn('collectionId', excludeIds))
-      .preload('collection', query => query
-        .preload('asset')
-        .preload('postsFlattened', query => query.apply(scope => scope.forDisplay()).groupLimit(3))
-        .withCount('postsFlattened', query => query.apply(scope => scope.published()))
-        .withAggregate('postsFlattened', query => query.apply(scope => scope.published()).sum('video_seconds').as('videoSecondsSum'))
-        .where('stateId', States.PUBLIC)
+      .if(excludeIds.length, (query) => query.whereNotIn('collectionId', excludeIds))
+      .preload('collection', (query) =>
+        query
+          .preload('asset')
+          .preload('postsFlattened', (posts) =>
+            posts.apply((scope) => scope.forDisplay()).groupLimit(3)
+          )
+          .withCount('postsFlattened', (posts) => posts.apply((scope) => scope.published()))
+          .withAggregate('postsFlattened', (posts) =>
+            posts
+              .apply((scope) => scope.published())
+              .sum('video_seconds')
+              .as('videoSecondsSum')
+          )
+          .where('stateId', States.PUBLIC)
       )
       .orderBy('createdAt', 'desc')
-      .if(limit, query => query.limit(limit!))
+      .if(limit, (query) => query.limit(limit!))
 
-    return results.map(r => r.collection)
+    return results.map((r) => r.collection)
   }
 
   /**
    * toggles watchlist item for user
-   * @param data 
-   * @returns 
+   * @param data
+   * @returns
    */
-  public async toggle(data: Partial<Watchlist>) {
+  async toggle(data: Partial<Watchlist>) {
     return WatchlistService.toggle(this.user, data)
   }
 
-  public static async toggle(user: User | undefined, data: Partial<Watchlist>) {
+  static async toggle(user: User | undefined, data: Partial<Watchlist>) {
     if (!user) throw new UnauthorizedException('Watchlists require an authenticated user')
 
     const record = await Watchlist.query().where(data).where({ userId: user.id }).first()

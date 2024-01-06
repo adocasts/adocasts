@@ -1,19 +1,24 @@
 import { BaseModel } from '@adonisjs/lucid/orm'
 import { ModelAdapterOptions, ModelAssignOptions } from '@adonisjs/lucid/types/model'
-import CamelCaseNamingStrategy from "#strategies/camel_case_naming_strategy";
+import CamelCaseNamingStrategy from '#strategies/camel_case_naming_strategy'
 
 export default class AppBaseModel extends BaseModel {
-  public static namingStrategy = new CamelCaseNamingStrategy()
-  public serializeExtras = true
+  static namingStrategy = new CamelCaseNamingStrategy()
+  serializeExtras = true
 
-  public get meta() {
+  get meta() {
     return this.$extras
   }
 
-  public static async firstOrNewById(id: number | undefined = undefined, savePayload?: any, options?: ModelAssignOptions): Promise<any> {
-    const query = id !== undefined
-      ? this.query(options).where(this.primaryKey, id)
-      : this.query(options).whereNull(this.primaryKey)
+  static async firstOrNewById(
+    id: number | undefined = undefined,
+    savePayload?: any,
+    options?: ModelAssignOptions
+  ): Promise<any> {
+    const query =
+      id !== undefined
+        ? this.query(options).where(this.primaryKey, id)
+        : this.query(options).whereNull(this.primaryKey)
 
     const row = await query.first()
 

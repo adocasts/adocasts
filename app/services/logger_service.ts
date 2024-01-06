@@ -3,7 +3,7 @@ import env from '#start/env'
 import DiscordLogger from './discord_service.js'
 
 type LogPayload = {
-  message: string,
+  message: string
   description: string
 }
 
@@ -22,35 +22,35 @@ class LoggerService {
     this.logger = new DiscordLogger({ hook: webhook!, serviceName })
   }
 
-  public async info(title: string, message?: string | object | Array<any>): Promise<void> {
+  async info(title: string, message?: string | object | Array<any>): Promise<void> {
     return this.log('info', this.build(title, message))
   }
 
-  public async warn(title: string, message?: string | object | Array<any>): Promise<void> {
+  async warn(title: string, message?: string | object | Array<any>): Promise<void> {
     return this.log('warn', this.build(title, message))
   }
 
-  public async error(title: string, message?: string | object | Array<any>): Promise<void> {
+  async error(title: string, message?: string | object | Array<any>): Promise<void> {
     return this.log('error', this.build(title, message))
   }
 
-  public async debug(title: string, message?: string | object | Array<any>): Promise<void> {
+  async debug(title: string, message?: string | object | Array<any>): Promise<void> {
     return this.log('debug', this.build(title, message))
   }
 
-  public async silly(title: string, message?: string | object | Array<any>): Promise<void> {
+  async silly(title: string, message?: string | object | Array<any>): Promise<void> {
     return this.log('silly', this.build(title, message))
   }
 
-  public async log(method: 'info'|'warn'|'error'|'debug'|'silly', payload: LogPayload) {
-    if (app.inTest || !this.enabled) return 
+  async log(method: 'info' | 'warn' | 'error' | 'debug' | 'silly', payload: LogPayload) {
+    if (app.inTest || !this.enabled) return
     return this.logger[method](payload)
   }
 
   private build(title: string, message?: string | object | Array<any>) {
     return {
       message: title,
-      description: JSON.stringify(message, null, 4)
+      description: JSON.stringify(message, null, 4),
     }
   }
 }

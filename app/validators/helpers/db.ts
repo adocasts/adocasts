@@ -1,15 +1,19 @@
-import { Database } from "@adonisjs/lucid/database"
-import { FieldContext } from "@vinejs/vine/types"
+import { Database } from '@adonisjs/lucid/database'
+import { FieldContext } from '@vinejs/vine/types'
 
 type DbOptions = {
   caseInsensitive: boolean
 }
 
 const query = (db: Database, table: string, column: string, value: string, options?: DbOptions) => {
-  return db.from(table).select('id').if(options?.caseInsensitive, 
-    query => query.whereILike(column, value),
-    query => query.where(column, value)
-  )
+  return db
+    .from(table)
+    .select('id')
+    .if(
+      options?.caseInsensitive,
+      (truthy) => truthy.whereILike(column, value),
+      (falsy) => falsy.where(column, value)
+    )
 }
 
 export const exists = (table: string, column: string, options?: DbOptions) => {
@@ -25,3 +29,4 @@ export const unique = (table: string, column: string, options?: DbOptions) => {
     return result.length ? false : true
   }
 }
+

@@ -2,8 +2,11 @@ import { DateTime } from 'luxon'
 import {
   beforeSave,
   belongsTo,
-  column, computed, hasMany,
-  manyToMany, scope
+  column,
+  computed,
+  hasMany,
+  manyToMany,
+  scope,
 } from '@adonisjs/lucid/orm'
 import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 // import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
@@ -89,7 +92,7 @@ export default class Collection extends AppBaseModel {
   declare updatedAt: DateTime
 
   @computed()
-  public get isInWatchlist() {
+  get isInWatchlist() {
     if (!this.$extras.watchlist_count) {
       return false
     }
@@ -98,12 +101,12 @@ export default class Collection extends AppBaseModel {
   }
 
   @computed()
-  public get moduleNumber() {
+  get moduleNumber() {
     return this.sortOrder + 1
   }
 
   @belongsTo(() => User, {
-    foreignKey: 'ownerId'
+    foreignKey: 'ownerId',
   })
   declare owner: BelongsTo<typeof User>
 
@@ -114,36 +117,36 @@ export default class Collection extends AppBaseModel {
   declare parent: BelongsTo<typeof Collection>
 
   @belongsTo(() => Collection, {
-    localKey: 'outdatedVersionId'
+    localKey: 'outdatedVersionId',
   })
   declare outdatedVersion: BelongsTo<typeof Collection>
 
   @hasMany(() => Collection, {
-    foreignKey: 'outdatedVersionId'
+    foreignKey: 'outdatedVersionId',
   })
   declare updatedVersions: HasMany<typeof Collection>
 
   @manyToMany(() => Post, {
     pivotTable: 'collection_posts',
-    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
+    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order'],
   })
   declare posts: ManyToMany<typeof Post>
 
   @manyToMany(() => Post, {
     pivotForeignKey: 'root_collection_id',
     pivotTable: 'collection_posts',
-    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order']
+    pivotColumns: ['sort_order', 'root_collection_id', 'root_sort_order'],
   })
   declare postsFlattened: ManyToMany<typeof Post>
 
   @manyToMany(() => Taxonomy, {
     pivotColumns: ['sort_order'],
-    pivotTable: 'collection_taxonomies'
+    pivotTable: 'collection_taxonomies',
   })
   declare taxonomies: ManyToMany<typeof Taxonomy>
 
   @hasMany(() => Collection, {
-    foreignKey: 'parentId'
+    foreignKey: 'parentId',
   })
   declare children: HasMany<typeof Collection>
 
@@ -151,42 +154,46 @@ export default class Collection extends AppBaseModel {
   declare watchlist: HasMany<typeof Watchlist>
 
   @hasMany(() => History, {
-    onQuery: q => q.where('historyTypeId', HistoryTypes.VIEW)
+    onQuery: (q) => q.where('historyTypeId', HistoryTypes.VIEW),
   })
   declare viewHistory: HasMany<typeof History>
 
   @hasMany(() => History, {
-    onQuery: q => q.where('historyTypeId', HistoryTypes.PROGRESSION)
+    onQuery: (q) => q.where('historyTypeId', HistoryTypes.PROGRESSION),
   })
   declare progressionHistory: HasMany<typeof History>
 
   @beforeSave()
-  public static async slugifyUsername(collection: Collection) {
+  static async slugifyUsername(collection: Collection) {
     if (collection.$dirty.name && !collection.$dirty.slug) {
-      const slugify = new SlugService<typeof Collection>({ strategy: 'dbIncrement', fields: ['name'] })
+      const slugify = new SlugService<typeof Collection>({
+        strategy: 'dbIncrement',
+        fields: ['name'],
+      })
       collection.slug = await slugify.make(Collection, 'name', collection.name)
     }
   }
 
-  public static series() {
+  static series() {
     return this.query().where('collectionTypeId', CollectionTypes.SERIES)
   }
 
-  public static courses() {
+  static courses() {
     return this.query().where('collectionTypeId', CollectionTypes.COURSE)
   }
 
-  public static playlists() {
+  static playlists() {
     return this.query().where('collectionTypeId', CollectionTypes.PLAYLIST)
   }
 
-  public static paths() {
+  static paths() {
     return this.query().where('collectionTypeId', CollectionTypes.PATH)
   }
 
-  public static withPostLatestPublished = scope((query) => {
+  static withPostLatestPublished = scope((query) => {
     query.select(
-      Database.rawQuery(`(
+      Database.rawQuery(
+        `(
         select
           p.publish_at
         from
@@ -199,25 +206,33 @@ export default class Collection extends AppBaseModel {
               and p.publish_at <= ?
             order by p.publish_at desc
             limit 1
-      ) as latest_publish_at`, [States.PUBLIC, DateTime.now().toSQL()])
+      ) as latest_publish_at`,
+        [States.PUBLIC, DateTime.now().toSQL()]
+      )
     )
   })
 
-  public static withPublishedPostCount = scope<typeof Collection, (query: ModelQueryBuilderContract<typeof Collection>) => void>((query) => {
-    query.withCount('postsFlattened', post => post.apply(scope => scope.published()))
+  static withPublishedPostCount = scope<
+    typeof Collection,
+    (query: ModelQueryBuilderContract<typeof Collection>) => void
+  >((query) => {
+    query.withCount('postsFlattened', (post) => post.apply((postScope) => postScope.published()))
   })
 
-  public static withPublishedPostDuration = scope<typeof Collection, (query: ModelQueryBuilderContract<typeof Collection>) => void>((query) => {
-    query.withAggregate('postsFlattened', query => query
-      .apply(scope => scope.published())
-      .sum('video_seconds')
-      .as('videoSecondsSum')
+  static withPublishedPostDuration = scope<
+    typeof Collection,
+    (query: ModelQueryBuilderContract<typeof Collection>) => void
+  >((query) => {
+    query.withAggregate('postsFlattened', (posts) =>
+      posts
+        .apply((postScope) => postScope.published())
+        .sum('video_seconds')
+        .as('videoSecondsSum')
     )
   })
 
-  public static get postCountSubQuery() {
-    return Database
-      .from('collection_posts')
+  static get postCountSubQuery() {
+    return Database.from('collection_posts')
       .where('root_collection_id', Database.ref('collections.id'))
       .count('*')
       .as('root_posts_count')

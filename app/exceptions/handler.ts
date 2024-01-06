@@ -41,7 +41,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
     logger.error('Too many requests', {
       url: ctx.request.url(true),
       userId: ctx.auth?.user?.id,
-      ip: ctx.request.ip()
+      ip: ctx.request.ip(),
     })
 
     return super.report(error, ctx)

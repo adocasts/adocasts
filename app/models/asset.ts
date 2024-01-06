@@ -33,20 +33,20 @@ export default class Asset extends AppBaseModel {
   declare updatedAt: DateTime
 
   @computed()
-  public get assetUrl() {
+  get assetUrl() {
     return '/img/' + this.filename // TODO
     //return AssetService.getAssetUrl(this.filename)
   }
 
   @manyToMany(() => Post, {
     pivotTable: 'asset_posts',
-    pivotColumns: ['sort_order']
+    pivotColumns: ['sort_order'],
   })
   declare posts: ManyToMany<typeof Post>
-  
+
   @hasMany(() => Collection)
   declare collections: HasMany<typeof Collection>
-  
+
   @hasMany(() => Taxonomy)
   declare taxonomies: HasMany<typeof Taxonomy>
 }

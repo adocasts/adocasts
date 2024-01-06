@@ -5,28 +5,27 @@ import Post from '#models/post'
 import router from '@adonisjs/core/services/router'
 import States from '#enums/states'
 
-export type Frequency = 'daily' | 'weekly' | 'monthly';
+export type Frequency = 'daily' | 'weekly' | 'monthly'
 
 export interface SiteMapItem {
-  url: string,
-  changefreq: Frequency,
+  url: string
+  changefreq: Frequency
   priority: number
 }
 
-
 export default class SyndicationService {
-  public static sitemapCacheKey: string = 'sitemap'
+  static sitemapCacheKey: string = 'sitemap'
 
-  public static async getCachedSitemapUrls(): Promise<SiteMapItem[] | undefined> {
+  static async getCachedSitemapUrls(): Promise<SiteMapItem[] | undefined> {
     const urlString = await CacheService.get(this.sitemapCacheKey)
     return urlString && (JSON.parse(urlString) as SiteMapItem[])
   }
 
-  public static async setCacheSitemapUrls(urls: SiteMapItem[]) {
+  static async setCacheSitemapUrls(urls: SiteMapItem[]) {
     return CacheService.set(this.sitemapCacheKey, JSON.stringify(urls), 86400)
   }
 
-  public static async getSitemapUrls(): Promise<SiteMapItem[]> {
+  static async getSitemapUrls(): Promise<SiteMapItem[]> {
     // series
     const series = await Collection.series()
       .whereNull('parentId')
@@ -39,10 +38,22 @@ export default class SyndicationService {
     const childTopics = await Taxonomy.children().orderBy('name', 'asc').select('slug')
 
     // posts
-    const lessons = await Post.lessons().apply(scope => scope.published()).orderBy('title', 'asc').select('slug')
-    const blogs = await Post.blogs().apply(scope => scope.published()).orderBy('title', 'asc').select('slug')
-    const news = await Post.news().apply(scope => scope.published()).orderBy('title', 'asc').select('slug')
-    const streams = await Post.livestreams().apply(scope => scope.published()).orderBy('title', 'asc').select('slug')
+    const lessons = await Post.lessons()
+      .apply((scope) => scope.published())
+      .orderBy('title', 'asc')
+      .select('slug')
+    const blogs = await Post.blogs()
+      .apply((scope) => scope.published())
+      .orderBy('title', 'asc')
+      .select('slug')
+    const news = await Post.news()
+      .apply((scope) => scope.published())
+      .orderBy('title', 'asc')
+      .select('slug')
+    const streams = await Post.livestreams()
+      .apply((scope) => scope.published())
+      .orderBy('title', 'asc')
+      .select('slug')
 
     let urls: SiteMapItem[] = [
       this.make('/', 'weekly', 1.0),
@@ -54,13 +65,23 @@ export default class SyndicationService {
       this.make('/posts', 'weekly', 0.3),
     ]
 
-    series.map(({ slug }) => urls = this.add(urls, this.map('series.show', { slug }, 'weekly', 0.7)))
-    rootTopics.map(({ slug }) => urls = this.add(urls, this.map('topics.show', { slug }, 'weekly', 0.7)))
-    childTopics.map(({ slug }) => urls = this.add(urls, this.map('topics.show', { slug }, 'weekly', 0.5)))
-    lessons.map(({ slug }) => urls = this.add(urls, this.map('lessons.show', { slug }, 'weekly', 0.6)))
-    news.map(({ slug }) => urls = this.add(urls, this.map('news.show', { slug }, 'weekly', 0.3)))
-    streams.map(({ slug }) => urls = this.add(urls, this.map('streams.show', { slug }, 'weekly', 0.3)))
-    blogs.map(({ slug }) => urls = this.add(urls, this.map('blog.show', { slug }, 'weekly', 0.2)))
+    series.map(
+      ({ slug }) => (urls = this.add(urls, this.map('series.show', { slug }, 'weekly', 0.7)))
+    )
+    rootTopics.map(
+      ({ slug }) => (urls = this.add(urls, this.map('topics.show', { slug }, 'weekly', 0.7)))
+    )
+    childTopics.map(
+      ({ slug }) => (urls = this.add(urls, this.map('topics.show', { slug }, 'weekly', 0.5)))
+    )
+    lessons.map(
+      ({ slug }) => (urls = this.add(urls, this.map('lessons.show', { slug }, 'weekly', 0.6)))
+    )
+    news.map(({ slug }) => (urls = this.add(urls, this.map('news.show', { slug }, 'weekly', 0.3))))
+    streams.map(
+      ({ slug }) => (urls = this.add(urls, this.map('streams.show', { slug }, 'weekly', 0.3)))
+    )
+    blogs.map(({ slug }) => (urls = this.add(urls, this.map('blog.show', { slug }, 'weekly', 0.2))))
 
     return urls
   }
@@ -69,7 +90,12 @@ export default class SyndicationService {
     return { url, changefreq, priority }
   }
 
-  private static map(routeName: string, params: { [x: string]: any }, changefreq: Frequency = 'weekly', priority: number = 0.5): SiteMapItem | undefined {
+  private static map(
+    routeName: string,
+    params: { [x: string]: any },
+    changefreq: Frequency = 'weekly',
+    priority: number = 0.5
+  ): SiteMapItem | undefined {
     const url = router.makeUrl(routeName, { params })
     if (!url) return
     return this.make(url, changefreq, priority)

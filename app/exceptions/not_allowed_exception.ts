@@ -1,5 +1,5 @@
-import HttpStatus from '#enums/http_statuses';
-import { Exception } from '@adonisjs/core/exceptions';
+import HttpStatus from '#enums/http_statuses'
+import { Exception } from '@adonisjs/core/exceptions'
 
 /*
 |--------------------------------------------------------------------------

@@ -8,22 +8,23 @@ import shiki from 'shiki'
 const shikiTheme = 'github-dark'
 const highlighter = await shiki.getHighlighter({
   theme: shikiTheme,
-  langs: [...shiki.BUNDLED_LANGUAGES,
+  langs: [
+    ...shiki.BUNDLED_LANGUAGES,
     {
       id: 'edge',
       scopeName: 'text.html.edge',
-      path: app.publicPath('/shiki/edge.json')
-    }
-  ]
+      path: app.publicPath('/shiki/edge.json'),
+    },
+  ],
 })
 
 class HtmlParser {
-  public static highlightVersion = '2023-10-19.01'
+  static highlightVersion = '2023-10-19.01'
 
-  public normalizeLanguage(language: string | undefined) {
+  normalizeLanguage(language: string | undefined) {
     if (!language) return language
 
-    switch(language.toLowerCase()) {
+    switch (language.toLowerCase()) {
       case 'typescript':
         return 'ts'
       case 'javascript':
@@ -36,13 +37,13 @@ class HtmlParser {
     }
   }
 
-  public async normalizeUrls(html: string) {
+  async normalizeUrls(html: string) {
     const root = parse(html || '')
     const anchors = root.querySelectorAll('a')
     const images = root.querySelectorAll('img')
 
     if (anchors?.length) {
-      anchors.map(el => {
+      anchors.map((el) => {
         const href = el.getAttribute('href')
         if (href?.startsWith('/') && !href.startsWith('//')) {
           el.setAttribute('href', `${env.get('APP_DOMAIN')}${href}`)
@@ -51,7 +52,7 @@ class HtmlParser {
     }
 
     if (images?.length) {
-      images.map(el => {
+      images.map((el) => {
         const source = el.getAttribute('src')
         if (source?.startsWith('/') && !source.startsWith('//')) {
           el.setAttribute('src', `${env.get('APP_DOMAIN')}${source}`)
@@ -62,7 +63,7 @@ class HtmlParser {
     return root.toString()
   }
 
-  public async getLangIconHtml(lang: string, filepath: string) {
+  async getLangIconHtml(lang: string, filepath: string) {
     let identifier = ''
     let iconHtml = ''
 
@@ -96,39 +97,41 @@ class HtmlParser {
     }
 
     if (identifier) {
-      iconHtml = `<span class="lang-icon ${lang}">${await edge.render(`components/helpers/svg`, { identifier })}</span>`
+      iconHtml = `<span class="lang-icon ${lang}">${await edge.render(`components/helpers/svg`, {
+        identifier,
+      })}</span>`
     }
 
     return iconHtml
   }
 
-  public getCopyCode(code: string, lang: string) {
+  getCopyCode(code: string, lang: string) {
     let lines = code
       .split('\n')
-      .filter(l => !l.startsWith('--'))
-      .filter(l => l !== '\r')
-      .map(l => l.startsWith('++') ? l.replace('++', '') : l)
+      .filter((l) => !l.startsWith('--'))
+      .filter((l) => l !== '\r')
+      .map((l) => (l.startsWith('++') ? l.replace('++', '') : l))
 
     switch (lang) {
       case 'bash':
         // remove bash comments
-        lines = lines.filter(l => !l.startsWith('#'))
+        lines = lines.filter((l) => !l.startsWith('#'))
         break
     }
-  
+
     return lines.join('\n')
   }
 
-  public async getPreview(html: string) {
+  async getPreview(html: string) {
     const root = parse(html || '')
-    const [one, two, three, four, five, ..._rest ] = root.childNodes
-    
+    const [one, two, three, four, five] = root.childNodes
+
     root.childNodes = [one, two, three, four, five].filter(Boolean)
-    
+
     return root.toString()
   }
 
-  public async highlight(html: string) {
+  async highlight(html: string) {
     const root = parse(html || '')
     const headings = root.querySelectorAll('h1,h2,h3,h4,h5,h6')
     const preBlocks = root.querySelectorAll('pre')
@@ -136,32 +139,36 @@ class HtmlParser {
 
     // set slug anchor id to all headings
     if (headings?.length) {
-      headings.map(el => el.setAttribute('id', string.slug(el.textContent, { lower: true, replacement: '_' })))
+      headings.map((el) =>
+        el.setAttribute('id', string.slug(el.textContent, { lower: true, replacement: '_' }))
+      )
     }
 
     // add timestamp class to timestamp paragraphs
     if (paragraphs.length) {
       const regexWholeString = /^([0-9]{1,2}:)?[0-9]{1,2}:[0-9]{1,2}$/i
       const regex = /([0-9]{1,2}:)?[0-9]{1,2}:[0-9]{1,2}/gim
-      
+
       paragraphs
-        .filter(el => el.textContent.match(regex))
-        .map(el => {
+        .filter((el) => el.textContent.match(regex))
+        .map((el) => {
           if (el.textContent.trim().match(regexWholeString)) {
             el.setAttribute('class', 'timestamp')
             return
-          } 
+          }
 
           el.setAttribute('class', 'chapters')
           el.innerHTML = el.innerHTML.replaceAll(regex, '<span class="timestamp">$&</span>')
         })
 
       // find & set transcript paragraph timestamps
-      const transcriptIndex = paragraphs.findIndex(el => el.textContent.includes('Transcript:'))
+      const transcriptIndex = paragraphs.findIndex((el) => el.textContent.includes('Transcript:'))
       if (transcriptIndex > -1) {
-        const transcriptParagraphs = paragraphs.slice(transcriptIndex + 1).filter(el => el.textContent.match(regex))
+        const transcriptParagraphs = paragraphs
+          .slice(transcriptIndex + 1)
+          .filter((el) => el.textContent.match(regex))
         const transcriptCutoffIndex = transcriptParagraphs.length > 12 ? 6 : 0
-        
+
         if (transcriptCutoffIndex) {
           const cutoffHTML = transcriptParagraphs[transcriptCutoffIndex].innerHTML
 
@@ -170,8 +177,13 @@ class HtmlParser {
             <p class="timestamp transcript cutoff active">${cutoffHTML}</p>
           `)
         }
-        
-        transcriptParagraphs.map((el, i) => el.setAttribute('class', `timestamp transcript ${i >= transcriptCutoffIndex ? 'cutoff active' : ''}`))
+
+        transcriptParagraphs.map((el, i) =>
+          el.setAttribute(
+            'class',
+            `timestamp transcript ${i >= transcriptCutoffIndex ? 'cutoff active' : ''}`
+          )
+        )
       }
     }
 
@@ -179,56 +191,70 @@ class HtmlParser {
       const promises = preBlocks.map(async (c) => {
         const codeRoot = parse(c.text, {
           blockTextElements: {
-            code: false
-          }
+            code: false,
+          },
         })
 
         const codeBlock = codeRoot.querySelector('code')
 
         if (codeBlock) {
           const classList = [...codeBlock.classList.values()]
-          const lang = this.normalizeLanguage(classList.find((c) => c.startsWith('language-'))?.replace('language-', ''))
+          const lang = this.normalizeLanguage(
+            classList.find((list) => list.startsWith('language-'))?.replace('language-', '')
+          )
 
           if (!lang) return
 
           const outerHTML = codeBlock.outerHTML
           const tagStart = outerHTML.replace('</code>', '')
           let code = c.text.replace(tagStart, '').replace('</code>', '')
-          const filepath = code.match(/^\/\/ (\w+\/){1,6}\w+.(ts|js|edge|vue|jsx|tsx)((\r\n)?){1,6}/)
+          const filepath = code.match(
+            /^\/\/ (\w+\/){1,6}\w+.(ts|js|edge|vue|jsx|tsx)((\r\n)?){1,6}/
+          )
 
           if (filepath?.length) {
             code = code.replace(filepath[0], '')
           }
 
           const lines = code.split('\r\n')
-          const delLineNumbers = lines.map((line, i) => line.startsWith('--') ? i + 1 : undefined).filter(Boolean)
-          const addLineNumbers = lines.map((line, i) => line.startsWith('++') ? i + 1 : undefined).filter(Boolean)
+          const delLineNumbers = lines
+            .map((line, i) => (line.startsWith('--') ? i + 1 : undefined))
+            .filter(Boolean)
+          const addLineNumbers = lines
+            .map((line, i) => (line.startsWith('++') ? i + 1 : undefined))
+            .filter(Boolean)
           const codeLessChange = code.replaceAll('\r\n--', '\r\n').replaceAll('\r\n++', '\r\n')
-          let highlighted = await highlighter.codeToHtml(codeLessChange, lang, shikiTheme, { 
+          let highlighted = await highlighter.codeToHtml(codeLessChange, lang, shikiTheme, {
             lang,
             lineOptions: [
-              ...delLineNumbers.map(x => ({ line: x!, classes: ['del'] })),
-              ...addLineNumbers.map(x => ({ line: x!, classes: ['add'] }))
-            ]
+              ...delLineNumbers.map((x) => ({ line: x!, classes: ['del'] })),
+              ...addLineNumbers.map((x) => ({ line: x!, classes: ['add'] })),
+            ],
           })
 
           const copyCode = this.getCopyCode(code, lang)
-          const copy = `<div class="code-copy">${await edge.render('components/clipboard/copy', { code: copyCode })}</div>`
+          const copy = `<div class="code-copy">${await edge.render('components/clipboard/copy', {
+            code: copyCode,
+          })}</div>`
           highlighted = highlighted.replace('</pre>', copy + '</pre>')
 
           const h = parse(highlighted)
           let highlightedCode = highlighted
-          
+
           if (filepath?.length) {
             const path = filepath[0].replaceAll('\r\n', '').replace('//', '').trim().split('/')
             const iconHtml = await this.getLangIconHtml(lang, filepath[0])
-            const filePathHtml = parse(`<span class="filepath">${iconHtml}<ul class="filepath-list">${path.map(item => `<li>${item}</li>`).join('')}</ul></span>`)
+            const filePathHtml = parse(
+              `<span class="filepath">${iconHtml}<ul class="filepath-list">${path
+                .map((item) => `<li>${item}</li>`)
+                .join('')}</ul></span>`
+            )
             const rawInnerText = h.firstChild.rawText
             const rawText = rawInnerText + filePathHtml.outerHTML
-            
+
             highlightedCode = highlighted.replace(rawInnerText, rawText)
           }
-          
+
           c.replaceWith(highlightedCode)
         }
       })

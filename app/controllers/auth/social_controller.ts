@@ -11,25 +11,27 @@ export default class SocialController {
   constructor(
     protected authSocialService: AuthSocialService,
     protected sessionService: SessionService,
-    protected stripeService: StripeService,
+    protected stripeService: StripeService
   ) {}
 
-  public async redirect ({ request, session, ally, params }: HttpContext) {
+  async redirect({ request, session, ally, params }: HttpContext) {
     const plan = request.qs().plan
-    
-    plan
-      ? session.put('plan', plan)
-      : session.forget('plan')
+
+    plan ? session.put('plan', plan) : session.forget('plan')
 
     await ally.use(params.provider).redirect()
   }
 
-  public async callback ({ response, auth, params, session }: HttpContext) {
+  async callback({ response, auth, params, session }: HttpContext) {
     const wasAuthenticated = !!auth.user
-    const { success, user, message } = await this.authSocialService.getUser(params.provider)
+    const {
+      success,
+      user,
+      message: formError,
+    } = await this.authSocialService.getUser(params.provider)
 
     if (!success) {
-      session.flash('errors', { form: message })
+      session.flash('errors', { form: formError })
       return response.redirect().toRoute('auth.signin.create')
     }
 
@@ -48,7 +50,10 @@ export default class SocialController {
     }
 
     if (session.has('plan')) {
-      const { status, message, checkout } = await this.stripeService.tryCreateCheckoutSession(user!, session.get('plan'))
+      const { status, message, checkout } = await this.stripeService.tryCreateCheckoutSession(
+        user!,
+        session.get('plan')
+      )
 
       if (status === 'warning' || status === 'error') {
         session.flash(status, message)
@@ -58,19 +63,31 @@ export default class SocialController {
       return response.redirect(checkout!.url!)
     }
 
-    session.flash('success', hasProfile ? `Welcome back, ${auth.user!.username}` : `Welcome to Adocasts, ${auth.user!.username}`)
+    session.flash(
+      'success',
+      hasProfile
+        ? `Welcome back, ${auth.user!.username}`
+        : `Welcome to Adocasts, ${auth.user!.username}`
+    )
     return response.redirect('/')
   }
 
-  public async unlink ({ response, auth, params, session }: HttpContext) {
+  async unlink({ response, auth, params, session }: HttpContext) {
     if (!auth.user!.password) {
-      const signedUrl = router.makeSignedUrl('auth.password.reset', {
-        email: auth.user!.email
-      }, { 
-        expiresIn: '1h' 
-      });
+      const signedUrl = router.makeSignedUrl(
+        'auth.password.reset',
+        {
+          email: auth.user!.email,
+        },
+        {
+          expiresIn: '1h',
+        }
+      )
 
-      session.flash('error', `Please create a password for your account by following the password reset flow before unlinking ${params.provider}`)
+      session.flash(
+        'error',
+        `Please create a password for your account by following the password reset flow before unlinking ${params.provider}`
+      )
       return response.redirect(signedUrl)
     }
 
@@ -81,3 +98,4 @@ export default class SocialController {
     return response.redirect().back()
   }
 }
+

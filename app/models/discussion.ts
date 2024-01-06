@@ -1,5 +1,13 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeSave, belongsTo, column, computed, hasMany, manyToMany } from '@adonisjs/lucid/orm'
+import {
+  BaseModel,
+  beforeSave,
+  belongsTo,
+  column,
+  computed,
+  hasMany,
+  manyToMany,
+} from '@adonisjs/lucid/orm'
 import User from './user.js'
 import Comment from './comment.js'
 import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
@@ -38,7 +46,7 @@ export default class Discussion extends BaseModel {
   declare updatedAt: DateTime
 
   @computed()
-  public get createdAtDisplay() {
+  get createdAtDisplay() {
     if (!this.createdAt) return ''
 
     if (DateTime.now().year === this.createdAt.year) {
@@ -49,7 +57,7 @@ export default class Discussion extends BaseModel {
   }
 
   @computed()
-  public get updatedAtDisplay() {
+  get updatedAtDisplay() {
     if (!this.updatedAt) return ''
 
     if (DateTime.now().year === this.updatedAt.year) {
@@ -60,12 +68,12 @@ export default class Discussion extends BaseModel {
   }
 
   @computed()
-  public get createdAgo() {
+  get createdAgo() {
     return UtilityService.timeago(this.createdAt)
   }
 
   @computed()
-  public get updatedAgo() {
+  get updatedAgo() {
     return UtilityService.timeago(this.updatedAt)
   }
 
@@ -81,7 +89,7 @@ export default class Discussion extends BaseModel {
   @hasMany(() => DiscussionView, {
     onQuery(query) {
       query.where('typeId', DiscussionViewTypes.VIEW)
-    }
+    },
   })
   declare views: HasMany<typeof DiscussionView>
 
@@ -94,10 +102,14 @@ export default class Discussion extends BaseModel {
   declare votes: ManyToMany<typeof User>
 
   @beforeSave()
-  public static async slugify(discussion: Discussion) {
+  static async slugify(discussion: Discussion) {
     if (discussion.$dirty.title && !discussion.slug) {
-      const slugify = new SlugService<typeof Discussion>({ strategy: 'dbIncrement', fields: ['title'] })
+      const slugify = new SlugService<typeof Discussion>({
+        strategy: 'dbIncrement',
+        fields: ['title'],
+      })
       discussion.slug = await slugify.make(Discussion, 'title', discussion.title)
     }
   }
 }
+
