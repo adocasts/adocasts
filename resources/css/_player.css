@@ -1,16 +1,20 @@
 @layer utilities {
-  .aspect-video:not(.no-access) {
+  .aspect-video {
     aspect-ratio: 16 / 9;
+  }
+
+  .aspect-video.no-access {
+    aspect-ratio: unset;
+  }
+
+  @media screen(md) {
+    .aspect-video.no-access {
+      aspect-ratio: 16 / 9;
+    }
   }
 
   .plyr {
     height: 100%;
-  }
-
-  @screen lg {
-    .aspect-video {
-      aspect-ratio: 16 / 9;
-    }
   }
 
   .aspect-square {

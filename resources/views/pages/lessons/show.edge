@@ -11,9 +11,11 @@
 
   @slot('list')
     <div class="flex flex-col">
-      @if (transcript)
-        @!post.transcript()
-      @endif
+      @can('PostPolicy.view', post)
+        @if (transcript)
+          @!post.transcript()
+        @endif
+      @endcan
 
       @if (series)
         @!post.list.series()
@@ -69,14 +71,16 @@
           @end
         @endif
 
-        @if (transcript)
-          @button({
-            '@click': `document.getElementById('boxTranscript').dispatchEvent(new CustomEvent('toggle'))`
-          })
-            @svg('ph:scroll-fill', { class: 'w-5 h-5' })
-            Transcript
-          @end
-        @endif
+        @can('PostPolicy.view', post)
+          @if (transcript)
+            @button({
+              '@click': `document.getElementById('boxTranscript').dispatchEvent(new CustomEvent('toggle'))`
+            })
+              @svg('ph:scroll-fill', { class: 'w-5 h-5' })
+              Transcript
+            @end
+          @endif
+        @endcan
 
         @if (auth.user && [PostTypes.LESSON, PostTypes.LIVESTREAM].includes(post.postTypeId))
           @!post.completed()
@@ -130,7 +134,7 @@
     @endif
 
     <div class="-mx-4">
-      <div class="bg-slate-100 rounded-md p-4 mt-8">
+      <div class="bg-slate-100 md:rounded-md p-4 mt-8">
         @let(author = post.authors.at(0))
         @stat.bar({ size: 'small', display: 'flex', class: 'mb-4' })
           @stat.bar.item({ title: 'Author' })
@@ -191,16 +195,16 @@
     @endcan
 
     @can('PostPolicy.view', post)
-    <article x-data="proseBody" id="proseBody" class="prose !max-w-full post-type-{{ post.postTypeId }} relative">
-      {{{ await parser.highlight(post.body) }}}
-    </article>
+      <article x-data="proseBody" id="proseBody" class="prose !max-w-full post-type-{{ post.postTypeId }} relative">
+        {{{ await parser.highlight(post.body) }}}
+      </article>
     @else
       <article x-data="proseBody" id="proseBody" class="prose !max-w-full post-type-{{ post.postTypeId }} relative">
         {{{ await parser.getPreview(post.body) }}}
       </article>
       <div class="w-full absolute bottom-0 left-0 h-full bg-gradient-to-b from-slate-100/0 via-slate-100/75 to-body z-10"></div>
       <div class="-mx-4">
-        <div class="bg-slate-100 rounded-md p-6 shadow-xl relative z-20 {{ post.body.length ? '-mt-16' : '' }}">
+        <div class="bg-slate-100 rounded-md p-6 shadow-xl relative z-20 {{ post.body.length > 10 ? '-mt-16' : '' }}">
           @!plus.postCta({ post, plusMonthly, outlineVariant: 'dark' })
         </div>
       </div>
