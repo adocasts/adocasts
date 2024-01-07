@@ -95,4 +95,56 @@ test.group('Posts actions', (group) => {
     response.assertStatus(HttpStatus.OK)
     response.assertTextIncludes('Add to Watchlist')
   })
+
+  test('should be able to track post progression', async ({ client, route }) => {
+    const user = await UserFactory.with('profile').create()
+    const post = await PostFactory.with('authors', 1, (authors) => authors.with('profile')).create()
+
+    const response = await client
+      .post(route('api.histories.progression'))
+      .withGuard('web')
+      .loginAs(user)
+      .form({
+        postId: post.id,
+        route: 'lessons.show',
+        watchSeconds: 60,
+        watchPercent: 50,
+      })
+
+    response.assertStatus(HttpStatus.OK)
+    response.assertBodyContains({ success: true })
+  })
+
+  test('should be able to update post progression', async ({ client, route, assert }) => {
+    const user = await UserFactory.with('profile').create()
+    const post = await PostFactory.with('authors', 1, (authors) => authors.with('profile')).create()
+    const history = await History.create({
+      userId: user.id,
+      postId: post.id,
+      historyTypeId: HistoryTypes.PROGRESSION,
+      route: 'lessons.show',
+      isCompleted: false,
+      watchSeconds: 10,
+      watchPercent: 20,
+    })
+
+    const response = await client
+      .post(route('api.histories.progression'))
+      .withGuard('web')
+      .loginAs(user)
+      .form({
+        postId: post.id,
+        route: 'lessons.show',
+        watchSeconds: 60,
+        watchPercent: 50,
+      })
+
+    await history.refresh()
+
+    response.assertStatus(HttpStatus.OK)
+    response.assertBodyContains({ success: true })
+
+    assert.equal(history.watchSeconds, 60)
+    assert.equal(history.watchPercent, 50)
+  })
 })
