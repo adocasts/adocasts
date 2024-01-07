@@ -5,18 +5,30 @@ Alpine.data('starfield', () => {
   const isReducedMotion =
     window.matchMedia(`(prefers-reduced-motion: reduce)`) === true ||
     window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true
+
   return {
+    line: null,
+    dot: null,
+
     init() {
+      this.create()
+    },
+
+    redraw() {
+      this.create()
+    },
+
+    create() {
       if (isReducedMotion) return
       if (this.$refs.canvasLine) {
-        new Starback(this.$refs.canvasLine, {
+        this.line = new Starback(this.$refs.canvasLine, {
           type: 'line',
-          quantity: 25,
+          quantity: 15,
           speed: 5,
-          frequency: 75,
+          frequency: 100,
           slope: { x: -1, y: 10 },
           directionX: 1,
-          speed: 3,
+          speed: 5,
           spread: -3,
           width: this.$refs.canvasLine.parentElement.clientWidth,
           height: this.$refs.canvasLine.parentElement.clientHeight,
@@ -25,7 +37,7 @@ Alpine.data('starfield', () => {
       }
 
       if (this.$refs.canvasDot) {
-        new Starback(this.$refs.canvasDot, {
+        this.dot = new Starback(this.$refs.canvasDot, {
           type: 'dot',
           quantity: 100,
           direction: 200,

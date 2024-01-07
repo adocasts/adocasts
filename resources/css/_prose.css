@@ -37,6 +37,16 @@
   }
 }
 
+:not(.feed-body) > pre.shiki {
+  border-radius: 0;
+}
+
+@media (min-width: 650px) {
+  :not(.feed-body) > pre.shiki {
+    border-radius: .375rem;
+  }
+}
+
 .image-uploading {
   position: relative;
   display: inline-block;

@@ -3,6 +3,7 @@ build
 coverage
 .vscode
 .DS_STORE
+.DS_Store
 .env
 .idea
 google-cloud-key.json

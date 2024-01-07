@@ -11,10 +11,10 @@
       @endif
 
       <div class="w-full flex items-center p-4 gap-4 shadow-md relative z-20 anchor-group backdrop-blur-2xl">
-        <div class="w-1/4 max-w-[100px] flex justify-center items-center">
+        <div class="w-1/5 md:w-1/4 max-w-[100px] flex justify-center items-center">
           @!collection.icon({ item, class: 'w-full' })
         </div>
-        <div class="w-3/4 space-y-1.5">
+        <div class="w-4/5 md:w-3/4 space-y-1.5">
           <h3 class="font-bold text-slate-900 text-xl lg:text-2xl">
             <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="anchor-expand">
               {{ item.name }}

@@ -5,7 +5,7 @@
 @let(lines = $props.lines ?? true)
 @let(dots = $props.dots ?? true)
 
-<section x-data="starfield" {{ html.attrs({ class: classNames, ...attrs }) }}>
+<section x-data="starfield" {{ html.attrs({ class: classNames, ...attrs }) }} x-on:resize.window.debounce.500ms="redraw">
   
   {{{ await $slots.main() }}}
   

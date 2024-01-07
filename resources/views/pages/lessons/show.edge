@@ -147,7 +147,11 @@
             @end
           @end
           @!stat.bar.item({ title: 'Published', value: post.publishAtDisplay })
-          @!stat.bar.item({ title: 'Duration', value: post.watchMinutes })
+          
+          @if (post.watchMinutes)
+            @!stat.bar.item({ title: 'Duration', value: post.watchMinutes })
+          @endif
+
           @!stat.bar.item({ title: 'Comments', value: commentCount, href: '#comments', class: 'hidden sm:flex' })
         @end
 

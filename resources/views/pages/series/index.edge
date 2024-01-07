@@ -31,13 +31,13 @@
       subtitle: 'Alphabetical list of all our series'
     })
 
-    <section class="grid md:gap-4 lg:gap-8 mt-8">
+    <section class="grid gap-4 lg:gap-8 mt-8">
       @each ((item, i) in series)
-        <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-slate-100 rounded-md">
+        <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-slate-100 rounded-md pb-4 md:pb-0">
           @!collection.square.tall({ item, class: ['bg-slate-200'] })
 
           @each ((post, i) in item.postsFlattened)
-            @!post.item({ item: post, col: true, class: `p-4 ${i > 0 ? 'sm:hidden' : ''} ${i == 2 ? 'md:hidden lg:flex' : 'md:flex'}`, display: { seriesName: false } })
+            @!post.item({ item: post, col: true, class: `p-4 pb-0 md:pb-4 !mb-0 ${i > 0 ? 'sm:hidden' : ''} ${i == 2 ? 'md:hidden lg:flex' : 'md:flex'}`, display: { seriesName: false } })
           @endeach
         </div>
       @endeach
