@@ -2,6 +2,9 @@ import { mergeAttributes, Node } from '@tiptap/core'
 import { PluginKey } from '@tiptap/pm/state'
 import Suggestion from '@tiptap/suggestion'
 
+let atMentionWarning = false
+let atMentionTimeout = null
+
 export const MentionPluginKey = new PluginKey('mention')
 
 export const Mention = Node.create({
@@ -43,7 +46,24 @@ export const Mention = Node.create({
 
           window.getSelection()?.collapseToEnd()
         },
-        allow: ({ state, range }) => {
+        allow: ({ state, range, editor }) => {
+          const html = editor.getHTML()
+          const mentions = html.match(/data-type="mention"/gm)
+
+          // max of 3 mentions
+          if (mentions && mentions.length >= 3) {
+            if (!atMentionWarning) {
+              window.toast('Maximum of 3 mentions', { type: 'warning' })
+
+              atMentionWarning = true
+              atMentionTimeout = setTimeout(() => {
+                atMentionWarning = false
+                clearTimeout(atMentionTimeout)
+              }, 5000)
+            }
+            return false
+          }
+
           const $from = state.doc.resolve(range.from)
           const type = state.schema.nodes[this.name]
           const allow = !!$from.parent.type.contentMatch.matchType(type)
@@ -66,8 +86,8 @@ export const Mention = Node.create({
     return {
       id: {
         default: null,
-        parseHTML: element => element.getAttribute('data-id'),
-        renderHTML: attributes => {
+        parseHTML: (element) => element.getAttribute('data-id'),
+        renderHTML: (attributes) => {
           if (!attributes.id) {
             return {}
           }
@@ -80,8 +100,8 @@ export const Mention = Node.create({
 
       label: {
         default: null,
-        parseHTML: element => element.getAttribute('data-label'),
-        renderHTML: attributes => {
+        parseHTML: (element) => element.getAttribute('data-label'),
+        renderHTML: (attributes) => {
           if (!attributes.label) {
             return {}
           }
@@ -105,12 +125,17 @@ export const Mention = Node.create({
   renderHTML({ node, HTMLAttributes }) {
     return [
       'a',
-      mergeAttributes({ 'data-type': this.name }, { 'href': `/@${HTMLAttributes['data-id']}`, 'up-follow': true }, this.options.HTMLAttributes, HTMLAttributes),
+      mergeAttributes(
+        { 'data-type': this.name },
+        { 'href': `/@${HTMLAttributes['data-id']}`, 'up-follow': true },
+        this.options.HTMLAttributes,
+        HTMLAttributes
+      ),
       this.options.renderLabel({
         options: this.options,
         node,
       }),
-  ]
+    ]
   },
 
   renderText({ node }) {
@@ -122,26 +147,27 @@ export const Mention = Node.create({
 
   addKeyboardShortcuts() {
     return {
-      Backspace: () => this.editor.commands.command(({ tr, state }) => {
-        let isMention = false
-        const { selection } = state
-        const { empty, anchor } = selection
+      Backspace: () =>
+        this.editor.commands.command(({ tr, state }) => {
+          let isMention = false
+          const { selection } = state
+          const { empty, anchor } = selection
 
-        if (!empty) {
-          return false
-        }
-
-        state.doc.nodesBetween(anchor - 1, anchor, (node, pos) => {
-          if (node.type.name === this.name) {
-            isMention = true
-            tr.insertText(this.options.suggestion.char || '', pos, pos + node.nodeSize)
-
+          if (!empty) {
             return false
           }
-        })
 
-        return isMention
-      }),
+          state.doc.nodesBetween(anchor - 1, anchor, (node, pos) => {
+            if (node.type.name === this.name) {
+              isMention = true
+              tr.insertText(this.options.suggestion.char || '', pos, pos + node.nodeSize)
+
+              return false
+            }
+          })
+
+          return isMention
+        }),
     }
   },
 
