@@ -36,6 +36,11 @@ export default class TaxonomyBuilder extends BaseBuilder<typeof Taxonomy, Taxono
     return this
   }
 
+  withChildren() {
+    this.query.preload('children', (query) => query.orderBy('name', 'asc'))
+    return this
+  }
+
   withPostCount() {
     this.query.withCount('posts')
     return this

@@ -10,6 +10,8 @@ import States from '#enums/states'
 import SyndicationService from '#services/syndication_service'
 import { SitemapStream } from 'sitemap'
 import { createGzip } from 'node:zlib'
+import { inject } from '@adonisjs/core'
+import TaxonomyService from '#services/taxonomy_service'
 
 export default class SyndicationsController {
   async rss({ view, response }: HttpContext) {
@@ -41,14 +43,15 @@ export default class SyndicationsController {
     )
   }
 
-  async sitemap({ view }: HttpContext) {
+  @inject()
+  async sitemap({ view }: HttpContext, taxonomyService: TaxonomyService) {
     const series = await Collection.series()
       .preload('children')
       .where('stateId', States.PUBLIC)
       .whereNull('parentId')
       .orderBy('name', 'asc')
 
-    const topics = await Taxonomy.roots().preload('children').orderBy('name', 'asc')
+    const topics = await taxonomyService.builder().public().withChildren().orderBy('name', 'asc')
 
     return view.render('pages/sitemap', { series, topics })
   }
@@ -79,4 +82,3 @@ export default class SyndicationsController {
     }
   }
 }
-

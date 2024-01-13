@@ -164,7 +164,7 @@ export default class PostService {
   async getSimilarPosts(post: Post, limit: number = 15) {
     const taxonomyIds = post.taxonomies.map((t) => t.id)
     const similarPostTypes = this.getSimilarPostTypes(post)
-    let query = Post.query()
+    let query = Post.query().apply((scope) => scope.published())
 
     query = query.whereIn('postTypeId', similarPostTypes).whereNot('id', post.id)
 

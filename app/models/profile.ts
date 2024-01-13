@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { belongsTo, column } from '@adonisjs/lucid/orm'
+import { belongsTo, column, computed } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import User from '#models/user'
 import Asset from '#models/asset'
@@ -82,4 +82,13 @@ export default class Profile extends AppBaseModel {
 
   @belongsTo(() => Asset)
   declare asset: BelongsTo<typeof Asset>
+
+  @computed()
+  get websiteUrl() {
+    if (!this.website) return ''
+    if (!this.website.startsWith('https://') && !this.website.startsWith('http://')) {
+      return `https://${this.website}`
+    }
+    return this.website
+  }
 }
