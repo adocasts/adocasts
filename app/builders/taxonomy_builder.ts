@@ -1,3 +1,4 @@
+import AssetTypes from '#enums/asset_types'
 import Post from '#models/post'
 import Taxonomy from '#models/taxonomy'
 import BaseBuilder from './base_builder.js'
@@ -53,6 +54,8 @@ export default class TaxonomyBuilder extends BaseBuilder<typeof Taxonomy, Taxono
     this.query.preload('posts', (query) =>
       query
         .apply((scope) => scope.forDisplay())
+        .apply((scope) => scope.published())
+        .whereHas('assets', (assets) => assets.where('assetTypeId', AssetTypes.THUMBNAIL))
         .orderBy(orderBy, direction)
         .if(limit, (truthy) => truthy.groupLimit(limit!))
         .if(orderBy, (truthy) => truthy.groupOrderBy(orderBy, direction))
@@ -75,4 +78,3 @@ export default class TaxonomyBuilder extends BaseBuilder<typeof Taxonomy, Taxono
     return this
   }
 }
-
