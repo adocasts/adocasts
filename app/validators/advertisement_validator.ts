@@ -16,13 +16,13 @@ export const advertisementStoreValidator = vine.compile(
       .date()
       .afterOrEqual('today')
       .optional()
-      .transform((value) => DateTime.fromJSDate(value)),
+      .transform((value) => DateTime.fromJSDate(value).startOf('day')),
     endAt: vine
       .date()
       .afterField('startAt')
       .beforeOrEqual(() => DateTime.now().plus({ months: 6 }).toFormat('yyyy-MM-dd'))
       .optional()
-      .transform((date) => DateTime.fromJSDate(date)),
+      .transform((date) => DateTime.fromJSDate(date).endOf('day')),
   })
 )
 
@@ -42,13 +42,12 @@ export const advertisementUpdateValidator = vine.compile(
     startAt: vine
       .date()
       .optional()
-      .transform((value) => DateTime.fromJSDate(value)),
+      .transform((value) => DateTime.fromJSDate(value).startOf('day')),
     endAt: vine
       .date()
       .afterField('startAt')
       .beforeOrEqual(() => DateTime.now().plus({ months: 6 }).toFormat('yyyy-MM-dd'))
       .optional()
-      .transform((date) => DateTime.fromJSDate(date)),
+      .transform((date) => DateTime.fromJSDate(date).endOf('day')),
   })
 )
-

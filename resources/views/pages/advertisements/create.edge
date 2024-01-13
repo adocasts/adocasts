@@ -26,7 +26,7 @@
               type: 'date', 
               value: DateTime.now().toFormat('yyyy-MM-dd'),
               min: DateTime.now().toFormat('yyyy-MM-dd'),
-              max: DateTime.now().toFormat('yyyy-MM-dd'),
+              max: DateTime.now().plus({ months: 6 }).toFormat('yyyy-MM-dd'),
             })
           @end
 

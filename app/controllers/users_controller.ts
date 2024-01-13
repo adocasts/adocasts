@@ -144,15 +144,11 @@ export default class UsersController {
       .where('isEnabledMentions', true)
       .whereNot('id', auth.user!.id)
       .select('username', 'planId')
-      .orderBy([
-        { column: 'planId', order: 'desc' },
-        { column: 'username', order: 'asc' },
-      ])
-      .limit(10)
+      .orderBy('username', 'asc')
+      .limit(3)
 
     return response.json(
       users.map((user) => user.username.toLowerCase()).sort((a, b) => a.localeCompare(b))
     )
   }
 }
-

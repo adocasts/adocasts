@@ -3,6 +3,9 @@ import axios from 'axios'
 
 export default {
   items: async ({ query }) => {
+    if (query.length < 3) {
+      return []
+    }
     const _csrf = document.forms.csrf._csrf.value
     const { data } = await axios.post('/api/mentions/list', { _csrf, pattern: query })
     return data
@@ -26,7 +29,7 @@ export default {
     }
 
     return {
-      onStart: props => {
+      onStart: (props) => {
         state = props
 
         commandState = {
@@ -58,7 +61,7 @@ export default {
             return false
           },
           upHandler() {
-            this.selectedIndex = ((this.selectedIndex + this.items.length) - 1) % this.items.length
+            this.selectedIndex = (this.selectedIndex + this.items.length - 1) % this.items.length
           },
           downHandler() {
             this.selectedIndex = (this.selectedIndex + 1) % this.items.length
@@ -75,7 +78,10 @@ export default {
                 <div class="title" class="text-left" x-text="item"></div>
               </button>
             </template>
-            <div x-show="!state.tiptapCommand.items.length" class="text-slate-600">
+            <div x-show="!state.tiptapCommand.query || state.tiptapCommand.query?.length < 3" class="text-slate-600">
+              Type at least 3 characters
+            </div>
+            <div x-show="!state.tiptapCommand.items.length && state.tiptapCommand.query?.length >= 3" class="text-slate-600">
               No users found
             </div>
           </div>
@@ -122,5 +128,5 @@ export default {
         popup.destroy()
       },
     }
-  }
+  },
 }

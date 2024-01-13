@@ -5,6 +5,7 @@ import States from '#enums/states'
 import Advertisement from '#models/advertisement'
 import AdvertisementEvent from '#models/advertisement_event'
 import User from '#models/user'
+import { DateTime } from 'luxon'
 
 export default class AdService {
   static async getLeaderboard() {
@@ -18,6 +19,8 @@ export default class AdService {
       .where('userId', users[0].id)
       .where('sizeId', AdvertisementSizes.LEADERBOARD)
       .where('stateId', States.PUBLIC)
+      .where('startAt', '<=', DateTime.now().toSQL())
+      .where('endAt', '>=', DateTime.now().toSQL())
       .orderByRaw('RANDOM()')
       .first()
   }
@@ -26,6 +29,7 @@ export default class AdService {
     // get random users, then pull an ad per-user, to give each user a fair shot at getting pulled
     // regardless of how many ads they have
     const users = await this.getRandomAdUsers(AdvertisementSizes.MEDIUM_RECTANGLE, limit)
+
     const promises = users.map((user) => {
       return Advertisement.query()
         .preload('asset')
@@ -33,6 +37,8 @@ export default class AdService {
         .where('userId', user.id)
         .where('sizeId', AdvertisementSizes.MEDIUM_RECTANGLE)
         .where('stateId', States.PUBLIC)
+        .where('startAt', '<=', DateTime.now().toSQL())
+        .where('endAt', '>=', DateTime.now().toSQL())
         .orderByRaw('RANDOM()')
         .first()
     })
@@ -48,6 +54,8 @@ export default class AdService {
         .whereNotIn('id', adIds)
         .where('sizeId', AdvertisementSizes.MEDIUM_RECTANGLE)
         .where('stateId', States.PUBLIC)
+        .where('startAt', '<=', DateTime.now().toSQL())
+        .where('endAt', '>=', DateTime.now().toSQL())
         .orderByRaw('RANDOM()')
         .limit(remaining)
 
@@ -60,7 +68,13 @@ export default class AdService {
   static async getRandomAdUsers(sizeId: AdvertisementSizes, limit: number = 1) {
     return User.query()
       .where('planId', '!=', Plans.FREE)
-      .whereHas('ads', (query) => query.where('sizeId', sizeId).where('stateId', States.PUBLIC))
+      .whereHas('ads', (query) =>
+        query
+          .where('sizeId', sizeId)
+          .where('stateId', States.PUBLIC)
+          .where('startAt', '<=', DateTime.now().toSQL())
+          .where('endAt', '>=', DateTime.now().toSQL())
+      )
       .orderByRaw('RANDOM()')
       .limit(limit)
   }
