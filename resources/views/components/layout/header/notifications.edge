@@ -1,4 +1,4 @@
-@assign(unreadCount = unreadCount || parseInt(await NotificationService.getUnreadCount(auth.user.id)))
+@assign(unreadCount = auth.user ? unreadCount || parseInt(await NotificationService.getUnreadCount(auth.user.id)) : 0)
 
 <div 
   x-data
