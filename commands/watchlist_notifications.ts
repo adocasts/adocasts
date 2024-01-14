@@ -19,7 +19,6 @@ export default class WatchlistNotifications extends BaseCommand {
 
   async run() {
     this.logger.info('Starting "WatchlistNotifications"')
-    await logger.info('Starting WatchlistNotifications')
 
     // command will run hourly, but let's go back through yesterday's posts
     // to capture any failures that may have happened on prior runs
@@ -66,12 +65,14 @@ export default class WatchlistNotifications extends BaseCommand {
     })
 
     this.logger.info(`Found ${newPosts.length} new posts. Marking as sent...`)
-    await logger.info(`Found ${newPosts.length} new posts. Marking as sent...`) 
+
+    if (newPosts.length) {
+      await logger.info(`Found ${newPosts.length} new posts. Marking as sent...`)
+    }
 
     await Promise.all(newPosts.map(async (post) => post.merge({ isWatchlistSent: true }).save()))
 
     this.logger.info(`Marked ${newPosts.length} posts as sent`)
-    await logger.info(`Marked ${newPosts.length} posts as sent`)
 
     // we'll need only the users with watchlist notifications on
     const userIds = Object.keys(sendables).map((id) => Number.parseInt(id))
@@ -80,7 +81,10 @@ export default class WatchlistNotifications extends BaseCommand {
       .whereHas('profile', (query) => query.where('emailOnWatchlist', true))
 
     this.logger.info(`Sending notifications to ${users.length} users`)
-    await logger.info(`Sending notifications to ${users.length} users`)
+
+    if (newPosts.length) {
+      await logger.info(`Sending notifications to ${users.length} users`)
+    }
 
     // send a notification email for each user linking to new post(s)
     for (const user of users) {
@@ -140,6 +144,5 @@ export default class WatchlistNotifications extends BaseCommand {
     }
 
     this.logger.info('Finished "WatchlistNotifications"')
-    await logger.info('Finished "WatchlistNotifications"')
   }
 }
