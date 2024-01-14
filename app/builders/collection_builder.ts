@@ -127,6 +127,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
       .preload('postsFlattened', (query) =>
         query
           .apply((scope) => scope.forDisplay())
+          .apply((scope) => scope.published())
           .orderBy(orderBy, direction)
           .if(limit, (truthy) => truthy.groupLimit(limit!))
           .if(this.user, (truthy) =>
@@ -138,6 +139,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
       .preload('posts', (query) =>
         query
           .apply((scope) => scope.forDisplay())
+          .apply((scope) => scope.published())
           .orderBy(orderBy, direction)
           .if(this.user, (truthy) =>
             truthy.preload('progressionHistory', (history) =>
@@ -190,4 +192,3 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     return this
   }
 }
-

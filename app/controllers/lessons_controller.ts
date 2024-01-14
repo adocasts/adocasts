@@ -15,6 +15,7 @@ import router from '@adonisjs/core/services/router'
 import axios from 'axios'
 import { DateTime } from 'luxon'
 import VttService from '#services/vtt_service'
+import logger from '#services/logger_service'
 
 @inject()
 export default class LessonsController {
@@ -107,8 +108,13 @@ export default class LessonsController {
       const transcript = await CacheService.try(
         `TRANSCRIPT:${post.id}`,
         async () => {
-          const { data: vtt } = await axios.get(post.transcriptUrl!)
-          return VttService.parse(vtt)
+          try {
+            const { data: vtt } = await axios.get(post.transcriptUrl!)
+            return VttService.parse(vtt)
+          } catch (error) {
+            await logger.warn(`Failed to get transcript for ${post.slug}`, error.message)
+            return ''
+          }
         },
         CacheService.oneDay
       )
