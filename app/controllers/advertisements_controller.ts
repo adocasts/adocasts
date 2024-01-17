@@ -204,8 +204,10 @@ export default class AdvertisementsController {
       await trx.commit()
 
       if (asset) {
-        // await storage.destroy(asset.filename)
+        await storage.destroy(asset.filename)
       }
+
+      session.flash('success', 'Your advertisement has been deleted!')
 
       return response.redirect().toRoute('advertisements.index')
     } catch (error) {

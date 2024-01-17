@@ -11,6 +11,7 @@ import sharp, { AvailableFormatInfo, FormatEnum } from 'sharp'
 import { MultipartFile } from '@adonisjs/core/bodyparser'
 import fs from 'node:fs'
 import logger from './logger_service.js'
+import app from '@adonisjs/core/services/app'
 
 class StorageService {
   private bucket: Bucket
@@ -38,6 +39,7 @@ class StorageService {
   }
 
   async store(filename: string, data: Buffer, options?: SaveOptions) {
+    if (app.inTest) return
     const file = this.bucket.file(filename)
     await file.save(data, options)
   }
@@ -64,10 +66,12 @@ class StorageService {
   }
 
   async destroy(filename: string, options: DeleteFileOptions = { ignoreNotFound: true }) {
+    if (app.inTest) return
     return this.bucket.file(filename).delete(options)
   }
 
   alter(fromFilename: string, toFilename: string, options: ImageOptions) {
+    if (app.inTest) return
     if (options.format === 'svg+xml') return this.get(fromFilename)
 
     const writeStream = this.bucket
