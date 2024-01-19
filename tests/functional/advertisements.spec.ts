@@ -1,17 +1,11 @@
 import HttpStatus from '#enums/http_statuses'
 import States from '#enums/states'
 import { AdvertisementFactory } from '#factories/advertisement_factory'
-import { AssetFactory } from '#factories/asset_factory'
 import { UserFactory } from '#factories/user_factory'
 import Advertisement from '#models/advertisement'
-import { MultipartFile } from '@adonisjs/core/bodyparser'
-import app from '@adonisjs/core/services/app'
 import db from '@adonisjs/lucid/services/db'
 import { test } from '@japa/runner'
-import axios from 'axios'
 import { DateTime } from 'luxon'
-import { File } from 'node:buffer'
-import { readFileSync } from 'node:fs'
 
 test.group('Advertisements', (group) => {
   group.each.setup(async () => {

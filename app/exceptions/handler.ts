@@ -17,6 +17,12 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    */
   protected renderStatusPages = app.inProduction
 
+  protected statusPages = {
+    '404': (error: unknown, { view }: HttpContext) => view.render('errors/not-found', { error }),
+    '500..599': (error: unknown, { view }: HttpContext) =>
+      view.render('errors/server-error', { error }),
+  }
+
   /**
    * The method is used for handling errors and returning
    * response to the client
@@ -28,7 +34,13 @@ export default class HttpExceptionHandler extends ExceptionHandler {
       ctx.response.redirect().back()
     }
 
-    return super.handle(error, ctx)
+    const result = await super.handle(error, ctx)
+
+    if (error && typeof error === 'object' && 'status' in error && result.includes('<html')) {
+      ctx.response.send(result)
+    }
+
+    return result
   }
 
   /**
@@ -38,7 +50,8 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * @note You should not attempt to send a response from this method.
    */
   async report(error: unknown, ctx: HttpContext) {
-    logger.error('Too many requests', {
+    logger.error('error.report', {
+      error,
       url: ctx.request.url(true),
       userId: ctx.auth?.user?.id,
       ip: ctx.request.ip(),
