@@ -18,9 +18,16 @@ export default class HttpExceptionHandler extends ExceptionHandler {
   protected renderStatusPages = app.inProduction
 
   protected statusPages = {
-    '404': (error: unknown, { view }: HttpContext) => view.render('errors/not-found', { error }),
-    '500..599': (error: unknown, { view }: HttpContext) =>
-      view.render('errors/server-error', { error }),
+    '404': async (error: unknown, { view, response }: HttpContext) => {
+      const html = await view.render('errors/not-found', { error })
+      response.send(html)
+      return html
+    },
+    '500..599': async (error: unknown, { view, response }: HttpContext) => {
+      const html = await view.render('errors/server-error', { error })
+      response.send(html)
+      return html
+    },
   }
 
   /**
@@ -34,13 +41,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
       ctx.response.redirect().back()
     }
 
-    const result = await super.handle(error, ctx)
-
-    if (error && typeof error === 'object' && 'status' in error && result.includes('<html')) {
-      ctx.response.send(result)
-    }
-
-    return result
+    return super.handle(error, ctx)
   }
 
   /**

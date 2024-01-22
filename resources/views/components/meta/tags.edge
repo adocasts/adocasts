@@ -1,5 +1,7 @@
+@let(seriesTitle = series && !title.startsWith(series.name) ? `${series.name}: ${title}` : title)
 @let(asset = $props.asset ?? { filename: 'brand/og-2023.png' })
 
+<title>{{ (seriesTitle ? `${seriesTitle} - ` : '') + env('APP_BRAND') }}</title>
 <meta name="description" content="{{ desc }}"  />
 
 @if (canonical && !canonical.includes(request.url())) 

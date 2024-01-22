@@ -46,15 +46,17 @@
           @endif
         @endcan
 
-        <div class="hidden lg:block xl:pl-8">
-          @!heading({ 
-            title: 'From The Feed',
-            size: 'xs',
-            href: route('feed.index'),
-            cta: 'View Feed'
-          })
-          @!discussion.list({ items: feed, aside: true })
-        </div>
+        @if (feed?.length)
+          <div class="hidden lg:block xl:pl-8">
+            @!heading({ 
+              title: 'From The Feed',
+              size: 'xs',
+              href: route('feed.index'),
+              cta: 'View Feed'
+            })
+            @!discussion.list({ items: feed, aside: true })
+          </div>
+        @endif
       </aside>
     </div>
   @end

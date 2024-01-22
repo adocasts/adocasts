@@ -9,15 +9,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  
-  <title>{{ (title ? `${title} - ` : '') + env('APP_BRAND') }}</title>
 
   @if ($slots.meta)
     {{{ await $slots.meta() }}}
   @endif
 
   @if (meta)
-    @!meta.tags(meta)
+    @!meta.tags({ ...meta, title })
   @endif
 
   @vite(['resources/js/unpoly.js', 'resources/js/alpine.js', 'resources/js/app.js'])

@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, belongsTo, column, computed } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import User from '#models/user'
-import uap from 'ua-parser-js'
+import { UAParser } from 'ua-parser-js'
 import UtilityService from '#services/utility_service'
 
 export default class SessionLog extends BaseModel {
@@ -71,14 +71,14 @@ export default class SessionLog extends BaseModel {
   }
 
   @computed()
-  get device(): uap.IResult | undefined {
+  get device(): UAParser.IResult | undefined {
     if (!this.userAgent) return undefined
-    return uap(this.userAgent)
+    return UAParser(this.userAgent)
   }
 
   @computed()
   get browser() {
-    if (typeof this.browser === 'undefined') return '--'
+    if (typeof this.userAgent === 'undefined') return '--'
     if (!this.device?.browser) return '--'
 
     const info = [
