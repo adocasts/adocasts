@@ -158,6 +158,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
         .preload('posts', (post) =>
           post
             .apply((scope) => scope.forCollectionDisplay())
+            .apply((scope) => scope.published())
             .if(this.user, (truthy) =>
               truthy.preload('progressionHistory', (history) =>
                 history.where({ userId: this.user!.id }).orderBy('updated_at', 'desc')

@@ -1,5 +1,5 @@
 @let(attrs = $props.attrs || {})
-@let(classNames = utils.classes('shadow-md rounded-md', $props.class, theme ? 'bg-slate-100' : 'bg-slate-base-900', primary ? `border-4 border-brand-600` : `border ${theme ? 'border-slate-200' : 'border-slate-base-800'}`))
+@let(classNames = utils.classes('shadow-md rounded-md', $props.class, primary ? `border-4 border-brand-400` : `border ${theme ? 'border-slate-200' : 'border-slate-base-800'}`))
 
 <div {{ html.attrs({ class: classNames, ...attrs }) }}>
   <div class="p-4 lg:p-8">

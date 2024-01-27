@@ -182,6 +182,10 @@ footer .formkit-form input {
   animation: float 3s linear infinite;
 }
 
+.animation-rocket {
+  animation: rocket 42s linear infinite;
+}
+
 @keyframes float {
   0% {
     transform: translateY(-.25rem);
@@ -193,5 +197,19 @@ footer .formkit-form input {
 
   100% {
     transform: translateY(-.25rem);
+  }
+}
+
+@keyframes rocket {
+  0% {
+    transform: rotate(-21deg) translateY(48rem);
+  }
+
+  20% {
+    transform: rotate(-21deg) translateY(-48rem);
+  }
+
+  100% {
+    transform: rotate(-21deg) translateY(-48rem);
   }
 }

@@ -24,14 +24,14 @@ export default class HomeController {
     const blogs = await this.postService.getLatestBlogs(4)
     const snippets = await this.postService.getLatestSnippets(4)
 
-    if (auth.user) {
-      const lessonCount = await this.postService.getLessonCount()
-      const lessonDuration = await this.postService.getLessonDuration()
-      const seriesCount = await this.collectionService.getSeriesCount()
-      const topicCount = await this.taxonomyService.getCount()
+    // if (auth.user) {
+    //   const lessonCount = await this.postService.getLessonCount()
+    //   const lessonDuration = await this.postService.getLessonDuration()
+    //   const seriesCount = await this.collectionService.getSeriesCount()
+    //   const topicCount = await this.taxonomyService.getCount()
 
-      view.share({ lessonCount, lessonDuration, seriesCount, topicCount })
-    }
+    //   view.share({ lessonCount, lessonDuration, seriesCount, topicCount })
+    // }
 
     if (!auth.user || auth.user.isFreeTier) {
       const plusMonthly = await Plan.findOrFail(Plans.PLUS_MONTHLY)

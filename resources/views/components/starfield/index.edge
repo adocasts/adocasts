@@ -1,4 +1,4 @@
-@let(classNames = utils.classes('relative', $props.bg || 'bg-slate-base-950 bg-gradient-to-br from-slate-base-950 to-brand-base-700/35', $props.class))
+@let(classNames = utils.classes('relative', $props.bg || 'bg-slate-base-950 bg-gradient-to-bl from-slate-base-950 to-brand-base-700/35', $props.class))
 @let(attrs = $props.attrs || {})
 @let(mountain = $props.mountain ?? true)
 @let(clouds = $props.clouds ?? mountain)
@@ -22,12 +22,18 @@
   @if (clouds) 
     <div x-data="mouseParallax(['one', 'two'], 'scale(50%)')" class="hidden md:block">
       <div x-ref="one" class="absolute scale-50 right-8 top-8 z-10">
-        @!illustration.cloudOne({ class: 'text-slate-base-600/50' })
+        @!illustration.cloudOne({ class: 'text-brand-base-950/50' })
       </div>
   
-      <div x-ref="two" class="absolute scale-50 right-[15%] top-1/4 z-10">
-        @!illustration.cloudTwo({ class: 'text-slate-base-600/75' })
+      <div x-ref="two" class="absolute scale-50 right-[30%] top-1/4 z-10">
+        @!illustration.cloudTwo({ class: 'scale-[50%] text-brand-base-950/75' })
       </div>
+    </div>
+  @endif
+
+  @if (rocket)
+    <div class="absolute right-36 bottom-72 w-[500px] animation-float">
+      <img src="/imgs/animated-rocket.gif" alt="rocket launching animation" />
     </div>
   @endif
   

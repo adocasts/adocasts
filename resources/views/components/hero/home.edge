@@ -1,5 +1,5 @@
 <div class="relative overflow-hidden max-w-[1920px] mx-auto">
-  @starfield({ class: 'pt-24 pb-72' })
+  @starfield({ class: 'pt-24 pb-96', rocket: true, lines: false })
     <div class="page relative z-10">
       <h1 class="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black text-slate-base-100 flex flex-col">
         <span>
@@ -15,7 +15,7 @@
         </span>
       </h1>
 
-      @if (auth.user)
+      {{-- @if (auth.user)
         <div class="hidden lg:grid lg:grid-cols-1 lg:space-y-4 max-w-3xl mt-6 lg:absolute -bottom-64 right-8 xl:right-0 lg:bg-slate-base-950/25 lg:rounded-xl lg:p-8 lg:pb-36 backdrop-blur-sm">
           <h5 class="text-slate-base-400 font-black">
             Library Stats
@@ -37,7 +37,7 @@
             <dd class="text-xl font-semibold tracking-tight text-slate-base-100">{{ topicCount }}</dd>
           </div>
         </div>
-      @endif
+      @endif --}}
       
       <div class="inline-grid grid-cols-1 md:grid-cols-2 gap-3 mt-8">
         @if (!auth.user)
