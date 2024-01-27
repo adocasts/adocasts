@@ -41,7 +41,7 @@
       
       <div class="inline-grid grid-cols-1 md:grid-cols-2 gap-3 mt-8">
         @if (!auth.user)
-          @button({ variant: 'lightBase', href: route('auth.signup.create') })
+          @button({ variant: 'lightBase', href: route('auth.signup.create'), 'up-layer': 'new' })
             Sign up for free
           @end
           

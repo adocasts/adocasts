@@ -226,10 +226,23 @@
             <h4 class="font-black uppercase tracking-wider text-sm">More in the works!</h4>
             <p class="text-sm text-slate-600">Add to your watchlist to get notified when new lessons are added</p>
             <div class="mt-2 max-w-fit">
-              @!watchlist.toggle({ 
-                active: parseInt(item.$extras.watchlist_count ?? 0), 
-                collectionId: item.id 
-              })
+              @if (auth.user)
+                @!watchlist.toggle({ 
+                  active: parseInt(item.$extras.watchlist_count ?? 0), 
+                  collectionId: item.id 
+                })
+              @else
+                <p class="text-sm">
+                  <a href="{{ route('auth.signin.create') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+                    Sign in
+                  </a>
+                  or 
+                  <a href="{{ route('auth.signup.create') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+                    sign up
+                  </a>
+                  to add to your watchlist
+                </p>
+              @endif
             </div>
           </div>
         </div>

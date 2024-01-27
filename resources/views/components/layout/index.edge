@@ -51,7 +51,7 @@
     x-data
     x-init="window.isAuthenticated = {{ !!auth.user }}"
     up-main
-    class="{{ html.classNames([{ 'h-full': hFull }]) }}">
+    class="{{ html.classNames([{ 'h-full': hFull }, $props?.mainClass]) }}">
     <div id="upHero" class="relative z-20 {{ postClass }}" up-hero>
       @if ($slots.hero)
         {{{ await $slots.hero() }}}
@@ -62,7 +62,7 @@
       up-main-content
       data-post-class="{{ postClassString }}" 
       data-sync-to="[up-header], [up-hero], [up-footer]" 
-      {{ html.attrs({ class: utils.classes('relative z-20', postClass, [up.isPage ? 'mt-8' : '!px-0', { 'h-full': hFull }]), ...($props.attrs || {}) }) }}>
+      {{ html.attrs({ class: utils.classes('relative z-20', postClass, $props?.mainClass, [up.isPage ? 'mt-8' : '!px-0']), ...($props.attrs || {}) }) }}>
       <div class="page h-full relative">
         {{{ await $slots.main() }}}
       </div>
