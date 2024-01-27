@@ -1,4 +1,4 @@
-@let(classNames = utils.classes('relative', $props.bg || 'bg-slate-base-800 bg-gradient-to-br from-slate-base-950 to-brand-base-700/75', $props.class))
+@let(classNames = utils.classes('relative', $props.bg || 'bg-slate-base-950 bg-gradient-to-br from-slate-base-950 to-brand-base-700/35', $props.class))
 @let(attrs = $props.attrs || {})
 @let(mountain = $props.mountain ?? true)
 @let(clouds = $props.clouds ?? mountain)
@@ -21,12 +21,12 @@
   
   @if (clouds) 
     <div x-data="mouseParallax(['one', 'two'], 'scale(50%)')" class="hidden md:block">
-      <div x-ref="one" class="absolute scale-50 right-8 top-8">
-        @!illustration.cloudOne({ class: 'text-slate-base-50/50' })
+      <div x-ref="one" class="absolute scale-50 right-8 top-8 z-10">
+        @!illustration.cloudOne({ class: 'text-slate-base-600/50' })
       </div>
   
-      <div x-ref="two" class="absolute scale-50 right-[15%] top-1/4">
-        @!illustration.cloudTwo({ class: 'text-slate-base-50/75' })
+      <div x-ref="two" class="absolute scale-50 right-[15%] top-1/4 z-10">
+        @!illustration.cloudTwo({ class: 'text-slate-base-600/75' })
       </div>
     </div>
   @endif
