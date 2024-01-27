@@ -1,4 +1,5 @@
 import AuthAttempt from '#models/auth_attempt'
+import User from '#models/user'
 import SessionService from '#services/session_service'
 import StripeService from '#services/stripe_service'
 import { signInValidator } from '#validators/auth_validator'
@@ -22,6 +23,7 @@ export default class SignInController {
     sessionService: SessionService,
     stripeService: StripeService
   ) {
+    let user: User | null = null
     let { uid, password, rememberMe, forward, action, plan } =
       await request.validateUsing(signInValidator)
 
@@ -34,14 +36,15 @@ export default class SignInController {
     }
 
     try {
-      await auth.use('web').attempt(uid, password, rememberMe)
+      user = await User.verifyCredentials(uid, password)
+      await auth.use('web').login(user, rememberMe)
     } catch (error) {
       await AuthAttempt.recordBadLogin(uid)
       session.flash('errors', { form: 'The provided username/email or password is incorrect' })
       return response.redirect().toRoute('auth.signin.create')
     }
 
-    await sessionService.onSignInSuccess(auth.user!, rememberMe)
+    await sessionService.onSignInSuccess(user, rememberMe)
     await AuthAttempt.clear(uid)
 
     switch (action) {
@@ -51,10 +54,7 @@ export default class SignInController {
     }
 
     if (plan) {
-      const { status, message, checkout } = await stripeService.tryCreateCheckoutSession(
-        auth.user!,
-        plan
-      )
+      const { status, message, checkout } = await stripeService.tryCreateCheckoutSession(user, plan)
 
       if (status === 'warning' || status === 'error') {
         session.flash(status, message)
@@ -64,7 +64,7 @@ export default class SignInController {
       return response.redirect(checkout!.url!)
     }
 
-    session.flash('success', `Welcome back, ${auth.user!.username}`)
+    session.flash('success', `Welcome back, ${user.username}`)
 
     up.setTarget('[up-theme]')
 

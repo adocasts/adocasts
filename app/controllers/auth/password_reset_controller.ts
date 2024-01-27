@@ -60,7 +60,7 @@ export default class PasswordResetController {
 
       await emitter.emit('email:password_reset_success', { user })
 
-      await auth.use('web').attempt(email, password)
+      await auth.use('web').login(user)
       await AuthAttemptService.clearAttempts(email)
 
       session.flash('success', 'Your password has been successfully reset')

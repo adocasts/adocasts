@@ -1,5 +1,4 @@
 import { DateTime } from 'luxon'
-import Hash from '@adonisjs/core/services/hash'
 import {
   column,
   beforeSave,
@@ -38,8 +37,18 @@ import env from '#start/env'
 import SlugService from '#services/slug_service'
 import Discussion from './discussion.js'
 import Advertisement from './advertisement.js'
+import { compose } from '@adonisjs/core/helpers'
+import { withAuthFinder } from '@adonisjs/auth'
+import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
 
-export default class User extends AppBaseModel {
+const AuthFinder = withAuthFinder(() => hash.use('argon'), {
+  uids: ['email', 'username'],
+  passwordColumnName: 'password',
+})
+
+export default class User extends compose(AppBaseModel, AuthFinder) {
+  static rememberMeTokens = DbRememberMeTokensProvider.forModel(User)
+
   @column({ isPrimary: true })
   declare id: number
 
@@ -202,13 +211,6 @@ export default class User extends AppBaseModel {
   }
 
   @beforeSave()
-  static async hashPassword(user: User) {
-    if (user.$dirty.password && !user.$extras.rehash) {
-      user.password = await Hash.make(user.password)
-    }
-  }
-
-  @beforeSave()
   static async slugifyUsername(user: User) {
     if (user.$dirty.username) {
       const slugify = new SlugService<typeof User>({
@@ -317,9 +319,10 @@ export default class User extends AppBaseModel {
     return hash.use('argon').verify(this.password, plainTextPassword)
   }
 
-  static async getUserForAuth(uids: string[], value: string) {
+  static async findForAuth(uids: string[], value: string) {
     const query = this.query()
     uids.map((uid) => query.orWhereILike(uid, value))
-    return query.first()
+    const user = await query.first()
+    return user
   }
 }

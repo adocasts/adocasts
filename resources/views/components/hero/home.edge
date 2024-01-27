@@ -1,14 +1,16 @@
 <div class="relative overflow-hidden">
   @starfield({ class: 'pt-24 pb-72' })
     <div class="page relative z-10">
-      <h1 class="text-4xl md:text-5xl xl:text-6xl font-black text-slate-base-100 uppercase tracking-wider flex flex-col">
+      <h1 class="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black text-slate-base-100 flex flex-col">
         <span>
           Launch Your
         </span>
         <span>
-          AdonisJS Skills
+          <span class="inline-block bg-blue/15 bg-gradient-to-tr from-brand-600 to-accent-600 bg-clip-text text-transparent">
+            AdonisJS
+          </span> Skills
         </span>
-        <span class="inline-block bg-blue/15 bg-gradient-to-tr from-brand-600 to-accent-600 bg-clip-text text-transparent">
+        <span>
           to the Stars
         </span>
       </h1>
@@ -43,12 +45,12 @@
             Sign up for free
           @end
           
-          @button.outline({ variant: 'lightBase', href: route('series.show', { slug: 'lets-learn-adonisjs-5' }) })
+          @button.outline({ variant: 'lightBase', href: route('series.show', { slug: 'lets-learn-adonisjs-6' }) })
             New to AdonisJS? Start here 
             @svg('ph:arrow-right-bold')
           @end
         @else
-          @button({ variant: 'lightBase', href: route('series.show', { slug: 'lets-learn-adonisjs-5' }) })
+          @button({ variant: 'lightBase', href: route('series.show', { slug: 'lets-learn-adonisjs-6' }) })
             New to AdonisJS? Start here 
             @svg('ph:arrow-right-bold')
           @end

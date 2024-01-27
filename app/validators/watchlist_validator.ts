@@ -6,6 +6,7 @@ export const watchlistValidator = vine.compile(
     collectionId: vine.number().optional(),
     taxonomyId: vine.number().optional(),
     fragment: vine.string().optional(),
+    identifier: vine.string().optional(),
+    target: vine.string().optional(),
   })
 )
-

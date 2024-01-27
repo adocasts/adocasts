@@ -19,7 +19,7 @@ const hashConfig = defineConfig({
       parallelism: 4,
       saltSize: 16,
       hashLength: 32,
-    })
+    }),
   },
 })
 

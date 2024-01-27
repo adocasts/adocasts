@@ -11,7 +11,6 @@ test.group('Auth sign in', (group) => {
 
   test('should sign in a user', async ({ client, route }) => {
     const user = await UserFactory.merge({ password: 'Password!01' }).with('profile').create()
-
     const response = await client.post('/signin').form({
       uid: user.email,
       password: 'Password!01',

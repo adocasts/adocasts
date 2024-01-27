@@ -13,7 +13,7 @@ class LoggerService {
 
   constructor() {
     const webhook = env.get('DISCORD_WEBHOOK')
-    const enabled = webhook && webhook !== '<discord_webhook>' ? true : false
+    const enabled = false //webhook && webhook !== '<discord_webhook>' ? true : false
     const serviceName = env.get('NODE_ENV')
 
     if (!enabled) return
@@ -43,6 +43,7 @@ class LoggerService {
   }
 
   async log(method: 'info' | 'warn' | 'error' | 'debug' | 'silly', payload: LogPayload) {
+    console.log({ method, payload })
     if (app.inTest || !this.enabled) return
     return this.logger[method](payload)
   }

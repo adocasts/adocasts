@@ -22,3 +22,17 @@ up.on('up:location:changed', function (event) {
     Array.from(upPricing.children).map((child) => child.remove())
   }
 })
+
+// sync watchlist toggle when there are multiple
+up.compiler('[up-watchlist-toggle]', function (element, _data, meta) {
+  if (element.dataset.isPage === 'true') return
+
+  const matches = Array.from(document.querySelectorAll('[up-watchlist-toggle]'))
+
+  if (!matches.length) return
+
+  matches.map((match) => {
+    if (match === element) return
+    match.innerHTML = element.innerHTML
+  })
+})

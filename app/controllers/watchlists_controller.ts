@@ -10,12 +10,18 @@ export default class WatchlistsController {
   async index({}: HttpContext) {}
 
   async toggle({ response, request, view, params }: HttpContext) {
-    const { fragment, ...data } = await request.validateUsing(watchlistValidator)
+    const { fragment, identifier, target, ...data } =
+      await request.validateUsing(watchlistValidator)
     const { wasDeleted } = await this.watchlistService.toggle(data)
 
     return fragment
-      ? view.render(fragment, { table: params.table, active: !wasDeleted, ...data })
+      ? view.render(fragment, {
+          table: params.table,
+          active: !wasDeleted,
+          ...data,
+          identifier,
+          target,
+        })
       : response.redirect().back()
   }
 }
-

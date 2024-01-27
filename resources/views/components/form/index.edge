@@ -20,6 +20,14 @@
     @!turnstile()
   @endif
 
+  @if (identifier)
+    <input type="hidden" name="identifier" value="{{ identifier }}" />
+  @endif
+
+  @if ($props['up-target'])
+    <input type="hidden" name="target" value="{{ $props['up-target'] }}" />
+  @endif
+
   @if (fragment)
     <input type="hidden" name="fragment" value="{{ fragment }}" />
   @endif

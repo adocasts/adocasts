@@ -193,7 +193,8 @@
                 {{ day }}
               </div>
               <div class="hidden xl:flex flex-col text-2xs p-2">
-                @each (match in matches)
+                @let(limit = matches.length > 3 ? 3 : matches.length)
+                @each (match in matches.slice(0, limit))
                   <div class="{{ 
                     html.classNames([
                       'mb-1 p-1 rounded-md',
@@ -208,6 +209,11 @@
                     {{ match.title }}
                   </div>
                 @endeach
+                @if (matches.length !== limit)
+                  <div class="{{ html.classNames([ 'mb-1 p-1 rounded-md' ]) }}">
+                    +{{ matches.length - limit }} others
+                  </div>
+                @endif
               </div>
               <div class="xl:hidden text-2xs p-1 md:p-2">
                 @if (matches.length)

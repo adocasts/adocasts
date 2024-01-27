@@ -141,8 +141,8 @@
             <ol class="flex flex-col mt-1.5 -mx-1">
               @each (module in item.children)
                 <li>
-                  <a href="#module{{module.moduleNumber}}" class="flex items-center flex-wrap text-slate-600 gap-x-3 px-1 py-1 rounded-xl hover:bg-slate-200 group duration-300">
-                    <span class="uppercase tracking-tight hidden md:block bg-slate-200 group-hover:bg-slate-300 duration-300 rounded-lg py-0.5 px-2 text-2xs">
+                  <a href="#module{{module.moduleNumber}}" class="flex items-center flex-wrap text-slate-600 gap-x-3 px-1 py-1 rounded-md hover:bg-slate-200 group duration-300">
+                    <span class="uppercase tracking-tight hidden md:block bg-slate-200 group-hover:bg-slate-300 duration-300 rounded-md py-0.5 px-2 text-2xs">
                       Module {{ module.moduleNumber }}
                     </span>
                     <span class="truncate -my-1">
@@ -159,7 +159,7 @@
 
     <main class="w-full lg:w-[calc(100%-var(--aside-width))] px-4 lg:px-6 xl:px-8 order-2 md:order-1">
       @if (nextLesson.$extras.pivot_root_sort_order > 0)
-        <div class="-mx-4 bg-slate-100 mb-4 rounded-xl">
+        <div class="-mx-4 bg-slate-100 mb-4 rounded-md overflow-hidden">
           <div class="bg-slate-100 px-4 mb-4">
             <h3 class="flex items-baseline flex-wrap text-lg lg:text-xl text-slate-700 border-b border-slate-200 py-4">
               <span class="uppercase tracking-wider font-black text-sm relative">
@@ -183,7 +183,7 @@
       @each ((module, x) in item.children)
         <div id="module{{module.moduleNumber }}" class="mb-6">
           <div class="sticky top-0 z-20 -mx-4">
-            <div class="bg-slate-100 rounded-xl p-4 mb-4">
+            <div class="bg-slate-100 rounded-md p-4 mb-4">
               <h3 class="flex items-baseline flex-wrap text-lg lg:text-xl text-slate-700">
                 <span class="uppercase tracking-wider font-black text-sm relative">
                   Module {{ module.moduleNumber }}
@@ -214,6 +214,24 @@
           @each (post in item.posts)
             @!post.item.large({ item: post })
           @endeach
+        </div>
+      @endif
+
+      @if (item.statusId === Status.IN_PROGRESS)
+        <div class="bg-slate-100 py-4 px-12 rounded-md flex items-center gap-6">
+          <div>
+            <img class="w-32" src="/imgs/robot/slice6.svg" alt="excited robot" />
+          </div>
+          <div class="flex flex-col">
+            <h4 class="font-black uppercase tracking-wider text-sm">More in the works!</h4>
+            <p class="text-sm text-slate-600">Add to your watchlist to get notified when new lessons are added</p>
+            <div class="mt-2 max-w-fit">
+              @!watchlist.toggle({ 
+                active: parseInt(item.$extras.watchlist_count ?? 0), 
+                collectionId: item.id 
+              })
+            </div>
+          </div>
         </div>
       @endif
     </main>

@@ -1,10 +1,19 @@
-<div x-data="{ loading: false }" class="{{ html.classNames([($props || {}).class || '', { 'hidden': !auth.user }])}}" up-watchlist-toggle>
+@let(props = $props || state)
+@let(identifier = props?.identifier || 'up-watchlist-toggle')
+@let(target = props.target || `[${identifier}]`)
+
+<div 
+  x-data="{ loading: false }" 
+  class="{{ html.classNames([identifier, ($props || {}).class || '', { 'hidden': !auth.user }])}}" 
+  data-is-page="{{ !!$props }}"
+  {{ identifier }}>
   @if (auth.user)
     @form({ 
       class: 'w-full md:w-auto flex flex-col md:flex-row justify-center',
       action: form.patch('watchlists.toggle'), 
-      'up-target': '[up-watchlist-toggle]',
+      'up-target': target,
       'up-submit': true,
+      identifier,
       fragment: 'components/watchlist/toggle.edge',
       '@submit': 'loading = true'
     })

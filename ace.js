@@ -6,14 +6,18 @@
 | Since, we cannot run TypeScript source code using "node" binary, we need
 | a JavaScript entrypoint to run ace commands.
 |
-| This file runs "bin/console.ts" file as a child process and uses "ts-node/esm"
-| loader to run TypeScript code.
-|
-| Executing this file is same as running the following command.
-| "node --loader=ts-node/esm bin/console.js"
+| This file registers the "ts-node/esm" hook with the Node.js module system
+| and then imports the "bin/console.ts" file.
 |
 */
 
-import { aceShell } from '@adonisjs/core/ace/shell'
+/**
+ * Register hook to process TypeScript files using ts-node
+ */
+import { register } from 'node:module'
+register('ts-node/esm', import.meta.url)
 
-await aceShell(new URL('./', import.meta.url)).handle(process.argv.splice(2))
+/**
+ * Import ace console entrypoint
+ */
+await import('./bin/console.js')
