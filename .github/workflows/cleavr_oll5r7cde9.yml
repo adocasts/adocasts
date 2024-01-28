@@ -25,8 +25,6 @@ jobs:
           node-version: '20'
 
       - uses: bahmutov/npm-install@v1
-        with:
-          install-command: npm i --force
 
       - name: Build app
         run: npm run build --production
