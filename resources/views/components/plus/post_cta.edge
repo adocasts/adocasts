@@ -22,13 +22,13 @@
       @!countdown({ dateTime: post.publishAt.plus({ days: 14 }).toISO() })
     @endif
     <h3 class="{{ classes.heading }}">
-      Adocasts+ Timed Exclusive
+      Adocasts Plus Timed Exclusive
     </h3>
     <p class="{{ classes.p }}">
       @if (auth.user)
-        Please check back {{ post.paywallTimeAgo }}. Get immediate access to this lesson and more by joining Adocasts+ for {{ plusMonthly.displayPrice }}/mo.
+        Please check back {{ post.paywallTimeAgo }}. Get immediate access to this lesson and more by joining Adocasts Plus for {{ plusMonthly.displayPrice }}/mo.
       @else
-        Please check back {{ post.paywallTimeAgo }}. Get immediate access to this lesson and more by joining Adocasts+ for {{ plusMonthly.displayPrice }}/mo or signing into your existing Adocasts+ account.
+        Please check back {{ post.paywallTimeAgo }}. Get immediate access to this lesson and more by joining Adocasts Plus for {{ plusMonthly.displayPrice }}/mo or signing into your existing Adocasts+ account.
       @endif
     </p>
     <div class="{{ classes.action }}">
@@ -36,7 +36,7 @@
     </div>
 
     @if (size === 'lg')
-      <div class="absolute bottom-4 right-8 md:-left-36 md:-bottom-28 w-20 md:w-28 h-full">
+      <div class="absolute bottom-4 right-2 md:-left-36 md:-bottom-28 w-20 md:w-28 h-full">
         <img class="animation-float" src="/imgs/robot/slice1.svg" alt="robot mascot smiling" />
       </div>
     @endif
@@ -58,7 +58,7 @@
     </div>
 
     @if (size === 'lg')
-      <div class="absolute -left-10 bottom-2 md:-left-36 md:bottom-4 w-10 md:w-28 h-full">
+      <div class="absolute right-0 bottom-2 md:-left-36 md:bottom-4 w-10 md:w-28 h-full">
         <img class="animation-float" src="/imgs/robot/slice1.svg" alt="robot mascot smiling" />
       </div>
     @endif

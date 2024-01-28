@@ -25,14 +25,14 @@
         @!illustration.cloudOne({ class: 'text-brand-base-950/50' })
       </div>
   
-      <div x-ref="two" class="absolute scale-50 right-[30%] top-1/4 z-10">
+      <div x-ref="two" class="absolute scale-50 right-[30%] top-1/2 lg:top-1/4 z-10">
         @!illustration.cloudTwo({ class: 'scale-[50%] text-brand-base-950/75' })
       </div>
     </div>
   @endif
 
   @if (rocket)
-    <div class="absolute right-36 bottom-72 w-[500px] animation-float">
+    <div class="absolute hidden md:block md:-right-12 md:bottom-40 lg:right-36 lg:bottom-72 w-[300px] md:w-[500px] animation-float">
       <img src="/imgs/animated-rocket.gif" alt="rocket launching animation" />
     </div>
   @endif

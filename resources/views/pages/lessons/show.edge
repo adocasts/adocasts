@@ -31,7 +31,7 @@
         <div class="app-container !px-0">
           @if (!bounce.canViewPost(post))
             <div class="no-access relative aspect-video bg-slate-base-900 text-slate-base-100 bg-gradient-to-br from-accent-base-800/25 to-brand-base-900/25 w-full h-full">
-              @starfield({ class: 'w-full h-full p-12 flex items-center justify-center', bg: 'bg-gradient-to-br from-slate-base-950/25 to-slate-base-800/0', dotsClass: 'opacity-50', mountain: false, lines: false })
+              @starfield({ class: 'w-full h-full py-12 px-6 md:p-12 flex items-center justify-center', dotsClass: 'opacity-50', mountain: false, lines: false })
                 @!plus.postCta({ 
                   post, 
                   plusMonthly, 
