@@ -5,12 +5,15 @@
   class: utils.classes('flex flex-col mb-4 duration-300 relative', $props.class, [{
     '-mx-2 sm:flex-row md:items-center': !col 
   }]),
-  ...($props.attrs || {})
+  ...($props.attrs || {}),
+  'x-data': '{ hovered: false }',
+  '@mouseenter': 'hovered = true',
+  '@mouseleave': 'hovered = false',
 }) }}>
   @if (img)
     <div class="mb-2 {{ html.classNames([{ 'md:mb-0 w-full sm:w-2/5 md:w-1/2 lg:w-2/5 px-2': !col }]) }}">
       <div class="{{ html.classNames(['w-full relative duration-300', ...(imgClassName || [])]) }}">
-        @!post.picture({ item, class: 'h-full', lazy: lazyItem })
+        @!post.picture({ item, class: 'h-full', lazy: lazyItem, preview: true })
 
         {{--  @if (progression)
           @!lessons.progression({ progressionHistory: item.progressionHistory })

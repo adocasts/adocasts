@@ -10,10 +10,18 @@
     class: [`rounded-md overflow-hidden group-hover:shadow-xl duration-300`, ...($props.class || [])],
     filename: img.filename,
     altText: img.altText,
-    lazy
+    lazy,
   })
+    @if (preview && item.animatedPreviewUrl)
+      <template x-if="hovered">
+        <div class="absolute -top-px -left-px w-[calc(100%+2px)] h-[calc(100%+2px)] z-10 pointer-events-none">
+          <img class="w-full" src="{{ item.animatedPreviewUrl }}" alt="Video preview" />
+        </div>
+      </template>
+    @endif
+    
     @cannot('PostPolicy.view', item)
-      <div class="absolute bottom-2 left-2 bg-slate-base-900/80 backdrop-blur-md text-slate-base-50 flex items-center rounded-md">
+      <div class="absolute bottom-2 left-2 bg-slate-base-900/80 backdrop-blur-md text-slate-base-50 flex items-center rounded-md z-20">
         <div class="w-5 h-5 rounded-md text-slate-base-200 flex items-center justify-center">
           @if (item.paywallTypeId === PaywallTypes.DELAYED_RELEASE)
             @svg('ph:clock-countdown-fill', { class: 'w-3 h-3' })

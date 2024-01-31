@@ -385,9 +385,16 @@ export default class Post extends AppBaseModel {
 
   @computed()
   get transcriptUrl() {
-    if (this.videoTypeId !== VideoTypes.BUNNY) return
+    if (this.videoTypeId !== VideoTypes.BUNNY || !this.videoBunnyId) return
 
     return this.bunnySubtitleUrls?.at(0)?.src
+  }
+
+  @computed()
+  get animatedPreviewUrl() {
+    if (this.videoTypeId !== VideoTypes.BUNNY || !this.videoBunnyId) return
+
+    return `https://videos.adocasts.com/${this.videoBunnyId}/preview.webp`
   }
 
   @computed()

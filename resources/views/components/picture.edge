@@ -1,7 +1,7 @@
 @let(width = $props.width ? width : 325)
 @let(lazy = $props.lazy ?? false)
 
-<div class="{{ html.classNames(['overflow-hidden max-w-full relative', ...($props.class || [])]) }}">
+<div class="{{ html.classNames(['overflow-hidden max-w-full relative', ...($props.class || [])]) }}" {{ html.attrs({ ...(attrs || {}) }) }}>
   @if ($slots.main)
     {{{ await $slots.main() }}}
   @endif
