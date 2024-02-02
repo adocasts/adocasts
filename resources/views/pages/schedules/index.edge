@@ -1,4 +1,9 @@
-@layout()
+@layout({
+  title: 'Content Schedule',
+  meta: {
+    description: "Curious what's in the works? Our content schedule shows what we're planning and what's currently on our schedule."
+  }
+})
 
   @!heading({ title: 'Series Planned', subtitle: "Series We're Working On", size: 'sm' })
 
@@ -197,7 +202,7 @@
                 @each (match in matches.slice(0, limit))
                   <div class="{{ 
                     html.classNames([
-                      'mb-1 p-1 rounded-md',
+                      'mb-1 p-1 rounded-md truncate',
                       {
                         'bg-red-500/50': match.type === 'Blog',
                         'bg-blue-500/50': match.type === 'Lesson',
@@ -205,7 +210,7 @@
                         'bg-green-500/50': match.type === 'Snippet'
                       }
                     ]) 
-                  }}">
+                  }}" title="{{ match.title }}">
                     {{ match.title }}
                   </div>
                 @endeach

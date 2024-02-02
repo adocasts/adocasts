@@ -73,7 +73,7 @@
               @!watchlist.toggle({ active: parseInt(item.$extras.watchlist_count ?? 0), collectionId: item.id })
 
               @if (item.repositoryUrl)
-                @button({ href: item.repositoryUrl, class: ['gap-2'] })
+                @button({ href: item.repositoryUrl, target: '_blank', class: ['gap-2'] })
                   @svg('simple-icons:github')
                   Repository
                 @end
@@ -158,6 +158,45 @@
     </aside>
 
     <main class="w-full lg:w-[calc(100%-var(--aside-width))] px-4 lg:px-6 xl:px-8 order-2 md:order-1">
+      @if (auth.user)
+        <div class="-mx-4 mb-4">
+          <div class="bg-slate-100 rounded-md p-4 flex flex-wrap justify-between relative z-10">
+            @let(progressPercent = Math.floor((item.meta.postCompletedCount / item.meta.postsFlattened_count) * 100))
+            @let(totalWatchSeconds = utils.secondsToTimestring(item.meta.totalWatchSeconds))
+            <div class="flex items-center gap-3 tracking-wider pr-2 {{ progressPercent >= 100 ? 'text-green-600' : '' }}">
+              @!progression.circle({ progressPercent, size: 12, stroke: 6, sizeClass: 'w-8 h-8', plain: true })
+              {{-- <div class="flex flex-col">
+                <span class="text-xs text-slate-600 uppercase tracking-wider">Series Progress</span>
+                <div class="flex items-center gap-3 md:gap-6">
+                  <span>{{ progressPercent }}% Completed</span>
+                  <span>
+                    @svg('ph:books-fill')
+                    {{ item.meta.postCompletedCount }}
+                    {{ pluralize('Lesson', item.meta.postCount) }} Completed
+                  </span>
+                  <span>
+                    @svg('ph:timer-fill')
+                    {{ totalWatchSeconds }} Watched
+                  </span>
+                </div>
+              </div> --}}
+              <div class="flex flex-col lg:mr-6">
+                <span class="text-xs text-slate-600 uppercase tracking-wider">Percent Done</span>
+                <span>{{ progressPercent }}% Completed</span>
+              </div>
+              <div class="flex flex-col lg:mr-6">
+                <span class="text-xs text-slate-600 uppercase tracking-wider">Lessons Completed</span>
+                <span>{{ item.meta.postCompletedCount }} of {{ item.meta.postsFlattened_count ?? '0' }}</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-xs text-slate-600 uppercase tracking-wider">Time Watched</span>
+                <span>{{ totalWatchSeconds }} of {{ utils.secondsToTimestring(item.meta.videoSecondsSum) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      @endif
+
       @if (nextLesson.$extras.pivot_root_sort_order > 0)
         <div class="-mx-4 bg-slate-100 mb-4 rounded-md overflow-hidden">
           <div class="bg-slate-100 px-4 mb-4">

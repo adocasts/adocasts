@@ -1,10 +1,4 @@
 @let(plain = $props.plain ?? false)
-@let(progress = item.progressionHistory.at(0))
-@let(progressPercent = progress.watchPercent > progress.readPercent ? progress.watchPercent : progress.readPercent)
-
-@if (progress.isCompleted)
-  @assign(progressPercent = 100)
-@endif
 
 @if (progressPercent !== null && progressPercent > 0)
   @let(bg = $props.color || 'text-brand-600')

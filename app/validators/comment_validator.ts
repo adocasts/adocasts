@@ -11,4 +11,3 @@ export const commentValidator = vine.compile(
     levelIndex: vine.number().positive(),
   })
 )
-

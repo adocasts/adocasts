@@ -1,4 +1,9 @@
-@layout()
+@layout({
+  title: 'The Adocasts Feed',
+  meta: {
+    description: "Discussion and social feed for topics related to AdonisJS"
+  }
+})
   <div class="max-w-prose xl:max-w-[74ch] mx-auto">
     @heading({ title: 'The Feed', subtitle: 'Converse, Share, and Discuss' })
       @slot('action')

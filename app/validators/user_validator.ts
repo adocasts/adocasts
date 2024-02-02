@@ -11,4 +11,3 @@ export const mentionListValidator = vine.compile(
     pattern: vine.string().trim().toLowerCase().optional(),
   })
 )
-

@@ -225,7 +225,7 @@ code {
 }
 
 .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-  @apply bg-brand-400/20 text-brand-950 font-mono;
+  @apply bg-brand-400/50 text-brand-950 font-mono;
   word-wrap: break-word;
   box-decoration-break: clone;
   padding: .1rem .3rem .2rem;
@@ -261,18 +261,15 @@ code .line:last-of-type:before {
 }
 
 pre .filepath {
-  background-color: theme('colors.slate-base.800');
-  padding: 1.5rem .75rem .125rem;
-  border-bottom-right-radius: .25rem;
-  border-bottom-left-radius: .25rem;
+  @apply h-7 bg-slate-200 text-xs rounded-md leading-none;
+  padding: .3rem .75rem .2rem;
   line-height: 1;
-  font-size: theme('fontSize.xs');
   display: flex;
   align-items: flex-end;
   gap: .5rem;
   position: absolute;
-  top: -1rem;
-  left: 6rem;
+  top: .375rem;
+  left: 5rem;
 }
 
 /* purgecss start ignore */
@@ -280,7 +277,7 @@ pre .filepath .lang-icon {
   width: 1em;
   height: 1em;
   position: relative;
-  top: -7px;
+  top: -5px;
 
   &.ts,
   &.tsx {

@@ -100,7 +100,7 @@
         @endif
 
         @if (post.repositoryUrl)
-          @button({ href: post.repositoryUrl, class: 'gap-2' })
+          @button({ href: post.repositoryUrl, class: 'gap-2', target: '_blank' })
             @svg('simple-icons:github', { class: 'w-5 h-5' })
             Repository
           @end

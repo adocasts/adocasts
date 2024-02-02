@@ -8,7 +8,7 @@
     action: 'mt-3 flex flex-wrap items-center gap-6 relative z-10'
   },
   lg: {
-    heading: `font-black uppercase text-xl lg:text-3xl tracking-wider relative z-10 ${isDelayedRelease ? 'border-t border-brand-300/75 mt-6 pt-6' : ''}`,
+    heading: `font-black uppercase text-xl lg:text-3xl tracking-wider relative z-10 ${isDelayedRelease ? 'border-t border-slate-base-100/25 mt-6 pt-6' : ''}`,
     p: 'lg:text-lg max-w-lg mt-3 mb-10 relative z-10',
     action: 'mt-10 flex flex-wrap items-center gap-6 relative z-10'
   }
@@ -48,9 +48,9 @@
     </h3>
     <p class="{{ classes.p }}">
       @if (auth.user)
-        Join Adocasts+ for {{ plusMonthly.displayPrice }}/mo to get immediate access to this lesson and more.
+        Join Adocasts Plus for {{ plusMonthly.displayPrice }}/mo to get immediate access to this lesson and more.
       @else
-        Join Adocasts+ for {{ plusMonthly.displayPrice }}/mo or sign into your account to get access to all of our lessons.
+        Join Adocasts Plus for {{ plusMonthly.displayPrice }}/mo or sign into your account to get access to all of our lessons.
       @endif
     </p>
     <div class="{{ classes.action }}">

@@ -1,4 +1,9 @@
-@layout()
+@layout({
+  title: item.title,
+  meta: {
+    description: string.excerpt(item.body, 350, { completeWords: true })
+  }
+})
 
   <div class="max-w-prose mx-auto">
     <div class="flex justify-between items-center">

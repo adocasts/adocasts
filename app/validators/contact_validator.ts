@@ -8,4 +8,3 @@ export const contactValidator = vine.compile(
     body: vine.string().trim(),
   })
 )
-

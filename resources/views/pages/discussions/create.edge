@@ -1,4 +1,4 @@
-@layout()
+@layout({ title: 'Create Feed Discussion' })
   <div class="{{ html.classNames(['bg-white border border-slate-200 rounded-xl shadow-xl', { 'max-w-prose mx-auto': up.isPage }]) }}">
     @form({ action: route('feed.store'), upSubmit: true, loadable: true })
       <div class="p-2">

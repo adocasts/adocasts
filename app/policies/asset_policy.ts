@@ -11,4 +11,3 @@ export default class AssetPolicy extends BasePolicy {
     return !user.isFreeTier
   }
 }
-

@@ -12,4 +12,3 @@ export const historyValidator = vine.compile(
     isCompleted: vine.boolean().optional(),
   })
 )
-

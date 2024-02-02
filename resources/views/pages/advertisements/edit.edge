@@ -1,6 +1,6 @@
 @let(size = sizes.find(size => size.id === ad.sizeId))
 
-@layout()
+@layout({ title: 'Edit Advertisement' })
   <div class="{{ html.classNames(['bg-white border border-slate-200 rounded-xl shadow-xl']) }}">
     @form({ action: form.put('advertisements.update', { id: ad.id }), upSubmit: true, loadable: true })
       <div x-data="{ src: {{ js.stringify('/img/' + ad.asset.filename) }}, url: {{ js.stringify(ad.url) }}, sizeId: '{{ ad.sizeId }}', sizes: {{ js.stringify(sizes) }}, size: {{ js.stringify(size) }} }" class="p-6 pb-0">

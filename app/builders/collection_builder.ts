@@ -24,9 +24,13 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
       .withTotalMinutes()
       .withProgressCount()
       .query.if(this.user, (truthy) =>
-        truthy.withCount('progressionHistory', (query) =>
-          query.where('userId', this.user!.id).where('isCompleted', true).as('postCompletedCount')
-        )
+        truthy
+          .withCount('progressionHistory', (query) =>
+            query.where('userId', this.user!.id).where('isCompleted', true).as('postCompletedCount')
+          )
+          .withAggregate('progressionHistory', (query) =>
+            query.where('userId', this.user!.id).sum('watch_seconds').as('totalWatchSeconds')
+          )
       )
 
     return this

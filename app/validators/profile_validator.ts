@@ -57,4 +57,3 @@ export const profileUpdateValidator = vine.compile(
       .optional(),
   })
 )
-

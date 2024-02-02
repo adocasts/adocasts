@@ -8,4 +8,3 @@ export const preferencesValidator = vine.compile(
     isEnabledMentions: vine.accepted().optional(),
   })
 )
-

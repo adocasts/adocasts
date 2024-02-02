@@ -6,7 +6,7 @@ export const advertisementStoreValidator = vine.compile(
     sizeId: vine.number().positive(),
     asset: vine.file({
       size: '1mb',
-      extnames: ['jpg', 'jpeg', 'png', 'svg', 'webp', 'gif'],
+      extnames: ['jpg', 'jpeg', 'png', 'webp', 'gif'],
     }),
     assetId: vine.number().positive().optional(),
     url: vine.string().trim().url().normalizeUrl().maxLength(250),

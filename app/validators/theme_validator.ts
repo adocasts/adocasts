@@ -6,4 +6,3 @@ export const themeValidator = vine.compile(
     theme: vine.enum(Object.values(Themes)),
   })
 )
-

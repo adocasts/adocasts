@@ -1,6 +1,6 @@
 @let(size = sizes.at(0))
 
-@layout()
+@layout({ title: 'Create Advertisement' })
   <div class="{{ html.classNames(['bg-white border border-slate-200 rounded-xl shadow-xl']) }}">
     @form({ action: route('advertisements.store'), upSubmit: true, loadable: true })
       <div x-data="{ src: '', url: '', sizeId: '{{ size.id }}', sizes: {{ js.stringify(sizes) }}, size: {{ js.stringify(size) }} }" class="p-6 pb-0">
