@@ -43,15 +43,14 @@
               <img src="{{ comment.user.avatar }}" class="w-14 h-14 rounded-xl mr-3" />
             @end
             <div class="flex flex-col">
-              <h6 class="text-base font-semibold">
-                @profile.link({ user: comment.user })
-                  {{ comment.user.username }}
-                @end
-              </h6>
-              <div class="flex items-center gap-6 text-xs h-2.5">
+              <div class="flex items-center gap-1.5">
+                <h6 class="text-base font-semibold">
+                  @profile.link({ user: comment.user })
+                    {{ comment.user.username }}
+                  @end
+                </h6>
                 @if (!comment.user.isFreeTier)
-                  <img class="logo-white h-2.5 relative" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts+" />
-                  <img class="logo-black h-2.5 relative" src="/imgs/adocasts-plus-black-40.png" alt="Adocasts+" />
+                  <img class="h-3" src="/imgs/plus-badge-100.png" alt="Adocasts Plus Subscriber" title="Adocasts Plus Subscriber" />
                 @endif
               </div>
               @if (lessonRequest && lessonRequest.approveCommentId === comment.id)

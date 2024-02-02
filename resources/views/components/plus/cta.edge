@@ -4,7 +4,7 @@
   @if (auth.user)
     @!plus.monthlyForm({ cta: `Join Adocasts+ for ${plusMonthly.displayPrice}/mo`, plusMonthly })
   @else
-    @button({ variant: 'dark', href: route('auth.signup.create', {}, { qs: { plan: plusMonthly?.slug }}), 'up-layer': 'new', 'up-size': 'grow' })
+    @button({ variant: variant || 'dark', href: route('auth.signup.create', {}, { qs: { plan: plusMonthly?.slug }}), 'up-layer': 'new', 'up-size': 'grow' })
       Join for {{ plusMonthly.displayPrice }}/mo
     @end
     @button.outline({ variant: outlineVariant || 'base', href: route('auth.signin.create'), 'up-layer': 'new', 'up-size': 'grow' })

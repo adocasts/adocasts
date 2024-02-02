@@ -38,8 +38,10 @@
       <a
         href="/"
         up-follow
-        class="absolute top-0 left-1/2 -translate-x-1/2 w-full bg-body duration-300 hover:bg-slate-200 flex justify-center items-center border-t-0 border-slate-200 shadow-xl"
+        class="absolute top-0 left-1/2 -translate-x-1/2 w-full bg-body duration-300 hover:bg-slate-200 flex justify-center items-center border-t-0 border-slate-200"
         :class="[$store.app.videoPlaying && !$store.app.videoSmall ? 'h-full' : 'h-[calc(100%+.5rem)] border rounded-b-md']">
+        <div x-show="!$store.app.videoPlaying && !$store.app.videoSmall" class="w-px h-4/5 duration-300 absolute top-0 -left-px bg-gradient-to-b from-body to-slate-200"></div>
+        <div x-show="!$store.app.videoPlaying && !$store.app.videoSmall" class="w-px h-4/5 duration-300 absolute top-0 -right-px bg-gradient-to-b from-body to-slate-200"></div>
         <span class="sr-only">Adocasts</span>
         <img class="logo-white w-auto h-6 md:h-7" src="/imgs/logo-white.svg" alt="Adocasts" width="146px" height="28px" />
         <img class="logo-black w-auto h-6 md:h-7" src="/imgs/logo-black.svg" alt="Adocasts" width="146px" height="28px" />
