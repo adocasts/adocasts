@@ -47,13 +47,13 @@
             </div>
 
             @if (item.description)
-              <p class="xl:font-lg leading-7 mt-4 max-w-prose text-slate-900">
+              <p class="text-sm md:text-base xl:font-lg leading-7 mt-4 max-w-prose text-slate-900">
                 {{ item.description }}
               </p>
             @endif
 
             @if (item.taxonomies)
-              <div class="flex flex-wrap gap-4 mt-2">
+              <div class="text-sm md:text-base flex flex-wrap gap-4 mt-2">
                 @each (topic in item.taxonomies)
                   <a href="{{ route('topics.show', { slug: topic.slug }) }}" class="font-medium anchor" up-follow>
                     #{{ topic.slug }}
@@ -62,7 +62,7 @@
               </div>
             @endif
 
-            <div class="flex flex-wrap gap-4 mt-4 lg:mt-6">
+            <div class="flex flex-col sm:flex-row flex-wrap gap-4 mt-6">
               @if (nextLesson)
                 @button({ variant: 'dark', href: nextLesson.routeUrl, class: ['gap-2'] })
                   @svg('ph:play-fill')
@@ -165,18 +165,18 @@
             @let(totalWatchSeconds = utils.secondsToTimestring(item.meta.totalWatchSeconds))
             <div class="flex items-center gap-3 tracking-wider pr-2 {{ progressPercent >= 100 ? 'text-green-600' : '' }}">
               @!progression.circle({ progressPercent, size: 12, stroke: 6, sizeClass: 'w-8 h-8', plain: true })
-              <div class="flex flex-col lg:mr-6">
+              <div class="flex flex-col mr-2 lg:mr-6">
                 <span class="text-xs text-slate-600 uppercase tracking-wider">Percent Done</span>
-                <span class="font-bold">{{ progressPercent }}% Completed</span>
+                <span class="font-bold text-sm sm:text-base">{{ progressPercent }}% Completed</span>
               </div>
-              <div class="flex flex-col lg:mr-6">
-                <span class="text-xs text-slate-600 uppercase tracking-wider">Lessons Completed</span>
-                <span>
+              <div class="flex-col mr-2 lg:mr-6 flex">
+                <span class="text-xs text-slate-600 uppercase tracking-wider">Completed</span>
+                <span class="text-sm sm:text-base">
                   <span class="font-bold">{{ item.meta.postCompletedCount }}</span> 
-                  <span class="text-slate-600">of {{ item.meta.postsFlattened_count ?? '0' }}</span>
+                  <span class="text-slate-600">of {{ item.meta.postsFlattened_count ?? '0' }} Lessons</span>
                 </span>
               </div>
-              <div class="flex flex-col">
+              <div class="flex-col hidden md:flex">
                 <span class="text-xs text-slate-600 uppercase tracking-wider">Time Watched</span>
                 <span>
                   <span class="font-bold">{{ totalWatchSeconds }}</span>
