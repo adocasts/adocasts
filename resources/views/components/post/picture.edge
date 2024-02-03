@@ -1,4 +1,4 @@
-@let(lazy = $props.lazy ?? false)
+@let(lazy = $props.lazy ?? true)
 @let(progression = $props.progression ?? true)
 
 @if (item.thumbnails?.length || item.covers?.length)
@@ -14,8 +14,8 @@
   })
     @if (preview && item.animatedPreviewUrl)
       <template x-if="hovered">
-        <div class="absolute -top-px -left-px w-[calc(100%+2px)] h-[calc(100%+2px)] z-10 pointer-events-none">
-          <img class="w-full" src="{{ item.animatedPreviewUrl }}" alt="Video preview" />
+        <div class="absolute -top-px -left-px w-[calc(100%+2px)] h-[calc(100%+2px)] z-10 pointer-events-none" x-cloak>
+          <img class="w-full" src="{{ item.animatedPreviewUrl }}" alt="Video preview" loading="lazy" />
         </div>
       </template>
     @endif
