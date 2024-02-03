@@ -1,6 +1,7 @@
 import Plans from '#enums/plans'
 import Plan from '#models/plan'
 import CollectionService from '#services/collection_service'
+import IdentityService from '#services/identity_service'
 import PostService from '#services/post_service'
 import TaxonomyService from '#services/taxonomy_service'
 import { inject } from '@adonisjs/core'

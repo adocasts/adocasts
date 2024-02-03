@@ -24,9 +24,10 @@ export default class IdentityService {
 
     try {
       const ip2Location = new IP2Location()
-      const binPath = ip.includes(':') ? env.get('IPLOCATION_V6') : env.get('IPLOCATION_V4')
+      const version = ip.includes(':') ? 'IPV6' : 'IPV4'
+      const bin = app.publicPath(`ip2location/DB3.${version}.BIN`)
 
-      ip2Location.open(binPath)
+      ip2Location.open(bin)
 
       const data = ip2Location.getAll(ip)
 
