@@ -63,7 +63,7 @@
             @end
           @end
           @!stat.bar.item({ title: 'Posted', value: item.createdAgo })
-          @!stat.bar.item({ title: 'Impressions', value: parseInt(item.$extras.impressions_count).toLocaleString() })
+          @!stat.bar.item({ title: 'Impressions', value: parseInt(item.$extras.impressions_count).toLocaleString(), class: 'hidden sm:flex' })
           @!stat.bar.item({ title: 'Replies', value: commentCount, href: '#comments', class: 'hidden sm:flex' })
         @end
       </div>
