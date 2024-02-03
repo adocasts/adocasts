@@ -9,14 +9,17 @@ export default class CreditsController {
     const authors = await User.query()
       .preload('profile')
       .whereHas('posts', (query) => query.apply((scope) => scope.published()))
+
     const assets = await Asset.query()
       .whereNotNull('credit')
       .where('credit', '!=', '')
       .distinct('credit')
+
     const subscribers = await User.query()
       .preload('profile')
       .where('planId', '!=', Plans.FREE)
       .where('roleId', '!=', Roles.ADMIN)
+      .orderBy('username')
 
     view.share({ hFull: true })
 
@@ -27,4 +30,3 @@ export default class CreditsController {
     })
   }
 }
-

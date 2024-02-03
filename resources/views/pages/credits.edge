@@ -117,7 +117,9 @@
         @credit.group({ title: 'Image Assets' })
           <div class="grid md:grid-cols-3 gap-4 text-slate-base-300 text-center lg:text-left">
             @each (asset in assets)
-              <div>{{ asset.credit.replace('Left image by', '').replace('Left photo by', '').trim() }}</div>
+              <div class="flex justify-center">
+                {{ asset.credit.replace('Left image by', '').replace('Left photo by', '').trim() }}
+              </div>
             @endeach
           </div>
         @end
@@ -145,7 +147,7 @@
         @credit.group({ title: 'Adocasts Plus Subscribers' })
           <div class="grid md:grid-cols-3 gap-4 text-slate-base-300 text-center lg:text-left">
             @each (user in subscribers)
-              <div>
+              <div class="flex justify-center">
                 @if (user.isEnabledProfile)
                   <a href="/{{ user.handle }}" up-follow>{{ user.profile.name || user.username }}</a>
                 @else
