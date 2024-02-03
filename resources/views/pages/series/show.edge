@@ -165,32 +165,23 @@
             @let(totalWatchSeconds = utils.secondsToTimestring(item.meta.totalWatchSeconds))
             <div class="flex items-center gap-3 tracking-wider pr-2 {{ progressPercent >= 100 ? 'text-green-600' : '' }}">
               @!progression.circle({ progressPercent, size: 12, stroke: 6, sizeClass: 'w-8 h-8', plain: true })
-              {{-- <div class="flex flex-col">
-                <span class="text-xs text-slate-600 uppercase tracking-wider">Series Progress</span>
-                <div class="flex items-center gap-3 md:gap-6">
-                  <span>{{ progressPercent }}% Completed</span>
-                  <span>
-                    @svg('ph:books-fill')
-                    {{ item.meta.postCompletedCount }}
-                    {{ pluralize('Lesson', item.meta.postCount) }} Completed
-                  </span>
-                  <span>
-                    @svg('ph:timer-fill')
-                    {{ totalWatchSeconds }} Watched
-                  </span>
-                </div>
-              </div> --}}
               <div class="flex flex-col lg:mr-6">
                 <span class="text-xs text-slate-600 uppercase tracking-wider">Percent Done</span>
-                <span>{{ progressPercent }}% Completed</span>
+                <span class="font-bold">{{ progressPercent }}% Completed</span>
               </div>
               <div class="flex flex-col lg:mr-6">
                 <span class="text-xs text-slate-600 uppercase tracking-wider">Lessons Completed</span>
-                <span>{{ item.meta.postCompletedCount }} of {{ item.meta.postsFlattened_count ?? '0' }}</span>
+                <span>
+                  <span class="font-bold">{{ item.meta.postCompletedCount }}</span> 
+                  <span class="text-slate-600">of {{ item.meta.postsFlattened_count ?? '0' }}</span>
+                </span>
               </div>
               <div class="flex flex-col">
                 <span class="text-xs text-slate-600 uppercase tracking-wider">Time Watched</span>
-                <span>{{ totalWatchSeconds }} of {{ utils.secondsToTimestring(item.meta.videoSecondsSum) }}</span>
+                <span>
+                  <span class="font-bold">{{ totalWatchSeconds }}</span>
+                  <span class="text-slate-600">of {{ utils.secondsToTimestring(item.meta.videoSecondsSum) }}</span>
+                </span>
               </div>
             </div>
           </div>
