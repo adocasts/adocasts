@@ -2,7 +2,7 @@
 
 Adocasts provides education lessons, screencasts, and livestreams on AdonisJS, NodeJS, JavaScript, and more. We have a vast library of free lessons and resources that expands weekly to help get you up and running with AdonisJS. 
 
-Get even more by joining Adocasts+ (coming soon)
+Get even more by joining [Adocasts Plus](https://adocasts.com/pricing)
 
 📚 Ready to learn? [Check out adocasts.com](https://adocasts.com)  
 🎉 New lessons every week!
@@ -24,7 +24,7 @@ Some portions of the Adocasts site rely on production data or external APIs & SD
 ### Prerequisites
 * **PostgreSQL** &mdash; We use PostgreSQL as our database driver so you'll either want it installed on your machine or a service that provides it.
 * **SMTP Provider** &mdash; Locally, we like to use MailTrap
-* **Node v16+** &mdash; Recommended
+* **Node v20+** &mdash; Recommended
 
 ### Installation
 1. Clone the repository
@@ -40,6 +40,8 @@ npm i
 
 ### Data
 We provide a `StarterSeed` that will populate your database with faker data to populate pages on the Adocasts site.
+
+I haven't tested this yet since our migration from AdonisJS 5 to 6. If you run into any problems, feel free to open an issue.
 
 1. Migrate your database
 ```sh
