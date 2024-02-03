@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./resources/**/*.{edge,js,ts,jsx,tsx,vue}', './app/view_models/**/*.ts'],
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   theme: {
     extend: {
       colors: {

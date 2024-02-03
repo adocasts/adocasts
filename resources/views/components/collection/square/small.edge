@@ -2,18 +2,18 @@
   <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="flex anchor-expand absolute top-0 left-0 w-full h-full">
     <div class="p-4 flex flex-col justify-end duration-300 z-10 w-full h-full bg-gradient-to-b from-slate-100/0 via-slate-100/40 to-slate-100/95 backdrop-blur-xl">
       <div class="relative overflow-hidden bg-slate-100 rounded-md flex-1 h-fit">
-        <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-100/0 via-slate-100/40 to-slate-100/95 md:group-hover:opacity-0 duration-300 z-10"></div>
+        <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-100/0 via-slate-100/40 to-slate-100/95 group-hover:opacity-0 duration-300 z-10"></div>
         @if (item.asset)
           <div 
-            class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed md:group-hover:bg-icon-fit md:group-hover:scale-[175%] duration-300"
+            class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit group-hover:scale-[175%] duration-300"
             style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
           </div>
         @endif
-        <div class="flex justify-center items-center duration-300 flex-1 h-full backdrop-blur-xl bg-slate-100/50 md:group-hover:bg-slate-100/0 p-4 relative z-20">
+        <div class="flex justify-center items-center duration-300 flex-1 h-full backdrop-blur-xl bg-slate-100/50 group-hover:bg-slate-100/0 p-4 relative z-20">
           @!collection.icon({ item, class: 'h-full mx-auto shadow-lg' })
         </div>
       </div>
-      <div class="translate-y-0 md:group-hover:translate-y-full opacity-100 md:group-hover:opacity-0 duration-300 text-center mt-4">
+      <div class="translate-y-0 group-hover:translate-y-full opacity-100 group-hover:opacity-0 duration-300 text-center mt-4">
         <h3 class="font-bold text-slate-900 text-sm">
           {{ item.name }}
         </h3>
@@ -34,8 +34,8 @@
     </div>
   </a>
 
-  <div class="px-4 pb-4 flex flex-col justify-end absolute bottom-0 left-0 opacity-0 md:group-hover:opacity-100 duration-300 z-10 w-full">
-    <div class="translate-y-full md:group-hover:translate-y-0 duration-300 text-center drop-shadow-lg">
+  <div class="px-4 pb-4 flex flex-col justify-end absolute bottom-0 left-0 opacity-0 group-hover:opacity-100 duration-300 z-10 w-full">
+    <div class="translate-y-full group-hover:translate-y-0 duration-300 text-center drop-shadow-lg">
       @button({ href: route('series.show', { slug: item.slug }), variant: 'dark', block: true, class: 'gap-1.5' })
         View Series
         @svg('ph:arrow-circle-right-fill')
