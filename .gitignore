@@ -8,3 +8,4 @@ coverage
 .idea
 google-cloud-key.json
 tmp
+public/assets/hot.json

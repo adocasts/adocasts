@@ -158,7 +158,7 @@
     </aside>
 
     <main class="w-full lg:w-[calc(100%-var(--aside-width))] px-4 lg:px-6 xl:px-8 order-2 md:order-1">
-      @if (auth.user)
+      @if (auth.user && Number(item.meta.totalWatchSeconds) > 0)
         <div class="-mx-4 mb-4">
           <div class="bg-slate-100 rounded-md p-4 flex flex-wrap justify-between relative z-10">
             @let(progressPercent = Math.floor((item.meta.postCompletedCount / item.meta.postsFlattened_count) * 100))
