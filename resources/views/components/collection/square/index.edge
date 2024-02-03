@@ -1,11 +1,11 @@
 <div class="{{ html.classNames(['flex flex-col justify-center items-center bg-slate-100 rounded-md relative overflow-hidden group', ...($props.class || [])]) }}">
   <div class="p-4 lg:p-6 flex-col duration-300 z-10 w-full h-full">
     <div class="flex items-center rounded-md bg-slate-100 relative z-10 mb-2 overflow-hidden">
-      <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-100/0 via-slate-100/40 to-slate-100/95 group-hover:opacity-75 duration-300 z-10"></div>
+      <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-100/0 via-slate-100/40 to-slate-100/95 md:group-hover:opacity-75 duration-300 z-10"></div>
 
       @if (item.asset)
         <div 
-          class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit opacity-50 group-hover:opacity-75 duration-300"
+          class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit opacity-50 md:group-hover:opacity-75 duration-300"
           style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
         </div>
       @endif
@@ -22,7 +22,7 @@
           </h3>
 
           <div class="relative">
-            <div class="flex items-center gap-3 text-slate-700 text-sm group-hover:translate-y-full group-hover:opacity-0 duration-300">
+            <div class="flex items-center gap-3 text-slate-700 text-sm md:group-hover:translate-y-full md:group-hover:opacity-0 duration-300">
               <div class="flex items-center gap-1.5">
                 @svg('ph:graduation-cap-fill')
                 <span>
@@ -37,7 +37,7 @@
               </div>
             </div>
 
-            <div class="absolute w-full top-0 left-0 opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 duration-300 text-center drop-shadow-lg">
+            <div class="absolute w-full top-0 left-0 opacity-0 md:group-hover:opacity-100 translate-y-full md:group-hover:translate-y-0 duration-300 text-center drop-shadow-lg">
               @button({ variant: 'dark', block: true, class: 'gap-1.5', href: route('series.show', { slug: item.slug }) })
                 View Series
                 @svg('ph:arrow-circle-right-fill')
