@@ -4,6 +4,8 @@ import { errors } from '@vinejs/vine'
 import logger from '#services/logger_service'
 
 export default class HttpExceptionHandler extends ExceptionHandler {
+  protected ignoreCodes = ['E_ROUTE_NOT_FOUND', 'E_BAD_CSRF_TOKEN']
+
   /**
    * In debug mode, the exception handler will display verbose errors
    * with pretty printed stack traces.
