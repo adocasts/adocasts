@@ -51,7 +51,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * @note You should not attempt to send a response from this method.
    */
   async report(error: unknown, ctx: HttpContext) {
-    logger.error('error.report', {
+    await logger.error('error.report', {
       error,
       url: ctx.request.url(true),
       userId: ctx.auth?.user?.id,

@@ -13,7 +13,7 @@ class LoggerService {
 
   constructor() {
     const webhook = env.get('DISCORD_WEBHOOK')
-    const enabled = false //webhook && webhook !== '<discord_webhook>' ? true : false
+    const enabled = webhook && webhook !== '<discord_webhook>' ? true : false
     const serviceName = env.get('NODE_ENV')
 
     if (!enabled) return
