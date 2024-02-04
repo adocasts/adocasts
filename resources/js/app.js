@@ -7,6 +7,8 @@ import './_player'
 
 Cookies.set('timezone', DateTime.now().zoneName)
 
+window.axios = axios
+
 window.onfocus = async function () {
   const { data: isAuthenticated } = await axios.get('/api/user/check')
 

@@ -24,10 +24,10 @@ Alpine.data('pdf', function ({ filename = 'invoice.pdf', ...data }) {
       if (!scale) {
         scale = (document.body.clientWidth - 16) / this.$refs.page.clientWidth
       }
-      
+
       this.scale = scale > 1 ? 1 : scale
       this.$refs.page.style.setProperty('--scale', this.scale)
-      this.scale === 1 
+      this.scale === 1
         ? this.$refs.page.classList.remove('scaled')
         : this.$refs.page.classList.add('scaled')
     },
@@ -39,10 +39,10 @@ Alpine.data('pdf', function ({ filename = 'invoice.pdf', ...data }) {
     async onExport(element) {
       this.scalePage(1)
       setTimeout(async () => {
-        const jpeg = await domToJpeg(element, { scale: 2, quality: .75 })
+        const jpeg = await domToJpeg(element, { scale: 2, quality: 0.75 })
         const doc = new jsPDF({
           orientation: 'portrait',
-          unit: 'in'
+          unit: 'in',
         })
 
         this.scalePage()
@@ -59,7 +59,7 @@ Alpine.data('pdf', function ({ filename = 'invoice.pdf', ...data }) {
     addLinks(element, doc) {
       const links = Array.from(element.querySelectorAll('a[href]'))
 
-      links.map(link => {
+      links.map((link) => {
         const rect = link.getBoundingClientRect()
         const { left, top } = this.getOffset(link)
         const x = this.getInchesFromPixels(left)
@@ -67,7 +67,7 @@ Alpine.data('pdf', function ({ filename = 'invoice.pdf', ...data }) {
         const width = this.getInchesFromPixels(rect.width)
         const height = this.getInchesFromPixels(rect.height)
         const config = link.dataset.page
-          ? { pageNumber: parseInt(link.dataset.page) }
+          ? { pageNumber: Number.parseInt(link.dataset.page) }
           : { url: link.href }
 
         doc.link(x, y, width, height, config)
@@ -93,7 +93,7 @@ Alpine.data('pdf', function ({ filename = 'invoice.pdf', ...data }) {
 
     confirmBillToInfo() {
       if (!this.billToInfo) {
-        this.billToInfo = this.isCustomBillTo 
+        this.billToInfo = this.isCustomBillTo
           ? this.$refs.billToInfoCustom.innerHTML.replaceAll('<br>', '\n')
           : this.$refs.billToInfo.innerHTML.replaceAll('<br>', '\n')
       }
@@ -103,13 +103,13 @@ Alpine.data('pdf', function ({ filename = 'invoice.pdf', ...data }) {
 
     async saveBillToInfo() {
       const billToInfo = this.billToInfo
-      const _csrf = document.forms.csrf._csrf.value
+
       try {
         this.isSavingBillTo = true
-        
-        const { data } = await axios.patch('/api/users/billto', { _csrf, billToInfo })
 
-        this.successBillTo = data.clearedBillTo 
+        const { data } = await axios.patch('/api/users/billto', { billToInfo })
+
+        this.successBillTo = data.clearedBillTo
           ? `Your address info has been reset back to the invoice original`
           : `Your address info has been saved successfully`
 
@@ -130,10 +130,10 @@ Alpine.data('pdf', function ({ filename = 'invoice.pdf', ...data }) {
 
     changeIsCustomBillTo(value) {
       this.isCustomBillTo = value
-      this.billToInfo = this.isCustomBillTo 
-          ? this.$refs.billToInfoCustom.innerHTML.replaceAll('<br>', '\n')
-          : this.$refs.billToInfo.innerHTML.replaceAll('<br>', '\n')
-    }
+      this.billToInfo = this.isCustomBillTo
+        ? this.$refs.billToInfoCustom.innerHTML.replaceAll('<br>', '\n')
+        : this.$refs.billToInfo.innerHTML.replaceAll('<br>', '\n')
+    },
   }
 })
 

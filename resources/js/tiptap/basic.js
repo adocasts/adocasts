@@ -204,10 +204,8 @@ export const setupEditor = function (content, isFreeUser = true) {
 
     async uploadImage(file) {
       const payload = new FormData()
-      const _csrf = document.forms.csrf._csrf.value
 
       payload.append('file', file)
-      payload.append('_csrf', _csrf)
 
       try {
         const { data } = await axios.post('/api/image/upload', payload, {

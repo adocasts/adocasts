@@ -19,7 +19,7 @@ export default defineConfig({
   csrf: {
     enabled: env.get('NODE_ENV') !== 'test',
     exceptRoutes: ['/stripe/webhook'],
-    enableXsrfCookie: false,
+    enableXsrfCookie: true,
     methods: ['POST', 'PUT', 'PATCH', 'DELETE'],
   },
 

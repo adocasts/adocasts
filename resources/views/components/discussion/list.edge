@@ -6,12 +6,7 @@
     @each (item in items)
       <li 
         id="feed_{{ item.id }}"
-        x-intersect.once="$ajax('{{ route('feed.impression', { id: item.id }) }}', { 
-          method: 'POST', 
-          body: {
-            _csrf: document.forms.csrf._csrf.value
-          }
-        })"
+        x-intersect:enter.once="axios.post('{{ route('feed.impression', { id: item.id }) }}')"
         class="flex flex-wrap gap-x-4 py-4 px-4 relative bg-slate-100 hover:bg-slate-200/50 duration-300 group mb-4 rounded-md">
         @if (!aside)
           @profile.link({ user: item.user, class: 'h-full' })

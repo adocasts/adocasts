@@ -437,7 +437,6 @@ class VideoPlayer {
       ...this.http.payload,
       watchPercent,
       watchSeconds: Math.floor(currentTime),
-      _csrf: document.forms.csrf._csrf.value,
     })
 
     if (typeof data !== 'object') return

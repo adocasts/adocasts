@@ -6,8 +6,7 @@ export default {
     if (query.length < 3) {
       return []
     }
-    const _csrf = document.forms.csrf._csrf.value
-    const { data } = await axios.post('/api/mentions/list', { _csrf, pattern: query })
+    const { data } = await axios.post('/api/mentions/list', { pattern: query })
     return data
   },
 
