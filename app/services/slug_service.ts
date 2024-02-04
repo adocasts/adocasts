@@ -67,7 +67,7 @@ class SimpleStrategy {
    * Makes the slug out the value string
    */
   makeSlug(_: LucidModel, __: string, value: string) {
-    let baseSlug = string.slug(value, { replacement: this.separator, lower: true })
+    let baseSlug = string.slug(value, { replacement: this.separator, lower: true, strict: true })
 
     /**
      * Limit to defined characters
