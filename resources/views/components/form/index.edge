@@ -14,7 +14,10 @@
   @endif
 
   {{ $props.except(['upSubmit', 'target', 'fragment']).merge({ method: 'POST' }).toAttrs() }}>
-  {{ csrfField() }}
+  
+  @if (csrfField)
+    {{ csrfField() }}
+  @endif
 
   @if (turnstile)
     @!turnstile()
