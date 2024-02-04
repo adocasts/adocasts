@@ -52,7 +52,7 @@ export default class WatchlistNotifications extends BaseCommand {
       ]
 
       // limit to tomgobich user during testing phase
-      const userIds = [...new Set([...postUserIds, ...collectionUserIds])].filter((id) => id === 1)
+      const userIds = [...new Set([...postUserIds, ...collectionUserIds])] //.filter((id) => id === 1)
 
       // build map of userId to array of postIds user is watching
       userIds.map((id) => {
