@@ -51,12 +51,18 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * @note You should not attempt to send a response from this method.
    */
   async report(error: unknown, ctx: HttpContext) {
-    await logger.error('error.report', {
-      error,
-      url: ctx.request.url(true),
-      userId: ctx.auth?.user?.id,
-      ip: ctx.request.ip(),
-    })
+    const alertIgnore = ['/assets/', '/schedule/']
+    const url = ctx.request.url(true)
+
+    // don't send these to our discord alerter, they seem to be bots
+    if (!alertIgnore.some((path) => url.startsWith(path))) {
+      await logger.error('error.report', {
+        error,
+        url: ctx.request.url(true),
+        userId: ctx.auth?.user?.id,
+        ip: ctx.request.ip(),
+      })
+    }
 
     return super.report(error, ctx)
   }
