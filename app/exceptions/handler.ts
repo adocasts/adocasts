@@ -1,11 +1,11 @@
 import app from '@adonisjs/core/services/app'
 import { HttpContext, ExceptionHandler } from '@adonisjs/core/http'
-import { errors } from '@vinejs/vine'
+import { errors as vineErrors } from '@vinejs/vine'
+import { errors as shieldErrors } from '@adonisjs/shield'
+import { errors } from '@adonisjs/core'
 import logger from '#services/logger_service'
 
 export default class HttpExceptionHandler extends ExceptionHandler {
-  protected ignoreCodes = ['E_ROUTE_NOT_FOUND', 'E_BAD_CSRF_TOKEN']
-
   /**
    * In debug mode, the exception handler will display verbose errors
    * with pretty printed stack traces.
@@ -37,7 +37,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * response to the client
    */
   async handle(error: unknown, ctx: HttpContext) {
-    if (error instanceof errors.E_VALIDATION_ERROR && ctx.up.isUnpolyRequest) {
+    if (error instanceof vineErrors.E_VALIDATION_ERROR && ctx.up.isUnpolyRequest) {
       ctx.up.setTarget(ctx.up.getFailTarget())
       ctx.up.setStatus(400)
       ctx.response.redirect().back()
@@ -53,6 +53,13 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * @note You should not attempt to send a response from this method.
    */
   async report(error: unknown, ctx: HttpContext) {
+    if (
+      error instanceof errors.E_ROUTE_NOT_FOUND ||
+      error instanceof shieldErrors.E_BAD_CSRF_TOKEN
+    ) {
+      return super.report(error, ctx)
+    }
+
     const alertIgnore = ['/assets/', '/schedule/']
     const url = ctx.request.url(true)
 
