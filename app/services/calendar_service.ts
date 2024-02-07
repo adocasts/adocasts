@@ -17,7 +17,7 @@ export default class CalendarService {
   ]
   private static dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-  static getMonth(year: number, month: number) {
+  static getMonth(year: number, month: number, timezone: string) {
     const daysArray: number[] = []
     const daysBeforeArray: number[] = []
     const daysAfterArray: number[] = []
@@ -50,7 +50,7 @@ export default class CalendarService {
       dayNames: this.dayNames,
       month: dte.monthLong,
       year: dte.year,
-      today: isThisMonth && DateTime.now().day,
+      today: isThisMonth && DateTime.now().setZone(timezone).day,
       current: dte,
       prev: {
         year: dte.minus({ month: 1 }).year,
