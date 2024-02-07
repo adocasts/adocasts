@@ -4,6 +4,7 @@ import { errors as vineErrors } from '@vinejs/vine'
 import { errors as shieldErrors } from '@adonisjs/shield'
 import { errors } from '@adonisjs/core'
 import logger from '#services/logger_service'
+import SessionService from '#services/session_service'
 
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
@@ -65,11 +66,13 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 
     // don't send these to our discord alerter, they seem to be bots
     if (!alertIgnore.some((path) => url.startsWith(path))) {
+      const sessionService = new SessionService(ctx)
       await logger.error('error.report', {
         error,
         url: ctx.request.url(true),
         userId: ctx.auth?.user?.id,
         ip: ctx.request.ip(),
+        sId: sessionService.ipAddress,
       })
     }
 
