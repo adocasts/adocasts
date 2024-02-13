@@ -13,11 +13,9 @@
     lazy,
   })
     @if (preview && item.animatedPreviewUrl)
-      <template x-if="hovered">
-        <div class="absolute -top-px -left-px w-[calc(100%+2px)] h-[calc(100%+2px)] z-10 pointer-events-none" x-cloak>
-          <img class="w-full" src="{{ item.animatedPreviewUrl }}" alt="Video preview" loading="lazy" />
-        </div>
-      </template>
+      <div x-show="hovered" x-transition.300ms class="absolute -top-px -left-px w-[calc(100%+2px)] h-[calc(100%+2px)] z-10 pointer-events-none" x-cloak>
+        <img class="w-full" src="{{ item.animatedPreviewUrl }}" alt="Video preview" loading="lazy" />
+      </div>
     @endif
     
     @cannot('PostPolicy.view', item)

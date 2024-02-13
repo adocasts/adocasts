@@ -150,7 +150,7 @@ export default class UserSettingsController {
   }
 
   async disableNotificationField({ request, response, params, auth, session }: HttpContext) {
-    const forwardTo = auth.user ? 'users.settings.index' : 'home.index'
+    const forwardTo = auth.user ? 'users.settings.index' : 'home'
 
     if (!request.hasValidSignature() || (auth.user && params.userId !== auth.user.id.toString())) {
       session.flash('error', 'Link signature is expired or invalid')
@@ -201,7 +201,7 @@ export default class UserSettingsController {
   }
 
   async disableNotifications({ request, response, params, auth, session }: HttpContext) {
-    const forwardTo = auth.user ? 'users.settings.index' : 'home.index'
+    const forwardTo = auth.user ? 'users.settings.index' : 'home'
 
     if (!request.hasValidSignature() || (auth.user && params.userId !== auth.user.id.toString())) {
       session.flash('error', 'Link signature is expired or invalid')
