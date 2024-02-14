@@ -1,4 +1,4 @@
-@if (auth.user && !auth.user.isEmailVerified && up.isPage)
+@if (auth && auth.user && !auth.user.isEmailVerified && up.isPage)
 
   <div class="w-[400px] max-w-full fixed bottom-0 left-0 sm:bottom-3 sm:left-3 z-[100]">
     <div class="bg-brand-400 text-sm p-2 border-b border-brand-200 border-opacity-40 relative sm:rounded-xl">
