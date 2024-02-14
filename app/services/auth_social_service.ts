@@ -41,7 +41,7 @@ export default class AuthSocialService {
     if (!success) return { success, message, user: null }
 
     const user = await social.user()
-    const username = await this.getUniqueUsername(user.name)
+    const username = await this.getUniqueUsername(user.name ?? user.email.split('@').at(0))
     const userIdKey = provider === 'github' ? 'githubId' : `googleId`
     const userEmailKey = provider === 'github' ? 'githubEmail' : `googleEmail`
     const tokenKey = provider === 'github' ? 'githubAccessToken' : `googleAccessToken`
@@ -110,7 +110,7 @@ export default class AuthSocialService {
       username = username + ''
     }
 
-    username = string.slug(username, { lower: true })
+    username = string.slug(username, { lower: true, strict: true })
 
     const occurances = await db.from('users').where('username', 'ILIKE', `${username}%`)
     const incrementors = occurances
