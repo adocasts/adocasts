@@ -26,6 +26,8 @@
 
   @if (lessonRequestId)
     <input type="hidden" name="lessonRequestId" value="{{ lessonRequestId }}" />
+  @elseif (lessonRequest)
+    <input type="hidden" name="lessonRequestId" value="{{ lessonRequest.id }}" />
   @elseif (discussionId)
     <input type="hidden" name="discussionId" value="{{ discussionId }}" />
   @else
