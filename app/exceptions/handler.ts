@@ -73,6 +73,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
         userId: ctx.auth?.user?.id,
         ip: ctx.request.ip(),
         sId: sessionService.ipAddress,
+        headers: !ctx.auth?.user && ctx.request.headers()
       })
     }
 
