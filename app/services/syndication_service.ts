@@ -96,7 +96,7 @@ export default class SyndicationService {
     changefreq: Frequency = 'weekly',
     priority: number = 0.5
   ): SiteMapItem | undefined {
-    const url = router.makeUrl(routeName, { params })
+    const url = router.makeUrl(routeName, params)
     if (!url) return
     return this.make(url, changefreq, priority)
   }
