@@ -22,9 +22,7 @@
           {{ assetDomain }}/img/{{ filename }}?w={{ width }} 1x,
         "
         alt="{{ altText || '' }}"
-        style="background-image: url('{{ assetDomain }}/img/{{ filename }}?w=10'); filter: blur(10px); background-size: 100%;"
-        onload="this.style.backgroundImage = null; this.style.filter = null; this.classList.remove('bg-white');"
-        class="{{ html.classNames(['bg-white w-full max-w-full', ...($props.classImg || [])]) }}"
+        class="{{ html.classNames(['w-full max-w-full', ...($props.classImg || [])]) }}"
         {{ lazy && 'loading=lazy' }}
         {{ ratio === 'aspect-video' ? 'width=1280 height=720' : '' }}
       />
