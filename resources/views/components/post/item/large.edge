@@ -2,7 +2,7 @@
 @let(col = $props.col ?? false)
 
 <div {{ html.attrs({
-  class: utils.classes('flex flex-col mb-4 duration-300 relative', $props.class, [{
+  class: utils.classes('flex flex-col mb-4 duration-300 relative group', $props.class, [{
     '-mx-2 sm:flex-row md:items-center': !col 
   }]),
   ...($props.attrs || {}),
@@ -41,7 +41,7 @@
 
     @if (item.description)
       <p class="{{ html.classNames([
-        'mb-2 mt-2 text-sm text-slate-600 group-hover:text-slate-700 duration-300 line-clamp-4', 
+        'mb-2 mt-2 text-sm text-slate-600 line-clamp-4', 
         ...($props.classDescription || [])
       ]) }}">
         {{ item.description }}

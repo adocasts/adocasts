@@ -19,7 +19,7 @@
           {{ series.name }}
         </a>
       @endif
-      <span class="{{ html.classNames(['text-slate-600 group-hover:text-slate-700 whitespace-nowrap duration-150', { 'ml-2': display.seriesName }]) }}">
+      <span class="{{ html.classNames(['text-slate-600 whitespace-nowrap duration-150', { 'ml-2': display.seriesName }]) }}">
         {{ display.seriesName ? '#' : 'Lesson ' }}{{ item.lessonIndexDisplay }}
       </span>
     </h5>
@@ -32,7 +32,7 @@
           {{ path.name }}
         </a>  --}}
       @endif
-      <span class="{{ html.classNames(['text-slate-600 group-hover:text-slate-700 duration-150', { 'ml-2': display.pathName }]) }}">
+      <span class="{{ html.classNames(['text-slate-600 duration-150', { 'ml-2': display.pathName }]) }}">
         {{ display.pathName ? '#' : 'Lesson' }}
         {{ item.lessonIndexDisplay }}
       </span>
@@ -66,7 +66,7 @@
     </div>
   @endif
 
-  <div class="md:hidden lg:block text-slate-500 group-hover:text-slate-700 whitespace-nowrap text-xs">
+  <div class="md:hidden lg:block text-slate-500 whitespace-nowrap text-xs">
     {{ item.publishAtDisplay }}
   </div>
 </div>

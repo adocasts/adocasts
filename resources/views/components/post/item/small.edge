@@ -2,7 +2,7 @@
 
 <a up-follow {{ html.attrs({
   href: item.routeUrl,
-  class: ['-mx-2 flex flex-col sm:flex-row md:items-center mb-4 group duration-300 anchor-group', ...($props.class || [])],
+  class: ['-mx-2 flex flex-col sm:flex-row md:items-center mb-4 group duration-300 group', ...($props.class || [])],
   ...($props.attrs || {})
 }) }}>
   @if (img)
@@ -29,7 +29,7 @@
 
     @if (item.description)
       <p class="{{ html.classNames([
-        'mb-2 mt-2 text-xs line-clamp-2 md:hidden text-slate-600 group-hover:text-slate-700 duration-300', 
+        'mb-2 mt-2 text-xs line-clamp-2 md:hidden text-slate-600', 
         ...($props.classDescription || [])
       ]) }}">
         {{ item.description }}

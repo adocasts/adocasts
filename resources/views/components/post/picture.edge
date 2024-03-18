@@ -7,13 +7,18 @@
     ...$props,
     ratio: 'aspect-video',
     fit: 'object-cover',
-    class: [`rounded-md overflow-hidden group-hover:shadow-xl duration-300`, ...($props.class || [])],
+    class: [`rounded-md overflow-hidden group-hover:shadow-xl duration-300 group-hover:scale-[104%]`, ($props.class || [])],
     filename: img.filename,
     altText: img.altText,
     lazy,
   })
     @if (preview && item.animatedPreviewUrl)
-      <div x-show="hovered" x-transition.300ms class="absolute -top-px -left-px w-[calc(100%+2px)] h-[calc(100%+2px)] z-10 pointer-events-none" x-cloak>
+      <div 
+        x-show="hovered" 
+        x-transition:enter.duration.600ms.delay.600ms
+        x-transition:leave.duration.600ms
+        x-cloak
+        class="absolute -top-px -left-px w-[calc(100%+3px)] h-[calc(100%+2px)] z-10 pointer-events-none">
         <img class="w-full" src="{{ item.animatedPreviewUrl }}" alt="Video preview" loading="lazy" />
       </div>
     @endif

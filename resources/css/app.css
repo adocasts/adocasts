@@ -103,7 +103,7 @@ a.link {
   }
 }
 
-.anchor-group {
+/* .anchor-group {
   .anchor-target {
     color: theme('colors.brand.600');
     text-decoration: none !important;
@@ -126,7 +126,7 @@ a.link {
       color: currentColor;
     }
   }
-}
+} */
 
 .anchor-inv-group {
   .anchor-target {
