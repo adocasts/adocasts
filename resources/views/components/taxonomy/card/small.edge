@@ -1,4 +1,4 @@
-<div class="flex justify-center items-center bg-slate-100 hover:bg-slate-base-900 duration-300 rounded-md relative overflow-hidden group">
+<div class="flex justify-center items-center bg-slate-100 duration-300 rounded-md relative overflow-hidden group">
   @if (item.asset)
     <div 
       class="absolute w-full h-full top-0 left-0 bg-center bg-cover opacity-0 group-hover:opacity-100 duration-300"
@@ -6,16 +6,16 @@
     </div>
   @endif
 
-  <div class="backdrop-blur-2xl bg-slate-100 group-hover:bg-slate-base-900/0 duration-300 w-full h-full flex justify-center items-center">
-    <a href="{{ route('topics.show', { slug: item.slug }) }}" up-follow class="p-4 flex items-center opacity-full group-hover:opacity-0 duration-300 z-10 w-full h-full gap-2 xl:gap-4">
+  <div class="backdrop-blur-2xl duration-300 w-full h-full flex justify-center items-center">
+    <a href="{{ route('topics.show', { slug: item.slug }) }}" up-follow class="bg-slate-100 p-4 flex items-center opacity-full group-hover:opacity-0 duration-300 z-10 w-full h-full gap-2 xl:gap-4">
       <div class="flex justify-center items-center translate-y-0 group-hover:-translate-y-full duration-300 h-fit mr-1.5 md:mr-0">
         @!taxonomy.icon({ item, class: 'w-12 lg:w-14 mx-auto' })
       </div>
       <div class="translate-y-0 group-hover:translate-y-full duration-300">
-        <h3 class="font-bold group-hover:text-slate-base-50 duraton-300 text-sm xl:text-base mb-1">
+        <h3 class="font-bold duraton-300 text-sm xl:text-base mb-1">
           {{ item.name }}
         </h3>
-        <div class="flex justify-center items-center gap-3 text-slate-600 group-hover:text-slate-base-400 duration-300 text-xs">
+        <div class="flex justify-center items-center gap-3 text-slate-600 duration-300 text-xs">
           <div class="flex items-center gap-1.5">
             @svg('ph:books-fill')
             <span>
