@@ -3,6 +3,7 @@ import Roles from '#enums/roles'
 import Asset from '#models/asset'
 import User from '#models/user'
 import type { HttpContext } from '@adonisjs/core/http'
+import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
 
 export default class CreditsController {
   async handle({ view }: HttpContext) {
@@ -17,6 +18,11 @@ export default class CreditsController {
 
     const subscribers = await User.query()
       .preload('profile')
+      .where((query) => {
+        query
+          .where('planId', Plans.FOREVER)
+          .orWhere('stripeSubscriptionStatus', StripeSubscriptionStatuses.ACTIVE)
+      })
       .where('planId', '!=', Plans.FREE)
       .where('roleId', '!=', Roles.ADMIN)
       .orderBy('username')
