@@ -2,7 +2,6 @@ import '../css/app.css'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { DateTime } from 'luxon'
-import './_prose'
 import './_player'
 
 Cookies.set('timezone', DateTime.now().zoneName)

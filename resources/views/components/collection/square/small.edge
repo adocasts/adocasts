@@ -6,7 +6,7 @@
         @if (item.asset)
           <div 
             class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed scale-[200%] duration-300"
-            style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
+            style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}?w=10');">
           </div>
         @endif
         <div class="flex justify-center items-center duration-300 flex-1 h-full backdrop-blur-2xl bg-slate-100/50 group-hover:bg-slate-100/0 p-4 relative z-20">

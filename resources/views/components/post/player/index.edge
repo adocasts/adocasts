@@ -36,7 +36,25 @@
               >
               </div>
             @elseif (post.videoTypeId === VideoTypes.BUNNY)
-              <video
+              <iframe
+                id="lessonVideoEmbed"
+                class="absolute top-0 left-0 w-full h-full"
+                data-is-live="false"
+                data-video-id="{{ post.videoId }}"
+                data-plyr-provider="bunny"
+                data-watch-seconds="{{ userProgression?.watchSeconds ?? 0 }}"
+                data-is-completed="{{ userProgression?.isCompleted ?? false }}"
+                data-http-url="{{ route('api.histories.progression', { id: userProgression?.id }) }}"
+                data-payload-post-id="{{ post.id }}"
+                data-payload-collection-id="{{ series?.id ?? '' }}"
+                data-payload-user-id="{{ auth.user?.id ?? '' }}"
+                data-payload-route="{{ request.ctx.route?.name ?? '' }}"
+                src="https://iframe.mediadelivery.net/embed/164208/{{ post.videoId }}?autoplay=false&preload=true&responsive=true" 
+                loading="lazy" 
+                allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" 
+                allowfullscreen="true"
+              ></iframe>
+              {{-- <video
                 id="lessonVideoEmbed"
                 class="absolute top-0 left-0 w-full h-full"
                 data-is-live="false"
@@ -59,7 +77,7 @@
                 @each ((subtitle, i) in post.bunnySubtitleUrls)
                   <track kind="captions" label="{{ subtitle.label }}" src="{{ subtitle.src }}" srclang="{{ subtitle.code }}" />
                 @endeach
-              </video>
+              </video> --}}
             @endif
 
             @if (nextLesson)

@@ -1,9 +1,10 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import Alpine from 'alpinejs'
-import Hls from 'hls.js'
-import Plyr from 'plyr'
-import 'plyr/dist/plyr.css'
+// import Hls from 'hls.js'
+// import Plyr from 'plyr'
+// import 'plyr/dist/plyr.css'
+import { Player } from 'player.js'
 
 let isInitialLoad = true
 let isVideoPlaying = false
@@ -45,6 +46,12 @@ class VideoPlayer {
       payload: httpPayload,
     }
 
+    this.types = {
+      YOUTUBE: 'youtube',
+      HLS: 'hls',
+      BUNNY: 'bunny',
+    }
+
     Cookies.remove('playingId')
 
     if (isLive) this.autoplay = true
@@ -68,6 +75,44 @@ class VideoPlayer {
     return this.elementInitialNodeName === 'VIDEO' && this.element.dataset.hlsUrl
   }
 
+  get isBunnyEmbed() {
+    return this.element.dataset.plyrProvider === 'bunny'
+  }
+
+  get type() {
+    if (this.isYouTube) {
+      return this.types.YOUTUBE
+    } else if (this.isHlsVideo) {
+      return this.types.HLS
+    } else if (this.isBunnyEmbed) {
+      return this.types.BUNNY
+    }
+  }
+
+  async getCurrentTime() {
+    switch (this.type) {
+      case this.types.YOUTUBE:
+        return this.player.getCurrentTime()
+      case this.types.HLS:
+        return this.player.currentTime
+      case this.types.BUNNY:
+        if (!this.player?.elem) return 0
+        return new Promise((resolve) => this.player.getCurrentTime(value => resolve(value)))
+    }
+  }
+
+  async getDuration() {
+    switch (this.type) {
+      case this.types.YOUTUBE:
+        return this.player.getDuration()
+      case this.types.HLS:
+        return this.player.duration
+      case this.types.BUNNY:
+        if (!this.player?.elem) return 0
+        return new Promise((resolve) => this.player.getDuration(value => resolve(value)))
+    }
+  }
+
   // #region Player Initialization
 
   /**
@@ -85,6 +130,7 @@ class VideoPlayer {
     }
 
     clearInterval(nextUpInterval)
+    clearInterval(playerInterval)
 
     await this.#initPlayer(playOnReady, skipToSeconds)
 
@@ -102,30 +148,38 @@ class VideoPlayer {
       return
     }
 
-    this.player = await this.#initPlyrPlayer(playOnReady)
-
-    this.player.on('playing', this.#onPlyrStateChange.bind(this))
-    this.player.on('pause', this.#onPlyrStateChange.bind(this))
-    this.player.on('ended', this.#onPlyrStateChange.bind(this))
-
-    const setInitialTime = () => {
-      // start user where they left off... unless lesson was already completed or it's a livestream
-      if (!this.isCompleted && skipToSeconds && !this.isLive) {
-        this.player.currentTime = skipToSeconds
-      }
-
-      if (playOnReady) {
-        player.play()
-      }
+    if (this.isBunnyEmbed) {
+      this.player = await this.#initBunnyEmbed(playOnReady)
+      return
     }
 
-    // ready is needed to set YouTube video start times
-    this.player.on('ready', () => setInitialTime())
+    // DEPRECATED - commented out so we can remove it's hls dependency
+    // ---
 
-    // loadedmetadata is need for bunny stream videos when loaded via unpoly (setting in ready is ignored for some reason)
-    this.player.on('loadedmetadata', () => setInitialTime())
+    // this.player = await this.#initPlyrPlayer(playOnReady)
 
-    this.player.on('timeupdate', this.#onPlayerTimeUpdate.bind(this))
+    // this.player.on('playing', this.#onPlyrStateChange.bind(this))
+    // this.player.on('pause', this.#onPlyrStateChange.bind(this))
+    // this.player.on('ended', this.#onPlyrStateChange.bind(this))
+
+    // const setInitialTime = () => {
+    //   // start user where they left off... unless lesson was already completed or it's a livestream
+    //   if (!this.isCompleted && skipToSeconds && !this.isLive) {
+    //     this.player.currentTime = skipToSeconds
+    //   }
+
+    //   if (playOnReady) {
+    //     player.play()
+    //   }
+    // }
+
+    // // ready is needed to set YouTube video start times
+    // this.player.on('ready', () => setInitialTime())
+
+    // // loadedmetadata is need for bunny stream videos when loaded via unpoly (setting in ready is ignored for some reason)
+    // this.player.on('loadedmetadata', () => setInitialTime())
+
+    // this.player.on('timeupdate', this.#onPlayerTimeUpdate.bind(this))
   }
 
   /**
@@ -174,6 +228,33 @@ class VideoPlayer {
     })
   }
 
+  async #initBunnyEmbed(playOnReady) {
+    return new Promise((resolve) => {
+      const player = new Player(this.element)
+
+      player.on('play', this.#onBunnyStateChange.bind(this, { action: 'play' }))
+      player.on('pause', this.#onBunnyStateChange.bind(this, { action: 'pause' }))
+      player.on('ended', this.#onBunnyStateChange.bind(this, { action: 'ended'}))
+      player.on('timeupdate', this.#onPlayerTimeUpdate.bind(this))
+
+      player.on('ready', () => {
+        setTimeout(() => {
+          if (!this.isCompleted && this.watchSeconds && !this.isLive) {
+            console.log('setting current video time', this.watchSeconds)
+            player.setCurrentTime(this.watchSeconds)
+          }
+
+          if (this.startMuted) player.mute()
+          if (playOnReady) player.play()
+        }, 300)
+
+        window.player = player
+
+        resolve(player)
+      })
+    })
+  }
+
   /**
    * initializes the plyr player for the needed video type
    * @param {boolean} playOnReady
@@ -214,68 +295,70 @@ class VideoPlayer {
    * @returns
    */
   #initPlyrPlayerHls(config) {
-    if (!Hls.isSupported()) {
-      this.element.src = this.element.dataset.hlsUrl
+    console.error('HLS has been disabled in favor of Bunny Stream embedding.')
 
-      // create the plyr instance
-      const player = this.#initPlyrPlayerStandard(config)
+    // if (!Hls.isSupported()) {
+    //   this.element.src = this.element.dataset.hlsUrl
 
-      return new Promise((resolve) => resolve(player))
-    }
+    //   // create the plyr instance
+    //   const player = this.#initPlyrPlayerStandard(config)
 
-    const hls = new Hls()
+    //   return new Promise((resolve) => resolve(player))
+    // }
 
-    // bind hls to our video element
-    hls.loadSource(this.element.dataset.hlsUrl)
-    hls.attachMedia(this.element)
+    // const hls = new Hls()
 
-    // when hls auto updates the level, update our auto selection to show current quality
-    hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
-      const autoOptionEl = document.querySelector(
-        '.plyr__menu__container [data-plyr="quality"][value="AUTO"] span'
-      )
-      autoOptionEl.textContent = hls.autoLevelEnabled
-        ? `Auto (${hls.levels[data.level].height}p)`
-        : `Auto`
-    })
+    // // bind hls to our video element
+    // hls.loadSource(this.element.dataset.hlsUrl)
+    // hls.attachMedia(this.element)
 
-    window.hls = hls
+    // // when hls auto updates the level, update our auto selection to show current quality
+    // hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
+    //   const autoOptionEl = document.querySelector(
+    //     '.plyr__menu__container [data-plyr="quality"][value="AUTO"] span'
+    //   )
+    //   autoOptionEl.textContent = hls.autoLevelEnabled
+    //     ? `Auto (${hls.levels[data.level].height}p)`
+    //     : `Auto`
+    // })
 
-    return new Promise((resolve) => {
-      hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-        // get available quality options for video from hls, prefixing with auto option
-        const qualities = ['AUTO', ...hls.levels.map((l) => l.height)]
+    // window.hls = hls
 
-        config.quality = {
-          default: 'AUTO',
-          options: qualities,
-          forced: true,
-          onChange: (quality) => {
-            // when auto is selected in plyr, enable it within hls
-            if (quality === 'AUTO') {
-              hls.currentLevel = -1
-              return
-            }
+    // return new Promise((resolve) => {
+    //   hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+    //     // get available quality options for video from hls, prefixing with auto option
+    //     const qualities = ['AUTO', ...hls.levels.map((l) => l.height)]
 
-            // otherwise, find and set the newly selected quality
-            hls.levels.map((level, index) => {
-              if (level.height !== quality) return
-              hls.currentLevel = index
-            })
-          },
-        }
+    //     config.quality = {
+    //       default: 'AUTO',
+    //       options: qualities,
+    //       forced: true,
+    //       onChange: (quality) => {
+    //         // when auto is selected in plyr, enable it within hls
+    //         if (quality === 'AUTO') {
+    //           hls.currentLevel = -1
+    //           return
+    //         }
 
-        // create the plyr instance
-        const player = this.#initPlyrPlayerStandard(config)
+    //         // otherwise, find and set the newly selected quality
+    //         hls.levels.map((level, index) => {
+    //           if (level.height !== quality) return
+    //           hls.currentLevel = index
+    //         })
+    //       },
+    //     }
 
-        // when subtitle language is changed, update it within hls
-        player.on('languagechange', () =>
-          setTimeout(() => (hls.subtitleTrack = player.currentTrack), 50)
-        )
+    //     // create the plyr instance
+    //     const player = this.#initPlyrPlayerStandard(config)
 
-        resolve(player)
-      })
-    })
+    //     // when subtitle language is changed, update it within hls
+    //     player.on('languagechange', () =>
+    //       setTimeout(() => (hls.subtitleTrack = player.currentTrack), 50)
+    //     )
+
+    //     resolve(player)
+    //   })
+    // })
   }
 
   /**
@@ -284,7 +367,8 @@ class VideoPlayer {
    * @returns
    */
   #initPlyrPlayerStandard(config) {
-    return new Plyr(this.element, config)
+    console.error('Plyr has been disabled in favor of Bunny Stream embedding.')
+    // return new Plyr(this.element, config)
   }
 
   /**
@@ -292,19 +376,9 @@ class VideoPlayer {
    * @param {CustomEvent} event
    * @returns
    */
-  #onPlayerTimeUpdate(event) {
-    let currentTime
-    let duration
-
-    const player = this.player
-
-    if (this.isYouTube) {
-      currentTime = Math.ceil(player.getCurrentTime())
-      duration = player.getDuration()
-    } else {
-      currentTime = Math.floor(player.currentTime)
-      duration = player.duration
-    }
+  async #onPlayerTimeUpdate(event) {
+    const currentTime = Math.ceil(await this.getCurrentTime())
+    const duration = Math.ceil(await this.getDuration())
 
     if (currentTime === this.lastTimeUpdate) return
 
@@ -349,6 +423,7 @@ class VideoPlayer {
       Cookies.remove('playingId')
       keepPlayer = null
       keepPlayerPostId = null
+      return
     }
 
     if (!isVideoPlaying) {
@@ -357,9 +432,7 @@ class VideoPlayer {
 
       if (typeof player.currentTime !== 'number') return
 
-      this.#storeWatchingProgression(player.currentTime, player.duration)
-
-      return
+      return this.#storeWatchingProgression(player.currentTime, player.duration)
     }
 
     if (!Cookies.get('playingId')) {
@@ -395,6 +468,7 @@ class VideoPlayer {
       Cookies.remove('playingId')
       keepPlayer = null
       keepPlayerPostId = null
+      return
     }
 
     if (!isVideoPlaying) {
@@ -416,6 +490,51 @@ class VideoPlayer {
     playerInterval = setInterval(async () => {
       const currentTime = window.player.getCurrentTime()
       const duration = window.player.getDuration()
+
+      // duration may be 0 if meta data is still loading
+      if (duration <= 0) return
+      this.#storeWatchingProgression(currentTime, duration)
+    }, this.progressionInterval)
+  }
+
+  async #onBunnyStateChange({ action }) {
+    isVideoPlaying = action === 'play'
+
+    Alpine.store('app').videoPlaying = isVideoPlaying
+
+    if (location.pathname === this.placeholder.dataset.path) {
+      keepPlayer = isVideoPlaying
+      keepPlayerPostId = this.http.payload.postId
+    }
+
+    if (this.isLive) return
+
+    if (!this.player) {
+      Cookies.remove('playingId')
+      keepPlayer = null
+      keepPlayerPostId = null
+      return
+    }
+
+    if (!isVideoPlaying) {
+      clearInterval(playerInterval)
+      Cookies.remove('playingId')
+
+      const currentTime = await this.getCurrentTime()
+      const duration = await this.getDuration()
+
+      if (typeof currentTime !== 'number') return 
+
+      return this.#storeWatchingProgression(currentTime, duration)
+    }
+
+    if (!Cookies.get('playingId')) {
+      Cookies.set('playingId', this.http.payload.postId)
+    }
+
+    playerInterval = setInterval(async () => {
+      const currentTime = await this.getCurrentTime()
+      const duration = await this.getDuration()
 
       // duration may be 0 if meta data is still loading
       if (duration <= 0) return

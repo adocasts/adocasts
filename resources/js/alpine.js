@@ -2,7 +2,6 @@ import Alpine from 'alpinejs'
 import intersect from '@alpinejs/intersect'
 import ajax from '@imacrayon/alpine-ajax'
 import { setupEditor } from './tiptap/basic'
-import { chain } from 'mathjs'
 import { DateTime } from 'luxon'
 import './_stars'
 
@@ -156,7 +155,7 @@ Alpine.data('videoAutoPlayNext', (enabled = true, nextLessonUrl) => {
       if (!this.enabled) return
 
       const { currentTime, duration } = event.detail
-      const remaining = chain(duration).subtract(currentTime).done()
+      const remaining = duration - currentTime
 
       this.timeRemaining = Math.floor(remaining)
       this.displayed = this.timeRemaining <= this.threshold
