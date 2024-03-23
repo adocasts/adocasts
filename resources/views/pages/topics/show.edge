@@ -20,13 +20,13 @@
       @if (item.asset)
         <div 
           class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit duration-300 opacity-25"
-          style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
+          style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}?w=10');">
         </div>
       @endif
 
       <div class="relative z-10 backdrop-blur-2xl lg:backdrop-blur-3xl pb-4">
         <div class="page flex flex-wrap items-center pt-8 pb-4 xl:py-8">
-          @!taxonomy.icon({ item, class: 'w-24 lg:w-full max-w-[250px] order-1 md:order-2 md:hidden' })
+          @!taxonomy.icon({ item, width: 96, class: 'w-24 lg:w-full max-w-[250px] order-1 md:order-2 md:hidden' })
 
           <div class="sm:flex-1 my-4 md:mr-4 xl:mr-8 order-2 md:order-1">
             @!heading({ title: item.name, class: 'text-slate-base-100' })
@@ -78,11 +78,11 @@
             <div 
               x-show="!$store.app.heroVisible || {{ item.children?.length ?? 0 }}"
               class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit group-hover:scale-[175%] duration-300"
-              style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
+              style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}?w=10');">
             </div>
           @endif
           <div class="flex justify-center items-center duration-300 h-full p-4 relative z-20" :class="{ 'backdrop-blur-xl bg-slate-base-900/50 group-hover:bg-slate-base-900/0': !$store.app.heroVisible || {{ item.children?.length ?? 0 }} }">
-            @!taxonomy.icon({ item, class: 'w-2/3 mx-auto shadow-lg' })
+            @!taxonomy.icon({ item, width: 150, class: 'w-2/3 mx-auto shadow-lg' })
           </div>
         </div>
       

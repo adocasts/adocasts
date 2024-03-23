@@ -19,7 +19,7 @@
       @if (item.asset)
         <div 
           class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit duration-300 opacity-25"
-          style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
+          style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}?w=10');">
         </div>
       @endif
 
@@ -99,7 +99,7 @@
             <div 
               x-show="!$store.app.heroVisible || {{ item.children?.length ?? 0 }}"
               class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit group-hover:scale-[175%] duration-300"
-              style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
+              style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}?w=10');">
             </div>
           @endif
           <div class="flex justify-center items-center duration-300 h-full p-4 relative z-20" :class="{ 'backdrop-blur-xl bg-slate-100/50 group-hover:bg-slate-100/0': !$store.app.heroVisible || {{ item.children?.length ?? 0 }} }">

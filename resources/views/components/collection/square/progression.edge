@@ -6,11 +6,11 @@
         @if (item.asset)
           <div 
             class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit group-hover:scale-[175%] duration-300"
-            style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}');">
+            style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}?w=10');">
           </div>
         @endif
         <div class="flex justify-center items-center duration-300 flex-1 h-full backdrop-blur-xl bg-slate-100/50 group-hover:bg-slate-100/0 p-4 relative z-20">
-          @!collection.icon({ item, class: 'h-full mx-auto shadow-lg' })
+          @!collection.icon({ item, width: 170, class: 'h-full mx-auto shadow-lg' })
         </div>
       </div>
       <div class="translate-y-0 group-hover:translate-y-full opacity-100 group-hover:opacity-0 duration-300 text-center mt-4">
