@@ -72,18 +72,27 @@ export default class AssetService {
       switch (key) {
         case 'w':
         case 'width':
-          options.width = Number.parseInt(queries[key])
+          // keep width to increments of 10, max 500
+          let width = Number.parseInt(queries[key])
+          if (width > 500) width = 500
+          options.width = Math.ceil(width / 50) * 50
           break
         case 'q':
         case 'quality':
-          options.quality = Number.parseInt(queries[key])
+          // keep quality to increments of 10, max 100
+          let quality = Number.parseInt(queries[key])
+          if (quality > 100) quality = 100
+          options.quality = Math.ceil(quality / 10) * 10
           break
         case 'f':
         case 'format':
           options.format = queries[key] as keyof FormatEnum | AvailableFormatInfo | 'svg+xml'
           break
         case 'blur':
-          options.blur = Number.parseInt(queries[key] || '0')
+          // keep blur to increments of 10, max 100
+          let blur = Number.parseInt(queries[key] || '0')
+          if (blur > 100) blur = 100
+          options.blur = Math.ceil(blur / 10) * 10
           break
       }
     }
