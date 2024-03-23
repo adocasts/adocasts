@@ -34,8 +34,8 @@ export default class SyndicationService {
       .select('slug')
 
     // topics
-    const rootTopics = await Taxonomy.roots().orderBy('name', 'asc').select('slug')
-    const childTopics = await Taxonomy.children().orderBy('name', 'asc').select('slug')
+    const rootTopics = await Taxonomy.roots().apply((scope) => scope.hasContent()).orderBy('name', 'asc').select('slug')
+    const childTopics = await Taxonomy.children().apply((scope) => scope.hasContent()).orderBy('name', 'asc').select('slug')
 
     // posts
     const lessons = await Post.lessons()
@@ -62,7 +62,6 @@ export default class SyndicationService {
       this.make('/lessons', 'weekly', 0.8),
       this.make('/blog', 'weekly', 0.3),
       this.make('/streams', 'weekly', 0.3),
-      this.make('/posts', 'weekly', 0.3),
     ]
 
     series.map(

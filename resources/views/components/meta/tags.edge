@@ -1,10 +1,10 @@
-@let(seriesTitle = series && !title.startsWith(series.name) ? `${series.name}: ${title}` : title)
+@let(seriesTitle = series?.name && !title.startsWith(series.name) ? `${series.name}: ${title}` : title)
 @let(asset = $props.asset ?? { filename: 'brand/2024/2024-02-adocasts-og.jpg' })
 
 <title>{{ (seriesTitle ? `${seriesTitle} - ` : '') + env('APP_BRAND') }}</title>
 <meta name="description" content="{{ desc }}"  />
 
-@if (canonical && !canonical.includes(request.url())) 
+@if (canonical && request.url(true) !== canonical) 
   <link rel="canonical" href="https://adocasts.com{{ canonical || url }}"   />
 @endif
 
@@ -24,6 +24,7 @@
 <meta  name="twitter:description" content="{{ desc }}">
 <meta  name="twitter:site" content="@adocasts">
 <meta  name="twitter:creator" content="@adocasts">
+
 @if (asset)
   <meta  name="twitter:card" content="summary_large_image">
   <meta  name="twitter:image" content="https://adocasts.com/img/{{ asset.filename }}?w=900">

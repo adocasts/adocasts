@@ -2,6 +2,7 @@
   title: item.name,
   meta: {
     url: route('topics.show', { slug: item.slug }),
+    canonical: posts.currentPage !== 1 && route('topics.show', { slug: item.slug }),
     desc: string.excerpt(item.description),
     asset: item.asset,
     index: true

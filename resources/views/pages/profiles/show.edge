@@ -2,6 +2,7 @@
   title: `${user.username}${user.profile.name ? ` (${user.profile.name})` : ''}`,
   meta: {
     url: route('profiles.show', { username: user.username }),
+    canonical: route('profiles.show', { username: user.username }),
     desc: user.profile.biography,
     asset: null,
     index: user.isEnabledProfile

@@ -2,6 +2,7 @@
   title: post.page_title ?? post.title,
   meta: {
     url: post.routeUrl,
+    canonical: post.routeUrl,
     series: series,
     desc: string.excerpt(post.meta_description ?? post.description, 180),
     asset: post.thumbnails && post.thumbnails[0],

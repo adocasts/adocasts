@@ -1,7 +1,10 @@
+@let(url = title === 'Livestreams' ? route('streams.index') : route('lessons.index'))
+
 @layout({
   title: title,
   meta: {
-    url: title === 'Livestreams' ? route('streams.index') : route('lessons.index'),
+    url: url,
+    canonical: items.currentPage !== 1 && url,
     desc: `Find the perfect AdonisJS lesson for your learning goals on Adocasts. We offer a comprehensive collection of video lessons, covering everything from the basics to advanced topics. `,
     asset: null,
     index: true
