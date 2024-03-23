@@ -1,11 +1,11 @@
-@let(classNames = utils.classes('relative', $props.bg || 'bg-slate-base-950 bg-gradient-to-bl from-slate-base-950 to-brand-base-700/35', $props.class))
+@let(classNames = utils.classes('relative', $props.bg || 'bg-gradient-to-b from-[#050820] via-brand-base-950 to-brand-base-950', $props.class))
 @let(attrs = $props.attrs || {})
 @let(mountain = $props.mountain ?? true)
 @let(clouds = $props.clouds ?? mountain)
 @let(lines = $props.lines ?? true)
 @let(dots = $props.dots ?? true)
 
-<section x-data="starfield" {{ html.attrs({ class: classNames, ...attrs }) }} x-on:resize.window.debounce.500ms="redraw">
+<section {{ html.attrs({ class: classNames, ...attrs }) }} x-on:resize.window.debounce.500ms="redraw">
   
   {{{ await $slots.main() }}}
   
@@ -15,29 +15,14 @@
     </div>
   @endif
 
-  @if (lines)
-    <canvas x-ref="canvasLine" class="w-full h-full absolute top-0 left-0 {{ $props.linesClass }}"></canvas>
-  @endif
-  
-  @if (clouds) 
-    <div x-data="mouseParallax(['one', 'two'], 'scale(50%)')" class="hidden md:block">
-      <div x-ref="one" class="absolute scale-50 right-8 top-8 z-10">
-        @!illustration.cloudOne({ class: 'text-brand-base-950/50' })
-      </div>
-  
-      <div x-ref="two" class="absolute scale-50 right-[30%] top-1/2 lg:top-1/4 z-10">
-        @!illustration.cloudTwo({ class: 'scale-[50%] text-brand-base-950/75' })
-      </div>
-    </div>
-  @endif
-
   @if (rocket)
-    <div class="absolute hidden md:block md:-right-12 md:bottom-40 lg:right-36 lg:bottom-72 w-[300px] md:w-[500px] animation-float">
-      <img src="/imgs/animated-rocket.gif" alt="rocket launching animation" />
+    <div class="absolute w-full aspect-video top-0 left-0 overflow-hidden">
+      <video class="w-full opacity-[70%] hue-rotate-[75deg] mix-blend-exclusion" muted autoplay loop>
+        <source src="/imgs/aurora-bg-loop.mp4" type="video/mp4" media="all and (min-width: 1501px)" />
+        <source src="/imgs/aurora-bg-loop-1920.mp4" type="video/mp4" media="all and (max-width: 1500px)" />
+        <source src="/imgs/aurora-bg-450.mp4" type="video/mp4" media="all and (max-width: 450px)" />
+      </video>
+      <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-slate-base-950/0 via-slate-base-950/0 to-brand-base-950 z-10"></div>
     </div>
-  @endif
-  
-  @if (dots)
-    <canvas x-ref="canvasDot" class="w-full h-full absolute top-0 left-0 {{ $props.dotsClass }}"></canvas>
   @endif
 </section>

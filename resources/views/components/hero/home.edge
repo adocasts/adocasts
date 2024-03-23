@@ -1,12 +1,12 @@
 <div class="relative overflow-hidden max-w-[1920px] mb-24 mx-auto">
   @starfield({ class: 'pt-24 pb-44 md:pb-72 lg:pb-96', rocket: true, lines: false })
-    <div class="page relative z-10">
-      <h1 class="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black text-slate-base-100 flex flex-col">
+    <div class="page relative z-20">
+      <h1 class="text-4xl sm:text-5xl md:text-6xl xl:text-8xl font-heading font-black uppercase text-slate-base-100 flex flex-col">
         <span>
           Launch Your
         </span>
         <span>
-          <span class="inline-block bg-gradient-to-br from-brand-600 to-brand-400 bg-clip-text text-transparent">
+          <span class="inline-block bg-gradient-to-br from-brand-base-500 to-brand-base-300 bg-clip-text text-transparent">
             AdonisJS
           </span> Skills
         </span>
@@ -39,7 +39,7 @@
         </div>
       @endif --}}
       
-      <div class="inline-grid grid-cols-1 md:grid-cols-2 gap-3 mt-8">
+      <div class="inline-grid grid-cols-1 md:grid-cols-2 gap-3 mt-8 xl:scale-105 origin-left">
         @if (!auth.user)
           @button({ variant: 'lightBase', href: route('auth.signup.create'), 'up-layer': 'new' })
             Sign up for free

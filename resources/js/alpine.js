@@ -3,7 +3,6 @@ import intersect from '@alpinejs/intersect'
 import ajax from '@imacrayon/alpine-ajax'
 import { setupEditor } from './tiptap/basic'
 import { DateTime } from 'luxon'
-import './_stars'
 
 const isReducedMotion =
   window.matchMedia(`(prefers-reduced-motion: reduce)`) === true ||
