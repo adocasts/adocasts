@@ -1,9 +1,6 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import Alpine from 'alpinejs'
-// import Hls from 'hls.js'
-// import Plyr from 'plyr'
-// import 'plyr/dist/plyr.css'
 import { Player } from 'player.js'
 
 let isInitialLoad = true
@@ -609,6 +606,8 @@ class VideoPlayer {
     // so this is a workaround that
     if (this.isYouTube) {
       this.player.seekTo(duration)
+    } else if (this.isBunnyEmbed) {
+      this.player.setCurrentTime(duration)
     } else if (typeof this.player.embed?.seekTo === 'function') {
       this.player.embed.seekTo(duration)
     } else {
