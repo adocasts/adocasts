@@ -1,4 +1,4 @@
-@let(plusMonthly = $props.plusMonthly || await Plan.findOrFail(Plans.PLUS_MONTHLY))
+@let(plusMonthly = $props.plusMonthly || await PlanService.get(Plans.PLUS_MONTHLY))
 
 @if (env('STRIPE_ENABLED'))
   @if (auth.user)

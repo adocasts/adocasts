@@ -25,6 +25,7 @@ import CollectionService from '#services/collection_service'
 import StripeService from '#services/stripe_service'
 import app from '@adonisjs/core/services/app'
 import Difficulties from '#enums/difficulties'
+import PlanService from '#services/plan_service'
 
 addCollection(phicons)
 addCollection(simpleicons)
@@ -54,6 +55,7 @@ edge.global('States', States)
 edge.global('Status', Status)
 edge.global('Plans', Plans)
 edge.global('Plan', Plan)
+edge.global('PlanService', PlanService)
 edge.global('VideoTypes', VideoTypes)
 edge.global('PaywallTypes', PaywallTypes)
 edge.global('StripeSubscriptionStatuses', StripeSubscriptionStatuses)

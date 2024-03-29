@@ -1,4 +1,4 @@
-@let(img = item.thumbnails?.length ? item.thumbnails[0] : item.covers?.length ? item.covers[0] : null)
+@let(img = item.asset)
 
 <a up-follow {{ html.attrs({
   href: item.routeUrl,
@@ -10,7 +10,7 @@
       @!post.picture({ item, class: 'h-full', lazy: lazyItem })
 
       {{--  @if (progression)
-        @!lessons.progression({ progressionHistory: item.progressionHistory })
+        {{-- @!lessons.progression({ progressionHistory: item.progressionHistory }) --}}
       @endif  --}}
     </div>
   @endif

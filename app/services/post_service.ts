@@ -5,6 +5,8 @@ import Comment from '#models/comment'
 import Post from '#models/post'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
+import bento from './bento_service.js'
+import PostListVM from '../view_models/post.js'
 
 @inject()
 export default class PostService {
@@ -12,6 +14,31 @@ export default class PostService {
 
   get user() {
     return this.ctx.auth.user
+  }
+
+  get cache() {
+    return bento.namespace('POSTS')
+  }
+
+  async getLatestLessonsForHome() {
+    return this.cache.getOrSet('GET_LATEST_LESSONS_FOR_HOME', async () => {
+      const latest = await this.getLatestLessons(12)
+      return latest.map(post => PostListVM.get(post))
+    })
+  }
+
+  async getLatestBlogsForHome() {
+    return this.cache.getOrSet('GET_LATEST_BLOGS_FOR_HOME', async () => {
+      const latest = await this.getLatestBlogs(3)
+      return latest.map(post => PostListVM.get(post))
+    })
+  }
+
+  async getLatestSnippetsForHome() {
+    return this.cache.getOrSet('GET_LATEST_SNIPPETS_FOR_HOME', async () => {
+      const latest = await this.getLatestSnippets(3)
+      return latest.map(post => PostListVM.get(post))
+    })
   }
 
   /**

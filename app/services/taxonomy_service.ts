@@ -1,7 +1,20 @@
 import TaxonomyBuilder from '#builders/taxonomy_builder'
 import Taxonomy from '#models/taxonomy'
+import TopicListVM from '../view_models/topic.js'
+import bento from './bento_service.js'
 
 export default class TaxonomyService {
+  get cache() {
+    return bento.namespace('TAXONOMIES')
+  }
+
+  async getDisplayList() {
+    return this.cache.getOrSet('GET_DISPLAY_LIST', async () => {
+      const list = await this.getList(3)
+      return list.map(taxonomy => TopicListVM.get(taxonomy))
+    })
+  }
+
   /**
    * Returns a new instance of the taxonomy builder
    * @returns

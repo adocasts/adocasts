@@ -4,6 +4,8 @@ import Post from '#models/post'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
+import SeriesListVM from '../view_models/series.js'
+import bento from './bento_service.js'
 
 @inject()
 export default class CollectionService {
@@ -11,6 +13,24 @@ export default class CollectionService {
 
   get user() {
     return this.ctx.auth.user
+  }
+
+  get cache() {
+    return bento.namespace('COLLECTIONS')
+  }
+
+  async getLatestFeatureForHome() {
+    return this.cache.getOrSet('GET_LATEST_FEATURE_FOR_HOME', async () => {
+      const latest = await this.queryGetLastUpdated(true, [], 4).firstOrFail()
+      return SeriesListVM.get(latest)
+    })
+  }
+
+  async getLatestForHome() {
+    return this.cache.getOrSet('GET_LATEST_FOR_HOME', async () => {
+      const latest = await this.queryGetLastUpdated(true, [], 4).limit(6)
+      return latest.map(series => SeriesListVM.get(series))
+    })
   }
 
   /**

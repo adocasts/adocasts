@@ -26,8 +26,8 @@
               <div class="flex items-center gap-1.5">
                 @svg('ph:graduation-cap-fill')
                 <span>
-                  {{ item.meta.postsFlattened_count ?? '0' }}
-                  {{ pluralize('Lessons', item.meta.postsFlattened_count)}}
+                  {{ item.meta.postsCount ?? '0' }}
+                  {{ pluralize('Lessons', item.meta.postsCount)}}
                 </span>
               </div>
     
@@ -53,7 +53,7 @@
         <h5 class="uppercase font-semibold tracking-tight text-sm text-slate-950 mb-2">
           Latest from this series
         </h5>
-        @each ((post, i) in item.postsFlattened.slice(0, 4))
+        @each ((post, i) in item.posts.slice(0, 4))
           @!post.item.small({ 
             item: post, 
             class: [{ 'hidden md:flex lg:hidden': i === 3 }], 

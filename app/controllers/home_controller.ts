@@ -1,6 +1,5 @@
-import Plans from '#enums/plans'
-import Plan from '#models/plan'
 import CollectionService from '#services/collection_service'
+import PlanService from '#services/plan_service'
 import PostService from '#services/post_service'
 import TaxonomyService from '#services/taxonomy_service'
 import { inject } from '@adonisjs/core'
@@ -18,22 +17,21 @@ export default class HomeController {
    * Display a list of resource
    */
   async index({ view, auth }: HttpContext) {
-    const series = await this.collectionService.getLastUpdated(7, true)
-    const topics = await this.taxonomyService.getList()
-    const lessons = await this.postService.getLatestLessons(12)
-    const blogs = await this.postService.getLatestBlogs(3)
-    const snippets = await this.postService.getLatestSnippets(3)
+    const seriesFeature = await this.collectionService.getLatestFeatureForHome()
+    const seriesLatest = await this.collectionService.getLatestForHome()
+    const lessons = await this.postService.getLatestLessonsForHome()
+    const topics = await this.taxonomyService.getDisplayList()
+    const blogs = await this.postService.getLatestBlogsForHome()
+    const snippets = await this.postService.getLatestSnippetsForHome()
 
     if (!auth.user || auth.user.isFreeTier) {
-      const plusMonthly = await Plan.findOrFail(Plans.PLUS_MONTHLY)
-      const plusAnnual = await Plan.findOrFail(Plans.PLUS_ANNUAL)
-      const plusForever = await Plan.findOrFail(Plans.FOREVER)
-
-      view.share({ plusMonthly, plusAnnual, plusForever })
+      const plans = await PlanService.all()
+      view.share(plans)
     }
 
     return view.render('pages/home', {
-      series,
+      seriesFeature,
+      seriesLatest,
       topics,
       lessons,
       blogs,
@@ -42,11 +40,9 @@ export default class HomeController {
   }
 
   async pricing({ view }: HttpContext) {
-    const plusMonthly = await Plan.findOrFail(Plans.PLUS_MONTHLY)
-    const plusAnnual = await Plan.findOrFail(Plans.PLUS_ANNUAL)
-    const plusForever = await Plan.findOrFail(Plans.FOREVER)
+    const plans = await PlanService.all()
 
-    view.share({ plusMonthly, plusAnnual, plusForever, isPricingPage: true })
+    view.share({ ...plans, isPricingPage: true })
 
     return view.render('pages/pricing')
   }

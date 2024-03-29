@@ -1,6 +1,6 @@
 <article class="flex max-w-2xl flex-col items-start">
   <div class="flex items-center gap-x-4 text-xs">
-    <time datetime="{{ item.publishAt.toFormat('yyyy-MM-dd') }}" class="text-slate-600">
+    <time datetime="{{ item.publishAtISO }}" class="text-slate-600">
       {{ item.publishAtDisplay }}
     </time>
     @each (topic in item.taxonomies)

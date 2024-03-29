@@ -1,4 +1,4 @@
-@let(plusMonthly = $props.plusMonthly || await Plan.findOrFail(Plans.PLUS_MONTHLY))
+@let(plusMonthly = $props.plusMonthly || await PlanService.get(Plans.PLUS_MONTHLY))
 @let(isDelayedRelease = post.paywallTypeId === PaywallTypes.DELAYED_RELEASE)
 @let(size = $props.size ?? 'base')
 @let(sizes = {

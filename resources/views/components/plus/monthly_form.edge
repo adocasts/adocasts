@@ -1,5 +1,5 @@
 @if (env('STRIPE_ENABLED'))
-  @let(plusMonthly = $props.plusMonthly || await Plan.findOrFail(Plans.PLUS_MONTHLY))
+  @let(plusMonthly = $props.plusMonthly || await PlanService.get(Plans.PLUS_MONTHLY))
   @let(block = $props.block || false)
 
   @button({ variant: 'dark', form: 'plusMonthlyForm', type: 'submit', block: true })

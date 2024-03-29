@@ -1,4 +1,4 @@
-@let(forever = await Plan.findOrFail(Plans.FOREVER))
+@let(forever = await PlanService.get(Plans.FOREVER))
 
 @if (auth.user.planId === Plans.FOREVER)
   <img class="logo-white h-6 relative mb-1" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts+" />

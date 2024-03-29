@@ -1,8 +1,8 @@
 @let(lazy = $props.lazy ?? true)
 @let(progression = $props.progression ?? true)
 
-@if (item.thumbnails?.length || item.covers?.length)
-  @let(img = item.thumbnails?.length ? item.thumbnails[0] : item.covers[0])
+@if (item.asset)
+  @let(img = item.asset)
   @picture({
     ...$props,
     ratio: 'aspect-video',
