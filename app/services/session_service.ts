@@ -90,7 +90,7 @@ export default class SessionService {
     const ua = UAParser(userAgent)
     const known = await this.getIsKnown(user, ua)
     const token = string.generateRandom(16)
-console.log({ known: known ? 'known' : 'new' })
+
     await this.signOutTimedOut(user)
 
     const log = await user.related('sessions').create({
