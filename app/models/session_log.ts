@@ -22,6 +22,30 @@ export default class SessionLog extends BaseModel {
   declare userAgent: string | null
 
   @column()
+  declare browserName: string | null
+
+  @column()
+  declare browserEngine: string | null
+
+  @column()
+  declare browserVersion: string | null
+
+  @column()
+  declare deviceModel: string | null
+
+  @column()
+  declare deviceType: string | null
+
+  @column()
+  declare deviceVendor: string | null
+
+  @column()
+  declare osName: string | null
+
+  @column()
+  declare osVersion: string | null
+
+  @column()
   declare city: string | null
 
   @column()

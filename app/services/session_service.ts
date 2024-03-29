@@ -8,6 +8,7 @@ import string from '@adonisjs/core/helpers/string'
 import ms from 'ms'
 import IdentityService from './identity_service.js'
 import { inject } from '@adonisjs/core'
+import { UAParser } from 'ua-parser-js'
 
 @inject()
 export default class SessionService {
@@ -86,14 +87,23 @@ export default class SessionService {
   ) {
     const { ipAddress, userAgent } = this
     const { city, countryLong, countryShort } = await IdentityService.getLocation(ipAddress)
-    const known = await this.getIsKnown(user)
+    const ua = UAParser(userAgent)
+    const known = await this.getIsKnown(user, ua)
     const token = string.generateRandom(16)
-
+console.log({ known: known ? 'known' : 'new' })
     await this.signOutTimedOut(user)
 
     const log = await user.related('sessions').create({
       ipAddress,
       userAgent,
+      browserName: ua?.browser?.name,
+      browserEngine: ua?.engine?.name,
+      browserVersion: ua?.browser?.version,
+      deviceModel: ua?.device?.model,
+      deviceType: ua?.device?.type,
+      deviceVendor: ua?.device?.vendor,
+      osName: ua?.os?.name,
+      osVersion: ua?.os?.version,
       city,
       isRememberSession,
       country: countryLong,
@@ -125,10 +135,20 @@ export default class SessionService {
     let log = await this.getLatest(user)
 
     if (!log) {
+      const ua = UAParser(userAgent)
+
       log = new SessionLog().merge({
         userId: user.id,
         ipAddress,
         userAgent,
+        browserName: ua?.browser?.name,
+        browserEngine: ua?.engine?.name,
+        browserVersion: ua?.browser?.version,
+        deviceModel: ua?.device?.model,
+        deviceType: ua?.device?.type,
+        deviceVendor: ua?.device?.vendor,
+        osName: ua?.os?.name,
+        osVersion: ua?.os?.version,
       })
     }
 
@@ -183,18 +203,34 @@ export default class SessionService {
     })
   }
 
-  async getIsKnown(user: User) {
+  async getIsKnown(user: User, ua: UAParser.IResult | undefined) {
     const { ipAddress, userAgent, token } = this
     return user
       .related('sessions')
       .query()
-      .where((query) =>
-        query
-          .if(ipAddress && userAgent, (truthy) =>
-            truthy.where((q2) => q2.where({ ipAddress, userAgent }))
-          )
-          .if(token, (truthy) => truthy.orWhere({ token }))
-      )
+      .where(query => {
+        // confirm ip address, browser name, device model, os name, os version match current session
+        if (ipAddress && ua?.browser?.name && ua?.device?.model && ua?.os?.name && ua?.os?.version) {
+          query.where(uaQuery => {
+            uaQuery
+              .where({ ipAddress })
+              .where('browserName', ua.browser.name!)
+              .where('deviceModel', ua.device.model!)
+              .where('osName', ua.os.name!)
+              .where('osVersion', ua.os.version!)
+          })
+        } 
+        
+        // or confirm ip address and user agent string as a whole match current session
+        if (ipAddress && userAgent) {
+          query.orWhere(ipQuery => ipQuery.where({ ipAddress, userAgent }))
+        }
+
+        // or confirm with the device's issued token
+        if (token) {
+          query.orWhere({ token })
+        }
+      })
       .where('loginSuccessful', true)
       .first()
   }
