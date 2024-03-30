@@ -65,13 +65,25 @@ export default class HistoryBuilder extends BaseBuilder<typeof History, History>
     return chain(builder)
   }
 
-  latest(column: 'postId' | 'collectionId' | 'taxonomyId') {
+  latest(column: 'postId' | 'collectionId' | 'taxonomyId', ids: number[] | undefined = undefined) {
     this.query
       .select(db.knexRawQuery('MAX(updated_at) as updated_at'), column)
+      .if(ids, truthy => truthy.whereIn(column, ids!))
       .where('userId', this.user!.id)
       .whereNotNull(column)
       .groupBy(column)
       .orderBy('updated_at')
+    return this
+  }
+
+  for(column: 'postId' | 'collectionId' | 'taxonomyId', ids: number[] | undefined = undefined) {
+    this.query
+      .select(db.knexRawQuery(`MAX(updated_at) as max_updated_at`), '*')
+      .if(ids, truthy => truthy.whereIn(column, ids!))
+      .where('userId', this.user!.id)
+      .whereNotNull(column)
+      .groupBy(column)
+      .orderBy('max_updated_at')
     return this
   }
 }

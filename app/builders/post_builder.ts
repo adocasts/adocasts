@@ -17,7 +17,7 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
   display({ skipPublishCheck = false } = {}) {
     this.if(!skipPublishCheck, (builder) => builder.published())
     this.orderPublished()
-    this.withProgression()
+    // this.withProgression()
     this.query.apply((scope) => scope.forDisplay())
     return this
   }

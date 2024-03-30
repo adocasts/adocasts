@@ -11,8 +11,8 @@ export default class TopicListVM {
       slug: topic.slug,
       description: topic.description,
       asset: this.#getAsset(topic),
-      posts: topic.posts?.map((post) => PostListVM.get(post)),
-      collections: topic.collections?.map((collection) => SeriesListVM.get(collection)),
+      posts: topic.posts?.map((post) => new PostListVM(post)),
+      collections: topic.collections?.map((collection) => new SeriesListVM(collection)),
       meta: {
         collectionsCount: topic.$extras.collections_count || 0,
         postsCount: topic.$extras.posts_count || 0
@@ -22,6 +22,6 @@ export default class TopicListVM {
 
   static #getAsset(topic: Taxonomy) {
     if (!topic.asset) return null
-    return AssetVM.get(topic.asset)
+    return new AssetVM(topic.asset)
   }
 }

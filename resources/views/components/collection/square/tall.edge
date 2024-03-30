@@ -27,8 +27,8 @@
           <div class="flex items-center gap-1.5">
             @svg('ph:graduation-cap-fill')
             <span>
-              {{ item.meta.postsFlattened_count ?? '0' }}
-              {{ pluralize('Lessons', item.meta.postsFlattened_count)}}
+              {{ item.meta.postsCount }}
+              {{ pluralize('Lessons', item.meta.postsCount)}}
             </span>
           </div>
           <div class="flex items-center gap-1.5">

@@ -19,18 +19,34 @@ export default class CollectionService {
     return bento.namespace('COLLECTIONS')
   }
 
-  async getLatestFeatureForHome() {
-    return this.cache.getOrSet('GET_LATEST_FEATURE_FOR_HOME', async () => {
+  /**
+   * Returns collections for the recently updated series sections
+   * @returns { latest: SeriesListVM, recent: SeriesListVM[] }
+   */
+  async getRecentlyUpdated() {
+    const { latest, recent } = await this.cache.getOrSet('GET_RECENTLY_UPDATED', async () => {
       const latest = await this.queryGetLastUpdated(true, [], 4).firstOrFail()
-      return SeriesListVM.get(latest)
+      const recent = await this.queryGetLastUpdated(true, [], 0).limit(6)
+      return { 
+        latest: new SeriesListVM(latest), 
+        recent: recent.map(series => new SeriesListVM(series))
+      }  
     })
+
+    SeriesListVM.addToHistory(this.ctx.history, [latest, ...recent])
+
+    return { latest, recent }
   }
 
-  async getLatestForHome() {
-    return this.cache.getOrSet('GET_LATEST_FOR_HOME', async () => {
-      const latest = await this.queryGetLastUpdated(true, [], 4).limit(6)
-      return latest.map(series => SeriesListVM.get(series))
+  async getAll() {
+    const results = await this.cache.getOrSet('GET_ALL', async () => {
+      const series = await this.getList(true).orderBy('name')
+      return series.map(series => new SeriesListVM(series))
     })
+
+    SeriesListVM.addToHistory(this.ctx.history, results)
+
+    return results
   }
 
   /**

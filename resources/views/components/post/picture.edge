@@ -38,7 +38,7 @@
           </div>
         @endif
       </div>
-    @elseif (progression && item.progressionHistory?.length)
+    @elseif (progression)
       @!post.progression.circle({ item })
     @endcannot
   @end

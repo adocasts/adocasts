@@ -13,8 +13,8 @@ export default class SeriesController {
   ) {}
 
   async index({ view }: HttpContext) {
-    const features = await this.collectionService.getLastUpdated(7, true)
-    const series = await this.collectionService.getList(true).orderBy('name')
+    const features = await this.collectionService.getRecentlyUpdated()
+    const series = await this.collectionService.getAll()
 
     return view.render('pages/series/index', { features, series })
   }

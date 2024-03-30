@@ -15,12 +15,10 @@
     })
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 pb-8 pt-4">
-      @each ((item, i) in features)
-        @if (i === 0)
-          @!collection.square({ item, class: ['sm:col-span-2 md:col-span-2 lg:col-span-2 md:row-span-3 lg:row-span-2']})
-        @else
-          @!collection.square.small({ item })
-        @endif
+      @!collection.square({ item: features.latest, class: ['sm:col-span-2 md:col-span-2 lg:col-span-2 md:row-span-3 lg:row-span-2']})
+
+      @each (item in features.recent)
+        @!collection.square.small({ item })
       @endeach
     </div>
   @end

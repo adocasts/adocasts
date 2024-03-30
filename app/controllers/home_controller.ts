@@ -16,22 +16,22 @@ export default class HomeController {
   /**
    * Display a list of resource
    */
-  async index({ view, auth }: HttpContext) {
-    const seriesFeature = await this.collectionService.getLatestFeatureForHome()
-    const seriesLatest = await this.collectionService.getLatestForHome()
-    const lessons = await this.postService.getLatestLessonsForHome()
+  async index({ view, auth, history }: HttpContext) {
+    const series = await this.collectionService.getRecentlyUpdated()
+    const lessons = await this.postService.getLatestLessons()
     const topics = await this.taxonomyService.getDisplayList()
-    const blogs = await this.postService.getLatestBlogsForHome()
-    const snippets = await this.postService.getLatestSnippetsForHome()
+    const blogs = await this.postService.getLatestBlogs()
+    const snippets = await this.postService.getLatestSnippets()
 
     if (!auth.user || auth.user.isFreeTier) {
       const plans = await PlanService.all()
       view.share(plans)
     }
 
+    await history.commit()
+
     return view.render('pages/home', {
-      seriesFeature,
-      seriesLatest,
+      series,
       topics,
       lessons,
       blogs,

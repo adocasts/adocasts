@@ -22,16 +22,16 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
       .withTaxonomies()
       .withPostCount()
       .withTotalMinutes()
-      .withProgressCount()
-      .query.if(this.user, (truthy) =>
-        truthy
-          .withCount('progressionHistory', (query) =>
-            query.where('userId', this.user!.id).where('isCompleted', true).as('postCompletedCount')
-          )
-          .withAggregate('progressionHistory', (query) =>
-            query.where('userId', this.user!.id).sum('watch_seconds').as('totalWatchSeconds')
-          )
-      )
+      // .withProgressCount()
+      // .query.if(this.user, (truthy) =>
+      //   truthy
+      //     .withCount('progressionHistory', (query) =>
+      //       query.where('userId', this.user!.id).where('isCompleted', true).as('postCompletedCount')
+      //     )
+      //     .withAggregate('progressionHistory', (query) =>
+      //       query.where('userId', this.user!.id).sum('watch_seconds').as('totalWatchSeconds')
+      //     )
+      // )
 
     return this
   }

@@ -20,25 +20,48 @@ export default class PostService {
     return bento.namespace('POSTS')
   }
 
-  async getLatestLessonsForHome() {
-    return this.cache.getOrSet('GET_LATEST_LESSONS_FOR_HOME', async () => {
-      const latest = await this.getLatestLessons(12)
-      return latest.map(post => PostListVM.get(post))
+  async getLatestLessons() {
+    const results = await this.cache.getOrSet('GET_LATEST_LESSONS', async () => {
+      const latest = await this.#getLatestLessons(12)
+      return latest.map(post => new PostListVM(post))
     })
+
+    PostListVM.addToHistory(this.ctx.history, results)
+
+    return PostListVM.consume(results)
   }
 
-  async getLatestBlogsForHome() {
-    return this.cache.getOrSet('GET_LATEST_BLOGS_FOR_HOME', async () => {
-      const latest = await this.getLatestBlogs(3)
-      return latest.map(post => PostListVM.get(post))
+  async getLatestBlogs() {
+    const results = await this.cache.getOrSet('GET_LATEST_BLOGS', async () => {
+      const latest = await this.#getLatestBlogs(3)
+      return latest.map(post => new PostListVM(post))
     })
+
+    PostListVM.addToHistory(this.ctx.history, results)
+
+    return PostListVM.consume(results)
   }
 
-  async getLatestSnippetsForHome() {
-    return this.cache.getOrSet('GET_LATEST_SNIPPETS_FOR_HOME', async () => {
-      const latest = await this.getLatestSnippets(3)
-      return latest.map(post => PostListVM.get(post))
+  async getLatestSnippets() {
+    const results = await this.cache.getOrSet('GET_LATEST_SNIPPETS', async () => {
+      const latest = await this.#getLatestSnippets(3)
+      return latest.map(post => new PostListVM(post))
     })
+
+    PostListVM.addToHistory(this.ctx.history, results)
+
+    return PostListVM.consume(results)
+  }
+
+  async getLatestStreams() {
+    const results = await this.cache.getOrSet('GET_LATEST_STREAMS', async () => {
+      const latest = await this.#getLatestSnippets(3)
+      return latest.map(post => new PostListVM(post))
+    })
+
+    PostListVM.addToHistory(this.ctx.history, results)
+
+    return PostListVM.consume(results)
   }
 
   /**
@@ -59,8 +82,8 @@ export default class PostService {
     return this.builder()
       .where(column, value)
       .display({ skipPublishCheck: true })
-      .watchlist()
-      .withProgression()
+      // .watchlist()
+      // .withProgression()
       .withComments()
       .firstOrFail()
   }
@@ -132,7 +155,7 @@ export default class PostService {
    * @param excludeIds
    * @returns
    */
-  getLatestLessons(limit: number | undefined = undefined, excludeIds: number[] = []) {
+  #getLatestLessons(limit: number | undefined = undefined, excludeIds: number[] = []) {
     return this.getLatest(limit, excludeIds, [PostTypes.LESSON, PostTypes.LIVESTREAM])
   }
 
@@ -142,7 +165,7 @@ export default class PostService {
    * @param excludeIds
    * @returns
    */
-  getLatestStreams(limit: number | undefined = undefined, excludeIds: number[] = []) {
+  #getLatestStreams(limit: number | undefined = undefined, excludeIds: number[] = []) {
     return this.getLatest(limit, excludeIds, [PostTypes.LIVESTREAM])
   }
 
@@ -152,7 +175,7 @@ export default class PostService {
    * @param excludeIds
    * @returns
    */
-  getLatestBlogs(limit: number | undefined = undefined, excludeIds: number[] = []) {
+  #getLatestBlogs(limit: number | undefined = undefined, excludeIds: number[] = []) {
     return this.getLatest(limit, excludeIds, [PostTypes.BLOG, PostTypes.NEWS])
   }
 
@@ -162,7 +185,7 @@ export default class PostService {
    * @param excludeIds
    * @returns
    */
-  getLatestSnippets(limit: number | undefined = undefined, excludeIds: number[] = []) {
+  #getLatestSnippets(limit: number | undefined = undefined, excludeIds: number[] = []) {
     return this.getLatest(limit, excludeIds, [PostTypes.SNIPPET])
   }
 
