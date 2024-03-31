@@ -30,7 +30,7 @@ export default class ProgressService {
    * @returns
    */
   async getPostProgression(post: Post) {
-    return HistoryService.getPostProgression(this.user, post)
+    return ProgressService.getPostProgression(this.user, post)
   }
 
   static async getPostProgression(user: User | undefined, post: Post) {

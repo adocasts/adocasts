@@ -3,6 +3,7 @@ import HttpStatus from '#enums/http_statuses'
 import { PostFactory } from '#factories/post_factory'
 import { UserFactory } from '#factories/user_factory'
 import History from '#models/history'
+import Progress from '#models/progress'
 import Watchlist from '#models/watchlist'
 import HistoryService from '#services/history_service'
 import WatchlistService from '#services/watchlist_service'
@@ -39,11 +40,9 @@ test.group('Posts actions', (group) => {
     const user = await UserFactory.with('profile').create()
     const post = await PostFactory.with('authors', 1, (authors) => authors.with('profile')).create()
 
-    const history = await History.create({
+    const history = await Progress.create({
       userId: user.id,
       postId: post.id,
-      historyTypeId: HistoryTypes.PROGRESSION,
-      route: 'lessons.show',
       isCompleted: true,
     })
 
@@ -118,11 +117,9 @@ test.group('Posts actions', (group) => {
   test('should be able to update post progression', async ({ client, route, assert }) => {
     const user = await UserFactory.with('profile').create()
     const post = await PostFactory.with('authors', 1, (authors) => authors.with('profile')).create()
-    const history = await History.create({
+    const history = await Progress.create({
       userId: user.id,
       postId: post.id,
-      historyTypeId: HistoryTypes.PROGRESSION,
-      route: 'lessons.show',
       isCompleted: false,
       watchSeconds: 10,
       watchPercent: 20,
