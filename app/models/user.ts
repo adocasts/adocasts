@@ -42,6 +42,7 @@ import Advertisement from './advertisement.js'
 import { compose } from '@adonisjs/core/helpers'
 import { withAuthFinder } from '@adonisjs/auth'
 import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
+import Progress from './progress.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('argon'), {
   uids: ['email', 'username'],
@@ -274,23 +275,21 @@ export default class User extends compose(AppBaseModel, AuthFinder) {
   @hasMany(() => History)
   declare histories: HasMany<typeof History>
 
-  @hasMany(() => History, {
+  @hasMany(() => Progress, {
     onQuery: (query) =>
       query
-        .where('historyTypeId', HistoryTypes.PROGRESSION)
         .whereNotNull('postId')
         .where('watchSeconds', '>', 0),
   })
-  declare watchedPosts: HasMany<typeof History>
+  declare watchedPosts: HasMany<typeof Progress>
 
-  @hasMany(() => History, {
+  @hasMany(() => Progress, {
     onQuery: (query) =>
       query
-        .where('historyTypeId', HistoryTypes.PROGRESSION)
         .whereNotNull('postId')
         .where('isCompleted', true),
   })
-  declare completedPosts: HasMany<typeof History>
+  declare completedPosts: HasMany<typeof Progress>
 
   @hasMany(() => Notification)
   declare notifications: HasMany<typeof Notification>
