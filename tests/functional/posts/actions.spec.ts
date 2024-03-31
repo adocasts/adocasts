@@ -1,8 +1,6 @@
-import HistoryTypes from '#enums/history_types'
 import HttpStatus from '#enums/http_statuses'
 import { PostFactory } from '#factories/post_factory'
 import { UserFactory } from '#factories/user_factory'
-import History from '#models/history'
 import Progress from '#models/progress'
 import Watchlist from '#models/watchlist'
 import HistoryService from '#services/history_service'
