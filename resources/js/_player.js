@@ -25,6 +25,7 @@ class VideoPlayer {
   } = {}) {
     this.element = document.getElementById(el)
     this.progressionInterval = 5000
+    this.isSavingProgression = false
     this.autoplay = autoplay
     this.startMuted = isLive
     this.watchSeconds = watchSeconds
@@ -117,7 +118,7 @@ class VideoPlayer {
    * @param {boolean} playOnReady
    * @param {number} skipToSeconds
    */
-  async onInitVideo(playOnReady = this.autoplay, skipToSeconds = this.watchSeconds) {
+  async onInitVideo(playOnReady = this.autoplay) {
     keepPlayerPostId = this.http.payload.postId
     keepPlayer = false
 
@@ -129,7 +130,7 @@ class VideoPlayer {
     clearInterval(nextUpInterval)
     clearInterval(playerInterval)
 
-    await this.#initPlayer(playOnReady, skipToSeconds)
+    await this.#initPlayer(playOnReady)
 
     this.bodyContent?.addEventListener('click', this.#onTimestampClick.bind(this))
   }
@@ -139,7 +140,7 @@ class VideoPlayer {
    * @param {boolean} playOnReady
    * @returns
    */
-  async #initPlayer(playOnReady, skipToSeconds) {
+  async #initPlayer(playOnReady) {
     if (this.isYouTube) {
       this.player = await this.#initYouTubePlayer(playOnReady)
       return
@@ -149,34 +150,6 @@ class VideoPlayer {
       this.player = await this.#initBunnyEmbed(playOnReady)
       return
     }
-
-    // DEPRECATED - commented out so we can remove it's hls dependency
-    // ---
-
-    // this.player = await this.#initPlyrPlayer(playOnReady)
-
-    // this.player.on('playing', this.#onPlyrStateChange.bind(this))
-    // this.player.on('pause', this.#onPlyrStateChange.bind(this))
-    // this.player.on('ended', this.#onPlyrStateChange.bind(this))
-
-    // const setInitialTime = () => {
-    //   // start user where they left off... unless lesson was already completed or it's a livestream
-    //   if (!this.isCompleted && skipToSeconds && !this.isLive) {
-    //     this.player.currentTime = skipToSeconds
-    //   }
-
-    //   if (playOnReady) {
-    //     player.play()
-    //   }
-    // }
-
-    // // ready is needed to set YouTube video start times
-    // this.player.on('ready', () => setInitialTime())
-
-    // // loadedmetadata is need for bunny stream videos when loaded via unpoly (setting in ready is ignored for some reason)
-    // this.player.on('loadedmetadata', () => setInitialTime())
-
-    // this.player.on('timeupdate', this.#onPlayerTimeUpdate.bind(this))
   }
 
   /**
@@ -253,122 +226,6 @@ class VideoPlayer {
   }
 
   /**
-   * initializes the plyr player for the needed video type
-   * @param {boolean} playOnReady
-   * @returns
-   */
-  async #initPlyrPlayer(playOnReady) {
-    const config = {
-      muted: this.startMuted,
-      volume: window.player?.volume ?? 1,
-      controls: [
-        'play-large',
-        'play',
-        'progress',
-        'duration',
-        'mute',
-        'volume',
-        'captions',
-        'settings',
-        'pip',
-        'airplay',
-        'fullscreen',
-      ],
-      settings: ['captions', 'quality', 'speed', 'loop'],
-    }
-
-    const player = this.isHlsVideo
-      ? await this.#initPlyrPlayerHls(config)
-      : this.#initPlyrPlayerStandard(config)
-
-    window.player = player
-
-    return player
-  }
-
-  /**
-   * initializes the plyr video specifically for an HLS Stream (how we're handling Bunny Stream videos)
-   * @param {Partial<Plyr.Options>|undefined} config
-   * @returns
-   */
-  #initPlyrPlayerHls(config) {
-    console.error('HLS has been disabled in favor of Bunny Stream embedding.')
-
-    // if (!Hls.isSupported()) {
-    //   this.element.src = this.element.dataset.hlsUrl
-
-    //   // create the plyr instance
-    //   const player = this.#initPlyrPlayerStandard(config)
-
-    //   return new Promise((resolve) => resolve(player))
-    // }
-
-    // const hls = new Hls()
-
-    // // bind hls to our video element
-    // hls.loadSource(this.element.dataset.hlsUrl)
-    // hls.attachMedia(this.element)
-
-    // // when hls auto updates the level, update our auto selection to show current quality
-    // hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
-    //   const autoOptionEl = document.querySelector(
-    //     '.plyr__menu__container [data-plyr="quality"][value="AUTO"] span'
-    //   )
-    //   autoOptionEl.textContent = hls.autoLevelEnabled
-    //     ? `Auto (${hls.levels[data.level].height}p)`
-    //     : `Auto`
-    // })
-
-    // window.hls = hls
-
-    // return new Promise((resolve) => {
-    //   hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-    //     // get available quality options for video from hls, prefixing with auto option
-    //     const qualities = ['AUTO', ...hls.levels.map((l) => l.height)]
-
-    //     config.quality = {
-    //       default: 'AUTO',
-    //       options: qualities,
-    //       forced: true,
-    //       onChange: (quality) => {
-    //         // when auto is selected in plyr, enable it within hls
-    //         if (quality === 'AUTO') {
-    //           hls.currentLevel = -1
-    //           return
-    //         }
-
-    //         // otherwise, find and set the newly selected quality
-    //         hls.levels.map((level, index) => {
-    //           if (level.height !== quality) return
-    //           hls.currentLevel = index
-    //         })
-    //       },
-    //     }
-
-    //     // create the plyr instance
-    //     const player = this.#initPlyrPlayerStandard(config)
-
-    //     // when subtitle language is changed, update it within hls
-    //     player.on('languagechange', () =>
-    //       setTimeout(() => (hls.subtitleTrack = player.currentTrack), 50)
-    //     )
-
-    //     resolve(player)
-    //   })
-    // })
-  }
-
-  /**
-   * simple initialization of plyr
-   * @param {Partial<Plyr.Options>|undefined} config
-   * @returns
-   */
-  #initPlyrPlayerStandard(config) {
-    console.error('Plyr has been disabled in favor of Bunny Stream embedding.')
-    // return new Plyr(this.element, config)
-  }
-
-  /**
    * dispatches times updates to the nextUp element
    * @param {CustomEvent} event
    * @returns
@@ -395,52 +252,6 @@ class VideoPlayer {
 
   // #endregion
   // #region Player State Handlers
-
-  /**
-   * handles player state changes (play, pause, end, etc)
-   * @param {CustomEvent} event
-   * @returns
-   */
-  #onPlyrStateChange(event) {
-    const player = event.detail.plyr
-
-    isVideoPlaying = player.playing
-
-    Alpine.store('app').videoPlaying = isVideoPlaying
-
-    // only update keepPlayer when on video's designated page
-    if (location.pathname === this.placeholder.dataset.path) {
-      keepPlayer = isVideoPlaying
-      keepPlayerPostId = this.http.payload.postId
-    }
-
-    if (this.isLive) return
-
-    if (!this.player) {
-      Cookies.remove('playingId')
-      keepPlayer = null
-      keepPlayerPostId = null
-      return
-    }
-
-    if (!isVideoPlaying) {
-      clearInterval(playerInterval)
-      Cookies.remove('playingId')
-
-      if (typeof player.currentTime !== 'number') return
-
-      return this.#storeWatchingProgression(player.currentTime, player.duration)
-    }
-
-    if (!Cookies.get('playingId')) {
-      Cookies.set('playingId', this.http.payload.postId)
-    }
-
-    playerInterval = setInterval(async () => {
-      if (player.duration <= 0) return
-      this.#storeWatchingProgression(player.currentTime, player.duration)
-    }, this.progressionInterval)
-  }
 
   #onYouTubeStateChange(event) {
     isVideoPlaying = event.data == YT.PlayerState.PLAYING
@@ -476,7 +287,7 @@ class VideoPlayer {
       const duration = window.player.getDuration()
 
       this.#storeWatchingProgression(currentTime, duration)
-
+      
       return
     }
 
@@ -546,7 +357,9 @@ class VideoPlayer {
    * @returns
    */
   async #storeWatchingProgression(currentTime, duration) {
-    if (!window.isAuthenticated) return
+    if (!window.isAuthenticated || this.isSavingProgression) return
+
+    this.isSavingProgression = true
 
     const watchPercent = Math.ceil((currentTime / duration) * 100)
     const { data } = await axios[this.http.method](this.http.url, {
@@ -554,6 +367,8 @@ class VideoPlayer {
       watchPercent,
       watchSeconds: Math.floor(currentTime),
     })
+
+    this.isSavingProgression = false
 
     if (typeof data !== 'object') return
 

@@ -25,6 +25,7 @@ import UtilityService from '#services/utility_service'
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 import SlugService from '#services/slug_service'
 import router from '@adonisjs/core/services/router'
+import Progress from './progress.js'
 
 export default class Post extends AppBaseModel {
   serializeExtras = true
@@ -234,10 +235,8 @@ export default class Post extends AppBaseModel {
   })
   declare viewHistory: HasMany<typeof History>
 
-  @hasMany(() => History, {
-    onQuery: (q) => q.where('historyTypeId', HistoryTypes.PROGRESSION),
-  })
-  declare progressionHistory: HasMany<typeof History>
+  @hasMany(() => Progress)
+  declare progressionHistory: HasMany<typeof Progress>
 
   @hasMany(() => Watchlist)
   declare watchlist: HasMany<typeof Watchlist>

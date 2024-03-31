@@ -1,13 +1,11 @@
 import { DateTime } from 'luxon'
-import { belongsTo, column } from '@adonisjs/lucid/orm'
+import { belongsTo, column, computed } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
-import HistoryTypes from '#enums/history_types'
 import AppBaseModel from '#models/app_base_model'
-import Post from '#models/post'
-import Collection from '#models/collection'
-import Taxonomy from '#models/taxonomy'
+import Collection from './collection.js'
+import Post from './post.js'
 
-export default class History extends AppBaseModel {
+export default class Progress extends AppBaseModel {
   @column({ isPrimary: true })
   declare id: number
 
@@ -21,13 +19,16 @@ export default class History extends AppBaseModel {
   declare collectionId: number | null
 
   @column()
-  declare taxonomyId: number | null
+  declare readPercent: number | null
 
   @column()
-  declare historyTypeId: HistoryTypes
+  declare watchPercent: number | null
 
   @column()
-  declare route: string
+  declare watchSeconds: number
+
+  @column()
+  declare isCompleted: boolean
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -41,6 +42,8 @@ export default class History extends AppBaseModel {
   @belongsTo(() => Collection)
   declare collection: BelongsTo<typeof Collection>
 
-  @belongsTo(() => Taxonomy)
-  declare taxonomy: BelongsTo<typeof Taxonomy>
+  @computed()
+  get hasActivity() {
+    return (this.readPercent && this.readPercent > 0) || this.watchSeconds > 0
+  }
 }
