@@ -11,6 +11,7 @@ import CollectionBuilder from '#builders/collection_builder'
 import PostBuilder from '#builders/post_builder'
 import { billtoValidator, mentionListValidator } from '#validators/user_validator'
 import User from '#models/user'
+import ProgressBuilder from '#builders/progress_builder'
 
 export default class UsersController {
   async menu({ view, auth }: HttpContext) {
@@ -113,19 +114,19 @@ export default class UsersController {
 
     switch (tab) {
       case keys.series:
-        series = await HistoryBuilder.new(auth.user)
-          .progressions()
+        series = await ProgressBuilder.new(auth.user)
+          .get()
           .collections((builder) => builder.series().display().paginate(page, 30, route))
         break
       case keys.lessons:
-        lessons = await HistoryBuilder.new(auth.user)
-          .progressions()
+        lessons = await ProgressBuilder.new(auth.user)
+          .get()
           .posts((builder) => builder.whereLesson().display().paginate(page, 20, route))
         break
       case keys.posts:
         const postTypes = [PostTypes.BLOG, PostTypes.LINK, PostTypes.NEWS, PostTypes.SNIPPET]
-        posts = await HistoryBuilder.new(auth.user)
-          .progressions()
+        posts = await ProgressBuilder.new(auth.user)
+          .get()
           .posts((builder) => builder.whereType(postTypes).display().paginate(page, 20, route))
         break
     }

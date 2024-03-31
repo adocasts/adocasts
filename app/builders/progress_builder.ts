@@ -8,18 +8,24 @@ import Post from '#models/post'
 import CollectionBuilder from './collection_builder.js'
 import Collection from '#models/collection'
 import { ModelPaginatorContract } from '@adonisjs/lucid/types/model'
+import Progress from '#models/progress'
 
-export default class HistoryBuilder extends BaseBuilder<typeof History, History> {
+export default class ProgressBuilder extends BaseBuilder<typeof Progress, Progress> {
   constructor(protected user: User | undefined = undefined) {
     super(History)
   }
 
   static new(user: User | undefined = undefined) {
-    return new HistoryBuilder(user)
+    return new ProgressBuilder(user)
   }
 
-  views() {
-    this.query.where('historyTypeId', HistoryTypes.VIEW)
+  get() {
+    this.query.where((query) =>
+      query
+        .where('is_completed', true)
+        .orWhere((or) => or.whereNotNull('watch_percent').where('watch_percent', '>', 0))
+        .orWhere((or) => or.whereNotNull('read_percent').where('read_percent', '>', 0))
+    )
     return this
   }
 

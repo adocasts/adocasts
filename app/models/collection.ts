@@ -25,6 +25,7 @@ import History from '#models/history'
 import HistoryTypes from '#enums/history_types'
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 import SlugService from '#services/slug_service'
+import Progress from './progress.js'
 
 export default class Collection extends AppBaseModel {
   @column({ isPrimary: true })
@@ -158,10 +159,8 @@ export default class Collection extends AppBaseModel {
   })
   declare viewHistory: HasMany<typeof History>
 
-  @hasMany(() => History, {
-    onQuery: (q) => q.where('historyTypeId', HistoryTypes.PROGRESSION),
-  })
-  declare progressionHistory: HasMany<typeof History>
+  @hasMany(() => Progress)
+  declare progressionHistory: HasMany<typeof Progress>
 
   @beforeSave()
   static async slugifyUsername(collection: Collection) {
