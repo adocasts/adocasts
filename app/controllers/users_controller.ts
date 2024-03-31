@@ -1,4 +1,3 @@
-import HistoryBuilder from '#builders/history_builder'
 import NotificationService from '#services/notification_service'
 import { themeValidator } from '#validators/theme_validator'
 import type { HttpContext } from '@adonisjs/core/http'

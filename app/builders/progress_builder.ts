@@ -1,5 +1,3 @@
-import HistoryTypes from '#enums/history_types'
-import History from '#models/history'
 import User from '#models/user'
 import db from '@adonisjs/lucid/services/db'
 import BaseBuilder from './base_builder.js'
@@ -12,7 +10,7 @@ import Progress from '#models/progress'
 
 export default class ProgressBuilder extends BaseBuilder<typeof Progress, Progress> {
   constructor(protected user: User | undefined = undefined) {
-    super(History)
+    super(Progress)
   }
 
   static new(user: User | undefined = undefined) {
