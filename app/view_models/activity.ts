@@ -13,6 +13,7 @@ import RequestVote from '#models/request_vote'
 import CommentVote from '#models/comment_vote'
 import Discussion from '#models/discussion'
 import DiscussionVote from '#models/discussion_vote'
+import Progress from '#models/progress'
 
 class Types {
   static COMMENT = 'comment'
@@ -55,7 +56,7 @@ interface ActivityModel {
   post?: Post
   comment?: Comment
   commentVote?: CommentVote
-  history?: History
+  history?: Progress
   lessonRequest?: LessonRequest
   requestVote?: RequestVote
   discussion?: Discussion
@@ -170,7 +171,7 @@ export default class ActivityVM {
     this.href = comment.post?.routeUrl
   }
 
-  private buildForHistory(history: History) {
+  private buildForHistory(history: Progress) {
     this.type = Types.LESSON_COMPLETED
     this.titleDescriptor = 'Completed lesson'
     this.title = history.post.title
