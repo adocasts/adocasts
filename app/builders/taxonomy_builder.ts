@@ -16,6 +16,7 @@ export default class TaxonomyBuilder extends BaseBuilder<typeof Taxonomy, Taxono
     this.public()
       .withPostCount()
       .withCollectionCount()
+      .withTotalMinutes()
       .query.preload('asset')
       .preload('parent', (query) => query.preload('asset'))
 

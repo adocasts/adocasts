@@ -4,6 +4,7 @@ import Post from '#models/post'
 import Taxonomy from '#models/taxonomy'
 import User from '#models/user'
 import { PostListVM } from '../view_models/post.js'
+import { TopicListVM } from '../view_models/topic.js'
 import BaseBuilder from './base_builder.js'
 
 export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
@@ -71,7 +72,7 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
     return this
   }
 
-  whereHasTaxonomy(taxonomy: Taxonomy) {
+  whereHasTaxonomy(taxonomy: Taxonomy | TopicListVM) {
     this.query.whereHas('taxonomies', (query) => query.where('taxonomies.id', taxonomy.id))
     return this
   }

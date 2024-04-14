@@ -8,6 +8,8 @@ import { SeriesListVM, SeriesShowVM } from '../view_models/series.js'
 import bento from './bento_service.js'
 import { ProgressContext } from '#start/context'
 import Watchlist from '#models/watchlist'
+import Taxonomy from '#models/taxonomy'
+import { TopicListVM } from '../view_models/topic.js'
 
 @inject()
 export default class CollectionService {
@@ -64,6 +66,16 @@ export default class CollectionService {
     SeriesShowVM.addToHistory(this.ctx.history, result)
 
     return SeriesShowVM.consume(result)
+  }
+
+  async getCachedForTaxonomy(taxonomy: Taxonomy | TopicListVM) {
+    const results = await this.cache.getOrSet(`GET_FOR_TAXONOMY_${taxonomy.id}`, async () => {
+      return this.getLastUpdated(undefined, false).whereHasTaxonomy(taxonomy).toListVM()
+    })
+
+    SeriesListVM.addToHistory(this.ctx.history, results)
+
+    return results
   }
 
   /**

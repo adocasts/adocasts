@@ -29,6 +29,10 @@ export default class TaxonomyService {
       const taxonomy = await this.getBySlug(slug)
       return new TopicListVM(taxonomy)
     })
+
+    TopicListVM.addToHistory(this.ctx.history, [results])
+
+    return results
   }
 
   /**

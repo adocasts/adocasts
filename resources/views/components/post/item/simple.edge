@@ -3,7 +3,7 @@
     <time datetime="{{ item.publishAtISO }}" class="text-slate-600">
       {{ item.publishAtDisplay }}
     </time>
-    @each (topic in item.taxonomies)
+    @each (topic in item.topics)
       <a href="{{ route('topics.show', { slug: topic.slug }) }}" class="relative z-10 font-medium link text-slate-600" up-follow>
         #{{ topic.slug }}
       </a>

@@ -56,9 +56,9 @@ export class SeriesListVM extends SeriesBaseVM {
   constructor(series: Collection) {
     super(series)
 
-    this.posts = series.postsFlattened.map((post) => new PostListVM(post))
+    this.posts = series.postsFlattened?.map((post) => new PostListVM(post)) || []
     this.meta = {
-      postsCount: series.$extras.postsFlattened_count || 0,
+      postsCount: (series.$extras.postsFlattened_count || series.$extras.posts_count) || 0,
       videoSecondsSum: series.$extras.videoSecondsSum || 0,
     }
   }

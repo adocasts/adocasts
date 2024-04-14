@@ -35,15 +35,15 @@
               <div class="flex items-center gap-1.5">
                 @svg('ph:books-fill')
                 <span>
-                  {{ item.meta.collections_count ?? '0' }}
-                  {{ pluralize('Series', item.meta.collections_count) }}
+                  {{ item.meta.collectionsCount ?? '0' }}
+                  {{ pluralize('Series', item.meta.collectionsCount) }}
                 </span>
               </div>
               <div class="flex items-center gap-1.5">
                 @svg('ph:graduation-cap-fill')
                 <span>
-                  {{ item.meta.posts_count ?? '0' }}
-                  {{ pluralize('Lessons', item.meta.posts_count)}}
+                  {{ item.meta.postsCount ?? '0' }}
+                  {{ pluralize('Lessons', item.meta.postsCount)}}
                 </span>
               </div>
               <div class="flex items-center gap-1.5">
@@ -101,15 +101,15 @@
             <div class="flex items-center gap-1.5">
               @svg('ph:books-fill')
               <span>
-                {{ item.meta.collections_count ?? '0' }}
-                {{ pluralize('Series', item.meta.collections_count) }}
+                {{ item.meta.collectionsCount ?? '0' }}
+                {{ pluralize('Series', item.meta.collectionsCount) }}
               </span>
             </div>
             <div class="flex items-center gap-1.5">
               @svg('ph:graduation-cap-fill')
               <span>
-                {{ item.meta.posts_count ?? '0' }}
-                {{ pluralize('Lessons', item.meta.posts_count) }}
+                {{ item.meta.postsCount ?? '0' }}
+                {{ pluralize('Lessons', item.meta.postsCount) }}
               </span>
             </div>
             <div class="flex items-center gap-1.5">
@@ -170,7 +170,7 @@
           @!heading({ title: 'Lessons.', size: 'sm' })
 
           <div class="py-4">
-            @each (post in posts)
+            @each (post in rows)
               @!post.item.large({ item: post })
             @endeach
           </div>

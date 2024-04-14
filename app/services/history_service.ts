@@ -10,6 +10,7 @@ import db from '@adonisjs/lucid/services/db'
 import { HttpContext } from '@adonisjs/core/http'
 import { inject } from '@adonisjs/core'
 import { SeriesShowVM } from '../view_models/series.js'
+import { TopicListVM } from '../view_models/topic.js'
 
 @inject()
 export default class HistoryService {
@@ -47,7 +48,7 @@ export default class HistoryService {
    * @returns
    */
   async recordView(
-    record: Post | Collection | Taxonomy | SeriesShowVM,
+    record: Post | Collection | Taxonomy | SeriesShowVM | TopicListVM,
     routeName: string | undefined = undefined
   ) {
     if (!this.user) return
@@ -67,7 +68,7 @@ export default class HistoryService {
    * @param record
    * @returns
    */
-  getRecordRelationColumn(record: Post | Collection | Taxonomy | SeriesShowVM) {
+  getRecordRelationColumn(record: Post | Collection | Taxonomy | SeriesShowVM | TopicListVM) {
     switch (true) {
       case record instanceof Post:
         return 'postId'
@@ -75,6 +76,7 @@ export default class HistoryService {
       case record instanceof SeriesShowVM:
         return 'collectionId'
       case record instanceof Taxonomy:
+      case record instanceof TopicListVM:
         return 'taxonomyId'
       default:
         throw new NotImplementedException(

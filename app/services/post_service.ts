@@ -8,6 +8,8 @@ import { HttpContext } from '@adonisjs/core/http'
 import bento from './bento_service.js'
 import { PostListVM } from '../view_models/post.js'
 import { DateTime } from 'luxon'
+import Taxonomy from '#models/taxonomy'
+import { TopicListVM } from '../view_models/topic.js'
 
 @inject()
 export default class PostService {
@@ -21,10 +23,10 @@ export default class PostService {
     return bento.namespace('POSTS')
   }
 
-  async getNewThisMonth() {
+  async getCachedNewThisMonth() {
     const results = await this.cache.getOrSet('GET_NEW_THIS_MONTH', async () => {
       const recentDate = DateTime.now().minus({ days: 30 }).startOf('day')
-      return this.#getLatestLessons().where('publishAt', '>=', recentDate).toListVM()
+      return this.getLatestLessons().where('publishAt', '>=', recentDate).toListVM()
     })
 
     PostListVM.addToHistory(this.ctx.history, results)
@@ -32,9 +34,9 @@ export default class PostService {
     return PostListVM.consume(results)
   }
 
-  async getLatestLessons() {
+  async getCachedLatestLessons() {
     const results = await this.cache.getOrSet('GET_LATEST_LESSONS', async () => {
-      return this.#getLatestLessons(12).toListVM()
+      return this.getLatestLessons(12).toListVM()
     })
 
     PostListVM.addToHistory(this.ctx.history, results)
@@ -42,9 +44,9 @@ export default class PostService {
     return PostListVM.consume(results)
   }
 
-  async getLatestBlogs() {
+  async getCachedLatestBlogs() {
     const results = await this.cache.getOrSet('GET_LATEST_BLOGS', async () => {
-      const latest = await this.#getLatestBlogs(3)
+      const latest = await this.getLatestBlogs(3)
       return latest.map(post => new PostListVM(post))
     })
 
@@ -53,9 +55,9 @@ export default class PostService {
     return PostListVM.consume(results)
   }
 
-  async getLatestSnippets() {
+  async getCachedLatestSnippets() {
     const results = await this.cache.getOrSet('GET_LATEST_SNIPPETS', async () => {
-      const latest = await this.#getLatestSnippets(3)
+      const latest = await this.getLatestSnippets(3)
       return latest.map(post => new PostListVM(post))
     })
 
@@ -64,10 +66,20 @@ export default class PostService {
     return PostListVM.consume(results)
   }
 
-  async getLatestStreams() {
+  async getCachedLatestStreams() {
     const results = await this.cache.getOrSet('GET_LATEST_STREAMS', async () => {
-      const latest = await this.#getLatestSnippets(3)
+      const latest = await this.getLatestSnippets(3)
       return latest.map(post => new PostListVM(post))
+    })
+
+    PostListVM.addToHistory(this.ctx.history, results)
+
+    return PostListVM.consume(results)
+  }
+
+  async getCachedSnippetsForTaxonomy(taxonomy: Taxonomy | TopicListVM) {
+    const results = await this.cache.getOrSet(`GET_SNIPPETS_FOR_TAXONOMY_${taxonomy.id}`, async () => {
+      return this.getLatestSnippets().whereHasTaxonomy(taxonomy).toListVM()
     })
 
     PostListVM.addToHistory(this.ctx.history, results)
@@ -166,7 +178,7 @@ export default class PostService {
    * @param excludeIds
    * @returns
    */
-  #getLatestLessons(limit: number | undefined = undefined, excludeIds: number[] = []) {
+  getLatestLessons(limit: number | undefined = undefined, excludeIds: number[] = []) {
     return this.getLatest(limit, excludeIds, [PostTypes.LESSON, PostTypes.LIVESTREAM])
   }
 
@@ -176,7 +188,7 @@ export default class PostService {
    * @param excludeIds
    * @returns
    */
-  #getLatestStreams(limit: number | undefined = undefined, excludeIds: number[] = []) {
+  getLatestStreams(limit: number | undefined = undefined, excludeIds: number[] = []) {
     return this.getLatest(limit, excludeIds, [PostTypes.LIVESTREAM])
   }
 
@@ -186,7 +198,7 @@ export default class PostService {
    * @param excludeIds
    * @returns
    */
-  #getLatestBlogs(limit: number | undefined = undefined, excludeIds: number[] = []) {
+  getLatestBlogs(limit: number | undefined = undefined, excludeIds: number[] = []) {
     return this.getLatest(limit, excludeIds, [PostTypes.BLOG, PostTypes.NEWS])
   }
 
@@ -196,7 +208,7 @@ export default class PostService {
    * @param excludeIds
    * @returns
    */
-  #getLatestSnippets(limit: number | undefined = undefined, excludeIds: number[] = []) {
+  getLatestSnippets(limit: number | undefined = undefined, excludeIds: number[] = []) {
     return this.getLatest(limit, excludeIds, [PostTypes.SNIPPET])
   }
 

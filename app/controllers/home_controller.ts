@@ -18,10 +18,10 @@ export default class HomeController {
    */
   async index({ view, auth, history }: HttpContext) {
     const series = await this.collectionService.getRecentlyUpdated()
-    const lessons = await this.postService.getLatestLessons()
+    const lessons = await this.postService.getCachedLatestLessons()
     const topics = await this.taxonomyService.getDisplayList()
-    const blogs = await this.postService.getLatestBlogs()
-    const snippets = await this.postService.getLatestSnippets()
+    const blogs = await this.postService.getCachedLatestBlogs()
+    const snippets = await this.postService.getCachedLatestSnippets()
 
     if (!auth.user || auth.user.isFreeTier) {
       const plans = await PlanService.all()

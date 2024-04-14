@@ -32,7 +32,7 @@ export default class LessonsController {
     const { page = '1', sortBy = 'publishAt', sort = 'desc' } = request.qs()
 
     if (page === '1' && sortBy === 'publishAt') {
-      const recent = await this.postService.getNewThisMonth()
+      const recent = await this.postService.getCachedNewThisMonth()
 
       view.share({ title: 'Lessons', recent })
     }
