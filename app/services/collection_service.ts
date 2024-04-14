@@ -4,8 +4,10 @@ import Post from '#models/post'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
-import SeriesListVM from '../view_models/series.js'
+import { SeriesListVM, SeriesShowVM } from '../view_models/series.js'
 import bento from './bento_service.js'
+import { ProgressContext } from '#start/context'
+import Watchlist from '#models/watchlist'
 
 @inject()
 export default class CollectionService {
@@ -25,15 +27,19 @@ export default class CollectionService {
    */
   async getRecentlyUpdated() {
     const { latest, recent } = await this.cache.getOrSet('GET_RECENTLY_UPDATED', async () => {
-      const latest = await this.queryGetLastUpdated(true, [], 4).firstOrFail()
-      const recent = await this.queryGetLastUpdated(true, [], 0).limit(6)
+      const latest = await this.queryGetLastUpdated(true, [], 4).toListVM()
+      const recent = await this.queryGetLastUpdated(true, [], 0).limit(6).toListVM()
       return { 
-        latest: new SeriesListVM(latest), 
-        recent: recent.map(series => new SeriesListVM(series))
+        latest: latest.at(0), 
+        recent: recent
       }  
     })
 
-    SeriesListVM.addToHistory(this.ctx.history, [latest, ...recent])
+    if (latest) {
+      SeriesListVM.addToHistory(this.ctx.history, [latest])
+    }
+    
+    SeriesListVM.addToHistory(this.ctx.history, recent)
 
     return { latest, recent }
   }
@@ -47,6 +53,17 @@ export default class CollectionService {
     SeriesListVM.addToHistory(this.ctx.history, results)
 
     return results
+  }
+
+  async getBySlug(slug: string) {
+    const result = await this.cache.getOrSet(`GET_BY_SLUG_${slug}`, async () => {
+      const series = await this.findBy('slug', slug)
+      return new SeriesShowVM(series)
+    })
+    
+    SeriesShowVM.addToHistory(this.ctx.history, result)
+
+    return SeriesShowVM.consume(result)
   }
 
   /**
@@ -193,6 +210,37 @@ export default class CollectionService {
     if (!next) next = collection.postsFlattened.at(0)
 
     return next
+  }
+
+  findNextProgressLesson(series: SeriesShowVM, progress: ProgressContext) {
+    if (!series?.postIds) return
+
+    for (const id of series.postIds) {
+      const history = progress.post(id)
+      
+      // if post is completed, skip
+      if (history?.isCompleted) continue
+
+      // find post within series
+      let post = series.posts?.find((post) => post.id === id)
+
+      // if post is found, return it
+      if (post) return post
+
+      // find post within modules
+      for (const module of series.modules) {
+        post = module.posts?.find((post) => post.id === id)
+        if (post) return post
+      }
+    }
+
+    return series.posts?.at(0) ?? series.modules?.at(0)?.posts?.at(0)
+  }
+
+  async getIsInWatchlist(user: User | undefined, series: SeriesShowVM) {
+    if (!user) return false
+    const results = await Watchlist.query().where('collectionId', series.id).where('userId', user.id).select('id').first()
+    return !!results
   }
 
   //#endregion

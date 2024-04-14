@@ -9,6 +9,7 @@ import States from '#enums/states'
 import db from '@adonisjs/lucid/services/db'
 import { HttpContext } from '@adonisjs/core/http'
 import { inject } from '@adonisjs/core'
+import { SeriesShowVM } from '../view_models/series.js'
 
 @inject()
 export default class HistoryService {
@@ -46,7 +47,7 @@ export default class HistoryService {
    * @returns
    */
   async recordView(
-    record: Post | Collection | Taxonomy,
+    record: Post | Collection | Taxonomy | SeriesShowVM,
     routeName: string | undefined = undefined
   ) {
     if (!this.user) return
@@ -66,11 +67,12 @@ export default class HistoryService {
    * @param record
    * @returns
    */
-  getRecordRelationColumn(record: Post | Collection | Taxonomy) {
+  getRecordRelationColumn(record: Post | Collection | Taxonomy | SeriesShowVM) {
     switch (true) {
       case record instanceof Post:
         return 'postId'
       case record instanceof Collection:
+      case record instanceof SeriesShowVM:
         return 'collectionId'
       case record instanceof Taxonomy:
         return 'taxonomyId'

@@ -10,9 +10,9 @@
 @let(hasSeries = false)
 
 <div class="flex items-center gap-1">
-  @if (item.series?.length)
+  @if (item.series)
     @assign(hasSeries = true)
-    @let(series = item.rootSeries.at(0))
+    @let(series = item.series)
     <h5 class="uppercase flex items-center text-accent-500 hover:text-accent-600 tracking-wide font-sans text-xs">
       @if (display.seriesName)
         <a href="{{ route('series.show', { slug: series.slug }) }}" up-follow class="anchor truncate" {{ html.attrs(upAttrs) }}>
@@ -20,7 +20,7 @@
         </a>
       @endif
       <span class="{{ html.classNames(['text-slate-600 whitespace-nowrap duration-150', { 'ml-2': display.seriesName }]) }}">
-        {{ display.seriesName ? '#' : 'Lesson ' }}{{ item.lessonIndexDisplay }}
+        {{ display.seriesName ? '#' : 'Lesson ' }}{{ item.series.lessonIndexDisplay }}
       </span>
     </h5>
   @elseif (item.paths?.length)

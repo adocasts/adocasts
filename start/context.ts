@@ -1,14 +1,16 @@
-import HistoryBuilder from "#builders/history_builder";
-import History from "#models/history";
+import ProgressBuilder from "#builders/progress_builder";
+import Progress from "#models/progress";
 import TurnstileService from "#services/turnstile_service";
 import { HttpContext } from "@adonisjs/core/http";
 
-export type HistoryContext = {
+export type ProgressContext = {
   isLoaded: boolean
   postIds: number[]
   collectionIds: number[]
-  records: History[]
-  commit: () => Promise<History[]>
+  records: Progress[]
+  commit: () => Promise<Progress[]>
+  post: (id: number) => Progress | undefined
+  collection: (id: number) => Progress | undefined
   addCollectionIds: (ids: number[]) => void
   addPostIds: (ids: number[]) => void
 }
@@ -17,7 +19,7 @@ declare module '@adonisjs/core/http' {
   interface HttpContext {
     turnstile: TurnstileService
     timezone: string
-    history: HistoryContext
+    history: ProgressContext
   }
 }
 
@@ -32,49 +34,47 @@ HttpContext.getter('timezone', function (this: HttpContext) {
 
 HttpContext.getter('history', function (this: HttpContext) {
   const ctx = this
-  const state: HistoryContext = {
+  const state: ProgressContext = {
     isLoaded: false,
     postIds: [],
     collectionIds: [],
     records: [],
 
-    addCollectionIds(ids: number[]) {
+    addCollectionIds(ids: number[] = []) {
       console.log('addCollectionIds', { ids })
       this.collectionIds = [...this.collectionIds, ...ids]
     },
 
-    addPostIds(ids: number[]) {
+    addPostIds(ids: number[] = []) {
       this.postIds = [...this.postIds, ...ids]
     },
 
-    async commit() {
-      if (!ctx.auth.user || this.isLoaded) return []
-      
-      const postRecords = await HistoryBuilder.new(ctx.auth.user)
-        .progressions()
-        .for('postId', this.postIds)
+    post(id: number) {
+      return this.records.find(record => record.postId === id)
+    },
 
-      const collectionRecords = await HistoryBuilder.new(ctx.auth.user)
-        .progressions()
-        .for('collectionId', this.collectionIds)
+    collection(id: number) {
+      return this.records.find(record => record.collectionId == id)
+    },
+
+    async commit() {
+      if (this.isLoaded) return []
+
+      let postRecords: Progress[] = []
+      let collectionRecords: Progress[] = []
       
-      console.log({
-        postIds: this.postIds,
-        collectionIds: this.collectionIds,
-      })
+      if (ctx.auth.user) {
+        postRecords = await ProgressBuilder.new(ctx.auth.user).for('postId', this.postIds)
+        collectionRecords = await ProgressBuilder.new(ctx.auth.user).for('collectionId', this.collectionIds)
+      }
 
       this.records = [...postRecords, ...collectionRecords]
 
       ctx.view.share({ 
         progressions: this.records,
         progression: {
-          post: (id: number) => {
-            return this.records.find(record => record.postId === id)
-          },
-
-          collection: (id: number) => {
-            return this.records.find(record => record.collectionId == id)
-          }
+          post: this.post.bind(this),
+          collection: this.collection.bind(this)
         }
       })
 

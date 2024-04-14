@@ -12,18 +12,25 @@ export default class SeriesController {
     protected historyService: HistoryService
   ) {}
 
-  async index({ view }: HttpContext) {
+  async index({ view, history }: HttpContext) {
     const features = await this.collectionService.getRecentlyUpdated()
     const series = await this.collectionService.getAll()
+
+    await history.commit()
 
     return view.render('pages/series/index', { features, series })
   }
 
-  async show({ view, params, route }: HttpContext) {
-    const item = await this.collectionService.findBy('slug', params.slug)
-    const nextLesson = this.collectionService.findNextLesson(item)
-
+  async show({ view, params, route, history, auth }: HttpContext) {
+    const item = await this.collectionService.getBySlug(params.slug)
+    
     await this.historyService.recordView(item, route?.name)
+    await history.commit()
+
+    const nextLesson = this.collectionService.findNextProgressLesson(item, history)
+
+    item.meta.isInWatchlist = await this.collectionService.getIsInWatchlist(auth.user, item)
+    item.meta.postsCompletedCount = history.records.filter(record => record.isCompleted).length
 
     return view.render('pages/series/show', { item, nextLesson })
   }

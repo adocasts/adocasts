@@ -16,6 +16,7 @@ import axios from 'axios'
 import { DateTime } from 'luxon'
 import VttService from '#services/vtt_service'
 import logger from '#services/logger_service'
+import { PostListVM } from '../view_models/post.js'
 
 @inject()
 export default class LessonsController {
@@ -27,12 +28,11 @@ export default class LessonsController {
     protected discussionService: DiscussionService
   ) {}
 
-  async index({ view, request, params }: HttpContext) {
+  async index({ view, request, params, history }: HttpContext) {
     const { page = '1', sortBy = 'publishAt', sort = 'desc' } = request.qs()
 
     if (page === '1' && sortBy === 'publishAt') {
-      const recentDate = DateTime.now().minus({ days: 30 }).startOf('day')
-      const recent = await this.postService.getLatestLessons().where('publishAt', '>=', recentDate)
+      const recent = await this.postService.getNewThisMonth()
 
       view.share({ title: 'Lessons', recent })
     }
@@ -42,31 +42,29 @@ export default class LessonsController {
       .orderBy(sortBy, sort)
       .paginate(page, 20, router.makeUrl('lessons.index', params))
 
+    const rows = items.map(post => new PostListVM(post))
     const adAside = await AdService.getMediumRectangles()
     const feed = await this.discussionService.getAsideList(4)
 
-    return view.render('pages/lessons/index', { type: 'Lessons', items, feed, adAside })
+    await history.commit()
+
+    return view.render('pages/lessons/index', { type: 'Lessons', items, rows, feed, adAside })
   }
 
-  async streams({ view, request, params }: HttpContext) {
+  async streams({ view, request, params, history }: HttpContext) {
     const { page = '1', sortBy = 'publishAt', sort = 'desc' } = request.qs()
-
-    if (page === '1' && sortBy === 'publishAt') {
-      const recentDate = DateTime.now().minus({ days: 30 }).startOf('day')
-      const recent = await this.postService.getLatestStreams().where('publishAt', '>=', recentDate)
-
-      view.share({ title: 'Livestreams', recent })
-    }
-
     const items = await this.postService
       .getStreams()
       .orderBy(sortBy, sort)
       .paginate(page, 20, router.makeUrl('lessons.index', params))
 
+    const rows = items.map(post => new PostListVM(post))
     const adAside = await AdService.getMediumRectangles()
     const feed = await this.discussionService.getAsideList()
 
-    return view.render('pages/lessons/index', { type: 'Livestreams', items, feed, adAside })
+    await history.commit()
+
+    return view.render('pages/lessons/index', { type: 'Livestreams', items, rows, feed, adAside })
   }
 
   async show({ view, request, params, session, auth, up, route, bouncer }: HttpContext) {

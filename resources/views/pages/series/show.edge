@@ -8,16 +8,16 @@
   }
 })
 
-  @slot('hero')
-    <div 
+   @slot('hero')
+    <div
       x-intersect:enter="$store.app.heroVisible = true"
-      x-intersect:leave="$store.app.heroVisible = false" 
+      x-intersect:leave="$store.app.heroVisible = false"
       x-init="$nextTick(() => ($store.app.heroHeight = $el.clientHeight))"
       class="bg-gradient-to-br from-slate-100 to-slate-50 relative">
       <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-100/0 via-slate-100/40 to-slate-100/95 group-hover:opacity-0 duration-300 z-10"></div>
 
       @if (item.asset)
-        <div 
+        <div
           class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit duration-300 opacity-25"
           style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}?w=10');">
         </div>
@@ -32,12 +32,12 @@
 
             <div class="flex items-center gap-4 xl:gap-6 text-slate-800 -mt-4">
               @!difficulty({ item })
-              
+
               <div class="flex items-center gap-1.5">
                 @svg('ph:graduation-cap-fill')
                 <span>
-                  {{ item.meta.postsFlattened_count ?? '0' }}
-                  {{ pluralize('Lessons', item.meta.postsFlattened_count)}}
+                  {{ item.meta.postsCount ?? '0' }}
+                  {{ pluralize('Lessons', item.meta.postsCount)}}
                 </span>
               </div>
               <div class="flex items-center gap-1.5">
@@ -52,9 +52,9 @@
               </p>
             @endif
 
-            @if (item.taxonomies)
+            @if (item.topics)
               <div class="text-sm md:text-base flex flex-wrap gap-4 mt-2">
-                @each (topic in item.taxonomies)
+                @each (topic in item.topics)
                   <a href="{{ route('topics.show', { slug: topic.slug }) }}" class="font-medium anchor" up-follow>
                     #{{ topic.slug }}
                   </a>
@@ -66,11 +66,11 @@
               @if (nextLesson)
                 @button({ variant: 'dark', href: nextLesson.routeUrl, class: ['gap-2'] })
                   @svg('ph:play-fill')
-                  {{ nextLesson.id === item.postsFlattened.at(0)?.id ? 'Start Series' : 'Continue Series' }}
+                  {{ nextLesson.series.rootSortOrder === 0 ? 'Start Series' : 'Continue Series' }}
                 @end
               @endif
 
-              @!watchlist.toggle({ active: parseInt(item.$extras.watchlist_count ?? 0), collectionId: item.id })
+              @!watchlist.toggle({ active: item.meta.isInWatchlist, collectionId: item.id })
 
               @if (item.repositoryUrl)
                 @button({ href: item.repositoryUrl, target: '_blank', class: ['gap-2'] })
@@ -86,38 +86,38 @@
   @end
 
   <div class="flex flex-wrap -mx-2 xl:-mx-8 relative" style="--aside-width: 385px;">
-    <aside 
-      class="hidden lg:block w-full px-4 xl:px-8 lg:w-[var(--aside-width)] lg:absolute lg:h-[calc(100%-var(--top-offset))] top-[var(--top-offset)] right-0 z-20 order-1 md:order-2" 
+    <aside
+      class="hidden lg:block w-full px-4 xl:px-8 lg:w-[var(--aside-width)] lg:absolute lg:h-[calc(100%-var(--top-offset))] top-[var(--top-offset)] right-0 z-20 order-1 md:order-2"
       :style="{ '--top-offset': ($store.app.heroHeight * -1) + 'px' }">
-      <div class="sticky top-4 lg:p-8 rounded-xl" :class="{ 'lg:bg-slate-100': !$store.app.heroVisible || {{ item.children?.length ?? 0 }} }">
+      <div class="sticky top-4 lg:p-8 rounded-xl" :class="{ 'lg:bg-slate-100': !$store.app.heroVisible || {{ item.modules?.length ?? 0 }} }">
         <div class="relative overflow-hidden rounded-xl" :class="[$store.app.heroVisible ? 'mb-8' : 'mb-4']">
-          <div 
-            x-show="!$store.app.heroVisible || {{ item.children?.length ?? 0 }}"
+          <div
+            x-show="!$store.app.heroVisible || {{ item.modules?.length ?? 0 }}"
             class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-100/0 via-slate-100/40 to-slate-100/95 group-hover:opacity-0 duration-300 z-10"
           ></div>
           @if (item.asset)
-            <div 
-              x-show="!$store.app.heroVisible || {{ item.children?.length ?? 0 }}"
+            <div
+              x-show="!$store.app.heroVisible || {{ item.modules?.length ?? 0 }}"
               class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit group-hover:scale-[175%] duration-300"
               style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}?w=10');">
             </div>
           @endif
-          <div class="flex justify-center items-center duration-300 h-full p-4 relative z-20" :class="{ 'backdrop-blur-xl bg-slate-100/50 group-hover:bg-slate-100/0': !$store.app.heroVisible || {{ item.children?.length ?? 0 }} }">
+          <div class="flex justify-center items-center duration-300 h-full p-4 relative z-20" :class="{ 'backdrop-blur-xl bg-slate-100/50 group-hover:bg-slate-100/0': !$store.app.heroVisible || {{ item.modules?.length ?? 0 }} }">
             @!collection.icon({ item, class: 'w-2/3 mx-auto shadow-lg' })
           </div>
         </div>
-      
+
         <div x-show="!$store.app.heroVisible" x-transition class="mb-4">
           <h3 class="text-2xl font-black tracking-tight mb-2">
             {{ item.name }}
           </h3>
-  
+
           <div class="flex items-center gap-3 text-slate-600 text-sm mt-2">
             <div class="flex items-center gap-1.5">
               @svg('ph:graduation-cap-fill')
               <span>
-                {{ item.meta.postsFlattened_count ?? '0' }}
-                {{ pluralize('Lessons', item.meta.postsFlattened_count)}}
+                {{ item.meta.postsCount ?? '0' }}
+                {{ pluralize('Lessons', item.meta.postsCount)}}
               </span>
             </div>
             <div class="flex items-center gap-1.5">
@@ -125,7 +125,7 @@
               {{ utils.secondsToTimestring(item.meta.videoSecondsSum) }}
             </div>
           </div>
-  
+
           @if (item.description)
             <p class="text-xs mt-2 max-w-prose">
               {{ item.description }}
@@ -133,12 +133,12 @@
           @endif
         </div>
 
-        @if (item.children?.length)
+        @if (item.modules?.length)
           <div class="text-sm">
             <h5 class="font-bold uppercase text-xs text-slate-600">Series Modules</h5>
 
             <ol class="flex flex-col mt-1.5 -mx-1">
-              @each (module in item.children)
+              @each (module in item.modules)
                 <li>
                   <a href="#module{{module.moduleNumber}}" class="flex items-center flex-nowrap text-slate-600 gap-x-3 px-1 py-1 rounded-md hover:bg-slate-200 group duration-300">
                     <span class="uppercase whitespace-nowrap tracking-tight hidden md:block bg-slate-200 group-hover:bg-slate-300 duration-300 rounded-md py-0.5 px-2 text-2xs">
@@ -160,7 +160,7 @@
       @if (auth.user && Number(item.meta.totalWatchSeconds) > 0)
         <div class="-mx-4 mb-4">
           <div class="bg-slate-100 rounded-md p-4 flex flex-wrap justify-between relative z-10">
-            @let(progressPercent = Math.floor((item.meta.postCompletedCount / item.meta.postsFlattened_count) * 100))
+            @let(progressPercent = Math.floor((item.meta.postCompletedCount / item.meta.postsCount) * 100))
             @let(totalWatchSeconds = utils.secondsToTimestring(item.meta.totalWatchSeconds))
             <div class="flex items-center gap-3 tracking-wider pr-2 {{ progressPercent >= 100 ? 'text-green-600' : '' }}">
               @!progression.circle({ progressPercent, size: 12, stroke: 6, sizeClass: 'w-8 h-8', plain: true })
@@ -171,8 +171,8 @@
               <div class="flex-col mr-2 lg:mr-6 flex">
                 <span class="text-xs text-slate-600 uppercase tracking-wider">Completed</span>
                 <span class="text-sm sm:text-base">
-                  <span class="font-bold">{{ item.meta.postCompletedCount }}</span> 
-                  <span class="text-slate-600">of {{ item.meta.postsFlattened_count ?? '0' }} Lessons</span>
+                  <span class="font-bold">{{ item.meta.postCompletedCount }}</span>
+                  <span class="text-slate-600">of {{ item.meta.postsCount ?? '0' }} Lessons</span>
                 </span>
               </div>
               <div class="flex-col hidden md:flex">
@@ -187,7 +187,7 @@
         </div>
       @endif
 
-      @if (nextLesson.$extras.pivot_root_sort_order > 0)
+      @if (nextLesson.series.rootSortOrder > 0)
         <div class="-mx-4 bg-slate-100 mb-4 rounded-md overflow-hidden">
           <div class="bg-slate-100 px-4 mb-4">
             <h3 class="flex items-baseline flex-wrap text-lg lg:text-xl text-slate-700 border-b border-slate-200 py-4">
@@ -208,8 +208,8 @@
           </div>
         </div>
       @endif
-      
-      @each ((module, x) in item.children)
+
+      @each ((module, x) in item.modules)
         <div id="module{{module.moduleNumber }}" class="mb-6">
           <div class="sticky top-0 z-20 -mx-4">
             <div class="bg-slate-100 rounded-md p-4 mb-4">
@@ -232,7 +232,7 @@
 
           <div>
             @each ((post, y) in module.posts)
-              @!post.item.large({ item: post })
+              @!post.item.large({ item: post, display: { seriesName: false } })
             @endeach
           </div>
         </div>
@@ -241,7 +241,7 @@
       @if (item.posts.length)
         <div class="mb-3">
           @each (post in item.posts)
-            @!post.item.large({ item: post })
+            @!post.item.large({ item: post, display: { seriesName: false } })
           @endeach
         </div>
       @endif
@@ -256,16 +256,16 @@
             <p class="text-sm text-slate-600">Add to your watchlist to get notified when new lessons are added</p>
             <div class="mt-2 max-w-fit">
               @if (auth.user)
-                @!watchlist.toggle({ 
-                  active: parseInt(item.$extras.watchlist_count ?? 0), 
-                  collectionId: item.id 
+                @!watchlist.toggle({
+                  active: item.meta.isInWatchlist,
+                  collectionId: item.id
                 })
               @else
                 <p class="text-sm">
                   <a href="{{ route('auth.signin.create') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
                     Sign in
                   </a>
-                  or 
+                  or
                   <a href="{{ route('auth.signup.create') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
                     sign up
                   </a>
@@ -278,4 +278,7 @@
       @endif
     </main>
   </div>
+
+  {{ inspect(nextLesson) }}
+  {{ inspect(item) }}
 @end

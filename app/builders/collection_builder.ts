@@ -4,6 +4,7 @@ import Collection from '#models/collection'
 import Post from '#models/post'
 import Taxonomy from '#models/taxonomy'
 import User from '#models/user'
+import { SeriesListVM } from '../view_models/series.js'
 import BaseBuilder from './base_builder.js'
 
 export default class CollectionBuilder extends BaseBuilder<typeof Collection, Collection> {
@@ -18,7 +19,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
   display() {
     this.query.preload('asset')
     this.public()
-      .watchlist()
+      // .watchlist()
       .withTaxonomies()
       .withPostCount()
       .withTotalMinutes()
@@ -175,7 +176,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
   }
 
   withPostCount() {
-    this.query.withCount('postsFlattened', (query) => query.apply((scope) => scope.published()))
+    this.query.withCount('postsFlattened', (query) => query.apply((scope) => scope.published()).as('posts_count'))
     return this
   }
 
@@ -196,5 +197,10 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
       .select(['collections.*'])
 
     return this
+  }
+
+  async toListVM() {
+    const results = await this.query.select('id', 'difficultyId', 'name', 'slug', 'description')
+    return results.map(collection => new SeriesListVM(collection))
   }
 }

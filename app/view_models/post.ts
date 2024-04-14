@@ -1,27 +1,32 @@
 import Post from "#models/post"
-import type { HistoryContext } from "#start/context"
-import AssetVM from "./asset.js"
 import BaseVM from "./base.js"
+import type { ProgressContext } from "#start/context"
+import { AssetVM } from "./asset.js"
+import { TopicRelationListVM } from "./topic.js"
 
 class PostListSeriesVM {
   declare id: number
   declare slug: string
   declare name: string
   declare lessonIndexDisplay: string
+  declare rootSortOrder: number
+  declare moduleSortOrder: number
 
   constructor(post: Post) {
     if (!post.series?.length) return
     
-    const series = post.series.at(0)!
+    const series = post.rootSeries.at(0)!
     
     this.id = series.id
     this.slug = series.slug
     this.name = series.name
     this.lessonIndexDisplay = post.lessonIndexDisplay
+    this.rootSortOrder = post.$extras.pivot_root_sort_order
+    this.moduleSortOrder = post.$extras.pivot_sort_order
   }
 }
 
-export default class PostListVM extends BaseVM {
+export class PostListVM extends BaseVM {
   declare id: number
   declare postTypeId: number
   declare paywallTypeId: number
@@ -33,6 +38,7 @@ export default class PostListVM extends BaseVM {
   declare publishAtDisplay: string
   declare animatedPreviewUrl: string | undefined
   declare series: PostListSeriesVM | null
+  declare topics: TopicRelationListVM[] | null
   declare asset: AssetVM | null
 
   constructor(post: Post | undefined = undefined) {
@@ -50,6 +56,7 @@ export default class PostListVM extends BaseVM {
     this.publishAtISO = post.publishAt?.toISO()
     this.publishAtDisplay = post.publishAtDisplay
     this.series = this.#getSeries(post)
+    this.topics = this.#getTopics(post)
     this.asset = this.#getAsset(post)
     this.animatedPreviewUrl = post.animatedPreviewUrl
   }
@@ -57,6 +64,11 @@ export default class PostListVM extends BaseVM {
   #getSeries(post: Post) {
     if (!post.series?.length) return null
     return new PostListSeriesVM(post)
+  }
+
+  #getTopics(post: Post) {
+    if (!post.taxonomies?.length) return null
+    return post.taxonomies.map(topic => new TopicRelationListVM(topic))
   }
 
   #getAsset(post: Post) {
@@ -69,7 +81,7 @@ export default class PostListVM extends BaseVM {
     return new AssetVM(post.assets.at(0)!)
   }
 
-  static addToHistory(history: HistoryContext, posts: PostListVM[]) {
+  static addToHistory(history: ProgressContext, posts: PostListVM[]) {
     const ids = posts.map(post => post.id)
     history.addPostIds(ids)
   }

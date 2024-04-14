@@ -3,6 +3,7 @@ import States from '#enums/states'
 import Post from '#models/post'
 import Taxonomy from '#models/taxonomy'
 import User from '#models/user'
+import { PostListVM } from '../view_models/post.js'
 import BaseBuilder from './base_builder.js'
 
 export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
@@ -120,6 +121,11 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
       { column: 'createdAt', order: 'desc' },
     ])
     return this
+  }
+
+  async toListVM() {
+    const results = await this.query.select('id', 'postTypeId', 'stateId', 'paywallTypeId', 'videoTypeId', 'title', 'slug', 'description', 'publishAt', 'timezone', 'videoUrl', 'videoBunnyId', 'redirectUrl')
+    return results.map(post => new PostListVM(post))
   }
 }
 

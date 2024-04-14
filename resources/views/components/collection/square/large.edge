@@ -53,7 +53,7 @@
             @svg('ph:arrow-circle-right-fill')
           @end
           @button.outline({ variant: 'dark', block: true, class: 'gap-1.5', href: route('series.continue', { slug: item.slug }) })
-            {{ parseInt(item.$extras.progressionHistory_count) ? 'Continue' : 'Start' }} Series
+            {{ progression.collection(item.id) ? 'Continue' : 'Start' }} Series
             @svg('ph:play-fill')
           @end
         </div>

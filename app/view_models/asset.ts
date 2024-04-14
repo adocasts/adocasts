@@ -1,7 +1,7 @@
 import Asset from "#models/asset"
 import BaseVM from "./base.js"
 
-export default class AssetVM extends BaseVM {
+export class AssetVM extends BaseVM {
   declare id: number
   declare assetTypeId: number
   declare assetUrl: string

@@ -1,5 +1,5 @@
 @let(classes = utils.classes('flex flex-col justify-center items-center bg-slate-100 rounded-md relative overflow-hidden group', $props.class))
-@let(isStarted = parseInt(item.$extras.progressionHistory_count) || 0)
+@let(isStarted = progression.collection(item.id) || 0)
 
 <div {{ html.attrs({ class: classes, ...($props.attrs || {}) }) }}>
   <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="flex anchor-expand w-full h-full">
@@ -45,7 +45,7 @@
 
         @if (withProgression)
           <div class="w-full text-slate-600 text-xs pt-4 flex flex-wrap justify-between relative z-10">
-            @let(percentCompleted = Math.floor((item.meta.postCompletedCount / item.meta.postsFlattened_count) * 100))
+            @let(percentCompleted = Math.floor((item.meta.postCompletedCount / item.meta.postsCount) * 100))
             <div class="flex items-baseline gap-1.5 uppercase tracking-wider pr-2 {{ percentCompleted >= 100 ? 'text-green-600' : '' }}">
               <span class="text-xs">{{ percentCompleted }}%</span>
               <span class="text-xs">Completed</span>
@@ -53,7 +53,7 @@
     
             @let(watchDisplay = utils.secondsForDisplay(item.meta.videoSecondsSum))
             <div class="flex items-baseline gap-1.5 uppercase tracking-wider">
-              <span class="text-xs">{{ item.meta.postCompletedCount }} / {{ item.meta.postsFlattened_count }}</span>
+              <span class="text-xs">{{ item.meta.postCompletedCount }} / {{ item.meta.postsCount }}</span>
               <span class="text-xs">{{ pluralize('lesson', item.meta.postCount) }}</span>
             </div>
           </div>
@@ -70,7 +70,7 @@
       @end
 
       @button.outline({ variant: 'dark', block: true, class: 'gap-1.5', href: route('series.continue', { slug: item.slug }) })
-        {{ parseInt(item.$extras.progressionHistory_count) ? 'Continue' : 'Start' }} Series
+        {{ progression.collection(item.id) ? 'Continue' : 'Start' }} Series
         @svg('ph:play-fill')
       @end
     </div>

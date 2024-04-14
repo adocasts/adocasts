@@ -1,17 +1,33 @@
 import TaxonomyBuilder from '#builders/taxonomy_builder'
 import Taxonomy from '#models/taxonomy'
-import TopicListVM from '../view_models/topic.js'
 import bento from './bento_service.js'
+import { inject } from '@adonisjs/core'
+import { TopicListVM } from '../view_models/topic.js'
+import { HttpContext } from '@adonisjs/core/http'
 
+@inject()
 export default class TaxonomyService {
+  constructor(protected ctx: HttpContext) {}
+
   get cache() {
     return bento.namespace('TAXONOMIES')
   }
 
   async getDisplayList() {
-    return this.cache.getOrSet('GET_DISPLAY_LIST', async () => {
+    const results = await this.cache.getOrSet('GET_DISPLAY_LIST', async () => {
       const list = await this.getList(3)
-      return list.map(taxonomy => TopicListVM.get(taxonomy))
+      return list.map(taxonomy => new TopicListVM(taxonomy))
+    })
+
+    TopicListVM.addToHistory(this.ctx.history, results)
+
+    return results
+  }
+
+  async getDisplayBySlug(slug: string) {
+    const results = await this.cache.getOrSet(slug, async () => {
+      const taxonomy = await this.getBySlug(slug)
+      return new TopicListVM(taxonomy)
     })
   }
 

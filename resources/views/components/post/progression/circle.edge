@@ -8,8 +8,6 @@
     @assign(progressPercent = 100)
   @endif
 
-  {{ inspect(progress.serialize()) }}
-
   @if (progressPercent !== null && progressPercent > 0)
     @let(bg = $props.color || 'text-brand-600')
     @let(text = progressPercent < 100 ? 'text-slate-600' : ($props.color || 'text-brand-600'))

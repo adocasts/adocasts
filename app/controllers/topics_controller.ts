@@ -17,8 +17,10 @@ export default class TopicsController {
     protected discussionService: DiscussionService
   ) {}
 
-  async index({ view }: HttpContext) {
-    const topics = await this.taxonomyService.getList(3)
+  async index({ view, history }: HttpContext) {
+    const topics = await this.taxonomyService.getDisplayList()
+
+    await history.commit()
 
     return view.render('pages/topics/index', { topics })
   }

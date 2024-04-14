@@ -6,7 +6,8 @@ import Post from '#models/post'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 import bento from './bento_service.js'
-import PostListVM from '../view_models/post.js'
+import { PostListVM } from '../view_models/post.js'
+import { DateTime } from 'luxon'
 
 @inject()
 export default class PostService {
@@ -20,10 +21,20 @@ export default class PostService {
     return bento.namespace('POSTS')
   }
 
+  async getNewThisMonth() {
+    const results = await this.cache.getOrSet('GET_NEW_THIS_MONTH', async () => {
+      const recentDate = DateTime.now().minus({ days: 30 }).startOf('day')
+      return this.#getLatestLessons().where('publishAt', '>=', recentDate).toListVM()
+    })
+
+    PostListVM.addToHistory(this.ctx.history, results)
+
+    return PostListVM.consume(results)
+  }
+
   async getLatestLessons() {
     const results = await this.cache.getOrSet('GET_LATEST_LESSONS', async () => {
-      const latest = await this.#getLatestLessons(12)
-      return latest.map(post => new PostListVM(post))
+      return this.#getLatestLessons(12).toListVM()
     })
 
     PostListVM.addToHistory(this.ctx.history, results)

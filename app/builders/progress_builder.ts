@@ -68,5 +68,13 @@ export default class ProgressBuilder extends BaseBuilder<typeof Progress, Progre
       .orderBy('updated_at')
     return this
   }
+
+  for(column: 'postId' | 'collectionId', ids: number[] | undefined = undefined) {
+    this.query
+      .if(ids, truthy => truthy.whereIn(column, ids!))
+      .where('userId', this.user!.id)
+      .whereNotNull(column)
+    return this
+  }
 }
 
