@@ -10,6 +10,7 @@ import { ProgressContext } from '#start/context'
 import Watchlist from '#models/watchlist'
 import Taxonomy from '#models/taxonomy'
 import { TopicListVM } from '../view_models/topic.js'
+import CacheNamespaces from '#enums/cache_namespaces'
 
 @inject()
 export default class CollectionService {
@@ -20,7 +21,7 @@ export default class CollectionService {
   }
 
   get cache() {
-    return bento.namespace('COLLECTIONS')
+    return bento.namespace(CacheNamespaces.COLLECTIONS)
   }
 
   /**

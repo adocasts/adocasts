@@ -20,7 +20,7 @@ export default class TopicsController {
   ) {}
 
   async index({ view, history }: HttpContext) {
-    const topics = await this.taxonomyService.getDisplayList()
+    const topics = await this.taxonomyService.getCachedList()
 
     await history.commit()
 
@@ -29,7 +29,7 @@ export default class TopicsController {
 
   async show({ view, request, params, route, history }: HttpContext) {
     const { page = '1' } = request.qs()
-    const topics = await this.taxonomyService.getDisplayList()
+    const topics = await this.taxonomyService.getCachedList()
     const item = topics.find(topic => topic.slug === params.slug)
 
     if (!item) {

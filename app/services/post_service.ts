@@ -10,6 +10,7 @@ import { PostListVM } from '../view_models/post.js'
 import { DateTime } from 'luxon'
 import Taxonomy from '#models/taxonomy'
 import { TopicListVM } from '../view_models/topic.js'
+import CacheNamespaces from '#enums/cache_namespaces'
 
 @inject()
 export default class PostService {
@@ -20,7 +21,7 @@ export default class PostService {
   }
 
   get cache() {
-    return bento.namespace('POSTS')
+    return bento.namespace(CacheNamespaces.POSTS)
   }
 
   async getCachedNewThisMonth() {

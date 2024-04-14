@@ -17,7 +17,7 @@
         })
     
         <div class="py-4 flex flex-col gap-6">
-          @each (item in items)
+          @each (item in rows)
             @!post.item.simple({ item })
           @endeach
         </div>

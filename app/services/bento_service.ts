@@ -6,7 +6,7 @@ import { redisDriver } from 'bentocache/drivers/redis'
 const bento = new BentoCache({
   default: 'cache',
   
-  ttl: '1h',
+  ttl: '72h',
 
   earlyExpiration: 0.9,
   

@@ -1,6 +1,7 @@
 import Taxonomy from "#models/taxonomy";
 import { ProgressContext } from "#start/context";
 import { AssetVM } from "./asset.js";
+import BaseVM from "./base.js";
 import { PostListVM } from "./post.js";
 import { SeriesListVM } from "./series.js";
 
@@ -18,7 +19,7 @@ export class TopicRelationListVM {
   }
 }
 
-export class TopicBaseVM {
+export class TopicBaseVM extends BaseVM {
   declare id: number
   declare parentId: number | null
   declare name: string
@@ -28,7 +29,11 @@ export class TopicBaseVM {
   declare collections: SeriesListVM[] | null
   declare meta: Record<string, any>
 
-  constructor(topic: Taxonomy) {
+  constructor(topic: Taxonomy | undefined = undefined) {
+    super()
+
+    if (!topic) return
+
     this.id = topic.id
     this.parentId = topic.parentId
     this.name = topic.name
@@ -52,8 +57,10 @@ export class TopicBaseVM {
 export class TopicListVM extends TopicBaseVM {
   declare posts: PostListVM[] | null
 
-  constructor(topic: Taxonomy) {
+  constructor(topic: Taxonomy | undefined = undefined) {
     super(topic) 
+
+    if (!topic) return
 
     this.posts = topic.posts?.map((post) => new PostListVM(post))
     this.meta = {
@@ -79,5 +86,9 @@ export class TopicListVM extends TopicBaseVM {
       ...ids,
       ...(topic?.postIds || []),
     ], [])
+  }
+
+  static consume(results: unknown[]) {
+    return this.consumable(TopicListVM, results)
   }
 }

@@ -19,7 +19,7 @@ export default class HomeController {
   async index({ view, auth, history }: HttpContext) {
     const series = await this.collectionService.getRecentlyUpdated()
     const lessons = await this.postService.getCachedLatestLessons()
-    const topics = await this.taxonomyService.getDisplayList()
+    const topics = await this.taxonomyService.getCachedList()
     const blogs = await this.postService.getCachedLatestBlogs()
     const snippets = await this.postService.getCachedLatestSnippets()
 

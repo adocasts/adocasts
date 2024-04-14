@@ -1,10 +1,11 @@
+import CacheNamespaces from "#enums/cache_namespaces";
 import Plans from "#enums/plans";
 import Plan from "#models/plan";
 import { PlanVM } from "../view_models/plan.js";
 import bento from "./bento_service.js";
 
 export default class PlanService {
-  static #cacheKey = 'PLANS'
+  static #cacheKey = CacheNamespaces.PLANS
 
   static get cache() {
     return bento.namespace(this.#cacheKey)
