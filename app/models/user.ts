@@ -194,7 +194,11 @@ export default class User extends compose(AppBaseModel, AuthFinder) {
   @computed()
   get isSubscriptionActive() {
     if (this.planId === Plans.FOREVER) return true
-    return this.stripeSubscriptionStatus === StripeSubscriptionStatuses.ACTIVE
+    
+    const isActive = this.stripeSubscriptionStatus === StripeSubscriptionStatuses.ACTIVE
+    const isComplete = this.stripeSubscriptionStatus === StripeSubscriptionStatuses.COMPLETE
+
+    return isActive || isComplete
   }
 
   @computed()
