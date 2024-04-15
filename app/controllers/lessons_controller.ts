@@ -67,7 +67,7 @@ export default class LessonsController {
     return view.render('pages/lessons/index', { type: 'Livestreams', items, rows, feed, adAside })
   }
 
-  async show({ view, request, params, session, auth, up, route, bouncer }: HttpContext) {
+  async show({ view, request, params, session, auth, up, route, bouncer, history }: HttpContext) {
     const post = await this.postService.findBy('slug', params.slug)
     const series = await this.collectionService.findForPost(post, params.collectionSlug)
 
@@ -84,6 +84,7 @@ export default class LessonsController {
       })
     } else if (!post.isViewable && (await bouncer.with('PostPolicy').denies('viewFutureDated'))) {
       view.share({ nextLesson, prevLesson, post, series })
+      await history.commit()
       return view.render('pages/lessons/soon', { post, series })
     }
 
@@ -143,6 +144,7 @@ export default class LessonsController {
     })
 
     await emitter.emit('post:sync', { post, views })
+    await history.commit()
 
     return view.render('pages/lessons/show', {
       comments,

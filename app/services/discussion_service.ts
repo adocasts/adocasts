@@ -7,10 +7,16 @@ import User from '#models/user'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 import { DateTime } from 'luxon'
+import bento from './bento_service.js'
+import CacheNamespaces from '#enums/cache_namespaces'
 
 @inject()
 export default class DiscussionService {
   constructor(protected ctx: HttpContext) {}
+
+  get cache() {
+    return bento.namespace(CacheNamespaces.FEED)
+  }
 
   /**
    * Retrieves a discussion by its slug.
