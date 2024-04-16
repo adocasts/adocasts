@@ -13,6 +13,12 @@ export default class StripeService {
   static isActive: boolean = !!(env.get('STRIPE_ENABLED') ?? true)
   private stripe: Stripe
   private inTest: boolean = app.inTest
+  private testSessionToPlan: Record<string, number> = {
+    'cs_test_a1pK9kmubhGyxPDsAAmvqlLEFAqkpWwcToOm96CFtqk0IwMDAWorXwdhmf': Plans.PLUS_MONTHLY, // monthly purchase
+    'cs_test_a1zSLqPTGFFUcaus1yJCgeW6MwlSFV5EBAq7caQEai8exJjvjuNcurB73A': Plans.PLUS_ANNUAL, // annual purchase
+    'cs_test_a1E3eqjWTAlzo3vsPCe0iiXdNQsu1Vj3EZpW5tyadLRJx70vP1CzRAKKX6': Plans.FOREVER, // forever purchase
+    'cs_test_a1rMtxI2beQkj8cF1MbPyjyCy4VmMsLZAICr3SY7g1LiydNIwF5Ei5bYYE': Plans.FOREVER, // mock monthly/annual upgrade to forever
+  }
 
   // interface with stripe-mock within tests
   // https://github.com/stripe/stripe-mock#homebrew
@@ -128,8 +134,9 @@ export default class StripeService {
 
   async getCheckoutSessionLineItemIds(sessionId: string) {
     if (this.inTest) {
-      const forever = await Plan.findOrFail(Plans.FOREVER)
-      return [forever.priceId]
+      const planId = this.testSessionToPlan[sessionId]
+      const plan = await Plan.findOrFail(planId)
+      return [plan.priceId]
     }
 
     const session = await this.stripe.checkout.sessions.retrieve(sessionId, {
