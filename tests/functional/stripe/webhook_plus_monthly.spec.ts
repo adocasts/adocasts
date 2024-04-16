@@ -66,7 +66,7 @@ test.group('Stripe webhook plus monthly', (group) => {
     await user.refresh()
 
     assert.equal(user.planId, Plans.PLUS_MONTHLY)
-    assert.equal(user.stripeSubscriptionStatus, StripeSubscriptionStatuses.ACTIVE)
+    assert.equal(user.stripeSubscriptionStatus, StripeSubscriptionStatuses.COMPLETE)
     assert.equal(
       user.planPeriodStart?.toSeconds(),
       mockCustomerSubscriptionUpdated.object.current_period_start
