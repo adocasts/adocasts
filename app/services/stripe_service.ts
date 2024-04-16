@@ -312,13 +312,10 @@ export default class StripeService {
   }
 
   async onCheckoutCompleted(event: any) {
-    // let subscription hooks handle subscriptions
-    if (event.data.object.mode !== 'payment') return
-
     const data = event.data.object
     const user = await User.findByOrFail('stripeCustomerId', data.customer)
     const itemIds = await this.getCheckoutSessionLineItemIds(data.id)
-
+    
     if (!itemIds?.length) {
       logger.info(`StripeService.onCheckoutCompleted > [${data.id}] no line items returned`)
       return
@@ -328,8 +325,12 @@ export default class StripeService {
     const previousPlanId = user.planId
 
     user.planId = plan.id
-    user.planPeriodStart = DateTime.now()
-    user.planPeriodEnd = null
+    user.stripeSubscriptionStatus = data.status
+
+    if (plan.id === Plans.FOREVER) {
+      user.planPeriodStart = DateTime.now()
+      user.planPeriodEnd = null
+    }
 
     await user.save()
 

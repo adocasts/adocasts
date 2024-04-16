@@ -30,7 +30,7 @@
     @if (post.hasVideo)
       <div id="videoPlayerContainer">
         <div class="app-container !px-0">
-          @if (!bounce.canViewPost(post))
+          @cannot('PostPolicy.view', post)
             <div class="no-access relative aspect-video bg-slate-base-900 text-slate-base-100 bg-gradient-to-br from-accent-base-800/25 to-brand-base-900/25 w-full h-full">
               @starfield({ class: 'w-full h-full py-12 px-6 md:p-12 flex items-center justify-center', dotsClass: 'opacity-50', mountain: false, lines: false })
                 @!plus.postCta({ 
@@ -49,7 +49,7 @@
                 <div id="videoPlayerPosition" class="aspect-video relative overflow-hidden"></div>
               </div>
             </div>
-          @endif
+          @end
         </div>
       </div>
     @endif

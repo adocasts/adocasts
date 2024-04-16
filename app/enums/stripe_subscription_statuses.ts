@@ -1,4 +1,5 @@
 enum StripeSubscriptionStatuses {
+  COMPLETE = 'complete',
   ACTIVE = 'active',
   PAST_DUE = 'past_due',
   UNPAID = 'unpaid',
