@@ -17,6 +17,8 @@ import { DateTime } from 'luxon'
 import VttService from '#services/vtt_service'
 import logger from '#services/logger_service'
 import { PostListVM } from '../view_models/post.js'
+import Comment from '#models/comment'
+import States from '#enums/states'
 
 @inject()
 export default class LessonsController {
@@ -68,8 +70,8 @@ export default class LessonsController {
   }
 
   async show({ view, request, params, session, auth, up, route, bouncer, history }: HttpContext) {
-    const post = await this.postService.findBy('slug', params.slug)
-    const series = await this.collectionService.findForPost(post, params.collectionSlug)
+    const post = await this.postService.findCachedBySlug(params.slug)
+    const series = await this.collectionService.getBySlug(params.collectionSlug)
 
     let nextLesson = this.collectionService.findNextSeriesLesson(series, post)
     let prevLesson = this.collectionService.findPrevSeriesLesson(series, post)
@@ -77,7 +79,7 @@ export default class LessonsController {
     if (
       post.isNotViewable &&
       !auth.user?.isAdmin &&
-      !post.authors.some((a) => a.id === auth.user?.id)
+      post.author.id !== auth.user?.id
     ) {
       throw new Exception('this post is not currently available to the public', {
         status: HttpStatus.NOT_FOUND,
@@ -88,20 +90,33 @@ export default class LessonsController {
       return view.render('pages/lessons/soon', { post, series })
     }
 
-    const userProgression = post.progressionHistory?.at(0)
-    const comments = post.comments
-    const commentCount = post.$extras.comments_count
+    const comments = await Comment.query()
+      .where('postId', post.id)
+      .whereIn('stateId', [States.PUBLIC, States.ARCHIVED])
+      .preload('user')
+      .preload('userVotes', (query) => query.select('id'))
+      .orderBy('createdAt')
+
+    const commentCountResults = await Comment.query()
+      .where('postId', post.id)
+      .where('stateId', States.PUBLIC)
+      .count('*', 'total')
+      .first()
+      
+    const commentCount = commentCountResults?.$extras.total || 0
     const views = await AnalyticsService.getPageViews(request.url())
     const adLeaderboard = await AdService.getLeaderboard()
     const adAside = await AdService.getMediumRectangles(2)
 
-    if (!series) {
-      const similarLessons = await this.postService.getSimilarPosts(post)
+    post.meta.isInWatchlist = await this.postService.getIsInWatchlist(auth.user, post)
 
-      nextLesson = similarLessons.at(0)
+    // if (!series) {
+    //   const similarLessons = await this.postService.getSimilarPosts(post)
 
-      view.share({ similarLessons })
-    }
+    //   nextLesson = similarLessons.at(0)
+
+    //   view.share({ similarLessons })
+    // }
 
     if (post.transcriptUrl) {
       const transcript = await CacheService.try(
@@ -132,6 +147,10 @@ export default class LessonsController {
     }
 
     await this.historyService.recordView(post, route?.name)
+    await emitter.emit('post:sync', { post, views })
+    await history.commit()
+    
+    const userProgression = history.post(post.id)
 
     session.put('videoPlayerId', post.id)
 
@@ -142,9 +161,6 @@ export default class LessonsController {
       series,
       userProgression,
     })
-
-    await emitter.emit('post:sync', { post, views })
-    await history.commit()
 
     return view.render('pages/lessons/show', {
       comments,

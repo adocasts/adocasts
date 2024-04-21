@@ -1,8 +1,8 @@
 import emitter from "@adonisjs/core/services/emitter"
-import Post from "#models/post"
 import User from "#models/user"
 import SessionLog from "#models/session_log"
 import Notification from "#models/notification"
+import { PostShowVM } from "../app/view_models/post.js"
 const SessionListener = () => import('#listeners/session_listener')
 const PostListener = () => import("#listeners/post_listener")
 const AccountListener = () => import('#listeners/account_listener')
@@ -10,7 +10,7 @@ const NotificationListener = () => import('#listeners/notification_listener')
 
 declare module '@adonisjs/core/types' {
   interface EventsList {
-    'post:sync': { post: Post, views: number }
+    'post:sync': { post: PostShowVM, views: number }
     'email:password_reset': { user: User, signedUrl: string }
     'email:password_reset_success': { user: User }
     'email:changed': { user: User, oldEmail: string, signedUrl: string }

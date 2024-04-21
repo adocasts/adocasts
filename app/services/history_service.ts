@@ -11,6 +11,7 @@ import { HttpContext } from '@adonisjs/core/http'
 import { inject } from '@adonisjs/core'
 import { SeriesShowVM } from '../view_models/series.js'
 import { TopicListVM } from '../view_models/topic.js'
+import { PostShowVM } from '../view_models/post.js'
 
 @inject()
 export default class HistoryService {
@@ -48,7 +49,7 @@ export default class HistoryService {
    * @returns
    */
   async recordView(
-    record: Post | Collection | Taxonomy | SeriesShowVM | TopicListVM,
+    record: Post | Collection | Taxonomy | SeriesShowVM | TopicListVM | PostShowVM,
     routeName: string | undefined = undefined
   ) {
     if (!this.user) return
@@ -71,6 +72,7 @@ export default class HistoryService {
   getRecordRelationColumn(record: Post | Collection | Taxonomy | SeriesShowVM | TopicListVM) {
     switch (true) {
       case record instanceof Post:
+      case record instanceof PostShowVM:
         return 'postId'
       case record instanceof Collection:
       case record instanceof SeriesShowVM:

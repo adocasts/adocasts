@@ -116,6 +116,14 @@ export class SeriesShowVM extends SeriesBaseVM {
     return [...modulePostIds, ...postIds]
   }
 
+  get postsFlattened() {
+    if (!this.modules.length) return this.posts || []
+    return [
+      ...this.modules.reduce<PostListVM[]>((acc, module) => [...acc, ...(module.posts || [])], []),
+      ...this.posts || [],
+    ]
+  }
+
   #getTopics(series: Collection) {
     if (!series.taxonomies?.length) return []
     return series.taxonomies.map(topic => new TopicRelationListVM(topic))

@@ -11,6 +11,7 @@ import Watchlist from '#models/watchlist'
 import Taxonomy from '#models/taxonomy'
 import { TopicListVM } from '../view_models/topic.js'
 import CacheNamespaces from '#enums/cache_namespaces'
+import { PostShowVM } from '../view_models/post.js'
 
 @inject()
 export default class CollectionService {
@@ -63,10 +64,12 @@ export default class CollectionService {
       const series = await this.findBy('slug', slug)
       return new SeriesShowVM(series)
     })
-    
-    SeriesShowVM.addToHistory(this.ctx.history, result)
 
-    return SeriesShowVM.consume(result)
+    const series = SeriesShowVM.consume(result)
+    
+    SeriesShowVM.addToHistory(this.ctx.history, series)
+
+    return series
   }
 
   async getCachedForTaxonomy(taxonomy: Taxonomy | TopicListVM) {
@@ -110,12 +113,12 @@ export default class CollectionService {
    * @param post
    * @returns
    */
-  findNextSeriesLesson(series: Collection | null, post: Post) {
+  findNextSeriesLesson(series: SeriesShowVM | null, post: PostShowVM) {
     if (!series) return
-    if (!post?.rootSeries?.length || !series?.postsFlattened?.length) return
+    if (!post?.series || !series.postIds?.length) return
 
-    const postRootIndex = post.rootSeries[0].$extras.pivot_root_sort_order
-    return series?.postsFlattened.find((p) => p.$extras.pivot_root_sort_order === postRootIndex + 1)
+    const postRootIndex = post.series.rootSortOrder
+    return series?.postsFlattened.at(postRootIndex + 1)
   }
 
   /**
@@ -138,12 +141,12 @@ export default class CollectionService {
    * @param post
    * @returns
    */
-  findPrevSeriesLesson(series: Collection | null, post: Post) {
+  findPrevSeriesLesson(series: SeriesShowVM | null, post: PostShowVM) {
     if (!series) return
-    if (!post?.rootSeries?.length || !series?.postsFlattened?.length) return
+    if (!post?.series || !series.postIds?.length) return
 
-    const postRootIndex = post.rootSeries[0].$extras.pivot_root_sort_order
-    return series?.postsFlattened.find((p) => p.$extras.pivot_root_sort_order === postRootIndex - 1)
+    const postRootIndex = post.series.rootSortOrder
+    return series?.postsFlattened.at(postRootIndex - 1)
   }
 
   /**

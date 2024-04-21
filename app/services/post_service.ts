@@ -6,11 +6,13 @@ import Post from '#models/post'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 import bento from './bento_service.js'
-import { PostListVM } from '../view_models/post.js'
+import { PostListVM, PostShowVM } from '../view_models/post.js'
 import { DateTime } from 'luxon'
 import Taxonomy from '#models/taxonomy'
 import { TopicListVM } from '../view_models/topic.js'
 import CacheNamespaces from '#enums/cache_namespaces'
+import User from '#models/user'
+import Watchlist from '#models/watchlist'
 
 @inject()
 export default class PostService {
@@ -88,6 +90,17 @@ export default class PostService {
     return PostListVM.consume(results)
   }
 
+  async findCachedBySlug(slug: string) {
+    const result = await this.cache.getOrSet(`GET_BY_SLUG_${slug}`, async () => {
+      const post = await this.findBy('slug', slug)
+      return new PostShowVM(post)
+    })
+
+    PostShowVM.addToHistory(this.ctx.history, result)
+
+    return PostShowVM.consume(result)
+  }
+
   /**
    * Start a new post builder
    * @returns
@@ -153,6 +166,12 @@ export default class PostService {
    */
   getBlogs() {
     return this.getList([PostTypes.BLOG, PostTypes.NEWS])
+  }
+
+  async getIsInWatchlist(user: User | undefined, post: PostShowVM) {
+    if (!user) return false
+    const results = await Watchlist.query().where('postId', post.id).where('userId', user.id).select('id').first()
+    return !!results
   }
 
   /**

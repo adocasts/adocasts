@@ -3,7 +3,8 @@ import BaseVM from "./base.js"
 import type { ProgressContext } from "#start/context"
 import { AssetVM } from "./asset.js"
 import { TopicRelationListVM } from "./topic.js"
-import User from "#models/user"
+import { UserVM } from "./user.js"
+import VideoTypes from "#enums/video_types"
 
 class PostListSeriesVM {
   declare id: number
@@ -22,8 +23,8 @@ class PostListSeriesVM {
     this.slug = series.slug
     this.name = series.name
     this.lessonIndexDisplay = post.lessonIndexDisplay
-    this.rootSortOrder = post.$extras.pivot_root_sort_order
-    this.moduleSortOrder = post.$extras.pivot_sort_order
+    this.rootSortOrder = post.$extras.pivot_root_sort_order || series.$extras.pivot_root_sort_order
+    this.moduleSortOrder = post.$extras.pivot_sort_order || series.$extras.pivot_sort_order
   }
 }
 
@@ -37,9 +38,11 @@ class PostBaseVM extends BaseVM {
   declare routeUrl: string
   declare publishAtISO: string | null | undefined
   declare publishAtDisplay: string
+  declare watchMinutes: string | number
   declare series: PostListSeriesVM | null
   declare topics: TopicRelationListVM[] | null
   declare asset: AssetVM | null
+  declare meta: Record<string, any>
 
   constructor(post: Post | undefined = undefined) {
     super()
@@ -55,9 +58,11 @@ class PostBaseVM extends BaseVM {
     this.routeUrl = post.routeUrl
     this.publishAtISO = post.publishAt?.toISO()
     this.publishAtDisplay = post.publishAtDisplay
+    this.watchMinutes = post.watchMinutes
     this.series = this.#getSeries(post)
     this.topics = this.#getTopics(post)
     this.asset = this.#getAsset(post)
+    this.meta = {}
   }
 
   #getSeries(post: Post) {
@@ -85,8 +90,8 @@ export class PostListVM extends PostBaseVM {
   declare animatedPreviewUrl: string | undefined
 
   constructor(post: Post | undefined = undefined) {
-    super()
-
+    super(post)
+    
     if (!post) return
 
     this.animatedPreviewUrl = post.animatedPreviewUrl
@@ -102,47 +107,24 @@ export class PostListVM extends PostBaseVM {
   }
 }
 
-class AuthorVM {
-  declare id: number
-  declare name: string
-  declare username: string
-  declare avatarUrl: string
-  declare biography: string | null
-  declare location: string | null
-  declare company: string | null
-  declare website: string | null
-  declare twitterUrl: string | null
-  declare facebookUrl: string | null
-  declare instagramUrl: string | null
-  declare linkedinUrl: string | null
-  declare youtubeUrl: string | null
-  declare threadsUrl: string | null
-  declare githubUrl: string | null
-
-  constructor(user: User | undefined = undefined) {
-    if (!user) return
-
-    this.id = user.id
-    this.name = user.profile.name || user.username
-    this.username = user.username
-    this.avatarUrl = user.avatarUrl
-    this.biography = user.profile.biography
-    this.location = user.profile.location
-    this.company = user.profile.company
-    this.website = user.profile.website
-    this.twitterUrl = user.profile.twitterUrl
-    this.facebookUrl = user.profile.facebookUrl
-    this.instagramUrl = user.profile.instagramUrl
-    this.linkedinUrl = user.profile.linkedinUrl
-    this.youtubeUrl = user.profile.youtubeUrl
-    this.threadsUrl = user.profile.threadsUrl
-    this.githubUrl = user.profile.githubUrl
-  }
-}
-
 export class PostShowVM extends PostBaseVM {
   declare body: string | null
-  declare author: AuthorVM
+  declare author: UserVM
+  declare videoTypeId: VideoTypes | null
+  declare isLive: boolean
+  declare isPublished: boolean
+  declare isViewable: boolean
+  declare isNotViewable: boolean
+  declare isPaywalled: boolean
+  declare paywallTimeAgo: string | undefined | null
+  declare paywallDaysRemaining: number
+  declare transcriptUrl: string | undefined
+  declare viewCount: number | null
+  declare hasVideo: boolean
+  declare streamId: string
+  declare videoId: string | null
+  declare livestreamUrl: string | null
+  declare rootSortOrder: number
 
   constructor(post: Post | undefined = undefined) {
     super(post)
@@ -150,6 +132,27 @@ export class PostShowVM extends PostBaseVM {
     if (!post) return
 
     this.body = post.body
-    this.author = new AuthorVM(post.authors.at(0)!)
+    this.videoTypeId = post.videoTypeId
+    this.isPublished = post.isPublished
+    this.isViewable = post.isViewable
+    this.isNotViewable = post.isNotViewable
+    this.isPaywalled = post.isPaywalled
+    this.paywallTimeAgo = post.paywallTimeAgo
+    this.paywallDaysRemaining = post.paywallDaysRemaining
+    this.transcriptUrl = post.transcriptUrl
+    this.viewCount = post.viewCount
+    this.hasVideo = !!post.hasVideo
+    this.streamId = post.streamId
+    this.videoId = post.videoId
+    this.livestreamUrl = post.livestreamUrl
+    this.author = new UserVM(post.authors.at(0)!)
+  }
+
+  static addToHistory(history: ProgressContext, post: PostShowVM) {
+    history.addPostIds([post.id])
+  }
+
+  static consume(result: unknown) {
+    return this.consumable(PostShowVM, [result])[0]
   }
 }

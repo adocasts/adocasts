@@ -50,15 +50,15 @@ export default class SessionService {
   }
 
   async check(user: User) {
-    const log = await this.getLatest(user)
+    let log = await this.getLatest(user)
 
     // don't kill pre-existing sessions, instead log their session
     if (!log) {
-      await this.onSignInExisting(user)
-      return true
+      log = await this.onSignInExisting(user)
+      return { isOk: true, log }
     }
 
-    if (log.forceLogout || log.logoutAt) return false
+    if (log.forceLogout || log.logoutAt) return { isOk: false, log }
 
     if (log.ipAddress !== this.ipAddress && this.ipAddress) {
       const location = await IdentityService.getLocation(this.ipAddress)
@@ -72,7 +72,7 @@ export default class SessionService {
     log.lastTouchedAt = DateTime.now()
     await log.save()
 
-    return true
+    return { isOk: true, log }
   }
 
   async onSignInExisting(user: User) {

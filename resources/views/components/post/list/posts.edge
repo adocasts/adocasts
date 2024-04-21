@@ -25,7 +25,7 @@
             @if (similar)
               {{ i + 1 }}
             @else
-              {{ item.lessonIndexDisplay }}
+              {{ item.series.lessonIndexDisplay }}
             @endif
           @else
             @if (item.paywallTypeId === PaywallTypes.DELAYED_RELEASE)
@@ -36,11 +36,9 @@
           @endcan
         </div>
 
-        @if (item.progressionHistory?.length)
-          <div class="absolute -top-1 -left-1 z-20 opacity-50 group-hover:opacity-100 duration-300">
-            @!post.progression.circle({ item, size: 16, sizeClass: 'w-10 h-10', stroke: 1, plain: true })
-          </div>
-        @endif
+        <div class="absolute -top-1 -left-1 z-20 opacity-50 group-hover:opacity-100 duration-300">
+          @!post.progression.circle({ item, size: 16, sizeClass: 'w-10 h-10', stroke: 1, plain: true })
+        </div>
       </div>
       <div class="flex flex-col flex-1 text-2xs leading-snug max-w-full truncate">
         <div class="truncate">{{ item.title }}</div>

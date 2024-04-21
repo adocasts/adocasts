@@ -42,10 +42,13 @@ HttpContext.getter('history', function (this: HttpContext) {
 
     addCollectionIds(ids: number[] = []) {
       console.log('addCollectionIds', { ids })
+      ids = ids.filter(Boolean)
       this.collectionIds = [...this.collectionIds, ...ids]
     },
 
     addPostIds(ids: number[] = []) {
+      console.log('addPostIds', { ids })
+      ids = ids.filter(Boolean)
       this.postIds = [...this.postIds, ...ids]
     },
 
@@ -64,6 +67,7 @@ HttpContext.getter('history', function (this: HttpContext) {
       let collectionRecords: Progress[] = []
       
       if (ctx.auth.user) {
+        console.log({ postIds: this.postIds })
         postRecords = await ProgressBuilder.new(ctx.auth.user).for('postId', this.postIds)
         collectionRecords = await ProgressBuilder.new(ctx.auth.user).for('collectionId', this.collectionIds)
       }
