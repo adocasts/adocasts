@@ -72,6 +72,18 @@ export default class CollectionService {
     return series
   }
 
+  async getCachedForPost(post: PostShowVM, slug: string | undefined = undefined) {
+    // if slug is passed in, use that
+    if (slug) {
+      return this.getBySlug(slug)
+    }
+    
+    // otherwise, try to use default post series
+    if (post?.series?.slug) {
+      return this.getBySlug(post.series.slug)
+    }
+  }
+
   async getCachedForTaxonomy(taxonomy: Taxonomy | TopicListVM) {
     const results = await this.cache.getOrSet(`GET_FOR_TAXONOMY_${taxonomy.id}`, async () => {
       return this.getLastUpdated(undefined, false).whereHasTaxonomy(taxonomy).toListVM()
@@ -113,7 +125,7 @@ export default class CollectionService {
    * @param post
    * @returns
    */
-  findNextSeriesLesson(series: SeriesShowVM | null, post: PostShowVM) {
+  findNextSeriesLesson(series: SeriesShowVM | null | undefined, post: PostShowVM) {
     if (!series) return
     if (!post?.series || !series.postIds?.length) return
 
@@ -141,7 +153,7 @@ export default class CollectionService {
    * @param post
    * @returns
    */
-  findPrevSeriesLesson(series: SeriesShowVM | null, post: PostShowVM) {
+  findPrevSeriesLesson(series: SeriesShowVM | null | undefined, post: PostShowVM) {
     if (!series) return
     if (!post?.series || !series.postIds?.length) return
 

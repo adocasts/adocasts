@@ -71,7 +71,7 @@ export default class LessonsController {
 
   async show({ view, request, params, session, auth, up, route, bouncer, history }: HttpContext) {
     const post = await this.postService.findCachedBySlug(params.slug)
-    const series = await this.collectionService.getBySlug(params.collectionSlug)
+    const series = await this.collectionService.getCachedForPost(post, params.collectionSlug)
 
     let nextLesson = this.collectionService.findNextSeriesLesson(series, post)
     let prevLesson = this.collectionService.findPrevSeriesLesson(series, post)
@@ -104,19 +104,10 @@ export default class LessonsController {
       .first()
       
     const commentCount = commentCountResults?.$extras.total || 0
-    const views = await AnalyticsService.getPageViews(request.url())
     const adLeaderboard = await AdService.getLeaderboard()
     const adAside = await AdService.getMediumRectangles(2)
 
     post.meta.isInWatchlist = await this.postService.getIsInWatchlist(auth.user, post)
-
-    // if (!series) {
-    //   const similarLessons = await this.postService.getSimilarPosts(post)
-
-    //   nextLesson = similarLessons.at(0)
-
-    //   view.share({ similarLessons })
-    // }
 
     if (post.transcriptUrl) {
       const transcript = await CacheService.try(
@@ -147,7 +138,6 @@ export default class LessonsController {
     }
 
     await this.historyService.recordView(post, route?.name)
-    await emitter.emit('post:sync', { post, views })
     await history.commit()
     
     const userProgression = history.post(post.id)
@@ -165,7 +155,6 @@ export default class LessonsController {
     return view.render('pages/lessons/show', {
       comments,
       commentCount,
-      views,
       adLeaderboard,
       adAside,
     })

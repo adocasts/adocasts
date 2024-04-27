@@ -15,7 +15,7 @@ class PostListSeriesVM {
   declare moduleSortOrder: number
 
   constructor(post: Post) {
-    if (!post.series?.length) return
+    if (!post.rootSeries?.length) return
     
     const series = post.rootSeries.at(0)!
     
@@ -66,7 +66,7 @@ class PostBaseVM extends BaseVM {
   }
 
   #getSeries(post: Post) {
-    if (!post.series?.length) return null
+    if (!post.rootSeries?.length) return null
     return new PostListSeriesVM(post)
   }
 
