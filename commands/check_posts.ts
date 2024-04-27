@@ -1,6 +1,5 @@
 import CacheNamespaces from '#enums/cache_namespaces'
 import PaywallTypes from '#enums/paywall_types'
-import States from '#enums/states'
 import Post from '#models/post'
 import bento from '#services/bento_service'
 import { BaseCommand } from '@adonisjs/core/ace'
