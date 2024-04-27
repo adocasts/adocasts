@@ -20,7 +20,7 @@
         @!heading({ title: 'Series.', size: 'sm' })
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-8 pt-4">
-          @each (item in series)
+          @each (item in rows)
             @!collection.square.progression({ item })
           @endeach
         </div>
@@ -32,7 +32,7 @@
         @!heading({ title: 'Lessons.', size: 'sm' })
 
         <div class="py-4 grid lg:grid-cols-2 gap-4">
-          @each (item in lessons)
+          @each (item in rows)
             @!post.item.large({ item })
           @endeach
         </div>
@@ -48,7 +48,7 @@
         @!heading({ title: 'Blogs, News, & Snippets.', size: 'sm' })
 
         <div class="py-4 grid lg:grid-cols-2 gap-4">
-          @each (item in posts)
+          @each (item in rows)
             @!post.item.simple({ item })
           @endeach
         </div>

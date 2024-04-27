@@ -113,7 +113,7 @@ export default class UsersController {
     return view.render('pages/users/watchlist', { tab, tabs, tabIndex, series, lessons, posts, rows })
   }
 
-  async history({ view, request, auth, params }: HttpContext) {
+  async history({ view, request, auth, params, history }: HttpContext) {
     const { page = 1 } = request.qs()
 
     const keys = {
@@ -127,30 +127,51 @@ export default class UsersController {
     const tabIndex = tabs.findIndex((_tab) => _tab.key === tab)
     const route = router.makeUrl('users.history', { tab })
 
-    let series: Collection[] | undefined
-    let lessons: Post[] | undefined
-    let posts: Post[] | undefined
+    let series: ModelPaginatorContract<Collection> | undefined
+    let lessons: ModelPaginatorContract<Post> | undefined
+    let posts: ModelPaginatorContract<Post> | undefined
+    let rows: SeriesListVM[] | PostListVM[] = []
 
     switch (tab) {
       case keys.series:
         series = await ProgressBuilder.new(auth.user)
           .get()
-          .collections((builder) => builder.series().display().paginate(page, 30, route))
+          .collections((builder) => builder
+            .series()
+            .display()
+            .withPostsCompletedCount()
+            .withTotalWatchSeconds()
+            .paginate(page, 30, route)
+         )
+
+        rows = series.all().map((collection) => new SeriesListVM(collection))
+
+        SeriesListVM.addToHistory(history, rows)
         break
       case keys.lessons:
         lessons = await ProgressBuilder.new(auth.user)
           .get()
           .posts((builder) => builder.whereLesson().display().paginate(page, 20, route))
+
+        rows = lessons.all().map((post) => new PostListVM(post))
+
+        PostListVM.addToHistory(history, rows)
         break
       case keys.posts:
         const postTypes = [PostTypes.BLOG, PostTypes.LINK, PostTypes.NEWS, PostTypes.SNIPPET]
         posts = await ProgressBuilder.new(auth.user)
           .get()
           .posts((builder) => builder.whereType(postTypes).display().paginate(page, 20, route))
+
+        rows = posts.all().map((post) => new PostListVM(post))
+
+        PostListVM.addToHistory(history, rows)
         break
     }
 
-    return view.render('pages/users/history', { tab, tabs, tabIndex, series, lessons, posts })
+    await history.commit()
+
+    return view.render('pages/users/history', { tab, tabs, tabIndex, series, lessons, posts, rows })
   }
 
   async check({ auth }: HttpContext) {

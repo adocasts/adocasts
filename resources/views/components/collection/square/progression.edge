@@ -21,8 +21,8 @@
           <div class="flex items-center gap-1.5">
             @svg('ph:graduation-cap-fill')
             <span>
-              {{ item.meta.postsFlattened_count ?? '0' }}
-              {{ pluralize('Lessons', item.meta.postsFlattened_count)}}
+              {{ item.meta.postsCount ?? '0' }}
+              {{ pluralize('Lessons', item.meta.postsCount)}}
             </span>
           </div>
           <div class="flex items-center gap-1.5">
@@ -32,7 +32,7 @@
         </div>
 
         <div class="w-full text-slate-600 text-xs pt-4 flex justify-around items-center relative z-10">
-          @let(percentCompleted = Math.floor((item.meta.postCompletedCount / item.meta.postsFlattened_count) * 100))
+          @let(percentCompleted = Math.floor((item.meta.postCompletedCount / item.meta.postsCount) * 100))
           <div class="flex flex-col justify-center text-center uppercase tracking-wider px-3 {{ percentCompleted >= 100 ? 'text-green-600' : '' }}">
             <span class="text-base">{{ percentCompleted }}%</span>
             <span class="text-xs ">Completed</span>
@@ -42,7 +42,7 @@
   
           @let(watchDisplay = utils.secondsForDisplay(item.meta.videoSecondsSum))
           <div class="flex flex-col justify-center text-center uppercase tracking-wider px-3">
-            <span class="text-base">{{ item.meta.postCompletedCount }} / {{ item.meta.postsFlattened_count }}</span>
+            <span class="text-base">{{ item.meta.postCompletedCount }} / {{ item.meta.postsCount }}</span>
             <span class="text-xs ">{{ pluralize('lesson', item.meta.postCount) }}</span>
           </div>
         </div>
@@ -58,7 +58,7 @@
       @end
 
       @button.outline({ variant: 'dark', block: true, class: 'gap-1.5', href: route('series.continue', { slug: item.slug }) })
-        {{ parseInt(item.$extras.progressionHistory_count) ? 'Continue' : 'Start' }} Series
+        {{ item.meta.postCompletedCount ? 'Continue' : 'Start' }} Series
         @svg('ph:play-fill')
       @end
     </div>

@@ -27,10 +27,10 @@ export default class ProgressBuilder extends BaseBuilder<typeof Progress, Progre
     return this
   }
 
-  async posts(
+  async posts<T>(
     chain: (
       builder: PostBuilder
-    ) => PostBuilder | Promise<Post[]> | Promise<ModelPaginatorContract<Post>>
+    ) => T
   ) {
     const rows = await this.latest('postId')
     const postIds = rows.map((row) => row.postId!)
@@ -43,10 +43,10 @@ export default class ProgressBuilder extends BaseBuilder<typeof Progress, Progre
     return chain(builder)
   }
 
-  async collections(
+  async collections<T>(
     chain: (
       builder: CollectionBuilder
-    ) => CollectionBuilder | Promise<Collection[]> | Promise<ModelPaginatorContract<Collection>>
+    ) => T
   ) {
     const rows = await this.latest('collectionId')
     const collectionIds = rows.map((row) => row.collectionId!)
