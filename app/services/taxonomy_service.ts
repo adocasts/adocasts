@@ -26,7 +26,7 @@ export default class TaxonomyService {
   }
 
   async getCachedBySlug(slug: string) {
-    const results = await this.cache.getOrSet(slug, async () => {
+    const results = await this.cache.getOrSet(`GET_BY_SLUG:${slug}`, async () => {
       const taxonomy = await this.getBySlug(slug)
       return new TopicListVM(taxonomy)
     })

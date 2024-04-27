@@ -124,8 +124,13 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
     return this
   }
 
+  selectListVM() {
+    this.query.select('id', 'postTypeId', 'stateId', 'paywallTypeId', 'videoTypeId', 'title', 'slug', 'description', 'publishAt', 'timezone', 'videoUrl', 'videoBunnyId', 'redirectUrl')
+    return this
+  }
+
   async toListVM() {
-    const results = await this.query.select('id', 'postTypeId', 'stateId', 'paywallTypeId', 'videoTypeId', 'title', 'slug', 'description', 'publishAt', 'timezone', 'videoUrl', 'videoBunnyId', 'redirectUrl')
+    const results = await this.selectListVM()
     return results.map(post => new PostListVM(post))
   }
 }

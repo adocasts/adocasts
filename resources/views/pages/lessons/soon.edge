@@ -5,7 +5,7 @@
     series: series,
     desc: string.excerpt(post.meta_description ?? post.description, 180),
     asset: post.thumbnails && post.thumbnails[0],
-    index: post.isPublished
+    index: PostService.getIsIndexable(post)
   }
 })
 

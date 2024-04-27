@@ -30,6 +30,7 @@ class PostListSeriesVM {
 
 class PostBaseVM extends BaseVM {
   declare id: number
+  declare stateId: number
   declare postTypeId: number
   declare paywallTypeId: number
   declare title: string
@@ -50,6 +51,7 @@ class PostBaseVM extends BaseVM {
     if (!post) return
 
     this.id = post.id
+    this.stateId = post.stateId
     this.postTypeId = post.postTypeId
     this.paywallTypeId = post.paywallTypeId
     this.title = post.title
@@ -112,12 +114,6 @@ export class PostShowVM extends PostBaseVM {
   declare author: UserVM
   declare videoTypeId: VideoTypes | null
   declare isLive: boolean
-  declare isPublished: boolean
-  declare isViewable: boolean
-  declare isNotViewable: boolean
-  declare isPaywalled: boolean
-  declare paywallTimeAgo: string | undefined | null
-  declare paywallDaysRemaining: number
   declare transcriptUrl: string | undefined
   declare viewCount: number | null
   declare hasVideo: boolean
@@ -133,12 +129,6 @@ export class PostShowVM extends PostBaseVM {
 
     this.body = post.body
     this.videoTypeId = post.videoTypeId
-    this.isPublished = post.isPublished
-    this.isViewable = post.isViewable
-    this.isNotViewable = post.isNotViewable
-    this.isPaywalled = post.isPaywalled
-    this.paywallTimeAgo = post.paywallTimeAgo
-    this.paywallDaysRemaining = post.paywallDaysRemaining
     this.transcriptUrl = post.transcriptUrl
     this.viewCount = post.viewCount
     this.hasVideo = !!post.hasVideo

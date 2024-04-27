@@ -13,6 +13,8 @@ import { TopicListVM } from '../view_models/topic.js'
 import CacheNamespaces from '#enums/cache_namespaces'
 import User from '#models/user'
 import Watchlist from '#models/watchlist'
+import PaywallTypes from '#enums/paywall_types'
+import UtilityService from './utility_service.js'
 
 @inject()
 export default class PostService {
@@ -81,7 +83,7 @@ export default class PostService {
   }
 
   async getCachedSnippetsForTaxonomy(taxonomy: Taxonomy | TopicListVM) {
-    const results = await this.cache.getOrSet(`GET_SNIPPETS_FOR_TAXONOMY_${taxonomy.id}`, async () => {
+    const results = await this.cache.getOrSet(`GET_SNIPPETS_FOR_TAXONOMY:${taxonomy.id}`, async () => {
       return this.getLatestSnippets().whereHasTaxonomy(taxonomy).toListVM()
     })
 
@@ -91,7 +93,7 @@ export default class PostService {
   }
 
   async findCachedBySlug(slug: string) {
-    const result = await this.cache.getOrSet(`GET_BY_SLUG_${slug}`, async () => {
+    const result = await this.cache.getOrSet(`GET_BY_SLUG:${slug}`, async () => {
       const post = await this.findBy('slug', slug)
       return new PostShowVM(post)
     })
@@ -318,5 +320,50 @@ export default class PostService {
     const commentCount = commentCountResult?.$extras.total
 
     return { comments, commentCount }
+  }
+
+  static getIsPaywalled(post: Post | PostListVM | PostShowVM) {
+    if (post.paywallTypeId === PaywallTypes.NONE) return false
+    if (post.paywallTypeId === PaywallTypes.FULL) return true
+    if (!post.publishAtISO) return false
+
+    const publishAt = DateTime.fromISO(post.publishAtISO)
+    const { days } = publishAt.plus({ days: 14 }).diffNow('days')
+
+    return days > 0
+  }
+
+  static getPaywallTimeAgo(post: Post | PostListVM | PostShowVM) {
+    if (!post.publishAtISO) return
+    const publishAt = DateTime.fromISO(post.publishAtISO)
+    return UtilityService.timeago(publishAt.plus({ days: 14 }))
+  }
+
+  static getIsViewable(post: Post | PostListVM | PostShowVM) {
+    return post.stateId === States.PUBLIC || post.stateId === States.UNLISTED
+  }
+
+  static getIsPublished(post: Post | PostListVM | PostShowVM) {
+    const isPublicOrUnlisted = post.stateId === States.PUBLIC || post.stateId === States.UNLISTED
+
+    if (!post.publishAtISO) {
+      return isPublicOrUnlisted
+    }
+
+    const isPastPublishAt = DateTime.fromISO(post.publishAtISO).diffNow().as('seconds')
+
+    return isPublicOrUnlisted && isPastPublishAt < 0
+  }
+
+  static getIsIndexable(post: Post | PostListVM | PostShowVM) {
+    const isPublic = post.stateId === States.PUBLIC
+
+    if (!post.publishAtISO) {
+      return isPublic
+    }
+
+    const isPastPublishAt = DateTime.fromISO(post.publishAtISO).diffNow().as('seconds')
+
+    return isPublic && isPastPublishAt < 0
   }
 }

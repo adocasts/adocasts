@@ -31,12 +31,9 @@ export default class CollectionService {
    */
   async getRecentlyUpdated() {
     const { latest, recent } = await this.cache.getOrSet('GET_RECENTLY_UPDATED', async () => {
-      const latest = await this.queryGetLastUpdated(true, [], 4).toListVM()
-      const recent = await this.queryGetLastUpdated(true, [], 0).limit(6).toListVM()
-      return { 
-        latest: latest.at(0), 
-        recent: recent
-      }  
+      const latest = (await this.queryGetLastUpdated(true, [], 4).toListVM())[0]
+      const recent = await this.queryGetLastUpdated(true, [latest.id], 0).limit(6).toListVM()
+      return { latest, recent }  
     })
 
     if (latest) {
@@ -60,7 +57,7 @@ export default class CollectionService {
   }
 
   async getBySlug(slug: string) {
-    const result = await this.cache.getOrSet(`GET_BY_SLUG_${slug}`, async () => {
+    const result = await this.cache.getOrSet(`GET_BY_SLUG:${slug}`, async () => {
       const series = await this.findBy('slug', slug)
       return new SeriesShowVM(series)
     })
@@ -85,7 +82,7 @@ export default class CollectionService {
   }
 
   async getCachedForTaxonomy(taxonomy: Taxonomy | TopicListVM) {
-    const results = await this.cache.getOrSet(`GET_FOR_TAXONOMY_${taxonomy.id}`, async () => {
+    const results = await this.cache.getOrSet(`GET_FOR_TAXONOMY:${taxonomy.id}`, async () => {
       return this.getLastUpdated(undefined, false).whereHasTaxonomy(taxonomy).toListVM()
     })
 

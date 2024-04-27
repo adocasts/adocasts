@@ -4,6 +4,7 @@ import Roles from '#enums/roles'
 import Post from '#models/post'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
+import PostService from './post_service.js'
 
 @inject()
 export default class PermissionService {
@@ -44,7 +45,7 @@ export default class PermissionService {
     if (post.paywallTypeId === PaywallTypes.NONE) return true
     if (post.paywallTypeId === PaywallTypes.FULL) return false
 
-    return !post.isPaywalled
+    return !PostService.getIsPaywalled(post)
   }
 
   canViewFutureDated() {

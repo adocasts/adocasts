@@ -1,6 +1,5 @@
 import HttpStatus from '#enums/http_statuses'
 import AdService from '#services/ad_service'
-import AnalyticsService from '#services/analytics_service'
 import CacheService from '#services/cache_service'
 import CollectionService from '#services/collection_service'
 import DiscussionService from '#services/discussion_service'
@@ -10,10 +9,8 @@ import PostService from '#services/post_service'
 import { inject } from '@adonisjs/core'
 import { Exception } from '@adonisjs/core/exceptions'
 import type { HttpContext } from '@adonisjs/core/http'
-import emitter from '@adonisjs/core/services/emitter'
 import router from '@adonisjs/core/services/router'
 import axios from 'axios'
-import { DateTime } from 'luxon'
 import VttService from '#services/vtt_service'
 import logger from '#services/logger_service'
 import { PostListVM } from '../view_models/post.js'
@@ -42,6 +39,7 @@ export default class LessonsController {
     const items = await this.postService
       .getLessons()
       .orderBy(sortBy, sort)
+      .selectListVM()
       .paginate(page, 20, router.makeUrl('lessons.index', params))
 
     const rows = items.map(post => new PostListVM(post))
@@ -58,6 +56,7 @@ export default class LessonsController {
     const items = await this.postService
       .getStreams()
       .orderBy(sortBy, sort)
+      .selectListVM()
       .paginate(page, 20, router.makeUrl('lessons.index', params))
 
     const rows = items.map(post => new PostListVM(post))
@@ -69,7 +68,7 @@ export default class LessonsController {
     return view.render('pages/lessons/index', { type: 'Livestreams', items, rows, feed, adAside })
   }
 
-  async show({ view, request, params, session, auth, up, route, bouncer, history }: HttpContext) {
+  async show({ view, params, session, auth, up, route, bouncer, history }: HttpContext) {
     const post = await this.postService.findCachedBySlug(params.slug)
     const series = await this.collectionService.getCachedForPost(post, params.collectionSlug)
 
@@ -77,14 +76,14 @@ export default class LessonsController {
     let prevLesson = this.collectionService.findPrevSeriesLesson(series, post)
 
     if (
-      post.isNotViewable &&
+      !PostService.getIsViewable(post) &&
       !auth.user?.isAdmin &&
       post.author.id !== auth.user?.id
     ) {
       throw new Exception('this post is not currently available to the public', {
         status: HttpStatus.NOT_FOUND,
       })
-    } else if (!post.isViewable && (await bouncer.with('PostPolicy').denies('viewFutureDated'))) {
+    } else if (!PostService.getIsPublished(post) && (await bouncer.with('PostPolicy').denies('viewFutureDated'))) {
       view.share({ nextLesson, prevLesson, post, series })
       await history.commit()
       return view.render('pages/lessons/soon', { post, series })

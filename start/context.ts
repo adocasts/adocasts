@@ -41,13 +41,11 @@ HttpContext.getter('history', function (this: HttpContext) {
     records: [],
 
     addCollectionIds(ids: number[] = []) {
-      console.log('addCollectionIds', { ids })
       ids = ids.filter(Boolean)
       this.collectionIds = [...this.collectionIds, ...ids]
     },
 
     addPostIds(ids: number[] = []) {
-      console.log('addPostIds', { ids })
       ids = ids.filter(Boolean)
       this.postIds = [...this.postIds, ...ids]
     },
@@ -67,12 +65,17 @@ HttpContext.getter('history', function (this: HttpContext) {
       let collectionRecords: Progress[] = []
       
       if (ctx.auth.user) {
-        console.log({ postIds: this.postIds })
-        postRecords = await ProgressBuilder.new(ctx.auth.user).for('postId', this.postIds)
-        collectionRecords = await ProgressBuilder.new(ctx.auth.user).for('collectionId', this.collectionIds)
+        const uniquePostIds = [...new Set(this.postIds)]
+        const uniqueCollectionIds = [...new Set(this.collectionIds)]
+
+        postRecords = await ProgressBuilder.new(ctx.auth.user).for('postId', uniquePostIds)
+        collectionRecords = await ProgressBuilder.new(ctx.auth.user).for('collectionId', uniqueCollectionIds)
       }
 
-      this.records = [...postRecords, ...collectionRecords]
+      this.records = [
+        ...postRecords, 
+        ...collectionRecords.filter(record => !postRecords.some(r => r.id === record.id))
+      ]
 
       ctx.view.share({ 
         progressions: this.records,

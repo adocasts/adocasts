@@ -19,16 +19,16 @@
 @if (isDelayedRelease)
   <div class="relative z-10">
     @if (countdown)
-      @!countdown({ dateTime: post.publishAt.plus({ days: 14 }).toISO() })
+      @!countdown({ dateTime: DateTime.fromISO(post.publishAtISO).plus({ days: 14 }).toISO() })
     @endif
     <h3 class="{{ classes.heading }}">
       Adocasts Plus Timed Exclusive
     </h3>
     <p class="{{ classes.p }}">
       @if (auth.user)
-        Please check back {{ post.paywallTimeAgo }}. Get immediate access to this lesson and more by joining Adocasts Plus for {{ plusMonthly.displayPrice }}/mo.
+        Please check back {{ PostService.getPaywallTimeAgo(post) }}. Get immediate access to this lesson and more by joining Adocasts Plus for {{ plusMonthly.displayPrice }}/mo.
       @else
-        Please check back {{ post.paywallTimeAgo }}. Get immediate access to this lesson and more by joining Adocasts Plus for {{ plusMonthly.displayPrice }}/mo or signing into your existing Adocasts+ account.
+        Please check back {{ PostService.getPaywallTimeAgo(post) }}. Get immediate access to this lesson and more by joining Adocasts Plus for {{ plusMonthly.displayPrice }}/mo or signing into your existing Adocasts+ account.
       @endif
     </p>
     <div class="{{ classes.action }}">

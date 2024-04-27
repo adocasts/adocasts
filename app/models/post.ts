@@ -242,6 +242,12 @@ export default class Post extends AppBaseModel {
   declare watchlist: HasMany<typeof Watchlist>
 
   @computed()
+  get publishAtISO() {
+    if (!this.publishAt) return ''
+    return this.publishAt.toISO()
+  }
+
+  @computed()
   get publishAtDisplay() {
     if (!this.publishAt) return ''
 
@@ -250,81 +256,6 @@ export default class Post extends AppBaseModel {
     }
 
     return this.publishAt.toFormat('MMM dd, yy')
-  }
-
-  @computed()
-  get publishAtDateString() {
-    let dte = this.publishAt
-
-    if (dte && this.timezone) {
-      dte = DateTime.now()
-      dte = dte.set(this.publishAt!.toObject()).setZone(this.timezone)
-    }
-
-    return dte?.toFormat('yyyy-MM-dd')
-  }
-
-  @computed()
-  get publishAtTimeString() {
-    let dte = this.publishAt
-
-    if (dte && this.timezone) {
-      dte = DateTime.now()
-      dte = dte.set(this.publishAt!.toObject()).setZone(this.timezone)
-    }
-
-    return dte?.toFormat('HH:mm')
-  }
-
-  @computed()
-  get isPublished(): boolean {
-    const isdeclare = this.stateId === State.PUBLIC
-
-    if (!this.publishAt) {
-      return isdeclare
-    }
-
-    const isPastPublishAt = this.publishAt.diffNow().as('seconds')
-
-    return isdeclare && isPastPublishAt < 0
-  }
-
-  @computed()
-  get isViewable(): boolean {
-    const isdeclareOrUnlisted = this.stateId === State.PUBLIC || this.stateId === State.UNLISTED
-
-    if (!this.publishAt) {
-      return isdeclareOrUnlisted
-    }
-
-    const isPastPublishAt = this.publishAt.diffNow().as('seconds')
-
-    return isdeclareOrUnlisted && isPastPublishAt < 0
-  }
-
-  @computed()
-  get isNotViewable() {
-    return this.stateId !== State.PUBLIC && this.stateId !== State.UNLISTED
-  }
-
-  @computed()
-  get paywallDaysRemaining() {
-    const { days } = this.publishAt!.plus({ days: 14 }).diffNow('days')
-    return days
-  }
-
-  @computed()
-  get paywallTimeAgo() {
-    if (!this.publishAt) return
-    return UtilityService.timeago(this.publishAt.plus({ days: 14 }))
-  }
-
-  @computed()
-  get isPaywalled() {
-    if (this.paywallTypeId === PaywallTypes.NONE) return false
-    if (this.paywallTypeId === PaywallTypes.FULL) return true
-
-    return this.paywallDaysRemaining > 0
   }
 
   @computed()
@@ -410,20 +341,6 @@ export default class Post extends AppBaseModel {
   @computed()
   get hasVideo() {
     return this.videoUrl || this.livestreamUrl || this.videoBunnyId
-  }
-
-  @computed()
-  get isInWatchlist() {
-    if (!this.$extras.watchlist_count) {
-      return false
-    }
-
-    return Number(this.$extras.watchlist_count) > 0
-  }
-
-  @computed()
-  get timeago() {
-    return UtilityService.timeago(this.publishAt)
   }
 
   @computed()

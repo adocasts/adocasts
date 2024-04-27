@@ -30,7 +30,7 @@
         </div>
         @if (item.paywallTypeId === PaywallTypes.DELAYED_RELEASE)
           <div class="text-[0.5rem] uppercase font-bold pr-0.5 leading-none">
-            Free {{ item.paywallTimeAgo }} 
+            Free {{ PostService.getPaywallTimeAgo(item) }} 
           </div>
         @else
           <div class="text-[0.5rem] uppercase font-bold pr-0.5 leading-none">
