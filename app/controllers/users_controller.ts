@@ -11,6 +11,9 @@ import PostBuilder from '#builders/post_builder'
 import { billtoValidator, mentionListValidator } from '#validators/user_validator'
 import User from '#models/user'
 import ProgressBuilder from '#builders/progress_builder'
+import { SeriesListVM } from '../view_models/series.js'
+import { PostListVM } from '../view_models/post.js'
+import { ModelPaginatorContract } from '@adonisjs/lucid/types/model'
 
 export default class UsersController {
   async menu({ view, auth }: HttpContext) {
@@ -46,7 +49,7 @@ export default class UsersController {
     return response.status(200).json({ clearedBillTo, billToInfo })
   }
 
-  async watchlist({ view, request, auth, params }: HttpContext) {
+  async watchlist({ view, request, auth, params, history }: HttpContext) {
     const { page = 1 } = request.qs()
 
     const keys = {
@@ -60,9 +63,10 @@ export default class UsersController {
     const tabIndex = tabs.findIndex((_tab) => _tab.key === tab)
     const route = router.makeUrl('users.watchlist', { tab })
 
-    let series: Collection[] | undefined
-    let lessons: Post[] | undefined
-    let posts: Post[] | undefined
+    let series: ModelPaginatorContract<Collection> | undefined
+    let lessons: ModelPaginatorContract<Post> | undefined
+    let posts: ModelPaginatorContract<Post> | undefined
+    let rows: SeriesListVM[] | PostListVM[] = []
 
     switch (tab) {
       case keys.series:
@@ -70,8 +74,14 @@ export default class UsersController {
           .series()
           .display()
           .whereInWatchlist()
+          .withPostsCompletedCount()
+          .withTotalWatchSeconds()
           .withPosts('pivot_root_sort_order', 'desc', 3)
           .paginate(page, 15, route)
+
+        rows = series.all().map((collection) => new SeriesListVM(collection))
+
+        SeriesListVM.addToHistory(history, rows)
         break
       case keys.lessons:
         lessons = await PostBuilder.new(auth.user)
@@ -79,6 +89,10 @@ export default class UsersController {
           .whereInWatchlist()
           .display()
           .paginate(page, 15, route)
+
+        rows = lessons.all().map((post) => new PostListVM(post))
+
+        PostListVM.addToHistory(history, rows)
         break
       case keys.posts:
         const postTypes = [PostTypes.BLOG, PostTypes.LINK, PostTypes.NEWS, PostTypes.SNIPPET]
@@ -87,10 +101,16 @@ export default class UsersController {
           .whereInWatchlist()
           .display()
           .paginate(page, 15, route)
+
+        rows = posts.all().map((post) => new PostListVM(post))
+
+        PostListVM.addToHistory(history, rows)
         break
     }
 
-    return view.render('pages/users/watchlist', { tab, tabs, tabIndex, series, lessons, posts })
+    await history.commit()
+
+    return view.render('pages/users/watchlist', { tab, tabs, tabIndex, series, lessons, posts, rows })
   }
 
   async history({ view, request, auth, params }: HttpContext) {

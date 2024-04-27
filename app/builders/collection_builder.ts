@@ -119,6 +119,26 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     return this
   }
 
+  withPostsCompletedCount() {
+    if (!this.user) return this
+    
+    this.query.withCount('progressionHistory', (query) =>
+      query.where('userId', this.user!.id).where('isCompleted', true).as('postCompletedCount')
+    )
+
+    return this
+  }
+
+  withTotalWatchSeconds() {
+    if (!this.user) return this
+
+    this.query.withAggregate('progressionHistory', (query) =>
+      query.where('userId', this.user!.id).sum('watch_seconds').as('totalWatchSeconds')
+    )
+
+    return this
+  }
+
   withTaxonomies() {
     this.query.preload('taxonomies', (query) =>
       query.groupOrderBy('sort_order', 'asc').groupLimit(3)

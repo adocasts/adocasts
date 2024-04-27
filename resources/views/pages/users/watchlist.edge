@@ -23,11 +23,11 @@
       @section()
         @!heading({ title: 'Series.', size: 'sm' })
 
-        @each ((item, i) in series)
+        @each ((item, i) in rows)
           <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-slate-100 rounded-md mt-4">
             @!collection.square.tall({ item, class: ['bg-slate-200'], withProgression: true })
 
-            @each ((post, i) in item.postsFlattened)
+            @each ((post, i) in item.posts)
               @!post.item({ item: post, col: true, class: `p-4  ${i > 0 ? 'sm:hidden' : ''} ${i == 2 ? 'md:hidden lg:flex' : 'md:flex'}`, display: { seriesName: false } })
             @endeach
           </div>
@@ -40,7 +40,7 @@
         @!heading({ title: 'Lessons.', size: 'sm' })
 
         <div class="py-4 grid lg:grid-cols-2 gap-4">
-          @each (item in lessons)
+          @each (item in rows)
             @!post.item.large({ item })
           @endeach
         </div>
@@ -56,7 +56,7 @@
         @!heading({ title: 'Blogs, News, & Snippets.', size: 'sm' })
 
         <div class="py-4 grid lg:grid-cols-2 gap-4">
-          @each (item in posts)
+          @each (item in rows)
             @!post.item.simple({ item })
           @endeach
         </div>

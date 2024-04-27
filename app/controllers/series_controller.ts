@@ -30,7 +30,8 @@ export default class SeriesController {
     const nextLesson = this.collectionService.findNextProgressLesson(item, history)
 
     item.meta.isInWatchlist = await this.collectionService.getIsInWatchlist(auth.user, item)
-    item.meta.postsCompletedCount = history.records.filter(record => record.isCompleted).length
+    item.meta.postCompletedCount = history.records.filter(record => record.isCompleted).length
+    item.meta.totalWatchSeconds = history.records.reduce((sum, record) => sum + record.watchSeconds, 0)
 
     return view.render('pages/series/show', { item, nextLesson })
   }
