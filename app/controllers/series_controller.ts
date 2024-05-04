@@ -33,10 +33,6 @@ export default class SeriesController {
     item.meta.postCompletedCount = history.records.filter(record => record.isCompleted).length
     item.meta.totalWatchSeconds = history.records.reduce((sum, record) => sum + record.watchSeconds, 0)
 
-    console.log({
-      completed: history.records.filter(record => record.isCompleted).map(record => record.serialize())
-    })
-
     return view.render('pages/series/show', { item, nextLesson })
   }
 
