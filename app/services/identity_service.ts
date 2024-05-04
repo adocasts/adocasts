@@ -10,7 +10,6 @@ import {
   names,
   starWars,
 } from 'unique-names-generator'
-import db from '@adonisjs/lucid/services/db'
 import CacheService from './cache_service.js'
 import env from '#start/env'
 import logger from './logger_service.js'
@@ -48,17 +47,6 @@ export default class IdentityService {
 
   static async getIdentity(ip: string, agent: string) {
     return this.create(ip, agent)
-  }
-
-  static async getByIdentity(
-    table: string,
-    identity: string,
-    identityKey: string = 'name'
-  ): Promise<string> {
-    const record = await db.from(table).where('identity', identity).select([identityKey]).first()
-    if (record && record.name) return record.name
-
-    return this.generateName()
   }
 
   static generateName(): string {

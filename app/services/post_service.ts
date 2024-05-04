@@ -28,6 +28,9 @@ export default class PostService {
     return bento.namespace(CacheNamespaces.POSTS)
   }
 
+  /**
+   * Returns list of lessons newly published in the past 30 days
+   */
   async getCachedNewThisMonth() {
     const results = await this.cache.getOrSet('GET_NEW_THIS_MONTH', async () => {
       const recentDate = DateTime.now().minus({ days: 30 }).startOf('day')
@@ -39,6 +42,9 @@ export default class PostService {
     return PostListVM.consume(results)
   }
 
+  /**
+   * Returns the latest 12 published lessons
+   */
   async getCachedLatestLessons() {
     const results = await this.cache.getOrSet('GET_LATEST_LESSONS', async () => {
       return this.getLatestLessons(12).toListVM()
@@ -49,6 +55,9 @@ export default class PostService {
     return PostListVM.consume(results)
   }
 
+  /**
+   * Returns the latest 3 published blogs
+   */
   async getCachedLatestBlogs() {
     const results = await this.cache.getOrSet('GET_LATEST_BLOGS', async () => {
       const latest = await this.getLatestBlogs(3)
@@ -60,6 +69,9 @@ export default class PostService {
     return PostListVM.consume(results)
   }
 
+  /**
+   * Returns the latest 3 published snippets
+   */
   async getCachedLatestSnippets() {
     const results = await this.cache.getOrSet('GET_LATEST_SNIPPETS', async () => {
       const latest = await this.getLatestSnippets(3)
@@ -71,6 +83,9 @@ export default class PostService {
     return PostListVM.consume(results)
   }
 
+  /**
+   * Returns the latest 3 published livestreams
+   */
   async getCachedLatestStreams() {
     const results = await this.cache.getOrSet('GET_LATEST_STREAMS', async () => {
       const latest = await this.getLatestSnippets(3)
@@ -82,6 +97,10 @@ export default class PostService {
     return PostListVM.consume(results)
   }
 
+  /**
+   * Returns snippets bound to the provided taxonomy
+   * @param taxonomy
+   */
   async getCachedSnippetsForTaxonomy(taxonomy: Taxonomy | TopicListVM) {
     const results = await this.cache.getOrSet(`GET_SNIPPETS_FOR_TAXONOMY:${taxonomy.id}`, async () => {
       return this.getLatestSnippets().whereHasTaxonomy(taxonomy).toListVM()
@@ -92,6 +111,10 @@ export default class PostService {
     return PostListVM.consume(results)
   }
 
+  /**
+   * Returns post show details matching the provided slug
+   * @param slug
+   */
   async findCachedBySlug(slug: string) {
     const result = await this.cache.getOrSet(`GET_BY_SLUG:${slug}`, async () => {
       const post = await this.findBy('slug', slug)

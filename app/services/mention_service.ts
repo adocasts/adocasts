@@ -2,7 +2,6 @@ import Comment from '#models/comment'
 import User from '#models/user'
 import { TransactionClientContract } from '@adonisjs/lucid/types/database'
 import NotificationService from './notification_service.js'
-import Post from '#models/post'
 import Discussion from '#models/discussion'
 import LessonRequest from '#models/lesson_request'
 
@@ -19,20 +18,6 @@ export default class MentionService {
     if (!usernames.length) return
 
     await NotificationService.onCommentMention(comment, usernames, user, trx)
-  }
-
-  static async checkForPostMention(
-    post: Post,
-    user: User,
-    trx: TransactionClientContract | null = null
-  ) {
-    if (!post.body || !post.body.includes('data-type="mention"')) return
-
-    const usernames = this.checkTextForMentions(post.body)
-
-    if (!usernames.length) return
-
-    await NotificationService.onPostMention(post, usernames, user, trx)
   }
 
   static async checkForDiscussionMention(

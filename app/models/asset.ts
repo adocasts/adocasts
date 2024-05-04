@@ -34,8 +34,7 @@ export default class Asset extends AppBaseModel {
 
   @computed()
   get assetUrl() {
-    return '/img/' + this.filename // TODO
-    //return AssetService.getAssetUrl(this.filename)
+    return '/img/' + this.filename
   }
 
   @manyToMany(() => Post, {

@@ -15,10 +15,6 @@ export class ImageOptions {
 }
 
 export default class AssetService {
-  static getAssetUrl(filename: string) {
-    return `/img/${filename}`
-  }
-
   static getParamFilename(params: Array<string> | Record<string, any>): string {
     if (Array.isArray(params)) {
       return params.join('/')
@@ -31,37 +27,12 @@ export default class AssetService {
     return Object.values(params).join('/')
   }
 
-  static getFileExtension(file: any): string {
-    const contentType = file.headers['content-type']
-    const subtype = contentType.slice(contentType.lastIndexOf('/') + 1)
-    let extension = subtype.split('+')[0]
-    return extension
-  }
-
   static getFilenameExtension(filename: string, defaultValue: string = 'jpg') {
     const name = filename.split('/').pop()
 
     if (!name) return defaultValue
 
     return name.includes('.') ? name.split('.').pop() : defaultValue
-  }
-
-  static getAlteredImage(file: Buffer | string, options: ImageOptions) {
-    if (options.format === 'svg+xml') return
-    let image = sharp(file)
-    return image.metadata().then((metadata) => {
-      const toOptions = options.quality ? { quality: options.quality } : {}
-
-      image
-        .resize(options.width || metadata.width)
-        .toFormat(options.format as keyof FormatEnum | AvailableFormatInfo, toOptions)
-
-      if (options.blur) {
-        image = image.blur(options.blur)
-      }
-
-      return image.toBuffer()
-    })
   }
 
   static getImageOptions(queries: Record<string, string>, path: string): ImageOptions {
@@ -132,24 +103,6 @@ export default class AssetService {
     const prefix = app.inProduction ? '' : 'local/'
     const extension = this.getFilenameExtension(url, 'jpg')
     return `${prefix}${user.id}/avatar.${extension}`
-  }
-
-  static async syncAssetTypes(
-    assetIds: number[] | undefined,
-    assetTypeIds: number[] | undefined,
-    altTexts: (string | undefined)[] | undefined,
-    credits: (string | undefined)[] | undefined
-  ) {
-    if (!assetIds || !assetTypeIds) return
-
-    const promises = assetIds.map((id, i) => {
-      const assetTypeId = assetTypeIds[i]
-      const altText = altTexts && altTexts[i]
-      const credit = credits && credits[i]
-      return Asset.query().where({ id }).update({ assetTypeId, altText, credit })
-    })
-
-    await Promise.all(promises)
   }
 }
 

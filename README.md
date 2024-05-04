@@ -24,7 +24,8 @@ Some portions of the Adocasts site rely on production data or external APIs & SD
 ### Prerequisites
 * **PostgreSQL** &mdash; We use PostgreSQL as our database driver so you'll either want it installed on your machine or a service that provides it.
 * **SMTP Provider** &mdash; Locally, we like to use MailTrap
-* **Node v20+** &mdash; Recommended
+* **Redis Server** &mdash; We now require a Redis connection via [Bentocache](https://bentocache.dev/docs/introduction)
+* **Node v20.6+** &mdash; Recommended
 
 ### Installation
 1. Clone the repository

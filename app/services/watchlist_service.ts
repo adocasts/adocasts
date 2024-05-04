@@ -14,62 +14,6 @@ export default class WatchlistService {
   }
 
   /**
-   * returns latest watchlist posts for user
-   * @param limit
-   * @param excludeIds
-   * @returns
-   */
-  async getLatestPosts(limit: number | undefined = undefined, excludeIds: number[] = []) {
-    if (!this.user) return []
-
-    const results = await this.user
-      .related('watchlist')
-      .query()
-      .whereNotNull('postId')
-      .if(excludeIds.length, (query) => query.whereNotIn('postId', excludeIds))
-      .preload('post', (query) => query.apply((scope) => scope.forDisplay()))
-      .orderBy('createdAt', 'desc')
-      .if(limit, (query) => query.limit(limit!))
-
-    return results.map((r) => r.post)
-  }
-
-  /**
-   * returns latest watchlsit collections for user
-   * @param limit
-   * @param excludeIds
-   * @returns
-   */
-  async getLatestCollections(limit: number | undefined = undefined, excludeIds: number[] = []) {
-    if (!this.user) return []
-
-    const results = await this.user
-      .related('watchlist')
-      .query()
-      .whereNotNull('collectionId')
-      .if(excludeIds.length, (query) => query.whereNotIn('collectionId', excludeIds))
-      .preload('collection', (query) =>
-        query
-          .preload('asset')
-          .preload('postsFlattened', (posts) =>
-            posts.apply((scope) => scope.forDisplay()).groupLimit(3)
-          )
-          .withCount('postsFlattened', (posts) => posts.apply((scope) => scope.published()))
-          .withAggregate('postsFlattened', (posts) =>
-            posts
-              .apply((scope) => scope.published())
-              .sum('video_seconds')
-              .as('videoSecondsSum')
-          )
-          .where('stateId', States.PUBLIC)
-      )
-      .orderBy('createdAt', 'desc')
-      .if(limit, (query) => query.limit(limit!))
-
-    return results.map((r) => r.collection)
-  }
-
-  /**
    * toggles watchlist item for user
    * @param data
    * @returns

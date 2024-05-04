@@ -25,17 +25,6 @@ export default class TaxonomyService {
     return TopicListVM.consume(results)
   }
 
-  async getCachedBySlug(slug: string) {
-    const results = await this.cache.getOrSet(`GET_BY_SLUG:${slug}`, async () => {
-      const taxonomy = await this.getBySlug(slug)
-      return new TopicListVM(taxonomy)
-    })
-
-    TopicListVM.addToHistory(this.ctx.history, [results])
-
-    return TopicListVM.consume([results])[0]
-  }
-
   /**
    * Returns a new instance of the taxonomy builder
    * @returns

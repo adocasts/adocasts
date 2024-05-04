@@ -120,7 +120,7 @@ export default class LessonsController {
             return ''
           }
         },
-        CacheService.oneDay
+        CacheService.oneMonth
       )
 
       view.share({ transcript })

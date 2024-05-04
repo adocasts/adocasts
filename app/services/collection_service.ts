@@ -45,6 +45,9 @@ export default class CollectionService {
     return { latest, recent }
   }
 
+  /**
+   * Returns list of all series
+   */
   async getAll() {
     const results = await this.cache.getOrSet('GET_ALL', async () => {
       const series = await this.getList(true).orderBy('name')
@@ -56,6 +59,10 @@ export default class CollectionService {
     return results
   }
 
+  /**
+   * Returns series show details for matching slug
+   * @param slug
+   */
   async getBySlug(slug: string) {
     const result = await this.cache.getOrSet(`GET_BY_SLUG:${slug}`, async () => {
       const series = await this.findBy('slug', slug)
@@ -69,6 +76,11 @@ export default class CollectionService {
     return series
   }
 
+  /**
+   * Returns series for provided post, using slug first, then falling back to the default series for the post
+   * @param post
+   * @param slug
+   */
   async getCachedForPost(post: PostShowVM, slug: string | undefined = undefined) {
     // if slug is passed in, use that
     if (slug) {
@@ -81,6 +93,10 @@ export default class CollectionService {
     }
   }
 
+  /**
+   * Returns series list for provided taxonomy's id
+   * @param taxonomy
+   */
   async getCachedForTaxonomy(taxonomy: Taxonomy | TopicListVM) {
     const results = await this.cache.getOrSet(`GET_FOR_TAXONOMY:${taxonomy.id}`, async () => {
       return this.getLastUpdated(undefined, false).whereHasTaxonomy(taxonomy).toListVM()
@@ -131,20 +147,6 @@ export default class CollectionService {
   }
 
   /**
-   * returns the next lesson after the provided post in the path (if there is one)
-   * @param series
-   * @param post
-   * @returns
-   */
-  findNextPathLesson(series: Collection | null, post: Post) {
-    if (!series) return
-    if (!post?.rootPaths?.length || !series?.postsFlattened?.length) return
-
-    const postRootIndex = post.rootPaths[0].$extras.pivot_root_sort_order
-    return series?.postsFlattened.find((p) => p.$extras.pivot_root_sort_order === postRootIndex + 1)
-  }
-
-  /**
    * returns the previous lesson before the provided post in the series (if there is one)
    * @param series
    * @param post
@@ -156,20 +158,6 @@ export default class CollectionService {
 
     const postRootIndex = post.series.rootSortOrder
     return series?.postsFlattened.at(postRootIndex - 1)
-  }
-
-  /**
-   * returns the previous lesson before the provided post in the path (if there is one)
-   * @param series
-   * @param post
-   * @returns
-   */
-  findPrevPathLesson(series: Collection | null, post: Post) {
-    if (!series) return
-    if (!post?.rootPaths?.length || !series?.postsFlattened?.length) return
-
-    const postRootIndex = post.rootPaths[0].$extras.pivot_root_sort_order
-    return series?.postsFlattened.find((p) => p.$extras.pivot_root_sort_order === postRootIndex - 1)
   }
 
   //#endregion
@@ -271,23 +259,6 @@ export default class CollectionService {
   //#endregion
 
   //#region Get
-
-  /**
-   * Returns the number of public root series
-   * @returns
-   */
-  async getSeriesCount() {
-    return this.builder().series().public().root().count()
-  }
-
-  /**
-   * Returns the most recently updated series
-   * @returns
-   */
-  async getFeatured() {
-    const latest = await this.getLastUpdated(1, true, undefined, 4)
-    return latest.at(0)
-  }
 
   /**
    * returns a collection query builder to retrieve a list of series

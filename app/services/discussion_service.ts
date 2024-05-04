@@ -214,17 +214,4 @@ export default class DiscussionService {
 
     return discussion
   }
-
-  async incrementImpressions(discussions: Discussion[]) {
-    const data = this.ctx.auth.user
-      ? {
-          userId: this.ctx.auth.user.id,
-          typeId: DiscussionViewTypes.IMPRESSION,
-        }
-      : {
-          typeId: DiscussionViewTypes.IMPRESSION,
-        }
-
-    return Promise.all(discussions.map((item) => item.related('impressions').create(data)))
-  }
 }

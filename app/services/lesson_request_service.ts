@@ -23,8 +23,6 @@ import { HttpContext } from '@adonisjs/core/http'
 
 @inject()
 export default class LessonRequestService {
-  static perPage = 3
-
   constructor(protected ctx: HttpContext) {}
 
   private getDisplayBaseQuery() {
@@ -100,26 +98,6 @@ export default class LessonRequestService {
       .preload('user')
       .preload('userVotes', (query) => query.select(['id']))
       .orderBy('createdAt', 'desc')
-  }
-
-  static async getCommentsReload(lessonRequestId: number) {
-    const query = Comment.query().where({ lessonRequestId })
-    const comments = await query
-      .clone()
-      .where((q2) => q2.where('stateId', States.PUBLIC).orWhere('stateId', States.ARCHIVED))
-      .preload('user')
-      .preload('userVotes', (votes) => votes.select(['id']))
-      .orderBy('createdAt', 'desc')
-
-    const commentCountResult = await query
-      .clone()
-      .where('stateId', States.PUBLIC)
-      .count('*', 'total')
-      .first()
-
-    const commentCount = commentCountResult?.$extras.total
-
-    return { comments, commentCount }
   }
 
   /**
