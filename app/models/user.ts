@@ -209,9 +209,7 @@ export default class User extends compose(AppBaseModel, AuthFinder) {
     if (this.emailVerified === this.email && this.emailVerifiedAt) return true
 
     // using third-party social auth
-    if (this.email === this.githubEmail || this.email === this.googleEmail) return true
-
-    return false
+    return this.email === this.githubEmail || this.email === this.googleEmail;
   }
 
   @beforeSave()
@@ -324,7 +322,6 @@ export default class User extends compose(AppBaseModel, AuthFinder) {
   static async findForAuth(uids: string[], value: string) {
     const query = this.query()
     uids.map((uid) => query.orWhereILike(uid, value))
-    const user = await query.first()
-    return user
+    return query.first()
   }
 }

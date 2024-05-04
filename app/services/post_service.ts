@@ -323,6 +323,7 @@ export default class PostService {
       .if(term, (builder) => builder.search(term!))
       .orderPublished()
       .limit(limit)
+      .toListVM()
   }
 
   static async getCommentReload(postId: number) {

@@ -128,6 +128,7 @@ export default class CollectionService {
       .if(term, (builder) => builder.search(term!))
       .orderLatestUpdated()
       .limit(limit)
+      .toListVM()
   }
 
   //#region Collection lesson helpers
