@@ -1,6 +1,5 @@
 import User from '#models/user'
-import sharp, { AvailableFormatInfo, FormatEnum } from 'sharp'
-import Asset from '#models/asset'
+import { AvailableFormatInfo, FormatEnum } from 'sharp'
 import app from '@adonisjs/core/services/app'
 import { AllyUserContract, GithubToken, GoogleToken } from '@adonisjs/ally/types'
 import storage from './storage_service.js'

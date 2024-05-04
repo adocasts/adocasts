@@ -1,5 +1,3 @@
-// @ts-nocheck
-// ^ just want to get this out to my test environment
 import { DateTime } from 'luxon'
 import {
   column,
@@ -31,7 +29,6 @@ import EmailHistory from '#models/email_history'
 import Question from '#models/question'
 import Themes from '#enums/themes'
 import Roles from '#enums/roles'
-import HistoryTypes from '#enums/history_types'
 import Plans from '#enums/plans'
 import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
 import hash from '@adonisjs/core/services/hash'
@@ -40,7 +37,7 @@ import SlugService from '#services/slug_service'
 import Discussion from './discussion.js'
 import Advertisement from './advertisement.js'
 import { compose } from '@adonisjs/core/helpers'
-import { withAuthFinder } from '@adonisjs/auth'
+import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
 import Progress from './progress.js'
 

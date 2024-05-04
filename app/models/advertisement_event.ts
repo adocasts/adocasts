@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
-import AnalyticTypes from '#enums/analytic_types'
+import type AnalyticTypes from '#enums/analytic_types'
 import Advertisement from './advertisement.js'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 

@@ -1,4 +1,3 @@
-import DiscussionViewTypes from '#enums/discussion_view_types'
 import Plans from '#enums/plans'
 import States from '#enums/states'
 import Discussion from '#models/discussion'

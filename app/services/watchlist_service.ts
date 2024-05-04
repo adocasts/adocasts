@@ -1,7 +1,6 @@
 import Watchlist from '#models/watchlist'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
-import States from '#enums/states'
 import UnauthorizedException from '#exceptions/unauthorized_exception'
 import User from '#models/user'
 

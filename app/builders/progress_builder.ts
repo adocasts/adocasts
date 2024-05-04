@@ -2,10 +2,7 @@ import User from '#models/user'
 import db from '@adonisjs/lucid/services/db'
 import BaseBuilder from './base_builder.js'
 import PostBuilder from './post_builder.js'
-import Post from '#models/post'
 import CollectionBuilder from './collection_builder.js'
-import Collection from '#models/collection'
-import { ModelPaginatorContract } from '@adonisjs/lucid/types/model'
 import Progress from '#models/progress'
 
 export default class ProgressBuilder extends BaseBuilder<typeof Progress, Progress> {
