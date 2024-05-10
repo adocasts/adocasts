@@ -30,19 +30,13 @@ export default class CollectionService {
    * @returns { latest: SeriesListVM, recent: SeriesListVM[] }
    */
   async getRecentlyUpdated() {
-    const { latest, recent } = await this.cache.getOrSet('GET_RECENTLY_UPDATED', async () => {
-      const latest = (await this.queryGetLastUpdated(true, [], 4).toListVM())[0]
-      const recent = await this.queryGetLastUpdated(true, [latest.id], 0).limit(6).toListVM()
-      return { latest, recent }  
+    const recent = await this.cache.getOrSet('GET_RECENTLY_UPDATED', async () => {
+      return this.queryGetLastUpdated(true, [], 3).limit(6).toListVM()
     })
 
-    if (latest) {
-      SeriesListVM.addToHistory(this.ctx.history, [latest])
-    }
-    
     SeriesListVM.addToHistory(this.ctx.history, recent)
 
-    return { latest, recent }
+    return recent
   }
 
   /**

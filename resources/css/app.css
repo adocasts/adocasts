@@ -38,6 +38,14 @@
   @apply max-w-7xl mx-auto px-4 md:px-6;
 }
 
+.header-link {
+  @apply flex items-center font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 py-2.5;
+}
+
+.header-nav:hover .header-link:not(:hover) {
+  @apply text-slate-400;
+}
+
 a.link {
   @apply duration-300;
   position: relative;

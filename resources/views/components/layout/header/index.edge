@@ -1,30 +1,31 @@
-<header x-data="{ showMobileMenu: false }" class="border-b border-slate-200 bg-body relative z-50 max-w-[1920px] mx-auto">
-  <nav class="mx-auto flex justify-between p-page" aria-label="Global">
-    <div class="flex flex-1">
-      <div class="hidden lg:flex lg:gap-x-4">
-        {{--  <a href="#" up-follow class="text-sm flex items-center font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
-          Paths
-          @!highlight.underline()
-        </a>  --}}
-        <a href="{{ route('series.index') }}" up-follow class="text-sm flex items-center font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
+<header x-data="{ showMobileMenu: false }" class="bg-slate-100 relative z-50 mx-auto py-1.5">
+  <nav class="mx-auto flex justify-between page" aria-label="Global">
+    <div class="relative flex justify-center items-center">
+      <a
+        href="/"
+        up-follow>
+        <span class="sr-only">Adocasts</span>
+        <img class="logo-white w-auto h-6 md:h-7" src="/imgs/logo-white.svg" alt="Adocasts" width="146px" height="28px" />
+        <img class="logo-black w-auto h-6 md:h-7" src="/imgs/logo-black.svg" alt="Adocasts" width="146px" height="28px" />
+      </a>
+    </div>
+
+    <div class="flex flex-1 justify-center">
+      <div class="hidden lg:flex lg:gap-x-4 xl:gap-x-6 header-nav">
+        <a href="{{ route('series.index') }}" up-follow class="header-link">
           Series
-          @!highlight.underline()
         </a>
-        <a href="{{ route('topics.index') }}" up-follow class="text-sm flex items-center font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
+        <a href="{{ route('topics.index') }}" up-follow class="header-link">
           Topics
-          @!highlight.underline()
         </a>
-        <a href="{{ route('lessons.index') }}" up-follow class="text-sm flex items-center font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
+        <a href="{{ route('lessons.index') }}" up-follow class="header-link">
           Lessons
-          @!highlight.underline()
         </a>
-        <a href="{{ route('blog.index') }}" up-follow class="text-sm flex items-center font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
+        <a href="{{ route('blog.index') }}" up-follow class="header-link">
           Blog
-          @!highlight.underline()
         </a>
-        <a href="{{ route('feed.index') }}" up-follow class="text-sm flex items-center font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
-          The Feed
-          @!highlight.underline()
+        <a href="{{ route('feed.index') }}" up-follow class="header-link">
+          Discuss
         </a>
       </div>
       <div class="flex lg:hidden my-2.5">
@@ -34,23 +35,11 @@
         </button>
       </div>
     </div>
-    <div class="w-[200px] relative">
-      <a
-        href="/"
-        up-follow
-        class="absolute top-0 left-1/2 -translate-x-1/2 w-full bg-body duration-300 hover:bg-slate-200 flex justify-center items-center border-t-0 border-slate-200"
-        :class="[$store.app.videoPlaying && !$store.app.videoSmall ? 'h-full' : 'h-[calc(100%+.5rem)] border rounded-b-md']">
-        <div x-show="!$store.app.videoPlaying && !$store.app.videoSmall" class="w-px h-4/5 duration-300 absolute top-0 -left-px bg-gradient-to-b from-body to-slate-200"></div>
-        <div x-show="!$store.app.videoPlaying && !$store.app.videoSmall" class="w-px h-4/5 duration-300 absolute top-0 -right-px bg-gradient-to-b from-body to-slate-200"></div>
-        <span class="sr-only">Adocasts</span>
-        <img class="logo-white w-auto h-6 md:h-7" src="/imgs/logo-white.svg" alt="Adocasts" width="146px" height="28px" />
-        <img class="logo-black w-auto h-6 md:h-7" src="/imgs/logo-black.svg" alt="Adocasts" width="146px" height="28px" />
-      </a>
-    </div>
-    <div class="flex flex-1 justify-end items-center gap-2">
+  
+    <div class="flex justify-end items-center gap-2">
       <div class="{{ html.classNames(['items-center gap-2', auth?.user ? 'hidden md:flex' : 'flex']) }}">
         @button({ href: route('search.index'), 'up-layer': 'new', 'up-target': '[up-main]', square: true })
-          @svg('ph:magnifying-glass-bold', { class: 'w-3 h-3 md:w-4 md:h-4' })
+          @svg('ph:magnifying-glass-bold', { class: 'w-3 h-3 md:w-4 md:h-4 m-0.5' })
         @end
 
         @!theme.selector()
@@ -65,16 +54,13 @@
           </a>
         </div>
       @else
-        <a href="{{ route('auth.signin.create') }}" up-layer="new" up-target="[up-main]" class="hidden md:block text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5 ml-4">
-          Sign in
-          @!highlight.underline()
-        </a>
+        @button({ href: route('auth.signin.create'), 'up-target': '[up-main]', 'up-layer': 'new' })
+          Sign In
+        @end
 
-        <a href="{{ route('auth.signup.create') }}" up-layer="new" up-target="[up-main]" class="hidden md:flex items-center gap-1.5 text-sm font-semibold leading-6 text-slate-700 hover:text-slate-900 duration-300 group relative py-2.5">
+        @button({ href: route('auth.signup.create'), 'up-target': '[up-main]', 'up-layer': 'new', variant: 'dark' })
           Sign up 
-          @svg('ph:arrow-right-bold')
-          @!highlight.underline()
-        </a>
+        @end
       @endif
     </div>
   </nav>
@@ -110,7 +96,7 @@
         <a up-follow href="{{ route('series.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Series</a>
         <a up-follow href="{{ route('topics.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Topics</a>
         <a up-follow href="{{ route('lessons.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Lessons</a>
-        <a up-follow href="{{ route('feed.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">The Feed</a>
+        <a up-follow href="{{ route('feed.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Discuss</a>
         <a up-follow href="{{ route('streams.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Livestreams</a>
         <a up-follow href="{{ route('blog.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Blog</a>
         <a up-follow href="{{ route('snippets.index') }}" @click="showMobileMenu = false" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-slate-900 hover:bg-slate-200">Snippets</a>

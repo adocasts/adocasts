@@ -1,7 +1,7 @@
 @let(width = $props.width || 170)
 
 @if (item.asset)
-  <picture class="w-full h-full">
+  <picture class="{{ $props.classPicture || 'w-full h-full' }}">
     <source
       srcset="
         {{ assetDomain }}{{ item.asset.assetUrl }}?w={{ width * 2 }}&f=webp 2x,

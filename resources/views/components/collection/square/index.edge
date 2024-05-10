@@ -1,66 +1,35 @@
-<div class="{{ html.classNames(['flex flex-col justify-center items-center bg-slate-100 rounded-md relative overflow-hidden', ...($props.class || [])]) }}">
-  <div class="p-4 lg:p-6 flex-col duration-300 z-10 w-full h-full">
-    <div class="flex items-center rounded-md bg-slate-100 relative z-10 mb-2 overflow-hidden group">
-      <div class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-100/0 via-slate-100/40 to-slate-100/95 group-hover:opacity-75 duration-300 z-10"></div>
+<div>
+  <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="group relative flex h-80 items-end overflow-hidden rounded-lg bg-gray-100 p-4 shadow-lg">
+    @if (item.asset)
+      <div 
+        class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed scale-[200%] blur-2xl duration-300"
+        style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}?w=10');">
+      </div>
+    @endif
 
-      @if (item.asset)
-        <div 
-          class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed opacity-50 group-hover:opacity-75 duration-300"
-          style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}?w=10');">
+    <div class="absolute inset-0 -mt-12">
+      @!collection.icon({ 
+        item, 
+        class: 'w-3/4 object-fit object-center transition duration-200 group-hover:scale-110',
+        classPicture: 'w-full h-full flex items-center justify-center'
+      })
+    </div>
+
+    <div class="relative flex w-full flex-col rounded-lg bg-slate-100/85 backdrop-blur-md p-4 text-center">
+      <span class="text-lg font-bold text-slate-800">{{ item.name }}</span>
+      <div class="flex justify-center items-center gap-3 text-slate-600 text-xs lg:text-sm">
+        <div class="flex items-center gap-1.5">
+          @svg('ph:graduation-cap-fill')
+          <span>
+            {{ item.meta.postsCount }}
+            {{ pluralize('Lessons', item.meta.postsCount)}}
+          </span>
         </div>
-      @endif
-
-      <div class="w-full flex items-center p-4 gap-4 shadow-md relative z-20 anchor-group backdrop-blur-2xl">
-        <div class="w-1/5 md:w-1/4 max-w-[100px] flex justify-center items-center">
-          @!collection.icon({ item, class: 'w-full group-hover:scale-[104%] duration-300' })
-        </div>
-        <div class="w-4/5 md:w-3/4 space-y-1.5">
-          <h3 class="font-black text-slate-900 text-xl lg:text-2xl">
-            <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="anchor-expand">
-              {{ item.name }}
-            </a>
-          </h3>
-
-          <div class="relative">
-            <div class="flex items-center gap-3 text-slate-700 text-sm group-hover:translate-y-full group-hover:opacity-0 duration-300">
-              <div class="flex items-center gap-1.5">
-                @svg('ph:graduation-cap-fill')
-                <span>
-                  {{ item.meta.postsCount ?? '0' }}
-                  {{ pluralize('Lessons', item.meta.postsCount)}}
-                </span>
-              </div>
-    
-              <div class="flex items-center gap-1.5">
-                @svg('ph:clock-fill')
-                {{ utils.secondsToTimestring(item.meta.videoSecondsSum) }}
-              </div>
-            </div>
-
-            <div class="absolute w-full top-0 left-0 opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 duration-300 text-center drop-shadow-lg">
-              @button({ variant: 'dark', block: true, class: 'gap-1.5', href: route('series.show', { slug: item.slug }) })
-                View Series
-                @svg('ph:arrow-circle-right-fill')
-              @end
-            </div>
-          </div>
+        <div class="flex items-center gap-1.5">
+          @svg('ph:clock-fill')
+          {{ utils.secondsToTimestring(item.meta.videoSecondsSum) }}
         </div>
       </div>
     </div>
-
-    <div class="relative z-10 mt-4">
-      <div class="flex flex-col -mb-4">
-        <h5 class="uppercase font-semibold tracking-tight text-sm text-slate-950 mb-2">
-          Latest from this series
-        </h5>
-        @each ((post, i) in item.posts.slice(0, 4))
-          @!post.item.small({ 
-            item: post, 
-            class: [{ 'hidden md:flex lg:hidden': i === 3 }], 
-            display: { seriesName: false }
-          })
-        @endeach
-      </div>
-    </div>
-  </div>
+  </a>
 </div>
