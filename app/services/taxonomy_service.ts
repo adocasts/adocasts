@@ -25,6 +25,11 @@ export default class TaxonomyService {
     return TopicListVM.consume(results)
   }
 
+  async getForSeriesFilter() {
+    const topics = await this.getCachedList()
+    return topics.filter(topic => topic.isFeatured && Number(topic.meta.collectionsCount || '0'))
+  }
+
   /**
    * Returns a new instance of the taxonomy builder
    * @returns

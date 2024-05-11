@@ -25,6 +25,7 @@ export class TopicBaseVM extends BaseVM {
   declare name: string
   declare slug: string
   declare description: string
+  declare isFeatured: boolean
   declare asset: AssetVM | null
   declare collections: SeriesListVM[] | null
   declare meta: Record<string, any>
@@ -39,6 +40,7 @@ export class TopicBaseVM extends BaseVM {
     this.name = topic.name
     this.slug = topic.slug
     this.description = topic.description
+    this.isFeatured = topic.isFeatured
     this.asset = this.#getAsset(topic)
     this.collections = topic.collections?.map((collection) => new SeriesListVM(collection))
   }

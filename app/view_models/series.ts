@@ -12,6 +12,7 @@ class SeriesBaseVM extends BaseVM {
   declare slug: string
   declare description: string
   declare asset: AssetVM | null
+  declare topics: TopicRelationListVM[] | null
 
   constructor(series: Collection | undefined = undefined) {
     super()
@@ -24,11 +25,17 @@ class SeriesBaseVM extends BaseVM {
     this.slug = series.slug
     this.description = series.description
     this.asset = this.#getAsset(series)
+    this.topics = this.#getTopics(series)
   }
 
   #getAsset(collection: Collection) {
     if (!collection.asset) return null
     return new AssetVM(collection.asset)
+  }
+
+  #getTopics(collection: Collection) {
+    if (!collection.taxonomies?.length) return null
+    return collection.taxonomies.map(topic => new TopicRelationListVM(topic))
   }
 }
 

@@ -8,36 +8,81 @@
   }
 })
 
-  @section()
-    @!heading({
-      title: 'Recently Updated.',
-      subtitle: 'Series with new lessons'
-    })
+  @slot('hero')
+    <div class="bg-slate-100 border-b border-slate-200/50 pt-12">
+      @section({ class: 'page' })
+        @!heading({
+          title: 'Recently Updated.',
+          subtitle: 'Series with new lessons'
+        })
 
-    <div class="grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6 xl:gap-8">
-      @each ((item, index) in features)
-        @!collection.grid({ item, index })
-      @endeach
-    </div>
-  @end
-
-  @section()
-    @!heading({
-      title: 'All Series.',
-      subtitle: 'Alphabetical list of all our series'
-    })
-
-    <section class="grid gap-4 lg:gap-8 mt-8">
-      @each ((item, i) in series)
-        <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-slate-100 rounded-md pb-4 md:pb-0">
-          @!collection.square.tall({ item, class: ['bg-slate-200'] })
-
-          @each ((post, i) in item.posts)
-            @!post.item({ item: post, col: true, class: `p-4 pb-0 md:pb-4 !mb-0 ${i > 0 ? 'sm:hidden' : ''} ${i == 2 ? 'md:hidden lg:flex' : 'md:flex'}`, display: { seriesName: false } })
+        <div class="grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6 xl:gap-8">
+          @each ((item, index) in features)
+            @!collection.grid({ item, index })
           @endeach
         </div>
-      @endeach
-    </section>
+      @end
+    </div>
+  @endslot
+
+  @section({ id: 'seriesFilter' })
+    <div class="break pt-6 -mt-8 border-b border-slate-200/50 mb-8">
+      <div class="page flex gap-1.5">
+        @form.field({ label: 'Filter by topic' })
+          <div class="flex flex-wrap gap-1.5">
+            @button({ 
+              variant: !topic ? 'brand' : null,
+              href: route('series.index'), 
+              class: 'whitespace-nowrap' 
+            })
+              All Series Topics
+            @end
+            @each (topic in topics)
+              @button({ 
+                variant: topic.meta.isSelected ? 'brand' : null,
+                href: route('series.index', {}, { qs: { topic: topic.slug } }), 
+                class: 'whitespace-nowrap !text-base',
+                'up-target': '#seriesFilter',
+                'up-scroll': 'preserve'
+              })
+                {{ topic.name }}
+              @end
+            @endeach
+          </div>
+        @end
+
+        <form x-data="{ sort: {{ js.stringify(sort) }} }" method="GET" action="{{ route('series.index') }}">
+          {{ csrfField() }}
+          <input type="hidden" name="topic" value="{{ topic }}" />
+          @form.field({ label: 'Order', name: 'sort' })
+            @form.select({ model: 'sort' })
+              <option value="latest">Latest</option>
+              <option value="alphabetical">Alphabetical</option>
+              <option value="duration">Longest Duration</option>
+              <option value="lessons">Most Lessons</option>
+            @end
+          @end
+        </form>
+      </div>
+    </div>
+
+    <div class="flex gap-4">
+      {{-- <div class="md:order-2 w-full md:w-1/3">
+        @collection.grid({ item: letsLearn })
+          @slot('prefix')
+            <h4 class="uppercase text-xs text-brand-600 font-black tracking-wider mb-0.5">
+              New to AdonisJS?
+            </h4>
+          @endslot
+        @end
+      </div> --}}
+
+      <section class="w-full grid gap-4 lg:gap-8">
+        @each ((item, i) in series)
+          @!collection.grid.list({ item })
+        @endeach
+      </section>
+    </div>
   @end
 
 @end
