@@ -10,8 +10,19 @@
 
   @section()
     @!heading({
-      title: 'Covered Topics.',
-      subtitle: 'Subject-Based Learning'
+      title: 'Featured Topics.'
+    })
+
+    <div class="grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6 xl:gap-8">
+      @each ((item, index) in featured)
+        @!taxonomy.grid({ item, index })
+      @endeach
+    </div>
+  @end
+
+  @section()
+    @!heading({
+      title: 'All Topics',
     })
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-8 pt-4">
@@ -19,25 +30,6 @@
         @!taxonomy.card.small({ item })
       @endeach
     </div>
-  @end
-
-  @section()
-    @!heading({
-      title: 'All Topics.',
-      subtitle: 'All our topics and their latest lessons'
-    })
-
-    <section class="grid gap-4 lg:gap-8 mt-8">
-      @each ((item, i) in topics)
-        <div class="grid sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4 bg-slate-100 rounded-md">
-          @!taxonomy.card.tall({ item, class: ['bg-slate-200'] })
-
-          @each ((post, i) in item.posts)
-            @!post.item({ item: post, col: true, class: `p-4 pb-0 md:pb-4 !mb-0 ${i > 0 ? 'sm:hidden' : ''} ${i == 2 ? 'md:hidden lg:flex' : 'md:flex'}` })
-          @endeach
-        </div>
-      @endeach
-    </section>
   @end
 
 @end

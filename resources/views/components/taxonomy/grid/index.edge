@@ -1,0 +1,92 @@
+@let(lgIndexes = [0,3,4])
+@let(isLarge = lgIndexes.includes(index))
+@let(width = 400)
+
+<div class="group relative flex h-56 items-start overflow-hidden rounded-lg bg-slate-100 md:h-96 duration-300 border-2 border-transparent hover:border-slate-200 {{ isLarge ? index === 4 ? 'lg:col-span-2' : 'md:col-span-2' : '' }}">
+  @if (item.asset)
+    <div 
+      class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed scale-[200%] blur-[125px] opacity-25 duration-300"
+      style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}?w=10');">
+    </div>
+  @endif
+
+  <a href="{{ route('topics.show', { slug: item.slug }) }}" up-follow>
+    <picture class="absolute inset-0 w-full h-full flex items-center justify-end {{ isLarge ? index === 4 ? 'md:justify-center lg:justify-end' : '' : 'md:justify-center' }}">
+      <source
+        srcset="
+          {{ assetDomain }}{{ item.asset.assetUrl }}?w={{ width * 2 }}&f=webp 2x,
+          {{ assetDomain }}{{ item.asset.assetUrl }}?w={{ width }}&f=webp 1x
+        "
+        type="image/webp"
+      />
+
+      <img
+        src="{{ assetDomain }}{{ item.asset.assetUrl }}?w={{ width * 2 }}"
+        srcset="
+          {{ assetDomain }}{{ item.asset.assetUrl }}?w={{ width * 2 }} 2x,
+          {{ assetDomain }}{{ item.asset.assetUrl }}?w={{ width }} 1x,
+        "
+        alt="{{ altText || item.asset.altText }}"
+        class="{{ html.classNames([
+          'h-36 w-36 aspect-square -right-6 top-12 sm:h-56 sm:w-56 sm:-right-4 sm:top-6 md:-right-16 md:top-12 rounded-xl object-cover transition duration-200 group-hover:scale-110 relative',
+          isLarge && index === 4 ? 'md:h-80 md:w-80 lg:h-96 lg:w-96' : 'md:h-96 md:w-96',
+          {
+            'rotate-12 group-hover:rotate-0': isLarge,
+            'rotate-6 group-hover:rotate-0': !isLarge,
+          }
+        ]) }}"
+        loading="lazy"
+      />
+    </picture>
+  </a>
+
+  <div class="pointer-events-none absolute inset-0 bg-gradient-to-br from-slate-base-900 via-transparent to-transparent opacity-50"></div>
+
+  <div class="flex flex-col">
+    <a href="{{ route('topics.show', { slug: item.slug }) }}" up-follow class="relative mx-2 mt-2 md:mx-4 md:mt-4 inline-flex flex-col rounded-lg bg-slate-100/85 backdrop-blur-md p-2 md:p-4">
+      @if ($slots.prefix)
+        {{{ await $slots.prefix() }}}
+      @endif
+
+      <h3 class="text-sm md:text-lg font-bold text-slate-800 lg:text-xl">{{ item.name }}</h3>
+
+      <div class="flex flex-col md:flex-row gap-y-1 gap-x-3 text-slate-600 text-xs lg:text-sm mt-1">
+        <div class="flex items-center gap-1.5">
+          @svg('ph:books-fill')
+          <span>
+            {{ item.meta.collectionsCount }}
+            {{ pluralize('Series', item.meta.collectionsCount) }}
+          </span>
+        </div>
+
+        <div class="flex items-center gap-1.5">
+          @svg('ph:graduation-cap-fill')
+          <span>
+            {{ item.meta.postsCount }}
+            {{ pluralize('Lessons', item.meta.postsCount)}}
+          </span>
+        </div>
+      </div>
+    </a>
+
+    @if (isLarge && item.posts)
+      <div class="hidden {{ index === 4 ? 'lg:block' : 'md:block' }} max-w-md bg-slate-100/85 backdrop-blur-md p-4 rounded-lg mt-4 mx-4">
+        <h5 class="uppercase font-semibold tracking-tight text-sm text-slate-950 mb-3">
+          Latest topic lessons
+        </h5>
+        <div class="flex flex-col md:flex-row relative z-10 gap-4 lg:gap-8 -mx-2">
+          <div class="w-full flex flex-col">
+            @each ((post, i) in item.posts.slice(0, 3))
+              @!post.item.small({ 
+                item: post, 
+                showImg: false,
+                class: ['bg-transparent hover:bg-slate-100 duration-300 rounded-lg py-1.5', { 'hidden md:flex lg:hidden': i === 3 }], 
+                display: { seriesName: false }
+              })
+            @endeach
+          </div>
+        </div>
+      </div>
+    @endif
+  </div>
+</div>

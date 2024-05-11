@@ -21,10 +21,11 @@ export default class TopicsController {
 
   async index({ view, history }: HttpContext) {
     const topics = await this.taxonomyService.getCachedList()
+    const featured = topics.filter(topic => topic.isFeatured)
 
     await history.commit()
 
-    return view.render('pages/topics/index', { topics })
+    return view.render('pages/topics/index', { topics, featured })
   }
 
   async show({ view, request, params, route, history }: HttpContext) {
