@@ -8,6 +8,7 @@ import { Exception } from '@adonisjs/core/exceptions'
 import type { HttpContext } from '@adonisjs/core/http'
 import router from '@adonisjs/core/services/router'
 import { PostListVM } from '../view_models/post.js'
+import UtilityService from '#services/utility_service'
 
 @inject()
 export default class TopicsController {
@@ -21,7 +22,7 @@ export default class TopicsController {
 
   async index({ view, history }: HttpContext) {
     const topics = await this.taxonomyService.getCachedList()
-    const featured = topics.filter(topic => topic.isFeatured)
+    const featured = UtilityService.pluckRandom(topics.filter(topic => topic.isFeatured), 6)
 
     await history.commit()
 

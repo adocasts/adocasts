@@ -11,25 +11,29 @@
   }
 })
 
-  @if (recent?.length)
-    @section()
-      @!heading({ 
-        title: 'Recently Released.',
-        subtitle: "Newly Released in the last 30 days"
-      })
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-8 gap-4 pb-8 pt-4">
-        @each(item in recent)
-          @!post.item({ 
-            item, 
-            col: true, 
-            class: ['lg:col-span-2'],
-            classDescription: ['md:hidden lg:block']
+  @slot('hero')
+    @if (recent?.length)
+      <div class="bg-slate-100 border-b border-slate-200/50 pt-12">
+        @section({ class: 'page' })
+          @!heading({ 
+            title: 'Recently Released.',
+            subtitle: "Newly Released in the last 30 days"
           })
-        @endeach
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-8 gap-4 pb-8 pt-4">
+            @each(item in recent)
+              @!post.item({ 
+                item, 
+                col: true, 
+                class: ['lg:col-span-2'],
+                classDescription: ['md:hidden lg:block']
+              })
+            @endeach
+          </div>
+        @end
       </div>
-    @end
-  @endif
+    @endif
+  @endslot
 
   @section()
     <div class="flex flex-col lg:flex-row -mx-4">

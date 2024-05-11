@@ -188,6 +188,11 @@ export default class UtilityService {
     return array[Math.floor(Math.random() * array.length)]
   }
 
+  static pluckRandom<T>(array: T[], pluck: number) {
+    const shuffle = array.sort(() => 0.5 - Math.random())
+    return shuffle.slice(0, pluck)
+  }
+
   static classes(...args: string[] | string[][]) {
     return args.filter(Boolean).reduce((list, item) => {
       if (Array.isArray(item)) {

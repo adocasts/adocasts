@@ -44,7 +44,7 @@
         {{{ await $slots.prefix() }}}
       @endif
 
-      <h3 class="text-sm md:text-lg font-bold text-slate-800 lg:text-xl">{{ item.name }}</h3>
+      <h3 class="text-sm md:text-lg font-black text-slate-800 lg:text-xl">{{ item.name }}</h3>
 
       <div class="flex flex-col md:flex-row gap-y-1 gap-x-3 text-slate-600 text-xs lg:text-sm mt-1">
         <div class="flex items-center gap-1.5">
@@ -63,7 +63,7 @@
 
     @if (isLarge && item.posts)
       <div class="hidden {{ index === 4 ? 'lg:block' : 'md:block' }} max-w-md bg-slate-100/85 backdrop-blur-md p-4 rounded-lg mt-4 mx-4">
-        <h5 class="uppercase font-semibold tracking-tight text-sm text-slate-950 mb-3">
+        <h5 class="uppercase font-semibold tracking-tight text-sm text-slate-600 mb-3">
           Latest from this series
         </h5>
         <div class="flex flex-col md:flex-row relative z-10 gap-4 lg:gap-8 -mx-2">
