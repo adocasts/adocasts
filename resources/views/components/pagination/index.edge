@@ -6,6 +6,17 @@
 @let(spreadEnd = false)
 @let(hasPrevious = items.currentPage > items.firstPage)
 @let(hasNext = items.lastPage > items.currentPage)
+@let(filterQs = '')
+@let(anchorAttrs = $props.anchorAttrs || {})
+
+@if (withQs)
+  @let(qs = request.qs())
+  @assign(filterQs = Object.keys(qs).filter(key => key !== 'page').map(key => `${key}=${qs[key]}`).join('&'))
+
+  @if (filterQs)
+    @assign(filterQs = '&' + filterQs)
+  @endif
+@endif
 
 @if (rangeStart < items.firstPage)
   @let(diff = items.firstPage - rangeStart)
@@ -54,9 +65,10 @@
           <li class="h-full">
               <a
                 @if (hasPrevious)
-                  href="{{ items.url + `?page=${items.currentPage - 1}` }}"
+                  href="{{ items.url + `?page=${items.currentPage - 1}${filterQs}` }}"
                 @endif
                 up-follow 
+                {{ html.attrs(anchorAttrs) }}
                 class="{{ html.classNames(['relative inline-flex items-center h-full px-3 rounded-l', {
                 'hover:bg-slate-200 hover:text-slate-900': hasPrevious,
                 'cursor-not-allowed text-slate-300': !hasPrevious
@@ -74,7 +86,8 @@
                 @elseif (typeof item.spread === 'undefined')
                   <a
                     up-follow 
-                    href="{{ item.url }}" 
+                    href="{{ item.url }}{{ filterQs }}" 
+                    {{ html.attrs(anchorAttrs) }}
                     class="{{ html.classNames(['relative inline-flex items-center h-full px-3', {
                       'hover:bg-slate-200 hover:text-slate-900': !item.isActive,
                       'text-brand-100 bg-brand-600': item.isActive
@@ -88,9 +101,10 @@
           <li class="h-full">
             <a
                 @if (hasNext)
-                  href="{{ items.url + `?page=${items.currentPage + 1}` }}"
+                  href="{{ items.url + `?page=${items.currentPage + 1}${filterQs}` }}"
                 @endif
                 up-follow 
+                {{ html.attrs(anchorAttrs) }}
                 class="{{ html.classNames(['relative inline-flex items-center h-full px-3 rounded-l', {
                 'hover:bg-slate-200 hover:text-slate-900': hasNext,
                 'cursor-not-allowed text-slate-300': !hasNext

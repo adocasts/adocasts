@@ -110,7 +110,15 @@
         </div>
     
         @if (items.hasPages)
-          @!pagination({ items })
+          @!pagination({ 
+            items, 
+            withQs: true, 
+            anchorAttrs: { 
+              'up-scroll': '#lessonFilter',
+              'up-scroll-behavior': 'smooth',
+              'up-reveal-top': true
+            } 
+          })
         @endif
       </main>
 
