@@ -16,6 +16,9 @@ import logger from '#services/logger_service'
 import { PostListVM } from '../view_models/post.js'
 import Comment from '#models/comment'
 import States from '#enums/states'
+import TaxonomyService from '#services/taxonomy_service'
+import { TopicListVM } from '../view_models/topic.js'
+import Post from '#models/post'
 
 @inject()
 export default class LessonsController {
@@ -24,21 +27,48 @@ export default class LessonsController {
     protected collectionService: CollectionService,
     protected permissionService: PermissionService,
     protected historyService: HistoryService,
-    protected discussionService: DiscussionService
+    protected discussionService: DiscussionService,
+    protected taxonomyService: TaxonomyService
   ) {}
 
   async index({ view, request, params, history }: HttpContext) {
-    const { page = '1', sortBy = 'publishAt', sort = 'desc' } = request.qs()
+    let { page = '1', sort = 'latest', topic = '' } = request.qs()
+    let sortField: keyof Post = 'publishAt'
+    let sortDir: 'asc' | 'desc' = 'desc'
+    let topics = await this.taxonomyService.getForPostFilter()
+    let topicActive: TopicListVM
 
-    if (page === '1' && sortBy === 'publishAt') {
-      const recent = await this.postService.getCachedNewThisMonth()
-
-      view.share({ title: 'Lessons', recent })
+    if (topic) {
+      topics = topics.map(t => {
+        if (t.slug !== topic) return t
+        t.meta.isSelected = true
+        topicActive = t
+        return t
+      })
     }
 
+    switch (sort) {
+      case 'duration':
+        sortField = 'videoSeconds'
+        break
+      case 'popular':
+        sortField = 'viewCount'
+        break
+      case 'alphabetical':
+        sortField = 'title'
+        sortDir = 'asc'
+        break
+      default:
+        sortField = 'publishAt'
+        break
+    }
+    
+    const recent = await this.postService.getCachedNewThisMonth()    
     const items = await this.postService
       .getLessons()
-      .orderBy(sortBy, sort)
+      .clearOrder()
+      .orderBy(sortField, sortDir)
+      .if(topic, q => q.whereHasTaxonomy(topicActive))
       .selectListVM()
       .paginate(page, 20, router.makeUrl('lessons.index', params))
 
@@ -48,7 +78,7 @@ export default class LessonsController {
 
     await history.commit()
 
-    return view.render('pages/lessons/index', { type: 'Lessons', items, rows, feed, adAside })
+    return view.render('pages/lessons/index', { type: 'Lessons', recent, items, rows, topics, topic, sort, feed, adAside })
   }
 
   async streams({ view, request, params, history }: HttpContext) {

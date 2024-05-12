@@ -27,23 +27,25 @@
 
   @section({ id: 'seriesFilter' })
     <div class="break pt-6 -mt-8 border-b border-slate-200/50 mb-8">
-      <div class="page flex gap-1.5">
-        @form.field({ label: 'Filter by topic' })
+      <div class="page flex justify-between gap-1.5">
+        @form.field({ label: 'Filter by topic', class: 'hidden md:block' })
           <div class="flex flex-wrap gap-1.5">
             @button({ 
               variant: !topic ? 'brand' : null,
-              href: route('series.index'), 
-              class: 'whitespace-nowrap' 
+              href: route('series.index', {}, { qs: { sort } }), 
+              class: 'whitespace-nowrap',
+              'up-target': '#seriesFilter',
+              'up-scroll': 'restore'
             })
               All Series Topics
             @end
             @each (topic in topics)
               @button({ 
                 variant: topic.meta.isSelected ? 'brand' : null,
-                href: route('series.index', {}, { qs: { topic: topic.slug } }), 
+                href: route('series.index', {}, { qs: { topic: topic.slug, sort } }), 
                 class: 'whitespace-nowrap !text-base',
                 'up-target': '#seriesFilter',
-                'up-scroll': 'preserve'
+                'up-scroll': 'restore'
               })
                 {{ topic.name }}
               @end
@@ -51,11 +53,26 @@
           </div>
         @end
 
-        <form x-data="{ sort: {{ js.stringify(sort) }} }" method="GET" action="{{ route('series.index') }}">
-          {{ csrfField() }}
-          <input type="hidden" name="topic" value="{{ topic }}" />
-          @form.field({ label: 'Order', name: 'sort' })
-            @form.select({ model: 'sort' })
+        <form class="flex-1 md:hidden" x-data="{ topic: {{ js.stringify(topic) }} }" method="GET" action="{{ route(routeIdentifier) }}" up-submit up-target="#lessonFilter" up-scroll="restore">
+          <input type="hidden" name="sort" value="{{ sort || '' }}" />
+
+          {{-- up-autosubmit isn't submitting consistently when resetting value back to latest, so we'll manually autosubmit submit for now --}}
+          @form.field({ label: 'Filter by topic', name: 'topic' })
+            @form.select({ model: 'topic', '@change': 'up.submit($el.form)' })
+              <option value="">All Lesson Topics</option>
+              @each (topic in topics)
+                <option value="{{ topic.slug }}">{{ topic.name }}</option>
+              @endeach
+            @end
+          @end
+        </form>
+
+        <form x-data="{ sort: {{ js.stringify(sort) }} }" method="GET" action="{{ route('series.index') }}" up-submit up-target="#seriesFilter" up-scroll="restore">
+          <input type="hidden" name="topic" value="{{ topic || '' }}" />
+
+          {{-- up-autosubmit isn't submitting consistently when resetting value back to latest, so we'll manually autosubmit submit for now --}}
+          @form.field({ label: 'Sort by', name: 'sort' })
+            @form.select({ model: 'sort', '@change': 'up.submit($el.form)' })
               <option value="latest">Latest</option>
               <option value="alphabetical">Alphabetical</option>
               <option value="duration">Longest Duration</option>

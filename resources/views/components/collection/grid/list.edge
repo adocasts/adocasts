@@ -1,6 +1,6 @@
 @let(width = 400)
 
-<div class="group relative flex min-h-[14rem] items-start overflow-hidden rounded-lg bg-slate-100 md:min-h-[24rem] duration-300 border-2 border-transparent hover:border-slate-200 md:col-span-2">
+<div class="group/list relative flex min-h-[14rem] items-start overflow-hidden rounded-lg bg-slate-100 md:min-h-[24rem] duration-300 border-2 border-transparent hover:border-slate-200 md:col-span-2">
   @if (item.asset?.assetUrl)
     <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow>
       <picture class="absolute inset-0 w-full h-full flex items-end justify-end">
@@ -19,14 +19,14 @@
             {{ assetDomain }}{{ item.asset.assetUrl }}?w={{ width }} 1x,
           "
           alt="{{ altText || item.asset.altText }}"
-          class="h-36 w-36 aspect-square -right-6 top-12 sm:h-56 sm:w-56 sm:-right-4 sm:top-6 md:h-96 md:w-96 md:-right-10 md:top-4 lg:w-[30rem] lg:h-[30rem] lg:-right-[5rem] lg:top-[5rem] rounded-full object-cover transition duration-200 group-hover:scale-110 relative"
+          class="h-36 w-36 aspect-square -right-6 top-12 sm:h-56 sm:w-56 sm:-right-4 sm:top-6 md:h-96 md:w-96 md:-right-10 md:top-4 lg:w-[30rem] lg:h-[30rem] lg:-right-[5rem] lg:top-[5rem] rounded-full object-cover transition duration-200 group-hover/list:scale-110 relative"
           loading="lazy"
         />
       </picture>
     </a>
   @endif
 
-  <div class="pointer-events-none absolute inset-0 bg-gradient-to-br from-slate-base-900 via-transparent to-transparent opacity-50"></div>
+  <div class="pointer-events-none absolute inset-0 bg-gradient-to-br from-slate-100 via-transparent to-transparent opacity-50"></div>
 
   <div class="flex flex-col">
     <a href="{{ route('series.show', { slug: item.slug }) }}" up-follow class="relative mx-2 mt-2 md:mx-4 md:mt-4 inline-flex flex-col rounded-lg bg-slate-100/85 backdrop-blur-md p-2 md:p-4">

@@ -48,6 +48,11 @@ export default class BaseBuilder<Model extends LucidModel, Record extends LucidR
     return this
   }
 
+  clearOrder() {
+    this.query.clearOrder()
+    return this
+  }
+
   orderBy(column: string, direction: 'asc' | 'desc' = 'asc') {
     this.query.orderBy(column, direction)
     return this

@@ -21,7 +21,6 @@ export default class SeriesController {
     let features = await this.collectionService.getRecentlyUpdated()
     let series = await this.collectionService.getAll()
     let topics = await this.taxonomyService.getForSeriesFilter()
-    let letsLearn = series.find(s => s.slug === 'lets-learn-adonisjs-6')
     
     if (topic) {
       series = series.filter(s => s.topics && s.topics.some(t => t.slug === topic))
@@ -46,7 +45,7 @@ export default class SeriesController {
 
     await history.commit()
 
-    return view.render('pages/series/index', { features, series, sort, topic, topics, letsLearn })
+    return view.render('pages/series/index', { features, series, sort, topic, topics })
   }
 
   async show({ view, params, route, history, auth }: HttpContext) {

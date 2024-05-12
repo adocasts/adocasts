@@ -1,7 +1,7 @@
 @layer base {
   :root {
-    --font-heading: 'Fugaz One', apple system, sans-serif;
-    --font-body: 'Karla', apple system, sans-serif;
+    --font-heading: 'Reddit Sans', apple system, sans-serif;
+    --font-body: 'Reddit Sans', apple system, sans-serif;
     --font-mono: 'Dank Mono', monospace;
 
     --white: 255 255 255;

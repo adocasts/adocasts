@@ -125,7 +125,7 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
   }
 
   selectListVM() {
-    this.query.select('id', 'postTypeId', 'stateId', 'paywallTypeId', 'videoTypeId', 'title', 'slug', 'description', 'publishAt', 'timezone', 'videoUrl', 'videoBunnyId', 'redirectUrl')
+    this.query.select('id', 'postTypeId', 'stateId', 'paywallTypeId', 'videoTypeId', 'title', 'slug', 'description', 'publishAt', 'timezone', 'videoUrl', 'videoBunnyId', 'redirectUrl', 'videoSeconds', 'viewCount')
     return this
   }
 

@@ -10,6 +10,8 @@ up.layer.config.modal.size = 'grow'
 up.layer.config.modal.onOpened = () => document.body.classList.add('overflow-hidden')
 up.layer.config.modal.onDismissed = () => document.body.classList.remove('overflow-hidden')
 
+window.up = up
+
 const upPricing = document.querySelector('[up-pricing]')
 
 up.on('up:location:changed', function (event) {

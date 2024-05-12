@@ -1,6 +1,6 @@
 <header x-data="{ showMobileMenu: false }" class="bg-slate-100 relative z-50 mx-auto py-1.5">
   <nav class="mx-auto flex justify-between page" aria-label="Global">
-    <div class="relative flex justify-center items-center">
+    <div class="relative flex justify-start items-center order-2 lg:order-1 flex-1 lg:flex-initial">
       <a
         href="/"
         up-follow>
@@ -10,7 +10,7 @@
       </a>
     </div>
 
-    <div class="flex flex-1 justify-center">
+    <div class="flex lg:flex-1 justify-center order-1 lg:order-2 mr-3 lg:mr-0">
       <div class="hidden lg:flex lg:gap-x-4 xl:gap-x-6 header-nav">
         <a href="{{ route('series.index') }}" up-follow class="header-link">
           Series
@@ -29,17 +29,17 @@
         </a>
       </div>
       <div class="flex lg:hidden my-2.5">
-        <button @click="showMobileMenu = true" type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-slate-700">
+        @button({ '@click': 'showMobileMenu = true', square: true })
           <span class="sr-only">Open main menu</span>
-          @svg('ph:list-fill', { class: 'w-6 h-6' })
-        </button>
+          @svg('ph:list-bold', { class: 'w-3 h-3 md:w-4 md:h-4 m-0.5' })
+        @end
       </div>
     </div>
   
-    <div class="flex justify-end items-center gap-2">
+    <div class="flex justify-end items-center gap-2 order-3">
       <div class="{{ html.classNames(['items-center gap-2', auth?.user ? 'hidden md:flex' : 'flex']) }}">
         @button({ href: route('search.index'), 'up-layer': 'new', 'up-target': '[up-main]', square: true })
-          @svg('ph:magnifying-glass-bold', { class: 'w-3 h-3 md:w-4 md:h-4 m-0.5' })
+          @svg('ph:magnifying-glass-bold', { class: 'w-3 h-3 md:w-4 md:h-4' })
         @end
 
         @!theme.selector()
@@ -54,11 +54,11 @@
           </a>
         </div>
       @else
-        @button({ href: route('auth.signin.create'), 'up-target': '[up-main]', 'up-layer': 'new' })
+        @button({ href: route('auth.signin.create'), 'up-target': '[up-main]', 'up-layer': 'new', class: 'hidden md:inline-block' })
           Sign In
         @end
 
-        @button({ href: route('auth.signup.create'), 'up-target': '[up-main]', 'up-layer': 'new', variant: 'dark' })
+        @button({ href: route('auth.signup.create'), 'up-target': '[up-main]', 'up-layer': 'new', variant: 'dark', class: 'hidden md:inline-block' })
           Sign up 
         @end
       @endif
@@ -70,7 +70,7 @@
     <div class="fixed inset-0 z-10"></div>
     <div class="fixed inset-y-0 left-0 z-10 w-full overflow-y-auto bg-white px-6 py-4">
       <div class="flex items-center justify-between">
-        <div class="flex flex-1">
+        <div class="flex mr-3">
           <button @click="showMobileMenu = false" type="button" class="-m-2.5 rounded-md p-2.5 text-slate-700">
             <span class="sr-only">Close menu</span>
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
