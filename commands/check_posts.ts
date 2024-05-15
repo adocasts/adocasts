@@ -24,7 +24,7 @@ export default class CheckPosts extends BaseCommand {
 
     const posts = await Post.query()
       .whereBetween('updatedAt', [start, end]) // updated in last 5 minutes
-      .whereBetween('publishAt', [start, end]) // published in last 5 minutes
+      .orWhereBetween('publishAt', [start, end]) // published in last 5 minutes
       .orWhere(query => { // switched from plus access to free access in last 5 minutes
         query
           .where('paywallTypeId', PaywallTypes.DELAYED_RELEASE)
@@ -35,12 +35,16 @@ export default class CheckPosts extends BaseCommand {
     if (!posts.length) {
       this.logger.info('No new posts found')
       return
+    } else {
+      this.logger.info(`Found ${posts.length} new, updated, or delayed posts`)
     }
 
     // for now, let's just clear all content-based namespaces
     await bento.namespace(CacheNamespaces.POSTS).clear()
     await bento.namespace(CacheNamespaces.COLLECTIONS).clear()
     await bento.namespace(CacheNamespaces.TAXONOMIES).clear()
+
+    await bento.disconnect()
 
     this.logger.info(`Cleared cache namespaces: ${CacheNamespaces.POSTS}, ${CacheNamespaces.COLLECTIONS}, ${CacheNamespaces.TAXONOMIES}`)
   }
