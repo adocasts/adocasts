@@ -5,7 +5,7 @@
     canonical: post.routeUrl,
     series: series,
     desc: string.excerpt(post.meta_description ?? post.description, 180),
-    asset: post.thumbnails && post.thumbnails[0],
+    asset: post.asset,
     index: PostService.getIsIndexable(post)
   }
 })
