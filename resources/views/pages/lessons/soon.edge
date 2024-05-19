@@ -4,7 +4,7 @@
     url: post.routeUrl,
     series: series,
     desc: string.excerpt(post.meta_description ?? post.description, 180),
-    asset: post.thumbnails && post.thumbnails[0],
+    asset: post.asset,
     index: PostService.getIsIndexable(post)
   }
 })
@@ -29,7 +29,7 @@
               <p class="lg:text-lg max-w-lg mt-3 mb-10">
                 Please check back {{ utils.timeago(post.publishAt) }}
               </p>
-              @!countdown({ dateTime: post.publishAt.toISO() })
+              @!countdown({ dateTime: DateTime.fromISO(post.publishAtISO).plus({ days: 14 }).toISO() })
             </div>
           </div>
         @end
@@ -55,7 +55,7 @@
           @end
         @endif
 
-        @!watchlist.toggle({ active: parseInt(post.$extras.watchlist_count ?? 0), postId: post.id })
+        @!watchlist.toggle({ active: post.meta.isInWatchlist, postId: post.id })
 
         @if (!auth.user)
           @button({ href: route('auth.signup.create'), class: 'gap-2', 'up-layer': 'new' })
