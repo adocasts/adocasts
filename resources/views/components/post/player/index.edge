@@ -1,5 +1,11 @@
 @if (post?.hasVideo)
   @can('PostPolicy.view', post)
+    @let(videoTypeId = post.videoTypeId)
+
+    {{-- @if (post.videoYouTubeId && !PostService.getIsPaywalled(post))
+      @assign(videoTypeId = VideoTypes.YOUTUBE)
+    @endif --}}
+    
     <div
       id="videoPlayerPlaceholder{{ post.id }}"
       video-placeholder
@@ -18,14 +24,14 @@
         @endif
         <div class="w-full h-full mx-auto" style="max-width: 150vh;">
           <div class="w-full aspect-video relative overflow-hidden">
-            @if (post.videoTypeId === VideoTypes.YOUTUBE)
+            @if (videoTypeId === VideoTypes.YOUTUBE)
               <div
                 id="lessonVideoEmbed"
                 class="absolute top-0 left-0 w-full h-full"
                 data-plyr-provider="youtube"
-                data-plyr-embed-id="{{ post.isLive && post.livestreamUrl ? post.streamId : post.videoId }}"
+                data-plyr-embed-id="{{ post.isLive && post.livestreamUrl ? post.streamId : post.videoYouTubeId }}"
                 data-is-live="{{ post.livestreamUrl && post.isLive }}"
-                data-video-id="{{ post.isLive && post.livestreamUrl ? post.streamId : post.videoId }}"
+                data-video-id="{{ post.isLive && post.livestreamUrl ? post.streamId : post.videoYouTubeId }}"
                 data-watch-seconds="{{ userProgression?.watchSeconds ?? 0 }}"
                 data-is-completed="{{ userProgression?.isCompleted ?? false }}"
                 data-http-url="{{ route('api.histories.progression', { id: userProgression?.id }) }}"
@@ -35,12 +41,12 @@
                 data-payload-route="{{ request.ctx.route?.name ?? '' }}"
               >
               </div>
-            @elseif (post.videoTypeId === VideoTypes.BUNNY)
+            @elseif (videoTypeId === VideoTypes.BUNNY)
               <iframe
                 id="lessonVideoEmbed"
                 class="absolute top-0 left-0 w-full h-full"
                 data-is-live="false"
-                data-video-id="{{ post.videoId }}"
+                data-video-id="{{ post.videoBunnyId }}"
                 data-plyr-provider="bunny"
                 data-watch-seconds="{{ userProgression?.watchSeconds ?? 0 }}"
                 data-is-completed="{{ userProgression?.isCompleted ?? false }}"
@@ -49,7 +55,7 @@
                 data-payload-collection-id="{{ series?.id ?? '' }}"
                 data-payload-user-id="{{ auth.user?.id ?? '' }}"
                 data-payload-route="{{ request.ctx.route?.name ?? '' }}"
-                src="https://iframe.mediadelivery.net/embed/164208/{{ post.videoId }}?autoplay=false&preload=true&responsive=true" 
+                src="https://iframe.mediadelivery.net/embed/164208/{{ post.videoBunnyId }}?autoplay=false&preload=true&responsive=true" 
                 loading="lazy" 
                 allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" 
                 allowfullscreen="true"
@@ -96,7 +102,7 @@
               <a href="{{ route('series.show', { slug: series.slug }) }}">
                 {{ series.name }}
                 <span class="inline-block ml-1 font-normal">
-                  #{{ post.lessonIndexDisplay }}
+                  #{{ post.series.lessonIndexDisplay }}
                 </span>
               </a>
             </h5>
