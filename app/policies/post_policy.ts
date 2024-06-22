@@ -24,4 +24,3 @@ export default class PostPolicy extends BasePolicy {
     return false
   }
 }
-

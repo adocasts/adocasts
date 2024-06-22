@@ -118,7 +118,8 @@ export class PostShowVM extends PostBaseVM {
   declare viewCount: number | null
   declare hasVideo: boolean
   declare streamId: string
-  declare videoId: string | null
+  declare videoYouTubeId: string | null
+  declare videoBunnyId: string | null
   declare livestreamUrl: string | null
   declare rootSortOrder: number
 
@@ -133,7 +134,8 @@ export class PostShowVM extends PostBaseVM {
     this.viewCount = post.viewCount
     this.hasVideo = !!post.hasVideo
     this.streamId = post.streamId
-    this.videoId = post.videoId
+    this.videoYouTubeId = post.videoYouTubeId
+    this.videoBunnyId = post.videoBunnyId
     this.livestreamUrl = post.livestreamUrl
     this.author = new UserVM(post.authors.at(0)!)
   }

@@ -268,11 +268,7 @@ export default class Post extends AppBaseModel {
   }
 
   @computed()
-  get videoId() {
-    if (this.videoTypeId === VideoTypes.BUNNY) {
-      return this.videoBunnyId
-    }
-
+  get videoYouTubeId() {
     if (!this.videoUrl) return ''
 
     return this.videoUrl
@@ -280,6 +276,15 @@ export default class Post extends AppBaseModel {
       .replace('https://youtube.com/watch?v=', '')
       .replace('https://youtube.com/embed/', '')
       .replace('https://youtu.be/', '')
+  }
+
+  @computed()
+  get videoId() {
+    if (this.videoTypeId === VideoTypes.BUNNY) {
+      return this.videoBunnyId
+    }
+
+    return this.videoYouTubeId
   }
 
   @computed()
