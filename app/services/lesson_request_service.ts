@@ -203,24 +203,24 @@ export default class LessonRequestService {
   private async updateState(lessonRequest: LessonRequest, stateId: States) {
     const data = await this.ctx.request.validateUsing(lessonRequestUpdateStateValidator)
     const commentColumn = await this.getStateCommentColumn(stateId)
-    const trx = await db.transaction()
-    let commentId: null | number = null
 
-    lessonRequest.useTransaction(trx)
+    await db.transaction(async (trx) => {
+      let commentId: null | number = null
 
-    if (data.comment) {
-      const comment = await this.comment(lessonRequest, data.comment, trx)
-      commentId = comment.id
-    }
+      lessonRequest.useTransaction(trx)
 
-    await lessonRequest
-      .merge({
-        [commentColumn]: commentId,
-        stateId,
-      })
-      .save()
+      if (data.comment) {
+        const comment = await this.comment(lessonRequest, data.comment, trx)
+        commentId = comment.id
+      }
 
-    await trx.commit()
+      await lessonRequest
+        .merge({
+          [commentColumn]: commentId,
+          stateId,
+        })
+        .save()
+    })
   }
 
   /**

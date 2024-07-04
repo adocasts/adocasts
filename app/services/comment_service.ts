@@ -25,34 +25,34 @@ export default class CommentService {
   async store(data: Infer<typeof commentValidator>) {
     if (!this.user) throw new UnauthorizedException('You must be signed in to create comments.')
 
-    const trx = await db.transaction()
     const comment = new Comment()
-    const identity = await IdentityService.getRequestIdentity(this.ctx.request)
 
-    comment.useTransaction(trx)
+    await db.transaction(async (trx) => {
+      const identity = await IdentityService.getRequestIdentity(this.ctx.request)
 
-    comment.merge({
-      ...data,
-      commentTypeId: Comment.getTypeId(data),
-      identity,
-      body: SanitizeService.sanitize(data.body),
-      userId: this.user.id,
-      stateId: States.PUBLIC,
+      comment.useTransaction(trx)
+
+      comment.merge({
+        ...data,
+        commentTypeId: Comment.getTypeId(data),
+        identity,
+        body: SanitizeService.sanitize(data.body),
+        userId: this.user!.id,
+        stateId: States.PUBLIC,
+      })
+
+      if (!comment.rootParentId) {
+        comment.rootParentId = comment.id
+      }
+
+      await comment.save()
+
+      comment.replyTo
+        ? await NotificationService.onCommentReply(comment, this.user, trx)
+        : await NotificationService.onCommentCreate(comment, this.user, trx)
+
+      await MentionService.checkForCommentMention(comment, this.user!, trx)
     })
-
-    if (!comment.rootParentId) {
-      comment.rootParentId = comment.id
-    }
-
-    await comment.save()
-
-    comment.replyTo
-      ? await NotificationService.onCommentReply(comment, this.user, trx)
-      : await NotificationService.onCommentCreate(comment, this.user, trx)
-
-    await MentionService.checkForCommentMention(comment, this.user, trx)
-
-    await trx.commit()
 
     await logger.info('NEW COMMENT', {
       postId: comment.postId,
@@ -69,23 +69,22 @@ export default class CommentService {
    * @param data
    */
   async update(comment: Comment, body: string) {
-    const trx = await db.transaction()
-    const oldBody = comment.body
+    await db.transaction(async (trx) => {
+      const oldBody = comment.body
 
-    comment.useTransaction(trx)
+      comment.useTransaction(trx)
 
-    body = SanitizeService.sanitize(body)
+      body = SanitizeService.sanitize(body)
 
-    await comment.merge({ body }).save()
-    await NotificationService.onUpdate(Comment.table, comment.id, comment.body, trx)
+      await comment.merge({ body }).save()
+      await NotificationService.onUpdate(Comment.table, comment.id, comment.body, trx)
 
-    const newMentions = MentionService.checkTextForNewMentions(oldBody, body)
+      const newMentions = MentionService.checkTextForNewMentions(oldBody, body)
 
-    if (newMentions.length) {
-      await NotificationService.onCommentMention(comment, newMentions, this.user!, trx)
-    }
-
-    await trx.commit()
+      if (newMentions.length) {
+        await NotificationService.onCommentMention(comment, newMentions, this.user!, trx)
+      }
+    })
 
     return comment
   }
@@ -117,37 +116,35 @@ export default class CommentService {
    * @param comment
    */
   async destroy(comment: Comment) {
-    const trx = await db.transaction()
+    await db.transaction(async (trx) => {
+      const parent = await comment.related('parent').query().first()
+      const childCount = await comment
+        .related('responses')
+        .query()
+        .whereNot('stateId', States.ARCHIVED)
+        .count('*', 'total')
+        .first()
 
-    const parent = await comment.related('parent').query().first()
-    const childCount = await comment
-      .related('responses')
-      .query()
-      .whereNot('stateId', States.ARCHIVED)
-      .count('*', 'total')
-      .first()
+      comment.useTransaction(trx)
+      parent?.useTransaction(trx)
 
-    comment.useTransaction(trx)
-    parent?.useTransaction(trx)
-
-    if (Number.parseInt(childCount?.$extras.total)) {
-      comment.merge({ body: '[deleted]', userId: null, stateId: States.ARCHIVED })
-      await comment.save()
-    } else {
-      await comment.related('userVotes').query().delete()
-      await comment.delete()
-      await NotificationService.onDelete(Comment.table, comment.id, trx)
-    }
-
-    if (parent?.stateId === States.ARCHIVED) {
-      const siblingCount = await parent.related('responses').query().count('*', 'total').first()
-
-      if (!Number.parseInt(siblingCount?.$extras.total)) {
-        await parent.delete()
-        await NotificationService.onDelete(Comment.table, parent.id, trx)
+      if (Number.parseInt(childCount?.$extras.total)) {
+        comment.merge({ body: '[deleted]', userId: null, stateId: States.ARCHIVED })
+        await comment.save()
+      } else {
+        await comment.related('userVotes').query().delete()
+        await comment.delete()
+        await NotificationService.onDelete(Comment.table, comment.id, trx)
       }
-    }
 
-    await trx.commit()
+      if (parent?.stateId === States.ARCHIVED) {
+        const siblingCount = await parent.related('responses').query().count('*', 'total').first()
+
+        if (!Number.parseInt(siblingCount?.$extras.total)) {
+          await parent.delete()
+          await NotificationService.onDelete(Comment.table, parent.id, trx)
+        }
+      }
+    })
   }
 }
