@@ -184,6 +184,8 @@ export default class NotificationService {
         comment: JSON.stringify(comment),
         error,
       })
+
+      throw error
     }
   }
 
@@ -220,6 +222,8 @@ export default class NotificationService {
         comment: JSON.stringify(comment),
         error,
       })
+
+      throw error
     }
   }
 
@@ -256,6 +260,8 @@ export default class NotificationService {
         comment: JSON.stringify(comment),
         error,
       })
+
+      throw error
     }
   }
 
@@ -305,6 +311,8 @@ export default class NotificationService {
         comment: JSON.stringify(comment),
         error,
       })
+
+      throw error
     }
   }
 
@@ -352,6 +360,8 @@ export default class NotificationService {
         usernames,
         error,
       })
+
+      throw error
     }
   }
 
@@ -397,6 +407,8 @@ export default class NotificationService {
         usernames,
         error,
       })
+
+      throw error
     }
   }
 
@@ -444,6 +456,8 @@ export default class NotificationService {
         usernames,
         error,
       })
+
+      throw error
     }
   }
 
@@ -491,6 +505,8 @@ export default class NotificationService {
         usernames,
         error,
       })
+
+      throw error
     }
   }
 
