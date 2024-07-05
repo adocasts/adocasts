@@ -100,7 +100,7 @@
 
             @can('CommentPolicy.reply', comment)
               @if (canComment)
-                @button({ '@click': `create(${comment.id})`, size: 'sm', class: 'gap-1.5 opacity-0 group-hover:opacity-100' })
+                @button({ '@click': `create(${comment.id})`, size: 'sm', class: 'gap-1.5 md:opacity-0 group-hover:opacity-100' })
                   @svg('ph:chat-circle-text-fill')
                   Reply
                 @end
@@ -108,7 +108,7 @@
             @endcan
 
             @if (!auth.user && canComment)
-              <p class="opacity-0 group-hover:opacity-100 text-sm duration-150 ml-6">
+              <p class="md:opacity-0 group-hover:opacity-100 text-sm duration-150 ml-6">
                 Please
                 <a href="{{ route('auth.signin.create') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
                   sign in
@@ -122,7 +122,7 @@
             @endif
 
             @can('CommentPolicy.update', comment)
-              @button({ '@click': `edit(${comment.id})`, variant: 'blue', size: 'sm', class: 'gap-1.5 opacity-0 group-hover:opacity-100' })
+              @button({ '@click': `edit(${comment.id})`, variant: 'blue', size: 'sm', class: 'gap-1.5 md:opacity-0 group-hover:opacity-100' })
                 @svg('ph:note-pencil-fill')
                 Edit
               @end
@@ -135,7 +135,7 @@
                 'up-confirm': 'Your comment will be deleted, would you like to continue?',
                 'up-target': '[up-comments]'
               })
-                @button({ type: 'submit', variant: 'red', size: 'sm', class: 'gap-1.5 opacity-0 group-hover:opacity-100' })
+                @button({ type: 'submit', variant: 'red', size: 'sm', class: 'gap-1.5 md:opacity-0 group-hover:opacity-100' })
                   @svg('ph:trash-fill')
                   Delete
                 @end
