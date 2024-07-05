@@ -6,6 +6,8 @@ import './_player'
 
 Cookies.set('timezone', DateTime.now().zoneName)
 
+const INPUT_TAGS = ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON']
+
 window.axios = axios
 
 window.onfocus = async function () {
@@ -20,22 +22,60 @@ window.onfocus = async function () {
  * Global shortcuts
  */
 document.body.addEventListener('keydown', (event) => {
+  const isInput = INPUT_TAGS.includes(document.activeElement.tagName)
+  const isEditable = document.activeElement.hasAttribute('contenteditable')
+
+  if (isInput || isEditable || event.metaKey) return
+
   switch (event.key) {
     case 'ArrowLeft':
-      // when player is using Plyr and not hidden, allow skipping back 5sec with left arrow
-      if (window.player?.isHTML5 && window.player.media.offsetParent != null) {
-        const currentTime = window.player.currentTime
-        const skipTo = currentTime - 5 > 0 ? currentTime - 5 : 0
-        window.player.currentTime = skipTo
+      if (window.player?.elem) {
+        // bunny
+        window.player.getCurrentTime((currentTime) => {
+          const skipTo = currentTime - 10 > 0 ? currentTime - 10 : 0
+          window.player.setCurrentTime(skipTo)
+        })
+      } else if (window.player?.videoTitle) {
+        // youtube
+        const currentTime = window.player.getCurrentTime()
+        const skipTo = currentTime - 10 > 0 ? currentTime - 10 : 0
+        window.player.seekTo(skipTo)
       }
       break
     case 'ArrowRight':
-      // when player is using Plyr and not hidden, allow skipping forward 5sec with right arrow
-      if (window.player?.isHTML5 && window.player.media.offsetParent != null) {
-        const currentTime = window.player.currentTime
-        const duration = window.player.duration
-        const skipTo = currentTime + 5 < duration ? currentTime + 5 : duration
-        window.player.currentTime = skipTo
+      if (window.player?.elem) {
+        // bunny
+        window.player.getCurrentTime((currentTime) => {
+          window.player.getDuration((duration) => {
+            const skipTo = currentTime + 10 < duration ? currentTime + 10 : duration
+            window.player.setCurrentTime(skipTo)
+          })
+        })
+      } else if (window.player?.videoTitle) {
+        // youtube
+        const currentTime = window.player.getCurrentTime()
+        const duration = window.player.getDuration()
+        const skipTo = currentTime + 10 < duration ? currentTime + 10 : duration
+        window.player.seekTo(skipTo)
+      }
+      break
+    case ' ':
+      event.preventDefault()
+
+      if (window.player?.elem) {
+        // bunny
+        window.player.getPaused((isPaused) => {
+          isPaused ? window.player.play() : window.player.pause()
+        })
+      } else if (window.player?.videoTitle) {
+        // youtube
+        const playerState = window.player.getPlayerState()
+
+        if (playerState === YT.PlayerState.PLAYING) {
+          window.player.pauseVideo()
+        } else if (playerState === YT.PlayerState.PAUSED) {
+          window.player.playVideo()
+        }
       }
       break
   }
