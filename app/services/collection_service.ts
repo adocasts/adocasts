@@ -45,7 +45,7 @@ export default class CollectionService {
   async getAll() {
     const results = await this.cache.getOrSet('GET_ALL', async () => {
       const series = await this.getList(true).orderBy('name')
-      return series.map(series => new SeriesListVM(series))
+      return series.map((series) => new SeriesListVM(series))
     })
 
     SeriesListVM.addToHistory(this.ctx.history, results)
@@ -64,7 +64,7 @@ export default class CollectionService {
     })
 
     const series = SeriesShowVM.consume(result)
-    
+
     SeriesShowVM.addToHistory(this.ctx.history, series)
 
     return series
@@ -80,7 +80,7 @@ export default class CollectionService {
     if (slug) {
       return this.getBySlug(slug)
     }
-    
+
     // otherwise, try to use default post series
     if (post?.series?.slug) {
       return this.getBySlug(post.series.slug)
@@ -179,8 +179,11 @@ export default class CollectionService {
       .where(column, value)
       .root()
       .series()
-      .public()
-      .display()
+      .publicOrPreview()
+      .withTaxonomies()
+      .withPostCount()
+      .withTotalMinutes()
+      .withAsset()
       .withPosts('pivot_root_sort_order')
       .withChildren()
       .firstOrFail()
@@ -225,7 +228,7 @@ export default class CollectionService {
 
     for (const id of series.postIds) {
       const history = progress.post(id)
-      
+
       // if post is completed, skip
       if (history?.isCompleted) continue
 
@@ -247,7 +250,11 @@ export default class CollectionService {
 
   async getIsInWatchlist(user: User | undefined, series: SeriesShowVM) {
     if (!user) return false
-    const results = await Watchlist.query().where('collectionId', series.id).where('userId', user.id).select('id').first()
+    const results = await Watchlist.query()
+      .where('collectionId', series.id)
+      .where('userId', user.id)
+      .select('id')
+      .first()
     return !!results
   }
 

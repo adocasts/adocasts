@@ -1,5 +1,6 @@
 import CollectionTypes from '#enums/collection_types'
 import States from '#enums/states'
+import Status from '#enums/status'
 import Collection from '#models/collection'
 import Post from '#models/post'
 import Taxonomy from '#models/taxonomy'
@@ -24,18 +25,16 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
       .withTaxonomies()
       .withPostCount()
       .withTotalMinutes()
-      // .withProgressCount()
-      // .query.if(this.user, (truthy) =>
-      //   truthy
-      //     .withCount('progressionHistory', (query) =>
-      //       query.where('userId', this.user!.id).where('isCompleted', true).as('postCompletedCount')
-      //     )
-      //     .withAggregate('progressionHistory', (query) =>
-      //       query.where('userId', this.user!.id).sum('watch_seconds').as('totalWatchSeconds')
-      //     )
-      // )
-
-
+    // .withProgressCount()
+    // .query.if(this.user, (truthy) =>
+    //   truthy
+    //     .withCount('progressionHistory', (query) =>
+    //       query.where('userId', this.user!.id).where('isCompleted', true).as('postCompletedCount')
+    //     )
+    //     .withAggregate('progressionHistory', (query) =>
+    //       query.where('userId', this.user!.id).sum('watch_seconds').as('totalWatchSeconds')
+    //     )
+    // )
 
     return this
   }
@@ -58,6 +57,17 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
   public() {
     this.whereHasPosts()
     this.query.where({ stateId: States.PUBLIC })
+    return this
+  }
+
+  publicOrPreview() {
+    this.query.where({ stateId: States.PUBLIC }).where((query) => {
+      query
+        // where has posts
+        .whereHas('postsFlattened', (posts) => posts.apply((scope) => scope.published()))
+        // or where status is coming soon
+        .orWhere('statusId', Status.COMING_SOON)
+    })
     return this
   }
 
@@ -113,6 +123,11 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     return this
   }
 
+  withAsset() {
+    this.query.preload('asset')
+    return this
+  }
+
   withProgressCount() {
     if (!this.user) return this
     this.query.withCount('progressionHistory', (query) => query.where('userId', this.user!.id))
@@ -121,7 +136,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
 
   withPostsCompletedCount() {
     if (!this.user) return this
-    
+
     this.query.withCount('progressionHistory', (query) =>
       query.where('userId', this.user!.id).where('isCompleted', true).as('postCompletedCount')
     )
@@ -198,7 +213,9 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
   }
 
   withPostCount() {
-    this.query.withCount('postsFlattened', (query) => query.apply((scope) => scope.published()).as('posts_count'))
+    this.query.withCount('postsFlattened', (query) =>
+      query.apply((scope) => scope.published()).as('posts_count')
+    )
     return this
   }
 
@@ -223,6 +240,6 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
 
   async toListVM() {
     const results = await this.query.select('id', 'difficultyId', 'name', 'slug', 'description')
-    return results.map(collection => new SeriesListVM(collection))
+    return results.map((collection) => new SeriesListVM(collection))
   }
 }

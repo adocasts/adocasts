@@ -6,13 +6,14 @@ import TaxonomyService from '#services/taxonomy_service'
 import { inject } from '@adonisjs/core'
 import _ from 'lodash'
 import type { HttpContext } from '@adonisjs/core/http'
+import Status from '#enums/status'
 
 @inject()
 export default class SeriesController {
   constructor(
     protected collectionService: CollectionService,
     protected historyService: HistoryService,
-    protected taxonomyService: TaxonomyService,
+    protected taxonomyService: TaxonomyService
   ) {}
 
   async index({ request, view, history }: HttpContext) {
@@ -21,10 +22,10 @@ export default class SeriesController {
     let features = await this.collectionService.getRecentlyUpdated()
     let series = await this.collectionService.getAll()
     let topics = await this.taxonomyService.getForSeriesFilter()
-    
+
     if (topic) {
-      series = series.filter(s => s.topics && s.topics.some(t => t.slug === topic))
-      topics = topics.map(t => {
+      series = series.filter((s) => s.topics && s.topics.some((t) => t.slug === topic))
+      topics = topics.map((t) => {
         if (t.slug !== topic) return t
         t.meta.isSelected = true
         return t
@@ -33,13 +34,13 @@ export default class SeriesController {
 
     switch (sort) {
       case 'latest':
-        series = _.orderBy(series, item => item.posts?.at(0)?.publishAtISO, ['desc'])
+        series = _.orderBy(series, (item) => item.posts?.at(0)?.publishAtISO, ['desc'])
         break
       case 'duration':
-        series = _.orderBy(series, item => Number(item.meta.videoSecondsSum), ['desc'])
+        series = _.orderBy(series, (item) => Number(item.meta.videoSecondsSum), ['desc'])
         break
       case 'lessons':
-        series = _.orderBy(series, item => Number(item.meta.postsCount), ['desc'])
+        series = _.orderBy(series, (item) => Number(item.meta.postsCount), ['desc'])
         break
     }
 
@@ -50,15 +51,22 @@ export default class SeriesController {
 
   async show({ view, params, route, history, auth }: HttpContext) {
     const item = await this.collectionService.getBySlug(params.slug)
-    
+
     await this.historyService.recordView(item, route?.name)
     await history.commit()
 
     const nextLesson = this.collectionService.findNextProgressLesson(item, history)
 
     item.meta.isInWatchlist = await this.collectionService.getIsInWatchlist(auth.user, item)
-    item.meta.postCompletedCount = history.records.filter(record => record.isCompleted).length
-    item.meta.totalWatchSeconds = history.records.reduce((sum, record) => sum + record.watchSeconds, 0)
+    item.meta.postCompletedCount = history.records.filter((record) => record.isCompleted).length
+    item.meta.totalWatchSeconds = history.records.reduce(
+      (sum, record) => sum + record.watchSeconds,
+      0
+    )
+
+    if (item.statusId === Status.COMING_SOON) {
+      return view.render('pages/series/soon', { item })
+    }
 
     return view.render('pages/series/show', { item, nextLesson })
   }

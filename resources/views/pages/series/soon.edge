@@ -1,0 +1,104 @@
+@layout({
+  title: item.name,
+  meta: {
+    url: route('series.show', { slug: item.slug }),
+    desc: string.excerpt(item.description, 180),
+    asset: item.assets,
+    index: true
+  }
+})
+
+   @slot('hero')
+    <div
+      x-intersect:enter="$store.app.heroVisible = true"
+      x-intersect:leave="$store.app.heroVisible = false"
+      x-init="$nextTick(() => ($store.app.heroHeight = $el.clientHeight))"
+      class="bg-slate-100 border-b border-slate-200/50 overflow-hidden">
+      <div class="page relative">
+        @if (item.asset?.assetUrl)
+          <div
+            class="absolute h-36 w-36 aspect-square -right-3 top-6 sm:h-56 sm:w-56 sm:-right-2 sm:top-3 md:h-96 md:w-96 md:-right-5 md:top-2 lg:w-[30rem] lg:h-[30rem] lg:-right-[1rem] lg:top-[2.5rem] rounded-full object-cover scale-150 bg-center bg-no-repeat bg-cover blur-2xl opacity-50"
+            style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}?w=10');">
+          </div>
+
+          @let(width = 400)
+          <picture class="absolute inset-0 w-full h-full flex items-end justify-end">
+            <source
+              srcset="
+                {{ assetDomain }}{{ item.asset.assetUrl }}?w={{ width * 2 }}&f=webp 2x,
+                {{ assetDomain }}{{ item.asset.assetUrl }}?w={{ width }}&f=webp 1x
+              "
+              type="image/webp"
+            />
+
+            <img
+              src="{{ assetDomain }}{{ item.asset.assetUrl }}?w={{ width * 2 }}"
+              srcset="
+                {{ assetDomain }}{{ item.asset.assetUrl }}?w={{ width * 2 }} 2x,
+                {{ assetDomain }}{{ item.asset.assetUrl }}?w={{ width }} 1x,
+              "
+              alt="{{ altText || item.asset.altText }}"
+              class="hidden md:block h-36 w-36 aspect-square -right-6 top-12 sm:-right-4 sm:top-6 md:h-56 md:w-56 md:-right-14 md:top-6 lg:w-96 lg:h-96 lg:-right-14 lg:top-14 xl:w-[30rem] xl:h-[30rem] xl:-right-[3.5rem] xl:top-[5rem] rounded-full object-cover relative"
+              loading="lazy"
+            />
+          </picture>
+        @endif
+
+        <div class="relative z-10">
+          <div class="flex flex-wrap items-start lg:items-center pt-8 pb-4 xl:py-8 gap-6">
+            @!collection.icon({ item, class: 'w-24 lg:w-full max-w-[250px] order-1 md:order-2 md:hidden border-2 md:border-4 border-brand-base-800' })
+
+            <div class="sm:flex-1 mb-4 sm:my-4 md:mr-4 xl:mr-8 order-2 md:order-1">
+              <h5 class="uppercase text-brand-600 font-bold tracking-wider mb-4">Coming Soon</h5>
+
+              @!heading({ title: item.name, class: 'text-slate-900' })
+
+              <div class="flex items-center gap-4 xl:gap-6 text-slate-800 -mt-4">
+                @!difficulty({ item })
+              </div>
+
+              @if (item.description)
+                <p class="text-sm md:text-base xl:font-lg leading-7 mt-4 max-w-prose text-slate-900">
+                  {{ item.description }}
+                </p>
+              @endif
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  @end
+
+  <div class="flex flex-wrap -mx-2 xl:-mx-8 relative" style="--aside-width: 385px;">
+    <main class="w-full lg:w-[calc(100%-var(--aside-width))] px-4 lg:px-6 xl:px-8 order-2 md:order-1">
+      <div class="bg-slate-100 py-4 px-12 rounded-md flex items-center gap-6">
+        <div>
+          <img class="w-32" src="/imgs/robot/slice6.svg" alt="excited robot" />
+        </div>
+        <div class="flex flex-col">
+          <h4 class="font-black uppercase tracking-wider text-sm">This series is coming soon!</h4>
+          <p class="text-sm text-slate-600">Add to your watchlist to get notified when it starts and anytime new lessons are added</p>
+          <div class="mt-2 max-w-fit">
+            @if (auth.user)
+              @!watchlist.toggle({
+                active: item.meta.isInWatchlist,
+                collectionId: item.id
+              })
+            @else
+              <p class="text-sm">
+                <a href="{{ route('auth.signin.create') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+                  Sign in
+                </a>
+                or
+                <a href="{{ route('auth.signup.create') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
+                  sign up
+                </a>
+                to add to your watchlist
+              </p>
+            @endif
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+@end
