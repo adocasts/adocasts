@@ -99,6 +99,13 @@
                     Repository
                   @end
                 @endif
+
+                @if (item.youtubePlaylistUrl)
+                  @button({ href: item.youtubePlaylistUrl, target: '_blank', class: ['gap-2'] })
+                    @svg('simple-icons:youtube')
+                    YouTube
+                  @end
+                @endif
               </div>
             </div>
           </div>

@@ -1,9 +1,9 @@
-import Collection from "#models/collection";
-import type { ProgressContext } from "#start/context";
-import BaseVM from "./base.js";
-import { AssetVM } from "./asset.js";
-import { PostListVM } from "./post.js";
-import { TopicRelationListVM } from "./topic.js";
+import Collection from '#models/collection'
+import type { ProgressContext } from '#start/context'
+import BaseVM from './base.js'
+import { AssetVM } from './asset.js'
+import { PostListVM } from './post.js'
+import { TopicRelationListVM } from './topic.js'
 
 class SeriesBaseVM extends BaseVM {
   declare id: number
@@ -35,7 +35,7 @@ class SeriesBaseVM extends BaseVM {
 
   #getTopics(collection: Collection) {
     if (!collection.taxonomies?.length) return null
-    return collection.taxonomies.map(topic => new TopicRelationListVM(topic))
+    return collection.taxonomies.map((topic) => new TopicRelationListVM(topic))
   }
 }
 
@@ -62,10 +62,10 @@ export class SeriesListVM extends SeriesBaseVM {
 
   constructor(series: Collection) {
     super(series)
-    
+
     this.posts = series.postsFlattened?.map((post) => new PostListVM(post)) || []
     this.meta = {
-      postsCount: (series.$extras.postsFlattened_count || series.$extras.posts_count) || 0,
+      postsCount: series.$extras.postsFlattened_count || series.$extras.posts_count || 0,
       videoSecondsSum: series.$extras.videoSecondsSum || 0,
     }
 
@@ -80,11 +80,11 @@ export class SeriesListVM extends SeriesBaseVM {
 
   get postIds() {
     if (!this.posts) return []
-    return this.posts.map(post => post.id)
+    return this.posts.map((post) => post.id)
   }
 
   static addToHistory(history: ProgressContext, results: SeriesListVM[]) {
-    const ids = results.map(record => record.id)
+    const ids = results.map((record) => record.id)
     const postIds = this.getPostIds(results)
 
     history.addCollectionIds(ids)
@@ -92,16 +92,14 @@ export class SeriesListVM extends SeriesBaseVM {
   }
 
   static getPostIds(results: SeriesListVM[]) {
-    return results.reduce<number[]>((ids, series) => [
-      ...ids,
-      ...(series?.postIds || []),
-    ], [])
+    return results.reduce<number[]>((ids, series) => [...ids, ...(series?.postIds || [])], [])
   }
 }
 
 export class SeriesShowVM extends SeriesBaseVM {
   declare statusId: number
   declare repositoryUrl: string
+  declare youtubePlaylistUrl: string
   declare posts: PostListVM[] | null
   declare modules: ModuleListVM[]
   declare topics: TopicRelationListVM[]
@@ -113,6 +111,7 @@ export class SeriesShowVM extends SeriesBaseVM {
 
     this.statusId = series.statusId
     this.repositoryUrl = series.repositoryUrl
+    this.youtubePlaylistUrl = series.youtubePlaylistUrl
     this.topics = this.#getTopics(series)
     this.modules = series.children.map((module) => new ModuleListVM(module))
     this.posts = series.posts.map((post) => new PostListVM(post))
@@ -124,9 +123,12 @@ export class SeriesShowVM extends SeriesBaseVM {
 
   get postIds() {
     if (!this.posts && !this.modules) return []
-    
-    const modulePostIds = this.modules.reduce<number[]>((acc, module) => [...acc, ...(module.posts?.map(post => post.id) || [])], [])
-    const postIds = this.posts?.map(post => post.id) ?? []
+
+    const modulePostIds = this.modules.reduce<number[]>(
+      (acc, module) => [...acc, ...(module.posts?.map((post) => post.id) || [])],
+      []
+    )
+    const postIds = this.posts?.map((post) => post.id) ?? []
 
     return [...modulePostIds, ...postIds]
   }
@@ -135,13 +137,13 @@ export class SeriesShowVM extends SeriesBaseVM {
     if (!this.modules.length) return this.posts || []
     return [
       ...this.modules.reduce<PostListVM[]>((acc, module) => [...acc, ...(module.posts || [])], []),
-      ...this.posts || [],
+      ...(this.posts || []),
     ]
   }
 
   #getTopics(series: Collection) {
     if (!series.taxonomies?.length) return []
-    return series.taxonomies.map(topic => new TopicRelationListVM(topic))
+    return series.taxonomies.map((topic) => new TopicRelationListVM(topic))
   }
 
   static addToHistory(history: ProgressContext, result: SeriesShowVM) {
