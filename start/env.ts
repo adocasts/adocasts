@@ -83,5 +83,5 @@ export default await Env.create(new URL('../', import.meta.url), {
   STRIPE_WEBHOOK_SECRET: Env.schema.string(),
 
   PLAUSIBLE_API_KEY: Env.schema.string.optional(),
-  DISCORD_WEBHOOK: Env.schema.string.optional()
+  DISCORD_WEBHOOK: Env.schema.string.optional(),
 })

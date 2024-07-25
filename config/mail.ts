@@ -6,24 +6,24 @@ const mailConfig = defineConfig({
 
   from: {
     address: env.get('APP_CONTACT_EMAIL'),
-    name: 'Adocasts'
+    name: 'Adocasts',
   },
 
   replyTo: {
     address: env.get('APP_CONTACT_EMAIL'),
-    name: 'Adocasts'
+    name: 'Adocasts',
   },
 
-   /**
-    * The mailers object can be used to configure multiple mailers
-    * each using a different transport or same transport with different
-    * options.
+  /**
+   * The mailers object can be used to configure multiple mailers
+   * each using a different transport or same transport with different
+   * options.
    */
-  mailers: { 
+  mailers: {
     smtp: transports.smtp({
       host: env.get('SMTP_HOST'),
       port: env.get('SMTP_PORT'),
-			/**
+      /**
        * Uncomment the auth block if your SMTP
        * server needs authentication
        */

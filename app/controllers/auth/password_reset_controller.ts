@@ -24,14 +24,20 @@ export default class PasswordResetController {
       const signedUrl = router.makeSignedUrl('auth.password.reset', { email }, { expiresIn: '1h' })
 
       if (user) {
-        await emitter.emit('email:password_reset', { user, signedUrl })
+        try {
+          await emitter.emit('email:password_reset', { user, signedUrl })
+        } catch (error) {
+          logger.error('PasswordResetController.forgotPasswordSend:emit', { email, error })
+          session.flash('error', 'Something went wrong, and the email could not be sent')
+          return response.redirect().back()
+        }
       }
 
       return response.redirect().toRoute('auth.password.forgot.sent')
     } catch (error) {
       const email = request.input('email')
 
-      logger.error('AuthController.forgotPasswordSend', { email, error })
+      logger.error('PasswordResetController.forgotPasswordSend', { email, error })
       session.flash('error', "Account couldn't be found for this email")
 
       return response.redirect().back()
@@ -68,7 +74,7 @@ export default class PasswordResetController {
       return response.redirect('/')
     } catch (error) {
       const { email } = request.only(['email'])
-      logger.error('AuthController.resetPasswordStore', { email, error })
+      logger.error('PasswordResetController.resetPasswordStore', { email, error })
 
       session.flash(
         'error',
