@@ -27,7 +27,7 @@ export default class SignUpController {
 
     await user.related('profile').create({})
     await auth.use('web').login(user)
-    await sessionService.onSignInSuccess(user)
+    await sessionService.onSignInSuccess(user, false, true)
 
     if (plan) {
       const { status, message, checkout } = await stripeService.tryCreateCheckoutSession(
