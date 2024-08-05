@@ -3,6 +3,7 @@ import States from '#enums/states'
 import User from '#models/user'
 import StripeService from './stripe_service.js'
 import logger from './logger_service.js'
+import DiscussionView from '#models/discussion_view'
 
 export default class UserService {
   /**
@@ -24,6 +25,9 @@ export default class UserService {
       await user.related('commentVotes').query().update({ userId: null })
       await user.related('invoices').query().delete()
       await user.related('sessions').query().delete()
+
+      await DiscussionView.query({ client: trx }).where('userId', user.id).update({ userId: null })
+
       await this.destroyComments(user)
       await this.destroyLessonRequests(user)
       await this.destroyDiscussions(user)
