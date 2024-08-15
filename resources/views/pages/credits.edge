@@ -10,14 +10,12 @@
 })
 
   @slot('hero')
-    @!starfield({ class: '!fixed w-full h-full top-0 left-0', mountain: false, clouds: false, lines: false })
+    @!starfield({ class: '!fixed w-full h-full top-0 left-0', mountain: false, rocket: true, clouds: false, lines: false })
   @endslot
     
   <div
     x-data="credits"
-    :class="['absolute h-[calc(100%+4rem)] min-h-[600px] w-full left-0 z-10 credits overflow-scroll -mt-8 -mb-16', { play }]"
-    @mouseenter="play = false"
-    @mouseleave="play = true">
+    :class="['absolute h-[calc(100%+4rem)] min-h-[600px] w-full left-0 z-10 credits overflow-scroll -mt-8 -mb-16', { play }]">
     <div class="max-w-3xl mx-auto">
       <div class="max-w-xs mx-auto pt-12">
         <span class="sr-only">Adocasts</span>
@@ -90,19 +88,22 @@
           @!credit.item({ title: 'Print Editing', value: 'Affinity Publisher 2', href: 'https://affinity.serif.com/en-us/publisher/' })
           @!credit.item({ title: 'Terminal', value: 'Hyper', href: 'https://hyper.is/' })
           @!credit.item({ title: 'Database Management', value: 'TablePlus', href: 'https://tableplus.com/' })
-          @!credit.item({ title: 'REST Client', value: 'Insomnia', href: 'https://insomnia.rest/' })
+          @!credit.item({ title: 'REST Client', value: 'Hoppscotch', href: 'https://hoppscotch.io/' })
           @!credit.item({ title: 'Content Planning', value: 'Notion', href: 'https://www.notion.so' })
           @!credit.item({ title: 'Grammer & Spelling', value: 'Grammerly', href: 'https://www.grammarly.com' })
         @end
 
         @credit.group({ title: 'Editor & Extensions' })
           @!credit.item({ title: 'Text Editor', value: 'Video Studio Code', href: 'https://code.visualstudio.com/' })
-          @!credit.item({ title: 'Color Theme', value: 'GitHub Dark', href: 'https://marketplace.visualstudio.com/items?itemName=GitHub.github-vscode-theme' })
+          @!credit.item({ title: 'Color Theme', value: 'Bearded Theme (Aquarelle Hydrangea)', href: 'https://marketplace.visualstudio.com/items?itemName=BeardedBear.beardedtheme' })
           @!credit.item({ title: 'File Icons', value: 'Bearded Icons', href: 'https://marketplace.visualstudio.com/items?itemName=BeardedBear.beardedicons' })
+          @!credit.item({ title: 'Font Family', value: 'Recursive Mono Casual Static', href: 'https://www.recursive.design/' })
           @!credit.item({ title: 'Extensions', value: [
               { text: 'AdonisJS Extension', href: 'https://marketplace.visualstudio.com/items?itemName=jripouteau.adonis-vscode-extension' }, 
               { text: 'Edge template syntax highligher',  href: 'https://marketplace.visualstudio.com/items?itemName=AdonisJS.vscode-edge' },
               { text: 'Japa Extension', href: 'https://marketplace.visualstudio.com/items?itemName=jripouteau.japa-vscode' },
+              { text: 'ESLint', href: 'https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint' },
+              { text: 'Custom CSS and JS Loader', href: 'https://marketplace.visualstudio.com/items?itemName=be5invis.vscode-custom-css' },
               { text: 'Stripe', href: 'https://marketplace.visualstudio.com/items?itemName=Stripe.vscode-stripe' },
               { text: 'Tailwind CSS IntelliSense', href: 'https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss' },
               { text: 'Vue Language Features', href: 'https://marketplace.visualstudio.com/items?itemName=Vue.volar' },
@@ -126,21 +127,19 @@
 
         @credit.group({ title: 'Icon Assets' })
           <div class="grid md:grid-cols-2 gap-4 text-slate-base-300 text-center lg:flex-left">
-            <span>
-              <a href="https://iconscout.com/lottie-animations/rocket" class="text-underline font-size-sm" target="_blank">Home Page Rocket</a> by <a href="https://iconscout.com/contributors/east-supply" class="text-underline font-size-sm" target="_blank">East Supply</a>
-            </span>
-            <a href="https://www.flaticon.com/free-icons/command-prompt" title="command prompt icons">Command Prompt by Hopstarter - Flaticon</a>
-            <a href="https://www.flaticon.com/free-icons/biometric-identification" title="biometric identification icons">Biometric by Freepik - Flaticon</a>
-            <a href="https://www.flaticon.com/free-icons/id-card" title="id-card icons">Id Card by Smashicons - Flaticon</a>
-            <a href="https://www.flaticon.com/free-icons/ui" title="ui icons">Lock by Smashicons - Flaticon</a>
-            <a href="https://www.flaticon.com/free-icons/component" title="component icons">Component by Freepik - Flaticon</a>
-            <a href="https://www.flaticon.com/free-icons/computing" title="computing icons">Hard Drive by Freepik - Flaticon</a>
-            <a href="https://www.flaticon.com/free-icons/email" title="email icons">Email by DinosoftLabs - Flaticon</a>
-            <a href="https://www.flaticon.com/free-icons/computing" title="computing icons">Folder by Freepik - Flaticon</a>
-            <a href="https://www.flaticon.com/free-icons/database" title="database icons">Database by Smashicons - Flaticon</a>
-            <a href="https://www.flaticon.com/free-icons/computing" title="computing icons">Router by Freepik - Flaticon</a>
-            <a href="https://www.flaticon.com/free-icons/idea" title="idea icons">Idea by Freepik - Flaticon</a>
-            <a href="https://www.flaticon.com/free-icons/settings" title="settings icons">Settings by DinosoftLabs - Flaticon</a>
+            <a href="https://www.freepik.com/pricing?origin=freepik_web" title="Freepik Premium">Freepik Premium</a>
+            <a href="https://www.flaticon.com/free-icons/command-prompt" title="command prompt icons">Command Prompt by Hopstarter</a>
+            <a href="https://www.flaticon.com/free-icons/biometric-identification" title="biometric identification icons">Biometric by Freepik</a>
+            <a href="https://www.flaticon.com/free-icons/id-card" title="id-card icons">Id Card by Smashicons</a>
+            <a href="https://www.flaticon.com/free-icons/ui" title="ui icons">Lock by Smashicons</a>
+            <a href="https://www.flaticon.com/free-icons/component" title="component icons">Component by Freepik</a>
+            <a href="https://www.flaticon.com/free-icons/computing" title="computing icons">Hard Drive by Freepik</a>
+            <a href="https://www.flaticon.com/free-icons/email" title="email icons">Email by DinosoftLabs</a>
+            <a href="https://www.flaticon.com/free-icons/computing" title="computing icons">Folder by Freepik</a>
+            <a href="https://www.flaticon.com/free-icons/database" title="database icons">Database by Smashicons</a>
+            <a href="https://www.flaticon.com/free-icons/computing" title="computing icons">Router by Freepik</a>
+            <a href="https://www.flaticon.com/free-icons/idea" title="idea icons">Idea by Freepik</a>
+            <a href="https://www.flaticon.com/free-icons/settings" title="settings icons">Settings by DinosoftLabs</a>
           </div>
         @end
 

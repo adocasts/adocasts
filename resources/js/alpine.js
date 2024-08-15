@@ -67,19 +67,17 @@ Alpine.data('credits', function () {
     play: true,
 
     init() {
-      if (isReducedMotion) return
-
-      setTimeout(() => {
-        interval = setInterval(() => {
-          if (this.play && this.$el.scrollTop !== this.$el.scrollTopMax) this.$el.scrollTop += 10
-        }, 60)
-
-        this.$watch('exists', (value) => !value && this.destroy())
-      }, 2500)
+      // if (isReducedMotion) return
+      // setTimeout(() => {
+      //   interval = setInterval(() => {
+      //     if (this.play && this.$el.scrollTop !== this.$el.scrollTopMax) this.$el.scrollTop += 10
+      //   }, 60)
+      //   this.$watch('exists', (value) => !value && this.destroy())
+      // }, 2500)
     },
 
     destroy() {
-      clearInterval(interval)
+      // clearInterval(interval)
     },
   }
 })

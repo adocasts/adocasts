@@ -22,6 +22,7 @@ export default class CreditsController {
         query
           .where('planId', Plans.FOREVER)
           .orWhere('stripeSubscriptionStatus', StripeSubscriptionStatuses.ACTIVE)
+          .orWhere('stripeSubscriptionStatus', StripeSubscriptionStatuses.COMPLETE)
       })
       .where('planId', '!=', Plans.FREE)
       .where('roleId', '!=', Roles.ADMIN)
