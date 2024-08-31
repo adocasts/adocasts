@@ -14,10 +14,10 @@ export default class StripeService {
   private stripe: Stripe
   private inTest: boolean = app.inTest
   private testSessionToPlan: Record<string, number> = {
-    'cs_test_a1pK9kmubhGyxPDsAAmvqlLEFAqkpWwcToOm96CFtqk0IwMDAWorXwdhmf': Plans.PLUS_MONTHLY, // monthly purchase
-    'cs_test_a1zSLqPTGFFUcaus1yJCgeW6MwlSFV5EBAq7caQEai8exJjvjuNcurB73A': Plans.PLUS_ANNUAL, // annual purchase
-    'cs_test_a1E3eqjWTAlzo3vsPCe0iiXdNQsu1Vj3EZpW5tyadLRJx70vP1CzRAKKX6': Plans.FOREVER, // forever purchase
-    'cs_test_a1rMtxI2beQkj8cF1MbPyjyCy4VmMsLZAICr3SY7g1LiydNIwF5Ei5bYYE': Plans.FOREVER, // mock monthly/annual upgrade to forever
+    cs_test_a1pK9kmubhGyxPDsAAmvqlLEFAqkpWwcToOm96CFtqk0IwMDAWorXwdhmf: Plans.PLUS_MONTHLY, // monthly purchase
+    cs_test_a1zSLqPTGFFUcaus1yJCgeW6MwlSFV5EBAq7caQEai8exJjvjuNcurB73A: Plans.PLUS_ANNUAL, // annual purchase
+    cs_test_a1E3eqjWTAlzo3vsPCe0iiXdNQsu1Vj3EZpW5tyadLRJx70vP1CzRAKKX6: Plans.FOREVER, // forever purchase
+    cs_test_a1rMtxI2beQkj8cF1MbPyjyCy4VmMsLZAICr3SY7g1LiydNIwF5Ei5bYYE: Plans.FOREVER, // mock monthly/annual upgrade to forever
   }
 
   // interface with stripe-mock within tests
@@ -222,6 +222,7 @@ export default class StripeService {
       automatic_tax: {
         enabled: true,
       },
+      allow_promotion_codes: true,
       line_items: [
         {
           price: plan.priceId!,
@@ -322,7 +323,7 @@ export default class StripeService {
     const data = event.data.object
     const user = await User.findByOrFail('stripeCustomerId', data.customer)
     const itemIds = await this.getCheckoutSessionLineItemIds(data.id)
-    
+
     if (!itemIds?.length) {
       logger.info(`StripeService.onCheckoutCompleted > [${data.id}] no line items returned`)
       return
