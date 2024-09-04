@@ -1,5 +1,3 @@
-
-
 # This GitHub Actions workflow is generated and deployed by https://cleavr.io
 # The filename, cleavr_tssllhqo79, of this workflow is tracked from within Cleavr,
 # please don't change the name. Though, feel free to add your own steps or tweak
@@ -47,14 +45,14 @@ jobs:
         id: build-app
         run: npm run build --production
 
-### ---  PLEASE DO NOT MODIFY ANYTHING BELOW THIS LINE --- ###
+      ### ---  PLEASE DO NOT MODIFY ANYTHING BELOW THIS LINE --- ###
 
       - name: Generate artifact name
         id: artifact
         uses: josStorer/get-current-time@v2.0.2
         with:
           format: YYYYMMDDHHmmss
-          utcOffset: "+08:00"
+          utcOffset: '+08:00'
 
       - name: Upload artifact
         id: upload-artifact
@@ -63,6 +61,7 @@ jobs:
           name: '${{ steps.artifact.outputs.formattedTime }}'
           path: build/
           if-no-files-found: error
+          include-hidden-files: true
 
   complete:
     if: always()
@@ -77,4 +76,3 @@ jobs:
           data: '{"status": "${{ needs.build.result }}" , "steps": ${{ toJson(needs.build.outputs.cleavr-step-status) }} }'
           timeout: 60000
           customHeaders: '{"artifact": "${{ needs.build.outputs.artifact-formatted-time }}"}'
-
