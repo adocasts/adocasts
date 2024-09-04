@@ -270,9 +270,14 @@ export default class StripeService {
     const plan = await this.getAdocastPlan(data.plan.id)
 
     user.planId = plan.id
-    user.stripeSubscriptionStatus = data.status
     user.planPeriodStart = DateTime.fromMillis(data.current_period_start * 1000)
     user.planPeriodEnd = DateTime.fromMillis(data.current_period_end * 1000)
+
+    // if status has already been activated, ignore.
+    // created webhook isn't guarrenteed to come before updated
+    user.stripeSubscriptionStatus = user.isSubscriptionActive
+      ? user.stripeSubscriptionStatus
+      : data.status
 
     await user.save()
   }
