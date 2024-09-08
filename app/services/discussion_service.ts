@@ -8,6 +8,7 @@ import { HttpContext } from '@adonisjs/core/http'
 import { DateTime } from 'luxon'
 import bento from './bento_service.js'
 import CacheNamespaces from '#enums/cache_namespaces'
+import Roles from "#enums/roles";
 
 @inject()
 export default class DiscussionService {
@@ -62,7 +63,7 @@ export default class DiscussionService {
       .preload('user', (query) => query.preload('profile'))
       .preload('taxonomy', (query) => query.preload('asset'))
       .preload('votes', (query) => query.select('id'))
-      .whereHas('user', (query) => query.where('planId', '!=', Plans.FREE))
+      .whereHas('user', (query) => query.where('planId', '!=', Plans.FREE).whereNot('roleId', Roles.ADMIN))
       .where('stateId', States.PUBLIC)
       .withCount('comments', (query) => query.where('stateId', States.PUBLIC).as('commentCount'))
       .withCount('views')
