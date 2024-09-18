@@ -192,7 +192,7 @@ export default class User extends compose(AppBaseModel, AuthFinder) {
   @computed()
   get isSubscriptionActive() {
     if (this.planId === Plans.FOREVER) return true
-    
+
     const isActive = this.stripeSubscriptionStatus === StripeSubscriptionStatuses.ACTIVE
     const isComplete = this.stripeSubscriptionStatus === StripeSubscriptionStatuses.COMPLETE
 
@@ -210,7 +210,7 @@ export default class User extends compose(AppBaseModel, AuthFinder) {
     if (this.emailVerified === this.email && this.emailVerifiedAt) return true
 
     // using third-party social auth
-    return this.email === this.githubEmail || this.email === this.googleEmail;
+    return this.email === this.githubEmail || this.email === this.googleEmail
   }
 
   @beforeSave()
@@ -275,19 +275,16 @@ export default class User extends compose(AppBaseModel, AuthFinder) {
   @hasMany(() => History)
   declare histories: HasMany<typeof History>
 
+  @hasMany(() => Progress)
+  declare progresses: HasMany<typeof Progress>
+
   @hasMany(() => Progress, {
-    onQuery: (query) =>
-      query
-        .whereNotNull('postId')
-        .where('watchSeconds', '>', 0),
+    onQuery: (query) => query.whereNotNull('postId').where('watchSeconds', '>', 0),
   })
   declare watchedPosts: HasMany<typeof Progress>
 
   @hasMany(() => Progress, {
-    onQuery: (query) =>
-      query
-        .whereNotNull('postId')
-        .where('isCompleted', true),
+    onQuery: (query) => query.whereNotNull('postId').where('isCompleted', true),
   })
   declare completedPosts: HasMany<typeof Progress>
 

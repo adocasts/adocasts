@@ -18,6 +18,7 @@ export default class UserService {
     try {
       // purge data
       await user.related('histories').query().delete()
+      await user.related('progresses').query().delete()
       await user.related('watchlist').query().delete()
       await user.related('notifications').query().delete()
       await user.related('initiatedNotifications').query().delete()
