@@ -290,20 +290,10 @@ export default class StripeService {
     // forever is forever
     if (user.planId === Plans.FOREVER) return
 
-    user.planId = plan?.id || Plans.FREE
-    user.planPeriodStart = DateTime.fromMillis(data.current_period_start * 1000)
-    user.planPeriodEnd = DateTime.fromMillis(data.current_period_end * 1000)
-    user.stripeSubscriptionStatus = data.status
-    user.stripeSubscriptionCanceledAt = null
-    user.stripeSubscriptionPausedAt = null
-
-    const subscriptions = await this.client.subscriptions.list({
-      customer: user.stripeCustomerId!,
-      status: 'active',
-    })
-
     if (data.canceled_at) {
       user.stripeSubscriptionCanceledAt = DateTime.fromSeconds(data.created)
+    } else {
+      user.stripeSubscriptionCanceledAt = null
     }
 
     if (data.pause_collection) {
@@ -311,10 +301,23 @@ export default class StripeService {
       user.stripeSubscriptionPausedAt = DateTime.fromSeconds(data.created)
     }
 
+    const subscriptions = await this.client.subscriptions.list({
+      customer: user.stripeCustomerId!,
+      status: 'active',
+    })
+
     // if user has an active subscription in stripe, ensure they remain active
+    // and prevent this call from updating plan details
     if (subscriptions.data.length && data.status !== 'active') {
       user.stripeSubscriptionStatus = StripeSubscriptionStatuses.ACTIVE
+      return user.save()
     }
+
+    user.planId = plan?.id || Plans.FREE
+    user.planPeriodStart = DateTime.fromMillis(data.current_period_start * 1000)
+    user.planPeriodEnd = DateTime.fromMillis(data.current_period_end * 1000)
+    user.stripeSubscriptionStatus = data.status
+    user.stripeSubscriptionPausedAt = null
 
     await user.save()
   }
