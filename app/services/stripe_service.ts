@@ -297,6 +297,11 @@ export default class StripeService {
     user.stripeSubscriptionCanceledAt = null
     user.stripeSubscriptionPausedAt = null
 
+    const subscriptions = await this.client.subscriptions.list({
+      customer: user.stripeCustomerId!,
+      status: 'active',
+    })
+
     if (data.canceled_at) {
       user.stripeSubscriptionCanceledAt = DateTime.fromSeconds(data.created)
     }
@@ -304,6 +309,11 @@ export default class StripeService {
     if (data.pause_collection) {
       user.stripeSubscriptionStatus = StripeSubscriptionStatuses.PAUSED
       user.stripeSubscriptionPausedAt = DateTime.fromSeconds(data.created)
+    }
+
+    // if user has an active subscription in stripe, ensure they remain active
+    if (subscriptions.data.length && data.status !== 'active') {
+      user.stripeSubscriptionStatus = StripeSubscriptionStatuses.ACTIVE
     }
 
     await user.save()
