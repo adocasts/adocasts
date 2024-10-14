@@ -61,11 +61,14 @@ export default class HttpExceptionHandler extends ExceptionHandler {
       return super.report(error, ctx)
     }
 
-    const alertIgnore = ['/assets/', '/schedule/']
     const url = ctx.request.url(true)
+    const userAgent = ctx.request.header('User-Agent')
+    const alertIgnorePaths = ['/assets/', '/schedule/']
+    const alertIgnoreAgents = ['crawler', 'bot']
+    const ignorePath = alertIgnorePaths.some((path) => url.startsWith(path))
+    const ignoreAgent = alertIgnoreAgents.some((agent) => userAgent?.includes(agent))
 
-    // don't send these to our discord alerter, they seem to be bots
-    if (!alertIgnore.some((path) => url.startsWith(path))) {
+    if (!ignorePath && !ignoreAgent) {
       const sessionService = new SessionService(ctx)
       await logger.error('error.report', {
         error,
@@ -73,7 +76,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
         userId: ctx.auth?.user?.id,
         ip: ctx.request.ip(),
         sId: sessionService.ipAddress,
-        headers: !ctx.auth?.user && ctx.request.headers()
+        headers: !ctx.auth?.user && ctx.request.headers(),
       })
     }
 
