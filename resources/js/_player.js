@@ -95,7 +95,14 @@ class VideoPlayer {
         return this.player.currentTime
       case this.types.BUNNY:
         if (!this.player?.elem) return 0
-        return new Promise((resolve) => this.player.getCurrentTime(value => resolve(value)))
+        return new Promise((resolve) => {
+          try {
+            this.player.getCurrentTime((value) => resolve(value))
+          } catch (_error) {
+            console.debug('player was disposed')
+            return -1
+          }
+        })
     }
   }
 
@@ -107,7 +114,14 @@ class VideoPlayer {
         return this.player.duration
       case this.types.BUNNY:
         if (!this.player?.elem) return 0
-        return new Promise((resolve) => this.player.getDuration(value => resolve(value)))
+        return new Promise((resolve) => {
+          try {
+            this.player.getDuration((value) => resolve(value))
+          } catch (_error) {
+            console.debug('player was disposed')
+            return -1
+          }
+        })
     }
   }
 
@@ -204,7 +218,7 @@ class VideoPlayer {
 
       player.on('play', this.#onBunnyStateChange.bind(this, { action: 'play' }))
       player.on('pause', this.#onBunnyStateChange.bind(this, { action: 'pause' }))
-      player.on('ended', this.#onBunnyStateChange.bind(this, { action: 'ended'}))
+      player.on('ended', this.#onBunnyStateChange.bind(this, { action: 'ended' }))
       player.on('timeupdate', this.#onPlayerTimeUpdate.bind(this))
 
       player.on('ready', () => {
@@ -233,8 +247,9 @@ class VideoPlayer {
   async #onPlayerTimeUpdate(event) {
     const currentTime = Math.ceil(await this.getCurrentTime())
     const duration = Math.ceil(await this.getDuration())
+    const wasDisposed = currentTime === -1 || duration === -1
 
-    if (currentTime === this.lastTimeUpdate) return
+    if (currentTime === this.lastTimeUpdate || wasDisposed) return
 
     this.lastTimeUpdate = currentTime
 
@@ -286,8 +301,12 @@ class VideoPlayer {
       const currentTime = window.player.getCurrentTime()
       const duration = window.player.getDuration()
 
+      console.debug('youtube play stopped, storing last progress', currentTime)
+
+      if (currentTime === -1 || duration === -1) return
+
       this.#storeWatchingProgression(currentTime, duration)
-      
+
       return
     }
 
@@ -295,12 +314,17 @@ class VideoPlayer {
       Cookies.set('playingId', this.http.payload.postId)
     }
 
+    clearInterval(playerInterval)
+
     playerInterval = setInterval(async () => {
       const currentTime = window.player.getCurrentTime()
       const duration = window.player.getDuration()
 
+      console.debug('youtube progress interval', currentTime)
+
       // duration may be 0 if meta data is still loading
-      if (duration <= 0) return
+      if (currentTime <= 0 || duration <= 0) return
+
       this.#storeWatchingProgression(currentTime, duration)
     }, this.progressionInterval)
   }
@@ -331,7 +355,10 @@ class VideoPlayer {
       const currentTime = await this.getCurrentTime()
       const duration = await this.getDuration()
 
-      if (typeof currentTime !== 'number') return 
+      console.debug('bunny play stopped, storing last progress', currentTime)
+
+      if (currentTime === -1 || duration === -1) return
+      if (typeof currentTime !== 'number') return
 
       return this.#storeWatchingProgression(currentTime, duration)
     }
@@ -340,12 +367,17 @@ class VideoPlayer {
       Cookies.set('playingId', this.http.payload.postId)
     }
 
+    clearInterval(playerInterval)
+
     playerInterval = setInterval(async () => {
       const currentTime = await this.getCurrentTime()
       const duration = await this.getDuration()
 
+      console.debug('bunny progress interval', currentTime)
+
       // duration may be 0 if meta data is still loading
-      if (duration <= 0) return
+      if (currentTime <= 0 || duration <= 0) return
+
       this.#storeWatchingProgression(currentTime, duration)
     }, this.progressionInterval)
   }

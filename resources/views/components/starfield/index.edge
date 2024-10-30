@@ -5,7 +5,7 @@
 @let(lines = $props.lines ?? true)
 @let(dots = $props.dots ?? true)
 
-<section {{ html.attrs({ class: classNames, ...attrs }) }} x-on:resize.window.debounce.500ms="redraw">
+<section {{ html.attrs({ class: classNames, ...attrs }) }}>
   
   {{{ await $slots.main() }}}
   

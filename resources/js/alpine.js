@@ -130,10 +130,10 @@ Alpine.data('videoPlaceholder', () => {
     close() {
       console.log('closing video player')
 
-      if (typeof window.player?.pause === 'function') {
-        window.player.pause()
-      } else if (typeof window.player?.stopVideo === 'function') {
-        window.player.stopVideo()
+      if (typeof window.player?.destroy === 'function') {
+        window.player.destroy()
+      } else if (window.player?.elem) {
+        window.player.elem.remove()
       }
 
       document.querySelector('[video-placeholder]').classList.add('hidden')
