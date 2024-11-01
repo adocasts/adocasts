@@ -16,7 +16,7 @@ export default class SchedulesController {
 
     if (year && !this.years.includes(year)) year = DateTime.now().year
     if (month && !this.months.includes(month)) month = DateTime.now().month
-
+    
     const calendar = CalendarService.getMonth(year, month, timezone)
     const posts = await this.scheduleService.getPosts(year, month)
     const series = await this.scheduleService.getSeries()

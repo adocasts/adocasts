@@ -11,7 +11,7 @@ import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
 export const UserFactory = Factory.define(User, ({ faker }) => ({
   roleId: Roles.USER,
   planId: Plans.FREE,
-  username: faker.internet.userName(),
+  username: faker.internet.username(),
   email: faker.internet.email(),
   password: faker.internet.password(),
   avatarUrl: faker.image.url({ width: 300, height: 300 }),
