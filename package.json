@@ -133,7 +133,7 @@
     "sitemap": "^8.0.0",
     "sqlite3": "^5.1.7",
     "starback": "^2.1.6",
-    "stripe": "^17.3.0",
+    "stripe": "^14.25.0",
     "striptags": "^3.2.0",
     "tippy.js": "6.3.7",
     "ua-parser-js": "^1.0.39",
