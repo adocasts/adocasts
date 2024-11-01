@@ -128,7 +128,7 @@ Alpine.data('videoPlaceholder', () => {
     },
 
     close() {
-      console.log('closing video player')
+      console.debug('closing video player')
 
       if (typeof window.player?.destroy === 'function') {
         window.player.destroy()

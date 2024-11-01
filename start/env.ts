@@ -84,4 +84,7 @@ export default await Env.create(new URL('../', import.meta.url), {
 
   PLAUSIBLE_API_KEY: Env.schema.string.optional(),
   DISCORD_WEBHOOK: Env.schema.string.optional(),
+
+  PLOTMYCOURSE_API_URL: Env.schema.string(),
+  PLOTMYCOURSE_API_KEY: Env.schema.string.optional(),
 })

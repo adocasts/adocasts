@@ -7,13 +7,13 @@ enum PostTypes {
   SNIPPET = 6,
 }
 
-export const PostTypeDesc = {
-  1: 'Lesson',
-  2: 'Blog Post',
-  3: 'Link',
-  4: 'News',
-  5: 'Livestream',
-  6: 'Snippet',
+export const PostTypeDesc: Record<PostTypes, string> = {
+  [PostTypes.LESSON]: 'Lesson',
+  [PostTypes.BLOG]: 'Blog Post',
+  [PostTypes.LINK]: 'Link',
+  [PostTypes.NEWS]: 'News',
+  [PostTypes.LIVESTREAM]: 'Livestream',
+  [PostTypes.SNIPPET]: 'Snippet',
 }
 
 export default PostTypes

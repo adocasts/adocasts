@@ -4,6 +4,7 @@ const enum CacheNamespaces {
   TAXONOMIES = 'TAXONOMIES',
   PLANS = 'PLANS',
   FEED = 'FEED',
+  SCHEDULE = 'SCHEDULE',
 }
 
 export default CacheNamespaces

@@ -1,6 +1,8 @@
-<div class="relative flex items-center justify-center w-full p-5 mt-2 text-xs border rounded-md content border-gray-200/70">
+@let(classes = $props.class ?? 'relative flex items-center justify-center w-full p-5 mt-2 text-xs border rounded-md content border-gray-200/70')
+
+<div class="{{ classes }}">
   
-  @each (tab in tabs)
+  @each (tab in ($props.tabs || $context.tabs))
     <div :id="$id(tabId + '-content')" x-show="tabContentActive($el)" class="relative">
       @if ($slots.tab)
         {{{ await $slots.tab({ tab }) }}}

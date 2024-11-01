@@ -1,125 +1,50 @@
+@let(tabs = [{
+  name: 'Series in the Pipeline',
+  slot: 'active',
+}, {
+  name: 'Series Ideas',
+  slot: 'ideas'
+}])
+
 @layout({
   title: 'Content Schedule',
   meta: {
     description: "Curious what's in the works? Our content schedule shows what we're planning and what's currently on our schedule."
   }
 })
+  
+  @!heading({ title: 'Series Planning', subtitle: "Active, Coming Soon, and Ideas Farther Away", size: 'sm' })
+  @tabs.data({ tabs, tabIndex: 0, class: 'mb-8' })
+    @!tabs.buttons()
 
-  @alert.inverse({ variant: 'blue', icon: 'ph:info-fill', title: 'Under Construction', class: 'mb-6' })
-    Hey there! We've recently switched from Notion to <a href="https://plotmycourse.app">PlotMyCourse</a>,
-    an app we're building to plan courses/series. We don't have an API for this application yet, but will soon.
-    In the meantime, the information shown on this page will be outdated. Apologies for the inconvenience!
+    @tabs.contents({ class: 'flex flex-col mt-2' })
+      @slot('active')
+        @!schedule.table({ series: series.active })
+      @endslot
+
+      @slot('ideas')
+        @!schedule.table({ series: series.ideas })
+      @endslot
+    @end
   @end
 
-  @!heading({ title: 'Series Planned', subtitle: "Series We're Working On", size: 'sm' })
+  <div up-tab-content>
+    @if (tab === 'series')
+      @section()
+        @!heading({ title: 'Series.', size: 'sm' })
 
-  <!-- Card -->
-  <div class="flex flex-col mb-12">
-    <div class="-m-1.5 overflow-x-auto">
-      <div class="p-1.5 min-w-full inline-block align-middle">
-        <div class="bg-slate-100 border border-slate-200 rounded-md overflow-hidden">
-          <!-- Table -->
-          <table class="min-w-full divide-y divide-slate-200">
-            <thead class="bg-slate-50">
-              <tr>
-                <th scope="col" class="pl-6 pr-6 py-3 text-start">
-                  <div class="flex items-center gap-x-2">
-                    <span class="text-xs font-semibold uppercase tracking-wide text-slate-800">
-                      Name
-                    </span>
-                  </div>
-                </th>
+        @each ((item, i) in rows)
+          <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-slate-100 rounded-md mt-4">
+            @!collection.square.tall({ item, class: ['bg-slate-200'], withProgression: true })
 
-                <th scope="col" class="px-6 py-3 text-start">
-                  <div class="flex items-center gap-x-2">
-                    <span class="text-xs font-semibold uppercase tracking-wide text-slate-800">
-                      Modules
-                    </span>
-                  </div>
-                </th>
-
-                <th scope="col" class="px-6 py-3 text-start">
-                  <div class="flex items-center gap-x-2">
-                    <span class="text-xs font-semibold uppercase tracking-wide text-slate-800">
-                      Difficulty
-                    </span>
-                  </div>
-                </th>
-
-                <th scope="col" class="px-6 py-3 text-start">
-                  <div class="flex items-center gap-x-2">
-                    <span class="text-xs font-semibold uppercase tracking-wide text-slate-800">
-                      Status
-                    </span>
-                  </div>
-                </th>
-              </tr>
-            </thead>
-
-            <tbody class="divide-y divide-slate-200">
-              @each (item in series)
-                <tr>
-                  <td class="h-px w-28 whitespace-nowrap">
-                    <div class="pl-6 pr-6 py-3">
-                      <div class="flex items-center gap-x-3">
-                        <div class="grow">
-                          <span class="block text-sm font-semibold text-slate-800">{{ item.name }}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="h-px w-px whitespace-nowrap">
-                    @let(total = item.modules?.length ?? 0)
-                    @let(inProgress = item.modules?.filter(item => item.status === 'In progress').length ?? 0)
-                    @let(done = item.modules?.filter(item => item.status === 'Done').length ?? 0)
-                    @let(inProgressPercent = inProgress / total * 100)
-                    @let(donePercent = done / total * 100)
-                    <div class="px-6 py-3">
-                      <div class="flex items-center gap-x-3">
-                        <span class="text-xs text-slate-500 flex items-center gap-0.5">
-                          <span class="text-green-500">{{ done }} Done</span>/<span class="text-blue-500">{{ inProgress }} In Progress</span>/<span>{{ total }} Planned</span>
-                        </span>
-                        <div class="flex w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                          <div
-                            class="flex flex-col justify-center overflow-hidden bg-green-500" 
-                            role="progressbar" 
-                            style="width: {{ donePercent }}%" 
-                            aria-valuenow="{{ donePercent }}" 
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
-                          <div
-                            class="flex flex-col justify-center overflow-hidden bg-blue-500" 
-                            role="progressbar" 
-                            style="width: {{ inProgressPercent }}%" 
-                            aria-valuenow="{{ inProgressPercent }}" 
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="h-px w-28 whitespace-nowrap">
-                    <div class="px-6 py-3 text-sm">
-                      @!notion.difficulty({ item })
-                    </div>
-                  </td>
-                  <td class="h-px w-px whitespace-nowrap">
-                    <div class="px-6 py-3 text-sm">
-                      @!notion.status({ item })
-                    </div>
-                  </td>
-                </tr>
-              @endeach
-            </tbody>
-          </table>
-          <!-- End Table -->
-        </div>
-      </div>
-    </div>
+            @each ((post, i) in item.posts)
+              @!post.item({ item: post, col: true, class: `p-4  ${i > 0 ? 'sm:hidden' : ''} ${i == 2 ? 'md:hidden lg:flex' : 'md:flex'}`, display: { seriesName: false } })
+            @endeach
+          </div>
+        @endeach
+      @end
+    @endif
   </div>
-  <!-- End Card -->
 
   @heading({ title: 'Content Schedule', subtitle: "Posts Assigned A Publish Date", size: 'sm' })
     @slot('action')
@@ -143,15 +68,6 @@
       </div>
     @endslot
   @end
-
-  @if (isBeforeStart)
-    @!alert({ 
-      variant: 'yellow', 
-      icon: 'ph:warning-fill',
-      title: `This schedule was started ${scheduleStartDate.toFormat('MMM d, yyyy')}.`, 
-      class: 'mb-4' 
-    })
-  @endif
   
   <div class="w-full mb-5">
     <div class="relative w-full">
@@ -191,7 +107,7 @@
           @endeach
 
           @each (day in calendar.days)
-            @let(matches = posts.filter(post => post.publishAt?.day === day))
+            @let(matches = posts.filter(post => DateTime.fromISO(post.publishAt).day === day))
             <div class="px-0.5 -mr-px -mb-px aspect-square border border-slate-200">
               <div 
                 class="{{
@@ -206,23 +122,29 @@
               <div class="hidden xl:flex flex-col text-2xs p-2">
                 @let(limit = matches.length > 3 ? 3 : matches.length)
                 @each (match in matches.slice(0, limit))
-                  <div class="{{ 
-                    html.classNames([
-                      'mb-1 p-1 rounded-md truncate',
-                      {
-                        'bg-red-500/50': match.type === 'Blog',
-                        'bg-blue-500/50': match.type === 'Lesson',
-                        'bg-purple-500/50': match.type === 'News',
-                        'bg-green-500/50': match.type === 'Snippet'
-                      }
-                    ]) 
-                  }}" title="{{ match.title }}">
+                  <{{ match.url ? 'a' : 'div' }} 
+                    {{{ match.url ? `href="${match.url}" up-follow` : '' }}}
+                    class="{{
+                      html.classNames([
+                        'mb-1 p-1 rounded-md truncate',
+                        {
+                          'underline': match.url,
+                          'bg-red-500/50': match.type === 'Blog' || match.type === 'Blog Post',
+                          'bg-blue-500/50': match.type === 'Lesson',
+                          'bg-purple-500/50': match.type === 'News',
+                          'bg-green-500/50': match.type === 'Snippet'
+                        }
+                      ])
+                    }}"
+                    title="{{ match.title }}"
+                    data-type="{{ match.type }}">
                     {{ match.title }}
-                  </div>
+                  </{{ match.url ? 'a' : 'div' }}>
                 @endeach
                 @if (matches.length !== limit)
+                  @let(others = matches.length - limit)
                   <div class="{{ html.classNames([ 'mb-1 p-1 rounded-md' ]) }}">
-                    +{{ matches.length - limit }} others
+                    +{{ others }} {{ pluralize('others', others) }}
                   </div>
                 @endif
               </div>

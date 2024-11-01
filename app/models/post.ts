@@ -26,6 +26,7 @@ import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 import SlugService from '#services/slug_service'
 import router from '@adonisjs/core/services/router'
 import Progress from './progress.js'
+import PostTypes from '#enums/post_types'
 
 export default class Post extends AppBaseModel {
   serializeExtras = true
@@ -111,7 +112,7 @@ export default class Post extends AppBaseModel {
   declare videoSeconds: number
 
   @column()
-  declare postTypeId: number
+  declare postTypeId: PostTypes
 
   @column()
   declare redirectUrl: string

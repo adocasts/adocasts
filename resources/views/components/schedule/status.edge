@@ -1,9 +1,15 @@
-@if (item.status === 'In progress' || item.status === 'Planning')
+@let(inProgressStatuses = ['Recording', 'Recorded', 'Edited'])
+
+@if (inProgressStatuses.includes(item.status))
   <div class="bg-blue-400 text-center text-black text-sm px-2 py-1 rounded-full">
     {{ string.capitalCase(item.status) }}
   </div>
 @elseif (item.status === 'Done')
   <div class="bg-green-400 text-center text-black text-sm px-2 py-1 rounded-full">
+    {{ string.capitalCase(item.status) }}
+  </div>
+@elseif (item.status === 'Ongoing')
+  <div class="bg-teal-400 text-center text-black text-sm px-2 py-1 rounded-full">
     {{ string.capitalCase(item.status) }}
   </div>
 @else
