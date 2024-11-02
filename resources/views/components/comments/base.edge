@@ -39,7 +39,7 @@
   @endif
 
   <div class="mt-6">
-    @!comments.list({ postId, lessonRequest, discussionId, comments, nodeComments: rootComments, canComment })
+    @!comments.list({ postId, lessonRequest, discussionId, authorId, comments, nodeComments: rootComments, canComment })
   </div>
 
   @if (!lessonRequest && !comments.length)

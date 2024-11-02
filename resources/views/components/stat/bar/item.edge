@@ -6,7 +6,7 @@
     {{{ await $slots.prefix() }}}
   @endif
 
-  <{{ el }} {{ html.attrs({ href: $props.href }) }} up-follow class="{{ html.classNames(['flex flex-col']) }}">
+  <{{ el }} {{ html.attrs({ href: $props.href }) }} up-follow class="{{ html.classNames(['flex flex-col', $props.itemClass]) }}">
 
     <dt class="{{ html.classNames(['font-semibold', size.dt]) }}">
       @if (title)

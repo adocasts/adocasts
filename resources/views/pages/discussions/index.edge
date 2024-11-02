@@ -5,30 +5,6 @@
   }
 })
   <div class="max-w-prose xl:max-w-[74ch] mx-auto">
-    @heading({ title: 'The Feed', subtitle: 'Converse, Share, and Discuss' })
-      @slot('action')
-        <div class="flex items-end">
-          @can('DiscussionPolicy.store')
-            @button({ href: route('feed.create'), 'up-layer': 'new', 'up-size': 'medium', 'up-class': 'discussion-modal' })
-              @svg('ph:plus-bold')
-              New Post
-            @end
-          @else
-            <p class="text-xs">
-              <a href="{{ route('auth.signin.create') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
-                Sign in
-              </a>
-              or 
-              <a href="{{ route('auth.signup.create') }}" up-layer="new modal" up-size="grow" class="anchor link-alt">
-                sign up
-              </a>
-              to join in on the dicussion
-            </p>
-          @endcan
-        </div>
-      @endslot
-    @end
-
     @form({
       action: form.post('feed.search'),
       'up-autosubmit': true,
@@ -48,6 +24,20 @@
         @form.field({ name: 'pattern', class: 'w-full md:flex-1' })
           @!form.input({ type: 'search', value: request.qs().pattern, placeholder: 'Search ...' })
         @end
+
+        <div class="mb-6">
+          @can('DiscussionPolicy.store')
+            @button({ href: route('feed.create'), 'up-layer': 'new', 'up-size': 'medium', 'up-class': 'discussion-modal' })
+              @svg('ph:plus-bold')
+              New Discussion
+            @end
+          @else
+            @button({ href: route('auth.signup.create'), 'up-target': '[up-main]', 'up-layer': 'new', class: 'hidden md:inline-block' })
+              @svg('ph:plus-bold')
+              New Discussion
+            @end
+          @endcan
+        </div>
       </div>
     @end
 

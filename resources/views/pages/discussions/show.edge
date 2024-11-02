@@ -19,7 +19,7 @@
           <a href="{{ route('feed.index') }}" class="anchor" up-follow>
             <span class="inline-flex items-center gap-1.5">
               @svg('ph:arrow-left-bold')
-              Feed
+              Back to discuss
             </span>
           </a>
         @endif
@@ -48,24 +48,60 @@
       <div class="bg-slate-100 rounded-md px-4 py-2">
         @let(author = item.user)
         @stat.bar({ size: 'small', display: 'flex' })
-          @stat.bar.item({ title: 'Posted By' })
+          @stat.bar.item({ title: `Posted ${item.createdAgo} by`, class: 'flex-1' })
             @slot('prefix')
               @if (author.avatar)
                 @profile.link({ user: author })
-                  <img class="rounded-md w-10 h-10 border-1 border-slate-900 border-opacity-20 bg-slate-100" src="{{ author.avatar }}" />
+                  <img class="rounded-md w-14 h-14 border-1 border-slate-900 border-opacity-20 bg-slate-100" src="{{ author.avatar }}" />
                 @end
               @endif
             @endslot
 
-            @profile.link({ user: author })
+            @profile.link({ user: author, class: 'flex items-baseline text-lg lg:text-xl leading-tight' })
               {{ author.profile.name || author.username }} 
-              <span class="text-slate-600 text-xs font-normal">({{ author.handle }})</span>
+              <span class="text-slate-600 text-sm font-normal ml-1">({{ author.handle }})</span>
+              @if (!author.isFreeTier)
+                <img class="h-3 ml-3" src="/imgs/plus-badge-100.png" alt="Adocasts Plus Subscriber" title="Adocasts Plus Subscriber" />
+              @endif
             @end
           @end
-          @!stat.bar.item({ title: 'Posted', value: item.createdAgo })
-          @!stat.bar.item({ title: 'Impressions', value: parseInt(item.$extras.impressions_count).toLocaleString(), class: 'hidden sm:flex' })
-          @!stat.bar.item({ title: 'Replies', value: commentCount, href: '#comments', class: 'hidden sm:flex' })
         @end
+
+        <div class="w-full flex items-end gap-4 justify-between text-sm mt-2 text-slate-600">
+          <div class="flex items-center gap-2">
+            @if (comments.length > 1)
+              <div class="flex -space-x-2 {{ aside ? '' : 'ml-3 mr-3' }}">
+                @each (comment in comments.toReversed())
+                  <img class="inline-block h-5 w-5 rounded-full ring-2 ring-slate-100" src="{{ comment.user.avatar }}" alt="{{ comment.user.handle }}">
+                @endeach
+              </div>
+            @endif
+
+            @tooltip({ text: `${parseInt(commentCount).toLocaleString()} ${string.pluralize('Reply', parseInt(commentCount))}`, position: 'bottom' })
+              <a href="{{ route('feed.show', { slug: item.slug }) }}#comments" up-follow class="flex items-center gap-1.5 text-sm bg-slate-200 hover:text-slate-950 duration-300 rounded-md py-1 px-2">
+                @svg('ph:chats-circle-fill')
+                {{ parseInt(commentCount).toLocaleString() }}
+              </a>
+            @end
+
+            @!discussion.vote({ item })
+
+            @tooltip({ text: `${parseInt(item.$extras.impressions_count).toLocaleString()} ${string.pluralize('Impression', parseInt(item.$extras.impressions_count))}`, position: 'bottom' })
+              <div class="text-sm bg-slate-200 text-slate-900 opacity-50 duration-300 rounded-md py-1 px-2 flex items-center gap-1.5">
+                @svg('ph:eye-fill', { class: 'text-slate-600' })
+                {{ parseInt(item.$extras.impressions_count).toLocaleString() }}
+              </div>
+            @end
+          </div>
+
+          @if (item.taxonomy)
+            <div>
+              @button({ href: route('feed.index', {}, { qs: { topic: item.taxonomy.slug } }), size: 'sm' })
+                {{ item.taxonomy.name }}
+              @end
+            </div>
+          @endif
+        </div>
       </div>
     </div>
 
@@ -76,7 +112,7 @@
     </article>
     
     <div id="comments" class="max-w-prose mx-auto mt-8">
-      @!comments.base({ discussionId: item.id, comments, commentCount, descriptor: 'Reply', class: 'md:-mx-4' })
+      @!comments.base({ discussionId: item.id, authorId: item.user.id, comments, commentCount, descriptor: 'Reply', class: 'md:-mx-4' })
     </div>
   </div>
 

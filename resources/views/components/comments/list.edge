@@ -52,6 +52,11 @@
                 @if (!comment.user.isFreeTier)
                   <img class="h-3" src="/imgs/plus-badge-100.png" alt="Adocasts Plus Subscriber" title="Adocasts Plus Subscriber" />
                 @endif
+                @if (comment.user.id === authorId)
+                  <div class="px-2 py-0.5 text-2xs uppercase text-slate-600 bg-slate-200 rounded-full">
+                    OP
+                  </div>
+                @endif
               </div>
               @if (lessonRequest && lessonRequest.approveCommentId === comment.id)
                 <div class="text-green-500 text-xs">
@@ -167,6 +172,7 @@
           lessonRequestId,
           discussionId,
           rootParentId,
+          authorId,
           parentId: comment.id,
           comments,
           levelIndex,
