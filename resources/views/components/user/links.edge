@@ -1,32 +1,51 @@
 <div class="flex flex-wrap gap-1 {{ $props.class }}">
   @if (user.profile.githubUrl)
-    @button({ href: user.profile.githubUrl, target: '_blank', square: true })
-      @svg('simple-icons:github')
+    @tooltip({ text: 'GitHub', position: 'bottom' })
+      @button({ href: user.profile.githubUrl, target: '_blank', square: true })
+        @svg('simple-icons:github')
+      @end
     @end
   @endif
   @if (user.profile.youtubeUrl)
-    @button({ href: user.profile.youtubeUrl, target: '_blank', square: true })
-      @svg('simple-icons:youtube')
+    @tooltip({ text: 'YouTube', position: 'bottom' })
+      @button({ href: user.profile.youtubeUrl, target: '_blank', square: true })
+        @svg('simple-icons:youtube')
+      @end
+    @end
+  @endif
+  @if (user.profile.blueskyUrl)
+    @tooltip({ text: 'Bluesky', position: 'bottom' })
+      @button({ href: user.profile.blueskyUrl, target: '_blank', square: true })
+        @svg('simple-icons:bluesky')
+      @end
     @end
   @endif
   @if (user.profile.twitterUrl)
-    @button({ href: user.profile.twitterUrl, target: '_blank', square: true })
-      @svg('simple-icons:twitter')
+    @tooltip({ text: 'Twitter', position: 'bottom' })
+      @button({ href: user.profile.twitterUrl, target: '_blank', square: true })
+        @svg('simple-icons:twitter')
+      @end
     @end
   @endif
   @if (user.profile.facebookUrl)
-    @button({ href: user.profile.facebookUrl, target: '_blank', square: true })
-      @svg('simple-icons:facebook')
+    @tooltip({ text: 'Facebook', position: 'bottom' })
+      @button({ href: user.profile.facebookUrl, target: '_blank', square: true })
+        @svg('simple-icons:facebook')
+      @end
     @end
   @endif
   @if (user.profile.instagramUrl)
-    @button({ href: user.profile.instagramUrl, target: '_blank', square: true })
-      @svg('simple-icons:instagram')
+    @tooltip({ text: 'Instagram', position: 'bottom' })
+      @button({ href: user.profile.instagramUrl, target: '_blank', square: true })
+        @svg('simple-icons:instagram')
+      @end
     @end
   @endif
   @if (user.profile.threadsUrl)
-    @button({ href: user.profile.threadsUrl, target: '_blank', square: true })
-      @svg('simple-icons:threads')
+    @tooltip({ text: 'Threads', position: 'bottom' })
+      @button({ href: user.profile.threadsUrl, target: '_blank', square: true })
+        @svg('simple-icons:threads')
+      @end
     @end
   @endif
   @if (user.profile.website)

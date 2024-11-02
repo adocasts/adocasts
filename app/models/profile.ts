@@ -54,6 +54,9 @@ export default class Profile extends AppBaseModel {
   declare threadsUrl: string | null
 
   @column()
+  declare blueskyUrl: string | null
+
+  @column()
   declare emailOnComment: boolean
 
   @column()

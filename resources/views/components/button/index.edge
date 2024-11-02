@@ -42,7 +42,7 @@
     type="{{ type || 'button' }}" 
     class="{{ html.classNames('duration-300', utils.classes(sizes[size], variants[variant], $props.class, [{ 'flex w-full': block, 'opacity-40 cursor-not-allowed': disabled }])) }}">
     @if ($slots.loading)
-      <span x-show="{{ sendingKey }}" class="flex items-center gap-1.5 {{ $props.classInner }}">
+      <span x-cloak x-show="{{ sendingKey }}" class="flex items-center gap-1.5 {{ $props.classInner }}">
         {{{ await $slots.loading() }}}
       </span>
     @endif

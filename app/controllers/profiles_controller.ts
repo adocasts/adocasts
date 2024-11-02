@@ -86,7 +86,7 @@ export default class ProfilesController {
 
   async update({ request, response, auth, session, up }: HttpContext) {
     const { avatar, ...data } = await request.validateUsing(profileUpdateValidator)
-
+    
     if (avatar) {
       const avatarUrl = auth.user!.avatarUrl
       const location = `${auth.user!.id}/profile/`

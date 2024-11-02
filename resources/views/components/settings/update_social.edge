@@ -1,5 +1,5 @@
 @form.section({ title: 'Update Social Links', description: 'Share where others can find you', borderBottom })
-  @form({ action: form.put('users.profiles.update'), upSubmit: true })
+  @form({ action: form.put('users.profiles.update'), upSubmit: true, loadable: true })
 
     @form.field({ label: 'GitHub URL', name: 'githubUrl' })
       @!form.input({ type: 'url', value: profile.githubUrl, placeholder: 'https://github.com/username' })
@@ -17,6 +17,10 @@
       @!form.input({ type: 'url', value: profile.instagramUrl, placeholder: 'https://instagram.com/username' })
     @end
 
+    @form.field({ label: 'Bluesky URL', name: 'blueskyUrl' })
+      @!form.input({ type: 'url', value: profile.blueskyUrl, placeholder: 'https://bsky.app/profile/username' })
+    @end
+
     @form.field({ label: 'Threads URL', name: 'threadsUrl' })
       @!form.input({ type: 'url', value: profile.threadsUrl, placeholder: 'https://threads.net/@username' })
     @end
@@ -26,6 +30,11 @@
     @end
 
     @button({ type: 'submit', class: 'mt-3' })
+      @slot('loading')
+        @svg('svg-spinners:blocks-shuffle-3')
+        Saving ...
+      @endslot
+
       Update Social Links
     @end
   @end
