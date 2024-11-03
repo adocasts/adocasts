@@ -44,7 +44,6 @@ export default class AuthSocialService {
     const username = await this.getUniqueUsername(user.name ?? user.email.split('@').at(0))
     const userIdKey = provider === 'github' ? 'githubId' : `googleId`
     const userEmailKey = provider === 'github' ? 'githubEmail' : `googleEmail`
-    const tokenKey = provider === 'github' ? 'githubAccessToken' : `googleAccessToken`
 
     let userMatch = await User.query()
       .if(user.email, (query) => query.where('email', user.email!))
@@ -61,9 +60,8 @@ export default class AuthSocialService {
         roleId: Roles.USER,
         [userIdKey]: user.id,
         [userEmailKey]: user.email,
-        [tokenKey]: user.token.token,
       })
-    } else if (!this.ctx.auth.user && !userMatch[tokenKey]) {
+    } else if (!this.ctx.auth.user && (!userMatch[userIdKey] || !userMatch[userEmailKey])) {
       return {
         success: false,
         message: `This email is already tied to an account. Please login to your account using your email/username and password and add ${provider} through your settings.`,
@@ -72,7 +70,6 @@ export default class AuthSocialService {
       userMatch.merge({
         [userIdKey]: user.id,
         [userEmailKey]: user.email,
-        [tokenKey]: user.token.token,
       })
       await userMatch.save()
     }
@@ -90,12 +87,10 @@ export default class AuthSocialService {
   async unlink(user: User, provider: keyof SocialProviders) {
     const userIdKey = `${provider}Id`
     const userEmailKey = `${provider}Email`
-    const tokenKey = `${provider}AccessToken`
 
     user.merge({
       [userIdKey]: null,
       [userEmailKey]: null,
-      [tokenKey]: null,
     })
 
     await user.save()

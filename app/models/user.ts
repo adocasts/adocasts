@@ -106,15 +106,6 @@ export default class User extends compose(AppBaseModel, AuthFinder) {
   declare googleEmail: string
 
   @column()
-  declare githubAccessToken: string
-
-  @column()
-  declare googleAccessToken: string
-
-  @column()
-  declare twitterAccessToken: string
-
-  @column()
   theme: string = Themes.SYSTEM
 
   @column()
