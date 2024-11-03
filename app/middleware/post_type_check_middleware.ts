@@ -4,9 +4,14 @@ import type { NextFn } from '@adonisjs/core/types/http'
 
 export default class PostTypeCheckMiddleware {
   async handle({ request, response, params }: HttpContext, next: NextFn) {
-    const post = await Post.findByOrFail('slug', params.slug)
+    // gracefully handle encoded #
+    if (params.slug.includes('%23')) {
+      params.slug = params.slug.split('%23').at(0)
+    }
 
-    if (!request.url().toLowerCase().includes(post.routeUrl.toLowerCase())) {
+    const post = await Post.findBy('slug', params.slug)
+
+    if (post && !request.url().toLowerCase().includes(post.routeUrl.toLowerCase())) {
       response.redirect(post.routeUrl)
       return
     }
