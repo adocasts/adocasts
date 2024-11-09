@@ -4,9 +4,9 @@
   x-data
   id="unreadNotifications" 
   class="relative z-30" 
-  up-source="{{ route('fragments.header.notifications', {}, { qs: { unreadCount }}) }}" 
+  {{-- up-source="{{ route('fragments.header.notifications', {}, { qs: { unreadCount }}) }}" 
   up-poll="{{ !!auth.user }}"
-  up-interval="120000"
+  up-interval="120000" --}}
   @read="$el.innerHTML = ''">
   @if (unreadCount)
     <div class="absolute -top-1 -right-1 w-4 h-4 text-2xs text-center font-mono bg-brand-500 rounded-full">
