@@ -56,7 +56,8 @@ export default class HttpExceptionHandler extends ExceptionHandler {
   async report(error: unknown, ctx: HttpContext) {
     if (
       error instanceof errors.E_ROUTE_NOT_FOUND ||
-      error instanceof shieldErrors.E_BAD_CSRF_TOKEN
+      error instanceof shieldErrors.E_BAD_CSRF_TOKEN ||
+      error instanceof vineErrors.E_VALIDATION_ERROR
     ) {
       return super.report(error, ctx)
     }
