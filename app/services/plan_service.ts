@@ -23,6 +23,6 @@ export default class PlanService {
     return this.cache.getOrSet(id.toString(), async () => {
       const plan = await Plan.findOrFail(id)
       return PlanVM.get(plan)
-    })
+    }, { ttl: '1m' })
   }
 }

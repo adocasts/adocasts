@@ -103,6 +103,16 @@ export default class Plan extends BaseModel {
   }
 
   @computed()
+  get couponAmount() {
+    let amount = `${this.couponDiscountPercent}%`
+    
+    if (this.couponDiscountFixed)
+      amount = `${UtilityService.formatCurrency(this.couponDiscountFixed, 'USD')}`
+
+    return amount
+  }
+
+  @computed()
   get salePrice() {
     if (!this.hasActiveSale) return this.price
 

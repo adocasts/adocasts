@@ -7,8 +7,13 @@ export class PlanVM {
       slug: plan.slug,
       name: plan.name,
       price: plan.price,
+      salePrice: plan.salePrice,
+      hasActiveSale: plan.hasActiveSale,
       stripePriceId: plan.stripePriceId,
-      displayPrice: plan.displayPrice
+      displayPrice: plan.displayPrice,
+      coupon: plan.couponCode,
+      couponDescriptor: plan.couponDescriptor,
+      couponAmount: plan.couponAmount
     }
   }
 }

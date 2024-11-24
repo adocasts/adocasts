@@ -214,15 +214,19 @@ export default class StripeService {
             },
           }
 
+    const couponConfig = discounts.length
+        ? {}
+        : { allow_promotion_codes: true }
+
     return this.stripe.checkout.sessions.create({
       ...baseConfig,
+      ...couponConfig,
       mode,
       discounts,
       customer: customerId!,
       automatic_tax: {
         enabled: true,
       },
-      allow_promotion_codes: true,
       line_items: [
         {
           price: plan.priceId!,

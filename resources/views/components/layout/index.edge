@@ -43,6 +43,10 @@
   @!toast()
   
   <div id="banners" up-hungry>
+    @if (!auth.user || auth.user.isFreeTier)
+      @!banner.sale()
+    @endif
+
     @!banner.verifyEmail()
   </div>
 

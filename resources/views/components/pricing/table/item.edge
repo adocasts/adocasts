@@ -3,19 +3,48 @@
 
 <div {{ html.attrs({ class: classNames, ...attrs }) }}>
   <div class="p-4 lg:p-8">
-    <img class="h-3 w-auto" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts Plus" />
-    <h3 class="m-0 text-xl leading-tight tracking-wide uppercase font-black border-0 border-solid {{ theme ? 'text-slate-900' : 'text-slate-base-100' }}">
-      {{ title }}
-    </h3>
-    
-    <div class="flex items-end justify-start mt-4 leading-7 border-0 border-solid sm:mt-6 {{ theme ? 'text-slate-900' : 'text-slate-base-100' }}">
-      <p class="box-border m-0 text-4xl lg:text-6xl font-semibold leading-none border-0 {{ theme ? 'border-slate-200' : 'border-slate-base-800'}}">
-        ${{ utils.centsToDollars(plan.price) }}
-      </p>
-      <p class="box-border m-0 border-solid text-slate-base-400" style="border-image: initial;">
-        / {{ period }}
-      </p>
+    <div class="flex items-center gap-4">
+      <div>
+        <img class="h-3 w-auto" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts Plus" />
+        <h3 class="m-0 text-xl leading-tight tracking-wide uppercase font-black border-0 border-solid {{ theme ? 'text-slate-900' : 'text-slate-base-100' }}">
+          {{ title }}
+        </h3>
+      </div>
+
+      @if (plan.hasActiveSale)
+        <div class="bg-green-400 text-green-base-50 text-xs font-bold px-3 py-0.5 rounded-full">
+          {{ plan.couponAmount }} OFF
+        </div>
+      @endif
     </div>
+    
+    @if (plan.hasActiveSale)
+      <div class="flex items-center justify-start mt-4 leading-7 border-0 border-solid sm:mt-6 gap-x-3 {{ theme ? 'text-slate-900' : 'text-slate-base-100' }}">
+        <p class="box-border m-0 text-5xl md:text-5xl lg:text-6xl font-semibold text-green-500 leading-none border-0 {{ theme ? 'border-slate-200' : 'border-slate-base-800'}}">
+          ${{ utils.centsToDollars(plan.salePrice) }}
+        </p>
+        <div class="leading-tight">
+          <div class="relative inline-block">
+            <p class="box-border m-0 text-lg lg:text-2xl font-semibold leading-none border-0 {{ theme ? 'text-slate-600' : 'text-slate-base-400' }}">
+              ${{ utils.centsToDollars(plan.price) }}
+            </p>
+            <div class="absolute top-1/2 left-0 -translate-1/2 w-full h-[2px] bg-slate-700 rounded-full"></div>
+          </div>
+          <p class="box-border m-0 border-solid text-slate-base-400" style="border-image: initial;">
+            per {{ period }}
+          </p>
+        </div>
+      </div>
+    @else
+      <div class="flex items-end justify-start mt-4 leading-7 border-0 border-solid sm:mt-6 gap-x-3 {{ theme ? 'text-slate-900' : 'text-slate-base-100' }}">
+        <p class="box-border m-0 text-4xl lg:text-6xl font-semibold leading-none border-0">
+          ${{ utils.centsToDollars(plan.price) }}
+        </p>
+        <p class="box-border m-0 border-solid text-slate-base-400" style="border-image: initial;">
+          / {{ period }}
+        </p>
+      </div>
+    @endif
 
     <p class="mt-3 leading-7 border-0 border-solid mb-8 text-slate-base-400 text-sm lg:text-base {{ theme ? 'text-slate-900' : 'text-slate-base-100' }}">
       {{ description }}
