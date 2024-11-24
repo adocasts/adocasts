@@ -1,7 +1,7 @@
 @let(plan = await PlanService.get(Plans.PLUS_MONTHLY))
 
 @if (plan.hasActiveSale)
-  <div class="relative bg-gradient-to-br from-slate-base-950 to-brand-base-100">
+  <div class="relative bg-gradient-to-br from-slate-base-950 to-brand-base-900 text-slate-base-50">
     <div class="w-full h-full absolute top-0 left-0" style="background-image: url('/imgs/planets-top.svg'); background-repeat: no-repeat; background-size: 80%; background-position: top -28px right;"></div>
     <div class="flex items-center gap-x-6 py-0.5 relative z-10 page">
       <img class="w-10 animation-float" src="/imgs/robot/slice9.svg" alt="robot mascot smiling" />
