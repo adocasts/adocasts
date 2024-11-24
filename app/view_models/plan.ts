@@ -11,6 +11,7 @@ export class PlanVM {
       hasActiveSale: plan.hasActiveSale,
       stripePriceId: plan.stripePriceId,
       displayPrice: plan.displayPrice,
+      displaySalePrice: plan.displaySalePrice,
       coupon: plan.couponCode,
       couponDescriptor: plan.couponDescriptor,
       couponAmount: plan.couponAmount

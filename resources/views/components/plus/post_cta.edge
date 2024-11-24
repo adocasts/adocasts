@@ -15,6 +15,7 @@
 })
 
 @let(classes = sizes[size])
+@let(cta = plusMonthly.hasActiveSale ? `, on sale now for ${plusMonthly.displaySalePrice}/mo` : ` for ${plusMonthly.displayPrice}/mo`)
 
 @if (isDelayedRelease)
   <div class="relative z-10">
@@ -26,9 +27,9 @@
     </h3>
     <p class="{{ classes.p }}">
       @if (auth.user)
-        Please check back {{ PostService.getPaywallTimeAgo(post) }}. Get immediate access to this lesson and more by joining Adocasts Plus for {{ plusMonthly.displayPrice }}/mo.
+        Please check back {{ PostService.getPaywallTimeAgo(post) }}. Get immediate access to this lesson and more by joining Adocasts Plus{{ cta }}.
       @else
-        Please check back {{ PostService.getPaywallTimeAgo(post) }}. Get immediate access to this lesson and more by joining Adocasts Plus for {{ plusMonthly.displayPrice }}/mo or signing into your existing Adocasts+ account.
+        Please check back {{ PostService.getPaywallTimeAgo(post) }}. Get immediate access to this lesson and more by joining Adocasts Plus{{ cta }} or signing into your existing Adocasts Plus account.
       @endif
     </p>
     <div class="{{ classes.action }}">
@@ -48,9 +49,9 @@
     </h3>
     <p class="{{ classes.p }}">
       @if (auth.user)
-        Join Adocasts Plus for {{ plusMonthly.displayPrice }}/mo to get immediate access to this lesson and more.
+        Join Adocasts Plus{{ cta }}, to get immediate access to this lesson and more.
       @else
-        Join Adocasts Plus for {{ plusMonthly.displayPrice }}/mo or sign into your account to get access to all of our lessons.
+        Join Adocasts Plus{{ cta }}, or sign into your account to get access to all of our lessons.
       @endif
     </p>
     <div class="{{ classes.action }}">
