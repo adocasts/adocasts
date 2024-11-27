@@ -27,6 +27,7 @@ import SlugService from '#services/slug_service'
 import router from '@adonisjs/core/services/router'
 import Progress from './progress.js'
 import PostTypes from '#enums/post_types'
+import env from '#start/env'
 
 export default class Post extends AppBaseModel {
   serializeExtras = true
@@ -292,7 +293,7 @@ export default class Post extends AppBaseModel {
   get bunnyHlsUrl() {
     if (this.videoTypeId !== VideoTypes.BUNNY) return
 
-    return `https://videos.adocasts.com/${this.videoBunnyId}/playlist.m3u8`
+    return `${env.get('VIDEO_DOMAIN')}/${this.videoBunnyId}/playlist.m3u8`
   }
 
   @computed()
@@ -301,7 +302,7 @@ export default class Post extends AppBaseModel {
 
     // note: bunny stream only provides direct mp4 files up to 720p
     // but that's okay because these are fallbacks in the event hls isn't support by the user
-    const baseUrl = `https://videos.adocasts.com/${this.videoBunnyId}`
+    const baseUrl = `${env.get('VIDEO_DOMAIN')}/${this.videoBunnyId}`
     const heights = ['480', '720']
 
     return heights.map((height) => ({ height, src: `${baseUrl}/play_${height}p.mp4` }))
@@ -315,7 +316,7 @@ export default class Post extends AppBaseModel {
 
     return langs.map((lang) => ({
       ...lang,
-      src: `https://videos.adocasts.com/${this.videoBunnyId}/captions/${lang.code}.vtt`,
+      src: `${env.get('VIDEO_DOMAIN')}/${this.videoBunnyId}/captions/${lang.code}.vtt`,
     }))
   }
 
@@ -330,7 +331,7 @@ export default class Post extends AppBaseModel {
   get animatedPreviewUrl() {
     if (this.videoTypeId !== VideoTypes.BUNNY || !this.videoBunnyId) return
 
-    return `https://videos.adocasts.com/${this.videoBunnyId}/preview.webp`
+    return `${env.get('VIDEO_DOMAIN')}/${this.videoBunnyId}/preview.webp`
   }
 
   @computed()

@@ -20,6 +20,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   APP_LOGO_INV: Env.schema.string(),
   APP_CONTACT_EMAIL: Env.schema.string(),
   APP_DOMAIN: Env.schema.string(),
+  VIDEO_DOMAIN: Env.schema.string(),
   CACHE_VIEWS: Env.schema.boolean(),
   DRIVE_DISK: Env.schema.enum(['local', 'gcs'] as const),
   NODE_ENV: Env.schema.enum(['development', 'production', 'test'] as const),

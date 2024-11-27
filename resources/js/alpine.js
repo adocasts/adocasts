@@ -175,6 +175,44 @@ Alpine.data('videoAutoPlayNext', (enabled = true, nextLessonUrl) => {
   }
 })
 
+Alpine.data('videoDownload', (videoDownloadUrl, filename) => {
+  return {
+    isDownloading: false,
+
+    async download() {
+      let href
+      this.isDownloading = true
+
+      try {
+        const response = await axios.get(videoDownloadUrl, {
+          responseType: 'blob',
+        })
+        href = URL.createObjectURL(response.data)
+      } catch (error) {
+        window.toast('Failed to download video', { type: 'error' })
+        this.isDownloading = false
+        console.error(error.message)
+        return
+      }
+
+      const anchor = document.createElement('a')
+
+      anchor.href = href
+      anchor.setAttribute('download', `${filename || document.title}.mp4`)
+
+      document.body.appendChild(anchor)
+
+      anchor.click()
+
+      document.body.removeChild(anchor)
+
+      URL.revokeObjectURL(href)
+
+      this.isDownloading = false
+    },
+  }
+})
+
 Alpine.data('proseBody', function () {
   return {
     init() {

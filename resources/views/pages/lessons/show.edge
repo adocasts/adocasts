@@ -107,6 +107,20 @@
             Repository
           @end
         @endif
+
+        @if (post?.hasVideo && post.videoBunnyId && auth.user && !auth.user.isFreeTier)
+          <div x-data="videoDownload({{ js.stringify(`${env('VIDEO_DOMAIN')}/${post.videoBunnyId}/original`) }}, {{ js.stringify([post.series?.name, post.series?.lessonIndexDisplay, post.title].filter(Boolean).join(' - ')) }})">
+            @button({ '@click': 'download', ':disabled': 'isDownloading', sendingKey: 'isDownloading' })
+              @slot('loading')
+                @svg('svg-spinners:blocks-shuffle-3')
+                Downloading ...
+              @endslot
+
+              @svg('ph:download-fill', { class: 'w-5 h-5' })
+              Download
+            @end
+          </div>
+        @endif
       </div>
   
       <div class="flex w-36 justify-end order-1 lg:order-2">
