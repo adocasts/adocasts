@@ -169,7 +169,7 @@ export default class Collection extends AppBaseModel {
         strategy: 'dbIncrement',
         fields: ['name'],
       })
-      collection.slug = await slugify.make(Collection, 'name', collection.name)
+      collection.slug = await slugify.make(Collection, 'slug', collection.name)
     }
   }
 

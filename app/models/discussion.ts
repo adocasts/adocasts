@@ -108,7 +108,7 @@ export default class Discussion extends BaseModel {
         strategy: 'dbIncrement',
         fields: ['title'],
       })
-      discussion.slug = await slugify.make(Discussion, 'title', discussion.title)
+      discussion.slug = await slugify.make(Discussion, 'slug', discussion.title)
     }
   }
 }

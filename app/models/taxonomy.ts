@@ -107,7 +107,7 @@ export default class Taxonomy extends AppBaseModel {
         strategy: 'dbIncrement',
         fields: ['name'],
       })
-      taxonomy.name = await slugify.make(Taxonomy, 'name', taxonomy.name)
+      taxonomy.name = await slugify.make(Taxonomy, 'slug', taxonomy.name)
     }
   }
 
