@@ -181,6 +181,11 @@ export default class User extends compose(AppBaseModel, AuthFinder) {
   }
 
   @computed()
+  get isContributor() {
+    return [Roles.CONTRIBUTOR_LVL_1, Roles.CONTRIBUTOR_LVL_2].includes(this.roleId)
+  }
+
+  @computed()
   get isSubscriptionActive() {
     if (this.planId === Plans.FOREVER) return true
 

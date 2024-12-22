@@ -20,7 +20,7 @@
         </p>
       </div>
 
-      @form({ action: route('auth.signin.store'), upSubmit: !request.qs().plan })
+      @form({ action: route('auth.signin.store'), upSubmit: !request.qs().plan && action !== 'cms' })
         @if (action)
           <input type="hidden" name="action" value="{{ action }}" />
         @endif

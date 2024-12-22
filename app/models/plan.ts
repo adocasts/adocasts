@@ -1,9 +1,11 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, computed } from '@adonisjs/lucid/orm'
+import { BaseModel, column, computed, hasMany } from '@adonisjs/lucid/orm'
 import Env from '#start/env'
 import UtilityService from '#services/utility_service'
 import Plans from '#enums/plans'
 import CouponDurations from '#enums/coupon_durations'
+import User from './user.js'
+import type { HasMany } from '@adonisjs/lucid/types/relations'
 
 export default class Plan extends BaseModel {
   @column({ isPrimary: true })
@@ -56,6 +58,9 @@ export default class Plan extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  @hasMany(() => User)
+  declare users: HasMany<typeof User>
 
   @computed()
   get mode() {

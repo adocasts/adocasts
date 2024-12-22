@@ -20,11 +20,12 @@ export default await Env.create(new URL('../', import.meta.url), {
   APP_LOGO_INV: Env.schema.string(),
   APP_CONTACT_EMAIL: Env.schema.string(),
   APP_DOMAIN: Env.schema.string(),
-  VIDEO_DOMAIN: Env.schema.string(),
   CACHE_VIEWS: Env.schema.boolean(),
   DRIVE_DISK: Env.schema.enum(['local', 'gcs'] as const),
   NODE_ENV: Env.schema.enum(['development', 'production', 'test'] as const),
+  VIDEO_DOMAIN: Env.schema.string(),
   ASSET_DOMAIN: Env.schema.string.optional({ format: 'url' }),
+  CMS_SESSION_DOMAIN: Env.schema.string(),
   LOG_LEVEL: Env.schema.string(),
   IDENTITY_SECRET: Env.schema.string(),
 

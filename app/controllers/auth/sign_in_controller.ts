@@ -10,8 +10,10 @@ export default class SignInController {
   /**
    * Display form to create a new record
    */
-  async create({ view }: HttpContext) {
-    return view.render('pages/auth/signin')
+  async create({ view, request }: HttpContext) {
+    const action = request.input('action')
+
+    return view.render('pages/auth/signin', { action })
   }
 
   /**
@@ -50,6 +52,11 @@ export default class SignInController {
     switch (action) {
       case 'email_verification':
         forward = session.get('email_verification')
+        break
+      case 'cms':
+        if (user.isAdmin || user.isContributor) {
+          return response.redirect('https://cms.adocasts.com')
+        }
         break
     }
 

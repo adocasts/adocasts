@@ -11,10 +11,17 @@ const INPUT_TAGS = ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON']
 window.axios = axios
 
 window.onfocus = async function () {
-  const { data: isAuthenticated } = await axios.get('/api/user/check')
+  try {
+    const { data: isAuthenticated } = await axios.get('/api/user/check')
 
-  if (window.isAuthenticated && !isAuthenticated) {
-    window.location = '/go/auth/reset'
+    if (window.isAuthenticated && isAuthenticated === false) {
+      window.location = '/go/auth/reset'
+    }
+  } catch (error) {
+    window.debug('onfocus user check failed', {
+      message: error.message,
+      stack: error.stack
+    })
   }
 }
 

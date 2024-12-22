@@ -41,6 +41,7 @@ router.use([
   () => import('#middleware/up_middleware'),
   () => import('#middleware/initialize_bouncer_middleware'),
   () => import('#middleware/session_check_middleware'),
+  () => import('#middleware/cms_session_middleware'),
 ])
 
 /**
