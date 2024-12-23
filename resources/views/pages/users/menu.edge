@@ -31,14 +31,13 @@
       @!menu.link({ text: 'Notifications', href: route('users.settings.index', { section: 'notifications' }), 'up-follow': true, 'up-layer': 'root' })
       @!menu.link({ text: 'Data', href: route('users.settings.index', { section: 'data' }), 'up-follow': true, 'up-layer': 'root' })
 
-      @if (auth.user?.isAdmin)
-        <p class="font-semibold text-xs uppercase tracking-wider text-slate-400 mt-8 mb-2">Studio</p>
+      @if (auth.user?.isAdmin || auth.user?.isContributor)
+        <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8 mb-2">CMS</p>
 
-        @!menu.link({ text: 'Dashboard', href: 'https://studio.adocasts.com' })
-        @!menu.link({ text: 'Posts', href: 'https://studio.adocasts.com/posts' })
-        @!menu.link({ text: 'Collections', href: 'https://studio.adocasts.com/collections' })
-        @!menu.link({ text: 'Taxonomies', href: 'https://studio.adocasts.com/taxonomies' })
-        @!menu.link({ text: 'Comments', href: 'https://studio.adocasts.com/comments' })
+        @!menu.link({ text: 'Dashboard', href: 'https://cms.adocasts.com' })
+        @!menu.link({ text: 'Posts', href: 'https://cms.adocasts.com/posts' })
+        @!menu.link({ text: 'Collections', href: 'https://cms.adocasts.com/collections' })
+        @!menu.link({ text: 'Taxonomies', href: 'https://cms.adocasts.com/taxonomies' })
       @endif
 
       @form({ action: route('auth.signout'), upSubmit: true })
