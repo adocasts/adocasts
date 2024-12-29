@@ -70,15 +70,15 @@ export default class HttpExceptionHandler extends ExceptionHandler {
     const ignoreAgent = alertIgnoreAgents.some((agent) => userAgent?.includes(agent))
 
     if (!ignorePath && !ignoreAgent) {
-      const sessionService = new SessionService(ctx)
-      await logger.error('error.report', {
-        error,
-        url: ctx.request.url(true),
-        userId: ctx.auth?.user?.id,
-        ip: ctx.request.ip(),
-        sId: sessionService.ipAddress,
-        headers: !ctx.auth?.user && ctx.request.headers(),
-      })
+      // const sessionService = new SessionService(ctx)
+      // await logger.error('error.report', {
+      //   error,
+      //   url: ctx.request.url(true),
+      //   userId: ctx.auth?.user?.id,
+      //   ip: ctx.request.ip(),
+      //   sId: sessionService.ipAddress,
+      //   headers: !ctx.auth?.user && ctx.request.headers(),
+      // })
     }
 
     return super.report(error, ctx)
