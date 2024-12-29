@@ -116,10 +116,10 @@ export default class PostService {
    * @param slug
    */
   async findCachedBySlug(slug: string) {
-    // const result = await this.cache.getOrSet(`GET_BY_SLUG:${slug}`, async () => {
+    const result = await this.cache.getOrSet(`GET_BY_SLUG:${slug}`, async () => {
       const post = await this.findBy('slug', slug)
       return new PostShowVM(post)
-    // })
+    })
 
     PostShowVM.addToHistory(this.ctx.history, result)
 
