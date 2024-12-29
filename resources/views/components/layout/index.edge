@@ -47,9 +47,9 @@
   </div>
 
   <div class="relative z-[101] {{ postClass }}" up-header>
-    @if (!auth?.user || auth.user?.isFreeTier)
+    {{-- @if (!auth?.user || auth.user?.isFreeTier)
       @!banner.sale()
-    @endif
+    @endif --}}
 
     @!layout.header()
   </div>
