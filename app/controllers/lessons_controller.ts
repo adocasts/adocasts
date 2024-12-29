@@ -150,11 +150,11 @@ export default class LessonsController {
         async () => {
           try {
             const { data: caption } = await axios.get(post.transcriptUrl!, { 
-              headers: { Referer: `https://${request.header('host')}` }
+              headers: { Referer: `https://adocasts.com` }
             })
             return CaptionService.parse(caption)
           } catch (error) {
-            await logger.warn(`Failed to get transcript for ${post.slug}`, error.message)
+            await logger.warn(`Failed to get transcript for ${post.slug} url ${post.transcriptUrl}`, error.message)
             return ''
           }
         },
