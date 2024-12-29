@@ -2,6 +2,10 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import Alpine from 'alpinejs'
 import { Player } from 'player.js'
+import { VidstackPlayer, VidstackPlayerLayout } from 'vidstack/global/player'
+import { TextTrack } from 'vidstack'
+import 'vidstack/player/styles/default/theme.css';
+import 'vidstack/player/styles/default/layouts/video.css';
 
 let isInitialLoad = true
 let isVideoPlaying = false
@@ -48,6 +52,7 @@ class VideoPlayer {
       YOUTUBE: 'youtube',
       HLS: 'hls',
       BUNNY: 'bunny',
+      R2: 'r2',
     }
 
     Cookies.remove('playingId')
@@ -77,6 +82,10 @@ class VideoPlayer {
     return this.element.dataset.plyrProvider === 'bunny'
   }
 
+  get isR2() {
+    return this.element.dataset.plyrProvider === 'r2'
+  }
+
   get type() {
     if (this.isYouTube) {
       return this.types.YOUTUBE
@@ -84,6 +93,8 @@ class VideoPlayer {
       return this.types.HLS
     } else if (this.isBunnyEmbed) {
       return this.types.BUNNY
+    } else if (this.isR2) {
+      return this.types.R2
     }
   }
 
@@ -92,6 +103,7 @@ class VideoPlayer {
       case this.types.YOUTUBE:
         return this.player.getCurrentTime()
       case this.types.HLS:
+      case this.types.R2:
         return this.player.currentTime
       case this.types.BUNNY:
         if (!this.player?.elem) return 0
@@ -111,6 +123,7 @@ class VideoPlayer {
       case this.types.YOUTUBE:
         return this.player.getDuration()
       case this.types.HLS:
+      case this.types.R2:
         return this.player.duration
       case this.types.BUNNY:
         if (!this.player?.elem) return 0
@@ -162,6 +175,11 @@ class VideoPlayer {
 
     if (this.isBunnyEmbed) {
       this.player = await this.#initBunnyEmbed(playOnReady)
+      return
+    }
+
+    if (this.isR2) {
+      this.player = await this.#initR2Player(playOnReady)
       return
     }
   }
@@ -216,9 +234,9 @@ class VideoPlayer {
     return new Promise((resolve) => {
       const player = new Player(this.element)
 
-      player.on('play', this.#onBunnyStateChange.bind(this, { action: 'play' }))
-      player.on('pause', this.#onBunnyStateChange.bind(this, { action: 'pause' }))
-      player.on('ended', this.#onBunnyStateChange.bind(this, { action: 'ended' }))
+      player.on('play', this.#onPlayerStateChange.bind(this, { action: 'play' }))
+      player.on('pause', this.#onPlayerStateChange.bind(this, { action: 'pause' }))
+      player.on('ended', this.#onPlayerStateChange.bind(this, { action: 'ended' }))
       player.on('timeupdate', this.#onPlayerTimeUpdate.bind(this))
 
       player.on('ready', () => {
@@ -237,6 +255,63 @@ class VideoPlayer {
         resolve(player)
       })
     })
+  }
+
+  async #initR2Player(playOnReady) {
+    const player = await VidstackPlayer.create({
+      target: this.element,
+      title: this.element.dataset.title,
+      src: `https://vid.adocasts.com/${this.videoId}/main.m3u8`,
+      autoPlay: playOnReady,
+      currentTime: this.watchSeconds,
+      layout: new VidstackPlayerLayout(),
+    })
+
+    const captions = JSON.parse(this.element.dataset.captions) || []
+    const chapters = JSON.parse(this.element.dataset.chapters) || []
+
+    captions.map((caption, index) => {
+      if (!caption.language) return
+
+      const lang = new TextTrack({
+        src: `https://vid.adocasts.com/${this.videoId}/${caption.filename}`,
+        kind: 'captions',
+        type: caption.type,
+        label: caption.label,
+        language: caption.language,
+        default: index === 0
+      })
+
+      player.textTracks.add(lang)
+    })
+
+    if (chapters?.length) {
+      const chapterTrack = new TextTrack({
+        kind: 'chapters',
+        type: 'vtt',
+        default: true
+      })
+
+      chapters.map((chapter) => {
+        const cue = new VTTCue(chapter.startSeconds, chapter.endSeconds, chapter.text)
+        chapterTrack.addCue(cue)
+      })
+
+      player.textTracks.add(chapterTrack)
+    }
+    
+    player.addEventListener('play', this.#onPlayerStateChange.bind(this, { action: 'play' }))
+    player.addEventListener('pause', this.#onPlayerStateChange.bind(this, { action: 'pause' }))
+    player.addEventListener('ended', this.#onPlayerStateChange.bind(this, { action: 'ended' }))
+    player.addEventListener('time-update', this.#onPlayerTimeUpdate.bind(this))
+
+    // create call's currentTime seems to be ignored 
+    // perhaps because metadata isn't loaded yet
+    player.addEventListener('loaded-metadata', () => {
+      player.currentTime = this.watchSeconds
+    }, { once: true })
+
+    return player
   }
 
   /**
@@ -329,7 +404,7 @@ class VideoPlayer {
     }, this.progressionInterval)
   }
 
-  async #onBunnyStateChange({ action }) {
+  async #onPlayerStateChange({ action }) {
     isVideoPlaying = action === 'play'
 
     Alpine.store('app').videoPlaying = isVideoPlaying
@@ -374,6 +449,59 @@ class VideoPlayer {
       const duration = await this.getDuration()
 
       console.debug('bunny progress interval', currentTime)
+
+      // duration may be 0 if meta data is still loading
+      if (currentTime <= 0 || duration <= 0) return
+
+      this.#storeWatchingProgression(currentTime, duration)
+    }, this.progressionInterval)
+  }
+
+  async #onR2StateChange({ action }) {
+    isVideoPlaying = action === 'play'
+
+    Alpine.store('app').videoPlaying = isVideoPlaying
+
+    if (location.pathname === this.placeholder.dataset.path) {
+      keepPlayer = isVideoPlaying
+      keepPlayerPostId = this.http.payload.postId
+    }
+
+    if (this.isLive) return
+
+    if (!this.player) {
+      Cookies.remove('playingId')
+      keepPlayer = null
+      keepPlayerPostId = null
+      return
+    }
+
+    if (!isVideoPlaying) {
+      clearInterval(playerInterval)
+      Cookies.remove('playingId')
+
+      const currentTime = await this.getCurrentTime()
+      const duration = await this.getDuration()
+
+      console.debug('R2 play stopped, storing last progress', currentTime)
+
+      if (currentTime === -1 || duration === -1) return
+      if (typeof currentTime !== 'number') return
+
+      return this.#storeWatchingProgression(currentTime, duration)
+    }
+
+    if (!Cookies.get('playingId')) {
+      Cookies.set('playingId', this.http.payload.postId)
+    }
+
+    clearInterval(playerInterval)
+
+    playerInterval = setInterval(async () => {
+      const currentTime = await this.getCurrentTime()
+      const duration = await this.getDuration()
+
+      console.debug('R2 progress interval', currentTime)
 
       // duration may be 0 if meta data is still loading
       if (currentTime <= 0 || duration <= 0) return

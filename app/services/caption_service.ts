@@ -2,14 +2,15 @@
  * Ported to TypeScript Class from https://github.com/osk/node-webvtt/blob/master/lib/parser.js
  * See VTT Spec: https://www.w3.org/TR/webvtt1/#file-structure
  */
+import CaptionTypes from '#enums/caption_types'
 import { Exception } from '@adonisjs/core/exceptions'
 
-export type VttOptions = {
+export type CaptionOptions = {
   meta?: boolean
   strict?: boolean
 }
 
-export type VttCue = {
+export type CaptionCue = {
   identifier: string | undefined
   start: number | undefined
   end: number | undefined
@@ -17,18 +18,19 @@ export type VttCue = {
   styles: string
 }
 
-export type VttResult = {
+export type CaptionResult = {
   valid: boolean
   strict: boolean
-  cues: (VttCue | null)[]
+  cues: (CaptionCue | null)[]
   errors: any[] | null
   meta?: Record<string, string> | null
 }
 
-export default class VttService {
-  private static TIMESTAMP_REGEXP = /([0-9]+)?:?([0-9]{2}):([0-9]{2}\.[0-9]{2,3})/
+export default class CaptionService {
+  private static VTT_TIMESTAMP_REGEXP = /([0-9]+)?:?([0-9]{2}):([0-9]{2}\.[0-9]{2,3})/
+  private static SRT_TIMESTAMP_REGEXP = /([0-9]+)?:?([0-9]{2}):([0-9]{2}\,[0-9]{2,3})/
 
-  static parse(input: string, options: VttOptions = {}) {
+  static parse(input: string, options: CaptionOptions = {}) {
     const { meta = false, strict = true } = options
 
     if (typeof input !== 'string') {
@@ -40,18 +42,23 @@ export default class VttService {
     input = input.replace(/\r/g, '\n')
 
     const parts = input.split('\n\n')
-    const header = parts.shift()
+    const type = parts.at(0)?.startsWith('WEBVTT') ? CaptionTypes.VTT : CaptionTypes.SRT
+    let headerParts: string[] = []
+    
+    if (type === CaptionTypes.VTT) {
+      const header = parts.shift()
+     
+      if (!header || !header.startsWith('WEBVTT')) {
+        throw new Exception('Must start with "WEBVTT"')
+      }
 
-    if (!header || !header.startsWith('WEBVTT')) {
-      throw new Exception('Must start with "WEBVTT"')
-    }
+      headerParts = header.split('\n')
 
-    const headerParts = header.split('\n')
+      const headerComments = headerParts[0].replace('WEBVTT', '')
 
-    const headerComments = headerParts[0].replace('WEBVTT', '')
-
-    if (headerComments.length > 0 && headerComments[0] !== ' ' && headerComments[0] !== '\t') {
-      throw new Exception('Header comment must start with space or tab')
+      if (headerComments.length > 0 && headerComments[0] !== ' ' && headerComments[0] !== '\t') {
+        throw new Exception('Header comment must start with space or tab')
+      } 
     }
 
     // nothing of interests, return early
@@ -63,7 +70,7 @@ export default class VttService {
       throw new Exception('Missing blank line after signature')
     }
 
-    const { cues, errors } = this.parseCues(parts, strict)
+    const { cues, errors } = this.parseCues(parts, strict, type)
 
     if (strict && errors.length > 0) {
       throw errors[0]
@@ -71,7 +78,7 @@ export default class VttService {
 
     const headerMeta = meta ? this.parseMeta(headerParts) : null
 
-    const result: VttResult = { valid: errors.length === 0, strict, cues, errors }
+    const result: CaptionResult = { valid: errors.length === 0, strict, cues, errors }
 
     if (meta) {
       result.meta = headerMeta
@@ -91,13 +98,13 @@ export default class VttService {
     return Object.keys(meta).length > 0 ? meta : null
   }
 
-  static parseCues(cues: string[], strict: boolean) {
+  static parseCues(cues: string[], strict: boolean, type: CaptionTypes) {
     const errors: any[] = []
 
     const parsedCues = cues
       .map((cue, i) => {
         try {
-          return this.parseCue(cue, i, strict)
+          return this.parseCue(cue, i, strict, type)
         } catch (e) {
           errors.push(e)
           return null
@@ -116,11 +123,13 @@ export default class VttService {
    *
    * @param {array} cue Array of content for the cue
    * @param {number} i Index of cue in array
+   * @param {boolean} strict Perform stricter validations
+   * @param {CaptionTypes} type type of caption
    *
    * @returns {object} cue Cue object with start, end, text and styles.
    *                       Null if it's a note
    */
-  static parseCue(cue: string, i: number, strict: boolean) {
+  static parseCue(cue: string, i: number, strict: boolean, type: CaptionTypes) {
     let identifier: string | undefined = ''
     let start: number | undefined = 0
     let end: number | undefined = 0.01
@@ -149,12 +158,12 @@ export default class VttService {
 
     const times = typeof lines[0] === 'string' ? lines[0].split(' --> ') : []
 
-    if (times.length !== 2 || !this.validTimestamp(times[0]) || !this.validTimestamp(times[1])) {
+    if (times.length !== 2 || !this.validTimestamp(times[0], type) || !this.validTimestamp(times[1], type)) {
       throw new Exception(`Invalid cue timestamp (cue #${i})`)
     }
 
-    start = this.parseTimestamp(times[0])
-    end = this.parseTimestamp(times[1])
+    start = this.parseTimestamp(times[0], type)
+    end = this.parseTimestamp(times[1], type)
 
     if (strict) {
       if (typeof start !== 'number' || typeof end !== 'number') {
@@ -174,8 +183,7 @@ export default class VttService {
       return null
     }
 
-    // TODO better style validation
-    styles = times[1].replace(this.TIMESTAMP_REGEXP, '').trim()
+    styles = times[1].replace(this.regex(type), '').trim()
 
     lines.shift()
 
@@ -188,17 +196,21 @@ export default class VttService {
     return { identifier, start, end, text, styles }
   }
 
-  static validTimestamp(timestamp: string) {
-    return this.TIMESTAMP_REGEXP.test(timestamp)
+  static validTimestamp(timestamp: string, type: CaptionTypes) {
+    return this.regex(type).test(timestamp)
   }
 
-  static parseTimestamp(timestamp: string) {
-    const matches = timestamp.match(this.TIMESTAMP_REGEXP)
+  static parseTimestamp(timestamp: string, type: CaptionTypes) {
+    const matches = timestamp.match(this.regex(type))
     if (!matches) return
     let secs = Number.parseFloat(matches[1] || '0') * 60 * 60 // hours
     secs += Number.parseFloat(matches[2]) * 60 // mins
     secs += Number.parseFloat(matches[3])
     // secs += parseFloat(matches[4]);
     return secs
+  }
+
+  static regex(type: CaptionTypes) {
+    return type === CaptionTypes.VTT ? this.VTT_TIMESTAMP_REGEXP : this.SRT_TIMESTAMP_REGEXP
   }
 }

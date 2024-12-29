@@ -11,7 +11,7 @@ import { Exception } from '@adonisjs/core/exceptions'
 import type { HttpContext } from '@adonisjs/core/http'
 import router from '@adonisjs/core/services/router'
 import axios from 'axios'
-import VttService from '#services/vtt_service'
+import CaptionService from '#services/caption_service'
 import logger from '#services/logger_service'
 import { PostListVM } from '../view_models/post.js'
 import Comment from '#models/comment'
@@ -98,7 +98,7 @@ export default class LessonsController {
     return view.render('pages/lessons/index', { type: 'Livestreams', items, rows, feed, adAside })
   }
 
-  async show({ view, params, session, auth, up, route, bouncer, history }: HttpContext) {
+  async show({ view, params, request, session, auth, up, route, bouncer, history }: HttpContext) {
     const post = await this.postService.findCachedBySlug(params.slug)
     const series = await this.collectionService.getCachedForPost(post, params.collectionSlug)
 
@@ -117,6 +117,12 @@ export default class LessonsController {
       view.share({ nextLesson, prevLesson, post, series })
       await history.commit()
       return view.render('pages/lessons/soon', { post, series })
+    }
+
+    if (!series) {
+      const similarLessons = await this.postService.getSimilarPosts(post)
+      nextLesson = similarLessons.at(0)
+      view.share({ similarLessons })
     }
 
     const comments = await Comment.query()
@@ -143,8 +149,10 @@ export default class LessonsController {
         `TRANSCRIPT:${post.id}`,
         async () => {
           try {
-            const { data: vtt } = await axios.get(post.transcriptUrl!)
-            return VttService.parse(vtt)
+            const { data: caption } = await axios.get(post.transcriptUrl!, { 
+              headers: { Referer: `https://${request.header('host')}` }
+            })
+            return CaptionService.parse(caption)
           } catch (error) {
             await logger.warn(`Failed to get transcript for ${post.slug}`, error.message)
             return ''

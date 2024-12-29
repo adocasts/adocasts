@@ -112,7 +112,7 @@
     "edge-iconify": "^2.0.1",
     "edge.js": "^6.2.0",
     "gravatar": "^1.8.2",
-    "hls.js": "^1.5.17",
+    "hls.js": "^1.5.18",
     "ip2location-nodejs": "^9.6.1",
     "js-cookie": "^3.0.5",
     "jspdf": "^2.5.2",
@@ -140,7 +140,8 @@
     "tippy.js": "6.3.7",
     "ua-parser-js": "^1.0.39",
     "unique-names-generator": "^4.7.1",
-    "unpoly": "^3.9.3"
+    "unpoly": "^3.9.3",
+    "vidstack": "^1.12.12"
   },
   "eslintConfig": {
     "extends": "@adonisjs/eslint-config/app"

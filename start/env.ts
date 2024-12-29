@@ -89,4 +89,6 @@ export default await Env.create(new URL('../', import.meta.url), {
 
   PLOTMYCOURSE_API_URL: Env.schema.string(),
   PLOTMYCOURSE_API_KEY: Env.schema.string.optional(),
+
+  R2_SIGNING_KEY: Env.schema.string(),
 })

@@ -1,10 +1,6 @@
 @if (post?.hasVideo)
   @can('PostPolicy.view', post)
     @let(videoTypeId = post.videoTypeId)
-
-    {{-- @if (post.videoYouTubeId && !PostService.getIsPaywalled(post))
-      @assign(videoTypeId = VideoTypes.YOUTUBE)
-    @endif --}}
     
     <div
       id="videoPlayerPlaceholder{{ post.id }}"
@@ -60,8 +56,26 @@
                 allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" 
                 allowfullscreen="true"
               ></iframe>
+            @elseif (videoTypeId === VideoTypes.R2)
+              <div
+                id="lessonVideoEmbed"
+                class="absolute top-0 left-0 w-full h-full"
+                data-plyr-provider="r2"
+                data-is-live="{{ post.livestreamUrl && post.isLive }}"
+                data-video-id="{{ post.videoR2Id }}"
+                data-watch-seconds="{{ userProgression?.watchSeconds ?? 0 }}"
+                data-is-completed="{{ userProgression?.isCompleted ?? false }}"
+                data-title="{{ post.title }}"
+                data-captions="{{ js.stringify(post.captions ?? []) }}"
+                data-chapters="{{ js.stringify(post.chapters ?? []) }}"
+                data-http-url="{{ route('api.histories.progression', { id: userProgression?.id }) }}"
+                data-payload-post-id="{{ post.id }}"
+                data-payload-collection-id="{{ series?.id ?? '' }}"
+                data-payload-user-id="{{ auth.user?.id ?? '' }}"
+                data-payload-route="{{ request.ctx.route?.name ?? '' }}"
+              >
+              </div>
             @endif
-
             @if (nextLesson)
               <div 
                 x-cloak

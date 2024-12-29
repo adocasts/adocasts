@@ -28,6 +28,8 @@ import router from '@adonisjs/core/services/router'
 import Progress from './progress.js'
 import PostTypes from '#enums/post_types'
 import env from '#start/env'
+import PostCaption from './post_caption.js'
+import PostChapter from './post_chapter.js'
 
 export default class Post extends AppBaseModel {
   serializeExtras = true
@@ -243,6 +245,12 @@ export default class Post extends AppBaseModel {
   @hasMany(() => Watchlist)
   declare watchlist: HasMany<typeof Watchlist>
 
+  @hasMany(() => PostCaption)
+  declare captions: HasMany<typeof PostCaption>
+
+  @hasMany(() => PostChapter)
+  declare chapters: HasMany<typeof PostChapter>
+
   @computed()
   get publishAtISO() {
     if (!this.publishAt) return ''
@@ -271,7 +279,7 @@ export default class Post extends AppBaseModel {
 
   @computed()
   get videoYouTubeId() {
-    if (!this.videoUrl) return ''
+    if (this.videoTypeId !== VideoTypes.YOUTUBE || !this.videoUrl) return ''
 
     return this.videoUrl
       .replace('https://www.', 'https://')
@@ -281,11 +289,15 @@ export default class Post extends AppBaseModel {
   }
 
   @computed()
-  get videoId() {
-    if (this.videoTypeId === VideoTypes.BUNNY) {
-      return this.videoBunnyId
-    }
+  get videoR2Id() {
+    if (this.videoTypeId !== VideoTypes.R2 || !this.videoUrl) return ''
+    return this.videoUrl
+  }
 
+  @computed()
+  get videoId() {
+    if (this.videoTypeId === VideoTypes.BUNNY) return this.videoBunnyId
+    if (this.videoTypeId === VideoTypes.R2) return this.videoR2Id
     return this.videoYouTubeId
   }
 
@@ -322,6 +334,12 @@ export default class Post extends AppBaseModel {
 
   @computed()
   get transcriptUrl() {
+    if (this.videoTypeId === VideoTypes.R2 && this.captions?.length) {
+      const filename = this.captions.at(0)?.filename
+      if (!filename) return
+      return `https://vid.adocasts.com/${this.videoId}/${filename}`
+    }
+
     if (this.videoTypeId !== VideoTypes.BUNNY || !this.videoBunnyId) return
 
     return this.bunnySubtitleUrls?.at(0)?.src
@@ -329,6 +347,10 @@ export default class Post extends AppBaseModel {
 
   @computed()
   get animatedPreviewUrl() {
+    if (this.videoTypeId === VideoTypes.R2 && this.videoId) {
+      return `https://vid.adocasts.com/${this.videoId}/video.webp`
+    }
+
     if (this.videoTypeId !== VideoTypes.BUNNY || !this.videoBunnyId) return
 
     return `${env.get('VIDEO_DOMAIN')}/${this.videoBunnyId}/preview.webp`
@@ -528,6 +550,8 @@ export default class Post extends AppBaseModel {
         .preload('taxonomies')
         .preload('rootSeries')
         .preload('series')
+        .preload('captions', (captions) => captions.orderBy('sort_order'))
+        .preload('chapters', (chapters) => chapters.orderBy('sort_order'))
         .preload('authors', (authors) => authors.preload('profile'))
     }
   )

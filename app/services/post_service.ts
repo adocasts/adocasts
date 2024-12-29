@@ -116,10 +116,10 @@ export default class PostService {
    * @param slug
    */
   async findCachedBySlug(slug: string) {
-    const result = await this.cache.getOrSet(`GET_BY_SLUG:${slug}`, async () => {
+    // const result = await this.cache.getOrSet(`GET_BY_SLUG:${slug}`, async () => {
       const post = await this.findBy('slug', slug)
       return new PostShowVM(post)
-    })
+    // })
 
     PostShowVM.addToHistory(this.ctx.history, result)
 
@@ -279,8 +279,8 @@ export default class PostService {
    * @param limit
    * @returns
    */
-  async getSimilarPosts(post: Post, limit: number = 15) {
-    const taxonomyIds = post.taxonomies.map((t) => t.id)
+  async getSimilarPosts(post: PostShowVM, limit: number = 15) {
+    const taxonomyIds = post.topics?.map((t) => t.id) ?? []
     const similarPostTypes = this.getSimilarPostTypes(post)
     let query = Post.query().apply((scope) => scope.published())
 
@@ -296,10 +296,12 @@ export default class PostService {
       query = query.orderBy('publishAt', 'desc')
     }
 
-    return query.apply((scope) => scope.forDisplay()).limit(limit)
+    const posts = await query.apply((scope) => scope.forDisplay()).limit(limit)
+
+    return posts.map((post) => new PostListVM(post))
   }
 
-  getSimilarPostTypes(post: Post) {
+  getSimilarPostTypes(post: PostShowVM) {
     switch (post.postTypeId) {
       case PostTypes.LESSON:
       case PostTypes.LIVESTREAM:
