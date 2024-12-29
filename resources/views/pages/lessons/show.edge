@@ -120,6 +120,18 @@
               Download
             @end
           </div>
+        @elseif (post?.hasVideo && post.videoR2Id && auth.user && !auth.user.isFreeTier)
+          <div x-data="videoDownload({{ js.stringify(`https://vid.adocasts.com/${post.videoR2Id}/video.mp4`) }}, {{ js.stringify([post.series?.name, post.series?.lessonIndexDisplay, post.title].filter(Boolean).join(' - ')) }})">
+            @button({ '@click': 'download', ':disabled': 'isDownloading', sendingKey: 'isDownloading' })
+              @slot('loading')
+                @svg('svg-spinners:blocks-shuffle-3')
+                Downloading ...
+              @endslot
+
+              @svg('ph:download-fill', { class: 'w-5 h-5' })
+              Download
+            @end
+          </div>
         @endif
       </div>
   

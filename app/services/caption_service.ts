@@ -174,7 +174,7 @@ export default class CaptionService {
         throw new Exception(`Start timestamp greater than end (cue #${i})`)
       }
 
-      if (end <= start) {
+      if (end < start) {
         throw new Exception(`End must be greater than start (cue #${i})`)
       }
     }

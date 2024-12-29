@@ -68,6 +68,7 @@
                 data-title="{{ post.title }}"
                 data-captions="{{ js.stringify(post.captions ?? []) }}"
                 data-chapters="{{ js.stringify(post.chapters ?? []) }}"
+                data-poster="{{ post.asset?.filename ? `/img/${post.asset.filename}` : '' }}"
                 data-http-url="{{ route('api.histories.progression', { id: userProgression?.id }) }}"
                 data-payload-post-id="{{ post.id }}"
                 data-payload-collection-id="{{ series?.id ?? '' }}"

@@ -265,7 +265,10 @@ class VideoPlayer {
       autoPlay: playOnReady,
       currentTime: this.watchSeconds,
       layout: new VidstackPlayerLayout(),
+      poster: this.element.dataset.poster,
     })
+
+    console.log({ poster: this.element.dataset.poster })
 
     const captions = JSON.parse(this.element.dataset.captions) || []
     const chapters = JSON.parse(this.element.dataset.chapters) || []
