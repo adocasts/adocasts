@@ -98,7 +98,7 @@ export default class LessonsController {
     return view.render('pages/lessons/index', { type: 'Livestreams', items, rows, feed, adAside })
   }
 
-  async show({ view, params, request, session, auth, up, route, bouncer, history }: HttpContext) {
+  async show({ view, params, session, auth, up, route, bouncer, history }: HttpContext) {
     const post = await this.postService.findCachedBySlug(params.slug)
     const series = await this.collectionService.getCachedForPost(post, params.collectionSlug)
 
