@@ -44,7 +44,7 @@ export default class AssetService {
         case 'width':
           // keep width to increments of 10, max 500
           let width = Number.parseInt(queries[key])
-          if (width > 500) width = 500
+          if (width > 1000) width = 1000
           options.width = Math.ceil(width / 50) * 50
           break
         case 'q':
