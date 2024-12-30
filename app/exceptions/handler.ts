@@ -4,7 +4,6 @@ import { errors as vineErrors } from '@vinejs/vine'
 import { errors as shieldErrors } from '@adonisjs/shield'
 import { errors } from '@adonisjs/core'
 import logger from '#services/logger_service'
-import SessionService from '#services/session_service'
 
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
