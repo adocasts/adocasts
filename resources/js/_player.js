@@ -273,6 +273,8 @@ class VideoPlayer {
       poster: this.element.dataset.poster,
     })
 
+    window.player = player
+
     const captions = JSON.parse(this.element.dataset.captions) || []
     const chapters = JSON.parse(this.element.dataset.chapters) || []
 
