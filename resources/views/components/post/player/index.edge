@@ -57,6 +57,7 @@
                 allowfullscreen="true"
               ></iframe>
             @elseif (videoTypeId === VideoTypes.R2)
+              @let(sig = HlsService.getSignature(auth.user, post))
               <div
                 id="lessonVideoEmbed"
                 class="absolute top-0 left-0 w-full h-full"
@@ -74,6 +75,10 @@
                 data-payload-collection-id="{{ series?.id ?? '' }}"
                 data-payload-user-id="{{ auth.user?.id ?? '' }}"
                 data-payload-route="{{ request.ctx.route?.name ?? '' }}"
+                data-authorization-v="{{ sig.version }}"
+                data-authorization-key="{{ sig.signature }}"
+                data-authorization-exp="{{ sig.expiration }}"
+                data-user-id="{{ sig.userId }}"
               >
               </div>
             @endif

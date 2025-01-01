@@ -109,7 +109,9 @@
         @endif
 
         @if (post?.hasVideo && post.videoBunnyId && auth.user && !auth.user.isFreeTier)
-          <div x-data="videoDownload({{ js.stringify(`${env('VIDEO_DOMAIN')}/${post.videoBunnyId}/original`) }}, {{ js.stringify([post.series?.name, post.series?.lessonIndexDisplay, post.title].filter(Boolean).join(' - ')) }})">
+          @let(bunnyUrl = `${env('VIDEO_DOMAIN')}/${post.videoBunnyId}/original`)
+          @let(bunnyFilename = [post.series?.name, post.series?.lessonIndexDisplay, post.title].filter(Boolean).join(' - '))
+          <div x-data="videoDownload({{ js.stringify({ url: bunnyUrl, filename: bunnyFilename }) }})">
             @button({ '@click': 'download', ':disabled': 'isDownloading', sendingKey: 'isDownloading' })
               @slot('loading')
                 @svg('svg-spinners:blocks-shuffle-3')
@@ -121,7 +123,10 @@
             @end
           </div>
         @elseif (post?.hasVideo && post.videoR2Id && auth.user && !auth.user.isFreeTier)
-          <div x-data="videoDownload({{ js.stringify(`https://vid.adocasts.com/${post.videoR2Id}/video.mp4`) }}, {{ js.stringify([post.series?.name, post.series?.lessonIndexDisplay, post.title].filter(Boolean).join(' - ')) }})">
+          @let(r2Url = `https://vid.adocasts.com/${post.videoR2Id}/video.mp4`)
+          @let(r2Filename = [post.series?.name, post.series?.lessonIndexDisplay, post.title].filter(Boolean).join(' - '))
+          @let(r2Authorization = HlsService.getSignature(auth.user, post))
+          <div x-data="videoDownload({{ js.stringify({ url: r2Url, filename: r2Filename, authorization: r2Authorization }) }})">
             @button({ '@click': 'download', ':disabled': 'isDownloading', sendingKey: 'isDownloading' })
               @slot('loading')
                 @svg('svg-spinners:blocks-shuffle-3')

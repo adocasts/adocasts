@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 import Alpine from 'alpinejs'
 import { Player } from 'player.js'
 import { VidstackPlayer, VidstackPlayerLayout } from 'vidstack/global/player'
-import { TextTrack } from 'vidstack'
+import { isHLSProvider, TextTrack } from 'vidstack'
 import 'vidstack/player/styles/default/theme.css';
 import 'vidstack/player/styles/default/layouts/video.css';
 
@@ -258,6 +258,11 @@ class VideoPlayer {
   }
 
   async #initR2Player(playOnReady) {
+    const authorizationV = this.element.dataset.authorizationV
+    const authorizationKey = this.element.dataset.authorizationKey
+    const authorizationExp = this.element.dataset.authorizationExp
+    const userId = this.element.dataset.userId
+
     const player = await VidstackPlayer.create({
       target: this.element,
       title: this.element.dataset.title,
@@ -267,8 +272,6 @@ class VideoPlayer {
       layout: new VidstackPlayerLayout(),
       poster: this.element.dataset.poster,
     })
-
-    console.log({ poster: this.element.dataset.poster })
 
     const captions = JSON.parse(this.element.dataset.captions) || []
     const chapters = JSON.parse(this.element.dataset.chapters) || []
@@ -282,7 +285,7 @@ class VideoPlayer {
         type: caption.type,
         label: caption.label,
         language: caption.language,
-        default: index === 0
+        default: index === 0,
       })
 
       player.textTracks.add(lang)
@@ -307,12 +310,62 @@ class VideoPlayer {
     player.addEventListener('pause', this.#onPlayerStateChange.bind(this, { action: 'pause' }))
     player.addEventListener('ended', this.#onPlayerStateChange.bind(this, { action: 'ended' }))
     player.addEventListener('time-update', this.#onPlayerTimeUpdate.bind(this))
+    player.addEventListener('provider-change', (event) => {
+      const provider = event.detail
+      
+      if (provider?.type === 'hls') {
+        provider.config = {
+          xhrSetup(xhr) {
+            xhr.setRequestHeader('X-Authorization-V', authorizationV)
+            xhr.setRequestHeader('X-Authorization-Key', authorizationKey)
+            xhr.setRequestHeader('X-Authorization-Exp', authorizationExp)
+            xhr.setRequestHeader('X-User-Id', userId)
+          }
+        }
+      }
+    })
 
     // create call's currentTime seems to be ignored 
     // perhaps because metadata isn't loaded yet
     player.addEventListener('loaded-metadata', () => {
       player.currentTime = this.watchSeconds
     }, { once: true })
+
+    let hasErrored = false
+    const onError = (status, text, message) => {
+      if (hasErrored) return
+
+      hasErrored = true
+      player.destroy()
+
+      this.element.innerHTML = `
+        <div class="bg-slate-50 text-red-600 flex flex-col items-center justify-center w-full h-full">
+          <img class="w-24 mx-auto" src="/imgs/robot/slice7.svg" alt="robot broken">
+          ${status ? `<h3 class="text-5xl font-bold">${status}</h3>` : ''}
+          <h3 class="text-3xl font-bold">${text || 'Video Error'}</h3>
+          <p class="text-sm">${message}</p>
+        </div>
+      `
+    }
+
+    player.addEventListener('hls-error', (event) => {
+      console.debug({ hlsError: event })
+
+      const error = event.detail
+      const status = error.response.code
+      const text = error.response.text
+      const message = error.error.message
+
+      onError(status, text, message)
+    })
+
+    player.addEventListener('error', (event) => {
+      console.debug({ error: event })
+
+      const error = event.detail
+      
+      onError(null, null, error.message)
+    })
 
     return player
   }

@@ -175,17 +175,26 @@ Alpine.data('videoAutoPlayNext', (enabled = true, nextLessonUrl) => {
   }
 })
 
-Alpine.data('videoDownload', (videoDownloadUrl, filename) => {
+Alpine.data('videoDownload', ({ url, filename, authorization }) => {
   return {
     isDownloading: false,
 
     async download() {
       let href
+      let headers = {}
       this.isDownloading = true
 
+      if (authorization) {
+        headers['X-Authorization-V'] = authorization.version
+        headers['X-Authorization-Key'] = authorization.signature
+        headers['X-Authorization-Exp'] = authorization.expiration
+        headers['X-User-Id'] = authorization.userId
+      }
+
       try {
-        const response = await axios.get(videoDownloadUrl, {
+        const response = await axios.get(url, {
           responseType: 'blob',
+          headers,
         })
         href = URL.createObjectURL(response.data)
       } catch (error) {
