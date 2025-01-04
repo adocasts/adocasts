@@ -178,6 +178,17 @@ export default class UsersController {
     return !!auth.user
   }
 
+  async checkPost({ auth, params, bouncer }: HttpContext) {
+    if (!params.postId) {
+      return auth.user?.isAdmin || auth.user?.isContributor
+    }
+
+    const post = await Post.findOrFail(params.postId)
+    const allowed = await bouncer.with('PostPolicy').allows('view', post)
+    
+    return allowed
+  }
+
   async mentionsList({ request, response, auth }: HttpContext) {
     const { pattern } = await request.validateUsing(mentionListValidator)
     const users = await User.query()

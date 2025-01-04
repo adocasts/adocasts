@@ -131,6 +131,7 @@ router.get('/users/watchlist/:tab?', [UsersController, 'watchlist']).as('users.w
 router.get('/users/history/:tab?', [UsersController, 'history']).as('users.history').use(middleware.auth())
 router.put('/api/users/theme', [UsersController, 'theme']).as('api.users.theme')
 router.get('/api/user/check', [UsersController, 'check']).as('api.user.check')
+router.get('/api/user/check/post/:postId?', [UsersController, 'checkPost']).as('api.user.check.post')
 router.patch('/api/users/billto', [UsersController, 'billto']).as('api.users.billto').use(middleware.auth())
 router.post('/api/mentions/list', [UsersController, 'mentionsList']).as('api.mentions.list').use(middleware.auth())
 
