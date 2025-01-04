@@ -149,8 +149,8 @@ class VideoPlayer {
     keepPlayerPostId = this.http.payload.postId
     keepPlayer = false
 
-    // clean up any prior video
-    if (window.player && typeof window.player.destroy === 'function') {
+    // clean up any prior video, except the vidstack player... that uses web components & gracefully handles cleanup
+    if (window.player && typeof window.player.destroy === 'function' && window.player.nodeName !== 'MEDIA-PLAYER') {
       window.player.destroy()
     }
 
