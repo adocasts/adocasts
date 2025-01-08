@@ -15,14 +15,14 @@
       {{{ isActive && 'x-init="$el.scrollIntoView()"' }}}>
       <div class="relative mr-3 -my-3">
         @if (!isActive)
-          <div class="absolute top-0 left-0 w-8 h-8 opacity-0 group-hover:opacity-100 transition duration-300 z-20 overflow-hidden">
+          <div class="absolute top-0 left-0 w-8 h-8 opacity-0 group-hover:opacity-100 transition duration-300 z-50 overflow-hidden">
             <div class="w-full h-full absolute top-0 left-0 bg-brand-500 bg-gradient-to-br from-accent-500/50 to-brand-500 text-brand-base-100 rounded-full"></div>
             @svg('ph:play-fill', { class: 'w-4 h-4 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 relative text-slate-base-50 z-10' })
           </div>
         @endif
 
         @if (progress?.isCompleted)
-          <div class="absolute top-0 left-0 w-8 h-8 z-[15] overflow-hidden">
+          <div class="absolute top-0 left-0 w-8 h-8 z-20 overflow-hidden">
             <div class="w-full h-full absolute top-0 left-0 bg-slate-200 text-brand-base-100 rounded-full"></div>
             @svg('ph:check-bold', { class: 'w-4 h-4 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 relative text-brand-600 z-10' })
           </div>
