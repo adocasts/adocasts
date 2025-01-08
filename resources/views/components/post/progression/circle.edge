@@ -1,4 +1,4 @@
-@let(progress = progression.post(item.id))
+@let(progress = $props.progress || progression.post(item.id))
 
 @if (progress)
   @let(plain = $props.plain ?? false)
