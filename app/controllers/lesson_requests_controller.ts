@@ -46,7 +46,7 @@ export default class LessonRequestsController {
       const data = await request.validateUsing(lessonRequestStoreValidator)
       const lessonRequest = await this.lessonRequestService.store(auth.user!, data, trx)
 
-      await MentionService.checkForLessonRequestMention(lessonRequest, auth.user!, trx)
+      await MentionService.checkForLessonRequestMention(lessonRequest, auth.user!, [], trx)
       await trx.commit()
       await logger.info('NEW LESSON REQUEST', { id: lessonRequest.id, name: lessonRequest.name })
 
@@ -96,6 +96,7 @@ export default class LessonRequestsController {
           lessonRequest,
           newMentions,
           auth.user!,
+          [],
           trx
         )
       }

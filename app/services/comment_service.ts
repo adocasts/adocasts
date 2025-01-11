@@ -82,7 +82,7 @@ export default class CommentService {
       const newMentions = MentionService.checkTextForNewMentions(oldBody, body)
 
       if (newMentions.length) {
-        await NotificationService.onCommentMention(comment, newMentions, this.user!, trx)
+        await NotificationService.onCommentMention(comment, newMentions, this.user!, [], trx)
       }
     })
 

@@ -52,7 +52,7 @@ export default class DiscussionsController {
       const data = await request.validateUsing(discussionCreateValidator)
       const discussion = await auth.user!.related('discussions').create(data, { client: trx })
 
-      await MentionService.checkForDiscussionMention(discussion, auth.user!, trx)
+      await MentionService.checkForDiscussionMention(discussion, auth.user!, [], trx)
       await trx.commit()
 
       return response.redirect().toRoute('feed.show', { slug: discussion.slug })
@@ -110,7 +110,7 @@ export default class DiscussionsController {
       const newMentions = MentionService.checkTextForNewMentions(oldBody, item.body)
 
       if (newMentions.length) {
-        await NotificationService.onDiscussionMention(item, newMentions, auth.user!, trx)
+        await NotificationService.onDiscussionMention(item, newMentions, auth.user!, [], trx)
       }
 
       await trx.commit()
