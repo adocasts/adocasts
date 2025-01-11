@@ -9,20 +9,24 @@ export default class MentionService {
   static async checkForCommentMention(
     comment: Comment,
     user: User,
+    skipUserIds: Array<number | undefined> = [],
     trx: TransactionClientContract | null = null
   ) {
     if (!comment.body.includes('data-type="mention"')) return
 
     const usernames = this.checkTextForMentions(comment.body)
 
-    if (!usernames.length) return
+    if (!usernames.length) return []
 
-    await NotificationService.onCommentMention(comment, usernames, user, trx)
+    await NotificationService.onCommentMention(comment, usernames, user, skipUserIds, trx)
+
+    return usernames
   }
 
   static async checkForDiscussionMention(
     discussion: Discussion,
     user: User,
+    skipUserIds: Array<number | undefined> = [],
     trx: TransactionClientContract | null = null
   ) {
     if (!discussion.body || !discussion.body.includes('data-type="mention"')) return
@@ -31,12 +35,13 @@ export default class MentionService {
 
     if (!usernames.length) return
 
-    await NotificationService.onDiscussionMention(discussion, usernames, user, trx)
+    await NotificationService.onDiscussionMention(discussion, usernames, user, skipUserIds, trx)
   }
 
   static async checkForLessonRequestMention(
     request: LessonRequest,
     user: User,
+    skipUserIds: Array<number | undefined> = [],
     trx: TransactionClientContract | null = null
   ) {
     if (!request.body || !request.body.includes('data-type="mention"')) return
@@ -45,7 +50,7 @@ export default class MentionService {
 
     if (!usernames.length) return
 
-    await NotificationService.onLessonRequestMention(request, usernames, user, trx)
+    await NotificationService.onLessonRequestMention(request, usernames, user, skipUserIds, trx)
   }
 
   static checkTextForMentions(text: string) {

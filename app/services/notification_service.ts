@@ -178,6 +178,8 @@ export default class NotificationService {
 
         await notification.save()
         await notification.trySendEmail(post.authors[i].id, trx)
+
+        return post.authors[i].id
       }
     } catch (error) {
       await logger.error('Failed to create post comment notification', {
@@ -217,6 +219,8 @@ export default class NotificationService {
 
       await notification.save()
       await notification.trySendEmail(lessonRequest.userId, trx)
+
+      return lessonRequest.userId
     } catch (error) {
       await logger.error('Failed to create lesson request comment notification', {
         comment: JSON.stringify(comment),
@@ -255,6 +259,8 @@ export default class NotificationService {
 
       await notification.save()
       await notification.trySendEmail(discussion.userId, trx)
+
+      return discussion.userId
     } catch (error) {
       await logger.error('Failed to create discussion comment notification', {
         comment: JSON.stringify(comment),
@@ -306,6 +312,8 @@ export default class NotificationService {
 
       await notification.save()
       await notification.trySendEmail(userId, trx)
+
+      return userId
     } catch (error) {
       await logger.error('Failed to create comment reply notification', {
         comment: JSON.stringify(comment),
@@ -320,6 +328,7 @@ export default class NotificationService {
     comment: Comment,
     usernames: string[],
     user: User,
+    skipUserIds: Array<number | undefined> = [],
     trx: TransactionClientContract | null = null
   ) {
     try {
@@ -331,6 +340,10 @@ export default class NotificationService {
           await logger.warn(
             `Failed to find username ${username} mentioned in comment ${comment.id}`
           )
+          continue
+        }
+
+        if (skipUserIds.includes(mentioned.id)) {
           continue
         }
 
@@ -416,6 +429,7 @@ export default class NotificationService {
     discussion: Discussion,
     usernames: string[],
     user: User,
+    skipUserIds: Array<number | undefined> = [],
     trx: TransactionClientContract | null = null
   ) {
     try {
@@ -427,6 +441,10 @@ export default class NotificationService {
           await logger.warn(
             `Failed to find username ${username} mentioned in discussion ${discussion.id}`
           )
+          continue
+        }
+
+        if (skipUserIds.includes(mentioned.id)) {
           continue
         }
 
@@ -465,6 +483,7 @@ export default class NotificationService {
     request: LessonRequest,
     usernames: string[],
     user: User,
+    skipUserIds: Array<number | undefined> = [],
     trx: TransactionClientContract | null = null
   ) {
     try {
@@ -476,6 +495,10 @@ export default class NotificationService {
           await logger.warn(
             `Failed to find username ${username} mentioned in lesson request ${request.id}`
           )
+          continue
+        }
+
+        if (skipUserIds.includes(mentioned.id)) {
           continue
         }
 

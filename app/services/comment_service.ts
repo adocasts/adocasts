@@ -47,11 +47,11 @@ export default class CommentService {
 
       await comment.save()
 
-      comment.replyTo
+      const notifiedUserId = comment.replyTo
         ? await NotificationService.onCommentReply(comment, this.user, trx)
         : await NotificationService.onCommentCreate(comment, this.user, trx)
 
-      await MentionService.checkForCommentMention(comment, this.user!, trx)
+      await MentionService.checkForCommentMention(comment, this.user!, [notifiedUserId], trx)
     })
 
     await logger.info('NEW COMMENT', {
