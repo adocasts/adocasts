@@ -5,9 +5,9 @@ import { PostShowVM } from "../view_models/post.js";
 import User from "#models/user";
 
 export default class HlsService {
-  static getSignature(user: User, post: PostShowVM) {
+  static getSignature(user: User | undefined, post: PostShowVM) {
     const version = 'v1'
-    const userId = user.id ?? 'NA'
+    const userId = user?.id ?? 'NA'
     const videoId = post.videoR2Id
     const expiration = DateTime.now().plus({ hours: 48 }).toISO()
     const payload = [version, userId, videoId, expiration].join('|')
