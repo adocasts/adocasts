@@ -18,7 +18,7 @@ export default class ProfilesController {
     activityService: ProfileActivityService,
     discussionService: DiscussionService
   ) {
-    const username = params.username.replace(/^@/, '')
+    const username = decodeURIComponent(params.username.replace(/^@/, ''))
     const user = await User.query()
       .whereILike('username', username)
       .preload('profile')
