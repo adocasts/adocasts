@@ -2,6 +2,7 @@ import '../css/app.css'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { DateTime } from 'luxon'
+import posthog from 'posthog-js'
 import './_player'
 
 Cookies.set('timezone', DateTime.now().zoneName)
@@ -9,6 +10,7 @@ Cookies.set('timezone', DateTime.now().zoneName)
 const INPUT_TAGS = ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON']
 
 window.axios = axios
+window.posthog = posthog
 
 window.onfocus = async function () {
   try {
@@ -20,9 +22,23 @@ window.onfocus = async function () {
   } catch (error) {
     window.debug('onfocus user check failed', {
       message: error.message,
-      stack: error.stack
+      stack: error.stack,
     })
   }
+}
+
+const posthogClientToken = document.querySelector('meta[name="posthog-client-token"]')?.content
+
+if (posthogClientToken) {
+  posthog.init(posthogClientToken, {
+    api_host: 'https://us.i.posthog.com',
+    person_profiles: 'identified_only',
+    capture_pageview: false,
+  })
+
+  posthog.capture('$pageview', {
+    path: window.location.pathname,
+  })
 }
 
 /**

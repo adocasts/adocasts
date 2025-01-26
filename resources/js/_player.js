@@ -4,8 +4,8 @@ import Alpine from 'alpinejs'
 import { Player } from 'player.js'
 import { VidstackPlayer, VidstackPlayerLayout } from 'vidstack/global/player'
 import { isHLSProvider, TextTrack } from 'vidstack'
-import 'vidstack/player/styles/default/theme.css';
-import 'vidstack/player/styles/default/layouts/video.css';
+import 'vidstack/player/styles/default/theme.css'
+import 'vidstack/player/styles/default/layouts/video.css'
 
 let isInitialLoad = true
 let isVideoPlaying = false
@@ -150,7 +150,11 @@ class VideoPlayer {
     keepPlayer = false
 
     // clean up any prior video, except the vidstack player... that uses web components & gracefully handles cleanup
-    if (window.player && typeof window.player.destroy === 'function' && window.player.nodeName !== 'MEDIA-PLAYER') {
+    if (
+      window.player &&
+      typeof window.player.destroy === 'function' &&
+      window.player.nodeName !== 'MEDIA-PLAYER'
+    ) {
       window.player.destroy()
     }
 
@@ -297,7 +301,7 @@ class VideoPlayer {
       const chapterTrack = new TextTrack({
         kind: 'chapters',
         type: 'vtt',
-        default: true
+        default: true,
       })
 
       chapters.map((chapter) => {
@@ -307,14 +311,14 @@ class VideoPlayer {
 
       player.textTracks.add(chapterTrack)
     }
-    
+
     player.addEventListener('play', this.#onPlayerStateChange.bind(this, { action: 'play' }))
     player.addEventListener('pause', this.#onPlayerStateChange.bind(this, { action: 'pause' }))
     player.addEventListener('ended', this.#onPlayerStateChange.bind(this, { action: 'ended' }))
     player.addEventListener('time-update', this.#onPlayerTimeUpdate.bind(this))
     player.addEventListener('provider-change', (event) => {
       const provider = event.detail
-      
+
       if (provider?.type === 'hls') {
         provider.config = {
           xhrSetup(xhr) {
@@ -322,16 +326,20 @@ class VideoPlayer {
             xhr.setRequestHeader('X-Authorization-Key', authorizationKey)
             xhr.setRequestHeader('X-Authorization-Exp', authorizationExp)
             xhr.setRequestHeader('X-User-Id', userId)
-          }
+          },
         }
       }
     })
 
-    // create call's currentTime seems to be ignored 
+    // create call's currentTime seems to be ignored
     // perhaps because metadata isn't loaded yet
-    player.addEventListener('loaded-metadata', () => {
-      player.currentTime = this.watchSeconds
-    }, { once: true })
+    player.addEventListener(
+      'loaded-metadata',
+      () => {
+        player.currentTime = this.watchSeconds
+      },
+      { once: true }
+    )
 
     let hasErrored = false
     const onError = (status, text, message) => {
@@ -365,7 +373,7 @@ class VideoPlayer {
       console.debug({ error: event })
 
       const error = event.detail
-      
+
       onError(null, null, error.message)
     })
 
@@ -405,6 +413,21 @@ class VideoPlayer {
     isVideoPlaying = event.data == YT.PlayerState.PLAYING
 
     Alpine.store('app').videoPlaying = isVideoPlaying
+
+    if (
+      [YT.PlayerState.PLAYING, YT.PlayerState.PAUSED, YT.PlayerState.ENDED].includes(event.data)
+    ) {
+      const action = 'play'
+      if (event.data === YT.PlayerState.PAUSED) action = 'pause'
+      if (event.data === YT.PlayerState.ENDED) action = 'ended'
+
+      posthog.capture('video_action', {
+        action,
+        videoId: this.videoId,
+        postId: this.http.payload?.postId,
+        collectionId: this.http.payload?.collectionId,
+      })
+    }
 
     if (isVideoPlaying) {
       nextUpInterval = setInterval(() => this.#onPlayerTimeUpdate(), 1000)
@@ -472,6 +495,15 @@ class VideoPlayer {
       keepPlayerPostId = this.http.payload.postId
     }
 
+    if (['play', 'pause', 'ended'].includes(action)) {
+      posthog.capture('video_action', {
+        action,
+        videoId: this.videoId,
+        postId: this.http.payload?.postId,
+        collectionId: this.http.payload?.collectionId,
+      })
+    }
+
     if (this.isLive) return
 
     if (!this.player) {
@@ -507,59 +539,6 @@ class VideoPlayer {
       const duration = await this.getDuration()
 
       console.debug('bunny progress interval', currentTime)
-
-      // duration may be 0 if meta data is still loading
-      if (currentTime <= 0 || duration <= 0) return
-
-      this.#storeWatchingProgression(currentTime, duration)
-    }, this.progressionInterval)
-  }
-
-  async #onR2StateChange({ action }) {
-    isVideoPlaying = action === 'play'
-
-    Alpine.store('app').videoPlaying = isVideoPlaying
-
-    if (location.pathname === this.placeholder.dataset.path) {
-      keepPlayer = isVideoPlaying
-      keepPlayerPostId = this.http.payload.postId
-    }
-
-    if (this.isLive) return
-
-    if (!this.player) {
-      Cookies.remove('playingId')
-      keepPlayer = null
-      keepPlayerPostId = null
-      return
-    }
-
-    if (!isVideoPlaying) {
-      clearInterval(playerInterval)
-      Cookies.remove('playingId')
-
-      const currentTime = await this.getCurrentTime()
-      const duration = await this.getDuration()
-
-      console.debug('R2 play stopped, storing last progress', currentTime)
-
-      if (currentTime === -1 || duration === -1) return
-      if (typeof currentTime !== 'number') return
-
-      return this.#storeWatchingProgression(currentTime, duration)
-    }
-
-    if (!Cookies.get('playingId')) {
-      Cookies.set('playingId', this.http.payload.postId)
-    }
-
-    clearInterval(playerInterval)
-
-    playerInterval = setInterval(async () => {
-      const currentTime = await this.getCurrentTime()
-      const duration = await this.getDuration()
-
-      console.debug('R2 progress interval', currentTime)
 
       // duration may be 0 if meta data is still loading
       if (currentTime <= 0 || duration <= 0) return

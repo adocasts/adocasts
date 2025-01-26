@@ -127,6 +127,8 @@
     "player.js": "^0.1.0",
     "plyr": "^3.7.8",
     "postcss-import": "^16.1.0",
+    "posthog-js": "^1.210.2",
+    "posthog-node": "^4.4.1",
     "reading-time": "^1.5.0",
     "reflect-metadata": "^0.2.2",
     "sanitize-html": "^2.13.1",

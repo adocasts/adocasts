@@ -71,6 +71,7 @@ export default defineConfig({
       file: () => import('./start/context.js'),
       environment: ['web', 'test'],
     },
+    () => import('#start/posthog')
   ],
 
   /*

@@ -1,5 +1,6 @@
 import Profile from '#models/profile'
 import AuthSocialService from '#services/auth_social_service'
+import posthog from '#services/posthog_service'
 import SessionService from '#services/session_service'
 import StripeService from '#services/stripe_service'
 import { inject } from '@adonisjs/core'
@@ -43,6 +44,7 @@ export default class SocialController {
     }
 
     await this.sessionService.onSignInSuccess(user!, true)
+    await posthog.onAuthenticated(user!)
 
     if (wasAuthenticated) {
       session.flash('success', `Your ${params.provider} account has been successfully linked`)

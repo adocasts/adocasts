@@ -4,6 +4,7 @@ import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 import SessionService from '#services/session_service'
 import StripeService from '#services/stripe_service'
+import posthog from '#services/posthog_service'
 
 export default class SignUpController {
   /**
@@ -28,6 +29,7 @@ export default class SignUpController {
     await user.related('profile').create({})
     await auth.use('web').login(user)
     await sessionService.onSignInSuccess(user, false, true)
+    await posthog.onAuthenticated(user)
 
     if (plan) {
       const { status, message, checkout } = await stripeService.tryCreateCheckoutSession(
