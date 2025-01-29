@@ -7,6 +7,9 @@ import hash from '@adonisjs/core/services/hash'
 import logger from '#services/logger_service'
 import { passwordResetValidator } from '#validators/auth_validator'
 import emitter from '@adonisjs/core/services/emitter'
+import { inject } from '@adonisjs/core'
+import SessionService from '#services/session_service'
+import limiter from '@adonisjs/limiter/services/main'
 
 export default class PasswordResetController {
   async forgotPassword({ view }: HttpContext) {
@@ -17,31 +20,32 @@ export default class PasswordResetController {
     return view.render('pages/auth/password/sent')
   }
 
-  async forgotPasswordSend({ request, response, session }: HttpContext) {
-    try {
-      const email = request.input('email')
-      const user = await User.findByOrFail('email', email)
-      const signedUrl = router.makeSignedUrl('auth.password.reset', { email }, { expiresIn: '1h' })
+  @inject()
+  async forgotPasswordSend({ request, response, session }: HttpContext, sessionService: SessionService) {
+    const email = request.input('email')
+    const limitKey = `forgotPasswordSend_${sessionService.ipAddress}`
+    const limit = limiter.use({
+      requests: 3,
+      duration: '1 min',
+      blockDuration: '1 hour',
+    })
 
-      if (user) {
-        try {
-          await emitter.emit('email:password_reset', { user, signedUrl })
-        } catch (error) {
-          logger.error('PasswordResetController.forgotPasswordSend:emit', { email, error })
-          session.flash('error', 'Something went wrong, and the email could not be sent')
-          return response.redirect().back()
-        }
+    try {
+      const [throttle, user] = await limit.penalize(limitKey, () => {
+        return User.findByOrFail('email', email)
+      })
+
+      if (throttle) {
+        session.flash('error', 'Too many attempts. Please try again later.')
+        return response.redirect().back()
       }
 
-      return response.redirect().toRoute('auth.password.forgot.sent')
-    } catch (error) {
-      const email = request.input('email')
+      const signedUrl = router.makeSignedUrl('auth.password.reset', { email }, { expiresIn: '1h' })    
+      await emitter.emit('email:password_reset', { user, signedUrl })
+    } catch (_error) {}
 
-      logger.error('PasswordResetController.forgotPasswordSend', { email, error })
-      session.flash('error', "Account couldn't be found for this email")
-
-      return response.redirect().back()
-    }
+    session.flash('success', 'If an account exists with that email, a password reset link has been sent.')
+    return response.redirect().toRoute('auth.password.forgot.sent')
   }
 
   async resetPassword({ request, view, params }: HttpContext) {

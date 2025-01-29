@@ -70,6 +70,7 @@
     "@adonisjs/auth": "^9.2.3",
     "@adonisjs/bouncer": "^3.1.3",
     "@adonisjs/core": "^6.14.1",
+    "@adonisjs/limiter": "^2.3.3",
     "@adonisjs/lucid": "^21.3.0",
     "@adonisjs/mail": "^9.2.2",
     "@adonisjs/redis": "^9.1.0",

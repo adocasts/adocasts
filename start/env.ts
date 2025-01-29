@@ -93,4 +93,11 @@ export default await Env.create(new URL('../', import.meta.url), {
   R2_SIGNING_KEY: Env.schema.string(),
 
   POSTHOG_CLIENT_TOKEN: Env.schema.string.optional(),
+
+  /*
+  |----------------------------------------------------------
+  | Variables for configuring the limiter package
+  |----------------------------------------------------------
+  */
+  LIMITER_STORE: Env.schema.enum(['database', 'memory'] as const)
 })

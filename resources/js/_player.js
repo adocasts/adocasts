@@ -417,7 +417,7 @@ class VideoPlayer {
     if (
       [YT.PlayerState.PLAYING, YT.PlayerState.PAUSED, YT.PlayerState.ENDED].includes(event.data)
     ) {
-      const action = 'play'
+      let action = 'play'
       if (event.data === YT.PlayerState.PAUSED) action = 'pause'
       if (event.data === YT.PlayerState.ENDED) action = 'ended'
 
