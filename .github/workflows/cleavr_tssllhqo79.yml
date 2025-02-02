@@ -56,10 +56,11 @@ jobs:
 
       - name: Upload artifact
         id: upload-artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: '${{ steps.artifact.outputs.formattedTime }}'
           path: build/
+          overwrite: true
           if-no-files-found: error
           include-hidden-files: true
 
