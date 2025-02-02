@@ -3,7 +3,7 @@ import { HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import { errors as vineErrors } from '@vinejs/vine'
 import { errors as shieldErrors } from '@adonisjs/shield'
 import { errors } from '@adonisjs/core'
-// import logger from '#services/logger_service'
+import logger from '#services/logger_service'
 
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
@@ -69,18 +69,18 @@ export default class HttpExceptionHandler extends ExceptionHandler {
     const ignoreAgent = alertIgnoreAgents.some((agent) => userAgent?.includes(agent))
 
     if (!ignorePath && !ignoreAgent) {
-      // await logger.error('error.report', {
-      //   error,
-      //   url: ctx.request.url(true),
-      //   userId: ctx.auth?.user?.id,
-      //   headers: {
-      //     'User-Agent': userAgent,
-      //     'X-Forwarded-For': ctx.request.header('X-Forwarded-For'),
-      //     'X-Real-IP': ctx.request.header('X-Real-IP'),
-      //     'Cf-Connecting-Ip': ctx.request.header('Cf-Connecting-Ip'),
-      //     'Referer': ctx.request.header('Referer'),
-      //   },
-      // })
+      await logger.error('error.report', {
+        error,
+        url: ctx.request.url(true),
+        userId: ctx.auth?.user?.id,
+        headers: {
+          'User-Agent': userAgent,
+          'X-Forwarded-For': ctx.request.header('X-Forwarded-For'),
+          'X-Real-IP': ctx.request.header('X-Real-IP'),
+          'Cf-Connecting-Ip': ctx.request.header('Cf-Connecting-Ip'),
+          'Referer': ctx.request.header('Referer'),
+        },
+      })
     }
 
     return super.report(error, ctx)
