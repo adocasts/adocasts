@@ -153,6 +153,7 @@ export class PostShowVM extends PostBaseVM {
   declare videoTypeId: VideoTypes | null
   declare isLive: boolean
   declare transcriptUrl: string | undefined
+  declare repositoryUrl: string | undefined
   declare viewCount: number | null
   declare hasVideo: boolean
   declare streamId: string
@@ -172,6 +173,7 @@ export class PostShowVM extends PostBaseVM {
     this.body = post.body
     this.videoTypeId = post.videoTypeId
     this.transcriptUrl = post.transcriptUrl
+    this.repositoryUrl = post.repositoryUrl
     this.viewCount = post.viewCount
     this.hasVideo = !!post.hasVideo
     this.streamId = post.streamId

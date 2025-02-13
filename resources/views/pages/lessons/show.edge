@@ -101,13 +101,6 @@
           @end
         @endif
 
-        @if (post.repositoryUrl)
-          @button({ href: post.repositoryUrl, class: 'gap-2', target: '_blank' })
-            @svg('simple-icons:github', { class: 'w-5 h-5' })
-            Repository
-          @end
-        @endif
-
         @if (post?.hasVideo && post.videoBunnyId && auth.user && !auth.user.isFreeTier)
           @let(bunnyUrl = `${env('VIDEO_DOMAIN')}/${post.videoBunnyId}/original`)
           @let(bunnyFilename = [post.series?.name, post.series?.lessonIndexDisplay, post.title].filter(Boolean).join(' - '))
@@ -218,6 +211,28 @@
         </div>
       </div>
     </div>
+
+    @if (post.repositoryUrl)
+      <div class="-mx-4">
+        <div class="bg-slate-100 md:rounded-md p-4 mt-8 relative overflow-hidden">
+          <div class="absolute top-1/2 -right-4 -translate-y-1/2 -rotate-12 opacity-10">
+            @svg('simple-icons:github', { class: 'w-24 h-24' })
+          </div>
+          <div class="flex justify-between gap-4 relative z-10">
+            <div>
+              <h4 class="font-bold text-slate-900">Get the Code</h4>
+              <p class="text-slate-600 text-xs">
+                Download or explore the source code for this lesson on GitHub
+              </p>
+            </div>
+            @button({ href: post.repositoryUrl, class: 'gap-2', target: '_blank' })
+              @svg('simple-icons:github', { class: 'w-5 h-5' })
+              Repository
+            @end
+          </div>
+        </div>
+      </div>
+    @endif
   </div>
 
   <div class="relative max-w-prose xl:max-w-[74ch] mx-auto">
