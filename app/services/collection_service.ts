@@ -135,9 +135,9 @@ export default class CollectionService {
    */
   findNextSeriesLesson(series: SeriesShowVM | null | undefined, post: PostShowVM) {
     if (!series) return
-    if (!post?.series || !series.postIds?.length) return
 
-    const postRootIndex = post.series.rootSortOrder
+    const postRootIndex = series.postsFlattened.findIndex((p) => p.id === post.id)
+    if (postRootIndex === -1 || postRootIndex === series.postsFlattened.length - 1) return
     return series?.postsFlattened.at(postRootIndex + 1)
   }
 
@@ -149,9 +149,9 @@ export default class CollectionService {
    */
   findPrevSeriesLesson(series: SeriesShowVM | null | undefined, post: PostShowVM) {
     if (!series) return
-    if (!post?.series || !series.postIds?.length) return
 
-    const postRootIndex = post.series.rootSortOrder
+    const postRootIndex = series.postsFlattened.findIndex((p) => p.id === post.id)
+    if (postRootIndex <= 0) return
     return series?.postsFlattened.at(postRootIndex - 1)
   }
 
