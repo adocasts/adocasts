@@ -1,108 +1,16 @@
-@layout({
-  title: "Your Ultimate Resource for AdonisJS Lessons and Videos",
-  meta: {
-    url: '/',
-    desc: `Take your AdonisJS skills to the next level with Adocasts. Our comprehensive video lessons cover everything from the basics to advanced topics. Join our community today and start learning!`,
-    asset: null,
-    index: true
-  }
-})
-  @slot('hero')
-    @!hero.home()
-  @endslot
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      AdonisJS - A fully featured web framework for Node.js
+    </title>
 
-  @section()
-    @!heading({
-      title: 'Series.',
-      subtitle: 'Step-By-Step Learning',
-      cta: 'Browse All Series',
-      href: route('series.index')
-    })
-    <div class="grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6 xl:gap-8">
-      @each ((item, index) in series)
-        @!collection.grid({ item, index })
-      @endeach
-    </div>
-  @end
-
-  @section()
-    @!heading({
-      title: 'Topics.',
-      subtitle: 'Subject-Based Learning',
-      cta: 'Browse All Topics',
-      href: route('topics.index')
-    })
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-8 pt-4">
-      @each (item in topics)
-        @!taxonomy.card.small({ item })
-      @endeach
-    </div>
-  @end
-
-  @section()
-    @!heading({
-      title: 'Lessons.',
-      subtitle: "Here's What's New",
-      cta: 'Browse All Lessons',
-      href: route('lessons.index')
-    })
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-8 gap-4 pb-8 pt-4">
-      @each((item, i) in lessons)
-        @!post.item({ 
-          item, 
-          col: i < 4, 
-          class: [{
-            'lg:col-span-2': i < 4,
-            'sm:col-span-2 md:col-span-1 lg:col-span-4': i >= 4,
-          }],
-          classDescription: [{
-            'md:hidden lg:block': i >= 4
-          }]
-        })
-      @endeach
-    </div>
-  @end
-
-  @section({ class: ['grid md:grid-cols-2 gap-8 xl:gap-12'] })
-    <div>
-      @!heading({
-        size: 'sm',
-        title: 'Blogs.',
-        subtitle: "Odds and Ins",
-        cta: 'Browse Our Blog',
-        href: route('blog.index')
-      })
-
-      <div class="flex flex-col gap-6 mt-4">
-        @each (item in blogs.slice(0, 4))
-          @!post.item.simple({ item })
-        @endeach
-      </div>
-    </div>
-
-    <div>
-      @!heading({
-        size: 'sm',
-        title: 'Snippets.',
-        subtitle: "Bite Sized Code",
-        cta: 'Browse All Snippets',
-        href: route('snippets.index')
-      })
-
-      <div class="flex flex-col gap-6 mt-4">
-        @each (item in snippets.slice(0, 4))
-          @!post.item.simple({ item })
-        @endeach
-      </div>
-    </div>
-  @end
-
-  @if (auth.user && !auth.user.isFreeTier)
-
-  @else
-    @!pricing.home({ class: '-mb-16' })
-  @endif
-
-@end
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @stack('dumper')
+  </head>
+  <body>
+    @!header()
+  </body>
+</html>

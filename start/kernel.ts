@@ -25,7 +25,7 @@ server.errorHandler(() => import('#exceptions/handler'))
 server.use([
   () => import('#middleware/container_bindings_middleware'),
   () => import('@adonisjs/static/static_middleware'),
-  () => import('@adonisjs/vite/vite_middleware')
+  () => import('@adonisjs/vite/vite_middleware'),
 ])
 
 /**
@@ -37,11 +37,7 @@ router.use([
   () => import('@adonisjs/session/session_middleware'),
   () => import('@adonisjs/shield/shield_middleware'),
   () => import('@adonisjs/auth/initialize_auth_middleware'),
-  () => import('#middleware/silent_auth_middleware'),
-  () => import('#middleware/up_middleware'),
-  () => import('#middleware/initialize_bouncer_middleware'),
-  () => import('#middleware/session_check_middleware'),
-  () => import('#middleware/cms_session_middleware'),
+  () => import('#middleware/initialize_bouncer_middleware')
 ])
 
 /**
@@ -49,9 +45,6 @@ router.use([
  * the routes or the routes group.
  */
 export const middleware = router.named({
-  plus: () => import('#middleware/plus_middleware'),
-  postTypeCheck: () => import('#middleware/post_type_check_middleware'),
-  turnstile: () => import('#middleware/turnstile_middleware'),
   guest: () => import('#middleware/guest_middleware'),
-  auth: () => import('#middleware/auth_middleware'),
+  auth: () => import('#middleware/auth_middleware')
 })

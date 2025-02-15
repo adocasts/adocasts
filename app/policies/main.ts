@@ -12,12 +12,4 @@
 |
 */
 
-export const policies = {
-  AdPolicy: () => import('#policies/ad_policy'),
-  AssetPolicy: () => import('#policies/asset_policy'),
-  CommentPolicy: () => import('#policies/comment_policy'),
-  PostPolicy: () => import('#policies/post_policy'),
-  LessonRequestPolicy: () => import('#policies/lesson_request_policy'),
-  DiscussionPolicy: () => import('#policies/discussion_policy'),
-}
-
+export const policies = {}

@@ -1,9 +1,6 @@
 import app from '@adonisjs/core/services/app'
 import { HttpContext, ExceptionHandler } from '@adonisjs/core/http'
-import { errors as vineErrors } from '@vinejs/vine'
-import { errors as shieldErrors } from '@adonisjs/shield'
-import { errors } from '@adonisjs/core'
-import logger from '#services/logger_service'
+import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
 
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
@@ -19,16 +16,16 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    */
   protected renderStatusPages = app.inProduction
 
-  protected statusPages = {
-    '404': async (error: unknown, { view, response }: HttpContext) => {
-      const html = await view.render('errors/not-found', { error })
-      response.send(html)
-      return html
+  /**
+   * Status pages is a collection of error code range and a callback
+   * to return the HTML contents to send as a response.
+   */
+  protected statusPages: Record<StatusPageRange, StatusPageRenderer> = {
+    '404': (error, { view }) => {
+      return view.render('pages/errors/not_found', { error })
     },
-    '500..599': async (error: unknown, { view, response }: HttpContext) => {
-      const html = await view.render('errors/server-error', { error })
-      response.send(html)
-      return html
+    '500..599': (error, { view }) => {
+      return view.render('pages/errors/server_error', { error })
     },
   }
 
@@ -37,12 +34,6 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * response to the client
    */
   async handle(error: unknown, ctx: HttpContext) {
-    if (error instanceof vineErrors.E_VALIDATION_ERROR && ctx.up.isUnpolyRequest) {
-      ctx.up.setTarget(ctx.up.getFailTarget())
-      ctx.up.setStatus(400)
-      ctx.response.redirect().back()
-    }
-
     return super.handle(error, ctx)
   }
 
@@ -53,36 +44,6 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * @note You should not attempt to send a response from this method.
    */
   async report(error: unknown, ctx: HttpContext) {
-    if (
-      error instanceof errors.E_ROUTE_NOT_FOUND ||
-      error instanceof shieldErrors.E_BAD_CSRF_TOKEN ||
-      error instanceof vineErrors.E_VALIDATION_ERROR
-    ) {
-      return super.report(error, ctx)
-    }
-
-    const url = ctx.request.url(true)
-    const userAgent = ctx.request.header('User-Agent')
-    const alertIgnorePaths = ['/assets/', '/schedule/']
-    const alertIgnoreAgents = ['crawler', 'bot']
-    const ignorePath = alertIgnorePaths.some((path) => url.startsWith(path))
-    const ignoreAgent = alertIgnoreAgents.some((agent) => userAgent?.includes(agent))
-
-    if (!ignorePath && !ignoreAgent) {
-      await logger.error('error.report', {
-        error,
-        url: ctx.request.url(true),
-        userId: ctx.auth?.user?.id,
-        headers: {
-          'User-Agent': userAgent,
-          'X-Forwarded-For': ctx.request.header('X-Forwarded-For'),
-          'X-Real-IP': ctx.request.header('X-Real-IP'),
-          'Cf-Connecting-Ip': ctx.request.header('Cf-Connecting-Ip'),
-          'Referer': ctx.request.header('Referer'),
-        },
-      })
-    }
-
     return super.report(error, ctx)
   }
 }

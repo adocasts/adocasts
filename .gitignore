@@ -1,11 +1,27 @@
+# Dependencies and AdonisJS build
 node_modules
 build
-coverage
-.vscode
-.DS_STORE
-.DS_Store
-.env
-.idea
-google-cloud-key.json
 tmp
 public/assets/hot.json
+
+# Secrets
+.env
+.env.local
+.env.production.local
+.env.development.local
+google-cloud-key.json
+
+# Frontend assets compiled code
+public/assets
+
+# Build tools specific
+npm-debug.log
+yarn-error.log
+
+# Editors specific
+.fleet
+.idea
+.vscode
+
+# Platform specific
+.DS_Store
