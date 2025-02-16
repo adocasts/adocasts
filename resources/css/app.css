@@ -1,4 +1,10 @@
 @import "tailwindcss" source("../");
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: 'Recursive', sans-serif;
+  --font-mono: 'Recursive', monospace;
+}
 
 @plugin "daisyui";
 @plugin "daisyui/theme" {
@@ -40,6 +46,48 @@
   display: none !important;
 }
 
+body {
+  --mono: 0;
+  --casl: .5;
+  --wght: 400;
+  --slnt: 0;
+  --crsv: 0.5;
+
+  font-variation-settings: var(--mono), var(--casl), var(--wght), var(--slnt), var(--crsv);
+
+  .italic {
+    --casl: 1;
+    --slnt: -15;
+  }
+
+  .mono {
+    --mono: 1;
+  }
+
+  .font-semibold {
+    --wght: 600;
+  }
+
+  .font-bold {
+    --wght: 700;
+  }
+
+  .font-black {
+    --wght: 800;
+  }
+}
+
+.container-xl {
+  width: 100%;
+  max-width: 112rem;
+  margin-right: 1.5rem;
+  margin-left: 1.5rem;
+  
+  @media screen and (min-width: 112rem) {
+    margin: 0 auto;
+  }
+}
+
 .border-base {
   border-color: var(--color-base-300);
   border-width: var(--border);
@@ -67,5 +115,79 @@
     --btn-bg: color-mix(in oklab, var(--btn-color, var(--color-base-content)) 8%, var(--color-base-100));
     --btn-border: color-mix(in oklab, var(--btn-color, var(--color-base-content)) 10%, var(--color-base-100));
     --btn-noise: none;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+
+.animate-marquee-reverse {
+  animation: marquee-reverse 40s linear infinite;
+}
+
+.animate-marquee,
+.animate-marquee-reverse {
+  will-change: transform;
+  &:hover {
+      animation-play-state: paused;
+  }
+}
+
+.skew-center {
+  perspective: 100vh;
+  /* transform: translate3d(-1490px, 0px, 0px);
+  transform-style: preserve-3d;
+  transition-property: transform; */
+
+  > div {
+    position: relative;
+    transition-property: transform;
+    transform-style: preserve-3d;
+  }
+
+  > div:nth-of-type(1) {
+    transform: translate3d(300px, 0px, 0px) rotateX(0deg) rotateY(50deg) scale(0.7);
+    z-index: -2;
+  }
+
+  > div:nth-of-type(2) {
+    transform: translate3d(135px, 0px, 0px) rotateX(0deg) rotateY(25deg) scale(0.85);
+    z-index: -1;
+  }
+
+  > div:nth-of-type(3) {
+    transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg) scale(1);
+    z-index: 1;
+  }
+
+  > div:nth-of-type(4) {
+    transform: translate3d(-135px, 0px, 0px) rotateX(0deg) rotateY(-25deg) scale(0.85);
+    z-index: -1;
+  }
+
+  > div:nth-of-type(5) {
+    transform: translate3d(-300px, 0px, 0px) rotateX(0deg) rotateY(-50deg) scale(0.7);
+    z-index: -2;
   }
 }
