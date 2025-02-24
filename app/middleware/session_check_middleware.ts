@@ -9,7 +9,7 @@ export default class SessionCheckMiddleware {
   constructor(protected sessionService: SessionService) {}
 
   async handle({ request, response, auth }: HttpContext, next: NextFn) {
-    if (request.url().startsWith('/img/')) {
+    if (request.url().startsWith('/img/') || request.url().startsWith('/api/')) {
       await next()
       return
     }
