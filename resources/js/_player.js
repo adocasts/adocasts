@@ -414,20 +414,20 @@ class VideoPlayer {
 
     Alpine.store('app').videoPlaying = isVideoPlaying
 
-    if (
-      [YT.PlayerState.PLAYING, YT.PlayerState.PAUSED, YT.PlayerState.ENDED].includes(event.data)
-    ) {
-      let action = 'play'
-      if (event.data === YT.PlayerState.PAUSED) action = 'pause'
-      if (event.data === YT.PlayerState.ENDED) action = 'ended'
+    // if (
+    //   [YT.PlayerState.PLAYING, YT.PlayerState.PAUSED, YT.PlayerState.ENDED].includes(event.data)
+    // ) {
+    //   let action = 'play'
+    //   if (event.data === YT.PlayerState.PAUSED) action = 'pause'
+    //   if (event.data === YT.PlayerState.ENDED) action = 'ended'
 
-      posthog.capture('video_action', {
-        action,
-        videoId: this.videoId,
-        postId: this.http.payload?.postId,
-        collectionId: this.http.payload?.collectionId,
-      })
-    }
+    //   posthog.capture('video_action', {
+    //     action,
+    //     videoId: this.videoId,
+    //     postId: this.http.payload?.postId,
+    //     collectionId: this.http.payload?.collectionId,
+    //   })
+    // }
 
     if (isVideoPlaying) {
       nextUpInterval = setInterval(() => this.#onPlayerTimeUpdate(), 1000)
@@ -495,14 +495,14 @@ class VideoPlayer {
       keepPlayerPostId = this.http.payload.postId
     }
 
-    if (['play', 'pause', 'ended'].includes(action)) {
-      posthog.capture('video_action', {
-        action,
-        videoId: this.videoId,
-        postId: this.http.payload?.postId,
-        collectionId: this.http.payload?.collectionId,
-      })
-    }
+    // if (['play', 'pause', 'ended'].includes(action)) {
+    //   posthog.capture('video_action', {
+    //     action,
+    //     videoId: this.videoId,
+    //     postId: this.http.payload?.postId,
+    //     collectionId: this.http.payload?.collectionId,
+    //   })
+    // }
 
     if (this.isLive) return
 

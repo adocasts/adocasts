@@ -1,6 +1,6 @@
 import AuthAttempt from '#models/auth_attempt'
 import User from '#models/user'
-import posthog from '#services/posthog_service'
+// import posthog from '#services/posthog_service'
 import SessionService from '#services/session_service'
 import StripeService from '#services/stripe_service'
 import { signInValidator } from '#validators/auth_validator'
@@ -49,7 +49,7 @@ export default class SignInController {
 
     await sessionService.onSignInSuccess(user, rememberMe)
     await AuthAttempt.clear(uid)
-    await posthog.onAuthenticated(user)
+    // await posthog.onAuthenticated(user)
 
     switch (action) {
       case 'email_verification':

@@ -17,11 +17,11 @@ const upPricing = document.querySelector('[up-pricing]')
 up.on('up:location:changed', function (event) {
   if (!event.location) return
 
-  if (posthog) {
-    posthog.capture('$pageview', {
-      path: event.location,
-    })
-  }
+  // if (posthog) {
+  //   posthog.capture('$pageview', {
+  //     path: event.location,
+  //   })
+  // }
 
   if (event.location.toLowerCase().includes('/pricing')) {
     const script = document.createElement('script')
