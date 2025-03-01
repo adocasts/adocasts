@@ -2,8 +2,8 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --font-sans: 'Recursive', sans-serif;
-  --font-mono: 'Recursive', monospace;
+  --font-sans: 'Red Hat Display', sans-serif;
+  --font-mono: 'Red Hat Mono', monospace;
 }
 
 @plugin "daisyui";
@@ -129,106 +129,52 @@ a.link-grow {
   }
 }
 
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
+@property --hero-card-border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes hero-card-border-spin {
+  from {
+    --hero-card-border-angle: 0deg;
   }
 
-  100% {
-    transform: translateX(-100%);
+  to {
+    --hero-card-border-angle: 360deg;
   }
 }
 
-@keyframes marquee-reverse {
-  0% {
-    transform: translateX(-100%);
-  }
-
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.animate-marquee {
-  animation: marquee 40s linear infinite;
-}
-
-.animate-marquee-reverse {
-  animation: marquee-reverse 40s linear infinite;
-}
-
-.animate-marquee,
-.animate-marquee-reverse {
-  will-change: transform;
-  &:hover {
-      animation-play-state: paused;
-  }
-}
-
-.skew-center {
-  perspective: 100vh;
-  /* transform: translate3d(-1490px, 0px, 0px);
-  transform-style: preserve-3d;
-  transition-property: transform; */
-
-  > div {
-    --translate-3d-x: 0px;
-    --translate-3d-y: 0px;
-    --translate-3d: var(--translate-3d-x), var(--translate-3d-y), 0px;
-    --rotate-x: 0deg;
-    --rotate-y: 0deg;
-    --scale: 1;
-
-    position: relative;
-    transition-property: transform;
-    transform-style: preserve-3d;
-    transform: translate3d(var(--translate-3d)) rotateX(var(--rotate-x)) rotateY(var(--rotate-y)) scale(var(--scale));
-    transition: transform 300ms ease-in-out;
-
-    &:hover {
-      --translate-3d-y: -1rem;
-    }
-  }
-
-  > div:nth-of-type(1) {
-    --translate-3d-x: 300px;
-    --rotate-y: 50deg;
-    --scale: 0.7;
-
-    box-shadow: -10px 10px 25px 0px rgb(0 0 0 / 0.1);
-    z-index: -2;
-  }
-
-  > div:nth-of-type(2) {
-    --translate-3d-x: 135px;
-    --rotate-y: 25deg;
-    --scale: 0.85;
-
-    box-shadow: -25px 30px 40px 0px rgb(0 0 0 / 0.25);
+.hero-card-border {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  
+  &:before, &:after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-image: conic-gradient(
+      from var(--hero-card-border-angle),
+      var(--color-primary), 
+      var(--color-secondary),
+      var(--color-accent),
+      var(--color-primary)
+    );
+    border-radius: var(--radius-xl);
+    position: absolute;
+    top: 0;
+    left: 0;
     z-index: -1;
+    animation: 3s hero-card-border-spin linear infinite;
   }
 
-  > div:nth-of-type(3) {
-    box-shadow: -30px 30px 30px 10px rgb(0 0 0 / 0.25), 30px 30px 30px 10px rgb(0 0 0 / 0.25);
-    z-index: 1;
-  }
-
-  > div:nth-of-type(4) {
-    --translate-3d-x: -135px;
-    --rotate-y: -25deg;
-    --scale: 0.85;
-
-    box-shadow: 25px 30px 40px 0px rgb(0 0 0 / 0.25);
-    z-index: -1;
-  }
-
-  > div:nth-of-type(5) {
-    --translate-3d-x: -300px;
-    --rotate-y: -50deg;
-    --scale: 0.7;
-
-    box-shadow: 10px 10px 25px 0px rgb(0 0 0 / 0.1);
-    z-index: -2;
+  &:before {
+    filter: blur(1.5rem);
+    opacity: .5;
   }
 }
 
@@ -245,6 +191,7 @@ a.link-grow {
 .skew-lines {
   width: 100%;
   height: 95%;
+  perspective: 30vh;
   position: absolute;
   top: 0;
   left: 0;

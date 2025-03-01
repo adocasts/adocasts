@@ -9,7 +9,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght,CRSV,MONO@300..800,0..1,0..1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('dumper')
@@ -17,86 +17,8 @@
   <body>
     @!header({ plain: true })
     
-    <section class="container-xl rounded border border-base flex items-center justify-center bg-linear-to-br from-accent/25 via-base-200 to-primary mt-3 aspect-video max-h-[50vh] relative overflow-hidden">
-      <div class="bg-radial bg-radial from-base-200/85 from-40% to-base-100/0 backdrop-blur-sm absolute top-0 left-0 w-full h-full z-10"></div>
-      <video class="aspect-video absolute opacity-50 top-1/2 left-1/2 -translate-1/2 w-full" src="/vids/hero-video-01.mp4" autoplay loop></video>
-
-      <div class="text-center mx-auto relative z-20">
-        <h1 class="font-black text-6xl mb-6">
-          Navigate the Labyrinth of <br/>JavaScript Development with Adocasts
-        </h1>
-        <p class="max-w-4xl mx-auto text-xl mb-12 leading-8">
-          JavaScript web development can be complex. Adocasts offers expert training, tips, and tricks to help you build
-          efficiently and effectively with AdonisJS.
-        </p>
-
-        <div class="flex items-center justify-center gap-6">
-          <a href="/series/lets-learn-adonisjs-6" class="btn btn-primary btn-lg">
-            New To AdonisJS? Start Here
-            @svg('solar:map-arrow-right-bold-duotone')
-          </a>
-
-          <a href="/signup" class="btn btn-soft btn-lg">
-            Get Started
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="container mx-auto py-12 mt-12 relative">
-      <h2 class="font-bold text-4xl text-center">
-        Series of Endless Learning
-      </h2>
-      <p class="text-center">
-        Our series guide you through a range of topics from beginner to advanced
-      </p>
-
-      <div class="grid gap-6 lg:grid-cols-5 mt-6 as skew-center -mx-[300px]">
-        @!series.card()
-        @!series.card()
-        @!series.card()
-        @!series.card()
-        @!series.card()
-      </div>
-
-      <div class="skew-lines">
-        <div class="skew-lines-floor">
-          <div class="skew-lines-grid"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="py-12">
-      <div class="container mx-auto flex justify-between items-center mb-6">
-        <div>
-          <h2 class="font-bold text-4xl">
-            Hundreds of lessons at the ready
-          </h2>
-          <p>
-            Our collection of lessons grow by the week
-          </p>
-        </div>
-
-        <a href="/lessons" class="btn btn-primary">
-          Browse All Lessons
-        </a>
-      </div>
-
-      <div class="space-y-6">
-        @img.marquee() 
-          <img class="w-full rounded-lg" src="/imgs/thumbnail.jpg">
-          <img class="w-full rounded-lg" src="/imgs/thumbnail.jpg">
-          <img class="w-full rounded-lg" src="/imgs/thumbnail.jpg">
-          <img class="w-full rounded-lg" src="/imgs/thumbnail.jpg">
-        @end
-
-        @img.marquee({ reverse: true })
-          <img class="w-full rounded-lg" src="/imgs/thumbnail.jpg">
-          <img class="w-full rounded-lg" src="/imgs/thumbnail.jpg">
-          <img class="w-full rounded-lg" src="/imgs/thumbnail.jpg">
-          <img class="w-full rounded-lg" src="/imgs/thumbnail.jpg">
-        @end
-      </div>
+    <section class="mt-8">
+      @!hero.dropTheGlue()
     </section>
   </body>
 </html>
