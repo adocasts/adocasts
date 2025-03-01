@@ -1,4 +1,4 @@
-@import "tailwindcss" source("../");
+@import 'tailwindcss' source('../');
 @plugin "@tailwindcss/typography";
 
 @theme {
@@ -8,10 +8,10 @@
 
 @plugin "daisyui";
 @plugin "daisyui/theme" {
-  name: "Adocasts";
+  name: 'Adocasts';
   default: true;
   prefersdark: false;
-  color-scheme: "light";
+  color-scheme: 'light';
   --color-base-100: oklch(98% 0.003 247.858);
   --color-base-200: oklch(96% 0.007 247.896);
   --color-base-300: oklch(92% 0.013 255.508);
@@ -48,7 +48,7 @@
 
 body {
   --mono: 0;
-  --casl: .5;
+  --casl: 0.5;
   --wght: 400;
   --slnt: 0;
   --crsv: 0.5;
@@ -79,7 +79,7 @@ body {
 
 a.link-grow {
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -89,11 +89,10 @@ a.link-grow {
 }
 
 .container-xl {
-  width: 100%;
-  max-width: 112rem;
+  width: min(calc(100% - 3rem), 112rem);
   margin-right: 1.5rem;
   margin-left: 1.5rem;
-  
+
   @media screen and (min-width: 112rem) {
     margin: 0 auto;
   }
@@ -113,7 +112,7 @@ a.link-grow {
   }
 
   &:not(.btn-active, .mouseover, :hover, :active:focus, :focus-visible) {
-    --btn-shadow: "";
+    --btn-shadow: '';
     --btn-bg: #0000;
     --btn-border: #0000;
     --btn-noise: none;
@@ -121,16 +120,24 @@ a.link-grow {
 
   &:hover,
   &.mouseover {
-    --btn-shadow: "";
+    --btn-shadow: '';
     --btn-fg: var(--btn-color, var(--color-base-content));
-    --btn-bg: color-mix(in oklab, var(--btn-color, var(--color-base-content)) 8%, var(--color-base-100));
-    --btn-border: color-mix(in oklab, var(--btn-color, var(--color-base-content)) 10%, var(--color-base-100));
+    --btn-bg: color-mix(
+      in oklab,
+      var(--btn-color, var(--color-base-content)) 8%,
+      var(--color-base-100)
+    );
+    --btn-border: color-mix(
+      in oklab,
+      var(--btn-color, var(--color-base-content)) 10%,
+      var(--color-base-100)
+    );
     --btn-noise: none;
   }
 }
 
 @property --hero-card-border-angle {
-  syntax: "<angle>";
+  syntax: '<angle>';
   initial-value: 0deg;
   inherits: false;
 }
@@ -152,29 +159,30 @@ a.link-grow {
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  
-  &:before, &:after {
-    content: "";
+
+  &:before,
+  &:after {
+    content: '';
     width: 100%;
     height: 100%;
     background-image: conic-gradient(
       from var(--hero-card-border-angle),
-      var(--color-primary), 
+      var(--color-primary),
       var(--color-secondary),
       var(--color-accent),
       var(--color-primary)
     );
-    border-radius: var(--radius-xl);
+    border-radius: calc(var(--radius-xl) + 4px);
     position: absolute;
     top: 0;
     left: 0;
     z-index: -1;
-    animation: 3s hero-card-border-spin linear infinite;
+    animation: 6s hero-card-border-spin linear infinite;
   }
 
   &:before {
     filter: blur(1.5rem);
-    opacity: .5;
+    opacity: 0.5;
   }
 }
 
@@ -205,21 +213,23 @@ a.link-grow {
     left: 50%;
     bottom: -4rem;
     transform: translateX(-50%);
-    perspective: 450px;  
+    perspective: 450px;
   }
 
   .skew-lines-grid {
     width: 100%;
     height: 200%;
     transform: rotateX(106deg);
-    opacity: .065;
+    opacity: 0.065;
     overflow: hidden;
 
     &:before {
       content: '';
       width: 100%;
       height: 200%;
-      background-image: linear-gradient(to right, #fff 1px, transparent 0), linear-gradient(to bottom, #fff 1px, transparent 0);
+      background-image:
+        linear-gradient(to right, #fff 1px, transparent 0),
+        linear-gradient(to bottom, #fff 1px, transparent 0);
       background-size: 120px 60px;
       background-repeat: repeat;
       animation: line-grid 45s linear infinite;
