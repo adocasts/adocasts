@@ -1,0 +1,40 @@
+<div class="stats stats-lg">
+  @if (!commentCount)
+    @!stat.item({
+      color: 'text-info',
+      icon: 'solar:user-hand-up-bold-duotone',
+      stat: 'Jan 10, 21',
+      desc: 'Member Since'
+    })
+  @endif
+  
+  @!stat.item({
+    color: 'text-primary',
+    icon: 'solar:video-library-bold-duotone',
+    stat: '123',
+    desc: 'Lessons Started'
+  })
+
+  @!stat.item({
+    color: 'text-secondary',
+    icon: 'solar:star-rainbow-bold-duotone',
+    stat: '50',
+    desc: 'Lessons Completed'
+  })
+
+  @!stat.item({
+    color: 'text-accent',
+    icon: 'solar:rocket-2-bold-duotone',
+    stat: '300',
+    desc: 'Hours Watched'
+  })
+
+  @if (commentCount)
+    @!stat.item({
+      color: 'text-info',
+      icon: 'solar:chat-round-like-bold-duotone',
+      stat: '50',
+      desc: 'Comments Contributed'
+    })
+  @endif
+</div>

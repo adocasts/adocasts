@@ -21,47 +21,72 @@
       @!hero.dropTheGlue()
     </section>
 
-    <section class="pb-8 pt-16 -mt-8 flex flex-col items-center bg-gradient-to-b from-base-100 to-base-200">
-      <h3 class="text-2xl font-black mb-3">
-        We'll Be Here When You're Ready!
-      </h3>
-      <div class="stats stats-lg">
-        @!stat.large({
-          color: 'text-primary',
-          icon: 'solar:video-library-bold-duotone',
-          stat: '375+',
-          title: 'An Ever Growing Library',
-          desc: 'Lessons Available'
-        })
+    <section class="pb-8 pt-16 -mt-8 bg-gradient-to-b from-base-100 to-base-200">
+      <div class="container mx-auto flex flex-col items-center">
+        @if (auth.user)
+          <h3 class="text-2xl font-black mb-3">
+            Here's What You've Been Up To!
+          </h3>
 
-        @!stat.large({
-          color: 'text-secondary',
-          icon: 'solar:star-rainbow-bold-duotone',
-          stat: '24k+',
-          title: 'So Much Learning',
-          desc: 'Member Completed Lessons'
-        })
-
-        @!stat.large({
-          color: 'text-accent',
-          icon: 'solar:rocket-2-bold-duotone',
-          stat: '3k+',
-          title: 'Join Thousands of Others',
-          desc: 'Free & Plus Members'
-        })
-
-        @!stat.large({
-          color: 'text-info',
-          icon: 'solar:chat-round-like-bold-duotone',
-          stat: '775+',
-          title: 'Hop Into the Discussion',
-          desc: 'Comments Contributed'
-        })
+          @!stat.user()
+        @else
+          <h3 class="text-2xl font-black mb-3">
+            We'll Be Here When You're Ready!
+          </h3>
+          
+          @!stat.adocasts()
+        @endif
       </div>
     </section>
 
-    <section class="mt-8">
-      
+    <section class="mt-16 container mx-auto">
+      <h2 class="font-black text-2xl lg:text-4xl mb-6">
+        Learn One Step at a Time
+      </h2>
+
+      <div class="card card-side w-full bg-base-200 flex flex-col md:flex-row mb-6">
+        <figure>
+          <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Shoes" />
+        </figure>
+        <div class="card-body">
+          <h3 class="card-title">
+            Building with AdonisJS & Inertia
+          </h3>
+          <p>
+            We'll learn how to use InertiaJS with AdonisJS 6 to build a feature-complete application, called PlotMyCourse. Our
+            application will use server-side rendering (SSR), Vue 3, and Shadcn-Vue. It'll feature organizations, drag-and-drop, and
+            lots of forms.
+          </p>
+        </div>
+      </div>
+
+      <div class="flex gap-6">
+        <div class="card bg-base-100 w-full lg:w-1/2 shadow-sm">
+          <figure>
+            <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Shoes" />
+          </figure>
+          <div class="card-body">
+            <h2 class="card-title">Card Title</h2>
+            <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
+            <div class="card-actions justify-end">
+              <button class="btn btn-primary">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card bg-base-100 w-full lg:w-1/2 shadow-sm">
+          <figure>
+            <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Shoes" />
+          </figure>
+          <div class="card-body">
+            <h2 class="card-title">Card Title</h2>
+            <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
+            <div class="card-actions justify-end">
+              <button class="btn btn-primary">Buy Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </body>
 </html>
