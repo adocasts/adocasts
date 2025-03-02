@@ -20,5 +20,33 @@
     <section class="mt-8">
       @!hero.dropTheGlue()
     </section>
+
+    <section class="mt-8 flex justify-center">
+      <div class="stats stats-lg">
+        @!stat.large({
+          color: 'text-primary',
+          icon: 'solar:video-library-bold-duotone',
+          stat: '375+',
+          title: 'An Ever Growing Library',
+          desc: 'Lessons Available'
+        })
+
+        @!stat.large({
+          color: 'text-secondary',
+          icon: 'solar:star-rainbow-bold-duotone',
+          stat: '24k+',
+          title: 'So Much Learning',
+          desc: 'Completed Lessons'
+        })
+
+        @!stat.large({
+          color: 'text-accent',
+          icon: 'solar:rocket-2-bold-duotone',
+          stat: '3k+',
+          title: 'Join Thousands of Others',
+          desc: 'Free & Plus Members'
+        })
+      </div>
+    </section>
   </body>
 </html>

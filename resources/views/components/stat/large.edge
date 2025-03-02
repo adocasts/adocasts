@@ -1,0 +1,23 @@
+@let(color = $props.color ?? 'text-primary')
+
+<div class="stat">
+  @if(icon)
+    <div class="stat-figure {{ color }}">
+      @svg(icon, {
+       class: 'inline-block h-8 w-8 stroke-current'
+      })
+    </div>
+  @endif
+
+  @if (title)
+    <div class="stat-title">{{ title }}</div>
+  @endif
+  
+  @if (stat)
+    <div class="stat-value {{ color }}">{{ stat }}</div>
+  @endif
+  
+  @if (desc)
+    <div class="stat-desc">{{ desc }}</div>
+  @endif
+</div>

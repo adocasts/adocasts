@@ -196,10 +196,37 @@ a.link-grow {
   }
 }
 
+.stats.stats-lg {
+  @variant lg {
+    gap: theme(spacing.8);
+
+    .stat {
+      padding-inline: calc(.25rem * 8);
+    }
+
+    .stat-figure svg {
+      width: theme(spacing.16);
+      height: theme(spacing.16);
+    }
+
+    .stat-title {
+      font-size: var(--text-xl);
+    }
+
+    .stat-value {
+      font-size: var(--text-6xl);
+    }
+
+    .stat-desc {
+      font-size: var(--text-lg);
+    }
+  }
+}
+
 .skew-lines {
   width: 100%;
   height: 95%;
-  perspective: 30vh;
+  /* perspective: 30vh; */
   position: absolute;
   top: 0;
   left: 0;
@@ -213,7 +240,7 @@ a.link-grow {
     left: 50%;
     bottom: -4rem;
     transform: translateX(-50%);
-    perspective: 450px;
+    /* perspective: 450px; */
   }
 
   .skew-lines-grid {
