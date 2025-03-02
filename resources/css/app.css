@@ -210,15 +210,11 @@ a.link-grow {
     }
 
     .stat-title {
-      font-size: var(--text-xl);
+      font-size: var(--text-lg);
     }
 
     .stat-value {
-      font-size: var(--text-6xl);
-    }
-
-    .stat-desc {
-      font-size: var(--text-lg);
+      font-size: var(--text-5xl);
     }
   }
 }

@@ -21,7 +21,10 @@
       @!hero.dropTheGlue()
     </section>
 
-    <section class="mt-8 flex justify-center">
+    <section class="pb-8 pt-16 -mt-8 flex flex-col items-center bg-gradient-to-b from-base-100 to-base-200">
+      <h3 class="text-2xl font-black mb-3">
+        We'll Be Here When You're Ready!
+      </h3>
       <div class="stats stats-lg">
         @!stat.large({
           color: 'text-primary',
@@ -36,7 +39,7 @@
           icon: 'solar:star-rainbow-bold-duotone',
           stat: '24k+',
           title: 'So Much Learning',
-          desc: 'Completed Lessons'
+          desc: 'Member Completed Lessons'
         })
 
         @!stat.large({
@@ -46,7 +49,19 @@
           title: 'Join Thousands of Others',
           desc: 'Free & Plus Members'
         })
+
+        @!stat.large({
+          color: 'text-info',
+          icon: 'solar:chat-round-like-bold-duotone',
+          stat: '775+',
+          title: 'Hop Into the Discussion',
+          desc: 'Comments Contributed'
+        })
       </div>
+    </section>
+
+    <section class="mt-8">
+      
     </section>
   </body>
 </html>
