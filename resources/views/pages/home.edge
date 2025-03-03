@@ -14,7 +14,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('dumper')
   </head>
-  <body>
+  <body {{--data-theme="adocasts"--}}>
     @!header({ plain: true })
     
     <section class="mt-8">
@@ -44,7 +44,42 @@
         Learn One Step at a Time
       </h2>
 
-      <div class="card card-side w-full bg-base-200 flex flex-col md:flex-row mb-6">
+      <div class="grid grid-cols-3 gap-6">
+        <div class="card bg-base-200 shadow-sm">
+          <div class="card-body">
+            <h2 class="card-title text-xl font-bold text-primary-content">Building with AdonisJS & Inertia</h2>
+            <p class="line-clamp-3">
+              We'll learn how to use InertiaJS with AdonisJS 6 to build a feature-complete application, called PlotMyCourse. Our
+              application will use server-side rendering (SSR), Vue 3, and Shadcn-Vue. It'll feature organizations, drag-and-drop, and
+              lots of forms.
+            </p>
+          </div>
+        </div>
+
+        <div class="card bg-base-200 shadow-sm">
+          <div class="card-body">
+            <h2 class="card-title text-xl font-bold text-primary-content">AdonisJS Quick Tips</h2>
+            <p class="line-clamp-3">
+              We'll learn how to use InertiaJS with AdonisJS 6 to build a feature-complete application, called PlotMyCourse. Our
+              application will use server-side rendering (SSR), Vue 3, and Shadcn-Vue. It'll feature organizations, drag-and-drop, and
+              lots of forms.
+            </p>
+          </div>
+        </div>
+        
+        <div class="card bg-base-200 shadow-sm">
+          <div class="card-body">
+            <h2 class="card-title text-xl font-bold text-primary-content">Let's Learn AdonisJS 6</h2>
+            <p class="line-clamp-3">
+              We'll learn how to use InertiaJS with AdonisJS 6 to build a feature-complete application, called PlotMyCourse. Our
+              application will use server-side rendering (SSR), Vue 3, and Shadcn-Vue. It'll feature organizations, drag-and-drop, and
+              lots of forms.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {{-- <div class="card card-side w-full bg-base-200 flex flex-col md:flex-row mb-6">
         <figure>
           <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Shoes" />
         </figure>
@@ -85,7 +120,7 @@
               <button class="btn btn-primary">Buy Now</button>
             </div>
           </div>
-        </div>
+        </div> --}}
       </div>
     </section>
   </body>
