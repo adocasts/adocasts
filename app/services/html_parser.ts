@@ -33,7 +33,7 @@ class HtmlParser {
       case 'vbscript-html':
         return 'edge'
       default:
-        return language
+        return shiki.BUNDLED_LANGUAGES.some(lang => lang.id === language) ? language : undefined
     }
   }
 

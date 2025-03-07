@@ -56,7 +56,9 @@
           </h4>
 
           <div class="{{ aside ? 'prose-sm' : 'prose' }} feed-body line-clamp-5 text-slate-800">
-            {{{ string.truncate(await parser.highlight(item.body), 240) }}}
+            @if (item.body)
+              {{{ string.truncate(await parser.highlight(item.body), 240) }}}
+            @endif
             <a href="{{ route('feed.show', { slug: item.slug }) }}" class="cursor-pointer" up-follow>
               Read more
             </a>
