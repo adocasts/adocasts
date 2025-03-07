@@ -1,4 +1,12 @@
-import Alpine from "alpinejs"
+import Alpine from 'alpinejs'
+
+Alpine.data('header', () => ({
+  isWindowScrolled: false,
+
+  onWindowScroll() {
+    this.isWindowScrolled = window.scrollY > 0
+  },
+}))
 
 Alpine.data('nav', () => ({
   activeMenu: '',
@@ -27,10 +35,10 @@ Alpine.data('nav', () => ({
   reposition(el) {
     this.clearTimeout()
     this.$refs.dropdown.style.left = el.offsetLeft + 'px'
-    this.$refs.dropdown.style.marginLeft = (el.offsetWidth / 2) + 'px'
+    this.$refs.dropdown.style.marginLeft = el.offsetWidth / 2 + 'px'
   },
 
   clearTimeout() {
     clearTimeout(this.menuTimeout)
-  }
+  },
 }))

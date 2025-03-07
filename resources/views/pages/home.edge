@@ -15,7 +15,7 @@
     @stack('dumper')
   </head>
   <body data-theme="adocasts-dark">
-    @!header({ plain: true })
+    @!header()
     
     <section class="mt-8">
       @!hero.dropTheGlue()
@@ -24,7 +24,7 @@
     <section class="pb-8 pt-16 -mt-8 bg-gradient-to-b from-base-100 to-base-200">
       <div class="container mx-auto flex flex-col items-center">
         @if (auth.user)
-          <h3 class="text-2xl font-black mb-3">
+          <h3 class="heading-3">
             Here's What You've Been Up To!
           </h3>
 
@@ -39,8 +39,8 @@
       </div>
     </section>
 
-    <section class="my-16 container mx-auto">
-      <h2 class="font-black text-2xl lg:text-4xl mb-6">
+    <section class="my-16 container mx-auto relative">
+      <h2 class="heading-2">
         Learn One Step at a Time
       </h2>
 
@@ -50,49 +50,10 @@
         @!series.card()
       </div>
 
-      {{-- <div class="card card-side w-full bg-base-200 flex flex-col md:flex-row mb-6">
-        <figure>
-          <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Shoes" />
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">
-            Building with AdonisJS & Inertia
-          </h3>
-          <p>
-            We'll learn how to use InertiaJS with AdonisJS 6 to build a feature-complete application, called PlotMyCourse. Our
-            application will use server-side rendering (SSR), Vue 3, and Shadcn-Vue. It'll feature organizations, drag-and-drop, and
-            lots of forms.
-          </p>
-        </div>
-      </div>
-
-      <div class="flex gap-6">
-        <div class="card bg-base-100 w-full lg:w-1/2 shadow-sm">
-          <figure>
-            <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Shoes" />
-          </figure>
-          <div class="card-body">
-            <h2 class="card-title">Card Title</h2>
-            <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-            <div class="card-actions justify-end">
-              <button class="btn btn-primary">Buy Now</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card bg-base-100 w-full lg:w-1/2 shadow-sm">
-          <figure>
-            <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Shoes" />
-          </figure>
-          <div class="card-body">
-            <h2 class="card-title">Card Title</h2>
-            <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-            <div class="card-actions justify-end">
-              <button class="btn btn-primary">Buy Now</button>
-            </div>
-          </div>
-        </div> --}}
-      </div>
+      {{-- <div class="skew-lines">
+        <div class="skew-lines-floor"></div>
+        <div class="skew-lines-grid"></div>
+      </div> --}}
     </section>
   </body>
 </html>

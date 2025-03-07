@@ -42,7 +42,7 @@
   --radius-box: 0.25rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
-  --border: 0.5px;
+  --border: 1px;
   --depth: 1;
   --noise: 0;
 }
@@ -83,6 +83,22 @@ body {
 
   .font-black {
     --wght: 800;
+  }
+}
+
+.heading-2 {
+  @apply mb-6 font-black text-2xl;
+
+  @variant lg {
+    @apply text-3xl;
+  }
+}
+
+.heading-3 {
+  @apply mb-3 font-black text-xl;
+
+  @variant lg {
+    @apply text-2xl;
   }
 }
 
@@ -218,7 +234,7 @@ a.link-grow {
     top: 0;
     left: 0;
     z-index: -1;
-    animation: 6s hero-card-border-spin linear infinite;
+    /* animation: 6s hero-card-border-spin linear infinite; */
   }
 
   &:before {
@@ -263,7 +279,7 @@ a.link-grow {
 .skew-lines {
   width: 100%;
   height: 95%;
-  /* perspective: 30vh; */
+  perspective: 30vh;
   position: absolute;
   top: 0;
   left: 0;
@@ -277,7 +293,7 @@ a.link-grow {
     left: 50%;
     bottom: -4rem;
     transform: translateX(-50%);
-    /* perspective: 450px; */
+    perspective: 450px;
   }
 
   .skew-lines-grid {

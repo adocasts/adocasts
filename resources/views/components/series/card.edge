@@ -1,5 +1,10 @@
 <div class="card bg-gradient-to-b from-base-200/50 via-base-200 to-base-200 shadow-sm relative">
   <div class="card-body relative z-10">
+    <div class="flex gap-2 mb-3">
+      <div class="badge badge-soft badge-sm badge-primary">AdonisJS</div>
+      <div class="badge badge-soft badge-sm badge-secondary">InertiaJS</div>
+      <div class="badge badge-soft badge-sm badge-accent">Primary</div>
+    </div>
     <h2 class="card-title text-xl font-bold text-base-title">
       <a href="#" class="link-grow">
         Building with AdonisJS & Inertia
@@ -11,7 +16,20 @@
       lots of forms.
     </p>
     
-    <div class="mt-4 text-xs opacity-60 tracking-wide">Latest Lessons</div>
+    <div class="mt-6 flex items-center justify-between gap-3">
+      <div class="text-xs opacity-60 tracking-wide">Latest Lessons</div>
+      <div class="flex items-center justify-end gap-2">
+        <div class="badge badge-soft badge-xs">
+          @svg('solar:video-library-bold-duotone', { class: '-mx-1 -my-0.5 text-xs'})
+          91
+        </div>
+
+        <div class="badge badge-soft badge-xs">
+          @svg('solar:clock-circle-bold-duotone', { class: '-mx-1 -my-0.5 text-xs'})
+          14h 5m
+        </div>
+      </div>
+    </div>
     <div x-data="seriesCard" class="-mx-4 mb-0 faded-scroll-y faded-to-base-200" :style="overflowStyle">
       <ul class="list max-h-[200px] overflow-y-auto" @scroll="handleScroll">
         <li class="list-row">
@@ -24,7 +42,7 @@
             </div>
           </div>
           <button class="btn btn-neutral btn-square btn-ghost">
-            <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
+            @svg('solar:play-bold', { class: 'size-[1.2em]'})
           </button>
         </li>
         
@@ -38,7 +56,7 @@
             </div>
           </div>
           <button class="btn btn-neutral btn-square btn-ghost">
-            <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
+            @svg('solar:play-bold', { class: 'size-[1.2em]'})
           </button>
         </li>
         
@@ -52,7 +70,7 @@
             </div>
           </div>
           <button class="btn btn-neutral btn-square btn-ghost">
-            <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
+            @svg('solar:play-bold', { class: 'size-[1.2em]'})
           </button>
         </li>
 
@@ -66,7 +84,7 @@
             </div>
           </div>
           <button class="btn btn-neutral btn-square btn-ghost">
-            <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
+            @svg('solar:play-bold', { class: 'size-[1.2em]'})
           </button>
         </li>
 
@@ -80,7 +98,7 @@
             </div>
           </div>
           <button class="btn btn-neutral btn-square btn-ghost">
-            <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
+            @svg('solar:play-bold', { class: 'size-[1.2em]'})
           </button>
         </li>
 
