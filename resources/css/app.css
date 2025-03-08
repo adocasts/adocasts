@@ -51,6 +51,14 @@
   font-size: 0.625rem;
 }
 
+@utility mask-gradient-to-r {
+  mask: linear-gradient(to right, black 55%, transparent);
+}
+
+@utility mask-gradient-to-l {
+  mask: linear-gradient(to left, transparent 45%, black);
+}
+
 [x-cloak] {
   display: none !important;
 }
@@ -113,10 +121,15 @@ a.link-grow {
   }
 }
 
+.container {
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
 .container-xl {
-  width: min(calc(100% - 3rem), 112rem);
-  margin-right: 1.5rem;
-  margin-left: 1.5rem;
+  width: min(calc(100% - 1rem), 112rem);
+  margin-right: .5rem;
+  margin-left: .5rem;
 
   @media screen and (min-width: 112rem) {
     margin: 0 auto;
@@ -166,6 +179,10 @@ a.link-grow {
 }
 
 .faded-scroll-y {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  container-type: size;
   position: relative;
 
   &:before,
@@ -181,15 +198,21 @@ a.link-grow {
   }
 
   &:before {
-    background: linear-gradient(to top, transparent, var(--end, transparent));
+    background: linear-gradient(to top, transparent 25%, var(--end, transparent));
     opacity: var(--opacity-top, 1);
     top: 0;
   }
 
   &:after {
-    background: linear-gradient(to bottom, transparent, var(--end, transparent));
+    background: linear-gradient(to bottom, transparent 25%, var(--end, transparent));
     opacity: var(--opacity-bottom, 1);
     bottom: 0;
+  }
+
+  ul {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 100cqh;
   }
 }
 
@@ -315,6 +338,104 @@ a.link-grow {
       animation: line-grid 45s linear infinite;
       position: absolute;
       left: 0;
+    }
+  }
+}
+
+.radial-accent {
+  @apply top-0 right-0 z-20 absolute aspect-square pointer-events-none;
+
+  width: min(150px, 25%);
+  background-image: radial-gradient(
+    at 100% 0%, 
+    color-mix(in oklab, var(--color-slate-100) 3%, transparent) 0%,
+    color-mix(in oklab, var(--color-slate-100) 0%, transparent) 75%
+  );
+}
+
+.linear-accent {
+  --height: 8px;
+
+  position: relative;
+  overflow: hidden;
+  
+  &:before,
+  &:after {
+    @apply left-0 z-20 absolute pointer-events-none;
+
+    content: "";
+    width: 100%;
+    height: var(--height);
+    background-image: linear-gradient(
+      to var(--direction), 
+      color-mix(in oklab, var(--color) 3%, transparent) 0%,
+      color-mix(in oklab, var(--color) 0%, transparent) 75%
+    );
+  }
+
+  &:before {
+    --direction: bottom;
+    --color: var(--color-slate-50);
+    border-bottom-right-radius: calc(var(--height) / 2);
+    border-bottom-left-radius: calc(var(--height) / 2);
+    top: 0;
+  }
+
+  &:after {
+    --direction: top;
+    --color: var(--color-slate-950);
+    border-top-right-radius: calc(var(--height) / 2);
+    border-top-left-radius: calc(var(--height) / 2);
+    bottom: 0;
+  }
+}
+
+.series-bento {
+  display: grid;
+  grid-auto-columns: 33.33%;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-areas: 
+    "card-1 card-1 card-2"
+    "card-3 card-4 card-4"
+    "card-5 card-5 card-6";
+  gap: 1.5rem;
+
+  .card:nth-child(1) { grid-area: card-1; }
+  .card:nth-child(2) { grid-area: card-2; }
+  .card:nth-child(3) { grid-area: card-3; }
+  .card:nth-child(4) { grid-area: card-4; }
+  .card:nth-child(5) { grid-area: card-5; }
+  .card:nth-child(6) { grid-area: card-6; }
+
+  .card:nth-child(1),
+  .card:nth-child(4),
+  .card:nth-child(5) {
+    .card-body {
+      @apply flex-row gap-6;
+
+      main {
+        flex: 1;
+
+        p {
+          @apply line-clamp-none;
+        }
+      }
+
+      aside {
+        @apply flex flex-col flex-1 mt-0;
+      }
+    }
+  }
+
+  .card {
+    main {
+      p {
+        @apply line-clamp-5;
+      }
+    }
+
+    aside {
+      @apply hidden mt-6;
     }
   }
 }

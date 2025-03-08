@@ -44,16 +44,14 @@
         Learn One Step at a Time
       </h2>
 
-      <div class="grid grid-cols-3 gap-6">
+      <div class="series-bento">
+        @!series.card({ class: 'md:card-body-row' })
         @!series.card()
         @!series.card()
+        @!series.card({ class: 'md:card-body-row' })
+        @!series.card({ class: 'md:card-body-row' })
         @!series.card()
       </div>
-
-      {{-- <div class="skew-lines">
-        <div class="skew-lines-floor"></div>
-        <div class="skew-lines-grid"></div>
-      </div> --}}
     </section>
   </body>
 </html>
