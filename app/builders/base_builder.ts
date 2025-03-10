@@ -1,7 +1,11 @@
+import stringHelpers from '@adonisjs/core/helpers/string'
 import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 import { StrictValues } from '@adonisjs/lucid/types/querybuilder'
 
 export default class BaseBuilder<Model extends LucidModel, Record extends LucidRow> {
+  #beforeQuery: Map<string, ((query: ModelQueryBuilderContract<Model, Record>) => void)[]> =
+    new Map()
+
   query: ModelQueryBuilderContract<Model, Record>
 
   constructor(protected model: Model) {
@@ -81,10 +85,24 @@ export default class BaseBuilder<Model extends LucidModel, Record extends LucidR
     return this
   }
 
+  beforeQuery(
+    cb: (query: ModelQueryBuilderContract<Model, Record>) => void,
+    name: string = stringHelpers.random(4)
+  ) {
+    this.#beforeQuery.set(name, [cb])
+    return this
+  }
+
+  removeBeforeQuery(name: string) {
+    this.#beforeQuery.delete(name)
+    return this
+  }
+
   then(
     onfulfilled?: ((value: Record[]) => Record[] | PromiseLike<Record[]>) | null | undefined,
     onrejected?: ((reason: any) => PromiseLike<never>) | null | undefined
   ) {
+    this.#beforeQuery.values().forEach((cbs) => cbs.forEach((cb) => cb(this.query)))
     return this.query.then(onfulfilled, onrejected)
   }
 }

@@ -4,7 +4,6 @@ import Status from '#enums/status'
 import Collection from '#models/collection'
 import Post from '#models/post'
 import Taxonomy from '#models/taxonomy'
-import User from '#models/user'
 import { ManyToManyQueryBuilderContract } from '@adonisjs/lucid/types/relations'
 import BaseTopicDto from '../dtos/topics/base_topic.js'
 import BaseBuilder from './base_builder.js'
@@ -12,6 +11,7 @@ import BaseBuilder from './base_builder.js'
 export default class CollectionBuilder extends BaseBuilder<typeof Collection, Collection> {
   constructor() {
     super(Collection)
+    this.beforeQuery(() => this.publicOrPreview(), 'publicOrPreview')
   }
 
   static new() {
@@ -31,11 +31,13 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
   }
 
   series() {
+    this.root()
     this.query.where('collectionTypeId', CollectionTypes.SERIES)
     return this
   }
 
   path() {
+    this.root()
     this.query.where('collectionTypeId', CollectionTypes.PATH)
     return this
   }
@@ -57,9 +59,8 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     return this
   }
 
-  watchlist() {
-    if (!this.user) return this
-    this.query.withCount('watchlist', (query) => query.where('userId', this.user!.id))
+  withNonPublic() {
+    this.removeBeforeQuery('publicOrPreview')
     return this
   }
 

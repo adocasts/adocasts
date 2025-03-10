@@ -47,7 +47,10 @@
       <div class="series-bento">
         @let(expandedSeries = [0, 3, 4])
         @each ((item, index) in series)
-          @!series.card({ class: expandedSeries.includes(index) && 'md:card-body-row' })
+          @!series.card({ 
+            series: item,
+            class: expandedSeries.includes(index) && 'md:card-body-row' 
+          })
         @endeach
       </div>
     </section>
