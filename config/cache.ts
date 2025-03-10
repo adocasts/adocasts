@@ -1,4 +1,3 @@
-import env from '#start/env'
 import { defineConfig, store, drivers } from '@adonisjs/cache'
 
 const cacheConfig = defineConfig({
@@ -8,13 +7,13 @@ const cacheConfig = defineConfig({
     memoryOnly: store().useL1Layer(drivers.memory()),
 
     default: store()
-      .useL1Layer(drivers.memory())
-    
-      .useL2Layer(drivers.redis({
-        connectionName: 'main',
-      }))
-    
-  }
+      .useL1Layer(drivers.memory({ maxSize: 10_000 }))
+      .useL2Layer(
+        drivers.redis({
+          connectionName: 'main',
+        })
+      ),
+  },
 })
 
 export default cacheConfig

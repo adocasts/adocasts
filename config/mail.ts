@@ -4,26 +4,35 @@ import { defineConfig, transports } from '@adonisjs/mail'
 const mailConfig = defineConfig({
   default: 'smtp',
 
-   /**
-    * The mailers object can be used to configure multiple mailers
-    * each using a different transport or same transport with different
-    * options.
+  from: {
+    address: env.get('APP_CONTACT_EMAIL'),
+    name: 'Adocasts',
+  },
+
+  replyTo: {
+    address: env.get('APP_CONTACT_EMAIL'),
+    name: 'Adocasts',
+  },
+
+  /**
+   * The mailers object can be used to configure multiple mailers
+   * each using a different transport or same transport with different
+   * options.
    */
-  mailers: { 
+  mailers: {
     smtp: transports.smtp({
       host: env.get('SMTP_HOST'),
       port: env.get('SMTP_PORT'),
-			/**
+      /**
        * Uncomment the auth block if your SMTP
        * server needs authentication
        */
-      /* auth: {
+      auth: {
         type: 'login',
         user: env.get('SMTP_USERNAME'),
         pass: env.get('SMTP_PASSWORD'),
-      }, */
+      },
     }),
-		     
   },
 })
 

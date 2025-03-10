@@ -45,12 +45,10 @@
       </h2>
 
       <div class="series-bento">
-        @!series.card({ class: 'md:card-body-row' })
-        @!series.card()
-        @!series.card()
-        @!series.card({ class: 'md:card-body-row' })
-        @!series.card({ class: 'md:card-body-row' })
-        @!series.card()
+        @let(expandedSeries = [0, 3, 4])
+        @each ((item, index) in series)
+          @!series.card({ class: expandedSeries.includes(index) && 'md:card-body-row' })
+        @endeach
       </div>
     </section>
   </body>
