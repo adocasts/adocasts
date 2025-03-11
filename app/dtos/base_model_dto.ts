@@ -1,18 +1,28 @@
 import { BaseModelDto as AdoBaseModelDto } from '@adocasts.com/dto/base'
 import { StaticDto } from '@adocasts.com/dto/types'
 import { Exception } from '@adonisjs/core/exceptions'
-import { LucidModel, LucidRow } from '@adonisjs/lucid/types/model'
+import type { LucidModel } from '@adonisjs/lucid/types/model'
 
-export type StaticBaseModelDto<Model, Dto extends BaseModelDto> = {
-  new (model: Model): Dto
+function StaticImplements<T>() {
+  return (_t: T) => {}
 }
 
-export default class BaseModelDto extends AdoBaseModelDto {
-  constructor(_row?: LucidRow) {
-    super()
-  }
+export type StaticModelDto<T extends BaseModelDto> = {
+  new (record: any): T
 
-  static model: LucidModel | null
+  model: LucidModel | null
+
+  fromModel<SourceObject, Dto extends AdoBaseModelDto>(
+    this: StaticDto<SourceObject, Dto>,
+    row?: SourceObject
+  ): Dto | null
+
+  getSelectable(): string[]
+}
+
+@StaticImplements<StaticModelDto<any>>()
+export default class BaseModelDto extends AdoBaseModelDto {
+  static model: LucidModel | null = null
 
   static fromModel<SourceObject, Dto extends AdoBaseModelDto>(
     this: StaticDto<SourceObject, Dto>,

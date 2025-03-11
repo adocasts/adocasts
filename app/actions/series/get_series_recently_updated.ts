@@ -27,7 +27,6 @@ export default class GetSeriesRecentlyUpdated {
     return CollectionBuilder.new()
       .series()
       .orderLatestUpdated()
-      .select(BaseSeriesDto.getSelectable())
       .if(limit, (builder) => builder.limit(limit!))
       .if(excludeIds, (builder) => builder.exclude(excludeIds!))
       .if(withPosts, (builder) =>

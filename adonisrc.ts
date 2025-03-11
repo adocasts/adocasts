@@ -68,6 +68,7 @@ export default defineConfig({
     () => import('#start/validator'),
     () => import('#start/events'),
     () => import('#start/lucid/base_model'),
+    () => import('#start/lucid/query_builder')
   ],
 
   /*
