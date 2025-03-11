@@ -1,9 +1,18 @@
 import { BaseModelDto as AdoBaseModelDto } from '@adocasts.com/dto/base'
 import { StaticDto } from '@adocasts.com/dto/types'
-import { LucidModel } from '@adonisjs/lucid/types/model'
+import { Exception } from '@adonisjs/core/exceptions'
+import { LucidModel, LucidRow } from '@adonisjs/lucid/types/model'
+
+export type StaticBaseModelDto<Model, Dto extends BaseModelDto> = {
+  new (model: Model): Dto
+}
 
 export default class BaseModelDto extends AdoBaseModelDto {
-  static model: () => LucidModel
+  constructor(_row?: LucidRow) {
+    super()
+  }
+
+  static model: LucidModel | null
 
   static fromModel<SourceObject, Dto extends AdoBaseModelDto>(
     this: StaticDto<SourceObject, Dto>,
@@ -14,7 +23,11 @@ export default class BaseModelDto extends AdoBaseModelDto {
   }
 
   static getSelectable() {
-    const model = this.model()
+    if (!this.model) {
+      throw new Exception(`Model not set for ${this.name}`)
+    }
+
+    const model = this.model
     const properties = this.describeModel(this)
     return properties.filter((property) => model.$hasColumn(property))
   }

@@ -1,8 +1,8 @@
 import Asset from '#models/asset'
-import BaseModelDto from './base_dto.js'
+import BaseModelDto from './base_model_dto.js'
 
 export default class AssetDto extends BaseModelDto {
-  static model = () => Asset
+  static model = Asset
 
   declare id: number
   declare assetTypeId: number

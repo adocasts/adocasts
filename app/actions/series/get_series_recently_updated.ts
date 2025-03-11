@@ -35,5 +35,6 @@ export default class GetSeriesRecentlyUpdated {
           limit: postLimit,
         })
       )
+      .dto(BaseSeriesDto)
   }
 }

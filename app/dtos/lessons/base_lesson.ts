@@ -1,9 +1,9 @@
 import AssetDto from '../asset.js'
 import Post from '#models/post'
-import BaseModelDto from '../base_dto.js'
+import BaseModelDto from '../base_model_dto.js'
 
 export default class BaseLessonDto extends BaseModelDto {
-  static model = () => Post
+  static model = Post
 
   declare id: number
   declare slug: string

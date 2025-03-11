@@ -1,6 +1,8 @@
 import stringHelpers from '@adonisjs/core/helpers/string'
 import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 import { StrictValues } from '@adonisjs/lucid/types/querybuilder'
+import BaseModelDto from '../dtos/base_model_dto.js'
+import { StaticDto } from '@adocasts.com/dto/types'
 
 export default class BaseBuilder<Model extends LucidModel, Record extends LucidRow> {
   #beforeQuery: Map<string, ((query: ModelQueryBuilderContract<Model, Record>) => void)[]> =
@@ -96,6 +98,11 @@ export default class BaseBuilder<Model extends LucidModel, Record extends LucidR
   removeBeforeQuery(name: string) {
     this.#beforeQuery.delete(name)
     return this
+  }
+
+  async dto<T extends BaseModelDto>(dto: StaticDto<Record, T> & { getSelectable: () => string[] }) {
+    const records = await this.select(dto.getSelectable())
+    return records.map((record) => new dto(record))
   }
 
   then(

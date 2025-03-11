@@ -28,6 +28,7 @@
           14h 5m
         </div>
       </div>
+      @dump(series)
     </main>
     
     <aside>
@@ -36,11 +37,9 @@
       </div>
       <div x-data="seriesCard" class="-mx-2 mb-0 faded-scroll-y faded-to-base-200" :style="overflowStyle">
         <ul class="list" @scroll="handleScroll">
-          @!series.listItemSmall()
-          @!series.listItemSmall()
-          @!series.listItemSmall()
-          @!series.listItemSmall()
-          @!series.listItemSmall()
+          @each(lesson in series.lessons)
+            @!series.listItemSmall()
+          @endeach
 
           <li class="pt-2 px-3">
             <a href="#" class="btn btn-primary btn-soft btn-block">

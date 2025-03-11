@@ -1,9 +1,9 @@
 import AssetDto from '../asset.js'
 import Taxonomy from '#models/taxonomy'
-import BaseModelDto from '../base_dto.js'
+import BaseModelDto from '../base_model_dto.js'
 
 export default class BaseTopicDto extends BaseModelDto {
-  static model = () => Taxonomy
+  static model = Taxonomy
 
   declare id: number
   declare parentId: number | null
