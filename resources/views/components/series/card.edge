@@ -12,23 +12,20 @@
         </a>
       </h2>
       <p>
-        We'll learn how to use InertiaJS with AdonisJS 6 to build a feature-complete application, called PlotMyCourse. Our
-        application will use server-side rendering (SSR), Vue 3, and Shadcn-Vue. It'll feature organizations, drag-and-drop, and
-        lots of forms.
+        {{ series.description }}
       </p>
 
       <div class="flex items-center gap-2 mt-6">
         <div class="badge badge-soft">
           @svg('solar:video-library-bold-duotone', { class: '-ml-1 -my-0.5' })
-          91 Lessons
+          {{ series.meta.posts_count }} Lessons
         </div>
 
         <div class="badge badge-soft">
           @svg('solar:clock-circle-bold-duotone', { class: '-ml-1 -my-0.5' })
-          14h 5m
+          {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
         </div>
       </div>
-      @dump(series)
     </main>
     
     <aside>
@@ -38,7 +35,7 @@
       <div x-data="seriesCard" class="-mx-2 mb-0 faded-scroll-y faded-to-base-200" :style="overflowStyle">
         <ul class="list" @scroll="handleScroll">
           @each(lesson in series.lessons)
-            @!series.listItemSmall()
+            @!series.listItemSmall({ lesson })
           @endeach
 
           <li class="pt-2 px-3">

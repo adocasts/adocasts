@@ -145,7 +145,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
   }
 
   withPostsFlat(
-    postQuery: (
+    postQuery?: (
       query: ManyToManyQueryBuilderContract<typeof Post, any>
     ) => ManyToManyQueryBuilderContract<typeof Post, any>,
     {
@@ -193,7 +193,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
       query
         .apply((scope) => scope.published())
         .sum('video_seconds')
-        .as('videoSecondsSum')
+        .as('video_seconds_sum')
     )
     return this
   }

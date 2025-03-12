@@ -27,12 +27,12 @@ export default class GetSeriesRecentlyUpdated {
     return CollectionBuilder.new()
       .series()
       .orderLatestUpdated()
+      .withPostCount()
+      .withTotalMinutes()
       .if(limit, (builder) => builder.limit(limit!))
       .if(excludeIds, (builder) => builder.exclude(excludeIds!))
       .if(withPosts, (builder) =>
-        builder.withPostsFlat((query) => query.select(BaseLessonDto.getSelectable()), {
-          limit: postLimit,
-        })
+        builder.withPostsFlat((query) => query.selectDto(BaseLessonDto), { limit: postLimit })
       )
       .dto(BaseSeriesDto)
   }

@@ -276,15 +276,6 @@ export default class Post extends BaseModel {
   }
 
   @computed()
-  get rootSortOrder() {
-    if (!this.series || !this.series.length) {
-      return undefined
-    }
-
-    return this.series[0].$extras.pivot_root_sort_order
-  }
-
-  @computed()
   get videoYouTubeId() {
     if (this.videoTypeId !== VideoTypes.YOUTUBE || !this.videoUrl) return ''
 
@@ -456,6 +447,21 @@ export default class Post extends BaseModel {
     post.readMinutes = readTime.minutes
     post.readTime = readTime.time
     post.wordCount = readTime.words
+  }
+
+  @computed()
+  get rootSortOrder() {
+    if (!this.series || !this.series.length) {
+      return undefined
+    }
+
+    return this.series[0].$extras.pivot_root_sort_order
+  }
+
+  @computed()
+  get rootIndexDisplay() {
+    if (!this.rootSortOrder) return ''
+    return (this.rootSortOrder + 1).toLocaleString()
   }
 
   @computed()

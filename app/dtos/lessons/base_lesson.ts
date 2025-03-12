@@ -13,7 +13,7 @@ export default class BaseLessonDto extends BaseModelDto {
   declare stateId: number
   declare publishAt?: string | null
   declare routeUrl: string
-  declare watchMinutes: string
+  declare videoSeconds: number
   declare asset: AssetDto | null
   declare meta: Record<string, any>
 
@@ -30,7 +30,7 @@ export default class BaseLessonDto extends BaseModelDto {
     this.stateId = post.stateId
     this.publishAt = post.publishAt?.toISO()
     this.routeUrl = post.routeUrl
-    this.watchMinutes = post.watchMinutes
+    this.videoSeconds = post.videoSeconds
     this.asset = AssetDto.fromModel(post.assets?.at(0))
     this.meta = post.$extras
   }

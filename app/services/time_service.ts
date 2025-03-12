@@ -41,6 +41,8 @@ export default class TimeService {
   }
 
   static secondsToTimestring(totalSeconds: number | string, verbose: boolean = false) {
+    if (!totalSeconds) return '0s'
+
     if (typeof totalSeconds === 'string') {
       totalSeconds = Number(totalSeconds)
     }
@@ -55,15 +57,15 @@ export default class TimeService {
 
     const seconds = Math.floor(totalSeconds)
 
-    if (!hours) {
+    if (hours) {
+      return verbose ? `${hours} hours ${minutes} minutes` : `${hours}h ${minutes}m`
+    }
+
+    if (minutes) {
       return verbose ? `${minutes} minutes ${seconds} seconds` : `${minutes}m ${seconds}s`
     }
 
-    if (verbose) {
-      return `${hours} hours ${minutes} minutes`
-    }
-
-    return `${hours}h ${minutes}m`
+    return verbose ? `${seconds} seconds` : `${seconds}s`
   }
 
   static secondsToTime(totalSeconds: number | string) {
@@ -99,5 +101,25 @@ export default class TimeService {
     }
 
     return date ? date.toRelative() : ''
+  }
+
+  static dtmHumanShort(iso: string) {
+    const dtm = DateTime.fromISO(iso)
+    const suffix = this.#getDaySuffix(dtm.day)
+
+    if (dtm.year === DateTime.now().year) {
+      return dtm.toFormat(`MMM d'${suffix}'`)
+    }
+
+    return dtm.toFormat(`MMM d'${suffix}', yy`)
+  }
+
+  static #getDaySuffix(day: number) {
+    if (day > 3 && day < 21) {
+      return 'th'
+    }
+
+    const suffixes = ['st', 'nd', 'rd']
+    return suffixes[(day % 10) - 1] || 'th'
   }
 }

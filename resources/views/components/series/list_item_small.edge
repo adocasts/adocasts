@@ -1,10 +1,10 @@
 <li class="list-row px-3 py-2">
-  <div class="text-2xl font-thin opacity-30 tabular-nums">77</div>
+  <div class="text-2xl font-thin opacity-30 tabular-nums">{{ lesson.rootIndexDisplay }}</div>
   <div class="list-col-grow">
-    <div class="line-clamp-1 text-sm">Polling for Changes in InertiaJS 2</div>
-    <div class="text-2xs uppercase font-semibold opacity-60 flex items-center gap-4">
-      <div>Feb 24th</div>
-      <div>4m 12s</div>
+    <div class="line-clamp-1 text-sm">{{ lesson.title }}</div>
+    <div class="text-2xs font-semibold opacity-60 flex items-center gap-4">
+      <div>{{ TimeService.dtmHumanShort(lesson.publishAt) }}</div>
+      <div>{{ TimeService.secondsToTimestring(lesson.videoSeconds) }}</div>
     </div>
   </div>
   <button class="btn btn-neutral btn-square btn-ghost">
