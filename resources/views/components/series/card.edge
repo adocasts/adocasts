@@ -1,10 +1,19 @@
-<div class="card linear-accent bg-gradient-to-r from-base-200/50 via-base-200 to-base-200 shadow-sm relative {{ $props.class ?? '' }}">
+<div class="card min-h-[285px] linear-accent bg-gradient-to-bl from-base-200/50 via-base-200 to-base-200 shadow-sm relative {{ $props.class ?? '' }}">
   <div class="card-body relative z-10">
     <main>
       <div class="flex gap-2 mb-6">
-        <div class="badge badge-soft badge-sm badge-primary">AdonisJS</div>
-        <div class="badge badge-soft badge-sm badge-secondary">InertiaJS</div>
-        <div class="badge badge-soft badge-sm badge-accent">Primary</div>
+        @each ((topic, i) in series.topics)
+          @let(color = 'badge-primary')
+          @if (i === 1)
+            @assign(color = 'badge-secondary')
+          @elseif (i === 2)
+            @assign(color = 'badge-accent')
+          @endif
+
+          <div class="badge badge-soft badge-sm {{ color }}">
+            {{ topic.name }}
+          </div>
+        @endeach
       </div>
       <h2 class="card-title text-xl font-bold text-base-title mb-3">
         <a href="#" class="link-grow">

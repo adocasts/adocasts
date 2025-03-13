@@ -29,6 +29,7 @@ export default class GetSeriesRecentlyUpdated {
       .orderLatestUpdated()
       .withPostCount()
       .withTotalMinutes()
+      .withTaxonomies()
       .if(limit, (builder) => builder.limit(limit!))
       .if(excludeIds, (builder) => builder.exclude(excludeIds!))
       .if(withPosts, (builder) =>

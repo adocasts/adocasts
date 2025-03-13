@@ -2,16 +2,29 @@ import stringHelpers from '@adonisjs/core/helpers/string'
 import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 import { StrictValues } from '@adonisjs/lucid/types/querybuilder'
 import BaseModelDto, { StaticModelDto } from '../dtos/base_model_dto.js'
-import { StaticDto } from '@adocasts.com/dto/types'
 
 export default class BaseBuilder<Model extends LucidModel, Record extends LucidRow> {
+  qthen:
+    | (<TResult1 = Record[], TResult2 = never>(
+        onfulfilled?: ((value: Record[]) => TResult1 | PromiseLike<TResult1>) | undefined | null,
+        onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null
+      ) => Promise<TResult1 | TResult2>)
+    | null = null
+
+  exec: (() => Promise<Record[]>) | null = null
+
   #beforeQuery: Map<string, ((query: ModelQueryBuilderContract<Model, Record>) => void)[]> =
     new Map()
 
   query: ModelQueryBuilderContract<Model, Record>
 
   constructor(protected model: Model) {
-    this.query = model.query()
+    const query = model.query<Model, Record>()
+    this.qthen = query.then.bind(query)
+    this.exec = query.exec.bind(query)
+    query.then = this.then.bind(this)
+    query.exec = this.then.bind(this)
+    this.query = query
   }
 
   if(condition: any, cb: (self: this) => this) {
@@ -104,11 +117,13 @@ export default class BaseBuilder<Model extends LucidModel, Record extends LucidR
     return this.query.dto(dto)
   }
 
-  then(
-    onfulfilled?: ((value: Record[]) => Record[] | PromiseLike<Record[]>) | null | undefined,
-    onrejected?: ((reason: any) => PromiseLike<never>) | null | undefined
-  ) {
+  then<TResult1 = Record[], TResult2 = never>(
+    onfulfilled?: ((value: Record[]) => TResult1 | PromiseLike<TResult1>) | undefined | null,
+    onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null
+    // onfulfilled?: ((value: Record[]) => Record[] | PromiseLike<Record[]>) | null | undefined,
+    // onrejected?: ((reason: any) => PromiseLike<never>) | null | undefined
+  ): Promise<TResult1 | TResult2> {
     this.#beforeQuery.values().forEach((cbs) => cbs.forEach((cb) => cb(this.query)))
-    return this.query.then(onfulfilled, onrejected)
+    return this.exec!().then(onfulfilled, onrejected)
   }
 }

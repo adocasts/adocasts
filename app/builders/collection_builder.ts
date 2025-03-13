@@ -11,7 +11,7 @@ import BaseBuilder from './base_builder.js'
 export default class CollectionBuilder extends BaseBuilder<typeof Collection, Collection> {
   constructor() {
     super(Collection)
-    this.beforeQuery(() => this.publicOrPreview(), 'publicOrPreview')
+    this.beforeQuery(() => this.public(), 'public')
   }
 
   static new() {
@@ -49,6 +49,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
   }
 
   publicOrPreview() {
+    this.withNonPublic()
     this.query.where({ stateId: States.PUBLIC }).where((query) => {
       query
         // where has posts
@@ -60,7 +61,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
   }
 
   withNonPublic() {
-    this.removeBeforeQuery('publicOrPreview')
+    this.removeBeforeQuery('public')
     return this
   }
 
