@@ -1,4 +1,4 @@
-<div class="card linear-accent bg-gradient-to-b from-base-200/50 via-base-200 to-base-200 shadow-sm relative {{ $props.class ?? '' }}">
+<div class="card linear-accent bg-gradient-to-b from-base-100 {{ showLessons ? 'to-base-200' : 'via-base-100' }} to-base-200 shadow-sm relative {{ $props.class ?? '' }}">
   <div class="card-body relative z-10">
     <main>
       <div>
@@ -41,24 +41,26 @@
       </div>
     </main>
     
-    <aside>
-      <div class="flex items-center justify-between gap-3 mb-3">
-        <div class="text-xs opacity-60 tracking-wide">Latest Lessons</div>
-      </div>
-      <div x-data="seriesCard" class="-mx-2 mb-0 faded-scroll-y faded-to-base-200" :style="overflowStyle">
-        <ul class="list" @scroll="handleScroll">
-          @each(lesson in series.lessons)
-            @!series.listItemSmall({ lesson })
-          @endeach
+    @if (showLessons)
+      <aside>
+        <div class="flex items-center justify-between gap-3 mb-3">
+          <div class="text-xs opacity-60 tracking-wide">Latest Lessons</div>
+        </div>
+        <div x-data="seriesCard" class="-mx-2 mb-0 faded-scroll-y faded-to-base-200" :style="overflowStyle">
+          <ul class="list" @scroll="handleScroll">
+            @each(lesson in series.lessons)
+              @!series.listItemSmall({ lesson })
+            @endeach
 
-          <li class="pt-2 px-3">
-            <a href="#" class="btn btn-primary btn-soft btn-block">
-              View Full Series
-              @svg('solar:map-arrow-right-bold-duotone')
-            </a>
-          </li>
-        </ul>
-      </div>
-    </aside>
+            <li class="pt-2 px-3">
+              <a href="#" class="btn btn-primary btn-soft btn-block">
+                View Full Series
+                @svg('solar:map-arrow-right-bold-duotone')
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+    @endif
   </div>
 </div>

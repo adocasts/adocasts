@@ -16,11 +16,11 @@
   default: false;
   prefersdark: true;
   color-scheme: 'dark';
-  --color-base-100: oklch(20.3% 0.0577 287.79);
-  --color-base-200: oklch(17.67% 0.0442 287.23);
-  --color-base-300: oklch(15.99% 0.0372 289.14);
+  --color-base-100: oklch(24.41% 0.0715 287.23);
+  --color-base-200: oklch(21.18% 0.06 287.23);
+  --color-base-300: oklch(18.5% 0.055 287.23);
   --color-base-content: oklch(85.29% 0.0395 288.43);
-  --color-base-title: oklch(93.53% 0.0592 304.85);
+  --color-base-title: oklch(84.71% 0.0641 287.23);
   --color-primary: oklch(67% 0.182 276.935);
   --color-primary-content: oklch(15.07% 0.027 232.661);
   --color-secondary: oklch(82% 0.111 230.318);
@@ -63,13 +63,17 @@
   display: none !important;
 }
 
+html,
+body {
+  background-color: var(--color-base-300);
+}
+
 body {
   --mono: 0;
   --casl: 0.5;
   --wght: 400;
   --slnt: 0;
   --crsv: 0.5;
-
   font-variation-settings: var(--mono), var(--casl), var(--wght), var(--slnt), var(--crsv);
 
   .italic {

@@ -21,7 +21,7 @@
       @!hero.dropTheGlue()
     </section>
 
-    <section class="pb-8 pt-16 -mt-8 bg-gradient-to-b from-base-100 to-base-200">
+    <section class="pb-8 pt-16 -mt-8 bg-gradient-to-b from-base-300 to-base-200">
       <div class="container mx-auto flex flex-col items-center">
         @if (auth.user)
           <h3 class="heading-3">
@@ -48,7 +48,7 @@
         @let([firstSeries, ...otherSeries] = series)
 
         <div class="area-1">
-          @!series.card({ series: firstSeries})
+          @!series.card({ series: firstSeries, showLessons: true })
         </div>
 
         <div class="area-2">
