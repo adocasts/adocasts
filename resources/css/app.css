@@ -38,8 +38,8 @@
   --color-error: oklch(71.785% 0.17 13.118);
   --color-error-content: oklch(14.357% 0.034 13.118);
   --radius-selector: 1rem;
-  --radius-field: 0.25rem;
-  --radius-box: 0.25rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1.5rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
@@ -391,39 +391,42 @@ a.link-grow {
 }
 
 .series-bento {
+  --gap: 1rem;
+
   display: grid;
   grid-auto-columns: 33.33%;
-  grid-template-rows: repeat(3, 1fr);
-  grid-template-areas: 
-    "card-1 card-1 card-2"
-    "card-3 card-4 card-4"
-    "card-5 card-5 card-6";
-  gap: 1.5rem;
+  grid-template-rows: repeat(1, 1fr);
+  grid-template-areas: "area-1 area-2 area-2";
+  gap: var(--gap);
 
-  .card:nth-child(1) { grid-area: card-1; }
-  .card:nth-child(2) { grid-area: card-2; }
-  .card:nth-child(3) { grid-area: card-3; }
-  .card:nth-child(4) { grid-area: card-4; }
-  .card:nth-child(5) { grid-area: card-5; }
-  .card:nth-child(6) { grid-area: card-6; }
+  .area-1 {
+    grid-area: area-1;
+    height: 100%;
 
-  .card:nth-child(1),
-  .card:nth-child(4),
-  .card:nth-child(5) {
-    .card-body {
-      @apply flex-row gap-6;
-
-      main {
-        flex: 1;
-
-        p {
-          @apply line-clamp-none;
-        }
-      }
+    .card {
+      display: grid;
+      height: 100%;
 
       aside {
-        @apply flex flex-col flex-1 mt-0;
+        @apply flex flex-col flex-1;
       }
+    }
+  }
+
+  .area-2 {
+    grid-area: area-2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap);
+
+    .card {
+      --width: 45%;
+      width: calc(var(--width) - (var(--gap) / 2));
+    }
+
+    .card:nth-child(1),
+    .card:nth-child(4) {
+      --width: 55%;
     }
   }
 

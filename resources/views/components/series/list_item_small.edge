@@ -3,6 +3,7 @@
   <div class="list-col-grow">
     <div class="line-clamp-1 text-sm">{{ lesson.title }}</div>
     <div class="text-2xs font-semibold opacity-60 flex items-center gap-4">
+      {{-- <div>Lesson {{ lesson.lessonIndexDisplay }}</div> --}}
       <div>{{ TimeService.dtmHumanShort(lesson.publishAt) }}</div>
       <div>{{ TimeService.secondsToTimestring(lesson.videoSeconds) }}</div>
     </div>

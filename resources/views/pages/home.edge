@@ -45,13 +45,17 @@
       </h2>
 
       <div class="series-bento">
-        @let(expandedSeries = [0, 3, 4])
-        @each ((item, index) in series)
-          @!series.card({ 
-            series: item,
-            class: expandedSeries.includes(index) && 'md:card-body-row' 
-          })
-        @endeach
+        @let([firstSeries, ...otherSeries] = series)
+
+        <div class="area-1">
+          @!series.card({ series: firstSeries})
+        </div>
+
+        <div class="area-2">
+          @each ((item, index) in otherSeries)
+            @!series.card({ series: item })
+          @endeach
+        </div>
       </div>
     </section>
   </body>

@@ -7,7 +7,7 @@ export default class HomeController {
   async handle({ view }: HttpContext, getSeriesRecentlyUpdated: GetSeriesRecentlyUpdated) {
     const series = await getSeriesRecentlyUpdated.handle({
       withPosts: true,
-      limit: 6,
+      limit: 5,
       postLimit: 5,
     })
 
