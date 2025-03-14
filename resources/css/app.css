@@ -422,6 +422,13 @@ a.link-grow {
     .card {
       --width: 45%;
       width: calc(var(--width) - (var(--gap) / 2));
+
+      main {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: space-between;
+      }
     }
 
     .card:nth-child(1),
@@ -439,6 +446,10 @@ a.link-grow {
 
     aside {
       @apply hidden mt-6;
+    }
+
+    @variant lg {
+      @apply p-3;
     }
   }
 }

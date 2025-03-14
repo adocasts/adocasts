@@ -1,7 +1,18 @@
-<div class="card min-h-[285px] linear-accent bg-gradient-to-b from-base-200/50 via-base-200 to-base-200 shadow-sm relative {{ $props.class ?? '' }}">
+<div class="card linear-accent bg-gradient-to-b from-base-200/50 via-base-200 to-base-200 shadow-sm relative {{ $props.class ?? '' }}">
   <div class="card-body relative z-10">
     <main>
-      <div class="flex gap-2 mb-6">
+      <div>
+        <h2 class="card-title text-xl font-bold text-base-title mb-3">
+          <a href="#" class="link-grow">
+            {{ series.name }}
+          </a>
+        </h2>
+        <p>
+          {{ series.description }}
+        </p>
+      </div>
+
+      <div class="flex gap-2 mt-6">
         @each ((topic, i) in series.topics)
           @let(color = 'badge-primary')
           @if (i === 1)
@@ -11,26 +22,19 @@
           @endif
 
           <div class="badge badge-soft badge-sm {{ color }}">
+            {{-- <figure>
+              <img src="{{ topic.asset.assetUrl }}" alt="{{ topic.name }}" class="w-4 h-4" />
+            </figure> --}}
             {{ topic.name }}
           </div>
         @endeach
-      </div>
-      <h2 class="card-title text-xl font-bold text-base-title mb-3">
-        <a href="#" class="link-grow">
-          {{ series.name }}
-        </a>
-      </h2>
-      <p>
-        {{ series.description }}
-      </p>
 
-      <div class="flex items-center gap-2 mt-6">
-        <div class="badge badge-soft">
+        <div class="badge badge-soft badge-sm">
           @svg('solar:video-library-bold-duotone', { class: '-ml-1 -my-0.5' })
           {{ series.meta.posts_count }} Lessons
         </div>
 
-        <div class="badge badge-soft">
+        <div class="badge badge-soft badge-sm">
           @svg('solar:clock-circle-bold-duotone', { class: '-ml-1 -my-0.5' })
           {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
         </div>

@@ -116,9 +116,12 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     return this
   }
 
-  withTaxonomies() {
+  withTaxonomies({ withAsset = false, limit = 3 }: { withAsset?: boolean; limit?: number } = {}) {
     this.query.preload('taxonomies', (query) =>
-      query.groupOrderBy('sort_order', 'asc').groupLimit(3)
+      query
+        .if(withAsset, (tax) => tax.preload('asset'))
+        .groupOrderBy('sort_order', 'asc')
+        .groupLimit(limit)
     )
     return this
   }
