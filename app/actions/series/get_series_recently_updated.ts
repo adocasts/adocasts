@@ -1,8 +1,7 @@
 import CollectionBuilder from '#builders/collection_builder'
-import { inject } from '@adonisjs/core'
-import { HttpContext } from '@adonisjs/core/http'
 import BaseLessonDto from '../../dtos/lessons/base_lesson.js'
 import BaseSeriesDto from '../../dtos/series/base_series.js'
+import cache from '@adonisjs/cache/services/main'
 
 interface Options {
   withPosts?: boolean
@@ -11,19 +10,16 @@ interface Options {
   postLimit?: number
 }
 
-@inject()
 export default class GetSeriesRecentlyUpdated {
-  constructor(protected ctx: HttpContext) {}
+  static async fromCache(options: Options) {
+    const results = await this.fromDb(options)
 
-  async handle(options: Options) {
-    const series = await GetSeriesRecentlyUpdated.handle(options)
+    // TODO: cache
 
-    // todo cache impl
-
-    return series
+    return results
   }
 
-  static async handle({ withPosts, excludeIds, limit, postLimit }: Options) {
+  static async fromDb({ withPosts, excludeIds, limit, postLimit }: Options) {
     return CollectionBuilder.new()
       .series()
       .orderLatestUpdated()

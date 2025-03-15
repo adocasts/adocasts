@@ -346,22 +346,38 @@ a.link-grow {
   }
 }
 
-.radial-accent {
-  @apply top-0 right-0 z-20 absolute aspect-square pointer-events-none;
-
-  width: min(150px, 25%);
-  background-image: radial-gradient(
-    at 100% 0%, 
-    color-mix(in oklab, var(--color-slate-100) 3%, transparent) 0%,
-    color-mix(in oklab, var(--color-slate-100) 0%, transparent) 75%
-  );
+.radial-accent-t {
+  position: relative;
+  
+  &:before {
+    @apply top-0 left-0 z-20 absolute aspect-square pointer-events-none;
+    
+    content: "";
+    width: 100%;
+    background-image: radial-gradient(
+      40% 30px at top center,
+      color-mix(in oklab, var(--color-primary) 15%, transparent),
+      color-mix(in oklab, var(--color-primary) 0%, transparent)
+    );
+  }
+  
+  &:after {
+    @apply bg-gradient-to-r from-primary/0 via-primary/30 to-primary/0;
+    content: "";
+    width: 80%;
+    height: 1px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+  }
 }
 
 .linear-accent {
   --height: 8px;
 
   position: relative;
-  overflow: hidden;
   
   &:before,
   &:after {
@@ -370,6 +386,8 @@ a.link-grow {
     content: "";
     width: 100%;
     height: var(--height);
+    border-top-right-radius: var(--radius-box);
+    border-top-left-radius: var(--radius-box);
     background-image: linear-gradient(
       to var(--direction), 
       color-mix(in oklab, var(--color) 3%, transparent) 0%,
