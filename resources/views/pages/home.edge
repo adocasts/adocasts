@@ -64,35 +64,11 @@
         Dive Into A Topic
       </h2>
 
-      <div class="grid grid-cols-4 gap-3">
+      <div class="grid grid-cols-6 gap-3">
         @each (topic in topics)
-          <div class="card card-sm bg-gradient-to-b from-base-100 to-base-200">
-            <div class="card-body">
-              <h2 class="card-title font-bold text-base-title leading-2">
-                <a href="#" class="link-grow">
-                  {{ topic.name }}
-                </a>
-              </h2>
-
-              <div class="text-xs opacity-60 flex items-center gap-4">
-                @if (topic.meta.collections_count !== '0')
-                  <span>
-                    {{ topic.meta.collections_count }} series
-                  </span>
-                @endif
-
-                @if (topic.meta.posts_count !== '0')
-                  <span>
-                    {{ topic.meta.posts_count }} lessons
-                  </span>
-                @endif
-              </div>
-            </div>
-          </div>
+          @!topic.card({ topic })
         @endeach
       </div>
     </section>
-
-    @dump(topics[0])
   </body>
 </html>

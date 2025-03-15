@@ -39,7 +39,7 @@
   --color-error-content: oklch(14.357% 0.034 13.118);
   --radius-selector: 1rem;
   --radius-field: 0.5rem;
-  --radius-box: 1.5rem;
+  --radius-box: 1rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
@@ -346,30 +346,98 @@ a.link-grow {
   }
 }
 
-.radial-accent-t {
+.radial-accent-tl,
+.radial-accent-t,
+.radial-accent-tr {
+  --opacity: 1;
+  --offset-x-half: calc(var(--offset-x) / 2);
+}
+
+.hover\:radial-accent-tl,
+.hover\:radial-accent-t,
+.hover\:radial-accent-tr {
+  --opacity: 0;
+
+  &:hover {
+    --opacity: 1;
+  }
+}
+
+.group {
+  .group-hover\:radial-accent-tl,
+  .group-hover\:radial-accent-t,
+  .group-hover\:radial-accent-tr {
+    --opacity: 0;
+  }
+
+  .group:hover .group-hover\:radial-accent-tl,
+  .group:hover .group-hover\:radial-accent-t,
+  .group:hover .group-hover\:radial-accent-tr {
+    --opacity: 1;
+  }
+}
+
+.radial-accent-tl,
+.hover\:radial-accent-tl,
+.group-hover\:radial-accent-tl {
+  --offset-x: 30%;
+}
+
+.radial-accent-t,
+.hover\:radial-accent-t,
+.group-hover\:radial-accent-t {
+  --offset-x: 50%;
+
+  &:after {
+    right: unset;
+    left: var(--offset-x);
+    transform: translateX(-50%);
+  }
+}
+
+.radial-accent-tr,
+.hover\:radial-accent-tr,
+.group-hover\:radial-accent-tr {
+  --offset-x: 70%;
+}
+
+.radial-accent-tl,
+.hover\:radial-accent-tl,
+.group-hover\:radial-accent-tl,
+.radial-accent-t,
+.hover\:radial-accent-t,
+.group-hover\:radial-accent-t,
+.radial-accent-tr,
+.hover\:radial-accent-tr,
+.group-hover\:radial-accent-tr {
   position: relative;
+  overflow: hidden;
   
   &:before {
     @apply top-0 left-0 z-20 absolute aspect-square pointer-events-none;
     
     content: "";
     width: 100%;
+    opacity: var(--opacity, 1);
+    transition: all 200ms ease-in-out;
     background-image: radial-gradient(
-      40% 30px at top center,
-      color-mix(in oklab, var(--color-primary) 15%, transparent),
+      40% 30px at var(--offset-x, 30%) 0%,
+      color-mix(in oklab, var(--color-primary) var(--offset-x-half, 15%), transparent),
       color-mix(in oklab, var(--color-primary) 0%, transparent)
     );
   }
   
   &:after {
-    @apply bg-gradient-to-r from-primary/0 via-primary/30 to-primary/0;
+    @apply bg-gradient-to-r from-primary/0 from-[var(--offset-x-half,30%)] via-primary/30 to-primary/0;
+
     content: "";
     width: 80%;
     height: 1px;
+    opacity: var(--opacity, 1);
+    transition: all 200ms ease-in-out;
     position: absolute;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    right: var(--offset-x, 30%);
     z-index: 10;
   }
 }

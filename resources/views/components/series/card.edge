@@ -1,4 +1,4 @@
-<div class="card radial-accent-t bg-gradient-to-b from-base-100 {{ showLessons ? 'to-base-200' : 'via-base-100' }} to-base-200 shadow-sm relative {{ $props.class ?? '' }}">
+<div class="card radial-accent-tl bg-gradient-to-b from-base-100 {{ showLessons ? 'to-base-200' : 'via-base-100' }} to-base-200 shadow-sm relative group {{ $props.class ?? '' }}">
   <div class="card-body relative z-10">
     <main>
       <div>
@@ -29,12 +29,12 @@
           </div>
         @endeach
 
-        <div class="badge badge-soft badge-sm">
+        <div class="badge badge-soft badge-sm opacity-75 group-hover:opacity-100 duration-200">
           @svg('solar:video-library-bold-duotone', { class: '-ml-1 -my-0.5' })
           {{ series.meta.posts_count }} Lessons
         </div>
 
-        <div class="badge badge-soft badge-sm">
+        <div class="badge badge-soft badge-sm opacity-75 group-hover:opacity-100 duration-200">
           @svg('solar:clock-circle-bold-duotone', { class: '-ml-1 -my-0.5' })
           {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
         </div>
