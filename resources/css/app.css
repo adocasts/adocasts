@@ -555,3 +555,41 @@ a.link-grow {
     }
   }
 }
+
+.pattern-faded-stars {
+  width: 100%;
+  height: calc(theme(spacing.48) * 2);
+  transform: translateY(-50%);
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  &:before {
+    content: "";
+    background-image: url('/imgs/patterns/faded_stars.svg');
+    background-repeat: repeat-x;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: .1;
+    z-index: 0;
+  }
+
+  &:after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(
+      to right,
+      color-mix(in oklab, var(--color-base-300) 100%, transparent),
+      color-mix(in oklab, var(--color-base-300) 0%, transparent) 20% 80%,
+      color-mix(in oklab, var(--color-base-300) 100%, transparent)
+    );
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+}

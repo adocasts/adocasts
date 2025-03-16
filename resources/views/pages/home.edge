@@ -39,7 +39,7 @@
       </div>
     </section>
 
-    <section class="py-24 container mx-auto relative">
+    <section class="py-24 container mx-auto relative z-[1]">
       <h2 class="heading-2">
         Learn One Step at a Time
       </h2>
@@ -59,12 +59,16 @@
       </div>
     </section>
 
-    <section class="py-24 container mx-auto relative">
+    <div class="container mx-auto relative">
+      <div class="pattern-faded-stars">
+    </div>
+
+    <section class="py-24 container mx-auto relative z-[1]">
       <h2 class="heading-2">
         Dive Into A Topic
       </h2>
 
-      <div class="grid grid-cols-6 gap-3">
+      <div class="grid md:grid-cols-4 lg:grid-cols-6 gap-3">
         @each (topic in topics)
           @!topic.card({ topic })
         @endeach
