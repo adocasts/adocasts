@@ -254,14 +254,20 @@ a.link-grow {
       var(--color-primary),
       var(--color-secondary),
       var(--color-accent),
+      var(--color-secondary),
+      var(--color-accent),
       var(--color-primary)
     );
-    border-radius: calc(var(--radius-xl) + 4px);
     position: absolute;
     top: 0;
     left: 0;
     z-index: -1;
     /* animation: 6s hero-card-border-spin linear infinite; */
+  }
+
+  &.rounded-b-4xl:before,
+  &.rounded-b-4xl:after {
+    @apply rounded-b-4xl;
   }
 
   &:before {

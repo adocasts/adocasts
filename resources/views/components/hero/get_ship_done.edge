@@ -1,8 +1,8 @@
-<div class="container-xl mx-auto relative p-1 shadow-xl">
-  <div class="hero-card-border"></div>
+<div class="container-2xl mx-auto relative shadow-xl p-1 -mt-16">
+  <div class="hero-card-border rounded-b-4xl"></div>
   <div
-    class="w-full aspect-video max-h-[65vh] min-h-[500px] md:min-h-[650px] bg-gradient-to-br from-primary to-accent relative overflow-hidden rounded-xl">
-    <div class="h-full px-3">
+    class="w-full aspect-video max-h-[65vh] min-h-[500px] md:min-h-[650px] relative overflow-hidden rounded-t-md rounded-b-[1.75rem]">
+    <div class="h-full px-3 pt-8">
       <div class="container mx-auto h-full flex flex-col justify-center relative z-20">
         <h2
           class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl 2xl:text-9xl font-black mb-3 sm:mb-4 uppercase drop-shadow-lg">
@@ -34,11 +34,14 @@
       </div>
     </div>
 
-    <div class="mask-gradient-to-r backdrop-blur-lg absolute top-0 left-0 w-full h-full z-10">
+    <div class="mask-gradient-to-r backdrop-blur-lg absolute top-0 left-0 w-2/3 h-full z-10">
     </div>
 
     <div class="bg-gradient-to-r from-base-100/50 to-base-100/0 absolute top-0 left-0 w-full h-full z-10">
     </div>
+
+    {{-- <div class="bg-gradient-to-br from-primary/40 via-accent/40 to-accent/0 absolute top-0 left-0 w-full h-full z-10">
+    </div> --}}
 
     <div
       class="bg-radial-[at_0%_0%] from-base-100/75 via-base-100/0 to-base-100/0 absolute -top-2 -left-2 w-1/2 aspect-square z-10">
@@ -48,16 +51,8 @@
       class="bg-radial-[at_100%_100%] from-base-100/75 via-base-100/0 to-base-100/0 absolute -bottom-4 -right-2 w-1/2 aspect-square z-10">
     </div>
 
-    <div
-      class="bg-radial-[at_100%_0%] from-slate-100/50 via-slate-100/0 to-slate-100/0 absolute -top-4 -right-6 w-1/3 aspect-square z-10">
-    </div>
-
-    <div
-      class="bg-radial-[at_0%_100%] from-slate-100/30 via-slate-100/0 to-slate-100/0 absolute -bottom-4 -left-6 w-1/2 aspect-square z-10">
-    </div>
-
     <video
-      class="w-full h-full object-cover object-center bg-blend-color absolute opacity-40 top-1/2 left-1/2 -translate-1/2"
+      class="w-full h-full object-cover object-center bg-blend-color absolute top-1/2 left-1/2 -translate-1/2"
       src="/vids/space-01.mp4" autoplay loop></video>
   </div>
 </div>
