@@ -251,12 +251,18 @@ a.link-grow {
     height: 100%;
     background-image: conic-gradient(
       from var(--hero-card-border-angle),
+      color-mix(in oklab, var(--color-primary) 0%, transparent),
+      color-mix(in oklab, var(--color-primary) 0%, transparent),
+      color-mix(in oklab, var(--color-primary) 0%, transparent),
       var(--color-primary),
       var(--color-secondary),
       var(--color-accent),
-      var(--color-secondary),
       var(--color-accent),
-      var(--color-primary)
+      var(--color-secondary),
+      var(--color-primary),
+      color-mix(in oklab, var(--color-primary) 0%, transparent),
+      color-mix(in oklab, var(--color-primary) 0%, transparent),
+      color-mix(in oklab, var(--color-primary) 0%, transparent)
     );
     position: absolute;
     top: 0;
