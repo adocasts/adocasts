@@ -56,7 +56,15 @@
 }
 
 @utility mask-gradient-to-l {
-  mask: linear-gradient(to left, transparent 45%, black);
+  mask: linear-gradient(to left, transparent, black);
+}
+
+@utility mask-gradient-to-t {
+  mask: linear-gradient(to top, black 55%, transparent);
+}
+
+@utility mask-gradient-to-b {
+  mask: linear-gradient(to bottom, transparent, black);
 }
 
 [x-cloak] {
@@ -493,10 +501,14 @@ a.link-grow {
 }
 
 .series-bento {
-  --gap: 1rem;
+  --gap: .5rem;
+
+  @variant lg {
+    --gap: 1rem;
+  }
 
   display: grid;
-  grid-auto-columns: 33.33%;
+  grid-auto-columns: calc(33.33% - (var(--gap) / 2));
   grid-template-rows: repeat(1, 1fr);
   grid-template-areas: "area-1 area-2 area-2";
   gap: var(--gap);

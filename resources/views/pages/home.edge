@@ -64,15 +64,39 @@
     </div>
 
     <section class="py-24 container mx-auto relative z-[1]">
+      @let(featTopic1 = topics.find(topic => topic.name === 'AdonisJS'))
+      @let(featTopic2 = topics.find(topic => topic.name === 'EdgeJS'))
+      @let(featTopic3 = topics.find(topic => topic.name === 'Lucid'))
+      @let(featTopic4 = topics.find(topic => topic.name === 'Authentication'))
+      @let(featIds = [featTopic1.id, featTopic2.id, featTopic3.id, featTopic4.id])
+      @let(otherTopics = topics.filter(topic => !featIds.includes(topic.id)))
+
       <h2 class="heading-2">
         Dive Into A Topic
       </h2>
 
+      <div class="grid grid-cols-4 gap-3 mb-3">
+        @!topic.card({ topic: featTopic1, size: 'lg' })
+        @!topic.card({ topic: featTopic2, size: 'lg' })
+        @!topic.card({ topic: featTopic3, size: 'lg' })
+        @!topic.card({ topic: featTopic4, size: 'lg' })
+      </div>
+
       <div class="grid md:grid-cols-4 lg:grid-cols-6 gap-3">
-        @each (topic in topics)
-          @!topic.card({ topic })
+        @each (topic in otherTopics)
+          @!topic.card({ topic, size: 'sm' })
         @endeach
       </div>
     </section>
+
+    <section class="py-24 container mx-auto relative">
+      <h2 class="heading-2">
+        Jump Straight to the Latest
+      </h2>
+
+      
+    </section>
+
+    @dump(lessons)
   </body>
 </html>

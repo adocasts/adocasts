@@ -2,7 +2,6 @@ import env from '#start/env'
 import app from '@adonisjs/core/services/app'
 import { Secret } from '@adonisjs/core/helpers'
 import { defineConfig } from '@adonisjs/core/http'
-import { defineConfig as dumperConfig } from '@adonisjs/core/dumper'
 
 /**
  * The app key is used for encrypting cookies, generating signed URLs,
@@ -37,12 +36,5 @@ export const http = defineConfig({
     httpOnly: true,
     secure: app.inProduction,
     sameSite: 'lax',
-  },
-})
-
-export const dumper = dumperConfig({
-  console: {},
-  html: {
-    depth: 10,
   },
 })
