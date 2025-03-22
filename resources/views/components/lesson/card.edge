@@ -1,0 +1,28 @@
+<div class="card bg-base-100 w-96 overflow-hidden shadow-sm">
+  <figure class="relative">
+    <img src="/imgs/thumbnail_01.jpg" alt="Shoes">
+
+    <div class="absolute bottom-0 left-0 w-full flex items-center justify-between gap-3 px-[var(--card-p,1.5rem)] py-1.5 bg-base-100/75 backdrop-blur-md">
+      <h6 class="text-xs text-uppercase tracking-wide flex items-center gap-3">
+        <a href="#" class="font-black text-primary line-clamp-1">
+          Building with AdonisJS & Inertia
+        </a>
+        <span class="opacity-60">#12.1</span>
+      </h6>
+
+      <div class="badge badge-xs badge-accent">NEW</div>
+    </div>
+  </figure>
+
+  <div class="card-body bg-gradient-to-b from-base-100 to-base-200">
+    <h2 class="card-title font-bold text-base-title">
+      <a href="#" class="link-grow">
+        {{ lesson.title }}
+      </a>
+    </h2>
+    
+    <p class="line-clamp-3">
+      {{ lesson.description }}
+    </p>
+  </div>
+</div>

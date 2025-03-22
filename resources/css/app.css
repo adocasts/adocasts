@@ -1,4 +1,4 @@
-@import 'tailwindcss' source('../');
+@import 'tailwindcss'; /* NOTE: once candidates get added, you'll need to restart your server to clear them */
 @plugin "@tailwindcss/typography";
 
 @theme {

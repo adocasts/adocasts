@@ -8,6 +8,7 @@ export default class BaseLessonDto extends BaseModelDto {
   declare id: number
   declare slug: string
   declare title: string
+  declare description: string | null
   declare postTypeId: number
   declare paywallTypeId: number
   declare stateId: number
@@ -25,6 +26,7 @@ export default class BaseLessonDto extends BaseModelDto {
     this.id = post.id
     this.slug = post.slug
     this.title = post.title
+    this.description = post.description
     this.postTypeId = post.postTypeId
     this.paywallTypeId = post.paywallTypeId
     this.stateId = post.stateId
