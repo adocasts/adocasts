@@ -1,28 +1,63 @@
-<div class="card bg-base-100 w-96 overflow-hidden shadow-sm">
-  <figure class="relative">
-    <img src="/imgs/thumbnail_01.jpg" alt="Shoes">
+@if (size == 'lg')
 
-    <div class="absolute bottom-0 left-0 w-full flex items-center justify-between gap-3 px-[var(--card-p,1.5rem)] py-1.5 bg-base-100/75 backdrop-blur-md">
-      <h6 class="text-xs text-uppercase tracking-wide flex items-center gap-3">
-        <a href="#" class="font-black text-primary line-clamp-1">
-          Building with AdonisJS & Inertia
+  <div class="card card-side bg-gradient-to-b from-base-100 to-base-200 w-full overflow-hidden shadow-sm items-center">
+    <figure class="w-2/5 p-[var(--card-p,1.5rem)]">
+      <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md">
+    </figure>
+  
+    <div class="w-3/5 card-body">
+      <div class="flex items-center gap-6 mb-1.5">
+        <h6 class="text-uppercase tracking-wide flex items-center gap-3">
+          <a href="#" class="font-black text-primary line-clamp-1">
+            Building with AdonisJS & Inertia
+          </a>
+          <span class="opacity-60">#12.1</span>
+        </h6>
+      
+        <div class="badge badge-sm badge-accent">NEW</div>
+      </div>
+
+      <h2 class="card-title text-5xl font-bold text-base-title mb-3">
+        <a href="#" class="link-grow">
+          {{ lesson.title }}
         </a>
-        <span class="opacity-60">#12.1</span>
-      </h6>
-
-      <div class="badge badge-xs badge-accent">NEW</div>
+      </h2>
+  
+      <p class="line-clamp-5 text-lg mb-3">
+        {{ lesson.description }}
+      </p>
     </div>
-  </figure>
-
-  <div class="card-body bg-gradient-to-b from-base-100 to-base-200">
-    <h2 class="card-title font-bold text-base-title">
-      <a href="#" class="link-grow">
-        {{ lesson.title }}
-      </a>
-    </h2>
-    
-    <p class="line-clamp-3">
-      {{ lesson.description }}
-    </p>
   </div>
-</div>
+
+@else
+
+  <div class="card bg-base-100 w-96 overflow-hidden shadow-sm">
+    <figure>
+      <img src="/imgs/thumbnail_01.jpg" alt="Shoes">
+    </figure>
+  
+    <div class="card-body bg-gradient-to-b from-base-100 to-base-200">
+      <div class="flex items-center justify-between gap-3">
+        <h6 class="text-xs text-uppercase tracking-wide flex items-center gap-3">
+          <a href="#" class="font-black text-primary line-clamp-1">
+            Building with AdonisJS & Inertia
+          </a>
+          <span class="opacity-60">#12.1</span>
+        </h6>
+      
+        <div class="badge badge-xs badge-accent">NEW</div>
+      </div>
+
+      <h2 class="card-title font-bold text-base-title">
+        <a href="#" class="link-grow">
+          {{ lesson.title }}
+        </a>
+      </h2>
+  
+      <p class="line-clamp-3">
+        {{ lesson.description }}
+      </p>
+    </div>
+  </div>
+
+@endif

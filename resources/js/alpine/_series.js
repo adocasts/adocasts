@@ -11,7 +11,7 @@ Alpine.data('seriesCard', () => ({
   },
 
   init() {
-    this.scrollState = this.getScrollState(this.$el.children.at(0))
+    this.scrollState = this.getScrollState([...this.$el.children].at(0))
   },
 
   handleScroll(event) {

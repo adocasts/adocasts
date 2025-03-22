@@ -60,7 +60,7 @@
     </section>
 
     <div class="container mx-auto relative">
-      <div class="pattern-faded-stars">
+      <div class="pattern-faded-stars"></div>
     </div>
 
     <section class="py-24 container mx-auto relative z-[1]">
@@ -89,20 +89,25 @@
       </div>
     </section>
 
-    <section class="py-24 container mx-auto relative">
+    <section class="py-24 container mx-auto">
       <h2 class="heading-2">
         Jump Straight to the Latest
       </h2>
 
-      <div class="w-full carousel carousel-center space-x-3">
-        @each (lesson in lessons)
-          <div class="carousel-item">
-            @!lesson.card({ lesson, size: 'lg' })
-          </div>
-        @endeach
+      @let([featuredLesson, ...otherLessons] = lessons)
+      <div class="w-full mb-6">
+        @!lesson.card({ lesson: featuredLesson, size: 'lg' })
+      </div>
+
+      <div x-data="carousel" class="faded-scroll-carousel faded-to-base-300" :style="overflowStyle">
+        <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
+          @each (lesson in otherLessons)
+            <div class="carousel-item">
+              @!lesson.card({ lesson })
+            </div>
+          @endeach
+        </div>
       </div>
     </section>
-
-    @dump(lessons)
   </body>
 </html>
