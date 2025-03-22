@@ -17,11 +17,11 @@
   <body data-theme="adocasts-dark">
     @!header()
     
-    <section>
+    <section class="relative z-[2]">
       @!hero.getShipDone()
     </section>
 
-    <section class="mb-24 pb-8 pt-24 -mt-8 bg-gradient-to-b from-base-300 to-base-200">
+    <section class="mb-16 pb-8 pt-24 -mt-8 bg-gradient-to-b from-base-300 to-base-200 relative z-[1]">
       <div class="container mx-auto flex flex-col items-center">
         @if (auth.user)
           <h3 class="heading-3">
@@ -39,7 +39,17 @@
       </div>
     </section>
 
-    <section class="py-24 container mx-auto relative z-[1]">
+    <div class="container mx-auto relative">
+      <div class="absolute bottom-3/4 -left-32 translate-y-3/4 w-3/4 apsect-3/2 faded-pattern-br faded-to-base-300">
+        <img 
+          src="/imgs/patterns/pattern_01.svg" 
+          alt="Background pattern" 
+          class="object-contain object-center grayscale rotate-180 opacity-10"
+        >
+      </div>
+    </div>
+
+    <section class="section-container mx-auto relative z-[1]">
       <h2 class="heading-2">
         Learn One Step at a Time
       </h2>
@@ -60,10 +70,16 @@
     </section>
 
     <div class="container mx-auto relative">
-      <div class="pattern-faded-stars"></div>
+      <div class="absolute bottom-3/4 left-1/2 -translate-x-1/2 translate-y-3/4 w-3/4 apsect-3/2 faded-pattern-x faded-to-base-300">
+        <img 
+          src="/imgs/patterns/pattern_01.svg" 
+          alt="Background pattern" 
+          class="object-contain object-center grayscale opacity-10"
+        >
+      </div>
     </div>
 
-    <section class="py-24 container mx-auto relative z-[1]">
+    <section class="section-container mx-auto relative z-[1]">
       @let(featTopic1 = topics.find(topic => topic.name === 'AdonisJS'))
       @let(featTopic2 = topics.find(topic => topic.name === 'EdgeJS'))
       @let(featTopic3 = topics.find(topic => topic.name === 'Lucid'))
@@ -89,7 +105,17 @@
       </div>
     </section>
 
-    <section class="py-24 container mx-auto">
+    <div class="container mx-auto relative">
+      <div class="absolute bottom-3/4 -right-48 translate-y-1/2 w-3/4 apsect-3/2 faded-pattern faded-to-base-300">
+        <img 
+          src="/imgs/patterns/pattern_01.svg" 
+          alt="Background pattern" 
+          class="object-contain object-center grayscale opacity-10"
+        >
+      </div>
+    </div>
+
+    <section class="section-container mx-auto">
       <h2 class="heading-2">
         Jump Straight to the Latest
       </h2>
@@ -99,7 +125,7 @@
         @!lesson.card({ lesson: featuredLesson, size: 'lg' })
       </div>
 
-      <div x-data="carousel" class="faded-scroll-carousel faded-to-base-300" :style="overflowStyle">
+      <div x-data="carousel" class="faded-scroll-carousel faded-to-base-300 mb-6" :style="overflowStyle">
         <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
           @each (lesson in otherLessons)
             <div class="carousel-item">
@@ -108,6 +134,38 @@
           @endeach
         </div>
       </div>
+
+      <h4 class="heading-4">
+        Latest blog posts  
+      </h4>
+
+      <div x-data="carousel" class="faded-scroll-carousel faded-to-base-300 mb-6" :style="overflowStyle">
+        <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
+          @each (post in otherLessons)
+            <div class="carousel-item">
+              @!post.card({ post })
+            </div>
+          @endeach
+        </div>
+      </div>
+
+      <h4 class="heading-4">
+        Latest news
+      </h4>
+
+      <div x-data="carousel" class="faded-scroll-carousel faded-to-base-300" :style="overflowStyle">
+        <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
+          @each (post in otherLessons)
+            <div class="carousel-item">
+              @!post.card({ post })
+            </div>
+          @endeach
+        </div>
+      </div>
+    </section>
+
+    <section class="py-24 container mx-auto">
+      
     </section>
   </body>
 </html>

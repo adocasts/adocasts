@@ -3,10 +3,11 @@
 @if (size === 'lg')
 
   <div class="card card-sm relative overflow-hidden">
-    <div class="card-body items-center py-6 relative z-20 bg-gradient-to-b from-base-100/25 to-base-200 hover:radial-accent-t">
-      <div class="avatar w-1/2">
+    <div class="card-body items-center py-6 relative z-20 bg-gradient-to-b from-base-100/25 to-base-200 group radial-accent-t">
+      <div class="avatar w-1/2 group-hover:scale-105 duration-200 relative">
         <div class="rounded-xl">
-          <img src="/imgs/adonisjs.jpeg" alt="{{ topic.asset.altText ?? topic.name }}">
+          <img src="/imgs/adonisjs.jpeg" alt="{{ topic.asset.altText ?? topic.name }}" class="relative z-10">
+          <img src="/imgs/adonisjs.jpeg" alt="{{ topic.asset.altText ?? topic.name }}" class="absolute top-0 left-0 w-full h-full blur-lg opacity-50">
         </div>
       </div>
   
@@ -43,9 +44,9 @@
 
 @elseif (size === 'base')
 
-  <div class="card card-sm bg-gradient-to-b from-base-100 to-base-200 hover:radial-accent-t">
+  <div class="card card-sm bg-gradient-to-b from-base-100 to-base-200 group hover:radial-accent-t">
     <div class="card-body items-center py-6">
-      <div class="avatar">
+      <div class="avatar group-hover:scale-105 duration-200">
         <div class="w-12 rounded-xl">
           <img src="/imgs/adonisjs.jpeg" alt="{{ topic.asset.altText ?? topic.name }}">
         </div>
@@ -77,9 +78,9 @@
 
 @else
 
-  <div class="card card-sm bg-gradient-to-b from-base-100 to-base-200 hover:radial-accent-t">
+  <div class="card card-sm bg-gradient-to-b from-base-100 to-base-200 group hover:radial-accent-t">
     <div class="card-body flex-row items-center gap-4">
-      <div class="avatar">
+      <div class="avatar group-hover:scale-110 duration-200">
         <div class="w-12 rounded-xl">
           <img src="/imgs/adonisjs.jpeg" alt="{{ topic.asset.altText ?? topic.name }}">
         </div>

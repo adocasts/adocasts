@@ -1,9 +1,12 @@
 @if (size == 'lg')
 
-  <div class="card card-side bg-gradient-to-b from-base-100 to-base-200 w-full overflow-hidden shadow-sm items-center">
-    <figure class="w-2/5 p-[var(--card-p,1.5rem)]">
-      <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md">
-    </figure>
+  <div class="card card-side bg-gradient-to-b from-base-100 to-base-200 w-full overflow-hidden shadow-sm items-center group radial-accent-t">
+    <div class="w-2/5 p-[var(--card-p,1.5rem)]">
+      <figure class="relative overflow-visible group-hover:scale-[102.5%] duration-200">
+        <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md relative z-10">
+        <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md absolute top-0 left-0 w-full h-full blur-lg opacity-75">
+      </figure>
+    </div>
   
     <div class="w-3/5 card-body">
       <div class="flex items-center gap-6 mb-1.5">
@@ -17,7 +20,7 @@
         <div class="badge badge-sm badge-accent">NEW</div>
       </div>
 
-      <h2 class="card-title text-5xl font-bold text-base-title mb-3">
+      <h2 class="card-title text-3xl max-w-[32ch] font-bold text-base-title mb-3">
         <a href="#" class="link-grow">
           {{ lesson.title }}
         </a>
@@ -31,10 +34,13 @@
 
 @else
 
-  <div class="card bg-base-100 w-96 overflow-hidden shadow-sm">
-    <figure>
-      <img src="/imgs/thumbnail_01.jpg" alt="Shoes">
-    </figure>
+  <div class="card bg-base-100 w-96 overflow-hidden shadow-sm group hover:radial-accent-t">
+    <div class="p-[var(--card-p,1.5rem)] pb-0">
+      <figure class="relative overflow-visible group-hover:scale-105 duration-200">
+        <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md relative z-10">
+        <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md absolute top-0 left-0 w-full h-full blur-lg opacity-75">
+      </figure>
+    </div>
   
     <div class="card-body bg-gradient-to-b from-base-100 to-base-200">
       <div class="flex items-center justify-between gap-3">

@@ -77,6 +77,8 @@ body {
 }
 
 body {
+  --section-spacing: theme('spacing.12')
+
   --mono: 0;
   --casl: 0.5;
   --wght: 400;
@@ -122,6 +124,14 @@ body {
   }
 }
 
+.heading-4 {
+  @apply mb-3 font-black text-lg;
+
+  @variant lg {
+    @apply text-xl;
+  }
+}
+
 a.link-grow {
   &:before {
     content: '';
@@ -136,6 +146,40 @@ a.link-grow {
 .container {
   padding-right: 1rem;
   padding-left: 1rem;
+}
+
+.section-container {
+  --radius: theme('borderRadius.lg');
+  --padding: theme('spacing.6');
+
+  width: 100%;
+  /* background-color: theme('colors.base-200'); */
+  border-radius: var(--radius);
+  padding: var(--padding);
+  margin-bottom: theme('spacing.6');
+
+  @variant sm {
+    --max-width: 40rem;
+    max-width: calc(var(--max-width) + (var(--padding) * 2));
+  }
+
+  @variant md {
+    --max-width: 48rem;
+  }
+
+  @variant lg {
+    --radius: theme('borderRadius.xl');
+    --padding: theme('spacing.9');
+    --max-width: 64rem;
+  }
+  
+  @variant xl {
+    --max-width: 80rem;
+  }
+
+  @variant 2xl {
+    --max-width: 96rem;
+  }
 }
 
 .container-xl {
@@ -188,6 +232,78 @@ a.link-grow {
 
 @utility faded-to-* {
   --end: --value(--color-*);
+}
+
+.faded-pattern-br {
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to var(--dir, right), transparent 75%, var(--end, transparent));
+    z-index: 1;
+  }
+
+  &:after {
+    --dir: bottom;
+  }
+}
+
+.faded-pattern-bl {
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to var(--dir, left), transparent 75%, var(--end, transparent));
+    z-index: 1;
+  }
+
+  &:after {
+    --dir: bottom;
+  }
+}
+
+.faded-pattern-x {
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to var(--dir, left), transparent 75%, var(--end, transparent));
+    z-index: 1;
+  }
+
+  &:after {
+    --dir: right;
+  }
+}
+
+.faded-pattern {
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to var(--dir, right), var(--end, transparent), transparent 25%, transparent 75%, var(--end, transparent));
+    z-index: 1;
+  }
+
+  &:after {
+    --dir: bottom;
+  }
 }
 
 .faded-scroll-y {
