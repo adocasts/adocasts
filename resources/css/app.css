@@ -230,6 +230,13 @@ a.link-grow {
   }
 }
 
+.starfield-origin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 @utility faded-to-* {
   --end: --value(--color-*);
 }

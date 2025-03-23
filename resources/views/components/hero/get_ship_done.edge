@@ -1,9 +1,9 @@
 <div class="container-2xl mx-auto relative shadow-xl p-1 -mt-16">
   <div class="hero-card-border rounded-b-4xl"></div>
   <div
-    class="w-full aspect-video max-h-[65vh] min-h-[500px] md:min-h-[650px] relative overflow-hidden rounded-t-md rounded-b-[1.75rem]">
-    <div class="h-full px-3 pt-8">
-      <div class="container mx-auto h-full flex flex-col justify-center relative z-20">
+    class="bg-gradient-to-b from-base-100 to-base-300 w-full aspect-video max-h-[65vh] min-h-[500px] md:min-h-[650px] lg:min-h-[750px] relative overflow-hidden rounded-t-md rounded-b-[1.75rem]">
+    <div class="h-full px-3 relative z-40">
+      <div class="container mx-auto h-[calc(100%-125px)] flex flex-col justify-center relative z-20 text-center">
         <h2
           class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl 2xl:text-9xl font-black mb-3 sm:mb-4 uppercase drop-shadow-lg">
           <span class="bg-gradient-to-b from-white via-white/75 to-base-content/50 bg-clip-text text-transparent">
@@ -17,11 +17,11 @@
           </span>
         </h2>
 
-        <h1 class="md:text-lg lg:text-2xl 3xl:text-3xl mb-8 lg:mb-12 2xl:mb-16 text-white drop-shadow-sm max-w-[42ch]">
+        <h1 class="md:text-lg lg:text-2xl 3xl:text-3xl mb-8 lg:mb-12 2xl:mb-16 text-white drop-shadow-sm max-w-[42ch] mx-auto">
           Adocasts teaches you how to ship NodeJS apps in no time using AdonisJS and it's built-in batteries.
         </h1>
 
-        <div class="flex flex-wrap items-center gap-y-1.5 gap-x-3 md:gap-x-6">
+        <div class="flex flex-wrap items-center justify-center gap-y-1.5 gap-x-3 md:gap-x-6">
           <a href="/series/lets-learn-adonisjs-6" class="btn btn-accent btn-soft md:btn-wide md:btn-lg">
             Ship Your First App
             @svg('solar:map-arrow-right-bold-duotone')
@@ -34,25 +34,32 @@
       </div>
     </div>
 
-    <div class="mask-gradient-to-r backdrop-blur-lg absolute top-0 left-0 w-2/3 h-full z-10">
+    <div class="absolute bottom-0 left-0 w-full h-full z-30">
+      <img src="/imgs/cockpit_no_divider.svg" class="object-cover scale-105 object-center w-full h-full" alt="Spaceship Cockpit" />
     </div>
 
-    <div class="bg-gradient-to-r from-base-100/50 to-base-100/0 absolute top-0 left-0 w-full h-full z-10">
+    <div class="bg-gradient-to-b from-base-100/50 to-base-100/0 absolute top-0 left-0 w-full h-full z-20">
     </div>
 
-    {{-- <div class="bg-gradient-to-br from-primary/40 via-accent/40 to-accent/0 absolute top-0 left-0 w-full h-full z-10">
+    <div class="bg-gradient-to-t from-base-100/50 to-base-100/0 absolute top-0 left-0 w-full h-full z-20">
+    </div>
+
+    {{-- <div
+      class="bg-radial-[at_0%_0%] from-base-100/75 via-base-100/0 to-base-100/0 absolute -top-2 -left-2 w-1/2 aspect-square z-20">
+    </div> --}}
+{{-- 
+    <div
+      class="bg-radial-[at_100%_100%] from-base-100/75 via-base-100/0 to-base-100/0 absolute -bottom-4 -right-2 w-1/2 aspect-square z-20">
     </div> --}}
 
-    <div
-      class="bg-radial-[at_0%_0%] from-base-100/75 via-base-100/0 to-base-100/0 absolute -top-2 -left-2 w-1/2 aspect-square z-10">
+    <div class="absolute top-0 left-0 w-full h-full z-10">
+      <div class="starfield w-full h-full">
+        <div class="starfield-origin"></div>
+      </div>
     </div>
 
-    <div
-      class="bg-radial-[at_100%_100%] from-base-100/75 via-base-100/0 to-base-100/0 absolute -bottom-4 -right-2 w-1/2 aspect-square z-10">
-    </div>
-
-    <video
+    {{-- <video
       class="w-full h-full object-cover object-center bg-blend-color absolute top-1/2 left-1/2 -translate-1/2"
-      src="/vids/space-01.mp4" autoplay loop></video>
+      src="/vids/space-01.mp4" autoplay loop></video> --}}
   </div>
 </div>
