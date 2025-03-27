@@ -49,6 +49,7 @@
     "hot-hook": "^0.4.0",
     "pino-pretty": "^13.0.0",
     "prettier": "^3.5.3",
+    "tailwindcss-animated": "^2.0.0",
     "ts-node-maintained": "^10.9.5",
     "typescript": "~5.8",
     "vite": "^6.2.1"

@@ -6,22 +6,22 @@
       <div class="container mx-auto h-[calc(100%-125px)] flex flex-col justify-center relative z-20 text-center">
         <h2
           class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl 2xl:text-9xl font-black mb-3 sm:mb-4 uppercase drop-shadow-lg">
-          <span class="bg-gradient-to-b from-white via-white/75 to-base-content/50 bg-clip-text text-transparent">
+          <span class="inline-block bg-gradient-to-b from-white via-white/75 to-base-content/50 bg-clip-text text-transparent animate-jump-in-fade animate-delay-300">
             Get
           </span>
-          <span class="bg-gradient-to-b from-white via-white/75 to-base-content/50 bg-clip-text text-transparent">
+          <span class="inline-block bg-gradient-to-b from-white via-white/75 to-base-content/50 bg-clip-text text-transparent animate-jump-in-fade animate-delay-500">
             Ship
           </span>
-          <span class="bg-gradient-to-b from-white via-white/75 to-base-content/50 bg-clip-text text-transparent">
+          <span class="inline-block bg-gradient-to-b from-white via-white/75 to-base-content/50 bg-clip-text text-transparent animate-jump-in-fade animate-delay-700">
             Done
           </span>
         </h2>
 
-        <h1 class="md:text-lg lg:text-2xl 3xl:text-3xl mb-8 lg:mb-12 2xl:mb-16 text-white drop-shadow-sm max-w-[42ch] mx-auto">
+        <h1 class="md:text-lg lg:text-2xl 3xl:text-3xl mb-8 lg:mb-12 2xl:mb-16 text-white drop-shadow-sm max-w-[42ch] mx-auto animate-jump-in-fade animate-delay-1000">
           Adocasts teaches you how to ship NodeJS apps in no time using AdonisJS and it's built-in batteries.
         </h1>
 
-        <div class="flex flex-wrap items-center justify-center gap-y-1.5 gap-x-3 md:gap-x-6">
+        <div class="flex flex-wrap items-center justify-center gap-y-1.5 gap-x-3 md:gap-x-6 animate-jump-in-fade animate-delay-1000">
           <a href="/series/lets-learn-adonisjs-6" class="btn btn-accent btn-soft md:btn-wide md:btn-lg">
             Ship Your First App
             @svg('solar:map-arrow-right-bold-duotone')
@@ -34,9 +34,11 @@
       </div>
     </div>
 
-    <div class="absolute bottom-0 left-0 w-full h-full z-30">
-      <img src="/imgs/cockpit_no_divider.svg" class="object-cover scale-105 object-center w-full h-full" alt="Spaceship Cockpit" />
+    <div class="absolute bottom-0 left-0 w-full h-full z-30 scale-in">
+      <img src="/imgs/cockpit_no_divider.svg" class="object-cover scale-105 object-center w-full h-full relative z-10" alt="Spaceship Cockpit" />
+      <div class="absolute left-1/2 bottom-0 w-[150%] h-1/2 -translate-x-1/2 bg-radial-[at_50%_100%] from-accent to-50% to-accent/0 animate-pulse animate-duration-[5s] animate-infinite"></div>
     </div>
+
 
     <div class="bg-gradient-to-b from-base-100/50 to-base-100/0 absolute top-0 left-0 w-full h-full z-20">
     </div>
@@ -53,7 +55,7 @@
     </div> --}}
 
     <div class="absolute top-0 left-0 w-full h-full z-10">
-      <div class="starfield w-full h-full">
+      <div x-data="starfield" class="starfield w-full h-full">
         <div class="starfield-origin"></div>
       </div>
     </div>

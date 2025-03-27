@@ -11,11 +11,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/starfield.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('dumper')
   </head>
   <body data-theme="adocasts-dark">
-    @!header()
+    @!header({ forceBackdrop: true })
     
     <section class="relative z-[2]">
       @!hero.getShipDone()
@@ -50,8 +50,8 @@
     </div>
 
     <section class="section-container mx-auto relative z-[1]">
-      <h2 class="heading-2">
-        Learn One Step at a Time
+      <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10">
+        Learn one step at a time
       </h2>
 
       <div class="series-bento">
@@ -87,8 +87,8 @@
       @let(featIds = [featTopic1.id, featTopic2.id, featTopic3.id, featTopic4.id])
       @let(otherTopics = topics.filter(topic => !featIds.includes(topic.id)))
 
-      <h2 class="heading-2">
-        Dive Into A Topic
+      <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10">
+        Dive into a topic
       </h2>
 
       <div class="grid grid-cols-4 gap-3 mb-3">
@@ -116,8 +116,8 @@
     </div>
 
     <section class="section-container mx-auto">
-      <h2 class="heading-2">
-        Jump Straight to the Latest
+      <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10">
+        Jump straight to the latest
       </h2>
 
       @let([featuredLesson, ...otherLessons] = lessons)
@@ -164,8 +164,8 @@
       </div>
     </section>
 
-    <section class="py-24 container mx-auto">
-      
+    <section class="py-24 mx-auto">
+      @!pricing.hero()
     </section>
   </body>
 </html>
