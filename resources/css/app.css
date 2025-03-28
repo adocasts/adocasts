@@ -152,17 +152,18 @@ a.link-grow {
 
 .section-container {
   --radius: theme('borderRadius.lg');
-  --padding: theme('spacing.6');
+  --padding-x: theme('spacing.6');
+  --padding-y: theme('spacing.9');
 
   width: 100%;
-  /* background-color: theme('colors.base-200'); */
-  border-radius: var(--radius);
-  padding: var(--padding);
-  margin-bottom: theme('spacing.6');
+  padding-top: var(--padding-y);
+  padding-bottom: var(--padding-y);
+  padding-right: var(--padding-x);
+  padding-left: var(--padding-x);
 
   @variant sm {
     --max-width: 40rem;
-    max-width: calc(var(--max-width) + (var(--padding) * 2));
+    max-width: calc(var(--max-width) + (var(--padding-x) * 2));
   }
 
   @variant md {
@@ -171,7 +172,8 @@ a.link-grow {
 
   @variant lg {
     --radius: theme('borderRadius.xl');
-    --padding: theme('spacing.9');
+    --padding-x: theme('spacing.9');
+    --padding-y: theme('spacing.24');
     --max-width: 64rem;
   }
   

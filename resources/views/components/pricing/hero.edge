@@ -37,6 +37,7 @@
           const item = $refs.item;
           const clone = item.cloneNode(true);
           content.appendChild(clone);
+          content.style.width = item.offsetWidth + 'px';
         });
       "
       class="relative w-full container-block py-16 sm:py-24"
