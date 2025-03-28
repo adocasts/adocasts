@@ -98,10 +98,20 @@
         @!topic.card({ topic: featTopic4, size: 'lg' })
       </div>
 
-      <div class="grid md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 gap-3">
-        @each (topic in otherTopics)
-          @!topic.card({ topic, size: 'sm' })
-        @endeach
+      <div x-data="carousel" class="faded-scroll-carousel faded-to-base-300" :style="overflowStyle">
+        <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
+          @utils.chunk({ data: otherTopics, size: 3 })
+            @slot('main', state)
+              <div class="carousel-item">
+                <div class="flex flex-col gap-3">
+                  @each (topic in state.chunk)
+                    @!topic.card({ topic, size: 'sm' })
+                  @endeach
+                </div>
+              </div>
+            @endslot
+          @end
+        </div>
       </div>
     </section>
 
@@ -115,7 +125,7 @@
       </div>
     </div>
 
-    <section class="section-container mx-auto">
+    <section class="section-container mx-auto relative z-[1]">
       <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6">
         Jump straight to the latest
       </h2>
@@ -164,31 +174,48 @@
       </div>
     </section>
 
-    <section class="pt-24 mx-auto">
+    <div class="container mx-auto relative">
+      <div class="absolute bottom-3/4 -left-32 translate-y-3/4 w-3/4 apsect-3/2 faded-pattern faded-to-base-300">
+        <img 
+          src="/imgs/patterns/pattern_01.svg" 
+          alt="Background pattern" 
+          class="object-contain object-center grayscale rotate-180 opacity-10"
+        >
+      </div>
+    </div>
+
+    <section class="pt-24 mx-auto relative z-[1]">
       @!pricing.hero()
     </section>
 
     <footer class="bg-base-200 text-base-content p-10">
       <div class="footer sm:footer-horizontal container mx-auto">
         <nav>
-          <h6 class="footer-title">Services</h6>
-          <a class="link link-hover">Branding</a>
-          <a class="link link-hover">Design</a>
-          <a class="link link-hover">Marketing</a>
-          <a class="link link-hover">Advertisement</a>
+          <h6 class="footer-title">Content</h6>
+          <a class="link link-hover">Series</a>
+          <a class="link link-hover">Topics</a>
+          <a class="link link-hover">Lessons</a>
+          <a class="link link-hover">Snippets</a>
+          <a class="link link-hover">Forum</a>
         </nav>
         <nav>
-          <h6 class="footer-title">Company</h6>
-          <a class="link link-hover">About us</a>
+          <h6 class="footer-title">Info</h6>
+          <a class="link link-hover">Schedule</a>
+          <a class="link link-hover">Blog</a>
+          <a class="link link-hover">News</a>
           <a class="link link-hover">Contact</a>
-          <a class="link link-hover">Jobs</a>
-          <a class="link link-hover">Press kit</a>
+        </nav>
+        <nav>
+          <h6 class="footer-title">Plus</h6>
+          <a class="link link-hover">Pricing</a>
+          <a class="link link-hover">Testimonials</a>
         </nav>
         <nav>
           <h6 class="footer-title">Legal</h6>
           <a class="link link-hover">Terms of use</a>
           <a class="link link-hover">Privacy policy</a>
           <a class="link link-hover">Cookie policy</a>
+          <a class="link link-hover">Sitemap</a>
         </nav>
         <form>
           <h6 class="footer-title">Newsletter</h6>

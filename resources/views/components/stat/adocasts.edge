@@ -1,4 +1,4 @@
-<div class="stats stats-lg">
+<div class="stats stats-vertical sm:stats-horizontal grid-cols-2 md:grid-cols-none stats-lg">
   @!stat.item({
     color: 'text-primary',
     icon: 'solar:video-library-bold-duotone',
@@ -12,7 +12,7 @@
     icon: 'solar:star-rainbow-bold-duotone',
     stat: '24k+',
     title: 'So Much Learned',
-    desc: 'Member Completed Lessons'
+    desc: '<span class="hidden lg:inline">Member</span> Completed Lessons'
   })
 
   @!stat.item({
