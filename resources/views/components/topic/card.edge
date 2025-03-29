@@ -3,7 +3,7 @@
 @if (size === 'lg')
 
   <div class="card card-sm relative overflow-hidden">
-    <div class="card-body items-center py-6 relative z-20 bg-gradient-to-b from-base-100/25 to-base-200 group radial-accent-t">
+    <div class="card-body items-center md:py-6 relative z-20 bg-gradient-to-b from-base-100/25 to-base-200 group radial-accent-t">
       <div class="avatar w-1/2 group-hover:scale-105 duration-200 relative">
         <div class="rounded-xl">
           <img src="/imgs/adonisjs.jpeg" alt="{{ topic.asset.altText ?? topic.name }}" class="relative z-10">
@@ -11,14 +11,14 @@
         </div>
       </div>
   
-      <div class="mt-3">
-        <h2 class="card-title text-2xl font-bold text-base-title justify-center">
+      <div class="mt-1.5 md:mt-3">
+        <h2 class="card-title text-lg md:text-2xl font-bold text-base-title justify-center">
           <a href="#" class="link-grow">
             {{ topic.name }}
           </a>
         </h2>
   
-        <div class="text-base opacity-60 flex items-center justify-center gap-4">
+        <div class="text-sm md:text-base opacity-60 flex flex-col md:flex-row items-center justify-center md:gap-4 mt-1.5 md:mt-0">
           @if (topic.meta.collections_count !== '0')
           <span>
             {{ topic.meta.collections_count }} series

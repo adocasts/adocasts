@@ -1,28 +1,32 @@
 @if (size == 'lg')
 
-  <div class="card card-side bg-gradient-to-b from-base-100 to-base-200 w-full overflow-hidden shadow-sm items-center hover:radial-accent-t">
-    <figure class="w-2/5 p-[var(--card-p,1.5rem)]">
-      <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md">
-    </figure>
-  
-    <div class="w-3/5 card-body">
-      <div class="flex items-center gap-3 mb-1.5">
+  <div class="card md:card-side bg-gradient-to-b from-base-100 to-base-200 w-full overflow-hidden shadow-sm items-center group hover:radial-accent-tl">
+    <div class="md:w-1/2 lg:w-2/5 pb-0 md:pb-[var(--card-p,1.5rem)] p-[var(--card-p,1.5rem)] md:pr-0">
+      <figure class="relative overflow-visible group-hover:scale-[102.5%] duration-200">
+        <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md relative z-10">
+        <img src="/imgs/thumbnail_01.jpg" alt="Shoes"
+          class="rounded-md absolute top-0 left-0 w-full h-full blur-lg opacity-75">
+      </figure>
+    </div>
+
+    <div class="md:w-1/2 lg:w-3/5 card-body">
+      <div class="flex items-center gap-3 lg:mb-1.5">
         @each (topic in post.topics)
           <div class="badge badge-soft badge-sm badge-primary">
             {{ topic.name }}
           </div>
         @endeach
-      
-        <div class="badge badge-sm badge-accent">NEW</div>
+
+        <div class="badge badge-xs lg:badge-sm badge-accent">NEW</div>
       </div>
 
-      <h2 class="card-title text-3xl max-w-[32ch] font-bold text-base-title mb-3">
+      <h2 class="card-title text-xl md:text-2xl lg:text-3xl max-w-[32ch] font-bold text-base-title lg:mb-3">
         <a href="#" class="link-grow">
           {{ post.title }}
         </a>
       </h2>
-  
-      <p class="line-clamp-5 text-lg mb-3">
+
+      <p class="line-clamp-5 md:line-clamp-3 lg:line-clamp-5 lg:text-lg mb-3">
         {{ post.description }}
       </p>
     </div>
@@ -30,25 +34,25 @@
 
 @else
 
-  <div class="card bg-base-100 w-96 overflow-hidden shadow-sm hover:radial-accent-t">
+  <div class="card bg-gradient-to-b from-base-100 to-base-200 w-68 md:w-76 lg:w-96 overflow-hidden shadow-sm group hover:radial-accent-t">
     <div class="card-body bg-gradient-to-b from-base-100 to-base-200">
-      <div class="flex items-center gap-3">
+      <div class="flex items-center justify-between gap-3">
         @each (topic in post.topics)
           <div class="badge badge-soft badge-sm badge-primary">
             {{ topic.name }}
           </div>
         @endeach
-      
+
         <div class="badge badge-xs badge-accent">NEW</div>
       </div>
 
-      <h2 class="card-title font-bold text-base-title">
+      <h2 class="card-title font-bold text-base-title text-base md:text-lg">
         <a href="#" class="link-grow">
           {{ post.title }}
         </a>
       </h2>
-  
-      <p class="line-clamp-3">
+
+      <p class="line-clamp-3 text-sm md:text-base">
         {{ post.description }}
       </p>
     </div>

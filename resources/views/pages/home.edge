@@ -50,7 +50,7 @@
     </div>
 
     <section class="section-container mx-auto relative z-[1]">
-      <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6">
+      <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6 max-lg:text-center">
         Learn one step at a time
       </h2>
 
@@ -87,11 +87,11 @@
       @let(featIds = [featTopic1.id, featTopic2.id, featTopic3.id, featTopic4.id])
       @let(otherTopics = topics.filter(topic => !featIds.includes(topic.id)))
 
-      <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6">
+      <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6 max-lg:text-center">
         Dive into a topic
       </h2>
 
-      <div class="grid grid-cols-4 gap-3 mb-3">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
         @!topic.card({ topic: featTopic1, size: 'lg' })
         @!topic.card({ topic: featTopic2, size: 'lg' })
         @!topic.card({ topic: featTopic3, size: 'lg' })
@@ -126,7 +126,7 @@
     </div>
 
     <section class="section-container mx-auto relative z-[1]">
-      <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6">
+      <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6 max-lg:text-center">
         Jump straight to the latest
       </h2>
 

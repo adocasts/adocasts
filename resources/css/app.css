@@ -134,6 +134,10 @@ body {
   }
 }
 
+.card-title {
+  --cardtitle-fs: 1.125rem;
+}
+
 a.link-grow {
   &:before {
     content: '';
@@ -176,7 +180,7 @@ a.link-grow {
     --padding-y: theme('spacing.24');
     --max-width: 64rem;
   }
-  
+
   @variant xl {
     --max-width: 80rem;
   }
@@ -357,7 +361,7 @@ a.link-grow {
 
 .faded-scroll-carousel {
   position: relative;
-  
+
   &:before,
   &:after {
     content: '';
@@ -652,10 +656,10 @@ a.link-grow {
 .group-hover\:radial-accent-tr {
   position: relative;
   overflow: hidden;
-  
+
   &:before {
     @apply top-0 left-0 z-20 absolute aspect-square pointer-events-none;
-    
+
     content: "";
     width: 100%;
     opacity: var(--opacity, 1);
@@ -666,7 +670,7 @@ a.link-grow {
       color-mix(in oklab, var(--color-primary) 0%, transparent)
     );
   }
-  
+
   &:after {
     @apply bg-gradient-to-r from-primary/0 from-[var(--offset-x-half,30%)] via-primary/30 to-primary/0;
 
@@ -686,7 +690,7 @@ a.link-grow {
   --height: 8px;
 
   position: relative;
-  
+
   &:before,
   &:after {
     @apply left-0 z-20 absolute pointer-events-none;
@@ -697,7 +701,7 @@ a.link-grow {
     border-top-right-radius: var(--radius-box);
     border-top-left-radius: var(--radius-box);
     background-image: linear-gradient(
-      to var(--direction), 
+      to var(--direction),
       color-mix(in oklab, var(--color) 3%, transparent) 0%,
       color-mix(in oklab, var(--color) 0%, transparent) 75%
     );
@@ -728,10 +732,17 @@ a.link-grow {
   }
 
   display: grid;
-  grid-auto-columns: calc(33.33% - (var(--gap) / 2));
+  grid-auto-columns: 100%;
   grid-template-rows: repeat(1, 1fr);
-  grid-template-areas: "area-1 area-2 area-2";
+  grid-template-areas:
+    "area-1"
+    "area-2";
   gap: var(--gap);
+
+  @variant lg {
+    grid-auto-columns: calc(33.33% - (var(--gap) / 2));
+    grid-template-areas: "area-1 area-2 area-2";
+  }
 
   .area-1 {
     grid-area: area-1;
@@ -741,8 +752,24 @@ a.link-grow {
       display: grid;
       height: 100%;
 
+      .card-body {
+        flex-direction: row;
+        gap: theme(spacing.6);
+
+        main,
+        aside {
+          flex: 1;
+        }
+
+        @variant lg {
+          flex-direction: column;
+        }
+      }
+
       aside {
-        @apply flex flex-col flex-1;
+        @variant md {
+          @apply flex flex-col;
+        }
       }
     }
   }
@@ -754,8 +781,12 @@ a.link-grow {
     gap: var(--gap);
 
     .card {
-      --width: 45%;
+      --width: 100%;
       width: calc(var(--width) - (var(--gap) / 2));
+
+      @variant md {
+        --width: 45%;
+      }
 
       main {
         display: flex;
@@ -767,7 +798,9 @@ a.link-grow {
 
     .card:nth-child(1),
     .card:nth-child(4) {
-      --width: 55%;
+      @variant md {
+        --width: 55%;
+      }
     }
   }
 
@@ -779,7 +812,7 @@ a.link-grow {
     }
 
     aside {
-      @apply hidden mt-6;
+      @apply hidden;
     }
 
     @variant lg {

@@ -1,32 +1,32 @@
 @if (size == 'lg')
 
-  <div class="card card-side bg-gradient-to-b from-base-100 to-base-200 w-full overflow-hidden shadow-sm items-center group hover:radial-accent-tl">
-    <div class="w-2/5 p-[var(--card-p,1.5rem)]">
+  <div class="card md:card-side bg-gradient-to-b from-base-100 to-base-200 w-full overflow-hidden shadow-sm items-center group hover:radial-accent-tl">
+    <div class="md:w-1/2 lg:w-2/5 pb-0 md:pb-[var(--card-p,1.5rem)] p-[var(--card-p,1.5rem)] md:pr-0">
       <figure class="relative overflow-visible group-hover:scale-[102.5%] duration-200">
         <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md relative z-10">
         <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md absolute top-0 left-0 w-full h-full blur-lg opacity-75">
       </figure>
     </div>
   
-    <div class="w-3/5 card-body">
-      <div class="flex items-center gap-6 mb-1.5">
-        <h6 class="text-uppercase tracking-wide flex items-center gap-3">
+    <div class="md:w-1/2 lg:w-3/5 card-body">
+      <div class="flex items-center gap-6 lg:mb-1.5">
+        <h6 class="text-xs md:text-sm lg:text-base flex items-center gap-3">
           <a href="#" class="font-black text-primary line-clamp-1">
             Building with AdonisJS & Inertia
           </a>
           <span class="opacity-60">#12.1</span>
         </h6>
       
-        <div class="badge badge-sm badge-accent">NEW</div>
+        <div class="badge badge-xs lg:badge-sm badge-accent">NEW</div>
       </div>
 
-      <h2 class="card-title text-3xl max-w-[32ch] font-bold text-base-title mb-3">
+      <h2 class="card-title text-xl md:text-2xl lg:text-3xl max-w-[32ch] font-bold text-base-title lg:mb-3">
         <a href="#" class="link-grow">
           {{ lesson.title }}
         </a>
       </h2>
   
-      <p class="line-clamp-5 text-lg mb-3">
+      <p class="line-clamp-5 md:line-clamp-3 lg:line-clamp-5 lg:text-lg mb-3">
         {{ lesson.description }}
       </p>
     </div>
@@ -34,7 +34,7 @@
 
 @else
 
-  <div class="card bg-gradient-to-b from-base-100 to-base-200 w-96 overflow-hidden shadow-sm group hover:radial-accent-t">
+  <div class="card bg-gradient-to-b from-base-100 to-base-200 w-68 md:w-76 lg:w-96 overflow-hidden shadow-sm group hover:radial-accent-t">
     <div class="p-[var(--card-p,1.5rem)] pb-0">
       <figure class="relative overflow-visible group-hover:scale-105 duration-200">
         <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md relative z-10">
@@ -44,7 +44,7 @@
   
     <div class="card-body bg-gradient-to-b from-base-100 to-base-200">
       <div class="flex items-center justify-between gap-3">
-        <h6 class="text-xs text-uppercase tracking-wide flex items-center gap-3">
+        <h6 class="text-xs flex items-center gap-3">
           <a href="#" class="font-black text-primary line-clamp-1">
             Building with AdonisJS & Inertia
           </a>
@@ -54,13 +54,13 @@
         <div class="badge badge-xs badge-accent">NEW</div>
       </div>
 
-      <h2 class="card-title font-bold text-base-title">
+      <h2 class="card-title font-bold text-base-title text-base md:text-lg">
         <a href="#" class="link-grow">
           {{ lesson.title }}
         </a>
       </h2>
   
-      <p class="line-clamp-3">
+      <p class="line-clamp-3 text-sm md:text-base">
         {{ lesson.description }}
       </p>
     </div>
