@@ -1,4 +1,4 @@
-import TaxonomyBuilder from '#builders/taxonomy_builder'
+import Taxonomy from '#models/taxonomy'
 import BaseTopicDto from '../../dtos/topics/base_topic.js'
 import cache from '@adonisjs/cache/services/main'
 
@@ -12,6 +12,6 @@ export default class GetTopics {
   }
 
   static async fromDb() {
-    return TaxonomyBuilder.new().display().order().dto(BaseTopicDto)
+    return Taxonomy.build().display().order().dto(BaseTopicDto)
   }
 }

@@ -25,8 +25,11 @@ import HistoryTypes from '#enums/history_types'
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 import SlugService from '#services/slug_service'
 import Progress from './progress.js'
+import CollectionBuilder from '#builders/collection_builder'
 
 export default class Collection extends BaseModel {
+  static build = () => CollectionBuilder.new()
+
   @column({ isPrimary: true })
   declare id: number
 

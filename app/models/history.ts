@@ -5,8 +5,11 @@ import HistoryTypes from '#enums/history_types'
 import Post from '#models/post'
 import Collection from '#models/collection'
 import Taxonomy from '#models/taxonomy'
+import HistoryBuilder from '#builders/history_builder'
 
 export default class History extends BaseModel {
+  static build = () => HistoryBuilder.new()
+
   @column({ isPrimary: true })
   declare id: number
 

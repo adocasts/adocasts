@@ -5,8 +5,11 @@ import User from '#models/user'
 import Comment from '#models/comment'
 import RequestPriorities from '#enums/request_priorities'
 import States, { StateDesc } from '#enums/states'
+import LessonRequestBuilder from '#builders/lesson_request_builder'
 
 export default class LessonRequest extends BaseModel {
+  static build = () => new LessonRequestBuilder()
+
   @column({ isPrimary: true })
   declare id: number
 

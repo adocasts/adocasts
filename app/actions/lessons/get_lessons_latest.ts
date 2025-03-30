@@ -1,4 +1,4 @@
-import PostBuilder from '#builders/post_builder'
+import Post from '#models/post'
 import BaseLessonDto from '../../dtos/lessons/base_lesson.js'
 
 type Options = {
@@ -15,11 +15,6 @@ export default class GetLessonsLatest {
   }
 
   static async fromDb({ limit = 12 }: Options = {}) {
-    return PostBuilder.new()
-      .display()
-      .whereLesson()
-      .orderPublished()
-      .limit(limit)
-      .dto(BaseLessonDto)
+    return Post.build().display().whereLesson().orderPublished().limit(limit).dto(BaseLessonDto)
   }
 }

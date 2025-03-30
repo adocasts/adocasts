@@ -2,7 +2,7 @@ import LessonRequestSorts from '#enums/lesson_request_sorts'
 import States from '#enums/states'
 import LessonRequest from '#models/lesson_request'
 
-export default class LessonRequestQueryBuilder {
+export default class LessonRequestBuilder {
   private limit: number | null = null
   protected query = LessonRequest.query()
 
@@ -22,11 +22,11 @@ export default class LessonRequestQueryBuilder {
     return this
   }
 
-  setSort(column: LessonRequestSorts | undefined): LessonRequestQueryBuilder
+  setSort(column: LessonRequestSorts | undefined): LessonRequestBuilder
   setSort(
     column: string | undefined,
     direction: 'asc' | 'desc' | undefined = 'desc'
-  ): LessonRequestQueryBuilder {
+  ): LessonRequestBuilder {
     const sorts = Object.values(LessonRequestSorts) as string[]
 
     if (!column) return this
@@ -67,4 +67,3 @@ export default class LessonRequestQueryBuilder {
     return this.query.if(this.limit, (query) => query.limit(this.limit!))
   }
 }
-

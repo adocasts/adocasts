@@ -20,8 +20,11 @@ import History from '#models/history'
 import HistoryTypes from '#enums/history_types'
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 import SlugService from '#services/slug_service'
+import TaxonomyBuilder from '#builders/taxonomy_builder'
 
 export default class Taxonomy extends BaseModel {
+  static build = () => TaxonomyBuilder.new()
+
   @column({ isPrimary: true })
   declare id: number
 

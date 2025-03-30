@@ -1,9 +1,9 @@
 import Status from '#enums/status'
 import router from '@adonisjs/core/services/router'
-import LessonRequestQueryBuilder from './lesson_request_builder.js'
+import LessonRequestBuilder from './lesson_request_builder.js'
 import States from '#enums/states'
 
-export default class LessonRequestPaginatedQueryBuilder extends LessonRequestQueryBuilder {
+export default class LessonRequestPaginatedBuilder extends LessonRequestBuilder {
   private perPage = 20
   private page: number = 1
   private baseUrl: string

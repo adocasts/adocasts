@@ -3,8 +3,11 @@ import { BaseModel, belongsTo, column, computed } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import Collection from './collection.js'
 import Post from './post.js'
+import ProgressBuilder from '#builders/progress_builder'
 
 export default class Progress extends BaseModel {
+  static build = () => ProgressBuilder.new()
+
   @column({ isPrimary: true })
   declare id: number
 

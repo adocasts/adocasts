@@ -35,8 +35,11 @@ import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 import PostCaption from './post_caption.js'
 import PostChapter from './post_chapter.js'
 import Progress from './progress.js'
+import PostBuilder from '#builders/post_builder'
 
 export default class Post extends BaseModel {
+  static build = () => PostBuilder.new()
+
   serializeExtras = true
 
   @column({ isPrimary: true })
@@ -594,9 +597,9 @@ export default class Post extends BaseModel {
         orderBy,
         direction,
       }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order'; direction: 'asc' | 'desc' } = {
-          orderBy: 'pivot_sort_order',
-          direction: 'asc',
-        }
+        orderBy: 'pivot_sort_order',
+        direction: 'asc',
+      }
     ) => {
       query.apply((s) => s.forDisplay()).orderBy(orderBy, direction)
     }
@@ -612,9 +615,9 @@ export default class Post extends BaseModel {
         orderBy,
         direction,
       }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order'; direction: 'asc' | 'desc' } = {
-          orderBy: 'pivot_sort_order',
-          direction: 'asc',
-        }
+        orderBy: 'pivot_sort_order',
+        direction: 'asc',
+      }
     ) => {
       query.apply((s) => s.forPathDisplay()).orderBy(orderBy, direction)
     }

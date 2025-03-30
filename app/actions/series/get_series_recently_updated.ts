@@ -1,4 +1,4 @@
-import CollectionBuilder from '#builders/collection_builder'
+import Collection from '#models/collection'
 import BaseLessonDto from '../../dtos/lessons/base_lesson.js'
 import BaseSeriesDto from '../../dtos/series/base_series.js'
 import cache from '@adonisjs/cache/services/main'
@@ -20,7 +20,7 @@ export default class GetSeriesRecentlyUpdated {
   }
 
   static async fromDb(options?: Options) {
-    return CollectionBuilder.new()
+    return Collection.build()
       .series()
       .orderLatestUpdated()
       .withPostCount()
