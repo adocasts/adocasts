@@ -154,20 +154,14 @@ a.link-grow {
   padding-left: 1rem;
 }
 
+.container-vars,
 .section-container {
   --radius: theme('borderRadius.lg');
   --padding-x: theme('spacing.6');
   --padding-y: theme('spacing.9');
 
-  width: 100%;
-  padding-top: var(--padding-y);
-  padding-bottom: var(--padding-y);
-  padding-right: var(--padding-x);
-  padding-left: var(--padding-x);
-
   @variant sm {
     --max-width: 40rem;
-    max-width: calc(var(--max-width) + (var(--padding-x) * 2));
   }
 
   @variant md {
@@ -187,6 +181,18 @@ a.link-grow {
 
   @variant 2xl {
     --max-width: 96rem;
+  }
+}
+
+.section-container {
+  width: 100%;
+  padding-top: var(--padding-y);
+  padding-bottom: var(--padding-y);
+  padding-right: var(--padding-x);
+  padding-left: var(--padding-x);
+
+  @variant sm {
+    max-width: calc(var(--max-width) + (var(--padding-x) * 2));
   }
 }
 
@@ -833,6 +839,12 @@ a.link-grow {
   display: flex;
   flex-direction: column;
 
+  .card {
+    @variant lg {
+      --tw-gradient-position: to right in oklab;
+    }
+  }
+
   .card-body {
     @variant lg {
       flex-direction: row;
@@ -840,7 +852,7 @@ a.link-grow {
 
       main {
         width: 60%;
-        min-height: 12rem;
+        min-height: 14rem;
 
         .card-title {
           font-size: theme(fontSize.2xl);
@@ -853,6 +865,10 @@ a.link-grow {
 
       aside {
         width: 40%;
+
+        ul {
+          max-height: calc(100cqh - 1rem);
+        }
       }
     }
   }

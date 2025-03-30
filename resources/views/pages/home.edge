@@ -81,21 +81,19 @@
       @!topic.card({ topic: featTopic4, size: 'lg' })
     </div>
 
-    <div x-data="carousel" class="faded-scroll-carousel to-base-300" :style="overflowStyle">
-      <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
-        @utils.chunk({ data: otherTopics, size: 3 })
-          @slot('main', state)
-            <div class="carousel-item">
-              <div class="flex flex-col gap-3">
-                @each (topic in state.chunk)
-                  @!topic.card({ topic, size: 'sm' })
-                @endeach
-              </div>
+    @carousel({ class: 'to-base-300' })
+      @utils.chunk({ data: otherTopics, size: 3 })
+        @slot('main', state)
+          <div class="carousel-item">
+            <div class="flex flex-col gap-3">
+              @each (topic in state.chunk)
+              @!topic.card({ topic, size: 'sm' })
+              @endeach
             </div>
-          @endslot
-        @end
-      </div>
-    </div>
+          </div>
+        @endslot
+      @end
+    @end
   </section>
 
   <div class="container mx-auto relative">
@@ -118,43 +116,37 @@
       @!lesson.card({ lesson: featuredLesson, size: 'lg' })
     </div>
 
-    <div x-data="carousel" class="faded-scroll-carousel to-base-300 mb-6" :style="overflowStyle">
-      <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
-        @each (lesson in otherLessons)
-          <div class="carousel-item">
-            @!lesson.card({ lesson })
-          </div>
-        @endeach
-      </div>
-    </div>
+    @carousel({ class: 'to-base-300 mb-6' })
+      @each (lesson in otherLessons)
+        <div class="carousel-item">
+          @!lesson.card({ lesson })
+        </div>
+      @endeach
+    @end
 
     <h4 class="heading-4">
       Latest blog posts  
     </h4>
 
-    <div x-data="carousel" class="faded-scroll-carousel to-base-300 mb-6" :style="overflowStyle">
-      <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
-        @each (post in otherLessons)
-          <div class="carousel-item">
-            @!post.card({ post })
-          </div>
-        @endeach
-      </div>
-    </div>
+    @carousel({ class: 'to-base-300 mb-6' })
+      @each (post in otherLessons)
+        <div class="carousel-item">
+          @!post.card({ post })
+        </div>
+      @endeach
+    @end
 
     <h4 class="heading-4">
       Latest news
     </h4>
 
-    <div x-data="carousel" class="faded-scroll-carousel to-base-300" :style="overflowStyle">
-      <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
-        @each (post in otherLessons)
-          <div class="carousel-item">
-            @!post.card({ post })
-          </div>
-        @endeach
-      </div>
-    </div>
+    @carousel({ class: 'to-base-300' })
+      @each (post in otherLessons)
+        <div class="carousel-item">
+          @!post.card({ post })
+        </div>
+      @endeach
+    @end
   </section>
 
   <div class="container mx-auto relative">

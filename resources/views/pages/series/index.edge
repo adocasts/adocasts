@@ -8,17 +8,13 @@
           Recently updated series
         </h2>
       </div>
-      <div x-data="carousel" class="faded-scroll-carousel to-base-200/50 mb-6" :style="overflowStyle">
-        <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
-          <div class="carousel-item w-[calc((100%_-_80rem)_/_2)]"></div>
-          @each (item in latest)
-            <div class="carousel-item w-92">
-              @!series.card({ series: item })
-            </div>
-          @endeach
-          <div class="carousel-item w-[calc((100%_-_80rem)_/_2)]"></div>
-        </div>
-      </div>
+      @carousel.viewport({ class: 'to-base-200/50 mb-6' })
+        @each (item in latest)
+          <div class="carousel-item w-92">
+            @!series.card({ series: item })
+          </div>
+        @endeach
+      @end
     </section>
   </div>
 
@@ -28,44 +24,46 @@
     </h1>
     <div class="flex flex-wrap gap-3 lg:gap-6">
       <aside class="w-full md:w-[300px]">
-        <div class="mb-3 md:mb-6">
-          <div class="font-bold text-sm mb-3">Order by</div>
-          <select class="select">
-            <option>Latest</option>
-            <option>Popular</option>
-            <option>Alphabetical</option>
-            <option>Longest duration</option>
-          </select>
-        </div>
-
-        <div class="mb-3 md:mb-6">
-          <div class="font-bold text-sm mb-3">Filter by difficulty</div>
-          <div class="filter">
-            <input class="btn filter-reset" type="radio" name="topics" aria-label="All"/>
-            <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="difficulties" aria-label="Easy">
-            <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="difficulties" aria-label="Intermediate">
-            <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="difficulties" aria-label="Hard">
+        <form>
+          <div class="mb-3 md:mb-6">
+            <div class="font-bold text-sm mb-3">Order by</div>
+            <select class="select">
+              <option>Latest</option>
+              <option>Popular</option>
+              <option>Alphabetical</option>
+              <option>Longest duration</option>
+            </select>
           </div>
-        </div>
-
-        <div class="mb-3 md:mb-6">
-          <div class="font-bold text-sm mb-3">Filter by access</div>
-          <div class="filter">
-            <input class="btn filter-reset" type="radio" name="topics" aria-label="All"/>
-            <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="difficulties" aria-label="Free">
-            <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="difficulties" aria-label="Adocasts Plus">
+          
+          <div class="mb-3 md:mb-6">
+            <div class="font-bold text-sm mb-3">Filter by difficulty</div>
+            <div class="filter">
+              <input class="btn filter-reset" type="radio" name="topics" aria-label="All" />
+              <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="difficulties" value="easy" aria-label="Easy">
+              <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="difficulties" value="intermediate" aria-label="Intermediate">
+              <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="difficulties" value="hard" aria-label="Hard">
+            </div>
           </div>
-        </div>
-
-        <div class="mb-3 md:mb-6">
-          <div class="font-bold text-sm mb-3">Filter by topic</div>
-          <div class="filter">
-            <input class="btn filter-reset" type="radio" name="topics" aria-label="All"/>
-            @each (topic in topics)
-              <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="topics" aria-label="{{ topic.name }}">
-            @endeach
+          
+          {{-- <div class="mb-3 md:mb-6">
+            <div class="font-bold text-sm mb-3">Filter by access</div>
+            <div class="filter">
+              <input class="btn filter-reset" type="radio" name="topics" aria-label="All" />
+              <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="access" value="free" aria-label="Free">
+              <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="access" value="plus" aria-label="Adocasts Plus">
+            </div>
+          </div> --}}
+          
+          <div class="mb-3 md:mb-6">
+            <div class="font-bold text-sm mb-3">Filter by topic</div>
+            <div class="filter">
+              <input class="btn filter-reset" type="radio" name="topics" aria-label="All" />
+              @each (topic in topics)
+                <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="topics" value="{{ topic.slug }}" aria-label="{{ topic.name }}">
+              @endeach
+            </div>
           </div>
-        </div>
+        </form>
       </aside>
 
       <main class="gap-3 lg:gap-6 flex-1 series-list">

@@ -7,11 +7,7 @@ export default class HomeController {
   async handle({ view }: HttpContext) {
     const topics = await GetTopics.fromCache()
     const lessons = await GetLessonsLatest.fromCache()
-    const series = await GetSeriesRecentlyUpdated.fromCache({
-      withPosts: true,
-      limit: 5,
-      postLimit: 5,
-    })
+    const series = await GetSeriesRecentlyUpdated.fromCache({ limit: 5 })
 
     return view.render('pages/home', { series, topics, lessons })
   }

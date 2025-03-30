@@ -15,7 +15,7 @@
   
   @if (stat)
     <div class="flex items-center stat-value-group gap-3">
-      <div class="stat-value bg-gradient-to-b from-white via-base-content to-base-content/75 bg-clip-text text-transparent">{{ stat }}</div>
+      <div class="stat-value bg-gradient-to-b bg-primary from-white via-base-content to-base-content/50 bg-clip-text text-transparent">{{ stat }}</div>
       @if(icon)
         <div class="stat-figure lg:hidden {{ color }}">
           @svg(icon, {

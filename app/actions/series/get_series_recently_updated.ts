@@ -1,7 +1,6 @@
-import Collection from '#models/collection'
-import BaseLessonDto from '../../dtos/lessons/base_lesson.js'
 import BaseSeriesDto from '../../dtos/series/base_series.js'
 import cache from '@adonisjs/cache/services/main'
+import GetSeries, { FromDbOptions } from './get_series.js'
 
 interface Options {
   withPosts?: boolean
@@ -11,28 +10,19 @@ interface Options {
 }
 
 export default class GetSeriesRecentlyUpdated {
-  static async fromCache(options?: Options) {
-    const results = await this.fromDb(options)
+  static async fromCache(options?: Pick<Options, 'limit'>) {
+    const results = await this.fromDb({
+      limit: options?.limit,
+      withPosts: true,
+      postLimit: 5,
+    })
 
     // TODO: cache
 
     return results
   }
 
-  static async fromDb(options?: Options) {
-    return Collection.build()
-      .series()
-      .orderLatestUpdated()
-      .withPostCount()
-      .withTotalMinutes()
-      .withTaxonomies({ withAsset: true, limit: 1 })
-      .if(options?.limit, (builder) => builder.limit(options!.limit!))
-      .if(options?.excludeIds, (builder) => builder.exclude(options!.excludeIds!))
-      .if(options?.withPosts, (builder) =>
-        builder.withPostsFlat((query) => query.selectDto(BaseLessonDto), {
-          limit: options?.postLimit,
-        })
-      )
-      .dto(BaseSeriesDto)
+  static async fromDb(options?: FromDbOptions) {
+    return GetSeries.fromDb(options).orderLatestUpdated().dto(BaseSeriesDto)
   }
 }

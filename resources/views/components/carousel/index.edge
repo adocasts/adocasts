@@ -1,0 +1,5 @@
+<div x-data="carousel" class="faded-scroll-carousel {{ $props.class || '' }}" :style="overflowStyle">
+  <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
+    {{{ await $slots.main() }}}
+  </div>
+</div>

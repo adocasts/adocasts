@@ -1,0 +1,9 @@
+<div x-data="carousel" class="container-vars faded-scroll-carousel {{ $props.class || '' }}" :style="overflowStyle">
+  <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
+    <div class="carousel-item w-[calc((100%_-_var(--max-width))_/_2)]"></div>
+    
+    {{{ await $slots.main() }}}
+    
+    <div class="carousel-item w-[calc((100%_-_80rem)_/_2)]"></div>
+  </div>
+</div>
