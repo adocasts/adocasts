@@ -1,0 +1,41 @@
+@layout()
+  
+  <div class="bg-base-200/50 relative overflow-hidden">
+    <div class="absolute left-0 bottom-0 w-full h-full bg-radial-[at_50%_-150%] from-primary/50 to-primary/0"></div>
+    <section class="py-12 mx-auto relative z-[1]">
+      <div class="container mx-auto">
+        <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6 max-lg:text-center">
+          Recently updated series
+        </h2>
+      </div>
+      <div x-data="carousel" class="faded-scroll-carousel to-base-200/50 mb-6" :style="overflowStyle">
+        <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
+          <div class="carousel-item w-[calc((100%_-_80rem)_/_2)]"></div>
+          @each (item in latest)
+            <div class="carousel-item w-92">
+              @!series.card({ series: item })
+            </div>
+          @endeach
+          <div class="carousel-item w-[calc((100%_-_80rem)_/_2)]"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="section-container mx-auto relative z-[1]">
+    <h1 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6 max-lg:text-center">
+      Series
+    </h1>
+    <div class="flex flex-wrap gap-3 lg:gap-6">
+      <aside class="w-full md:w-[300px]">
+
+      </aside>
+      <main class="gap-3 lg:gap-6 flex-1 series-list">
+        @each (item in series)
+          @!series.card({ series: item, showLessons: true })
+        @endeach
+      </main>
+    </div>
+  </section>
+
+@end

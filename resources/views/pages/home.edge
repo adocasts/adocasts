@@ -1,236 +1,174 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>
-      AdonisJS - A fully featured web framework for Node.js
-    </title>
+@layout()
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+  <section class="relative z-[2]">
+    @!hero.getShipDone()
+  </section>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @stack('dumper')
-  </head>
-  <body data-theme="adocasts-dark">
-    @!header()
-    
-    <section class="relative z-[2]">
-      @!hero.getShipDone()
-    </section>
+  <section class="mb-24 pb-8 pt-24 -mt-8 bg-gradient-to-b from-base-300 to-base-200 relative z-[1]">
+    <div class="container mx-auto flex flex-col items-center">
+      @if (auth.user)
+        <h3 class="heading-3">
+          Here's What You've Been Up To!
+        </h3>
 
-    <section class="mb-24 pb-8 pt-24 -mt-8 bg-gradient-to-b from-base-300 to-base-200 relative z-[1]">
-      <div class="container mx-auto flex flex-col items-center">
-        @if (auth.user)
-          <h3 class="heading-3">
-            Here's What You've Been Up To!
-          </h3>
+        @!stat.user()
+      @else
+        <h3 class="text-2xl font-black mb-3">
+          We'll Be Here When You're Ready!
+        </h3>
+        
+        @!stat.adocasts()
+      @endif
+    </div>
+  </section>
 
-          @!stat.user()
-        @else
-          <h3 class="text-2xl font-black mb-3">
-            We'll Be Here When You're Ready!
-          </h3>
-          
-          @!stat.adocasts()
-        @endif
+  <div class="container mx-auto relative">
+    <div class="absolute bottom-3/4 -left-32 translate-y-3/4 w-3/4 apsect-3/2 faded-pattern-br to-base-300">
+      <img 
+        src="/imgs/patterns/pattern_01.svg" 
+        alt="Background pattern" 
+        class="object-contain object-center grayscale rotate-180 opacity-10"
+      >
+    </div>
+  </div>
+
+  <section class="section-container mx-auto relative z-[1]">
+    <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6 max-lg:text-center">
+      Learn one step at a time
+    </h2>
+
+    <div class="series-bento">
+      @let([firstSeries, ...otherSeries] = series)
+
+      <div class="area-1">
+        @!series.card({ series: firstSeries, showLessons: true })
       </div>
-    </section>
 
-    <div class="container mx-auto relative">
-      <div class="absolute bottom-3/4 -left-32 translate-y-3/4 w-3/4 apsect-3/2 faded-pattern-br faded-to-base-300">
-        <img 
-          src="/imgs/patterns/pattern_01.svg" 
-          alt="Background pattern" 
-          class="object-contain object-center grayscale rotate-180 opacity-10"
-        >
+      <div class="area-2">
+        @each ((item, index) in otherSeries)
+          @!series.card({ series: item })
+        @endeach
       </div>
     </div>
+  </section>
 
-    <section class="section-container mx-auto relative z-[1]">
-      <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6 max-lg:text-center">
-        Learn one step at a time
-      </h2>
+  <div class="container mx-auto relative">
+    <div class="absolute bottom-3/4 left-1/2 -translate-x-1/2 translate-y-3/4 w-3/4 apsect-3/2 faded-pattern-x to-base-300">
+      <img 
+        src="/imgs/patterns/pattern_01.svg" 
+        alt="Background pattern" 
+        class="object-contain object-center grayscale opacity-10"
+      >
+    </div>
+  </div>
 
-      <div class="series-bento">
-        @let([firstSeries, ...otherSeries] = series)
+  <section class="section-container mx-auto relative z-[1]">
+    @let(featTopic1 = topics.find(topic => topic.name === 'AdonisJS'))
+    @let(featTopic2 = topics.find(topic => topic.name === 'EdgeJS'))
+    @let(featTopic3 = topics.find(topic => topic.name === 'Lucid'))
+    @let(featTopic4 = topics.find(topic => topic.name === 'Authentication'))
+    @let(featIds = [featTopic1.id, featTopic2.id, featTopic3.id, featTopic4.id])
+    @let(otherTopics = topics.filter(topic => !featIds.includes(topic.id)))
 
-        <div class="area-1">
-          @!series.card({ series: firstSeries, showLessons: true })
-        </div>
+    <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6 max-lg:text-center">
+      Dive into a topic
+    </h2>
 
-        <div class="area-2">
-          @each ((item, index) in otherSeries)
-            @!series.card({ series: item })
-          @endeach
-        </div>
-      </div>
-    </section>
-
-    <div class="container mx-auto relative">
-      <div class="absolute bottom-3/4 left-1/2 -translate-x-1/2 translate-y-3/4 w-3/4 apsect-3/2 faded-pattern-x faded-to-base-300">
-        <img 
-          src="/imgs/patterns/pattern_01.svg" 
-          alt="Background pattern" 
-          class="object-contain object-center grayscale opacity-10"
-        >
-      </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+      @!topic.card({ topic: featTopic1, size: 'lg' })
+      @!topic.card({ topic: featTopic2, size: 'lg' })
+      @!topic.card({ topic: featTopic3, size: 'lg' })
+      @!topic.card({ topic: featTopic4, size: 'lg' })
     </div>
 
-    <section class="section-container mx-auto relative z-[1]">
-      @let(featTopic1 = topics.find(topic => topic.name === 'AdonisJS'))
-      @let(featTopic2 = topics.find(topic => topic.name === 'EdgeJS'))
-      @let(featTopic3 = topics.find(topic => topic.name === 'Lucid'))
-      @let(featTopic4 = topics.find(topic => topic.name === 'Authentication'))
-      @let(featIds = [featTopic1.id, featTopic2.id, featTopic3.id, featTopic4.id])
-      @let(otherTopics = topics.filter(topic => !featIds.includes(topic.id)))
-
-      <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6 max-lg:text-center">
-        Dive into a topic
-      </h2>
-
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
-        @!topic.card({ topic: featTopic1, size: 'lg' })
-        @!topic.card({ topic: featTopic2, size: 'lg' })
-        @!topic.card({ topic: featTopic3, size: 'lg' })
-        @!topic.card({ topic: featTopic4, size: 'lg' })
-      </div>
-
-      <div x-data="carousel" class="faded-scroll-carousel faded-to-base-300" :style="overflowStyle">
-        <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
-          @utils.chunk({ data: otherTopics, size: 3 })
-            @slot('main', state)
-              <div class="carousel-item">
-                <div class="flex flex-col gap-3">
-                  @each (topic in state.chunk)
-                    @!topic.card({ topic, size: 'sm' })
-                  @endeach
-                </div>
+    <div x-data="carousel" class="faded-scroll-carousel to-base-300" :style="overflowStyle">
+      <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
+        @utils.chunk({ data: otherTopics, size: 3 })
+          @slot('main', state)
+            <div class="carousel-item">
+              <div class="flex flex-col gap-3">
+                @each (topic in state.chunk)
+                  @!topic.card({ topic, size: 'sm' })
+                @endeach
               </div>
-            @endslot
-          @end
-        </div>
+            </div>
+          @endslot
+        @end
       </div>
-    </section>
+    </div>
+  </section>
 
-    <div class="container mx-auto relative">
-      <div class="absolute bottom-3/4 -right-48 translate-y-1/2 w-3/4 apsect-3/2 faded-pattern faded-to-base-300">
-        <img 
-          src="/imgs/patterns/pattern_01.svg" 
-          alt="Background pattern" 
-          class="object-contain object-center grayscale opacity-10"
-        >
+  <div class="container mx-auto relative">
+    <div class="absolute bottom-3/4 -right-48 translate-y-1/2 w-3/4 apsect-3/2 faded-pattern to-base-300">
+      <img 
+        src="/imgs/patterns/pattern_01.svg" 
+        alt="Background pattern" 
+        class="object-contain object-center grayscale opacity-10"
+      >
+    </div>
+  </div>
+
+  <section class="section-container mx-auto relative z-[1]">
+    <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6 max-lg:text-center">
+      Jump straight to the latest
+    </h2>
+
+    @let([featuredLesson, ...otherLessons] = lessons)
+    <div class="w-full mb-6">
+      @!lesson.card({ lesson: featuredLesson, size: 'lg' })
+    </div>
+
+    <div x-data="carousel" class="faded-scroll-carousel to-base-300 mb-6" :style="overflowStyle">
+      <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
+        @each (lesson in otherLessons)
+          <div class="carousel-item">
+            @!lesson.card({ lesson })
+          </div>
+        @endeach
       </div>
     </div>
 
-    <section class="section-container mx-auto relative z-[1]">
-      <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6 max-lg:text-center">
-        Jump straight to the latest
-      </h2>
+    <h4 class="heading-4">
+      Latest blog posts  
+    </h4>
 
-      @let([featuredLesson, ...otherLessons] = lessons)
-      <div class="w-full mb-6">
-        @!lesson.card({ lesson: featuredLesson, size: 'lg' })
-      </div>
-
-      <div x-data="carousel" class="faded-scroll-carousel faded-to-base-300 mb-6" :style="overflowStyle">
-        <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
-          @each (lesson in otherLessons)
-            <div class="carousel-item">
-              @!lesson.card({ lesson })
-            </div>
-          @endeach
-        </div>
-      </div>
-
-      <h4 class="heading-4">
-        Latest blog posts  
-      </h4>
-
-      <div x-data="carousel" class="faded-scroll-carousel faded-to-base-300 mb-6" :style="overflowStyle">
-        <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
-          @each (post in otherLessons)
-            <div class="carousel-item">
-              @!post.card({ post })
-            </div>
-          @endeach
-        </div>
-      </div>
-
-      <h4 class="heading-4">
-        Latest news
-      </h4>
-
-      <div x-data="carousel" class="faded-scroll-carousel faded-to-base-300" :style="overflowStyle">
-        <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
-          @each (post in otherLessons)
-            <div class="carousel-item">
-              @!post.card({ post })
-            </div>
-          @endeach
-        </div>
-      </div>
-    </section>
-
-    <div class="container mx-auto relative">
-      <div class="absolute bottom-3/4 -left-32 translate-y-3/4 w-3/4 apsect-3/2 faded-pattern faded-to-base-300">
-        <img 
-          src="/imgs/patterns/pattern_01.svg" 
-          alt="Background pattern" 
-          class="object-contain object-center grayscale rotate-180 opacity-10"
-        >
+    <div x-data="carousel" class="faded-scroll-carousel to-base-300 mb-6" :style="overflowStyle">
+      <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
+        @each (post in otherLessons)
+          <div class="carousel-item">
+            @!post.card({ post })
+          </div>
+        @endeach
       </div>
     </div>
 
-    <section class="pt-24 mx-auto relative z-[1]">
-      @!pricing.hero()
-    </section>
+    <h4 class="heading-4">
+      Latest news
+    </h4>
 
-    <footer class="bg-base-200 text-base-content p-10">
-      <div class="footer sm:footer-horizontal container mx-auto">
-        <nav>
-          <h6 class="footer-title">Content</h6>
-          <a class="link link-hover">Series</a>
-          <a class="link link-hover">Topics</a>
-          <a class="link link-hover">Lessons</a>
-          <a class="link link-hover">Snippets</a>
-          <a class="link link-hover">Forum</a>
-        </nav>
-        <nav>
-          <h6 class="footer-title">Info</h6>
-          <a class="link link-hover">Schedule</a>
-          <a class="link link-hover">Blog</a>
-          <a class="link link-hover">News</a>
-          <a class="link link-hover">Contact</a>
-        </nav>
-        <nav>
-          <h6 class="footer-title">Plus</h6>
-          <a class="link link-hover">Pricing</a>
-          <a class="link link-hover">Testimonials</a>
-        </nav>
-        <nav>
-          <h6 class="footer-title">Legal</h6>
-          <a class="link link-hover">Terms of use</a>
-          <a class="link link-hover">Privacy policy</a>
-          <a class="link link-hover">Cookie policy</a>
-          <a class="link link-hover">Sitemap</a>
-        </nav>
-        <form>
-          <h6 class="footer-title">Newsletter</h6>
-          <fieldset class="w-80">
-            <label>Enter your email address</label>
-            <div class="join">
-              <input
-                type="text"
-                placeholder="username@site.com"
-                class="input input-bordered join-item" />
-              <button class="btn btn-primary join-item">Subscribe</button>
-            </div>
-          </fieldset>
-        </form>
+    <div x-data="carousel" class="faded-scroll-carousel to-base-300" :style="overflowStyle">
+      <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
+        @each (post in otherLessons)
+          <div class="carousel-item">
+            @!post.card({ post })
+          </div>
+        @endeach
       </div>
-    </footer>
-  </body>
-</html>
+    </div>
+  </section>
+
+  <div class="container mx-auto relative">
+    <div class="absolute bottom-3/4 -left-32 translate-y-3/4 w-3/4 apsect-3/2 faded-pattern to-base-300">
+      <img 
+        src="/imgs/patterns/pattern_01.svg" 
+        alt="Background pattern" 
+        class="object-contain object-center grayscale rotate-180 opacity-10"
+      >
+    </div>
+  </div>
+
+  <section class="pt-24 mx-auto relative z-[1]">
+    @!pricing.hero()
+  </section>
+
+@end

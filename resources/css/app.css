@@ -245,11 +245,9 @@ a.link-grow {
   transform: translate(-50%, -50%);
 }
 
-@utility faded-to-* {
-  --end: --value(--color-*);
-}
-
 .faded-pattern-br {
+  --end: var(--tw-gradient-to);
+  
   &:before,
   &:after {
     content: "";
@@ -268,6 +266,8 @@ a.link-grow {
 }
 
 .faded-pattern-bl {
+  --end: var(--tw-gradient-to);
+
   &:before,
   &:after {
     content: "";
@@ -286,6 +286,8 @@ a.link-grow {
 }
 
 .faded-pattern-x {
+  --end: var(--tw-gradient-to);
+
   &:before,
   &:after {
     content: "";
@@ -304,6 +306,8 @@ a.link-grow {
 }
 
 .faded-pattern {
+  --end: var(--tw-gradient-to);
+
   &:before,
   &:after {
     content: "";
@@ -322,6 +326,8 @@ a.link-grow {
 }
 
 .faded-scroll-y {
+  --end: var(--tw-gradient-to);
+
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -360,6 +366,8 @@ a.link-grow {
 }
 
 .faded-scroll-carousel {
+  --end: var(--tw-gradient-to);
+
   position: relative;
 
   &:before,
@@ -817,6 +825,35 @@ a.link-grow {
 
     @variant lg {
       @apply p-3;
+    }
+  }
+}
+
+.series-list {
+  display: flex;
+  flex-direction: column;
+
+  .card-body {
+    @variant lg {
+      flex-direction: row;
+      gap: theme(spacing.12);
+
+      main {
+        width: 60%;
+        min-height: 12rem;
+
+        .card-title {
+          font-size: theme(fontSize.2xl);
+        }
+
+        p {
+          font-size: theme(fontSize.base);
+        }
+      }
+
+      aside {
+        width: 40%;
+      }
     }
   }
 }
