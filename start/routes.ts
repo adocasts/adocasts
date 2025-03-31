@@ -7,8 +7,8 @@
 |
 */
 
-const HomeController = () => import('#controllers/home_controller')
-const SeriesController = () => import('#controllers/series_controller')
+const HomeController = () => import('#core/controllers/home_controller')
+const SeriesController = () => import('#collection/controllers/series_controller')
 import router from '@adonisjs/core/services/router'
 
 router.where('slug', router.matchers.slug())
