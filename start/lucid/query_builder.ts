@@ -1,5 +1,5 @@
 import { LucidRow } from '@adonisjs/lucid/types/model'
-import BaseModelDto, { StaticModelDto } from '../../app/dtos/base_model_dto.js'
+import BaseModelDto, { StaticModelDto } from '#core/dtos/base_model_dto'
 import { ModelQueryBuilder } from '@adonisjs/lucid/orm'
 
 declare module '@adonisjs/lucid/orm' {
