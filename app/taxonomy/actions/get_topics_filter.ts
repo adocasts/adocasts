@@ -10,7 +10,7 @@ export default class GetTopicsFilter {
   }
 
   static async #get(countField: string) {
-    const topics = await GetTopics.fromCache()
+    const topics = await GetTopics.run()
     return topics.filter((topic) => Number(topic.meta[countField] || '0'))
   }
 }

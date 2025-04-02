@@ -1,6 +1,7 @@
 import BaseSeriesDto from '#collection/dtos/base_series'
 import Collection from '#collection/models/collection'
 import { seriesIndexValidator } from '#collection/validators/series'
+import CacheableAction from '#core/actions/cacheable_action'
 import NotImplementedException from '#core/exceptions/not_implemented_exception'
 import BaseLessonDto from '#post/dtos/base_lesson'
 import { Infer } from '@vinejs/vine/types'
@@ -8,21 +9,21 @@ import _ from 'lodash'
 
 type Validator = Infer<typeof seriesIndexValidator>
 
-interface FromCacheOptions {
+interface CacheOptions {
   sort?: Validator['sort']
   topic?: Validator['topic']
 }
 
-export interface FromDbOptions {
+export interface DbOptions {
   withPosts?: boolean
   excludeIds?: number[]
   limit?: number
   postLimit?: number
 }
 
-export default class GetSeries {
-  static async fromCache(options?: FromCacheOptions) {
-    let series = await this.fromDb().dto(BaseSeriesDto)
+export default class GetSeries extends CacheableAction<CacheOptions, DbOptions> {
+  async fromCache(options?: CacheOptions) {
+    let series = await this.fromDb({ withPosts: true, postLimit: 5 }).dto(BaseSeriesDto)
 
     // todo: cache
 
@@ -33,7 +34,7 @@ export default class GetSeries {
     return this.#applySort(series, options?.sort)
   }
 
-  static fromDb(options?: FromDbOptions) {
+  fromDb(options?: DbOptions) {
     return Collection.build()
       .series()
       .withPostCount()
@@ -48,7 +49,7 @@ export default class GetSeries {
       )
   }
 
-  static #applySort(series: BaseSeriesDto[], sort?: Validator['sort']) {
+  #applySort(series: BaseSeriesDto[], sort?: Validator['sort']) {
     switch (sort) {
       case 'latest':
         return _.orderBy(series, (item) => item.lessons?.at(0)?.publishAt, ['desc'])

@@ -13,15 +13,17 @@ export default class RenderSeriesIndex extends BaseAction<[number, string]> {
     return true
   }
 
-  async handle(id: number, name: string): Promise<string> {
+  async handle(id: number, name: string) {
     return `ID: ${id}, Name: ${name}`
   }
 
-  async asController({ view }: HttpContext, filters: Infer<typeof this.validator>) {
-    const latest = await GetSeriesRecentlyUpdated.fromCache({ limit: 5 })
+  async asController({ view }: HttpContext, _filters: Infer<typeof this.validator>) {
+    const latest = await GetSeriesRecentlyUpdated.run('db', { limit: 5 })
     const topics = await GetTopicsFilter.forCollections()
-    const series = await GetSeries.fromCache(filters)
+    const series = await GetSeries.run()
 
     return view.render('pages/series/index', { latest, series, topics })
   }
 }
+
+RenderSeriesIndex.run(1, 'test')

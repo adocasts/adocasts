@@ -17,7 +17,8 @@ export default class ContainerBindingsMiddleware {
     const isAction = Object.getPrototypeOf(controller.default) === BaseAction
 
     if (isAction) {
-      ctx.route.handler.handle = controller.default.run.bind(controller.default)
+      ctx.route.handler.handle = controller.default.handleController.bind(controller.default)
+      ctx.route.meta.isHandlerAction = true
     }
 
     return next()

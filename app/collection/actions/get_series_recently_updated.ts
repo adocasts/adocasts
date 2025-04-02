@@ -1,15 +1,13 @@
 import BaseSeriesDto from '#collection/dtos/base_series'
-import GetSeries, { FromDbOptions } from './get_series.js'
+import CacheableAction from '#core/actions/cacheable_action'
+import GetSeries, { DbOptions } from './get_series.js'
 
-interface Options {
-  withPosts?: boolean
-  excludeIds?: number[]
+interface CacheOptions {
   limit?: number
-  postLimit?: number
 }
 
-export default class GetSeriesRecentlyUpdated {
-  static async fromCache(options?: Pick<Options, 'limit'>) {
+export default class GetSeriesRecentlyUpdated extends CacheableAction<CacheOptions, DbOptions> {
+  async fromCache(options?: CacheOptions) {
     const results = await this.fromDb({
       limit: options?.limit,
       withPosts: true,
@@ -21,7 +19,7 @@ export default class GetSeriesRecentlyUpdated {
     return results
   }
 
-  static async fromDb(options?: FromDbOptions) {
-    return GetSeries.fromDb(options).orderLatestUpdated().dto(BaseSeriesDto)
+  async fromDb(options?: DbOptions) {
+    return GetSeries.run('db', options).orderLatestUpdated().dto(BaseSeriesDto)
   }
 }
