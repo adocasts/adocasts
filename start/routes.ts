@@ -8,8 +8,7 @@
 */
 
 const HomeController = () => import('#core/controllers/home_controller')
-const SeriesController = () => import('#collection/controllers/series_controller')
-import PageSeriesIndex from '#collection/actions/page_series_index'
+const RenderSeriesIndex = () => import('#collection/actions/render_series_index')
 import router from '@adonisjs/core/services/router'
 
 router.where('slug', router.matchers.slug())
@@ -17,6 +16,5 @@ router.where('slug', router.matchers.slug())
 router.get('/', [HomeController]).as('home')
 
 //* Series
-router.get('/series', [SeriesController, 'index']).as('series.index')
-router.get('/series/:slug', [SeriesController, 'show']).as('series.show')
-router.get('/test', PageSeriesIndex.controller())
+router.get('/series', [RenderSeriesIndex]).as('series.index')
+// router.get('/series/:slug', [SeriesController, 'show']).as('series.show')

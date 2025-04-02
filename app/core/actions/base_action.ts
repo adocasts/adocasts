@@ -1,62 +1,67 @@
 import ForbiddenException from '#core/exceptions/forbidden_exception'
 import NotImplementedException from '#core/exceptions/not_implemented_exception'
+import { ContainerResolver } from '@adonisjs/core/container'
 import { HttpContext } from '@adonisjs/core/http'
-import { Constructor, GetControllerHandlers, LazyImport, RouteFn } from '@adonisjs/core/types/http'
+import { RequestValidationOptions } from '@adonisjs/core/types/http'
 import { VineValidator } from '@vinejs/vine'
 
 interface StaticAction<T> {
   new (): T
 }
 
-export function StaticImplements<T>() {
-  return (_t: T) => {}
-}
-
-export interface BaseActionableStatic {
-  new (): BaseActionable
-  controller<T extends Constructor<any>>():
-    | string
-    | RouteFn
-    | [LazyImport<T> | T, GetControllerHandlers<T>?]
-}
-
 export interface BaseActionable {
+  handle?(...args: any[]): Promise<any>
   asController?(ctx: HttpContext, data?: unknown): Promise<any>
+  asListener?(...args: any[]): Promise<any>
   authorize?(ctx: HttpContext): Promise<boolean> | boolean
   validator?: VineValidator<any, any>
-}
-
-export interface ActionableStatic extends BaseActionableStatic {
-  new (): Actionable
+  validatorOptions?: RequestValidationOptions<any>
 }
 
 export interface Actionable extends BaseActionable {}
 
-@StaticImplements<BaseActionableStatic>()
-export default class BaseAction implements BaseActionable {
-  static controller<T extends BaseActionable>(this: StaticAction<T>) {
-    const Action = this
+export default abstract class BaseAction<HandleArgs extends any[] = any[]>
+  implements BaseActionable
+{
+  asController?(ctx: HttpContext, ...args: any[]): Promise<any>
+  asListener?(...args: any[]): Promise<any>
+  handle?(...args: HandleArgs): Promise<any>
 
-    return async (ctx: HttpContext) => {
-      const action = new Action()
+  static async run<T extends BaseAction<HandleArgs>, HandleArgs extends any[]>(
+    this: StaticAction<T>,
+    ...args: T['handle'] extends (...args: any) => any ? Parameters<T['handle']> : any[]
+  ): Promise<T['handle'] extends (...args: any) => any ? ReturnType<T['handle']> : any[]> {
+    const action = new this()
 
-      if (typeof action.asController !== 'function') {
-        throw new NotImplementedException(`ACTION does not implement asController`)
-      }
-
-      if (typeof action.authorize === 'function') {
-        const authorized = await action.authorize(ctx)
-        if (!authorized) {
-          throw new ForbiddenException()
-        }
-      }
-
-      let data: unknown
-      if (action.validator) {
-        data = await ctx.request.validateUsing(action.validator)
-      }
-
-      return action.asController(ctx, data)
+    if (args.at(0) instanceof ContainerResolver && args.at(1) instanceof HttpContext) {
+      args.splice(0, 1)
+      return action.#handleController(args.at(0))
     }
+
+    if (typeof action.handle !== 'function') {
+      throw new NotImplementedException(`${this.constructor.name} does not implement handle`)
+    }
+
+    return action.handle(...(args as HandleArgs))
+  }
+
+  async #handleController<T extends BaseActionable>(this: T, ctx: HttpContext) {
+    if (typeof this.asController !== 'function') {
+      throw new NotImplementedException(`${this.constructor.name} does not implement asController`)
+    }
+
+    if (typeof this.authorize === 'function') {
+      const authorized = await this.authorize(ctx)
+      if (!authorized) {
+        throw new ForbiddenException()
+      }
+    }
+
+    let data: unknown
+    if (this.validator) {
+      data = await ctx.request.validateUsing(this.validator, this.validatorOptions)
+    }
+
+    return this.asController(ctx, data)
   }
 }

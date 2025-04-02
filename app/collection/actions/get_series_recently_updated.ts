@@ -1,5 +1,4 @@
 import BaseSeriesDto from '#collection/dtos/base_series'
-import cache from '@adonisjs/cache/services/main'
 import GetSeries, { FromDbOptions } from './get_series.js'
 
 interface Options {

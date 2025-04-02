@@ -1,10 +1,10 @@
-import Collection from '#collection/models/collection'
-import { Infer } from '@vinejs/vine/types'
-import BaseLessonDto from '#post/dtos/base_lesson'
-import { seriesIndexValidator } from '#collection/validators/series'
 import BaseSeriesDto from '#collection/dtos/base_series'
-import _ from 'lodash'
+import Collection from '#collection/models/collection'
+import { seriesIndexValidator } from '#collection/validators/series'
 import NotImplementedException from '#core/exceptions/not_implemented_exception'
+import BaseLessonDto from '#post/dtos/base_lesson'
+import { Infer } from '@vinejs/vine/types'
+import _ from 'lodash'
 
 type Validator = Infer<typeof seriesIndexValidator>
 

@@ -1,12 +1,12 @@
+import SessionLog from '#auth/models/session_log'
+import Notification from '#notification/models/notification'
+import User from '#user/models/user'
 import emitter from '@adonisjs/core/services/emitter'
-import User from '#models/user'
-import SessionLog from '#models/session_log'
-import Notification from '#models/notification'
 import { PostShowVM } from '../app/view_models/post.js'
-const SessionListener = () => import('#listeners/session_listener')
-const PostListener = () => import('#listeners/post_listener')
-const AccountListener = () => import('#listeners/account_listener')
-const NotificationListener = () => import('#listeners/notification_listener')
+const SessionListener = () => import('#auth/listeners/session_listener')
+const PostListener = () => import('#post/listeners/post_listener')
+const AccountListener = () => import('#user/listeners/account_listener')
+const NotificationListener = () => import('#notification/listeners/notification_listener')
 
 declare module '@adonisjs/core/types' {
   interface EventsList {
@@ -18,6 +18,7 @@ declare module '@adonisjs/core/types' {
     'email:new_device': { user: User; log: SessionLog }
     'email:email_verification': { user: User }
     'notification:send': { notification: Notification; user: User }
+    'test': { test: string }
   }
 }
 
