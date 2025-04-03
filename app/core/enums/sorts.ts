@@ -1,6 +1,6 @@
 enum Sorts {
   LATEST = 'latest',
-  ALPHABETICAL = 'alphabetical',
+  ALPHA = 'alphabetical',
   POPULAR = 'popular',
   LONGEST = 'longest',
   SHORTEST = 'shortest',

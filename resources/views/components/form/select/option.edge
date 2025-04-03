@@ -1,0 +1,9 @@
+@let(selected = $context.selected === $props.value ? { selected: 'selected' } : {})
+
+<option {{ $props.except(['text']).merge(selected).toAttrs() }}>
+  @if (text)
+    {{ text }}
+  @else
+    {{{ await $slots.main() }}}
+  @endif
+</option>

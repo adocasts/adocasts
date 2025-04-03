@@ -22,27 +22,28 @@
     <h1 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6 max-lg:text-center">
       Series
     </h1>
+    
     <div class="flex flex-wrap gap-3 lg:gap-6">
       <aside class="w-full md:w-[300px]">
-        <form>
+        <form method="GET" action="{{ route('series.index') }}" up-target="[series-list]" up-scroll="false" up-autosubmit>
           <div class="mb-3 md:mb-6">
             <div class="font-bold text-sm mb-3">Order by</div>
-            <select class="select">
-              <option>Latest</option>
-              <option>Popular</option>
-              <option>Alphabetical</option>
-              <option>Longest duration</option>
-            </select>
+            @form.select({ name: 'sort', selected: filters?.sort })
+              @!form.select.option({ value: Sorts.LATEST, text: 'Latest' })
+              @!form.select.option({ value: Sorts.POPULAR, text: 'Popular' })
+              @!form.select.option({ value: Sorts.ALPHA, text: 'Alphabetical' })
+              @!form.select.option({ value: Sorts.LONGEST, text: 'Longest duration' })
+              @!form.select.option({ value: Sorts.SHORTEST, text: 'Shortest duration' })
+            @end
           </div>
-          
+
           <div class="mb-3 md:mb-6">
             <div class="font-bold text-sm mb-3">Filter by difficulty</div>
-            <div class="filter">
-              <input class="btn filter-reset" type="radio" name="topics" aria-label="All" />
-              <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="difficulties" value="easy" aria-label="Easy">
-              <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="difficulties" value="intermediate" aria-label="Intermediate">
-              <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="difficulties" value="hard" aria-label="Hard">
-            </div>
+            @form.filter({ name: 'difficulty', checked: filters?.difficulty })
+              @!form.filter.option({ value: Difficulties.BEGINNER, label: 'Beginner' })
+              @!form.filter.option({ value: Difficulties.INTERMEDIATE, label: 'Intermediate' })
+              @!form.filter.option({ value: Difficulties.ADVANCED, label: 'Advanced' })
+            @end
           </div>
           
           {{-- <div class="mb-3 md:mb-6">
@@ -56,17 +57,16 @@
           
           <div class="mb-3 md:mb-6">
             <div class="font-bold text-sm mb-3">Filter by topic</div>
-            <div class="filter">
-              <input class="btn filter-reset" type="radio" name="topics" aria-label="All" />
+            @form.filter({ name: 'topic', checked: filters?.topic })
               @each (topic in topics)
-                <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="topics" value="{{ topic.slug }}" aria-label="{{ topic.name }}">
+                @!form.filter.option({ value: topic.slug, label: topic.name })
               @endeach
-            </div>
+            @end
           </div>
         </form>
       </aside>
 
-      <main class="gap-3 lg:gap-6 flex-1 series-list">
+      <main class="gap-3 lg:gap-6 flex-1 series-list" series-list>
         @each (item in series)
           @!series.card({ series: item, showLessons: true })
         @endeach

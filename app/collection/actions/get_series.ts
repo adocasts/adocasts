@@ -2,6 +2,7 @@ import BaseSeriesDto from '#collection/dtos/base_series'
 import Collection from '#collection/models/collection'
 import { seriesIndexValidator } from '#collection/validators/series'
 import CacheableAction from '#core/actions/cacheable_action'
+import Sorts from '#core/enums/sorts'
 import NotImplementedException from '#core/exceptions/not_implemented_exception'
 import BaseLessonDto from '#post/dtos/base_lesson'
 import { Infer } from '@vinejs/vine/types'
@@ -49,7 +50,7 @@ export default class GetSeries extends CacheableAction<CacheOptions, DbOptions> 
       )
   }
 
-  #applySort(series: BaseSeriesDto[], sort?: Validator['sort']) {
+  #applySort(series: BaseSeriesDto[], sort: Validator['sort'] = Sorts.LATEST) {
     switch (sort) {
       case 'latest':
         return _.orderBy(series, (item) => item.lessons?.at(0)?.publishAt, ['desc'])

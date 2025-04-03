@@ -1,0 +1,4 @@
+@let(name = $props.name ?? $context.name)
+@let(label = $props.label ?? $context.resetLabel)
+
+<input class="btn filter-reset btn-sm mb-0.5 mr-0.5" type="radio" name="{{ name }}" aria-label="{{ label || 'All' }}" />

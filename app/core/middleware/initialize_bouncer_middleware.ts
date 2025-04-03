@@ -1,5 +1,5 @@
+// import * as abilities from '#core/abilities/main'
 import { policies } from '#core/policies/main'
-import * as abilities from '#core/abilities/main'
 
 import { Bouncer } from '@adonisjs/bouncer'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -15,11 +15,9 @@ export default class InitializeBouncerMiddleware {
      * Create bouncer instance for the ongoing HTTP request.
      * We will pull the user from the HTTP context.
      */
-    ctx.bouncer = new Bouncer(
-      () => ctx.auth.user || null,
-      abilities,
-      policies
-    ).setContainerResolver(ctx.containerResolver)
+    ctx.bouncer = new Bouncer(() => ctx.auth.user || null, {}, policies).setContainerResolver(
+      ctx.containerResolver
+    )
 
     /**
      * Share bouncer helpers with Edge templates.

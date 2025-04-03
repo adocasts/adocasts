@@ -6,24 +6,14 @@ import GetTopicsFilter from '#taxonomy/actions/get_topics_filter'
 import { HttpContext } from '@adonisjs/core/http'
 import { Infer } from '@vinejs/vine/types'
 
-export default class RenderSeriesIndex extends BaseAction<[number, string]> {
+export default class RenderSeriesIndex extends BaseAction {
   validator = seriesIndexValidator
 
-  async authorize(_ctx: HttpContext) {
-    return true
-  }
-
-  async handle(id: number, name: string) {
-    return `ID: ${id}, Name: ${name}`
-  }
-
-  async asController({ view }: HttpContext, _filters: Infer<typeof this.validator>) {
+  async asController({ view }: HttpContext, filters: Infer<typeof this.validator>) {
     const latest = await GetSeriesRecentlyUpdated.run('db', { limit: 5 })
     const topics = await GetTopicsFilter.forCollections()
-    const series = await GetSeries.run()
+    const series = await GetSeries.run(filters)
 
-    return view.render('pages/series/index', { latest, series, topics })
+    return view.render('pages/series/index', { filters, latest, series, topics })
   }
 }
-
-RenderSeriesIndex.run(1, 'test')

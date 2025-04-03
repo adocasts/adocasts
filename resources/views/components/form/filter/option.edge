@@ -1,0 +1,6 @@
+@let(checked = $context.checked === $props.value ? { checked: 'checked' } : {})
+@let(name = $props.name ?? $context.name)
+@let(ariaLabel = $props.label)
+@let(value = $props.value)
+
+<input class="btn btn-sm mb-0.5 mr-0.5" type="radio" {{ $props.except(['label']).merge({ ...checked, name, ariaLabel, value }).toAttrs() }} >

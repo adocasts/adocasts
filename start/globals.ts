@@ -1,14 +1,21 @@
-import edge from 'edge.js'
-import { addCollection, edgeIconify } from 'edge-iconify'
-import { icons as solarIcons } from '@iconify-json/solar'
-import { DateTime } from 'luxon'
+import Difficulties from '#core/enums/difficulties'
+import Sorts from '#core/enums/sorts'
 import TimeService from '#core/services/time_service'
 import is from '@adonisjs/core/helpers/is'
+import { icons as solarIcons } from '@iconify-json/solar'
+import { addCollection, edgeIconify } from 'edge-iconify'
+import edge from 'edge.js'
+import { DateTime } from 'luxon'
 
 addCollection(solarIcons)
 
 edge.use(edgeIconify)
 
+// enums
+edge.global('Sorts', Sorts)
+edge.global('Difficulties', Difficulties)
+
+// utilities
 edge.global('DateTime', DateTime)
 edge.global('TimeService', TimeService)
 edge.global('is', is)
