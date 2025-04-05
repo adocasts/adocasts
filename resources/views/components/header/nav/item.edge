@@ -1,13 +1,15 @@
 @let(identifier = $props.identifier ?? text)
+@let(tag = $props.href ? 'a' : 'button')
 
 <li>
-  <button 
+  <{{ tag }} 
     :class="{ 
       'mouseover' : activeMenu == '{{ identifier }}', 
     }"
     @mouseover="onItemHover($el, '{{ identifier }}')"
-    @mouseleave="onMouseLeave()"
-    class="btn btn-ghost-soft">
+    @mouseleave="onMouseLeave"
+    class="btn btn-ghost-soft"
+    {{ $props.except(['identifier', 'text']).toAttrs() }}>
     <span>{{ text }}</span>
     <svg :class="{ '-rotate-180' : activeMenu == '{{ identifier }}' }"
       class="relative top-[1px] ml-1 h-3 w-3 ease-out duration-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -15,5 +17,5 @@
       aria-hidden="true">
       <polyline points="6 9 12 15 18 9"></polyline>
     </svg>
-  </button>
+  </{{ tag }}>
 </li>

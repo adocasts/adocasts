@@ -13,6 +13,7 @@ type Validator = Infer<typeof seriesIndexValidator>
 interface CacheOptions {
   sort?: Validator['sort']
   topic?: Validator['topic']
+  difficulty?: Validator['difficulty']
 }
 
 export interface DbOptions {
@@ -24,12 +25,16 @@ export interface DbOptions {
 
 export default class GetSeries extends CacheableAction<CacheOptions, DbOptions> {
   async fromCache(options?: CacheOptions) {
-    let series = await this.fromDb({ withPosts: true, postLimit: 5 }).dto(BaseSeriesDto)
+    let series = await this.fromDb().dto(BaseSeriesDto)
 
     // todo: cache
 
     if (options?.topic) {
       series = series.filter((s) => s.topics && s.topics.some((t) => t.slug === options.topic))
+    }
+
+    if (options?.difficulty) {
+      series = series.filter((s) => s.difficultyId === options?.difficulty)
     }
 
     return this.#applySort(series, options?.sort)

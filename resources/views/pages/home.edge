@@ -1,10 +1,10 @@
 @layout()
 
   <section class="relative z-[2]">
-    @!hero.getShipDone()
+    {{-- @!hero.getShipDone() --}}
   </section>
 
-  <section class="mb-24 pb-8 pt-24 -mt-8 bg-gradient-to-b from-base-300 to-base-200 relative z-[1]">
+  <section class="mb-12 pb-8 pt-24 -mt-8 bg-gradient-to-b from-base-300 to-base-200 relative z-[1]">
     <div class="container mx-auto flex flex-col items-center">
       @if (auth.user)
         <h3 class="heading-3">
@@ -33,7 +33,7 @@
   </div>
 
   <section class="section-container mx-auto relative z-[1]">
-    <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6 max-lg:text-center">
+    <h2 class="heading-2">
       Learn one step at a time
     </h2>
 
@@ -62,7 +62,7 @@
     </div>
   </div>
 
-  <section class="section-container mx-auto relative z-[1]">
+  <section class="section-y mx-auto relative z-[1]">
     @let(featTopic1 = topics.find(topic => topic.name === 'AdonisJS'))
     @let(featTopic2 = topics.find(topic => topic.name === 'EdgeJS'))
     @let(featTopic3 = topics.find(topic => topic.name === 'Lucid'))
@@ -70,18 +70,20 @@
     @let(featIds = [featTopic1.id, featTopic2.id, featTopic3.id, featTopic4.id])
     @let(otherTopics = topics.filter(topic => !featIds.includes(topic.id)))
 
-    <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6 max-lg:text-center">
-      Dive into a topic
-    </h2>
+    <div class="container">
+      <h2 class="heading-2">
+        Dive into a topic
+      </h2>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
-      @!topic.card({ topic: featTopic1, size: 'lg' })
-      @!topic.card({ topic: featTopic2, size: 'lg' })
-      @!topic.card({ topic: featTopic3, size: 'lg' })
-      @!topic.card({ topic: featTopic4, size: 'lg' })
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+        @!topic.card({ topic: featTopic1, size: 'lg' })
+        @!topic.card({ topic: featTopic2, size: 'lg' })
+        @!topic.card({ topic: featTopic3, size: 'lg' })
+        @!topic.card({ topic: featTopic4, size: 'lg' })
+      </div>
     </div>
 
-    @carousel({ class: 'to-base-300' })
+    @carousel.viewport({ class: 'to-base-300' })
       @utils.chunk({ data: otherTopics, size: 3 })
         @slot('main', state)
           <div class="carousel-item">
@@ -106,17 +108,19 @@
     </div>
   </div>
 
-  <section class="section-container mx-auto relative z-[1]">
-    <h2 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6 max-lg:text-center">
-      Jump straight to the latest
-    </h2>
+  <section class="section-y mx-auto relative z-[1]">
+    <div class="container">
+      <h2 class="heading-2">
+        Jump straight to the latest
+      </h2>
 
-    @let([featuredLesson, ...otherLessons] = lessons)
-    <div class="w-full mb-6">
-      @!lesson.card({ lesson: featuredLesson, size: 'lg' })
+      @let([featuredLesson, ...otherLessons] = lessons)
+      <div class="w-full mb-3">
+        @!lesson.card({ lesson: featuredLesson, size: 'lg' })
+      </div>
     </div>
 
-    @carousel({ class: 'to-base-300 mb-6' })
+    @carousel.viewport({ class: 'to-base-300 mb-6 lg:mb-12' })
       @each (lesson in otherLessons)
         <div class="carousel-item">
           @!lesson.card({ lesson })
@@ -124,11 +128,13 @@
       @endeach
     @end
 
-    <h4 class="heading-4">
-      Latest blog posts  
-    </h4>
+    <div class="container">
+      <h4 class="heading-4">
+        Latest blog posts  
+      </h4>
+    </div>
 
-    @carousel({ class: 'to-base-300 mb-6' })
+    @carousel.viewport({ class: 'to-base-300 mb-6 lg:mb-12' })
       @each (post in otherLessons)
         <div class="carousel-item">
           @!post.card({ post })
@@ -136,11 +142,13 @@
       @endeach
     @end
 
-    <h4 class="heading-4">
-      Latest news
-    </h4>
+    <div class="container">
+      <h4 class="heading-4">
+        Latest news
+      </h4>
+    </div>
 
-    @carousel({ class: 'to-base-300' })
+    @carousel.viewport({ class: 'to-base-300' })
       @each (post in otherLessons)
         <div class="carousel-item">
           @!post.card({ post })

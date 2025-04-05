@@ -5,7 +5,7 @@
 @theme {
   --font-sans: 'Red Hat Display', sans-serif;
   --font-mono: 'Red Hat Mono', monospace;
-  --color-base-title: oklch(93.53% 0.0592 304.85);
+  /* --color-base-title: oklch(93.53% 0.0592 304.85); */
 }
 
 @plugin "daisyui" {
@@ -21,7 +21,7 @@
   --color-base-200: oklch(21.18% 0.06 287.23);
   --color-base-300: oklch(18.5% 0.055 287.23);
   --color-base-content: oklch(85.29% 0.0395 288.43);
-  --color-base-title: oklch(84.71% 0.0641 287.23);
+  /* --color-base-title: oklch(84.71% 0.0641 287.23); */
   --color-primary: oklch(67% 0.182 276.935);
   --color-primary-content: oklch(15.07% 0.027 232.661);
   --color-secondary: oklch(82% 0.111 230.318);
@@ -44,7 +44,7 @@
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
-  --depth: 1;
+  --depth: 0;
   --noise: 0;
 }
 
@@ -111,6 +111,14 @@ body {
 }
 
 .heading-2 {
+  @apply z-10 relative mb-6 font-semibold text-4xl max-lg:text-center text-balance tracking-tight;
+
+  @variant lg {
+    @apply text-5xl;
+  }
+}
+
+.heading-3 {
   @apply mb-6 font-black text-2xl;
 
   @variant lg {
@@ -127,7 +135,7 @@ body {
 }
 
 .heading-4 {
-  @apply mb-3 font-black text-lg;
+  @apply mb-3 font-medium text-lg;
 
   @variant lg {
     @apply text-xl;
@@ -149,34 +157,21 @@ a.link-grow {
   }
 }
 
-.container {
-  padding-right: 1rem;
-  padding-left: 1rem;
-}
-
-.container-vars,
-.section-container {
-  --radius: theme('borderRadius.lg');
-  --padding-x: theme('spacing.6');
-  --padding-y: theme('spacing.9');
-
-  @variant sm {
-    --max-width: 40rem;
-  }
-
-  @variant md {
-    --max-width: 48rem;
-  }
+.container,
+.section-container,
+.container-vars {
+  --max-width: 100%;
+  --radius: theme(borderRadius.lg);
+  --padding-x: theme(spacing.6);
+  --container-width: calc(var(--max-width) - (var(--padding-x) * 2));
 
   @variant lg {
-    --radius: theme('borderRadius.xl');
-    --padding-x: theme('spacing.9');
-    --padding-y: theme('spacing.24');
-    --max-width: 64rem;
+    --radius: theme(borderRadius.xl);
+    --padding-x: theme(spacing.12);
   }
 
   @variant xl {
-    --max-width: 80rem;
+    --padding-x: theme(spacing.16);
   }
 
   @variant 2xl {
@@ -184,10 +179,19 @@ a.link-grow {
   }
 }
 
+.container-vars,
+.section-container,
+.section-y {
+  --padding-y: theme(spacing.9);
+
+  @variant lg {
+    --padding-y: theme(spacing.12);
+  }
+}
+
+.container,
 .section-container {
   width: 100%;
-  padding-top: var(--padding-y);
-  padding-bottom: var(--padding-y);
   padding-right: var(--padding-x);
   padding-left: var(--padding-x);
 
@@ -196,14 +200,10 @@ a.link-grow {
   }
 }
 
-.container-xl {
-  width: min(calc(100% - 1rem), 112rem);
-  margin-right: .5rem;
-  margin-left: .5rem;
-
-  @media screen and (min-width: 112rem) {
-    margin: 0 auto;
-  }
+.section-container,
+.section-y {
+  padding-top: var(--padding-y);
+  padding-bottom: var(--padding-y);
 }
 
 .border-base {
@@ -668,6 +668,8 @@ a.link-grow {
 .radial-accent-tr,
 .hover\:radial-accent-tr,
 .group-hover\:radial-accent-tr {
+  --accent-height: 1px;
+
   position: relative;
   overflow: hidden;
 
@@ -690,7 +692,7 @@ a.link-grow {
 
     content: "";
     width: 80%;
-    height: 1px;
+    height: var(--accent-height, 1px);
     opacity: var(--opacity, 1);
     transition: all 200ms ease-in-out;
     position: absolute;
@@ -738,12 +740,36 @@ a.link-grow {
   }
 }
 
-.series-bento {
-  --gap: .5rem;
+.card:has(.card-border) {
+  --accent-height: 3px;
 
-  @variant lg {
-    --gap: 1rem;
+  .card-body,
+  .card-figure,
+  .card-actions {
+    position: relative;
+    z-index: 6;
   }
+
+  .card-border {
+    @apply absolute inset-0 h-full overflow-hidden duration-200 ease-in-out;
+    border-radius: var(--radius-box);
+    border: 3px solid transparent;
+    background: linear-gradient(to bottom, transparent, var(--color-base-100)) border-box;
+    mask:
+      linear-gradient(#000 0 0) padding-box, 
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    z-index: 20;
+  }
+
+  &:hover .card-border {
+    opacity: 1;
+  }
+}
+
+.series-bento {
+  --gap: theme(spacing.3);
 
   display: grid;
   grid-auto-columns: 100%;
@@ -827,10 +853,6 @@ a.link-grow {
 
     aside {
       @apply hidden;
-    }
-
-    @variant lg {
-      @apply p-3;
     }
   }
 }

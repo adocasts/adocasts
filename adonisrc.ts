@@ -65,10 +65,10 @@ export default defineConfig({
     () => import('#start/routes'),
     () => import('#start/kernel'),
     () => import('#start/globals'),
-    () => import('#start/validator'),
+    () => import('#start/validator/index'),
     () => import('#start/events'),
     () => import('#start/lucid/base_model'),
-    () => import('#start/lucid/query_builder')
+    () => import('#start/lucid/query_builder'),
   ],
 
   /*

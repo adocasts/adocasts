@@ -17,7 +17,9 @@
   <body data-theme="adocasts-dark">
     @!header()
     
-    {{{ await $slots.main() }}}
+    <div up-main>
+      {{{ await $slots.main() }}}
+    </div>
 
     @!footer()
   </body>

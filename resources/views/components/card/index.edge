@@ -1,0 +1,15 @@
+<div class="card bg-base-200 hover:radial-accent-t shadow-sm relative group overflow-hidden {{ $props.class ?? '' }}">
+  @if ($props.border === undefined || $props.border)
+    <div class="card-border {{ $props.border ?? '' }}"></div>
+  @endif
+  
+  @if ($slots.figure)
+    {{{ await $slots.figure() }}}
+  @endif
+
+  {{{ await $slots.main() }}}
+
+  @if ($slots.action)
+    {{{ await $slots.action() }}}
+  @endif
+</div>
