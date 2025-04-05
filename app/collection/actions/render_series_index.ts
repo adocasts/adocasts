@@ -1,4 +1,4 @@
-import GetSeries from '#collection/actions/get_series'
+import GetSeriesList from '#collection/actions/get_series_list'
 import GetSeriesRecentlyUpdated from '#collection/actions/get_series_recently_updated'
 import { seriesIndexValidator } from '#collection/validators/series'
 import BaseAction from '#core/actions/base_action'
@@ -12,7 +12,7 @@ export default class RenderSeriesIndex extends BaseAction {
   async asController({ view }: HttpContext, filters: Infer<typeof this.validator>) {
     const latest = await GetSeriesRecentlyUpdated.run('db', { limit: 5 })
     const topics = await GetTopicsFilter.forCollections()
-    const series = await GetSeries.run(filters)
+    const series = await GetSeriesList.run(filters)
 
     return view.render('pages/series/index', { filters, latest, series, topics })
   }

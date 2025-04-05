@@ -1,4 +1,4 @@
-import GetTopics from '#taxonomy/actions/get_topics'
+import GetTopicList from '#taxonomy/actions/get_topic_list'
 
 export default class GetTopicsFilter {
   static async forCollections() {
@@ -10,7 +10,7 @@ export default class GetTopicsFilter {
   }
 
   static async #get(countField: string) {
-    const topics = await GetTopics.run()
+    const topics = await GetTopicList.run()
     return topics.filter((topic) => Number(topic.meta[countField] || '0'))
   }
 }

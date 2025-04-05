@@ -1,6 +1,6 @@
+import GetSeriesList, { DbOptions } from '#collection/actions/get_series_list'
 import BaseSeriesDto from '#collection/dtos/base_series'
 import CacheableAction from '#core/actions/cacheable_action'
-import GetSeries, { DbOptions } from './get_series.js'
 
 interface CacheOptions {
   limit?: number
@@ -20,6 +20,6 @@ export default class GetSeriesRecentlyUpdated extends CacheableAction<CacheOptio
   }
 
   async fromDb(options?: DbOptions) {
-    return GetSeries.run('db', options).orderLatestUpdated().dto(BaseSeriesDto)
+    return GetSeriesList.run('db', options).orderLatestUpdated().dto(BaseSeriesDto)
   }
 }

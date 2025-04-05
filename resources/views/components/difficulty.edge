@@ -1,0 +1,22 @@
+@if (item.difficultyId)
+  <div class="{{ 
+    html.classNames([
+    'badge badge-soft flex items-center gap-1.5', 
+      { 
+        'badge-success': item.difficultyId === Difficulties.BEGINNER,
+        'badge-warning': item.difficultyId === Difficulties.INTERMEDIATE,
+        'badge-error': item.difficultyId === Difficulties.ADVANCED
+      },
+      $props.class
+    ]) 
+  }}">
+    @if (item.difficultyId === Difficulties.BEGINNER)
+      @svg('solar:spedometer-low-bold', { class: '-ml-1 -my-0.5' })
+    @elseif (item.difficultyId === Difficulties.INTERMEDIATE)
+      @svg('solar:spedometer-middle-bold', { class: '-ml-1 -my-0.5' })
+    @else
+      @svg('solar:spedometer-max-bold', { class: '-ml-1 -my-0.5' })
+    @endif
+    {{ string.capitalCase(Difficulties[item.difficultyId]) }}
+  </div>
+@endif

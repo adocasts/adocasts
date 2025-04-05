@@ -2,6 +2,7 @@ import Difficulties from '#core/enums/difficulties'
 import Sorts from '#core/enums/sorts'
 import TimeService from '#core/services/time_service'
 import is from '@adonisjs/core/helpers/is'
+import stringHelpers from '@adonisjs/core/helpers/string'
 import { icons as solarIcons } from '@iconify-json/solar'
 import { addCollection, edgeIconify } from 'edge-iconify'
 import edge from 'edge.js'
@@ -16,6 +17,7 @@ edge.global('Sorts', Sorts)
 edge.global('Difficulties', Difficulties)
 
 // utilities
+edge.global('string', stringHelpers)
 edge.global('DateTime', DateTime)
 edge.global('TimeService', TimeService)
 edge.global('is', is)

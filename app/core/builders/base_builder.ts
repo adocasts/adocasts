@@ -1,25 +1,25 @@
+import is from '@adonisjs/core/helpers/is'
 import stringHelpers from '@adonisjs/core/helpers/string'
 import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 import { StrictValues } from '@adonisjs/lucid/types/querybuilder'
 import BaseModelDto, { StaticModelDto } from '../dtos/base_model_dto.js'
 
-export default class BaseBuilder<Model extends LucidModel, Record extends LucidRow> {
+export default class BaseBuilder<Model extends LucidModel, Row extends LucidRow> {
   qthen:
-    | (<TResult1 = Record[], TResult2 = never>(
-        onfulfilled?: ((value: Record[]) => TResult1 | PromiseLike<TResult1>) | undefined | null,
+    | (<TResult1 = Row[], TResult2 = never>(
+        onfulfilled?: ((value: Row[]) => TResult1 | PromiseLike<TResult1>) | undefined | null,
         onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null
       ) => Promise<TResult1 | TResult2>)
     | null = null
 
-  exec: (() => Promise<Record[]>) | null = null
+  exec: (() => Promise<Row[]>) | null = null
 
-  #beforeQuery: Map<string, ((query: ModelQueryBuilderContract<Model, Record>) => void)[]> =
-    new Map()
+  #beforeQuery: Map<string, ((query: ModelQueryBuilderContract<Model, Row>) => void)[]> = new Map()
 
-  query: ModelQueryBuilderContract<Model, Record>
+  query: ModelQueryBuilderContract<Model, Row>
 
   constructor(protected model: Model) {
-    const query = model.query<Model, Record>()
+    const query = model.query<Model, Row>()
     this.qthen = query.then.bind(query)
     this.exec = query.exec.bind(query)
     query.then = this.then.bind(this)
@@ -34,13 +34,21 @@ export default class BaseBuilder<Model extends LucidModel, Record extends LucidR
     return this
   }
 
-  where(column: string, operator?: any, value?: any) {
-    if (value !== undefined) {
-      this.query.where(column, operator, value)
+  where(obj: Record<string, any>): this
+  where(column: string, value: any): this
+  where(column: string, operator: string, value: any): this
+  where(columnOrObj: Record<string, any> | string, operatorOrValue?: any, value?: any): this {
+    if (is.object(columnOrObj)) {
+      this.query.where(columnOrObj)
       return this
     }
 
-    this.query.where(column, operator)
+    if (value !== undefined) {
+      this.query.where(columnOrObj, operatorOrValue, value)
+      return this
+    }
+
+    this.query.where(columnOrObj, operatorOrValue)
     return this
   }
 
@@ -101,7 +109,7 @@ export default class BaseBuilder<Model extends LucidModel, Record extends LucidR
   }
 
   beforeQuery(
-    cb: (query: ModelQueryBuilderContract<Model, Record>) => void,
+    cb: (query: ModelQueryBuilderContract<Model, Row>) => void,
     name: string = stringHelpers.random(4)
   ) {
     this.#beforeQuery.set(name, [cb])
@@ -117,10 +125,10 @@ export default class BaseBuilder<Model extends LucidModel, Record extends LucidR
     return this.query.dto(dto)
   }
 
-  then<TResult1 = Record[], TResult2 = never>(
-    onfulfilled?: ((value: Record[]) => TResult1 | PromiseLike<TResult1>) | undefined | null,
+  then<TResult1 = Row[], TResult2 = never>(
+    onfulfilled?: ((value: Row[]) => TResult1 | PromiseLike<TResult1>) | undefined | null,
     onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null
-    // onfulfilled?: ((value: Record[]) => Record[] | PromiseLike<Record[]>) | null | undefined,
+    // onfulfilled?: ((value: Row[]) => Row[] | PromiseLike<Row[]>) | null | undefined,
     // onrejected?: ((reason: any) => PromiseLike<never>) | null | undefined
   ): Promise<TResult1 | TResult2> {
     this.#beforeQuery.values().forEach((cbs) => cbs.forEach((cb) => cb(this.query)))

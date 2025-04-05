@@ -4,9 +4,9 @@
     <div class="absolute left-0 bottom-0 w-full h-full bg-radial-[at_50%_-300%] from-primary/50 to-primary/0"></div>
     <section class="py-12 mx-auto relative z-[1]">
       <div class="container mx-auto">
-        <h2 class="heading-3">
+        <h3 class="heading-3">
           Recently updated
-        </h2>
+        </h3>
       </div>
       @carousel.viewport({ class: 'to-base-200/50 mb-6' })
         @each (item in latest)
@@ -29,7 +29,7 @@
   </div>
 
   <section class="section-container mx-auto relative z-[1]">
-    <h1 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-pretty relative z-10 mb-6 max-lg:text-center">
+    <h1 class="heading-2">
       Series
     </h1>
     
@@ -37,7 +37,7 @@
       <aside class="w-full md:w-[300px]">
         <form method="GET" action="{{ route('series.index') }}" up-target="[series-list]" up-scroll="false" up-autosubmit>
           <div class="mb-3 md:mb-6">
-            <div class="font-bold text-sm mb-3">Order by</div>
+            <div class="font-semibold opacity-60 text-sm mb-3">Order by</div>
             @form.select({ name: 'sort', selected: filters?.sort })
               @!form.select.option({ value: Sorts.LATEST, text: 'Latest' })
               @!form.select.option({ value: Sorts.POPULAR, text: 'Popular' })
@@ -48,7 +48,7 @@
           </div>
 
           <div class="mb-3 md:mb-6">
-            <div class="font-bold text-sm mb-3">Filter by difficulty</div>
+            <div class="font-semibold opacity-60 text-sm mb-3">Filter by difficulty</div>
             @form.filter({ name: 'difficulty', checked: filters?.difficulty })
               @!form.filter.option({ value: Difficulties.BEGINNER, label: 'Beginner' })
               @!form.filter.option({ value: Difficulties.INTERMEDIATE, label: 'Intermediate' })
@@ -66,7 +66,7 @@
           </div> --}}
           
           <div class="mb-3 md:mb-6">
-            <div class="font-bold text-sm mb-3">Filter by topic</div>
+            <div class="font-semibold opacity-60 text-sm mb-3">Filter by topic</div>
             @form.filter({ name: 'topic', checked: filters?.topic })
               @each (topic in topics)
                 @!form.filter.option({ value: topic.slug, label: topic.name })

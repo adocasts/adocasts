@@ -1,4 +1,3 @@
-import is from '@adonisjs/core/helpers/is'
 import BaseAction from './base_action.js'
 
 type ActionConstructor<CO, DO> = new (...args: any[]) => CacheableAction<CO, DO>
@@ -47,7 +46,7 @@ export default abstract class CacheableAction<
       return action.handle('db', options as DbOptions)
     } else if (typeOrOptions === 'cache') {
       return action.handle('cache', options as CacheOptions)
-    } else if (arguments.length === 1 && is.object(typeOrOptions)) {
+    } else if (arguments.length === 1 && typeOrOptions) {
       return action.handle(typeOrOptions as CacheOptions)
     } else {
       return action.handle()
@@ -73,7 +72,7 @@ export default abstract class CacheableAction<
       return this.fromCache(options as CacheOptions) as ReturnType<this['fromCache']>
     }
 
-    if (arguments.length === 1 && is.object(typeOrOptions)) {
+    if (arguments.length === 1 && typeOrOptions) {
       return this.fromCache(typeOrOptions as CacheOptions) as ReturnType<this['fromCache']>
     }
 

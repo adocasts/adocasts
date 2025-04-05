@@ -119,15 +119,7 @@ body {
 }
 
 .heading-3 {
-  @apply mb-6 font-black text-2xl;
-
-  @variant lg {
-    @apply text-3xl;
-  }
-}
-
-.heading-3 {
-  @apply mb-3 font-black text-xl;
+  @apply mb-3 font-semibold text-xl;
 
   @variant lg {
     @apply text-2xl;
@@ -154,6 +146,7 @@ a.link-grow {
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 50;
   }
 }
 
@@ -752,6 +745,7 @@ a.link-grow {
 
   .card-border {
     @apply absolute inset-0 h-full overflow-hidden duration-200 ease-in-out;
+    pointer-events: none;
     border-radius: var(--radius-box);
     border: 3px solid transparent;
     background: linear-gradient(to bottom, transparent, var(--color-base-100)) border-box;

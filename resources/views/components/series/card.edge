@@ -1,43 +1,29 @@
 @card({ class: $props.class })
   <div class="card-body">
-    <main>
+    <main class="flex-1 flex flex-col justify-between">
       <div>
         <h2 class="card-title text-xl font-bold text-base-title mb-3">
-          <a href="#" class="link-grow">
+          <a href="{{ route('series.show', { slug: series.slug }) }}" class="link-grow">
             {{ series.name }}
           </a>
         </h2>
-        <p>
+        <p class="opacity-60">
           {{ series.description }}
         </p>
       </div>
 
-      <div class="flex gap-2 mt-6">
-        @each ((topic, i) in series.topics)
-          @let(color = 'badge-primary')
-          @if (i === 1)
-            @assign(color = 'badge-secondary')
-          @elseif (i === 2)
-            @assign(color = 'badge-accent')
-          @endif
+      <div class="flex gap-2 mt-6 lg:mt-8">
+        @!difficulty({ item: series })
 
-          <div class="badge badge-soft badge-sm {{ color }}">
-            {{-- <figure>
-              <img src="{{ topic.asset.assetUrl }}" alt="{{ topic.name }}" class="w-4 h-4" />
-            </figure> --}}
-            {{ topic.name }}
-          </div>
-        @endeach
-
-        <div class="badge badge-soft badge-sm opacity-75 group-hover:opacity-100 duration-200">
+        <div class="badge badge-soft opacity-75 group-hover:opacity-100 duration-200">
           @svg('solar:video-library-bold-duotone', { class: '-ml-1 -my-0.5' })
           {{ series.meta.posts_count }} Lessons
         </div>
 
-        {{-- <div class="badge badge-soft badge-sm opacity-75 group-hover:opacity-100 duration-200">
+        <div class="badge badge-soft opacity-75 group-hover:opacity-100 duration-200">
           @svg('solar:clock-circle-bold-duotone', { class: '-ml-1 -my-0.5' })
           {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
-        </div> --}}
+        </div>
       </div>
     </main>
     
