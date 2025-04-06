@@ -3,7 +3,9 @@ import Post from '#post/models/post'
 import BaseModelDto from '#core/dtos/base_model_dto'
 
 export default class BaseLessonDto extends BaseModelDto {
-  static model = Post
+  static model() {
+    return Post
+  }
 
   declare id: number
   declare slug: string

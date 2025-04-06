@@ -1,26 +1,103 @@
 @layout()
 
-  <section class="bg-base-300 relative overflow-hidden z-10">
+  <div class="bg-base-300 relative overflow-hidden z-10">
     <div class="absolute left-0 bottom-0 w-full h-full bg-radial-[at_50%_-300%] from-primary/50 to-primary/0"></div>
-    <div class="section-container mx-auto relative z-[1]">
-      <h1 class="heading-2">
-        {{ series.name }}
-      </h1>
-    </div>
-  </section>
-
-  <div class="container mx-auto relative">
-    <div class="absolute bottom-3/4 -right-48 translate-y-1/2 w-3/4 apsect-3/2 faded-pattern to-base-300">
-      <img 
-        src="/imgs/patterns/pattern_01.svg" 
-        alt="Background pattern" 
-        class="object-contain object-center grayscale opacity-10"
-      >
-    </div>
+    <section class="py-12 mx-auto relative z-[1]">
+      <div class="container mx-auto">
+        <h1 class="heading-2">
+          {{ series.name }}
+        </h1>
+        
+        <div class="flex gap-2 mt-6 lg:mt-8">
+          @!difficulty({ item: series, class: 'lg:badge-lg' })
+        
+          <div class="badge lg:badge-lg badge-soft opacity-75 group-hover:opacity-100 duration-200">
+            @svg('solar:video-library-bold-duotone', { class: '-ml-1 -my-0.5' })
+            {{ series.meta.posts_count }} Lessons
+          </div>
+        
+          <div class="badge lg:badge-lg badge-soft opacity-75 group-hover:opacity-100 duration-200">
+            @svg('solar:clock-circle-bold-duotone', { class: '-ml-1 -my-0.5' })
+            {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 
-  <section class="section-container mx-auto relative z-[1]">
+  <div class="section-container mx-auto flex flex-wrap items-start gap-6 lg:gap-12">
+    <aside class="w-full lg:w-1/3">
+      
+    
+      @if (series.description)
+      <p class="max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
+        {{ series.description }}
+      </p>
+      @endif
+    </aside>
 
-  </section>
+    <main class="flex-1">
+      <div class="container mx-auto relative">
+        <div class="absolute bottom-3/4 -right-48 translate-y-1/2 w-3/4 apsect-3/2 faded-pattern to-base-300">
+          <img 
+            src="/imgs/patterns/pattern_01.svg" 
+            alt="Background pattern" 
+            class="object-contain object-center grayscale opacity-10"
+          >
+        </div>
+      </div>
+
+      <div class="relative z-[1]">
+        @each (mod in series.modules)
+          <details class="collapse rounded-none" open>
+            <summary class="collapse-title !flex items-center justify-between gap-3 border-base-100 border-[3px] mb-3 !px-6 rounded-[var(--radius-box)]">
+              <div class="flex items-center gap-6">
+                <h3 class="heading-4 !mb-0 flex items-center gap-6">
+                  <div class="font-black text-primary bg-base-100 w-[3rem] h-[3rem] flex items-center justify-center rounded-md">
+                    {{ mod.moduleNumber }}
+                  </div>
+
+                  {{ mod.name }}
+                </h3>
+              </div>
+              <div class="radial-progress text-primary" style="--value:70; --size: 1.5rem; --thickness: .25rem;" aria-valuenow="70" role="progressbar"></div>
+            </summary>
+
+            <div class="collapse-content !p-0">
+              @each (lesson in mod.lessons)
+                <div class="card bg-base-200 hover:radial-accent-tl mb-3">
+                  <div class="card-border"></div>
+                  <div class="card-body flex-row gap-6">
+                    <div class="radial-progress text-primary mt-3" style="--value:70; --size: 3rem; --thickness: .25rem;" aria-valuenow="70" role="progressbar">
+                      {{ lesson.lessonIndexDisplay }}
+                    </div>
+                    
+                    <div class="flex-1">
+                      <h4 class="text-lg">
+                        {{ lesson.title }}
+                      </h4>
+                      
+                      <p class="opacity-60">{{ lesson.description }}</p>
+                      
+                      <div class="mt-3 flex items-center gap-3">
+                        <div class="badge badge-sm badge-soft opacity-75 group-hover:opacity-100 duration-200">
+                          @svg('solar:clock-circle-bold-duotone', { class: '-ml-1 -my-0.5' })
+                          {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              @endeach
+            </div>
+          </details>
+        @endeach
+
+        <div class="mt-12">
+          @dump(series)
+        </div>
+      </div>
+    </main>
+  </div>
 
 @end

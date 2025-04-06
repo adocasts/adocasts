@@ -7,6 +7,8 @@ import Taxonomy from '#taxonomy/models/taxonomy'
 import { ManyToManyQueryBuilderContract } from '@adonisjs/lucid/types/relations'
 import BaseTopicDto from '#taxonomy/dtos/base_topic'
 import BaseBuilder from '#core/builders/base_builder'
+import SeriesLessonDto from '#post/dtos/series_lesson'
+import ModuleDto from '#collection/dtos/module'
 
 export default class CollectionBuilder extends BaseBuilder<typeof Collection, Collection> {
   constructor() {
@@ -116,18 +118,24 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     return this
   }
 
-  withTaxonomies({ withAsset = false, limit = 3 }: { withAsset?: boolean; limit?: number } = {}) {
+  withTaxonomies(
+    taxonomyQuery?: (
+      query: ManyToManyQueryBuilderContract<typeof Taxonomy, any>
+    ) => ManyToManyQueryBuilderContract<typeof Taxonomy, any>,
+    { withAsset = false, limit = 3 }: { withAsset?: boolean; limit?: number } = {}
+  ) {
     this.query.preload('taxonomies', (query) =>
       query
         .if(withAsset, (tax) => tax.preload('asset'))
         .groupOrderBy('sort_order', 'asc')
         .groupLimit(limit)
+        .if(typeof taxonomyQuery === 'function', (q) => taxonomyQuery!(q))
     )
     return this
   }
 
   withPosts(
-    postQuery: (
+    postQuery?: (
       query: ManyToManyQueryBuilderContract<typeof Post, any>
     ) => ManyToManyQueryBuilderContract<typeof Post, any>,
     {
@@ -143,7 +151,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
         .apply((scope) => scope.forDisplay())
         .apply((scope) => scope.published())
         .orderBy(orderBy, direction)
-        .if(postQuery, (q) => postQuery(q))
+        .if(typeof postQuery === 'function', (q) => postQuery!(q))
     )
     return this
   }
@@ -168,7 +176,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
         .apply((scope) => scope.published())
         .orderBy(orderBy, direction)
         .if(limit, (truthy) => truthy.groupLimit(limit!))
-        .if(typeof postQuery === 'function', (q) => postQuery(q))
+        .if(typeof postQuery === 'function', (q) => postQuery!(q))
     )
     return this
   }
@@ -179,8 +187,12 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
         .where('stateId', States.PUBLIC)
         .whereHas('posts', (post) => post.apply((scope) => scope.published()))
         .preload('posts', (post) =>
-          post.apply((scope) => scope.forCollectionDisplay()).apply((scope) => scope.published())
+          post
+            .apply((scope) => scope.forCollectionDisplay())
+            .apply((scope) => scope.published())
+            .selectDto(SeriesLessonDto)
         )
+        .selectDto(ModuleDto)
     )
     return this
   }

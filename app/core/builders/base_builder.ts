@@ -66,8 +66,13 @@ export default class BaseBuilder<Model extends LucidModel, Row extends LucidRow>
     return this.query.first()
   }
 
-  firstOrFail() {
-    return this.query.firstOrFail()
+  firstOrFail<Dto extends BaseModelDto>(dto?: StaticModelDto<Dto>) {
+    if (dto) this.query.selectDto(dto)
+
+    return this.query.firstOrFail().then((row) => {
+      if (dto) return dto.fromModel(row)
+      return row
+    })
   }
 
   exclude(values: any[], column: string = 'id') {
@@ -105,6 +110,11 @@ export default class BaseBuilder<Model extends LucidModel, Row extends LucidRow>
 
   select(...columns: any[]) {
     this.query.select(...columns)
+    return this
+  }
+
+  selectDto<Dto extends BaseModelDto>(dto: StaticModelDto<Dto>) {
+    this.query.selectDto(dto)
     return this
   }
 

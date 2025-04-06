@@ -134,6 +134,26 @@ body {
   }
 }
 
+.collapse {
+  .show-open {
+    display: none;
+  }
+
+  .show-close {
+    display: initial;
+  }
+}
+
+.collapse[open] {
+  .show-open {
+    display: initial;
+  }
+
+  .show-close {
+    display: none;
+  }
+}
+
 .card-title {
   --cardtitle-fs: 1.125rem;
 }
@@ -169,6 +189,14 @@ a.link-grow {
 
   @variant 2xl {
     --max-width: 96rem;
+  }
+
+  @media screen and (width >=1346px) {
+    --container-width: calc(100% - (var(--padding-x) * 2));
+  }
+
+  @media screen and (width >= 1454px) {
+    --container-width: min(100%, var(--max-width));
   }
 }
 

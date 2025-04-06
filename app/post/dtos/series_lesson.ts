@@ -1,7 +1,7 @@
 import Post from '#post/models/post'
 import BaseLessonDto from '#post/dtos/base_lesson'
 
-export default class SeriesLesson extends BaseLessonDto {
+export default class SeriesLessonDto extends BaseLessonDto {
   declare lessonIndexDisplay: string
   declare rootIndexDisplay: string
 

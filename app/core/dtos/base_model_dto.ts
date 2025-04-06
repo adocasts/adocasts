@@ -10,7 +10,9 @@ function StaticImplements<T>() {
 export type StaticModelDto<T extends BaseModelDto> = {
   new (record: any): T
 
-  model: LucidModel | null
+  model(): LucidModel | null
+
+  selectExtras: string[]
 
   fromModel<SourceObject, Dto extends AdoBaseModelDto>(
     this: StaticDto<SourceObject, Dto>,
@@ -22,7 +24,11 @@ export type StaticModelDto<T extends BaseModelDto> = {
 
 @StaticImplements<StaticModelDto<any>>()
 export default class BaseModelDto extends AdoBaseModelDto {
-  static model: LucidModel | null = null
+  static selectExtras: string[] = []
+
+  static model(): LucidModel | null {
+    return null
+  }
 
   static fromModel<SourceObject, Dto extends AdoBaseModelDto>(
     this: StaticDto<SourceObject, Dto>,
@@ -33,13 +39,15 @@ export default class BaseModelDto extends AdoBaseModelDto {
   }
 
   static getSelectable() {
-    if (!this.model) {
+    const model = this.model()
+    const properties = new Set(this.selectExtras)
+
+    if (!model) {
       throw new Exception(`Model not set for ${this.name}`)
     }
 
-    const model = this.model
-    const properties = this.describeModel(this)
-    return properties.filter((property) => model.$hasColumn(property))
+    this.describeModel(this).forEach(properties.add, properties)
+    return [...properties].filter((property) => model.$hasColumn(property))
   }
 
   private static describeModel(cls: any) {

@@ -1,0 +1,12 @@
+<details class="collapse hover:collapse-arrow border-base-100 border-[3px] mb-3">
+  <summary class="collapse-title font-semibold">
+    @if (title)
+      {{ title }}
+    @elseif ($slots.title)
+      {{{ await $slots.title() }}}
+    @endif
+  </summary>
+  <div class="collapse-content">
+    {{{ await $slots.main() }}}
+  </div>
+</details>

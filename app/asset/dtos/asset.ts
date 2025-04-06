@@ -2,7 +2,9 @@ import Asset from '#asset/models/asset'
 import BaseModelDto from '#core/dtos/base_model_dto'
 
 export default class AssetDto extends BaseModelDto {
-  static model = Asset
+  static model() {
+    return Asset
+  }
 
   declare id: number
   declare assetTypeId: number

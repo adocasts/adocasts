@@ -3,7 +3,9 @@ import BaseModelDto from '#core/dtos/base_model_dto'
 import Taxonomy from '#taxonomy/models/taxonomy'
 
 export default class BaseTopicDto extends BaseModelDto {
-  static model = Taxonomy
+  static model() {
+    return Taxonomy
+  }
 
   declare id: number
   declare parentId: number | null

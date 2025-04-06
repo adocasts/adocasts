@@ -62,7 +62,7 @@
     </div>
   </div>
 
-  <section class="section-y mx-auto relative z-[1]">
+  <section class="section-y relative z-[1]">
     @let(featTopic1 = topics.find(topic => topic.name === 'AdonisJS'))
     @let(featTopic2 = topics.find(topic => topic.name === 'EdgeJS'))
     @let(featTopic3 = topics.find(topic => topic.name === 'Lucid'))
@@ -70,7 +70,7 @@
     @let(featIds = [featTopic1.id, featTopic2.id, featTopic3.id, featTopic4.id])
     @let(otherTopics = topics.filter(topic => !featIds.includes(topic.id)))
 
-    <div class="container">
+    <div class="container mx-auto">
       <h2 class="heading-2">
         Dive into a topic
       </h2>
@@ -108,8 +108,8 @@
     </div>
   </div>
 
-  <section class="section-y mx-auto relative z-[1]">
-    <div class="container">
+  <section class="section-y relative z-[1]">
+    <div class="container mx-auto">
       <h2 class="heading-2">
         Jump straight to the latest
       </h2>
@@ -128,7 +128,7 @@
       @endeach
     @end
 
-    <div class="container">
+    <div class="container mx-auto">
       <h4 class="heading-4">
         Latest blog posts  
       </h4>
@@ -142,7 +142,7 @@
       @endeach
     @end
 
-    <div class="container">
+    <div class="container mx-auto">
       <h4 class="heading-4">
         Latest news
       </h4>
