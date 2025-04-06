@@ -15,39 +15,8 @@
       x-init="$nextTick(() => ($store.app.heroHeight = $el.clientHeight))"
       class="bg-slate-100 border-b border-slate-200/50 overflow-hidden">
       <div class="page relative">
-        @if (item.asset?.assetUrl)
-          <div
-            class="absolute h-36 w-36 aspect-square -right-3 top-6 sm:h-56 sm:w-56 sm:-right-2 sm:top-3 md:h-96 md:w-96 md:-right-5 md:top-2 lg:w-[30rem] lg:h-[30rem] lg:-right-[1rem] lg:top-[2.5rem] rounded-full object-cover scale-150 bg-center bg-no-repeat bg-cover blur-2xl opacity-50"
-            style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}?w=10');">
-          </div>
-
-          @let(width = 400)
-          <picture class="absolute inset-0 w-full h-full flex items-end justify-end">
-            <source
-              srcset="
-                {{ assetDomain }}{{ item.asset.assetUrl }}?w={{ width * 2 }}&f=webp 2x,
-                {{ assetDomain }}{{ item.asset.assetUrl }}?w={{ width }}&f=webp 1x
-              "
-              type="image/webp"
-            />
-
-            <img
-              src="{{ assetDomain }}{{ item.asset.assetUrl }}?w={{ width * 2 }}"
-              srcset="
-                {{ assetDomain }}{{ item.asset.assetUrl }}?w={{ width * 2 }} 2x,
-                {{ assetDomain }}{{ item.asset.assetUrl }}?w={{ width }} 1x,
-              "
-              alt="{{ altText || item.asset.altText }}"
-              class="hidden md:block h-36 w-36 aspect-square -right-6 top-12 sm:-right-4 sm:top-6 md:h-56 md:w-56 md:-right-14 md:top-6 lg:w-96 lg:h-96 lg:-right-14 lg:top-14 xl:w-[30rem] xl:h-[30rem] xl:-right-[3.5rem] xl:top-[5rem] rounded-full object-cover relative"
-              loading="lazy"
-            />
-          </picture>
-        @endif
-
         <div class="relative z-10">
           <div class="flex flex-wrap items-start lg:items-center pt-8 pb-4 xl:py-8 gap-6">
-            @!collection.icon({ item, class: 'w-24 lg:w-full max-w-[250px] order-1 md:order-2 md:hidden border-2 md:border-4 border-brand-base-800' })
-
             <div class="sm:flex-1 mb-4 sm:my-4 md:mr-4 xl:mr-8 order-2 md:order-1">
               @!heading({ title: item.name, class: 'text-slate-900' })
 
@@ -115,25 +84,8 @@
   @end
 
   <div class="flex flex-wrap -mx-2 xl:-mx-8 relative" style="--aside-width: 385px;">
-    <aside class="hidden lg:block w-full px-4 xl:px-8 lg:w-[var(--aside-width)] order-1 md:order-2">
-      <div class="sticky top-4 lg:p-8 rounded-xl" :class="{ 'lg:bg-slate-100': !$store.app.heroVisible || {{ item.modules?.length ?? 0 }} }">
-        <div x-show="!$store.app.heroVisible" class="relative overflow-hidden rounded-xl mb-4">
-          <div
-            x-show="!$store.app.heroVisible || {{ item.modules?.length ?? 0 }}"
-            class="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-slate-100/0 via-slate-100/40 to-slate-100/95 group-hover:opacity-0 duration-300 z-10"
-          ></div>
-          @if (item.asset)
-            <div
-              x-show="!$store.app.heroVisible || {{ item.modules?.length ?? 0 }}"
-              class="absolute w-full h-full top-0 left-0 bg-center bg-icon-fit-zoomed group-hover:bg-icon-fit group-hover:scale-[175%] duration-300"
-              style="background-image: url('{{ assetDomain }}{{ item.asset.assetUrl }}?w=10');">
-            </div>
-          @endif
-          <div class="flex justify-center items-center duration-300 h-full p-4 relative z-20" :class="{ 'backdrop-blur-xl bg-slate-100/50 group-hover:bg-slate-100/0': !$store.app.heroVisible || {{ item.modules?.length ?? 0 }} }">
-            @!collection.icon({ item, class: 'w-2/3 mx-auto shadow-lg' })
-          </div>
-        </div>
-
+    <aside class="hidden lg:block w-full px-4 xl:px-8 lg:w-[var(--aside-width)] order-1 md:order-2 lg:mt-[calc(var(--mt)_*_-1)]" :style="{ '--mt': `${$store.app.heroHeight}px` }">
+      <div class="sticky top-4 lg:p-8 rounded-md" :class="{ 'lg:bg-slate-100 shadow-xl border border-slate-200/50': !$store.app.heroVisible || {{ item.modules?.length ?? 0 }} }">
         <div x-show="!$store.app.heroVisible" x-transition class="mb-4">
           <h3 class="text-2xl font-black tracking-tight mb-2">
             {{ item.name }}
@@ -154,7 +106,7 @@
           </div>
 
           @if (item.description)
-            <p class="text-xs mt-2 max-w-prose">
+            <p class="text-xs mt-2 max-w-prose leading-loose">
               {{ item.description }}
             </p>
           @endif

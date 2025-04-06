@@ -87,7 +87,7 @@
 
   <div class="flex flex-wrap -mx-2 xl:-mx-8 relative" style="--aside-width: 385px;">
     <aside class="hidden lg:block w-full px-4 xl:px-8 lg:w-[var(--aside-width)] order-1 md:order-2">
-      <div class="sticky top-4 lg:p-8 rounded-xl" :class="{ 'lg:bg-slate-100': !$store.app.heroVisible || {{ item.children?.length ?? 0 }} }">
+      <div class="sticky top-4 lg:p-8 rounded-xl" :class="{ 'lg:bg-slate-100 border border-slate-200/50': !$store.app.heroVisible || {{ item.children?.length ?? 0 }} }">
         <div x-show="!$store.app.heroVisible" class="relative overflow-hidden rounded-xl mb-4">
           <div 
             x-show="!$store.app.heroVisible"

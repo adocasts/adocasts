@@ -9,7 +9,7 @@
 })
 
   @slot('hero')
-    <div class="bg-slate-100 border-b border-slate-200/50 pt-12">
+    <div class="hidden lg:block bg-slate-100 border-b border-slate-200/50 pt-12">
       @section({ class: 'page' })
         @!heading({
           title: 'Recently Updated.',
@@ -17,8 +17,8 @@
         })
 
         <div class="grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6 xl:gap-8">
-          @each ((item, index) in features)
-            @!collection.grid({ item, index })
+          @each ((item, index) in features.slice(0, 2))
+            @!collection.grid({ item, index, bg: 'bg-slate-200/50 shadow' })
           @endeach
         </div>
       @end
@@ -94,7 +94,7 @@
         @end
       </div> --}}
 
-      <section class="w-full grid gap-4 lg:gap-8">
+      <section class="w-full grid lg:grid-cols-2 gap-4 lg:gap-8">
         @each ((item, i) in series)
           @!collection.grid.list({ item })
         @endeach
