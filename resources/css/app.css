@@ -134,6 +134,12 @@ body {
   }
 }
 
+.radial-progress {
+  &:before {
+    background: radial-gradient(farthest-side, currentColor 98%, #0000) top/var(--thickness) var(--thickness) no-repeat, conic-gradient(currentColor var(--radialprogress), var(--color-base-100, #0000) 0);
+  }
+}
+
 .collapse {
   .show-open {
     display: none;
@@ -151,6 +157,10 @@ body {
 
   .show-close {
     display: none;
+  }
+
+  .open\:rotate-180 {
+    transform: rotate(180deg);
   }
 }
 

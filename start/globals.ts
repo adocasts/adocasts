@@ -3,12 +3,16 @@ import Sorts from '#core/enums/sorts'
 import TimeService from '#core/services/time_service'
 import is from '@adonisjs/core/helpers/is'
 import stringHelpers from '@adonisjs/core/helpers/string'
+import { icons as simpleIcons } from '@iconify-json/simple-icons'
 import { icons as solarIcons } from '@iconify-json/solar'
+import { icons as svgSpinners } from '@iconify-json/svg-spinners'
 import { addCollection, edgeIconify } from 'edge-iconify'
 import edge from 'edge.js'
 import { DateTime } from 'luxon'
 
 addCollection(solarIcons)
+addCollection(simpleIcons)
+addCollection(svgSpinners)
 
 edge.use(edgeIconify)
 

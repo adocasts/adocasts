@@ -461,7 +461,7 @@ export default class Post extends BaseModel {
 
   @computed()
   get rootIndexDisplay() {
-    if (!this.rootSortOrder) return ''
+    if (typeof this.rootSortOrder !== 'number') return ''
     return (this.rootSortOrder + 1).toLocaleString()
   }
 
@@ -597,9 +597,9 @@ export default class Post extends BaseModel {
         orderBy,
         direction,
       }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order'; direction: 'asc' | 'desc' } = {
-          orderBy: 'pivot_sort_order',
-          direction: 'asc',
-        }
+        orderBy: 'pivot_sort_order',
+        direction: 'asc',
+      }
     ) => {
       query.apply((s) => s.forDisplay()).orderBy(orderBy, direction)
     }
@@ -615,9 +615,9 @@ export default class Post extends BaseModel {
         orderBy,
         direction,
       }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order'; direction: 'asc' | 'desc' } = {
-          orderBy: 'pivot_sort_order',
-          direction: 'asc',
-        }
+        orderBy: 'pivot_sort_order',
+        direction: 'asc',
+      }
     ) => {
       query.apply((s) => s.forPathDisplay()).orderBy(orderBy, direction)
     }

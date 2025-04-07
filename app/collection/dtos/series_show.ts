@@ -1,4 +1,5 @@
 import Collection from '#collection/models/collection'
+import SeriesLessonDto from '#post/dtos/series_lesson'
 import BaseSeriesDto from './base_series.js'
 import ModuleDto from './module.js'
 
@@ -17,5 +18,6 @@ export class SeriesShowDto extends BaseSeriesDto {
     this.repositoryUrl = series.repositoryUrl
     this.youtubePlaylistUrl = series.youtubePlaylistUrl
     this.modules = ModuleDto.fromArray(series.children)
+    this.lessons = SeriesLessonDto.fromArray(series.posts)
   }
 }

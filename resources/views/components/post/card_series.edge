@@ -1,0 +1,26 @@
+<div class="card bg-base-200 hover:radial-accent-t group/card mb-3">
+  <div class="card-border"></div>
+  <div class="card-body flex-row items-center gap-6">
+    <div class="radial-progress opacity-60 text-primary text-xl" style="--value:0; --size: 5rem; --thickness: .35rem;" aria-valuenow="70" role="progressbar">
+      <span class="text-base-content font-bold proportional-nums">
+        {{ mod ? post.lessonIndexDisplay : post.rootIndexDisplay }}
+      </span>
+      {{-- @svg('solar:lock-keyhole-minimalistic-bold', { class: 'w-6 h-6' }) --}}
+    </div>
+    
+    <div class="flex-1">
+      <h4 class="text-lg -mt-1 font-semibold">
+        {{ post.title }}
+      </h4>
+      
+      <p class="opacity-60">{{ post.description }}</p>
+      
+      <div class="mt-3 flex items-center gap-3">
+        <div class="badge badge-sm badge-soft opacity-60 group-hover/card:opacity-100 duration-200">
+          @svg('solar:clock-circle-bold-duotone', { class: '-ml-1 -my-0.5' })
+          {{ TimeService.secondsToTimestring(post.videoSeconds) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

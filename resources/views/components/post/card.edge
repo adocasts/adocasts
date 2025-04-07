@@ -4,8 +4,7 @@
     <div class="md:w-1/2 lg:w-2/5 pb-0 md:pb-[var(--card-p,1.5rem)] p-[var(--card-p,1.5rem)] md:pr-0">
       <figure class="relative overflow-visible group-hover:scale-[102.5%] duration-200">
         <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md relative z-10">
-        <img src="/imgs/thumbnail_01.jpg" alt="Shoes"
-          class="rounded-md absolute top-0 left-0 w-full h-full blur-lg opacity-0 group-hover:opacity-75 duraton-200">
+        <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md absolute top-0 left-0 w-full h-full blur-lg opacity-0 group-hover:opacity-75 duraton-200">
       </figure>
     </div>
 
@@ -27,6 +26,39 @@
       </h2>
 
       <p class="line-clamp-5 md:line-clamp-3 lg:line-clamp-5 lg:text-lg opacity-60 mb-3">
+        {{ post.description }}
+      </p>
+    </div>
+  @end
+
+@elseif (size == 'wide')
+
+  @card({ class: `md:card-side ${$props.class || ''}`, border: 'flex md:card-side items-center' })
+    <div class="md:w-1/2 lg:w-1/3 pb-0 md:pb-[var(--card-p,1.5rem)] p-[var(--card-p,1.5rem)] md:pr-0">
+      <figure class="relative overflow-visible group-hover:scale-[102.5%] duration-200">
+        <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md relative z-10">
+        <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md absolute top-0 left-0 w-full h-full blur-lg opacity-0 group-hover:opacity-75 duraton-200">
+      </figure>
+    </div>
+
+    <div class="md:flex-1 card-body">
+      <div class="flex items-center gap-3 lg:mb-1.5">
+        @each (topic in post.topics)
+          <div class="badge badge-soft badge-sm badge-primary">
+            {{ topic.name }}
+          </div>
+        @endeach
+
+        <div class="badge badge-xs lg:badge-sm badge-accent">NEW</div>
+      </div>
+
+      <h2 class="card-title font-semibold text-base-title text-base md:text-lg">
+        <a href="#" class="link-grow">
+          {{ post.title }}
+        </a>
+      </h2>
+
+      <p class="line-clamp-3 opacity-60 text-sm">
         {{ post.description }}
       </p>
     </div>
