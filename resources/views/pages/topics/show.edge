@@ -1,0 +1,47 @@
+@layout()
+
+  <div class="bg-base-300 relative overflow-hidden z-10">
+    <div class="absolute left-0 bottom-0 w-full h-full bg-radial-[at_50%_-300%] from-primary/50 to-primary/0"></div>
+    <section class="section-container mx-auto relative z-[1]">
+      <h1 class="heading-2">
+        {{ topic.name }}
+      </h1>
+
+      @if (topic.description)
+        <p class="max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-base/6">
+          {{ topic.description }}
+        </p>
+      @endif
+    </section>
+  </div>
+
+  <div class="container mx-auto relative">
+    <div class="absolute bottom-3/4 -right-48 translate-y-1/2 w-3/4 apsect-3/2 faded-pattern to-base-300">
+      <img src="/imgs/patterns/pattern_01.svg" alt="Background pattern"
+        class="object-contain object-center grayscale opacity-10">
+    </div>
+  </div>
+
+  <div class="section-container mx-auto flex flex-wrap items-start gap-6 lg:gap-12 relative z-10">
+    <main class="flex-1">
+      <section class="section-y">
+        <h3 class="heading-4">Sub-Topics</h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+          @each (subtopic in topic.children)
+            @!topic.card({ topic: subtopic, size: 'sm' })
+          @endeach
+        </div>
+      </section>
+
+      <section class="section-y">
+        <h3 class="heading-4">Series</h3>
+        <main class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6 " series-list>
+          @each (item in series)
+            @!series.card({ series: item })
+          @endeach
+        </main>
+      </section>
+    </main>
+  </div>
+
+@end

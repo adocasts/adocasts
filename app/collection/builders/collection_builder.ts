@@ -1,14 +1,14 @@
+import ModuleDto from '#collection/dtos/module'
 import CollectionTypes from '#collection/enums/collection_types'
+import Collection from '#collection/models/collection'
+import BaseBuilder from '#core/builders/base_builder'
 import States from '#core/enums/states'
 import Status from '#core/enums/status'
-import Collection from '#collection/models/collection'
+import SeriesLessonDto from '#post/dtos/series_lesson'
 import Post from '#post/models/post'
 import Taxonomy from '#taxonomy/models/taxonomy'
+import is from '@adonisjs/core/helpers/is'
 import { ManyToManyQueryBuilderContract } from '@adonisjs/lucid/types/relations'
-import BaseTopicDto from '#taxonomy/dtos/base_topic'
-import BaseBuilder from '#core/builders/base_builder'
-import SeriesLessonDto from '#post/dtos/series_lesson'
-import ModuleDto from '#collection/dtos/module'
 
 export default class CollectionBuilder extends BaseBuilder<typeof Collection, Collection> {
   constructor() {
@@ -93,8 +93,12 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     return this
   }
 
-  whereHasTaxonomy(taxonomy: Taxonomy | BaseTopicDto) {
-    this.query.whereHas('taxonomies', (query) => query.where('taxonomies.id', taxonomy.id))
+  whereHasTaxonomy(idOrSlug: number | string) {
+    this.query.whereHas('taxonomies', (taxQuery) =>
+      taxQuery
+        .if(is.number(idOrSlug), (query) => query.where('taxonomies.id', idOrSlug))
+        .if(is.string(idOrSlug), (query) => query.where('taxonomies.slug', idOrSlug))
+    )
     return this
   }
 

@@ -12,6 +12,10 @@ export default class GetTopicList extends CacheableAction {
   }
 
   async fromDb() {
-    return Taxonomy.build().display().order().dto(BaseTopicDto)
+    return GetTopicList.fromBuilder().dto(BaseTopicDto)
+  }
+
+  static fromBuilder() {
+    return Taxonomy.build().display().order()
   }
 }

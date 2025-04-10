@@ -11,7 +11,7 @@ export default class RenderSeriesIndex extends BaseAction {
 
   async asController({ view }: HttpContext, filters: Infer<typeof this.validator>) {
     const latest = await GetSeriesRecentlyUpdated.run('db', { limit: 5 })
-    const topics = await GetTopicsFilter.forCollections()
+    const topics = await GetTopicsFilter.run('collections')
     const series = await GetSeriesList.run(filters)
 
     return view.render('pages/series/index', { filters, latest, series, topics })

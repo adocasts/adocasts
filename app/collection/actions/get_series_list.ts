@@ -5,6 +5,7 @@ import CacheableAction from '#core/actions/cacheable_action'
 import Sorts from '#core/enums/sorts'
 import NotImplementedException from '#core/exceptions/not_implemented_exception'
 import BaseLessonDto from '#post/dtos/base_lesson'
+import BaseTopicDto from '#taxonomy/dtos/base_topic'
 import { Infer } from '@vinejs/vine/types'
 import _ from 'lodash'
 
@@ -45,7 +46,7 @@ export default class GetSeriesList extends CacheableAction<CacheOptions, DbOptio
       .series()
       .withPostCount()
       .withTotalMinutes()
-      .withTaxonomies({ withAsset: true })
+      .withTaxonomies((query) => query.selectDto(BaseTopicDto), { withAsset: true })
       .if(options?.limit, (builder) => builder.limit(options!.limit!))
       .if(options?.excludeIds, (builder) => builder.exclude(options!.excludeIds!))
       .if(options?.withPosts, (builder) =>

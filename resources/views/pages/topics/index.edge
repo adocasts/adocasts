@@ -1,0 +1,30 @@
+@layout()
+
+  <div class="container mx-auto relative">
+    <div class="absolute bottom-3/4 -right-48 translate-y-1/2 w-3/4 apsect-3/2 faded-pattern to-base-300">
+      <img 
+        src="/imgs/patterns/pattern_01.svg" 
+        alt="Background pattern" 
+        class="object-contain object-center grayscale opacity-10"
+      >
+    </div>
+  </div>
+
+  <section class="section-container mx-auto relative z-[1]">
+    <h1 class="heading-2">
+      Dive into a topic
+    </h1>
+
+    <p class="mt-6 mb-12 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
+      Explore our wide range of topics and sub-topics, each of which contains various series, lessons, discussions, and more.
+      Topics are a great way to learn about a specific subject.
+    </p>
+    
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+      @each (topic in topics)
+        @!topic.card({ topic, size: 'sm' })
+      @endeach
+    </div>
+  </section>
+
+@end

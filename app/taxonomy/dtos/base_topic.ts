@@ -14,6 +14,7 @@ export default class BaseTopicDto extends BaseModelDto {
   declare description: string
   declare isFeatured: boolean
   declare asset: AssetDto | null
+  declare children: BaseTopicDto[]
   declare meta: Record<string, any>
 
   constructor(topic?: Taxonomy) {
@@ -28,6 +29,7 @@ export default class BaseTopicDto extends BaseModelDto {
     this.description = topic.description
     this.isFeatured = topic.isFeatured
     this.asset = topic.asset && new AssetDto(topic.asset)
+    this.children = BaseTopicDto.fromArray(topic.children)
     this.meta = topic.$extras
   }
 }

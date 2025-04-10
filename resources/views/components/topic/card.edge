@@ -12,7 +12,7 @@
   
       <div class="mt-1.5 md:mt-3">
         <h2 class="card-title text-lg md:text-2xl font-bold text-base-title justify-center">
-          <a href="#" class="link-grow">
+          <a href="{{ route('topics.show', { slug: topic.slug }) }}" class="link-grow">
             {{ topic.name }}
           </a>
         </h2>
@@ -53,7 +53,7 @@
   
       <div class="mt-1.5">
         <h2 class="card-title font-bold text-base-title justify-center">
-          <a href="#" class="link-grow">
+          <a href="{{ route('topics.show', { slug: topic.slug }) }}" class="link-grow">
             {{ topic.name }}
           </a>
         </h2>
@@ -87,7 +87,7 @@
   
       <div>
         <h2 class="card-title font-bold text-base-title">
-          <a href="#" class="link-grow">
+          <a href="{{ route('topics.show', { slug: topic.slug }) }}" class="link-grow">
             {{ topic.name }}
           </a>
         </h2>
