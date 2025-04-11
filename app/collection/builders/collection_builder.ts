@@ -126,13 +126,13 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     taxonomyQuery?: (
       query: ManyToManyQueryBuilderContract<typeof Taxonomy, any>
     ) => ManyToManyQueryBuilderContract<typeof Taxonomy, any>,
-    { withAsset = false, limit = 3 }: { withAsset?: boolean; limit?: number } = {}
+    { withAsset = false, limit }: { withAsset?: boolean; limit?: number } = {}
   ) {
     this.query.preload('taxonomies', (query) =>
       query
         .if(withAsset, (tax) => tax.preload('asset'))
+        .if(limit, (tax) => tax.groupLimit(limit!))
         .groupOrderBy('sort_order', 'asc')
-        .groupLimit(limit)
         .if(typeof taxonomyQuery === 'function', (q) => taxonomyQuery!(q))
     )
     return this

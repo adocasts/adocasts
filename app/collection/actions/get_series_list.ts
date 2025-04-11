@@ -46,7 +46,7 @@ export default class GetSeriesList extends CacheableAction<CacheOptions, DbOptio
       .series()
       .withPostCount()
       .withTotalMinutes()
-      .withTaxonomies((query) => query.selectDto(BaseTopicDto), { withAsset: true })
+      .withTaxonomies((query) => query.selectDto(BaseTopicDto))
       .if(options?.limit, (builder) => builder.limit(options!.limit!))
       .if(options?.excludeIds, (builder) => builder.exclude(options!.excludeIds!))
       .if(options?.withPosts, (builder) =>

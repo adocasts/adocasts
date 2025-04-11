@@ -1,8 +1,17 @@
 @layout()
 
-  <div class="bg-base-300 relative overflow-hidden z-10">
-    <div class="absolute left-0 bottom-0 w-full h-full bg-radial-[at_50%_-300%] from-primary/50 to-primary/0"></div>
-    <section class="section-container mx-auto relative z-[1]">
+  <div class="container mx-auto relative">
+    <div class="absolute bottom-3/4 -right-48 translate-y-1/2 w-3/4 apsect-3/2 faded-pattern to-base-300">
+      <img 
+        src="/imgs/patterns/pattern_01.svg" 
+        alt="Background pattern" 
+        class="object-contain object-center grayscale opacity-10"
+      >
+    </div>
+  </div>
+
+  <section class="section-container mx-auto flex jusitfy-between gap-6 relative z-[1]">
+    <div class="flex-1">
       <h1 class="heading-2">
         {{ topic.name }}
       </h1>
@@ -12,36 +21,44 @@
           {{ topic.description }}
         </p>
       @endif
-    </section>
-  </div>
-
-  <div class="container mx-auto relative">
-    <div class="absolute bottom-3/4 -right-48 translate-y-1/2 w-3/4 apsect-3/2 faded-pattern to-base-300">
-      <img src="/imgs/patterns/pattern_01.svg" alt="Background pattern"
-        class="object-contain object-center grayscale opacity-10">
     </div>
-  </div>
 
-  <div class="section-container mx-auto flex flex-wrap items-start gap-6 lg:gap-12 relative z-10">
+    <div class="pr-36">
+      <div class="w-48 relative -mb-12">
+        <img src="/imgs/adonisjs.jpeg" class="rounded-xl relative z-10" alt="{{ topic.asset.altText ?? topic.name }}">
+        <img src="/imgs/adonisjs.jpeg" class="opacity-60 rotate-12 origin-center absolute inset-0 blur-2xl" alt="{{ topic.asset.altText ?? topic.name }}">
+      </div>
+    </div>
+  </section>
+
+  <div class="flex gap-6 relative z-10">
     <main class="flex-1">
-      <section class="section-y">
-        <h3 class="heading-4">Sub-Topics</h3>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-          @each (subtopic in topic.children)
-            @!topic.card({ topic: subtopic, size: 'sm' })
-          @endeach
-        </div>
-      </section>
+      @if (topic.children?.length)
+        <section class="section-container mx-auto">
+          <h3 class="heading-3">Sub-Topics</h3>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+            @each (subtopic in topic.children)
+              @!topic.card({ topic: subtopic, size: 'sm' })
+            @endeach
+          </div>
+        </section>
+      @endif
 
-      <section class="section-y">
-        <h3 class="heading-4">Series</h3>
-        <main class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6 " series-list>
-          @each (item in series)
-            @!series.card({ series: item })
-          @endeach
-        </main>
-      </section>
+      @if (series?.length)
+        <section class="section-container mx-auto">
+          <h3 class="heading-3">Series</h3>
+          <main class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6 " series-list>
+            @each (item in series)
+              @!series.card({ series: item, size: 'sm' })
+            @endeach
+          </main>
+        </section>
+      @endif
     </main>
+
+    <aside class="section-y w-1/3">
+      aside
+    </aside>
   </div>
 
 @end
