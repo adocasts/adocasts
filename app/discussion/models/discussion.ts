@@ -1,6 +1,7 @@
 import Comment from '#comment/models/comment'
 import SlugService from '#core/services/slug_service'
 import TimeService from '#core/services/time_service'
+import DiscussionBuilder from '#discussion/builders/discussion_builder'
 import DiscussionViewTypes from '#discussion/enums/discussion_view_types'
 import DiscussionView from '#discussion/models/discussion_view'
 import Taxonomy from '#taxonomy/models/taxonomy'
@@ -18,6 +19,8 @@ import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relat
 import { DateTime } from 'luxon'
 
 export default class Discussion extends BaseModel {
+  static build = () => DiscussionBuilder.new()
+
   @column({ isPrimary: true })
   declare id: number
 

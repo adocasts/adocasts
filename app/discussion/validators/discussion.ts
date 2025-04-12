@@ -1,9 +1,9 @@
-import SanitizeService from '#services/sanitize_service'
+import SanitizeService from '#core/services/sanitize_service'
 import vine from '@vinejs/vine'
-// import { exists } from './helpers/db.js'
 
 export const discussionSearchValidator = vine.compile(
   vine.object({
+    page: vine.number().positive().optional(),
     pattern: vine.string().trim().optional(),
     topic: vine.string().optional(),
   })
@@ -17,6 +17,6 @@ export const discussionCreateValidator = vine.compile(
       .trim()
       .minLength(4)
       .transform((value) => SanitizeService.sanitize(value)),
-    taxonomyId: vine.number().positive().optional(), //.exists(exists('taxonomies', 'id')),
+    taxonomyId: vine.number().positive().exists({ table: 'taxonomies', column: 'id' }).optional(),
   })
 )

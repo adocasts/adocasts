@@ -1,16 +1,11 @@
 import Comment from '#comment/models/comment'
-import User from '#user/models/user'
 import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import { compose } from '@adonisjs/core/helpers'
 import { DateTime } from 'luxon'
+import { Voteable } from '#core/models/mixins/voteable'
 
-export default class CommentVote extends BaseModel {
-  @column({ isPrimary: true })
-  declare id: number
-
-  @column()
-  declare userId: number
-
+export default class CommentVote extends compose(BaseModel, Voteable) {
   @column()
   declare commentId: number
 
@@ -19,9 +14,6 @@ export default class CommentVote extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
-
-  @belongsTo(() => User)
-  declare user: BelongsTo<typeof User>
 
   @belongsTo(() => Comment)
   declare comment: BelongsTo<typeof Comment>

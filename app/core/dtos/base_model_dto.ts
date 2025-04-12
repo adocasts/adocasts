@@ -42,6 +42,10 @@ export default class BaseModelDto extends AdoBaseModelDto {
     const model = this.model()
     const properties = new Set(this.selectExtras)
 
+    if (!model && this.selectExtras.length) {
+      return this.selectExtras
+    }
+
     if (!model) {
       throw new Exception(`Model not set for ${this.name}`)
     }

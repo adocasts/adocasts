@@ -4,7 +4,7 @@
     <div class="relative" x-intersect:enter="isHeaderVisible = true" x-intersect:leave="isHeaderVisible = false">
       <img class="absolute top-1/2 right-0 -translate-y-1/2 w-1/3 aspect-square object-cover object-center opacity-20 mask-gradient-to-bl z-[1]" src="/imgs/adonisjs.jpeg" alt="{{ series.name }}">
       
-      <div class="section-container mx-auto flex items-center xl:min-h-[350px]">
+      <div class="section-container mx-auto flex items-center xl:min-h-[250px]">
         <div class="flex-1">
           <h1 class="heading-2">
             {{ topic.name }}
@@ -64,7 +64,7 @@
         @endif
       </main>
 
-      <aside class="@container hidden lg:block w-[350px] section-m-y sticky top-20">
+      <aside class="@container hidden lg:block w-[350px] section-vars mt-[calc(var(--padding-y)_+_28px_+_.75rem)] sticky top-20">
         <div x-show="!isHeaderVisible" x-transition x-cloak class="p-6 bg-base-200 relative z-10 rounded-[var(--radius-box)] mb-6">
           <div class="flex items-center gap-6 mb-6">
             <div class="w-20 relative">

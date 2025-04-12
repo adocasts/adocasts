@@ -1,0 +1,37 @@
+@layout()
+
+  <div>
+    <div class="section-container mx-auto flex flex-wrap items-start gap-6 lg:gap-12 relative z-10">
+      <aside class="@container w-[300px]">
+        <a href="#" class="btn btn-primary btn-block mb-6">
+          New Discussion
+        </a>
+
+        <form method="GET" action="{{ route('series.index') }}" up-target="[series-list]" up-scroll="false" up-autosubmit>
+          <div class="mb-3 md:mb-6">
+            <div class="font-semibold opacity-60 text-sm mb-3">Order by</div>
+            @form.select({ name: 'sort', selected: filters?.sort })
+              @!form.select.option({ value: null, text: 'All' })
+              @!form.select.option({ value: Sorts.POPULAR, text: 'Popular' })
+              @!form.select.option({ value: Sorts.ALPHA, text: 'Alphabetical' })
+            @end
+          </div>
+        
+          <div class="mb-3 md:mb-6">
+            <div class="font-semibold opacity-60 text-sm mb-3">Filter by topic</div>
+            @form.filter({ name: 'topic', checked: filters?.topic })
+              @each (topic in topics)
+                @!form.filter.option({ value: topic.slug, label: topic.name })
+              @endeach
+            @end
+          </div>
+        </form>
+      </aside>
+
+      <main class="@container flex-1">
+        main
+      </main>
+    </div>
+  </div>
+
+@end
