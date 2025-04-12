@@ -47,6 +47,7 @@ export default class GetSeriesList extends CacheableAction<CacheOptions, DbOptio
       .withPostCount()
       .withTotalMinutes()
       .withTaxonomies((query) => query.selectDto(BaseTopicDto))
+      .orderLatestUpdated()
       .if(options?.limit, (builder) => builder.limit(options!.limit!))
       .if(options?.excludeIds, (builder) => builder.exclude(options!.excludeIds!))
       .if(options?.withPosts, (builder) =>
@@ -58,16 +59,16 @@ export default class GetSeriesList extends CacheableAction<CacheOptions, DbOptio
 
   #applySort(series: BaseSeriesDto[], sort: Validator['sort'] = Sorts.LATEST) {
     switch (sort) {
-      case 'latest':
-        return _.orderBy(series, (item) => item.lessons?.at(0)?.publishAt, ['desc'])
-      case 'longest':
+      case Sorts.ALPHA:
+        return _.orderBy(series, (item) => item.name, ['asc'])
+      case Sorts.LONGEST:
         return _.orderBy(series, (item) => Number(item.meta.video_seconds_sum), ['desc'])
-      case 'shortest':
+      case Sorts.SHORTEST:
         return _.orderBy(series, (item) => Number(item.meta.video_seconds_sum), ['asc'])
-      case 'popular':
+      case Sorts.POPULAR:
         throw new NotImplementedException('GetSeries.#applySort: popular has not been implemented')
       default:
-        return _.orderBy(series, (item) => item.name, ['asc'])
+        return series // default is latest
     }
   }
 }

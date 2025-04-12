@@ -76,6 +76,7 @@
     "@adonisjs/shield": "^8.1.2",
     "@adonisjs/static": "^1.1.1",
     "@adonisjs/vite": "^4.0.0",
+    "@alpinejs/intersect": "^3.14.9",
     "@google-cloud/storage": "^7.15.2",
     "@iconify-json/simple-icons": "^1.2.31",
     "@iconify-json/solar": "^1.2.2",

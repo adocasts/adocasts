@@ -69,7 +69,7 @@ export default class TaxonomyBuilder extends BaseBuilder<typeof Taxonomy, Taxono
       query
         .apply((scope) => scope.published())
         .sum('video_seconds')
-        .as('videoSecondsSum')
+        .as('video_seconds_sum')
     )
     return this
   }

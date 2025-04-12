@@ -1,151 +1,165 @@
 @layout()
 
-  <div class="container mx-auto relative">
-    <div class="absolute bottom-3/4 -right-48 translate-y-1/2 w-3/4 apsect-3/2 faded-pattern to-base-300">
-      <img src="/imgs/patterns/pattern_01.svg" alt="Background pattern"
-        class="object-contain object-center grayscale opacity-10">
-    </div>
-  </div>
+  <div x-data="{ isHeaderVisible: true }">
+    <div class="relative" x-intersect:enter="isHeaderVisible = true" x-intersect:leave="isHeaderVisible = false">
+      <img class="absolute top-1/2 right-0 -translate-y-1/2 w-2/3 aspect-video object-cover object-center opacity-20 mask-gradient-to-bl z-[1]" src="/imgs/example-series-bg.png" alt="{{ series.name }}">
 
-  <div class="section-container mx-auto flex flex-wrap items-start gap-6 lg:gap-12 relative z-10">
-    <aside class="w-full lg:w-[36%] lg:sticky top-20">
-      <div class="p-6 bg-base-200 relative z-10 rounded-[var(--radius-box)] mb-6">
-        <h1 class="heading-2">
-          {{ series.name }}
-        </h1>
-        
-        <div class="flex gap-2 mb-6 lg:mb-8">
-          @!difficulty({ item: series })
-        
-          <div class="badge badge-soft opacity-75 group-hover:opacity-100 duration-200">
-            @svg('solar:video-library-bold-duotone', { class: '-ml-1 -my-0.5' })
-            {{ series.meta.posts_count }} Lessons
+      <div class="section-container mx-auto flex items-center xl:min-h-[350px]">
+        <div>
+          <div class="flex gap-2 mb-6 lg:mb-8">
+            @!difficulty({ item: series })
+          
+            <div class="badge badge-soft opacity-75 group-hover:opacity-100 duration-200">
+              @svg('solar:video-library-bold-duotone', { class: '-ml-1 -my-0.5' })
+              {{ series.meta.posts_count }} Lessons
+            </div>
+          
+            <div class="badge badge-soft opacity-75 group-hover:opacity-100 duration-200">
+              @svg('solar:clock-circle-bold-duotone', { class: '-ml-1 -my-0.5' })
+              {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
+            </div>
           </div>
-        
-          <div class="badge badge-soft opacity-75 group-hover:opacity-100 duration-200">
-            @svg('solar:clock-circle-bold-duotone', { class: '-ml-1 -my-0.5' })
-            {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
-          </div>
-        </div>
-      
-        @if (series.description)
-          <p class="max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-base/6">
-            {{ series.description }}
-          </p>
-        @endif
 
-        <div class="flex items-center justify-between gap-3 mt-10">
-          <div class="flex flex-1 items-center gap-3">
-            <a href="#" class="btn btn-primary flex-1">
+          <h1 class="heading-2">
+            {{ series.name }}
+          </h1>
+
+          @if (series.description)
+            <p class="max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-base/6 mb-6 lg:mb-8">
+              {{ series.description }}
+            </p>
+          @endif
+
+          <div class="flex flex-1 items-center gap-3 mt-10">
+            <a href="#" class="btn btn-primary btn-wide">
               @svg('solar:play-bold')
               Start Series
             </a>
-
-            <button type="button" class="btn btn-soft">
+        
+            <button type="button" class="btn btn-soft btn-wide">
               @svg('solar:bookmark-bold')
               Add to Watchist
             </button>
-          </div>
-
-          <div class="flex items-center gap-3">
+            
             <a href="#" class="btn btn-soft btn-square">
               @svg('simple-icons:github')
             </a>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="p-6 bg-base-200 flex items-center gap-6 relative z-10 rounded-[var(--radius-box)] overflow-hidden">
-        <div class="radial-progress text-primary" style="--value:70; --size: 4rem; --thickness: .35rem;" aria-valuenow="70" role="progressbar">70%</div>
-        
-        <div class="flex flex-col">
-          <div class="flex flex-col mr-2 lg:mr-6 mb-1">
-            <span class="font-bold text-lg">Your Progress</span>
-          </div>
-          
-          <div class="flex items-center gap-3">
-            <div class="flex-col mr-2 lg:mr-6 flex">
-              <span class="text-xs opacity-60">Completed</span>
-              <span class="text-sm">
-                <span class="font-bold">24</span>
-                <span class="opacity-60">of {{ series.meta.posts_count }} Lessons</span>
-              </span>
-            </div>
+    <div class="section-container mx-auto flex flex-wrap items-start gap-6 lg:gap-12 relative z-10">
+      <main class="@container flex-1">
+        <div class="relative z-[1]">
+          <div class="lg:hidden">
+            @if (series.modules?.length)
+              @!series.nextOnDeck({ series })
+            @endif
             
-            <div class="flex-col hidden md:flex">
-              <span class="text-xs opacity-60">Time Watched</span>
-              <span class="text-sm">
-                <span class="font-bold">2h 6m</span>
-                <span class="opacity-60">of {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}</span>
-              </span>
+            @!series.progress({ series })
+          </div>
+
+          @if (series.modules?.length)
+            <div x-data class="flex justify-end gap-1 mb-1 -mt-[21px]">
+              <button type="button" class="btn btn-xs btn-ghost opacity-60 hover:opacity-100 duration-200 hover:bg-base-200" @click="document.querySelectorAll('details').forEach((el) => el.open = true)">
+                @svg('solar:add-square-linear')
+                Expand All
+              </button>
+              <button type="button" class="btn btn-xs btn-ghost opacity-60 hover:opacity-100 duration-200 hover:bg-base-200" @click="document.querySelectorAll('details').forEach((el) => el.open = false)">
+                @svg('solar:minus-square-linear')
+                Collapse All
+              </button>
+            </div>
+          @endif
+
+          @each (mod in series.modules)
+            <details class="collapse rounded-none group" open>
+              <summary class="collapse-title !flex items-center justify-between gap-3 border-base-100 border-[3px] backdrop-blur-md mb-3 !px-6 rounded-[var(--radius-box)]">
+                <div class="flex items-center gap-6">
+                  <h3 class="heading-4 !mb-0 flex items-center gap-3">
+                    <div class="text-primary proportional-nums">
+                      Module {{ mod.moduleNumber }}
+                    </div>
+
+                    <div>
+                      @svg('solar:double-alt-arrow-right-broken', { class: 'w-6 h-6 text-primary' })
+                    </div>
+
+                    {{ mod.name }}
+                  </h3>
+                </div>
+
+                <div class="opacity-0 group-hover:opacity-100 duration-200">
+                  @svg('solar:alt-arrow-down-linear', { class: 'w-6 h-6 rotate-0 open:rotate-180 duration-200' })
+                </div>
+              </summary>
+
+              <div class="collapse-content !p-0">
+                @each (post in mod.lessons)
+                  @!post.cardSeries({ post, mod: true })
+                @endeach
+              </div>
+            </details>
+          @endeach
+
+          @each (post in series.lessons)
+            @!post.cardSeries({ post })
+          @endeach
+        </div>
+      </main>
+
+      <aside class="@container hidden lg:block w-[36%] sticky top-20">
+        <div x-show="!isHeaderVisible" x-transition x-cloak class="p-6 bg-base-200 relative z-10 rounded-[var(--radius-box)] mb-6">
+          <div class="flex gap-2 mb-6">
+            @!difficulty({ item: series })
+          
+            <div class="badge badge-soft opacity-75 group-hover:opacity-100 duration-200">
+              @svg('solar:video-library-bold-duotone', { class: '-ml-1 -my-0.5' })
+              {{ series.meta.posts_count }} Lessons
+            </div>
+          
+            <div class="badge badge-soft opacity-75 group-hover:opacity-100 duration-200">
+              @svg('solar:clock-circle-bold-duotone', { class: '-ml-1 -my-0.5' })
+              {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
+            </div>
+          </div>
+
+          <h2 class="heading-3">
+            {{ series.name }}
+          </h2>
+      
+          @if (series.description)
+            <p class="max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-base/6">
+              {{ series.description }}
+            </p>
+          @endif
+      
+          <div class="flex items-center justify-between gap-3 mt-10">
+            <div class="flex flex-1 items-center gap-3">
+              <a href="#" class="btn btn-primary flex-1">
+                @svg('solar:play-bold')
+                Start Series
+              </a>
+      
+              <button type="button" class="btn btn-soft">
+                @svg('solar:bookmark-bold')
+                Add to Watchist
+              </button>
+            </div>
+      
+            <div class="flex items-center gap-3">
+              <a href="#" class="btn btn-soft btn-square">
+                @svg('simple-icons:github')
+              </a>
             </div>
           </div>
         </div>
-      </div>
-    </aside>
-
-    <main class="flex-1">
-      <div class="relative z-[1]">
-        @if (series.modules?.length)
-          <div class="mb-6">
-            <div
-              class="flex items-center gap-3 bg-base-200 relative z-[1] rounded-t-[var(--radius-box)] px-6 py-3 bg-gradient-to-r from-primary/50 to-[30%] to-base-200">
-              <div class="font-bold">Next On Deck</div>
-              @svg('solar:double-alt-arrow-right-line-duotone', { class: 'w-6 h-6' })
-              <div class="opacity-60">Pick up where you left off</div>
-            </div>
-            @!post.card({ post: series.modules.at(0).lessons.at(0), size: 'wide', class: 'rounded-t-none' })
-          </div>
-        @endif
-
-        @if (series.modules?.length)
-          <div x-data class="flex justify-end gap-1 mb-1">
-            <button type="button" class="btn btn-xs btn-ghost opacity-60 hover:opacity-100 duration-200 hover:bg-base-200" @click="document.querySelectorAll('details').forEach((el) => el.open = true)">
-              @svg('solar:add-square-linear')
-              Expand All
-            </button>
-            <button type="button" class="btn btn-xs btn-ghost opacity-60 hover:opacity-100 duration-200 hover:bg-base-200" @click="document.querySelectorAll('details').forEach((el) => el.open = false)">
-              @svg('solar:minus-square-linear')
-              Collapse All
-            </button>
-          </div>
-        @endif
-
-        @each (mod in series.modules)
-          <details class="collapse rounded-none group" open>
-            <summary class="collapse-title !flex items-center justify-between gap-3 border-base-100 border-[3px] backdrop-blur-md mb-3 !px-6 rounded-[var(--radius-box)]">
-              <div class="flex items-center gap-6">
-                <h3 class="heading-4 !mb-0 flex items-center gap-3">
-                  <div class="text-primary proportional-nums">
-                    {{ mod.moduleNumber }}
-                  </div>
-
-                  <div>
-                    @svg('solar:double-alt-arrow-right-broken', { class: 'w-6 h-6 text-primary' })
-                  </div>
-
-                  {{ mod.name }}
-                </h3>
-              </div>
-
-              <div class="opacity-0 group-hover:opacity-100 duration-200">
-                @svg('solar:alt-arrow-down-linear', { class: 'w-6 h-6 rotate-0 open:rotate-180 duration-200' })
-              </div>
-            </summary>
-
-            <div class="collapse-content !p-0">
-              @each (post in mod.lessons)
-                @!post.cardSeries({ post, mod: true })
-              @endeach
-            </div>
-          </details>
-        @endeach
-
-        @each (post in series.lessons)
-          @!post.cardSeries({ post })
-        @endeach
-      </div>
-    </main>
+      
+        @!series.nextOnDeck({ series, size: 'wide' })
+        @!series.progress({ series })
+      </aside>
+    </div>
   </div>
 
 @end

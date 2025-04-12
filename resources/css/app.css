@@ -65,7 +65,14 @@
 }
 
 @utility mask-gradient-to-b {
-  mask: linear-gradient(to bottom, transparent, black);
+  mask: linear-gradient(to top, transparent, black);
+}
+
+@utility mask-gradient-to-bl {
+  mask: 
+    linear-gradient(to top, transparent, black 50%),
+    linear-gradient(to right, transparent, black 50%);
+  mask-composite: intersect;
 }
 
 [x-cloak] {
@@ -212,7 +219,8 @@ a.link-grow {
 
 .container-vars,
 .section-container,
-.section-y {
+.section-y,
+.section-b {
   --padding-y: theme(spacing.9);
 
   @variant lg {
@@ -234,6 +242,15 @@ a.link-grow {
 .section-container,
 .section-y {
   padding-top: var(--padding-y);
+  padding-bottom: var(--padding-y);
+}
+
+.section-m-y {
+  margin-top: var(--padding-y);
+  margin-bottom: var(--padding-y);
+}
+
+.section-b {
   padding-bottom: var(--padding-y);
 }
 
