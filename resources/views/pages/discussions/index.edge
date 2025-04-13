@@ -61,7 +61,109 @@
         </form>
       </aside>
 
-      <main class="@container flex-1">
+      <main class="@container flex-1 flex flex-col gap-3 lg:gap-6">
+        @each (discussion in discussions.data)
+          @let(commentCount = parseInt(discussion.meta.comments_count))
+          @let(impressionCount = parseInt(discussion.meta.impressions_count))
+
+          @card({ id: `feed_${discussion.id}` })
+            <div class="card-body flex flex-row flex-wrap gap-6">
+              <div class="flex flex-col">
+                @profile.link({ user: discussion.author, class: 'h-full' })
+                  <div class="avatar">
+                    <div class="w-14 rounded">
+                      <img loading="lazy" src="{{ discussion.author.avatar }}" alt="{{ discussion.author.handle }}" />
+                    </div>
+                  </div>
+                @end
+
+                @if (commentCount)
+                  <div class="flex justify-center h-full mt-2">
+                    <div class="w-[3px] h-[calc(100%_+_1.25rem)] rounded-full bg-base-content/10"></div>
+                  </div>
+                @endif
+              </div>
+
+              <div class="flex-1">
+                <h2 class="card-title text-xl @xl:text-2xl font-bold text-base-title">
+                  <a href="#" class="link-grow">
+                    {{ discussion.title }}
+                  </a>
+                </h2>
+
+                <p class="flex gap-1 items-baseline mb-3 @xl:mb-6">
+                  <span class="opacity-60">Posted by</span>
+
+                  @profile.link({ user: discussion.author, class: ['text-sm flex gap-1', 'items-baseline'] })
+                    <span>
+                      {{ discussion.author.username }} 
+                    </span>
+
+                    @if (!discussion.author.isFreeTier)
+                      <span class="h-2.5 relative mr-1.5">
+                        <img class="h-full" src="/imgs/plus-badge-100.png" alt="Adocasts Plus" />
+                      </span>
+                    @endif
+                  @end
+
+                  <span class="flex-none text-sm opacity-60">
+                    <time datetime="{{ discussion.createdAt }}">{{ TimeService.timeago(discussion.createdAt) }}</time>
+                  </span>
+                </p>
+                
+                @if (discussion.body)
+                  <p class="opacity-60 text-base">
+                    {{ string.truncate(await parser.stripHtml(discussion.body), 240) }}
+                  </p>
+                @endif
+              </div>
+              <div class="w-full">
+                <div class="w-full flex items-end gap-4 justify-between text-sm">
+                  <div class="flex items-center gap-2">
+                    <div class="w-14 flex justify-center mr-3">
+                      @if (commentCount)
+                        <div class="avatar-group -space-x-4">
+                          @each (comment in discussion.comments.toReversed())
+                            <div class="avatar">
+                              <div class="w-6">
+                                <img src="{{ comment.author.avatar }}" alt="{{ comment.author.handle }}">
+                              </div>
+                            </div>
+                          @endeach
+                        </div>
+                      @endif
+                    </div>
+
+                    @tooltip({ text: `${commentCount.toLocaleString()} ${string.pluralize('Reply', commentCount)}`, position: 'bottom' })
+                      <a href="#comments" class="badge badge-lg">
+                        @svg('solar:chat-round-call-bold-duotone', { class: '-ml-1 -my-0.5' })
+                        {{ commentCount.toLocaleString() }}
+                      </a>
+                    @end
+
+                    {{-- @!discussion.vote({ item }) --}}
+
+                    @tooltip({ text: `${impressionCount.toLocaleString()} ${string.pluralize('Impression', impressionCount)}`, position: 'bottom' })
+                      <div class="badge badge-lg">
+                        @svg('solar:eye-bold-duotone', { class: '-ml-1 -my-0.5' })
+                        {{ impressionCount.toLocaleString() }}
+                      </div>
+                    @end
+                  </div>
+
+                  @if (discussion.topic)
+                    <div>
+                      <a href="{{ route('discussions.index', {}, { qs: { topic: discussion.topic.slug }}) }}" class="btn btn-soft btn-sm">
+                        {{ discussion.topic.name }}
+                      </a>
+                    </div>
+                  @endif
+                </div>
+              </div>
+            </div>
+          @end
+        @endeach
+
         @dump(discussions)
       </main>
     </div>

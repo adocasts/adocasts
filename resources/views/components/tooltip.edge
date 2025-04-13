@@ -1,0 +1,9 @@
+<div {{ $props.except(['text']).merge({ class: 'tooltip', 'data-tip': text }).toAttrs() }}>
+  @if ($slots.content)
+    <div class="tooltip-content">
+      {{{ await $slots.content() }}}
+    </div>
+  @endif
+  
+  {{{ await $slots.main() }}}
+</div>
