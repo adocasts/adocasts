@@ -27,7 +27,13 @@ export default class GetTopicsFilter extends BaseAction<['collections' | 'posts'
   }
 
   async forDiscussions() {
-    return Taxonomy.build().orderBy('name').dto(BaseTopicDto)
+    const topics = await Taxonomy.build()
+      .orderBy('name')
+      .withDiscussionCount()
+      .whereHasDiscussion()
+      .dto(BaseTopicDto)
+
+    return topics.toSorted((a, b) => b.meta.discussions_count - a.meta.discussions_count)
   }
 
   async #get(countField: string) {

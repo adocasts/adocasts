@@ -9,7 +9,7 @@ export default class RenderDiscussionsIndex extends BaseAction {
   validator = discussionSearchValidator
 
   async asController({ view }: HttpContext, filters: Infer<typeof this.validator>) {
-    const discussions = await GetDiscussionsPaginated.run(filters)
+    const discussions = await GetDiscussionsPaginated.run(filters, 'discussions.index')
     const topics = await GetTopicsFilter.run('discussions')
 
     return view.render('pages/discussions/index', { discussions, topics, filters })

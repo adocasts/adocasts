@@ -3,4 +3,4 @@
 @let(ariaLabel = $props.label)
 @let(value = $props.value)
 
-<input class="btn btn-sm mb-0.5 mr-0.5" type="radio" {{ $props.except(['label']).merge({ ...checked, name, ariaLabel, value }).toAttrs() }} >
+<input class="btn btn-sm mb-1 mr-0.5" type="radio" {{ $props.except(['label']).merge({ ...checked, name, ariaLabel, value }).toAttrs() }} >

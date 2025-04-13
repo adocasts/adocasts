@@ -21,6 +21,7 @@ import TaxonomyBuilder from '#taxonomy/builders/taxonomy_builder'
 import User from '#user/models/user'
 import Database from '@adonisjs/lucid/services/db'
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
+import Discussion from '#discussion/models/discussion'
 
 export default class Taxonomy extends BaseModel {
   static build = () => TaxonomyBuilder.new()
@@ -98,6 +99,9 @@ export default class Taxonomy extends BaseModel {
     onQuery: (q) => q.where('historyTypeId', HistoryTypes.PROGRESSION),
   })
   declare progressionHistory: HasMany<typeof History>
+
+  @hasMany(() => Discussion)
+  declare discussions: HasMany<typeof Discussion>
 
   @manyToMany(() => Post, {
     pivotColumns: ['sort_order'],

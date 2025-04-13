@@ -9,16 +9,49 @@
 
         <form method="GET" action="{{ route('series.index') }}" up-target="[series-list]" up-scroll="false" up-autosubmit>
           <div class="mb-3 md:mb-6">
-            <div class="font-semibold opacity-60 text-sm mb-3">Order by</div>
-            @form.select({ name: 'sort', selected: filters?.sort })
-              @!form.select.option({ value: null, text: 'All' })
-              @!form.select.option({ value: Sorts.POPULAR, text: 'Popular' })
-              @!form.select.option({ value: Sorts.ALPHA, text: 'Alphabetical' })
+            @form.field({ name: 'pattern', as: 'div', class: 'w-full' })
+              @!form.input({ type: 'search', value: filters.pattern, placeholder: 'Search discussions ...', class: 'w-full' })
             @end
+          </div>
+
+          <div class="mb-3 md:mb-6">
+            <div class="font-semibold opacity-60 text-sm mb-3">Filter by feed</div>
+            <ul class="menu text-base w-full gap-1 p-0">
+              <li>
+                <a href="#" class="menu-active">
+                  @svg('solar:chat-round-call-bold-duotone', { class: 'w-6 h-6' })
+                  All discussions
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  @svg('solar:chat-round-like-bold-duotone', { class: 'w-6 h-6' })
+                  Popular
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  @svg('solar:chat-round-unread-bold-duotone', { class: 'w-6 h-6' })
+                  No replies
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  @svg('solar:chat-round-bold-duotone', { class: 'w-6 h-6' })
+                  Unsolved
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  @svg('solar:chat-round-check-bold-duotone', { class: 'w-6 h-6' })
+                  Solved
+                </a>
+              </li>
+            </ul>
           </div>
         
           <div class="mb-3 md:mb-6">
-            <div class="font-semibold opacity-60 text-sm mb-3">Filter by topic</div>
+            <div class="font-semibold opacity-60 text-sm mb-3">Filter by topics</div>
             @form.filter({ name: 'topic', checked: filters?.topic })
               @each (topic in topics)
                 @!form.filter.option({ value: topic.slug, label: topic.name })
@@ -29,7 +62,7 @@
       </aside>
 
       <main class="@container flex-1">
-        main
+        @dump(discussions)
       </main>
     </div>
   </div>

@@ -47,6 +47,11 @@ export default class TaxonomyBuilder extends BaseBuilder<typeof Taxonomy, Taxono
     return this
   }
 
+  withDiscussionCount() {
+    this.query.withCount('discussions')
+    return this
+  }
+
   withPosts(
     limit: number | undefined,
     orderBy: keyof Post | 'publish_at' = 'publish_at',
@@ -71,6 +76,11 @@ export default class TaxonomyBuilder extends BaseBuilder<typeof Taxonomy, Taxono
         .sum('video_seconds')
         .as('video_seconds_sum')
     )
+    return this
+  }
+
+  whereHasDiscussion() {
+    this.query.whereHas('discussions', (query) => query)
     return this
   }
 

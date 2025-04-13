@@ -1,0 +1,29 @@
+@let($$props = Object.assign($context, $props))
+@let(classes = [
+  'input',
+  $$props.class || '',
+  $$props?.error || flashMessages.get(`errors.${name}`)
+    ? 'input-error'
+    : ''
+])
+@let(name = $$props?.name)
+@let(internalValue = flashMessages.get(name) || ($$props.value ?? ''))
+
+<input 
+  x-data="{{ js.stringify({ name, internalValue }) }}"
+
+  @if ($$props?.model)
+    x-modelable="internalValue"
+    x-model="{{ $$props?.model }}"
+  @else
+    x-model="internalValue"
+  @endif
+
+  @if (name)
+    name="{{ name }}"
+  @endif
+
+  class="{{ html.classNames(classes) }}"
+
+  {{ $props.except(['value', 'name', 'model', 'upSubmit', 'class']).merge({ type: 'text', ...$context }).toAttrs() }} 
+/>

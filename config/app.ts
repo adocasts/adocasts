@@ -1,6 +1,7 @@
 import env from '#start/env'
 import { Secret } from '@adonisjs/core/helpers'
 import { defineConfig } from '@adonisjs/core/http'
+import { defineConfig as dumperConfig } from '@adonisjs/core/dumper'
 import app from '@adonisjs/core/services/app'
 
 /**
@@ -36,5 +37,11 @@ export const http = defineConfig({
     httpOnly: true,
     secure: app.inProduction,
     sameSite: 'lax',
+  },
+})
+
+export const dumper = dumperConfig({
+  html: {
+    depth: 10,
   },
 })
