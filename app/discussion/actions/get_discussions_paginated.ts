@@ -8,15 +8,17 @@ import { Infer } from '@vinejs/vine/types'
 type Filters = Infer<typeof discussionSearchValidator> | undefined
 
 export default class GetDiscussionsPaginated extends BaseAction<[Filters, string | undefined]> {
-  public async handle({ page = 1, pattern, topic }: Filters = {}, routeIdentifier?: string) {
+  public async handle({ page = 1, pattern, topic, feed }: Filters = {}, routeIdentifier?: string) {
     const paginator = await Discussion.build()
       .search(pattern)
+      .whereFeed(feed)
       .whereHasTaxonomy(topic)
       .withCounts()
       .withCommentPreview()
       .withAuthor()
       .withTaxonomy()
       .withVotes()
+      .orderBy('createdAt', 'desc')
       .paginate(page, 20)
 
     if (routeIdentifier) {

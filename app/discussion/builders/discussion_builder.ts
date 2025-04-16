@@ -51,6 +51,22 @@ export default class DiscussionBuilder extends BaseBuilder<typeof Discussion, Di
     return this
   }
 
+  whereFeed(feed?: 'popular' | 'noreplies' | 'solved' | 'unsolved') {
+    if (!feed) return this
+
+    switch (feed) {
+      case 'noreplies':
+        this.query.whereDoesntHave('comments', (query) => query.where('stateId', States.PUBLIC))
+        return this
+      case 'solved':
+        return this
+      case 'unsolved':
+        return this
+      default:
+        return this
+    }
+  }
+
   whereHasTaxonomy(slug?: string) {
     if (!slug) return this
 

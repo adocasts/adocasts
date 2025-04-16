@@ -1,8 +1,8 @@
-import { parse } from 'node-html-parser'
-import app from '@adonisjs/core/services/app'
-import edge from 'edge.js'
 import env from '#start/env'
 import string from '@adonisjs/core/helpers/string'
+import app from '@adonisjs/core/services/app'
+import edge from 'edge.js'
+import { parse } from 'node-html-parser'
 import shiki from 'shiki'
 
 const shikiTheme = 'github-dark'
@@ -24,7 +24,7 @@ class ParserService {
   stripHtml(html?: string) {
     if (!html) return ''
 
-    return parse(html).text
+    return parse(html).textContent
   }
 
   normalizeLanguage(language: string | undefined) {

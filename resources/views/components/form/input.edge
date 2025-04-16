@@ -9,21 +9,31 @@
 @let(name = $$props?.name)
 @let(internalValue = flashMessages.get(name) || ($$props.value ?? ''))
 
-<input 
-  x-data="{{ js.stringify({ name, internalValue }) }}"
-
-  @if ($$props?.model)
-    x-modelable="internalValue"
-    x-model="{{ $$props?.model }}"
-  @else
-    x-model="internalValue"
+<span class="{{ html.classNames(classes) }}">
+  @if ($slots.prefix)
+    {{{ await $slots.prefix() }}}
   @endif
 
-  @if (name)
-    name="{{ name }}"
+  <input 
+    x-data="{{ js.stringify({ name, internalValue }) }}"
+
+    @if ($$props?.model)
+      x-modelable="internalValue"
+      x-model="{{ $$props?.model }}"
+    @else
+      x-model="internalValue"
+    @endif
+
+    @if (name)
+      name="{{ name }}"
+    @endif
+
+    class="grow"
+
+    {{ $props.except(['value', 'name', 'model', 'upSubmit', 'class']).merge({ type: 'text', ...$context }).toAttrs() }} 
+  />
+
+  @if ($slots.suffix)
+    {{{ await $slots.suffix() }}}
   @endif
-
-  class="{{ html.classNames(classes) }}"
-
-  {{ $props.except(['value', 'name', 'model', 'upSubmit', 'class']).merge({ type: 'text', ...$context }).toAttrs() }} 
-/>
+</span>

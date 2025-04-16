@@ -5,6 +5,7 @@ export const discussionSearchValidator = vine.compile(
   vine.object({
     page: vine.number().positive().optional(),
     pattern: vine.string().trim().optional(),
+    feed: vine.enum(['popular', 'noreplies', 'unsolved', 'solved']).optional(),
     topic: vine.string().optional(),
   })
 )

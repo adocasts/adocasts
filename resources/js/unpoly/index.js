@@ -3,6 +3,8 @@ import 'unpoly/unpoly.css'
 
 window.up = up
 
+up.log.enable()
+
 // link configuration
 up.link.config.followSelectors.push('a[href]')
 
