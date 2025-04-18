@@ -12,11 +12,11 @@ import {
   belongsTo,
   column,
   computed,
-  hasMany,
-  manyToMany,
+  hasMany
 } from '@adonisjs/lucid/orm'
-import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import { DateTime } from 'luxon'
+import DiscussionVote from './discussion_vote.js'
 
 export default class Discussion extends BaseModel {
   static build = () => DiscussionBuilder.new()
@@ -99,10 +99,8 @@ export default class Discussion extends BaseModel {
   @hasMany(() => DiscussionView)
   declare impressions: HasMany<typeof DiscussionView>
 
-  @manyToMany(() => User, {
-    pivotTable: 'discussion_votes',
-  })
-  declare votes: ManyToMany<typeof User>
+  @hasMany(() => DiscussionVote)
+  declare votes: HasMany<typeof DiscussionVote>
 
   @beforeSave()
   static async slugify(discussion: Discussion) {

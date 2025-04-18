@@ -1,3 +1,4 @@
+import CommentPreviewDto from '#comment/dtos/comment_preview'
 import BaseBuilder from '#core/builders/base_builder'
 import States from '#core/enums/states'
 import Discussion from '#discussion/models/discussion'
@@ -103,6 +104,7 @@ export default class DiscussionBuilder extends BaseBuilder<typeof Discussion, Di
         .where('stateId', States.PUBLIC)
         .orderBy('createdAt', 'desc')
         .groupLimit(3)
+        .selectDto(CommentPreviewDto)
     )
     return this
   }

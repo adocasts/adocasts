@@ -1,5 +1,7 @@
-<div class="card bg-base-200 hover:radial-accent-t duration-300 shadow-sm relative group overflow-hidden {{ $props.class ?? '' }}">
-  @if ($props.border === undefined || $props.border)
+@let(accent = $props.accent ?? 'hover:radial-accent-t')
+
+<div class="card bg-base-200 duration-300 shadow-sm relative group overflow-hidden {{ accent }} {{ $props.class ?? '' }}">
+  @if (accent && ($props.border === undefined || $props.border))
     <div class="card-border {{ $props.border ?? '' }}"></div>
   @endif
   

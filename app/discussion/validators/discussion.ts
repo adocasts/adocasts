@@ -3,7 +3,17 @@ import vine from '@vinejs/vine'
 
 export const discussionSearchValidator = vine.compile(
   vine.object({
-    page: vine.number().positive().optional(),
+    page: vine
+      .number()
+      .parse((v) => v ?? 1)
+      .positive()
+      .optional(),
+    perPage: vine
+      .number()
+      .parse((v) => v ?? 20)
+      .positive()
+      .max(50)
+      .optional(),
     pattern: vine.string().trim().optional(),
     feed: vine.enum(['popular', 'noreplies', 'unsolved', 'solved']).optional(),
     topic: vine.string().optional(),

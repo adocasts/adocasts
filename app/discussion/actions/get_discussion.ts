@@ -1,5 +1,5 @@
 import BaseAction from '#core/actions/base_action'
-import BaseDiscussionDto from '#discussion/dtos/base_discussion'
+import DiscussionShowDto from '#discussion/dtos/discussion_show'
 import Discussion from '#discussion/models/discussion'
 
 export default class GetDiscussion extends BaseAction<[string]> {
@@ -11,6 +11,6 @@ export default class GetDiscussion extends BaseAction<[string]> {
       .withAuthor()
       .withTaxonomy()
       .withVotes()
-      .firstOrFail(BaseDiscussionDto)
+      .firstOrFail(DiscussionShowDto)
   }
 }
