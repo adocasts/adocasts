@@ -1,9 +1,8 @@
 import BaseBuilder from '#core/builders/base_builder'
-import BaseVoteDto from '#core/dtos/base_vote_dto'
 import States from '#core/enums/states'
-import DiscussionVoteDto from '#discussion/dtos/discussion_vote'
 import Discussion from '#discussion/models/discussion'
 import Taxonomy from '#taxonomy/models/taxonomy'
+import AuthorDto from '#user/dtos/author'
 import User from '#user/models/user'
 import { RelationQueryBuilderContract } from '@adonisjs/lucid/types/relations'
 
@@ -111,18 +110,22 @@ export default class DiscussionBuilder extends BaseBuilder<typeof Discussion, Di
   withComments() {
     this.query.preload('comments', (query) =>
       query
-        .preload('user')
-        .preload('userVotes', (votes) => votes.selectDto(BaseVoteDto))
+        .preload('user', (user) => user.selectDto(AuthorDto))
+        .preload('userVotes', (votes) => votes.select('comment_votes.id', 'comment_votes.user_id'))
         .where('stateId', States.PUBLIC)
+        .withCount('userVotes', (votes) => votes.as('voteCount'))
         .orderBy([
           { column: 'voteCount', order: 'desc' },
           { column: 'createdAt', order: 'desc' },
         ])
     )
+    return this
   }
 
   withVotes() {
-    this.query.preload('votes', (query) => query.selectDto(DiscussionVoteDto))
+    this.query.preload('votes', (query) =>
+      query.select('discussion_votes.id', 'discussion_votes.user_id')
+    )
     return this
   }
 

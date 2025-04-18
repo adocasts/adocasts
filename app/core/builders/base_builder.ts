@@ -66,13 +66,14 @@ export default class BaseBuilder<Model extends LucidModel, Row extends LucidRow>
     return this.query.first()
   }
 
-  firstOrFail<Dto extends BaseModelDto>(dto?: StaticModelDto<Dto>) {
-    if (dto) this.query.selectDto(dto)
+  firstOrFail(): Promise<Row>
+  firstOrFail<Dto extends BaseModelDto>(dto: StaticModelDto<Dto>): Promise<Dto>
+  firstOrFail<Dto extends BaseModelDto>(dto?: StaticModelDto<Dto>): Promise<Row | Dto> {
+    if (!dto) return this.query.firstOrFail()
 
-    return this.query.firstOrFail().then((row) => {
-      if (dto) return dto.fromModel(row)
-      return row
-    })
+    this.query.selectDto(dto)
+
+    return this.query.firstOrFail().then((row) => dto.fromModel(row)!)
   }
 
   exclude(values: any[], column: string = 'id') {

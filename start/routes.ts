@@ -13,6 +13,7 @@ const RenderSeriesShow = () => import('#collection/actions/render_series_show')
 const RenderTopicsIndex = () => import('#taxonomy/actions/render_topics_index')
 const RenderTopicShow = () => import('#taxonomy/actions/render_topic_show')
 const RenderDiscussionsIndex = () => import('#discussion/actions/render_discussions_index')
+const RenderDiscussionsShow = () => import('#discussion/actions/render_discussions_show')
 import router from '@adonisjs/core/services/router'
 
 router.where('slug', router.matchers.slug())
@@ -29,3 +30,4 @@ router.get('/topics/:slug', [RenderTopicShow]).as('topics.show')
 
 //* Discussions
 router.get('/forum', [RenderDiscussionsIndex]).as('discussions.index')
+router.get('/forum/:slug', [RenderDiscussionsShow]).as('discussions.show')

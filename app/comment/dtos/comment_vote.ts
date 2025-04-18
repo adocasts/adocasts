@@ -1,13 +1,13 @@
+import CommentVote from '#comment/models/comment_vote'
 import BaseModelDto from '#core/dtos/base_model_dto'
-import DiscussionVote from '#discussion/models/discussion_vote'
 
-export default class DiscussionVoteDto extends BaseModelDto {
+export default class CommentVoteDto extends BaseModelDto {
   static selectExtras = ['user_id']
 
   declare id: number
   declare userId: number
 
-  constructor(vote?: DiscussionVote) {
+  constructor(vote?: CommentVote) {
     super()
 
     if (!vote) return

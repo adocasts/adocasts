@@ -31,8 +31,8 @@ export default class BaseDiscussionDto extends BaseModelDto {
     this.title = discussion.title
     this.slug = discussion.slug
     this.body = discussion.body
-    this.createdAt = discussion.createdAt.toISO()!
-    this.updatedAt = discussion.updatedAt.toISO()!
+    this.createdAt = discussion.createdAt?.toISO()!
+    this.updatedAt = discussion.updatedAt?.toISO()!
     this.meta = discussion.$extras
 
     this.topic = BaseTopicDto.fromModel(discussion.taxonomy)

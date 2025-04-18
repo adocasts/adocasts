@@ -96,7 +96,7 @@
 
               <div class="flex-1 -mb-2">
                 <h2 class="card-title text-xl @xl:text-2xl font-bold text-base-title">
-                  <a href="#" class="link-grow">
+                  <a href="{{ route('discussions.show', { slug: discussion.slug }) }}" class="link-grow">
                     {{ discussion.title }}
                   </a>
                 </h2>
@@ -173,6 +173,8 @@
             </div>
           @end
         @endeach
+
+        @!pagination({ items: discussions.meta })
 
         @dump(discussions)
       </main>
