@@ -1042,3 +1042,337 @@ a.link-grow {
     transform: translateX(-100%)
   }
 }
+
+
+
+.prose p.timestamp {
+  @apply text-xs text-slate-600 tracking-wide font-bold;
+  margin-bottom: -2em;
+  position: relative;
+  top: -4px;
+}
+
+.prose .timestamp+p {
+  margin-bottom: .4em;
+}
+
+.prose .timestamp {
+  cursor: pointer;
+  color: var(--color-primary);
+}
+
+.prose.no-max {
+  max-width: 100%;
+}
+
+.prose [data-youtube-video],
+.prose-sm [data-youtube-video],
+.prose-xs [data-youtube-video] {
+  position: relative;
+  padding-bottom: 56.25%;
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.prose.post-type-5 .timestamp+p:not(.timestamp),
+.prose .timestamp.transcript+p:not(.timestamp) {
+  margin-top: -1.75rem;
+  padding-left: 55px;
+}
+
+.prose.post-type-1 p.timestamp:not(.transcript):after {
+  content: "- Jump to this section in video";
+  opacity: .6;
+  font-weight: 300;
+  margin-left: 1ch;
+}
+
+.prose p.transcript.cutoff.active,
+.prose p.transcript.cutoff.active+p:not(.timestamp) {
+  display: none;
+}
+
+.transcript-cutoff {
+  @apply xl:pl-6;
+
+  width: 100%;
+  height: 10ch;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  background-image: linear-gradient(to bottom, transparent, theme('color.base-300') 90%);
+  pointer-events: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transition: all 300ms ease;
+}
+
+.transcript-cutoff.active {
+  background-image: none;
+  bottom: -3ch;
+  z-index: 10;
+}
+
+.transcript-cutoff button {
+  width: 100%;
+  height: 3ch;
+  display: block;
+  text-align: left;
+  font-size: theme('fontSize.sm');
+  font-weight: 500;
+  text-transform: uppercase;
+  pointer-events: all;
+  transition: all 300ms ease;
+}
+
+.transcript-cutoff button:hover,
+.transcript-cutoff button:active {
+  @apply text-primary;
+}
+
+.transcript-cutoff button:before {
+  content: "👇 Show Full Transcript";
+}
+
+.transcript-cutoff.active button:before {
+  content: "👆 Hide Transcript";
+}
+
+.transcript-cutoff.active+.transcript-cutoff button {
+  display: none;
+}
+
+.prose pre code .line.del {
+  opacity: 40%;
+  transition: opacity 300ms ease;
+}
+
+.prose pre code:hover .line.del {
+  opacity: 100%;
+}
+
+.prose .line.del,
+.prose .line.add {
+  position: relative;
+}
+
+.prose .line.del:after,
+.prose .line.add:after {
+  content: "";
+  height: 100%;
+  left: -1.5rem;
+  opacity: 30%;
+  position: absolute;
+  top: 0;
+  width: calc(100% + 3rem);
+}
+
+.prose .line.del:after {
+  @apply bg-error/50;
+}
+
+.prose .line.add:after {
+  @apply bg-success/50;
+}
+
+.prose .line.del>span,
+.prose .line.add>span {
+  position: relative;
+  z-index: 20;
+}
+
+.prose .line {
+  display: block;
+  line-height: 2;
+}
+
+.prose img {
+  border-radius: theme('borderRadius.xl');
+}
+
+.prose pre,
+.prose-sm pre {
+  overflow-x: auto;
+}
+
+.prose pre>code {
+  display: flex;
+  flex-flow: column;
+}
+
+pre {
+  overflow: hidden;
+  position: relative;
+}
+
+code {
+  counter-reset: step delStep;
+  counter-increment: step 0;
+  counter-increment: delStep 0;
+}
+
+.prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::before,
+.prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::after {
+  content: none !important;
+}
+
+.prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  @apply font-mono;
+  word-wrap: break-word;
+  box-decoration-break: clone;
+  padding: .1rem .3rem .2rem;
+  border-radius: .2rem;
+}
+
+code .line:before {
+  width: 2.5rem;
+  text-align: right;
+  margin-right: 1rem;
+  margin-left: -1.6666666em;
+  padding-right: .65rem;
+  display: inline-block;
+  opacity: .4;
+}
+
+code .line:not(.del):before {
+  content: counter(step);
+  counter-increment: step delStep;
+}
+
+code .line.del:before {
+  content: counter(delStep);
+  counter-increment: delStep;
+}
+
+code .line:first-of-type:before {
+  @apply rounded-tr-lg;
+}
+
+code .line:last-of-type:before {
+  @apply rounded-br-lg;
+}
+
+pre .filepath {
+  @apply h-7 bg-base-100 text-xs rounded-md leading-none;
+  padding: .3rem .75rem .2rem;
+  line-height: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: .5rem;
+  position: absolute;
+  top: .375rem;
+  left: 5rem;
+}
+
+/* purgecss start ignore */
+pre .filepath .lang-icon {
+  width: 1em;
+  height: 1em;
+  position: relative;
+  top: -5px;
+
+  &.ts,
+  &.tsx {
+    color: theme('colors.blue.500');
+  }
+
+  &.js,
+  &.jsx {
+    color: theme('colors.yellow.500');
+  }
+
+  &.edge {
+    color: theme('colors.indigo.500');
+  }
+
+  &.vue {
+    color: theme('colors.green.500');
+  }
+}
+
+.profile pre.shiki>code {
+  @apply !px-0 !pb-0;
+}
+
+pre.shiki.github-dark,
+.code-block pre {
+  @apply !bg-base-100/50;
+
+  &:before {
+    content: "";
+    margin-bottom: .75rem;
+    margin-left: -1rem;
+    display: block;
+    height: .75rem;
+    width: .75rem;
+    border-radius: 9999px;
+    opacity: .3;
+    box-shadow: 1.4em 0, 2.8em 0, 4.2em 0;
+  }
+
+  /* [style="color: #E1E4E8"] {
+    color: theme('colors.slate-base.300') !important;
+  }
+
+  [style="color: #6A737D"] {
+    color: theme('colors.slate-base.500') !important;
+    font-style: italic;
+  } */
+}
+
+/* purgecss end ignore */
+
+.code-copy {
+  position: absolute;
+  top: .375rem;
+  right: .375rem;
+}
+
+pre ul.filepath-list {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+
+  li {
+    padding: 0;
+  }
+
+  li:not(:first-of-type):before {
+    content: "/";
+    display: inline-block;
+  }
+}
+
+.cdx-block.ce-code {
+  position: relative;
+}
+
+.ce-code__textarea {
+  min-height: 200px;
+  font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+  color: #41314e;
+  line-height: 1.6em;
+  font-size: 12px;
+  background: #f8f7fa;
+  border: 1px solid #f1f1f4;
+  box-shadow: none;
+  white-space: pre;
+  word-wrap: normal;
+  overflow-x: auto;
+  resize: vertical;
+}
+
+.ce-code__languagecode {
+  @apply text-xs px-3 py-1 rounded;
+  position: absolute;
+  bottom: 2ch;
+  right: 0;
+}

@@ -33,13 +33,11 @@
     </div>
 
     <div class="flex-1 -mb-2">
-      @if (!show)
-        <h2 class="card-title font-bold text-base-title {{ size.title }}">
-          <a href="{{ route('discussions.show', { slug: discussion.slug }) }}" class="link-grow">
-            {{ discussion.title }}
-          </a>
-        </h2>
-      @endif
+      <h2 class="card-title font-bold text-base-title {{ size.title }}">
+        <a href="{{ route('discussions.show', { slug: discussion.slug }) }}" class="link-grow">
+          {{ discussion.title }}
+        </a>
+      </h2>
 
       <p class="flex gap-1 items-baseline mb-3 {{ size.byline }}">
         <span class="opacity-60">Posted by</span>
@@ -63,61 +61,59 @@
       
       @if (discussion.body)
         @if (show)
-          <article class="prose">
+          <article class="prose max-w-4xl">
             {{{ await parser.highlight(discussion.body) }}}
           </article>
         @else
-          <p class="opacity-60">
+          <p class="opacity-60 xl:max-w-4xl">
             {{ string.truncate(await parser.stripHtml(discussion.body), 240) }}
           </p>
         @endif
       @endif
     </div>
     
-    @if (!show)
-      <div class="w-full">
-        <div class="w-full flex items-end gap-4 justify-between text-sm">
-          <div class="flex items-center gap-2">
-            <div class="w-14 flex justify-center mr-3">
-              @if (commentCount)
-                <div class="avatar-group -space-x-4">
-                  @each (comment in discussion.comments.toReversed())
-                    <div class="avatar">
-                      <div class="w-6">
-                        <img src="{{ comment.author.avatar }}" alt="{{ comment.author.handle }}">
-                      </div>
+    <div class="w-full">
+      <div class="w-full flex items-end gap-4 justify-between text-sm">
+        <div class="flex items-center gap-2">
+          <div class="w-14 flex justify-center mr-3">
+            @if (!show && commentCount)
+              <div class="avatar-group -space-x-4">
+                @each (comment in discussion.comments.toReversed())
+                  <div class="avatar">
+                    <div class="w-6">
+                      <img src="{{ comment.author.avatar }}" alt="{{ comment.author.handle }}">
                     </div>
-                  @endeach
-                </div>
-              @endif
-            </div>
-
-            @tooltip({ text: `${commentCount.toLocaleString()} ${string.pluralize('Reply', commentCount)}`, position: 'bottom' })
-              <a href="#comments" class="badge">
-                @svg('solar:chat-round-call-bold-duotone', { class: '-ml-1 -my-0.5' })
-                {{ commentCount.toLocaleString() }}
-              </a>
-            @end
-
-            {{-- @!discussion.vote({ item }) --}}
-
-            @tooltip({ text: `${impressionCount.toLocaleString()} ${string.pluralize('Impression', impressionCount)}`, position: 'bottom' })
-              <div class="badge">
-                @svg('solar:eye-bold-duotone', { class: '-ml-1 -my-0.5' })
-                {{ impressionCount.toLocaleString() }}
+                  </div>
+                @endeach
               </div>
-            @end
+            @endif
           </div>
 
-          @if (discussion.topic)
-            <div>
-              <a href="{{ route('discussions.index', {}, { qs: { topic: discussion.topic.slug }}) }}" class="btn btn-soft btn-xs">
-                {{ discussion.topic.name }}
-              </a>
+          @tooltip({ text: `${commentCount.toLocaleString()} ${string.pluralize('Reply', commentCount)}`, position: 'bottom' })
+            <a href="#comments" class="badge">
+              @svg('solar:chat-round-call-bold-duotone', { class: '-ml-1 -my-0.5' })
+              {{ commentCount.toLocaleString() }}
+            </a>
+          @end
+
+          {{-- @!discussion.vote({ item }) --}}
+
+          @tooltip({ text: `${impressionCount.toLocaleString()} ${string.pluralize('Impression', impressionCount)}`, position: 'bottom' })
+            <div class="badge">
+              @svg('solar:eye-bold-duotone', { class: '-ml-1 -my-0.5' })
+              {{ impressionCount.toLocaleString() }}
             </div>
-          @endif
+          @end
         </div>
+
+        @if (discussion.topic)
+          <div>
+            <a href="{{ route('discussions.index', {}, { qs: { topic: discussion.topic.slug }}) }}" class="btn btn-soft btn-xs">
+              {{ discussion.topic.name }}
+            </a>
+          </div>
+        @endif
       </div>
-    @endif
+    </div>
   </div>
 @end

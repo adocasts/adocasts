@@ -1,44 +1,16 @@
 @layout()
   @discussion.shell({ feed: 'none', topics })
-    @let(commentCount = parseInt(discussion.meta.comments_count))
-    @let(impressionCount = parseInt(discussion.meta.impressions_count))
 
-    <div class="flex lg:justify-between gap-3 items-center mb-6">
-      <h1 class="heading-2 !mb-0">
-        {{ discussion.title }}
-      </h1>
-
-      <div class="flex items-center gap-3">
-        @tooltip({ text: `${commentCount.toLocaleString()} ${string.pluralize('Reply', commentCount)}`, position: 'bottom' })
-          <a href="#comments" class="badge">
-            @svg('solar:chat-round-call-bold-duotone', { class: '-ml-1 -my-0.5' })
-            {{ commentCount.toLocaleString() }}
-          </a>
-        @end
-
-        {{-- @!discussion.vote({ item }) --}}
-
-        @tooltip({ text: `${impressionCount.toLocaleString()} ${string.pluralize('Impression', impressionCount)}`, position: 'bottom' })
-          <div class="badge">
-            @svg('solar:eye-bold-duotone', { class: '-ml-1 -my-0.5' })
-            {{ impressionCount.toLocaleString() }}
-          </div>
-        @end
-        
-        @if (discussion.topic)
-          <div>
-            <a href="{{ route('discussions.index', {}, { qs: { topic: discussion.topic.slug }}) }}" class="btn btn-soft btn-sm">
-              {{ discussion.topic.name }}
-            </a>
-          </div>
-        @endif
-      </div>
+    <div>
+      <a href="{{ route('discussions.index') }}" class="btn btn-soft">
+        @svg('solar:double-alt-arrow-left-line-duotone')
+        Return to Forum
+      </a>
     </div>
 
     @!discussion.card({ discussion, show: true })
-
+    @!comment.list({ comments: discussion.comments })
 
     @dump(discussion)
-
   @end
 @end

@@ -1,0 +1,14 @@
+@let(parentId = $props.parentId)
+@let(level = comments.filter((comment) => comment.replyTo == parentId))
+
+<ol class="list-none">
+  @each (comment in level)
+    <li class="relative">
+      @!comment.card({ comment })
+
+      @if (comments.some((c) => c.replyTo === comment.id))
+        @!comment.list({ comments, parentId: comment.id })
+      @endif
+    </li>
+  @endeach
+</ol>

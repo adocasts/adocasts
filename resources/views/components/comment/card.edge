@@ -1,0 +1,62 @@
+@let(sizes = new Map([
+  ['sm', {
+    title: 'text-base @xl:text-lg',
+    byline: 'text-sm',
+  }],
+  ['md', {
+    title: 'text-xl @xl:text-2xl',
+    byline: 'text-base'
+  }]
+]))
+
+@let(size = sizes.get($props.size ?? 'sm'))
+
+@card({ id: `comment${comment.id}`, accent: '', class: 'mb-6' })
+  <div class="card-body flex flex-row flex-wrap gap-6">
+    <div class="flex flex-col">
+      @profile.link({ user: comment.author, class: 'h-full' })
+        <div class="avatar">
+          <div class="w-14 rounded">
+            <img loading="lazy" src="{{ comment.author.avatar }}" alt="{{ comment.author.handle }}" />
+          </div>
+        </div>
+      @end
+    </div>
+
+    <div class="flex-1 -mb-2">
+      <p class="flex gap-1 items-baseline mb-3 {{ size.byline }}">
+        <span class="opacity-60">Posted by</span>
+
+        @profile.link({ user: comment.author, class: ['flex gap-1', 'items-baseline'] })
+          <span>
+            {{ comment.author.username }} 
+          </span>
+
+          @if (!comment.author.isFreeTier)
+            <span class="h-2.5 relative mr-1.5">
+              <img class="h-full" src="/imgs/plus-badge-100.png" alt="Adocasts Plus" />
+            </span>
+          @endif
+        @end
+
+        <span class="flex-none opacity-60">
+          <time datetime="{{ comment.createdAt }}">{{ TimeService.timeago(comment.createdAt) }}</time>
+        </span>
+      </p>
+      
+      @if (comment.body)
+        <article class="prose max-w-4xl">
+          {{{ await parser.highlight(comment.body) }}}
+        </article>
+      @endif
+    </div>
+    
+    {{-- <div class="w-full">
+      <div class="w-full flex items-end gap-4 justify-between text-sm">
+        <div class="flex items-center gap-2">
+          {{-- actions --}}
+        </div>
+      </div>
+    </div> --}}
+  </div>
+@end
