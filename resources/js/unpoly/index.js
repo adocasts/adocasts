@@ -4,6 +4,7 @@ import 'unpoly/unpoly.css'
 window.up = up
 
 up.log.enable()
+up.network.config.autoCache = () => false
 
 // link configuration
 up.link.config.followSelectors.push('a[href]')

@@ -15,6 +15,7 @@ export default class CommentDto extends BaseModelDto {
   declare body: string
   declare stateId: number
   declare author: AuthorDto | null
+  declare levelIndex: number
   declare createdAt: string
 
   constructor(comment?: Comment) {
@@ -30,6 +31,7 @@ export default class CommentDto extends BaseModelDto {
     this.body = comment.body
     this.stateId = comment.stateId
     this.author = AuthorDto.fromModel(comment.user)
+    this.levelIndex = comment.levelIndex
     this.createdAt = comment.createdAt?.toISO()!
   }
 }

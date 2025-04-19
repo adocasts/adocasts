@@ -1,6 +1,7 @@
 @let(show = $props.show ?? false)
 @let(commentCount = parseInt(discussion.meta.comments_count))
 @let(impressionCount = parseInt(discussion.meta.impressions_count))
+@let(viewCount = parseInt(discussion.meta.views_count))
 @let(sizes = new Map([
   ['sm', {
     title: 'text-base @xl:text-lg',
@@ -98,11 +99,18 @@
 
           {{-- @!discussion.vote({ item }) --}}
 
-          @tooltip({ text: `${impressionCount.toLocaleString()} ${string.pluralize('Impression', impressionCount)}`, position: 'bottom' })
+          {{-- @tooltip({ text: `${impressionCount.toLocaleString()} ${string.pluralize('Views', impressionCount)}`, position: 'bottom' })
             <div class="badge">
               @svg('solar:eye-bold-duotone', { class: '-ml-1 -my-0.5' })
               {{ impressionCount.toLocaleString() }}
             </div>
+          @end --}}
+
+          @tooltip({ text: `${viewCount.toLocaleString()} ${string.pluralize('Views', viewCount)}`, position: 'bottom' })
+          <div class="badge">
+            @svg('solar:eye-bold-duotone', { class: '-ml-1 -my-0.5' })
+            {{ viewCount.toLocaleString() }}
+          </div>
           @end
         </div>
 

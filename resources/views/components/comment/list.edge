@@ -1,13 +1,18 @@
-@let(parentId = $props.parentId)
-@let(level = comments.filter((comment) => comment.replyTo == parentId))
+@let(parent = $props.parent)
+@let(levelIndex = $props.levelIndex ?? 0)
+@let(level = comments.filter((comment) => comment.replyTo == parent?.id))
 
-<ol class="list-none">
+<ol class="{{ html.classNames(['list-none', { 'ml-3 lg:ml-6 relative': levelIndex === 1 }]) }}">
+  @if (levelIndex === 1)
+    <div class="absolute -left-3 lg:-left-6 -top-10 rotate-180 w-1.5 h-[calc(100%_+_2.5rem)] bg-gradient-to-t from-base-200 to-base-200/0 rounded-full"></div>
+  @endif
+
   @each (comment in level)
     <li class="relative">
-      @!comment.card({ comment })
+      @!comment.card({ comment, parent, levelIndex })
 
       @if (comments.some((c) => c.replyTo === comment.id))
-        @!comment.list({ comments, parentId: comment.id })
+        @!comment.list({ comments, parent: comment, levelIndex: levelIndex + 1 })
       @endif
     </li>
   @endeach
