@@ -32,25 +32,27 @@
     </div>
 
     <div class="flex-1 -mb-2">
-      <p class="flex gap-1 items-baseline mb-3 {{ size.byline }}">
-        <span class="opacity-60">Posted by</span>
-
+      <div class="{{ html.classNames(['flex gap-x-3 items-baseline mb-3', size.byline]) }}">
         @profile.link({ user: comment.author, class: ['flex gap-1', 'items-baseline'] })
           <span>
-            {{ comment.author.username }} 
+            {{ comment.author.handle }} 
           </span>
 
           @if (!comment.author.isFreeTier)
-            <span class="h-2.5 relative mr-1.5">
+            <span class="h-2.5 relative ml-1">
               <img class="h-full" src="/imgs/plus-badge-100.png" alt="Adocasts Plus" />
             </span>
           @endif
         @end
 
-        <span class="flex-none opacity-60">
+        <span class="text-primary relative top-[0.175rem]">
+          @svg('solar:double-alt-arrow-right-broken', { class: 'w-4 h-4' })
+        </span>
+
+        <span class="flex-none opacity-60 text-sm">
           <time datetime="{{ comment.createdAt }}">{{ TimeService.timeago(comment.createdAt) }}</time>
         </span>
-      </p>
+      </div>
       
       @if (comment.body)
         <article class="prose max-w-4xl">

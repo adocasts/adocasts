@@ -259,6 +259,10 @@ a.link-grow {
   border-width: var(--border);
 }
 
+.carousel-item-viewport-offset {
+  width: calc(((100% - var(--container-width)) / 2) + var(--padding-x));
+}
+
 .btn.btn-ghost-soft {
   &:not(.btn-active, .mouseover, :hover, :active:focus, :focus-visible) {
     &:not(:disabled, [disabled], .btn-disabled) {
@@ -1046,7 +1050,7 @@ a.link-grow {
 
 
 .prose p.timestamp {
-  @apply text-xs text-slate-600 tracking-wide font-bold;
+  @apply font-bold text-slate-600 text-xs tracking-wide;
   margin-bottom: -2em;
   position: relative;
   top: -4px;
@@ -1260,7 +1264,7 @@ code .line:last-of-type:before {
 }
 
 pre .filepath {
-  @apply h-7 bg-base-100 text-xs rounded-md leading-none;
+  @apply bg-base-100 rounded-md h-7 text-xs leading-none;
   padding: .3rem .75rem .2rem;
   line-height: 1;
   display: flex;
@@ -1371,7 +1375,7 @@ pre ul.filepath-list {
 }
 
 .ce-code__languagecode {
-  @apply text-xs px-3 py-1 rounded;
+  @apply px-3 py-1 rounded text-xs;
   position: absolute;
   bottom: 2ch;
   right: 0;

@@ -20,6 +20,6 @@ export default class GetSeriesRecentlyUpdated extends CacheableAction<CacheOptio
   }
 
   async fromDb(options?: DbOptions) {
-    return GetSeriesList.run('db', options).orderLatestUpdated().dto(BaseSeriesDto)
+    return GetSeriesList.run('db', options).dto(BaseSeriesDto)
   }
 }

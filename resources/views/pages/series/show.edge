@@ -54,7 +54,7 @@
         <div class="relative z-[1]">
           <div class="lg:hidden">
             @if (series.modules?.length)
-              @!series.nextOnDeck({ series })
+              @!series.nextOnDeck({ series, size: 'wide' })
             @endif
             
             @!series.progress({ series })

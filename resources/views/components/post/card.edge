@@ -33,15 +33,15 @@
 
 @elseif (size == 'wide')
 
-  @card({ class: `md:card-side ${$props.class || ''}`, border: 'flex md:card-side items-center' })
-    <div class="@lg:w-1/2 @xl:w-2/5 pb-0 @lg:pb-[var(--card-p,1.5rem)] p-[var(--card-p,1.5rem)] md:pr-0">
+  @card({ class: `@md:card-side ${$props.class || ''}` })
+    <div class="@sm:w-1/2 @lg:w-2/5 pb-0 @sm:pb-[var(--card-p,1.5rem)] p-[var(--card-p,1.5rem)] md:pr-0">
       <figure class="relative overflow-visible group-hover:scale-[102.5%] duration-200">
         <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md relative z-10">
         <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md absolute top-0 left-0 w-full h-full blur-lg opacity-0 group-hover:opacity-75 duraton-200">
       </figure>
     </div>
 
-    <div class="@lg:flex-1 card-body">
+    <div class="flex-1 card-body">
       <div class="flex items-center gap-3 @xl:mb-1.5">
         @each (topic in post.topics)
           <div class="badge badge-soft badge-xs badge-primary">
@@ -69,7 +69,7 @@
 @else
 
   @card({ class: 'w-68 md:w-76 lg:w-96' })
-    <div class="card-body bg-gradient-to-b from-base-100 to-base-200">
+    <div class="card-body">
       <div class="flex items-center justify-between gap-3">
         @each (topic in post.topics)
           <div class="badge badge-soft badge-xs badge-primary">

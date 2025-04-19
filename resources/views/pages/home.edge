@@ -89,7 +89,7 @@
           <div class="carousel-item">
             <div class="flex flex-col gap-3">
               @each (topic in state.chunk)
-              @!topic.card({ topic, size: 'sm' })
+                @!topic.card({ topic, size: 'sm' })
               @endeach
             </div>
           </div>
@@ -114,9 +114,10 @@
         Jump straight to the latest
       </h2>
 
-      @let([featuredLesson, ...otherLessons] = lessons)
-      <div class="w-full mb-3">
-        @!lesson.card({ lesson: featuredLesson, size: 'lg' })
+      @let([featuredLesson1, featuredLesson2, ...otherLessons] = lessons)
+      <div class="w-full grid grid-cols-2 gap-6 mb-3">
+        @!lesson.card({ lesson: featuredLesson1, size: 'lg' })
+        @!lesson.card({ lesson: featuredLesson2, size: 'lg' })
       </div>
     </div>
 

@@ -1,32 +1,32 @@
 @if (size == 'lg')
 
   @card({ class: 'md:card-side', border: 'flex md:card-side items-center' })
-    <div class="md:w-1/2 lg:w-2/5 pb-0 md:pb-[var(--card-p,1.5rem)] p-[var(--card-p,1.5rem)] md:pr-0">
+    <div class="md:w-1/2 @lg:w-2/5 pb-0 md:pb-[var(--card-p,1.5rem)] p-[var(--card-p,1.5rem)] md:pr-0">
       <figure class="relative !overflow-visible group-hover:scale-[102.5%] duration-200">
         <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md relative z-10">
         <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md absolute top-0 left-0 w-full h-full blur-lg opacity-0 group-hover:opacity-50 duration-200">
       </figure>
     </div>
   
-    <div class="md:w-1/2 lg:w-3/5 card-body">
-      <div class="flex items-center gap-6 lg:mb-1.5">
-        <h6 class="text-xs md:text-sm lg:text-base flex items-center gap-3">
+    <div class="flex-1 card-body">
+      <div class="flex items-center gap-6">
+        <h6 class="text-xs md:text-sm flex items-center gap-3">
           <a href="#" class="font-semibold text-primary line-clamp-1">
             Building with AdonisJS & Inertia
           </a>
           <span class="opacity-60">#12.1</span>
         </h6>
       
-        <div class="badge badge-xs lg:badge-sm badge-accent">NEW</div>
+        <div class="badge badge-xs badge-accent">NEW</div>
       </div>
 
-      <h2 class="card-title text-xl md:text-2xl lg:text-3xl max-w-[32ch] font-semibold text-base-title lg:mb-3">
+      <h2 class="card-title text-lg lg:text-xl max-w-[32ch] font-semibold text-base-title">
         <a href="#" class="link-grow">
           {{ lesson.title }}
         </a>
       </h2>
   
-      <p class="line-clamp-5 md:line-clamp-3 lg:line-clamp-5 lg:text-lg opacity-60 mb-3">
+      <p class="line-clamp-5 @md:line-clamp-4 opacity-60 mb-3">
         {{ lesson.description }}
       </p>
     </div>

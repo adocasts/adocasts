@@ -9,7 +9,7 @@
   }],
   ['md', {
     title: 'text-xl @xl:text-2xl',
-    byline: 'text-base'
+    byline: show ? 'text-lg' : 'text-sm'
   }]
 ]))
 
@@ -34,31 +34,35 @@
     </div>
 
     <div class="flex-1 -mb-2">
-      <h2 class="card-title font-bold text-base-title {{ size.title }}">
-        <a href="{{ route('discussions.show', { slug: discussion.slug }) }}" class="link-grow">
-          {{ discussion.title }}
-        </a>
-      </h2>
+      @if (!show)
+        <h2 class="card-title font-bold text-base-title {{ size.title }}">
+          <a href="{{ route('discussions.show', { slug: discussion.slug }) }}" class="link-grow">
+            {{ discussion.title }}
+          </a>
+        </h2>
+      @endif
 
-      <p class="flex gap-1 items-baseline mb-3 {{ size.byline }}">
-        <span class="opacity-60">Posted by</span>
-
+      <div class="{{ html.classNames(['flex gap-x-3 items-baseline mb-3', size.byline]) }}">
         @profile.link({ user: discussion.author, class: ['flex gap-1', 'items-baseline'] })
           <span>
-            {{ discussion.author.username }} 
+            {{ discussion.author.handle }} 
           </span>
 
           @if (!discussion.author.isFreeTier)
-            <span class="h-2.5 relative mr-1.5">
+            <span class="h-2.5 relative ml-1">
               <img class="h-full" src="/imgs/plus-badge-100.png" alt="Adocasts Plus" />
             </span>
           @endif
         @end
 
-        <span class="flex-none opacity-60">
+        <span class="text-primary relative top-[0.175rem]">
+          @svg('solar:double-alt-arrow-right-broken', { class: 'w-4 h-4' })
+        </span>
+
+        <span class="flex-none opacity-60 text-sm">
           <time datetime="{{ discussion.createdAt }}">{{ TimeService.timeago(discussion.createdAt) }}</time>
         </span>
-      </p>
+      </div>
       
       @if (discussion.body)
         @if (show)

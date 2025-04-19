@@ -1,16 +1,31 @@
 @layout()
   @discussion.shell({ feed: 'none', topics })
 
-    <div>
-      <a href="{{ route('discussions.index') }}" class="btn btn-soft">
+    <h1 class="heading-2 !mb-0">
+      {{ discussion.title }}
+    </h1>
+
+    <div class="flex justify-between items-center gap-3">
+      <a href="{{ route('discussions.index') }}" class="btn btn-soft btn-sm">
         @svg('solar:double-alt-arrow-left-line-duotone')
-        Return to Forum
+        Back
       </a>
+
+      <div class="flex items-center gap-3">
+        <button type="button" class="btn btn-soft btn-sm">
+          @svg('solar:reply-bold')
+          Reply
+        </button>
+
+        <button type="button" class="btn btn-soft btn-sm">
+          @svg('solar:bell-linear')
+          Subscribe
+        </button>
+      </div>
     </div>
 
     @!discussion.card({ discussion, show: true })
     @!comment.list({ comments: discussion.comments })
 
-    @dump(discussion)
   @end
 @end
