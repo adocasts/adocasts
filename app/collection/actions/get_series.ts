@@ -2,7 +2,7 @@ import { SeriesShowDto } from '#collection/dtos/series_show'
 import Collection from '#collection/models/collection'
 import CacheableAction from '#core/actions/cacheable_action'
 import SeriesLessonDto from '#post/dtos/series_lesson'
-import BaseTopicDto from '#taxonomy/dtos/base_topic'
+import TopicDto from '#taxonomy/dtos/topic'
 
 export default class GetSeries extends CacheableAction<string, string> {
   async fromCache(slug: string) {
@@ -20,7 +20,7 @@ export default class GetSeries extends CacheableAction<string, string> {
       .publicOrPreview()
       .where({ slug })
       .withPosts((query) => query.selectDto(SeriesLessonDto))
-      .withTaxonomies((query) => query.selectDto(BaseTopicDto))
+      .withTaxonomies((query) => query.selectDto(TopicDto))
       .withChildren()
       .withPostCount()
       .withTotalMinutes()

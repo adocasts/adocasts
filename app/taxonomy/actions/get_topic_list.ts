@@ -1,5 +1,5 @@
 import CacheableAction from '#core/actions/cacheable_action'
-import BaseTopicDto from '#taxonomy/dtos/base_topic'
+import TopicDto from '#taxonomy/dtos/topic'
 import Taxonomy from '#taxonomy/models/taxonomy'
 
 export default class GetTopicList extends CacheableAction {
@@ -12,7 +12,7 @@ export default class GetTopicList extends CacheableAction {
   }
 
   async fromDb() {
-    return GetTopicList.fromBuilder().dto(BaseTopicDto)
+    return GetTopicList.fromBuilder().dto(TopicDto)
   }
 
   static fromBuilder() {

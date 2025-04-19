@@ -1,11 +1,11 @@
-import BaseSeriesDto from '#collection/dtos/base_series'
+import SeriesListDto from '#collection/dtos/series_list'
 import Collection from '#collection/models/collection'
 import { seriesIndexValidator } from '#collection/validators/series'
 import CacheableAction from '#core/actions/cacheable_action'
 import Sorts from '#core/enums/sorts'
 import NotImplementedException from '#core/exceptions/not_implemented_exception'
-import BaseLessonDto from '#post/dtos/base_lesson'
-import BaseTopicDto from '#taxonomy/dtos/base_topic'
+import LessonListDto from '#post/dtos/lesson_list'
+import TopicDto from '#taxonomy/dtos/topic'
 import { Infer } from '@vinejs/vine/types'
 import _ from 'lodash'
 
@@ -26,7 +26,7 @@ export interface DbOptions {
 
 export default class GetSeriesList extends CacheableAction<CacheOptions, DbOptions> {
   async fromCache(options?: CacheOptions) {
-    let series = await this.fromDb().dto(BaseSeriesDto)
+    let series = await this.fromDb().dto(SeriesListDto)
 
     // todo: cache
 
@@ -46,18 +46,18 @@ export default class GetSeriesList extends CacheableAction<CacheOptions, DbOptio
       .series()
       .withPostCount()
       .withTotalMinutes()
-      .withTaxonomies((query) => query.selectDto(BaseTopicDto))
+      .withTaxonomies((query) => query.selectDto(TopicDto))
       .orderLatestUpdated()
       .if(options?.limit, (builder) => builder.limit(options!.limit!))
       .if(options?.excludeIds, (builder) => builder.exclude(options!.excludeIds!))
       .if(options?.withPosts, (builder) =>
-        builder.withPostsFlat((query) => query.selectDto(BaseLessonDto), {
+        builder.withPostsFlat((query) => query.selectDto(LessonListDto), {
           limit: options?.postLimit,
         })
       )
   }
 
-  #applySort(series: BaseSeriesDto[], sort: Validator['sort'] = Sorts.LATEST) {
+  #applySort(series: SeriesListDto[], sort: Validator['sort'] = Sorts.LATEST) {
     switch (sort) {
       case Sorts.ALPHA:
         return _.orderBy(series, (item) => item.name, ['asc'])

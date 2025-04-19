@@ -1,5 +1,5 @@
 import CacheableAction from '#core/actions/cacheable_action'
-import BaseLessonDto from '#post/dtos/base_lesson'
+import LessonListDto from '#post/dtos/lesson_list'
 import Post from '#post/models/post'
 
 type Options = {
@@ -16,6 +16,6 @@ export default class GetLessonsLatest extends CacheableAction<Options, Options> 
   }
 
   async fromDb({ limit = 12 }: Options = {}) {
-    return Post.build().display().whereLesson().orderPublished().limit(limit).dto(BaseLessonDto)
+    return Post.build().display().whereLesson().orderPublished().limit(limit).dto(LessonListDto)
   }
 }

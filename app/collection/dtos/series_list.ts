@@ -1,10 +1,10 @@
 import AssetDto from '#asset/dtos/asset'
-import BaseTopicDto from '#taxonomy/dtos/base_topic'
+import TopicDto from '#taxonomy/dtos/topic'
 import Collection from '#collection/models/collection'
 import BaseModelDto from '#core/dtos/base_model_dto'
 import SeriesLessonDto from '#post/dtos/series_lesson'
 
-export default class BaseSeriesDto extends BaseModelDto {
+export default class SeriesListDto extends BaseModelDto {
   static model() {
     return Collection
   }
@@ -15,7 +15,7 @@ export default class BaseSeriesDto extends BaseModelDto {
   declare slug: string
   declare description: string
   declare asset: AssetDto | null
-  declare topics: BaseTopicDto[]
+  declare topics: TopicDto[]
   declare lessons: SeriesLessonDto[]
   declare meta: Record<string, any>
 
@@ -30,7 +30,7 @@ export default class BaseSeriesDto extends BaseModelDto {
     this.slug = series.slug
     this.description = series.description
     this.asset = series.asset
-    this.topics = BaseTopicDto.fromArray(series.taxonomies)
+    this.topics = TopicDto.fromArray(series.taxonomies)
     this.lessons = SeriesLessonDto.fromArray(series.postsFlattened)
     this.meta = series.$extras
   }

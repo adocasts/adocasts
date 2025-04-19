@@ -1,5 +1,5 @@
 import BaseAction from '#core/actions/base_action'
-import BaseDiscussionDto from '#discussion/dtos/base_discussion'
+import DiscussionListDto from '#discussion/dtos/discussion_list'
 import Discussion from '#discussion/models/discussion'
 import { discussionSearchValidator } from '#discussion/validators/discussion'
 import router from '@adonisjs/core/services/router'
@@ -31,6 +31,6 @@ export default class GetDiscussionsPaginated extends BaseAction<[Filters, string
 
     paginator.queryString({ page, pattern, topic })
 
-    return BaseDiscussionDto.fromPaginator(paginator, { start: 1, end: paginator.lastPage })
+    return DiscussionListDto.fromPaginator(paginator, { start: 1, end: paginator.lastPage })
   }
 }

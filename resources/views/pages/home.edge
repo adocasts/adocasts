@@ -124,7 +124,7 @@
     @carousel.viewport({ class: 'to-base-300 mb-6 lg:mb-12' })
       @each (lesson in otherLessons)
         <div class="carousel-item">
-          @!lesson.card({ lesson })
+          @!lesson.card({ lesson, class: 'w-68 md:w-76 lg:w-96' })
         </div>
       @endeach
     @end
@@ -138,7 +138,7 @@
     @carousel.viewport({ class: 'to-base-300 mb-6 lg:mb-12' })
       @each (post in otherLessons)
         <div class="carousel-item">
-          @!post.card({ post })
+          @!post.card({ post, class: 'w-68 md:w-76 lg:w-96' })
         </div>
       @endeach
     @end
@@ -152,7 +152,7 @@
     @carousel.viewport({ class: 'to-base-300' })
       @each (post in otherLessons)
         <div class="carousel-item">
-          @!post.card({ post })
+          @!post.card({ post, class: 'w-68 md:w-76 lg:w-96' })
         </div>
       @endeach
     @end

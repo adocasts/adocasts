@@ -73,6 +73,17 @@
             </main>
           </section>
         @endif
+
+        @if (lessons.data.length)
+          <section class="section-y">
+            <h3 class="heading-3">Lessons</h3>
+            <main class="flex-1 grid grid-cols-2 @lg:grid-cols-3 gap-3 @lg:gap-6">
+              @each (item in lessons.data)
+                @!lesson.card({ lesson: item, size: 'sm' })
+              @endeach
+            </main>
+          </section>
+        @endif
       </main>
 
       <aside class="@container hidden lg:block w-[350px] section-vars mt-[calc(var(--padding-y)_+_28px_+_.75rem)] sticky top-20">
@@ -138,7 +149,7 @@
             <li>
               <a class="flex justify-between">
                 <span>Lessons</span>
-                <div class="badge badge-sm">{{ topic.children?.length }}</div>
+                <div class="badge badge-sm">{{ lessons.meta?.total }}</div>
               </a>
             </li>
           </ul>

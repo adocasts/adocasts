@@ -2,7 +2,6 @@ import PostTypes from '#post/enums/post_types'
 import States from '#core/enums/states'
 import Post from '#post/models/post'
 import Taxonomy from '#taxonomy/models/taxonomy'
-import BaseTopicDto from '#taxonomy/dtos/base_topic'
 import BaseBuilder from '#core/builders/base_builder'
 
 export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
@@ -27,7 +26,8 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
     return this
   }
 
-  search(term: string) {
+  search(term?: string) {
+    if (!term) return this
     this.query.where((query) =>
       query
         .where('title', 'ILIKE', `%${term}%`)
@@ -59,8 +59,9 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
     return this
   }
 
-  whereHasTaxonomy(taxonomy: Taxonomy | BaseTopicDto) {
-    this.query.whereHas('taxonomies', (query) => query.where('taxonomies.id', taxonomy.id))
+  whereHasTaxonomy(slug?: string) {
+    if (!slug) return this
+    this.query.whereHas('taxonomies', (query) => query.where('taxonomies.slug', slug))
     return this
   }
 

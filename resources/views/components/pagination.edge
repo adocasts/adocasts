@@ -1,69 +1,52 @@
-@let(displayCount = 5)
-@let(displaySplit = Math.floor((displayCount - 1) / 2))
-@let(rangeStart = items.lastPage <= displayCount ? items.firstPage : items.currentPage - displaySplit)
-@let(rangeEnd = items.lastPage <= displayCount ? items.lastPage : items.currentPage + displaySplit)
-@let(spreadStart = false)
-@let(spreadEnd = false)
-@let(hasPrevious = items.currentPage > items.firstPage)
-@let(hasNext = items.lastPage > items.currentPage)
-@let(anchorAttrs = $props.anchorAttrs || {})
+@let(display = 5)
+@let(displaySplit = Math.floor(display / 2))
+@let(rangeStart = Math.max(1, meta.currentPage - displaySplit))
+@let(rangeEnd = Math.min(meta.lastPage, meta.currentPage + displaySplit))
+@let(rangeArray = [...new Array(rangeEnd - rangeStart + 1)].map((_, i) => i + rangeStart))
 
-@if (rangeStart < items.firstPage)
-  @let(diff = items.firstPage - rangeStart)
-  @assign(rangeEnd = rangeEnd + diff)
-  @assign(rangeStart = items.firstPage)
-@endif
-
-@if (rangeEnd > items.lastPage)
-  @let(diff = rangeEnd - items.lastPage)
-  @assign(rangeStart = rangeStart - diff >= items.firstPage ? rangeStart - diff : items.firstPage)
-  @assign(rangeEnd = items.lastPage)
-@endif
-
-@if (rangeStart - 1 > items.firstPage)
-  @assign(spreadStart = true)
-@endif
-
-@if (rangeEnd + 1 < items.lastPage)
-  @assign(spreadEnd = true)
-@endif
-
-@let(getRange = (start, end) => item.pagesInRange.filter((item) => item.page >= start && item.page <= end))
-
-@let(rangeUrls = items.lastPage <= displayCount 
-  ? items.pagesInRange 
-  : [
-    ...getRange(items.firstPage, items.firstPage),
-    { spread: spreadStart },
-    ...getRange(rangeStart, rangeEnd),
-    { spread: spreadEnd },
-    ...getRange(items.lastPage, items.lastPage),
-  ]
-)
-
-<div class="flex items-center justify-between w-full h-16 px-1 md:px-2">
-  <p class="pl-2 text-xs md:text-sm opacity-60">
-    Showing 
-    <span class="font-medium">{{ items.currentPage * items.perPage - (items.perPage - 1) }}</span> 
-    to 
-    <span class="font-medium">{{ items.currentPage === items.lastPage ? items.total : items.currentPage * items.perPage }}</span> 
-    of 
-    <span class="font-medium">{{ items.total.toLocaleString() }}</span> 
+<div class="flex items-center justify-between w-full h-16 mt-3 lg:mt-6">
+  <p class="text-xs md:text-sm opacity-60">
+    Showing
+    <span class="font-medium">{{ meta.currentPage * meta.perPage - (meta.perPage - 1) }}</span>
+    to
+    <span class="font-medium">{{ meta.currentPage === meta.lastPage ? meta.total : meta.currentPage * meta.perPage }}</span>
+    of
+    <span class="font-medium">{{ meta.total.toLocaleString() }}</span>
     results
   </p>
 
   <nav>
-    @if (rangeUrls.length > 1)
+    @if (meta.pagesInRange.length > 1)
       <div class="join">
-        @each (item in rangeUrls)
-          @if (item.spread)
+        @if (meta.currentPage > displaySplit + 1)
+          @let(page = meta.pagesInRange.find((item) => item.page === 1))
+          
+          <a href="{{ page.url }}" class="join-item btn btn-soft">1</a>
+          
+          @if (meta.currentPage > displaySplit + 2)
             <button class="join-item btn btn-disabled">...</button>
-          @else
-            <a class="join-item btn {{ item.isActive ? 'btn-active' : '' }}" href="{{ item.url }}">
-              {{ item.page }}
+          @endif
+        @endif
+
+        @each (item in rangeArray)
+          @let(page = meta.pagesInRange.find((page) => page.page === item))
+          
+          @if (page)
+            <a href="{{ page.url }}" class="join-item btn {{ page.isActive ? 'btn-active' : '' }}">
+              {{ page.page }}
             </a>
           @endif
         @endeach
+
+        @if (meta.currentPage < meta.lastPage - (displaySplit + 1))
+          @let(page = meta.pagesInRange.find((item) => item.page === meta.lastPage))
+          
+          @if (meta.currentPage < meta.lastPage - (displaySplit + 2))
+            <button class="join-item btn btn-disabled">...</button>
+          @endif
+
+          <a href="{{ page.url }}" class="join-item btn btn-soft">{{ meta.lastPage }}</a>
+        @endif
       </div>
     @endif
   </nav>

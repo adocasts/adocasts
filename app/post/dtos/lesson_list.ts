@@ -2,7 +2,7 @@ import AssetDto from '#asset/dtos/asset'
 import Post from '#post/models/post'
 import BaseModelDto from '#core/dtos/base_model_dto'
 
-export default class BaseLessonDto extends BaseModelDto {
+export default class LessonListDto extends BaseModelDto {
   static model() {
     return Post
   }

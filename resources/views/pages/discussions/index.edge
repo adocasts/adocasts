@@ -5,7 +5,9 @@
       @!discussion.card({ discussion })
     @endeach
 
-    @!pagination({ items: discussions.meta })
+    <div class="-mt-3">
+      @!pagination({ meta: discussions.meta })
+    </div>
 
   @end
 @end

@@ -1,6 +1,6 @@
 @if (size == 'lg')
 
-  @card({ class: 'md:card-side', border: 'flex md:card-side items-center' })
+  @card({ class: html.classNames(['md:card-side', $props.class]), border: 'flex md:card-side items-center' })
     <div class="md:w-1/2 @lg:w-2/5 pb-0 md:pb-[var(--card-p,1.5rem)] p-[var(--card-p,1.5rem)] md:pr-0">
       <figure class="relative !overflow-visible group-hover:scale-[102.5%] duration-200">
         <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md relative z-10">
@@ -34,7 +34,7 @@
 
 @else
 
-  @card({ class: 'w-68 md:w-76 lg:w-96' })
+  @card({ class: $props.class })
     <div class="p-[var(--card-p,1.5rem)] pb-0">
       <figure class="relative overflow-visible group-hover:scale-105 duration-200">
         <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md relative z-10">

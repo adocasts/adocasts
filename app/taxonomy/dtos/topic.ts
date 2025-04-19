@@ -2,7 +2,7 @@ import AssetDto from '#asset/dtos/asset'
 import BaseModelDto from '#core/dtos/base_model_dto'
 import Taxonomy from '#taxonomy/models/taxonomy'
 
-export default class BaseTopicDto extends BaseModelDto {
+export default class TopicDto extends BaseModelDto {
   static model() {
     return Taxonomy
   }
@@ -14,7 +14,7 @@ export default class BaseTopicDto extends BaseModelDto {
   declare description: string
   declare isFeatured: boolean
   declare asset: AssetDto | null
-  declare children: BaseTopicDto[]
+  declare children: TopicDto[]
   declare meta: Record<string, any>
 
   constructor(topic?: Taxonomy) {
@@ -29,7 +29,7 @@ export default class BaseTopicDto extends BaseModelDto {
     this.description = topic.description
     this.isFeatured = topic.isFeatured
     this.asset = topic.asset && new AssetDto(topic.asset)
-    this.children = BaseTopicDto.fromArray(topic.children)
+    this.children = TopicDto.fromArray(topic.children)
     this.meta = topic.$extras
   }
 }

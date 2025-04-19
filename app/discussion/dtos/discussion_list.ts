@@ -1,11 +1,11 @@
 import CommentPreviewDto from '#comment/dtos/comment_preview'
 import BaseModelDto from '#core/dtos/base_model_dto'
 import Discussion from '#discussion/models/discussion'
-import BaseTopicDto from '#taxonomy/dtos/base_topic'
+import TopicDto from '#taxonomy/dtos/topic'
 import AuthorDto from '#user/dtos/author'
 import DiscussionVoteDto from './discussion_vote.js'
 
-export default class BaseDiscussionDto extends BaseModelDto {
+export default class DiscussionListDto extends BaseModelDto {
   static model() {
     return Discussion
   }
@@ -16,7 +16,7 @@ export default class BaseDiscussionDto extends BaseModelDto {
   declare body: string
   declare createdAt: string
   declare updatedAt: string
-  declare topic: BaseTopicDto | null
+  declare topic: TopicDto | null
   declare votes: DiscussionVoteDto[]
   declare comments: CommentPreviewDto[]
   declare author: AuthorDto | null
@@ -35,7 +35,7 @@ export default class BaseDiscussionDto extends BaseModelDto {
     this.updatedAt = discussion.updatedAt?.toISO()!
     this.meta = discussion.$extras
 
-    this.topic = BaseTopicDto.fromModel(discussion.taxonomy)
+    this.topic = TopicDto.fromModel(discussion.taxonomy)
     this.votes = DiscussionVoteDto.fromArray(discussion.votes)
     this.comments = CommentPreviewDto.fromArray(discussion.comments)
     this.author = AuthorDto.fromModel(discussion.user)

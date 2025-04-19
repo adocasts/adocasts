@@ -1,7 +1,7 @@
 import BaseAction from '#core/actions/base_action'
 import NotImplementedException from '#core/exceptions/not_implemented_exception'
 import GetTopicList from '#taxonomy/actions/get_topic_list'
-import BaseTopicDto from '#taxonomy/dtos/base_topic'
+import TopicDto from '#taxonomy/dtos/topic'
 import Taxonomy from '#taxonomy/models/taxonomy'
 
 export default class GetTopicsFilter extends BaseAction<['collections' | 'posts' | 'discussions']> {
@@ -31,7 +31,7 @@ export default class GetTopicsFilter extends BaseAction<['collections' | 'posts'
       .orderBy('name')
       .withDiscussionCount()
       .whereHasDiscussion()
-      .dto(BaseTopicDto)
+      .dto(TopicDto)
 
     return topics.toSorted((a, b) => b.meta.discussions_count - a.meta.discussions_count)
   }
