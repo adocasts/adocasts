@@ -30,16 +30,16 @@ import StripeSubscriptionStatuses from '#plan/enums/stripe_subscription_statuses
 import Invoice from '#plan/models/invoice'
 import Plan from '#plan/models/plan'
 import Post from '#post/models/post'
-import Profile from '#profile/models/profile'
+import Progress from '#progress/models/progress'
 import env from '#start/env'
 import EmailHistory from '#user/models/email_history'
+import Profile from '#user/models/profile'
 import Watchlist from '#watchlist/models/watchlist'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
 import { compose } from '@adonisjs/core/helpers'
 import hash from '@adonisjs/core/services/hash'
 import gravatar from 'gravatar'
-import Progress from '#progress/models/progress'
 
 const AuthFinder = withAuthFinder(() => hash.use('argon'), {
   uids: ['email', 'username'],

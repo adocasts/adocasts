@@ -1,12 +1,12 @@
-import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, column, computed } from '@adonisjs/lucid/orm'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
-import { TransactionClientContract } from '@adonisjs/lucid/types/database'
-import User from '#user/models/user'
-import Profile from '#profile/models/profile'
-import NotificationTypes from '#notification/enums/notification_types'
 import NotImplementedException from '#core/exceptions/not_implemented_exception'
+import NotificationTypes from '#notification/enums/notification_types'
+import Profile from '#user/models/profile'
+import User from '#user/models/user'
 import Emitter from '@adonisjs/core/services/emitter'
+import { BaseModel, belongsTo, column, computed } from '@adonisjs/lucid/orm'
+import { TransactionClientContract } from '@adonisjs/lucid/types/database'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import { DateTime } from 'luxon'
 
 export default class Notification extends BaseModel {
   @column({ isPrimary: true })

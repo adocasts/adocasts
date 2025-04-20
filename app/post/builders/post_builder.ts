@@ -1,8 +1,12 @@
-import PostTypes from '#post/enums/post_types'
+import AssetDto from '#asset/dtos/asset'
+import Collection from '#collection/models/collection'
+import BaseBuilder from '#core/builders/base_builder'
 import States from '#core/enums/states'
+import PostTypes from '#post/enums/post_types'
 import Post from '#post/models/post'
 import Taxonomy from '#taxonomy/models/taxonomy'
-import BaseBuilder from '#core/builders/base_builder'
+import AuthorDto from '#user/dtos/author'
+import { RelationQueryBuilderContract } from '@adonisjs/lucid/types/relations'
 
 export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
   constructor() {
@@ -15,9 +19,13 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
 
   display({ skipPublishCheck = false } = {}) {
     this.if(!skipPublishCheck, (builder) => builder.published())
-    this.orderPublished()
-    // this.withProgression()
-    this.query.apply((scope) => scope.forDisplay())
+    this.orderPublished().query.apply((scope) => scope.forDisplay())
+    return this
+  }
+
+  displayShow({ skipPublishCheck = false } = {}) {
+    this.if(!skipPublishCheck, (builder) => builder.published())
+    this.orderPublished().query.apply((scope) => scope.forDisplayShow())
     return this
   }
 
@@ -80,6 +88,39 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
     return this
   }
 
+  withSeries(
+    seriesQuery?: (
+      query: RelationQueryBuilderContract<typeof Collection, any>
+    ) => RelationQueryBuilderContract<typeof Collection, any>
+  ) {
+    this.query.preload('rootSeries', (query) =>
+      query.if(typeof seriesQuery === 'function', (q) => seriesQuery!(q))
+    )
+    return this
+  }
+
+  withSeriesParent(
+    seriesQuery?: (
+      query: RelationQueryBuilderContract<typeof Collection, any>
+    ) => RelationQueryBuilderContract<typeof Collection, any>
+  ) {
+    this.query.preload('series', (query) =>
+      query.if(typeof seriesQuery === 'function', (q) => seriesQuery!(q))
+    )
+    return this
+  }
+
+  withTaxonomies(
+    taxonomyQuery?: (
+      query: RelationQueryBuilderContract<typeof Taxonomy, any>
+    ) => RelationQueryBuilderContract<typeof Taxonomy, any>
+  ) {
+    this.query.preload('taxonomies', (query) =>
+      query.if(typeof taxonomyQuery === 'function', (q) => taxonomyQuery!(q))
+    )
+    return this
+  }
+
   withComments() {
     this.withCommentCount()
     this.query.preload('comments', (query) =>
@@ -94,6 +135,31 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
 
   withCommentCount() {
     this.query.withCount('comments', (query) => query.where('stateId', States.PUBLIC))
+  }
+
+  withAuthors() {
+    this.query.preload('authors', (query) => query.selectDto(AuthorDto))
+    return this
+  }
+
+  withThumbnails() {
+    this.query.preload('thumbnails', (query) => query.selectDto(AssetDto))
+    return this
+  }
+
+  withCovers() {
+    this.query.preload('covers', (query) => query.selectDto(AssetDto))
+    return this
+  }
+
+  withCaptions() {
+    this.query.preload('captions', (query) => query.orderBy('sort_order'))
+    return this
+  }
+
+  withChapters() {
+    this.query.preload('chapters', (query) => query.orderBy('sort_order'))
+    return this
   }
 
   orderPublished() {

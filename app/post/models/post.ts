@@ -14,7 +14,9 @@ import {
 import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { DateTime } from 'luxon'
 // import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
+import AssetDto from '#asset/dtos/asset'
 import AssetTypes from '#asset/enums/asset_types'
+import LessonSeriesDto from '#collection/dtos/lesson_series'
 import CollectionTypes from '#collection/enums/collection_types'
 import Collection from '#collection/models/collection'
 import { default as State, default as States } from '#core/enums/states'
@@ -25,6 +27,8 @@ import HistoryTypes from '#history/enums/history_types'
 import History from '#history/models/history'
 import PaywallTypes from '#plan/enums/paywall_types'
 import PostBuilder from '#post/builders/post_builder'
+import CaptionDto from '#post/dtos/caption'
+import ChapterDto from '#post/dtos/chapter'
 import BodyTypes from '#post/enums/body_types'
 import { default as PostType, default as PostTypes } from '#post/enums/post_types'
 import VideoTypes from '#post/enums/video_types'
@@ -32,7 +36,9 @@ import PostCaption from '#post/models/post_caption'
 import PostChapter from '#post/models/post_chapter'
 import Progress from '#progress/models/progress'
 import env from '#start/env'
+import TopicDto from '#taxonomy/dtos/topic'
 import Taxonomy from '#taxonomy/models/taxonomy'
+import AuthorDto from '#user/dtos/author'
 import Watchlist from '#watchlist/models/watchlist'
 import router from '@adonisjs/core/services/router'
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
@@ -523,10 +529,6 @@ export default class Post extends BaseModel {
     return this.query().where('postTypeId', PostType.SNIPPET)
   }
 
-  static loadForDisplay() {
-    return this.query().apply((s) => s.forDisplay())
-  }
-
   static progression = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>(
     (query, user: User | undefined = undefined) => {
       query.if(user, (truthy) =>
@@ -555,36 +557,29 @@ export default class Post extends BaseModel {
 
   static forDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>(
     (query) => {
-      // const ctx = HttpContext.get()
-
       query
-        // .if(ctx?.auth.user, query => query.withCount('watchlist', query => query.where('userId', ctx!.auth.user!.id)))
-        .preload('thumbnails')
-        .preload('covers')
-        .preload('taxonomies')
-        .preload('rootSeries')
-        .preload('series')
-        .preload('captions', (captions) => captions.orderBy('sort_order'))
-        .preload('chapters', (chapters) => chapters.orderBy('sort_order'))
-        .preload('authors', (authors) => authors.preload('profile'))
+        .preload('thumbnails', (thumbnails) => thumbnails.selectDto(AssetDto))
+        .preload('rootSeries', (series) => series.selectDto(LessonSeriesDto))
+        .preload('series', (series) => series.selectDto(LessonSeriesDto))
+        .preload('authors', (authors) => authors.selectDto(AuthorDto))
+        .preload('taxonomies', (taxonomies) => taxonomies.selectDto(TopicDto))
     }
   )
 
-  static forPathDisplay = scope<
+  static forDisplayShow = scope<
     typeof Post,
     (query: ModelQueryBuilderContract<typeof Post>) => void
-  >((query, skipPublishCheck: boolean = false) => {
-    // const ctx = HttpContext.get()
-
+  >((query) => {
     query
-      .if(!skipPublishCheck, (truthy) => truthy.apply((s) => s.published()))
-      // .if(ctx?.auth.user, query => query.withCount('watchlist', query => query.where('userId', ctx!.auth.user!.id)))
-      .preload('thumbnails')
-      .preload('covers')
-      .preload('taxonomies')
-      .preload('rootPaths')
-      .preload('paths')
-      .preload('authors', (authors) => authors.preload('profile'))
+      .preload('thumbnails', (thumbnails) => thumbnails.selectDto(AssetDto))
+      .preload('rootSeries', (series) =>
+        series.preload('asset', (asset) => asset.selectDto(AssetDto)).selectDto(LessonSeriesDto)
+      )
+      .preload('series', (series) => series.selectDto(LessonSeriesDto))
+      .preload('authors', (authors) => authors.selectDto(AuthorDto))
+      .preload('taxonomies', (taxonomies) => taxonomies.selectDto(TopicDto))
+      .preload('captions', (captions) => captions.orderBy('sort_order').selectDto(CaptionDto))
+      .preload('chapters', (chapters) => chapters.orderBy('sort_order').selectDto(ChapterDto))
   })
 
   static forCollectionDisplay = scope<
@@ -601,25 +596,10 @@ export default class Post extends BaseModel {
         direction: 'asc',
       }
     ) => {
-      query.apply((s) => s.forDisplay()).orderBy(orderBy, direction)
-    }
-  )
-
-  static forCollectionPathDisplay = scope<
-    typeof Post,
-    (query: ModelQueryBuilderContract<typeof Post>) => void
-  >(
-    (
-      query,
-      {
-        orderBy,
-        direction,
-      }: { orderBy: 'pivot_sort_order' | 'pivot_root_sort_order'; direction: 'asc' | 'desc' } = {
-        orderBy: 'pivot_sort_order',
-        direction: 'asc',
-      }
-    ) => {
-      query.apply((s) => s.forPathDisplay()).orderBy(orderBy, direction)
+      query
+        .preload('thumbnails', (thumbnails) => thumbnails.selectDto(AssetDto))
+        .preload('rootSeries', (series) => series.selectDto(LessonSeriesDto))
+        .orderBy(orderBy, direction)
     }
   )
 }

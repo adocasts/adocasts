@@ -15,6 +15,7 @@ const RenderTopicShow = () => import('#taxonomy/actions/render_topic_show')
 const RenderDiscussionsIndex = () => import('#discussion/actions/render_discussions_index')
 const RenderDiscussionsShow = () => import('#discussion/actions/render_discussions_show')
 const RenderLessonsIndex = () => import('#post/actions/render_lessons_index')
+const RenderLessonShow = () => import('#post/actions/render_lessons_show')
 import router from '@adonisjs/core/services/router'
 
 router.where('slug', router.matchers.slug())
@@ -24,6 +25,7 @@ router.get('/', [RenderHome]).as('home')
 //* Series
 router.get('/series', [RenderSeriesIndex]).as('series.index')
 router.get('/series/:slug', [RenderSeriesShow]).as('series.show')
+router.get('/series/:series/lessons/:slug', [RenderLessonShow]).as('series.lessons.show')
 
 //* Topics
 router.get('/topics', [RenderTopicsIndex]).as('topics.index')
@@ -31,6 +33,7 @@ router.get('/topics/:slug', [RenderTopicShow]).as('topics.show')
 
 //* Lessons
 router.get('/lessons', [RenderLessonsIndex]).as('lessons.index')
+router.get('/lessons/:slug', [RenderLessonShow]).as('lessons.show')
 
 //* Discussions
 router.get('/forum', [RenderDiscussionsIndex]).as('discussions.index')

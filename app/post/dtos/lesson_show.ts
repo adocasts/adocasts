@@ -2,8 +2,10 @@ import AssetDto from '#asset/dtos/asset'
 import LessonSeriesDto from '#collection/dtos/lesson_series'
 import BaseModelDto from '#core/dtos/base_model_dto'
 import Post from '#post/models/post'
+import CaptionDto from './caption.js'
+import ChapterDto from './chapter.js'
 
-export default class LessonListDto extends BaseModelDto {
+export default class LessonShowDto extends BaseModelDto {
   static model() {
     return Post
   }
@@ -17,27 +19,14 @@ export default class LessonListDto extends BaseModelDto {
   declare stateId: number
   declare publishAt?: string | null
   declare routeUrl: string
+  declare body: string | null
   declare videoSeconds: number
   declare asset: AssetDto | null
-  declare series: LessonSeriesDto | null
-  declare seriesParent: LessonSeriesDto | null
+  declare captions: CaptionDto[] | null
+  declare chapters: ChapterDto[] | null
+  declare series: LessonSeriesDto[]
+  declare seriesParents: LessonSeriesDto[]
   declare meta: Record<string, any>
-
-  get order() {
-    const module = this.seriesParent
-
-    if (!module) {
-      return ''
-    }
-
-    // if not a module, use sort as major
-    if (!module.parentId) {
-      return `${module.meta.pivot_sort_order + 1}.0`
-    }
-
-    // otherwise, use module sort as major and lesson sort as minor
-    return `${module.sortOrder + 1}.${module.meta.pivot_sort_order}`
-  }
 
   constructor(post?: Post) {
     super()
@@ -53,10 +42,13 @@ export default class LessonListDto extends BaseModelDto {
     this.stateId = post.stateId
     this.publishAt = post.publishAt?.toISO()
     this.routeUrl = post.routeUrl
+    this.body = post.body
     this.videoSeconds = post.videoSeconds
     this.asset = AssetDto.fromModel(post.assets?.at(0))
-    this.series = LessonSeriesDto.fromModel(post.rootSeries?.at(0))
-    this.seriesParent = LessonSeriesDto.fromModel(post.series?.at(0))
+    this.captions = CaptionDto.fromArray(post.captions)
+    this.chapters = ChapterDto.fromArray(post.chapters)
+    this.series = LessonSeriesDto.fromArray(post.rootSeries)
+    this.seriesParents = LessonSeriesDto.fromArray(post.series)
     this.meta = post.$extras
   }
 }

@@ -8,20 +8,22 @@
       </figure>
     </div>
   
-    <div class="flex-1 card-body">
+    <div class="flex-1 card-body !static">
       <div class="flex items-center gap-6">
-        <h6 class="text-xs md:text-sm flex items-center gap-3">
-          <a href="#" class="font-semibold text-primary line-clamp-1">
-            Building with AdonisJS & Inertia
-          </a>
-          <span class="opacity-60">#12.1</span>
-        </h6>
+        @if (lesson.series)
+          <h6 class="text-xs md:text-sm flex items-center gap-3">
+            <a href="{{ route('series.show', { slug: lesson.series.slug }) }}" class="font-semibold text-primary line-clamp-1">
+              {{ lesson.series.name }}
+            </a>
+            <span class="opacity-60">#{{ lesson.order }}</span>
+          </h6>
+        @endif
       
         <div class="badge badge-xs badge-accent">NEW</div>
       </div>
 
       <h2 class="card-title text-lg lg:text-xl max-w-[32ch] font-semibold text-base-title">
-        <a href="#" class="link-grow">
+        <a href="{{ route('lessons.show', { slug: lesson.slug }) }}" class="link-grow">
           {{ lesson.title }}
         </a>
       </h2>
@@ -42,20 +44,22 @@
       </figure>
     </div>
   
-    <div class="card-body">
+    <div class="card-body !static">
       <div class="flex items-center justify-between gap-3">
-        <h6 class="text-xs flex items-center gap-3">
-          <a href="#" class="font-semibold text-primary line-clamp-1">
-            Building with AdonisJS & Inertia
-          </a>
-          <span class="opacity-60">#12.1</span>
-        </h6>
+        @if (lesson.series)
+          <h6 class="text-xs flex items-center gap-3">
+            <a href="{{ route('series.show', { slug: lesson.series.slug }) }}" class="font-semibold text-primary line-clamp-1">
+              {{ lesson.series.name }}
+            </a>
+            <span class="opacity-60">#{{ lesson.order }}</span>
+          </h6>
+        @endif
       
         <div class="badge badge-xs badge-accent">NEW</div>
       </div>
 
       <h2 class="card-title font-semibold text-base-title text-base md:text-lg">
-        <a href="#" class="link-grow">
+        <a href="{{ route('lessons.show', { slug: lesson.slug }) }}" class="link-grow">
           {{ lesson.title }}
         </a>
       </h2>

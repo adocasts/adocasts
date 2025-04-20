@@ -1,0 +1,23 @@
+@layout()
+
+  <div class="container section-y flex gap-3 lg:gap-6 mx-auto">
+    <main class="@container flex-1">
+      <div class="aspect-video bg-base-200 mb-6"></div>
+
+      <h1 class="heading-2">
+        {{ lesson.title }}
+      </h1>
+      <p class="max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-base/6 mb-6 lg:mb-8">
+        {{ lesson.description }}
+      </p>
+
+      @dump(lesson)
+      @dump(series)
+    </main>
+
+    <aside class="@container w-[300px] bg-base-200">
+      aside
+    </aside>
+  </div>
+
+@end
