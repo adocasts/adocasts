@@ -12,7 +12,7 @@
   /* themes: 'dark'; */
 }
 
-@plugin "daisyui/theme" {
+/* @plugin "daisyui/theme" {
   name: 'night';
   default: false;
   prefersdark: true;
@@ -21,7 +21,6 @@
   --color-base-200: oklch(0.24 0.0617 287.23);
   --color-base-300: oklch(18.5% 0.055 287.23);
   --color-base-content: oklch(85.29% 0.0395 288.43);
-  /* --color-base-title: oklch(84.71% 0.0641 287.23); */
   --color-primary: oklch(0.57 0.17765687088086557 276.9970363642235);
   --color-primary-content: oklch(0.9 0.04819531886405981 275.7116935996338);
   --color-secondary: oklch(82% 0.111 230.318);
@@ -38,6 +37,58 @@
   --color-warning-content: oklch(16.648% 0.027 82.95);
   --color-error: oklch(71.785% 0.17 13.118);
   --color-error-content: oklch(14.357% 0.034 13.118);
+  --radius-selector: .25rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+} */
+
+@plugin "daisyui/theme" {
+  name: 'night';
+  default: false;
+  prefersdark: true;
+  color-scheme: 'dark';
+  
+  /* Base Colors */
+  --color-base-100: oklch(0.26 0.068 287.4); /* Slightly muted base */
+  --color-base-200: oklch(0.23 0.056 287.5); /* More neutral base */
+  --color-base-300: oklch(16.8% 0.055 287.6); /* Soft dark for secondary areas */
+  --color-base-content: oklch(83% 0.039 288.4); /* Soft white text on base */
+  
+  /* Primary Colors */
+  --color-primary: oklch(0.55 0.150 276.5); /* Slightly softer primary for readability */
+  --color-primary-content: oklch(0.93 0.048 275.7); /* Light text on primary */
+  
+  /* Secondary Colors */
+  --color-secondary: oklch(80% 0.10 230.5); /* A bit softer secondary */
+  --color-secondary-content: oklch(12% 0.03 276.9); /* Dark secondary content */
+  
+  /* Accent Colors */
+  --color-accent: oklch(90% 0.08 180.6); /* Softer accent for subtle contrast */
+  --color-accent-content: oklch(13% 0.033 350.1); /* Darker accent content for contrast */
+  
+  /* Neutral Colors */
+  --color-neutral: oklch(0.26 0.068 287.4); /* Lighter neutral, just above base-100 */
+  --color-neutral-content: oklch(86% 0.05 287.6);
+  
+  /* Status Colors */
+  --color-info: oklch(68% 0.15 237.2); /* Slightly more vibrant info */
+  --color-info-content: oklch(0% 0 0); /* Solid white for info content */
+  
+  --color-success: oklch(77% 0.13 182); /* Softer success for readability */
+  --color-success-content: oklch(15.5% 0.025 182); /* Darker content on success */
+  
+  --color-warning: oklch(82% 0.13 83); /* Mellowed out warning */
+  --color-warning-content: oklch(15.5% 0.02 83); /* Slightly darker warning content */
+  
+  --color-error: oklch(70% 0.17 13.2); /* Slightly less saturated error */
+  --color-error-content: oklch(13% 0.03 13.1); /* Darker error content */
+  
+  /* Custom Radius and Border */
   --radius-selector: .25rem;
   --radius-field: 0.5rem;
   --radius-box: 1rem;
@@ -122,6 +173,14 @@ body {
 
   @variant lg {
     @apply text-5xl;
+  }
+}
+
+.heading-2a {
+  @apply z-10 relative mb-6 font-semibold text-2xl max-lg:text-center text-balance tracking-tight;
+
+  @variant lg {
+    @apply text-3xl;
   }
 }
 

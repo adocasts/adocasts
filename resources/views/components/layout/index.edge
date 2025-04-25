@@ -15,7 +15,7 @@
     @stack('dumper')
   </head>
   <body data-theme="adocasts-dark" class="max-w-[120rem] mx-auto">
-    <div up-hungry>
+    <div id="slot-header" up-hungry>
       @if ($slots.header)
         {{{ await $slots.header() }}}
       @else

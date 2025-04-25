@@ -10,7 +10,9 @@
     
     <div class="flex-1">
       <h4 class="text-lg -mt-1 font-semibold">
-        {{ post.title }}
+        <a href="{{ post.routeUrl }}" class="link-grow">
+          {{ post.title }}
+        </a>
       </h4>
       
       <p class="opacity-60">{{ post.description }}</p>
