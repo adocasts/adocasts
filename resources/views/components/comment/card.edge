@@ -15,7 +15,7 @@
   @if (parent)
     <div class="w-full flex items-center bg-base-100 py-3 px-4 gap-1.5 text-sm rounded-[var(--radius-box)] opacity-60">
       @svg('solar:reply-bold', { class: 'w-8 rotate-180' })
-      Responding to {{ parent.author.username }}
+      Responding to {{ parent.author?.username }}
     </div>
   @endif
 
@@ -25,7 +25,9 @@
       @profile.link({ user: comment.author, class: 'h-full' })
         <div class="avatar">
           <div class="w-14 rounded">
-            <img loading="lazy" src="{{ comment.author.avatar }}" alt="{{ comment.author.handle }}" />
+            @if (comment.author?.avatar)
+              <img loading="lazy" src="{{ comment.author.avatar }}" alt="{{ comment.author.handle }}" />
+            @endif
           </div>
         </div>
       @end
@@ -33,17 +35,19 @@
 
     <div class="flex-1 -mb-2">
       <div class="{{ html.classNames(['flex gap-x-3 items-baseline mb-3', size.byline]) }}">
-        @profile.link({ user: comment.author, class: ['flex gap-1', 'items-baseline'] })
-          <span>
-            {{ comment.author.handle }} 
-          </span>
-
-          @if (!comment.author.isFreeTier)
-            <span class="h-2.5 relative ml-1">
-              <img class="h-full" src="/imgs/plus-badge-100.png" alt="Adocasts Plus" />
+        @if (comment.author)
+          @profile.link({ user: comment.author, class: ['flex gap-1', 'items-baseline'] })
+            <span>
+              {{ comment.author.handle }} 
             </span>
-          @endif
-        @end
+
+            @if (!comment.author.isFreeTier)
+              <span class="h-2.5 relative ml-1">
+                <img class="h-full" src="/imgs/plus-badge-100.png" alt="Adocasts Plus" />
+              </span>
+            @endif
+          @end
+        @endif
 
         <span class="text-primary relative top-[0.175rem]">
           @svg('solar:double-alt-arrow-right-broken', { class: 'w-4 h-4' })

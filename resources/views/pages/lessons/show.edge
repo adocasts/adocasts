@@ -1,23 +1,185 @@
 @layout()
+  @slot('header')
+  @endslot
 
-  <div class="container section-y flex gap-3 lg:gap-6 mx-auto">
-    <main class="@container flex-1">
-      <div class="aspect-video bg-base-200 mb-6"></div>
+  <main class="w-full lg:w-[calc(100%_-_325px)]">
+    <div class="p-3 lg:p-6 !pb-0">
+      <div class="w-full bg-base-100/25 flex items-center justify-between gap-0.5 rounded-t-[var(--radius-box)] px-3 py-1.5">
+        <div class="flex items-center">
+          <a href="/" class="btn btn-ghost btn-square opacity-60 hover:opacity-100 duration-200">
+            <img class="w-6 h-6" src="/imgs/logo-icon.svg" alt="Adocasts" />
+          </a>
 
-      <h1 class="heading-2">
-        {{ lesson.title }}
-      </h1>
-      <p class="max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-base/6 mb-6 lg:mb-8">
-        {{ lesson.description }}
-      </p>
+          <div class="h-5 w-px bg-base-100 mx-3"></div>
 
-      @dump(lesson)
-      @dump(series)
-    </main>
+          <a href="{{ route('series.show', { slug: series.slug }) }}" class="btn btn-ghost">
+            @svg('solar:book-2-bold-duotone', { class: 'w-4 h-4 mr-1' })
+            {{ series.name }}
+          </a>
+        </div>
 
-    <aside class="@container w-[300px] bg-base-200">
-      aside
-    </aside>
-  </div>
+        <div class="flex justify-end items-center">
+          <div class="flex items-center justify-end">
+            @tooltip({ text: 'Toggle Autoplay', class: 'tooltip-bottom' })
+              <button type="button" class="btn btn-ghost btn-square">
+                @svg('solar:playlist-bold-duotone', { class: 'w-5 h-5' })
+              </button>
+            @end
+            @tooltip({ text: 'Toggle Transcript', class: 'tooltip-bottom' })
+              <button type="button" class="btn btn-ghost btn-square">
+                @svg('solar:document-text-line-duotone', { class: 'w-5 h-5' })
+              </button>
+            @end
+            @tooltip({ text: 'View Lesson Repository', class: 'tooltip-bottom' })
+              <button type="button" class="btn btn-ghost btn-square">
+                @svg('solar:code-line-duotone', { class: 'w-5 h-5' })
+              </button>
+            @end
+            @tooltip({ text: 'Download Lesson', class: 'tooltip-bottom' })
+              <button type="button" class="btn btn-ghost btn-square">
+                @svg('solar:download-minimalistic-bold-duotone', { class: 'w-5 h-5' })
+              </button>
+            @end
+          </div>
+
+          <div class="h-5 w-px bg-base-100 mx-3"></div>
+          
+          <div class="flex items-center justify-end">
+            @tooltip({ text: 'Previous Lesson', class: 'tooltip-bottom' })
+              <button type="button" class="btn btn-ghost btn-square">
+                @svg('solar:arrow-left-line-duotone', { class: 'w-5 h-5' })
+              </button>
+            @end
+            @tooltip({ text: 'Next Lesson', class: 'tooltip-bottom' })
+              <button type="button" class="btn btn-ghost btn-square">
+                @svg('solar:arrow-right-line-duotone', { class: 'w-5 h-5' })
+              </button>
+            @end
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-base-100/25 rounded-b-[var(--radius-box)]">
+        <div class="aspect-video bg-base-200 rounded-[var(--radius-box)]"></div>
+      </div>
+    </div>
+
+    <div class="max-w-prose mx-auto flex gap-3 lg:gap-6 mt-6 lg:mt-12">
+      <div class="@container flex-1">
+        <h1 class="heading-2">
+          {{ lesson.title }}
+        </h1>
+        
+        <div class="flex items-center text-sm uppercase gap-2 -ml-7">
+          @svg('solar:double-alt-arrow-right-broken', { class: 'w-5 h-5 text-primary' })
+          In This Lesson
+        </div>
+        <p class="text-pretty font-medium opacity-60 sm:text-lg/8 mb-6">
+          @if (lesson.description.startsWith('In this lesson,'))
+            @let([char, ...desc] = lesson.description.replace('In this lesson,', '').trim())
+            
+            {{ [char?.toUpperCase(), ...desc].join('') }}
+          @else
+            {{ lesson.description }}
+          @endif
+        </p>
+
+        @if (lesson.author)
+          <div class="flex gap-3 lg:gap-6 items-center mb-6">
+            @profile.link({ user: lesson.author })
+              <div class="avatar">
+                <div class="w-12 rounded-full">
+                  <img loading="lazy" src="{{ lesson.author.avatar }}" alt="{{ lesson.author.handle }}" />
+                </div>
+              </div>
+            @end
+
+            <div class="flex flex-col">
+              <h5 class="text-xs opacity-60">Published by</h5>
+              <div class="flex gap-x-3 items-baseline">
+                @profile.link({ user: lesson.author })
+                  <span>
+                    {{ lesson.author.handle }} 
+                  </span>
+                @end
+              
+                <span class="text-primary relative top-[0.175rem]">
+                  @svg('solar:double-alt-arrow-right-broken', { class: 'w-4 h-4' })
+                </span>
+
+                <span class="flex-none opacity-60 text-sm">
+                  <time datetime="{{ lesson.createdAt }}">{{ TimeService.timeago(lesson.publishAt) }}</time>
+                </span>
+              </div>
+            </div>
+          </div>
+        @endif
+
+        @if (lesson.body)
+          <article class="prose">
+            {{{ await parser.highlight(lesson.body) }}}
+          </article>
+        @endif
+
+        <div class="mt-8 lg:mt-12">
+          <h3 class="heading-3 mb-3">
+            Join the Discussion
+          </h3>
+
+          @!comment.list({ comments: lesson.comments })
+        </div>
+
+        @dump(lesson)
+        @dump(series)
+      </div>
+
+    </div>
+  </main>
+  
+  <aside class="w-[325px] bg-base-200 fixed right-0 top-0 h-full flex flex-col overflow-hidden">
+    <div class="px-6 pt-6 pb-3">
+      <h3 class="heading-4 !mb-0">
+        <a href="{{ route('series.show', { slug: series.slug }) }}">
+          {{ series.name }}
+        </a>
+      </h3>
+    </div>
+    <div x-data="seriesCard" class="flex-1 faded-scroll-y to-base-200" :style="overflowStyle">
+      <div class="h-full overflow-y-auto p-3" @scroll="handleScroll">
+        @each (module in series.modules)
+          <details class="collapse rounded-none group" open>
+            <summary class="collapse-title !p-0 min-h-0 mb-3">
+              <div class="flex items-center gap-1.5 bg-base-100 p-3 rounded-md">
+                @svg('solar:double-alt-arrow-right-broken', { class: 'w-5 h-5 text-primary' })
+                <h5 class="font-semibold text-sm">
+                  {{ module.name }}
+                </h5>
+              </div>
+            </summary>
+            
+            <div class="collapse-content !p-0">
+              <ol class="list-plain mb-3">
+                @each (lesson in module.lessons)
+                  <li>
+                    <a href="{{ lesson.routeUrl }}" class="text-sm opacity-60 hover:opacity-100 bg-base-100/0 hover:bg-base-100 duration-200 p-1 flex items-center gap-3 rounded-lg">
+                      <div class="w-6 h-6 text-[.6rem] rounded bg-base-100 flex items-center justify-center">
+                        1.0
+                      </div>
+                      <div class="flex-1 text-xs">
+                        {{ lesson.title }}
+                      </div>
+                      <div class="badge badge-xs badge-soft opacity-60 group-hover/card:opacity-100 duration-200">
+                        {{ TimeService.secondsToTimestring(lesson.videoSeconds) }}
+                      </div>
+                    </a>
+                  </li>
+                @endeach
+              </ol>
+            </div>
+          </details>
+        @endeach
+      </div>
+    </div>
+  </aside>
 
 @end
