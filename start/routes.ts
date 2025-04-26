@@ -16,11 +16,23 @@ const RenderDiscussionsIndex = () => import('#discussion/actions/render_discussi
 const RenderDiscussionsShow = () => import('#discussion/actions/render_discussions_show')
 const RenderLessonsIndex = () => import('#post/actions/render_lessons_index')
 const RenderLessonShow = () => import('#post/actions/render_lessons_show')
+const RenderSignInPage = () => import('#auth/actions/render_signin_page')
+const StoreSession = () => import('#auth/actions/store_session')
+const RenderUserMenu = () => import('#user/actions/render_user_menu')
+const DestroySession = () => import('#auth/actions/destroy_session')
 import router from '@adonisjs/core/services/router'
 
 router.where('slug', router.matchers.slug())
 
 router.get('/', [RenderHome]).as('home')
+
+//* Auth
+router.get('/signin', [RenderSignInPage]).as('auth.signin')
+router.post('/sessions', [StoreSession]).as('auth.sessions.store')
+router.delete('/sessions', [DestroySession]).as('auth.sessions.destroy')
+
+//* User
+router.get('/users/menu', [RenderUserMenu]).as('users.menu')
 
 //* Series
 router.get('/series', [RenderSeriesIndex]).as('series.index')

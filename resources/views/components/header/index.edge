@@ -18,8 +18,16 @@
     @!header.nav()
 
     <div class="flex items-center justify-end gap-3">
-      <a href="/login" class="btn btn-ghost-soft">Login</a>
-      <a href="/register" class="btn btn-primary">Register</a>
+      @if (auth.user)
+        <a href="{{ route('users.menu') }}" class="avatar">
+          <div class="w-8 rounded-md">
+            <img src="{{ auth.user.avatar }}">
+          </div>
+        </a>
+      @else
+        <a href="{{ route('auth.signin') }}" class="btn btn-ghost-soft">Sign In</a>
+        <a href="/register" class="btn btn-primary">Sign Up</a>
+      @endif
     </div>
   </div>
 </header>

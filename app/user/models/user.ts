@@ -311,10 +311,10 @@ export default class User extends compose(BaseModel, AuthFinder) {
   async verifyPasswordForAuth(plainTextPassword: string) {
     return hash.use('argon').verify(this.password, plainTextPassword)
   }
+}
 
-  static async findForAuth(uids: string[], value: string) {
-    const query = this.query()
-    uids.map((uid) => query.orWhereILike(uid, value))
-    return query.first()
-  }
+User['findForAuth'] = function (uids: string[], value: string) {
+  const query = User.query()
+  uids.map((uid) => query.orWhereILike(uid, value))
+  return query.first()
 }

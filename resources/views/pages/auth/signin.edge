@@ -1,0 +1,84 @@
+@let(plan = request.qs().plan)
+@let(referrer = request.header('referrer'))
+
+@layout()
+
+  @card({ class: 'max-w-md mx-auto my-24 p-6', accent: false })
+
+    <h1 class="heading-2a !mb-0">Sign In</h1>
+    <p>
+      Need an account?
+      <a href="#" class="link">Sign up here</a>
+    </p>
+
+    <form method="post" class="flex flex-col mt-6" action="{{ route('auth.sessions.store') }}">
+      {{ csrfField() }}
+      <input type="hidden" name="action" value="{{ old('action', action ?? '') }}">
+      <input type="hidden" name="plan" value="{{ plan ?? '' }}">
+      <input type="hidden" name="forward" value="{{ referrer ?? '' }}">
+
+      @error('E_INVALID_CREDENTIALS')
+        <div class="text-error">
+          {{ $message }}
+        </div>
+      @end
+
+      @if (plan)
+        <div role="alert">
+          First sign into your account, then we'll get you set up with
+          <span class="lowercase">PLAN_NAME</span>!
+        </div>
+      @endif
+
+      @form.field({ name: 'uid', label: 'Username/email', class: 'w-full' })
+        @!form.input({ class: 'w-full', placeholder: 'Enter your username or email', required: true, autofocus: true })
+      @end
+
+      @form.field({ name: 'password', label: 'Password', class: 'w-full' })
+        @!form.input({ type: 'password', class: 'w-full', placeholder: 'Enter password', minlength: 8, required: true })
+      @end
+
+      <div class="flex justify-between items-center gap-3 mb-8">
+        <label class="label">
+          <input type="checkbox" class="checkbox" name="remember" />
+          Remember me
+        </label>
+
+        <div class="flex-1 text-right">
+          <a href="#" class="link">Forget your password?</a>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        Sign in
+      </button>
+
+      <div class="mt-8">
+        <div class="relative flex items-center opacity-60">
+          <div class="flex-1 border-t"></div>
+          <div class="flex-1 flex justify-center text-sm">
+            <span class="px-2 whitespace-nowrap">
+              Or continue with
+            </span>
+          </div>
+          <div class="flex-1 border-t"></div>
+        </div>
+      
+        <div class="mt-8 grid grid-cols-2 gap-3 relative">
+          <a href="#" class="btn btn-soft flex-1">
+            @svg('simple-icons:google', { class: 'w-5 h-5' })
+            <span class="sr-only">Sign in with Google</span>
+          </a>
+    
+          <a href="#" class="btn btn-soft flex-1">
+            @svg('simple-icons:github', { class: 'w-5 h-5' })
+            <span class="sr-only">Sign in with GitHub</span>
+          </a>
+        </div>
+      </div>
+    </form>
+
+    @dump(flashMessages.all())
+  @end
+
+@end

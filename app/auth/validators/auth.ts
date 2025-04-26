@@ -35,7 +35,7 @@ export const signInValidator = vine.compile(
   vine.object({
     uid: vine.string(),
     password: vine.string(),
-    rememberMe: vine.accepted().optional(),
+    remember: vine.accepted().optional(),
     forward: vine.string().optional(),
     action: vine.string().optional(),
     plan: vine.string().exists(exists('plans', 'slug')).optional(),
