@@ -1,0 +1,9 @@
+@let(avatar = user?.avatar)
+
+@if (user && !avatar)
+  @assign(avatar = await gavatar(user.email))
+@endif
+
+@if (avatar)
+  <img {{ $props.except(['user']).toAttrs() }} src="{{ avatar }}" />
+@endif

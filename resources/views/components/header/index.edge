@@ -2,15 +2,17 @@
 @let(forceBackdrop = $props.forceBackdrop ?? false)
 
 <header 
+  id="slot-header"
   x-data="header" 
   :class="['w-full h-16 border border-base-100/50 sticky top-0 z-30 duration-300', 
     isWindowScrolled || {{ forceBackdrop }}
       ? 'bg-base-200/75 backdrop-blur-md shadow-sm'
       : 'bg-base-200/0 shadow-none']"
-  @scroll.window="onWindowScroll">
+  @scroll.window="onWindowScroll"
+  up-hungry>
   <div class="{{ container }} mx-auto flex justify-between items-center h-full">
     <div class="relative h-full">
-      <a class="absolute w-36 left-0 top-1/2 -translate-y-1/2" href="/">
+      <a class="absolute w-36 left-0 top-1/2 -translate-y-1/2" href="{{ route('home') }}">
         <img src="/imgs/logo-white.svg" alt="Adocasts" width="168px" height="50px" />
       </a>
     </div>
@@ -21,12 +23,12 @@
       @if (auth.user)
         <a href="{{ route('users.menu') }}" class="avatar">
           <div class="w-8 rounded-md">
-            <img src="{{ auth.user.avatar }}">
+            @!user.avatar({ user: auth.user, alt: auth.user.handle })
           </div>
         </a>
       @else
         <a href="{{ route('auth.signin') }}" class="btn btn-ghost-soft">Sign In</a>
-        <a href="/register" class="btn btn-primary">Sign Up</a>
+        <a href="{{ route('auth.signup') }}" class="btn btn-primary">Sign Up</a>
       @endif
     </div>
   </div>

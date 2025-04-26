@@ -11,6 +11,7 @@ import { icons as solarIcons } from '@iconify-json/solar'
 import { icons as svgSpinners } from '@iconify-json/svg-spinners'
 import { addCollection, edgeIconify } from 'edge-iconify'
 import edge from 'edge.js'
+import { image as gravatar } from 'gravatar-gen'
 import { DateTime } from 'luxon'
 
 addCollection(solarIcons)
@@ -31,3 +32,4 @@ edge.global('TimeService', TimeService)
 edge.global('is', is)
 edge.global('parser', parser_service)
 edge.global('form', FormService)
+edge.global('gravatar', gravatar)

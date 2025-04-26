@@ -39,7 +39,6 @@ import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
 import { compose } from '@adonisjs/core/helpers'
 import hash from '@adonisjs/core/services/hash'
-import gravatar from 'gravatar'
 
 const AuthFinder = withAuthFinder(() => hash.use('argon'), {
   uids: ['email', 'username'],
@@ -157,21 +156,6 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
       return `${env.get('ASSET_DOMAIN') || ''}/img/${this.avatarUrl}`
     }
-
-    return gravatar.url(this.email, { s: '60' })
-  }
-
-  @computed()
-  get avatarLarge() {
-    if (this.avatarUrl) {
-      if (this.avatarUrl.startsWith('https://')) {
-        return this.avatarUrl
-      }
-
-      return `${env.get('ASSET_DOMAIN') || ''}/img/${this.avatarUrl}`
-    }
-
-    return gravatar.url(this.email, { s: '250' })
   }
 
   @computed()

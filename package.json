@@ -90,7 +90,7 @@
     "dinero.js": "^1.9.1",
     "edge-iconify": "^2.0.1",
     "edge.js": "^6.2.1",
-    "gravatar": "^1.8.2",
+    "gravatar-gen": "^1.0.2",
     "lodash": "^4.17.21",
     "luxon": "^3.6.1",
     "node-html-parser": "^7.0.1",

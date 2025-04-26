@@ -17,9 +17,10 @@ const RenderDiscussionsShow = () => import('#discussion/actions/render_discussio
 const RenderLessonsIndex = () => import('#post/actions/render_lessons_index')
 const RenderLessonShow = () => import('#post/actions/render_lessons_show')
 const RenderSignInPage = () => import('#auth/actions/render_signin_page')
-const StoreSession = () => import('#auth/actions/store_session')
 const RenderUserMenu = () => import('#user/actions/render_user_menu')
 const DestroySession = () => import('#auth/actions/destroy_session')
+const RenderSignUpPage = () => import('#auth/actions/render_signup_page')
+const StoreSessionSignIn = () => import('#auth/actions/store_session_signin')
 import router from '@adonisjs/core/services/router'
 
 router.where('slug', router.matchers.slug())
@@ -28,7 +29,8 @@ router.get('/', [RenderHome]).as('home')
 
 //* Auth
 router.get('/signin', [RenderSignInPage]).as('auth.signin')
-router.post('/sessions', [StoreSession]).as('auth.sessions.store')
+router.get('/signup', [RenderSignUpPage]).as('auth.signup')
+router.post('/sessions', [StoreSessionSignIn]).as('auth.sessions.store')
 router.delete('/sessions', [DestroySession]).as('auth.sessions.destroy')
 
 //* User

@@ -1,5 +1,4 @@
 import vine from '@vinejs/vine'
-import { exists, unique } from '#core/validators/helpers/db'
 
 export const usernameRule = vine
   .string()
@@ -29,37 +28,43 @@ export const usernameRule = vine
     'alpha',
     'mail',
   ])
-  .unique(unique('users', 'username', { caseInsensitive: true }))
+  .unique({ table: 'users', column: 'username', caseInsensitive: true })
 
 export const signInValidator = vine.compile(
   vine.object({
+    options: vine.object({
+      remember: vine.accepted().optional(),
+      forward: vine.string().optional(),
+      action: vine.string().optional(),
+      plan: vine.string().exists({ table: 'plans', column: 'slug' }).optional(),
+    }),
     uid: vine.string(),
     password: vine.string(),
-    remember: vine.accepted().optional(),
-    forward: vine.string().optional(),
-    action: vine.string().optional(),
-    plan: vine.string().exists(exists('plans', 'slug')).optional(),
   })
 )
 
 export const signUpValidator = vine.compile(
   vine.object({
+    options: vine.object({
+      remember: vine.accepted().optional(),
+      forward: vine.string().optional(),
+      action: vine.string().optional(),
+      plan: vine.string().exists({ table: 'plans', column: 'slug' }).optional(),
+    }),
     username: usernameRule,
     email: vine
       .string()
       .trim()
       .email()
-      .unique(unique('users', 'email', { caseInsensitive: true })),
+      .unique({ table: 'users', column: 'email', caseInsensitive: true }),
     password: vine.string().minLength(8),
-    forward: vine.string().optional(),
-    plan: vine.string().exists(exists('plans', 'slug')).optional(),
   })
 )
 
 export const passwordResetValidator = vine.compile(
   vine.object({
     token: vine.string(),
-    email: vine.string().trim().exists(exists('users', 'email')),
+    email: vine.string().trim().exists({ table: 'users', column: 'email', caseInsensitive: true }),
     password: vine.string().minLength(8),
   })
 )

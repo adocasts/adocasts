@@ -25,6 +25,8 @@ export default class LessonShowDto extends BaseModelDto {
   declare videoSeconds: number
   declare thumbnail: AssetDto | null
   declare author: AuthorDto | null
+  declare lessonIndexDisplay: string
+  declare rootIndexDisplay: string
   declare captions: CaptionDto[] | null
   declare chapters: ChapterDto[] | null
   declare series: LessonSeriesDto[]
@@ -48,6 +50,8 @@ export default class LessonShowDto extends BaseModelDto {
     this.routeUrl = post.routeUrl
     this.body = post.body
     this.videoSeconds = post.videoSeconds
+    this.lessonIndexDisplay = post.lessonIndexDisplay
+    this.rootIndexDisplay = post.rootIndexDisplay
     this.thumbnail = AssetDto.fromModel(post.thumbnails?.at(0))
     this.author = AuthorDto.fromModel(post.authors?.at(0))
     this.captions = CaptionDto.fromArray(post.captions)

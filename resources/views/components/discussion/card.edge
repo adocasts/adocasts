@@ -21,7 +21,7 @@
       @profile.link({ user: discussion.author, class: 'h-full' })
         <div class="avatar">
           <div class="w-14 rounded">
-            <img loading="lazy" src="{{ discussion.author.avatar }}" alt="{{ discussion.author.handle }}" />
+            @!user.avatar({ user: discussion.author, loading: 'lazy', alt: discussion.author.handle })
           </div>
         </div>
       @end
@@ -86,7 +86,7 @@
                 @each (comment in discussion.comments.toReversed())
                   <div class="avatar">
                     <div class="w-6">
-                      <img src="{{ comment.author.avatar }}" alt="{{ comment.author.handle }}">
+                      @!user.avatar({ user: comment.author, loading: 'lazy', alt: comment.author.handle })
                     </div>
                   </div>
                 @endeach

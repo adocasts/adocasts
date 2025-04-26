@@ -48,7 +48,7 @@
       <div class="flex items-center gap-x-3">
         @profile.link({ user: auth.user, 'up-layer': 'root' })
           <figure>
-            <img class="w-16 h-16 rounded shadow-xl" src="{{ auth.user.avatar }}" alt="{{ auth.user.handle }}" />
+            @!user.avatar({ user: auth.user, class: 'w-16 h-16 rounded shadow-xl', loading: 'lazy', alt: auth.user.handle })
           </figure>
         @end
         <div>

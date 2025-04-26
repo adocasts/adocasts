@@ -5,10 +5,10 @@
 
   @card({ class: 'max-w-md mx-auto my-12 p-6', accent: false })
 
-    <h1 class="heading-2a !mb-0">Sign in</h1>
+    <h1 class="heading-2a !mb-0">Sign up</h1>
     <p class="opacity-60">
-      Need an account?
-      <a href="{{ route('auth.signup') }}" class="link">Sign up here</a>
+      Already have an account?
+      <a href="{{ route('auth.signin') }}" class="link">Sign in here</a>
     </p>
 
     @form({ method: 'post', action: form.post('auth.sessions.store'), class: 'flex flex-col mt-6' })
@@ -24,13 +24,17 @@
 
       @if (plan)
         <div role="alert">
-          First sign into your account, then we'll get you set up with
+          First create an account, then we'll get you set up with
           <span class="lowercase">PLAN_NAME</span>!
         </div>
       @endif
 
-      @form.field({ name: 'uid', label: 'Username/email', class: 'w-full' })
-        @!form.input({ class: 'w-full', placeholder: 'Enter your username or email', required: true, autofocus: true })
+      @form.field({ name: 'username', label: 'Username', class: 'w-full' })
+        @!form.input({ class: 'w-full', placeholder: 'Enter a username (publicly displayed)', required: true, autofocus: true })
+      @end
+
+      @form.field({ name: 'email', label: 'Email', class: 'w-full' })
+        @!form.input({ class: 'w-full', placeholder: 'Enter your email', required: true })
       @end
 
       @form.field({ name: 'password', label: 'Password', class: 'w-full' })
@@ -42,14 +46,10 @@
           <input type="checkbox" class="checkbox checkbox-sm" name="options.remember" />
           Remember me
         </label>
-
-        <div class="flex-1 text-right">
-          <a href="#" class="link">Forget your password?</a>
-        </div>
       </div>
 
       <button type="submit" class="btn btn-primary">
-        Sign in
+        Sign up
       </button>
 
       <div class="mt-8">
@@ -66,12 +66,12 @@
         <div class="mt-8 grid grid-cols-2 gap-3 relative">
           <a href="#" class="btn btn-soft flex-1">
             @svg('simple-icons:google', { class: 'w-5 h-5' })
-            <span class="sr-only">Sign in with Google</span>
+            <span class="sr-only">Sign up with Google</span>
           </a>
     
           <a href="#" class="btn btn-soft flex-1">
             @svg('simple-icons:github', { class: 'w-5 h-5' })
-            <span class="sr-only">Sign in with GitHub</span>
+            <span class="sr-only">Sign up with GitHub</span>
           </a>
         </div>
       </div>

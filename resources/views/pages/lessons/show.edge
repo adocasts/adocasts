@@ -75,7 +75,7 @@
             @profile.link({ user: lesson.author })
               <div class="avatar">
                 <div class="w-10 rounded-full">
-                  <img loading="lazy" src="{{ lesson.author.avatar }}" alt="{{ lesson.author.handle }}" />
+                  @!user.avatar({ user: lesson.author, loading: 'lazy', alt: lesson.author.handle })
                 </div>
               </div>
             @end
@@ -172,7 +172,7 @@
                         }
                       ]) }}">
                       <div class="w-7 h-7 text-[.6rem] rounded bg-base-100 group-hover/modles:bg-primary duration-200 flex items-center justify-center">
-                        1.0
+                        {{ module.moduleNumber }}.{{ item.meta.pivot_sort_order }}
                       </div>
                       <div class="flex-1 text-xs">
                         {{ item.title }}
