@@ -1,7 +1,7 @@
 @let(avatar = user?.avatar)
 
 @if (user && !avatar)
-  @assign(avatar = await gavatar(user.email))
+  @assign(avatar = await gravatar(user.email))
 @endif
 
 @if (avatar)

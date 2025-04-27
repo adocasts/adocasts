@@ -4,10 +4,17 @@
       @if ($slots.actions)
         {{{ await $slots.actions() }}}
       @else
-        <a href="#" class="btn btn-primary btn-block mb-6">
-          @svg('solar:chat-round-line-bold-duotone', { class: 'w-6 h-6' })
-          New Discussion
-        </a>
+        @if (auth.user)
+          <a href="#" class="btn btn-primary btn-block mb-6">
+            @svg('solar:chat-round-line-bold-duotone', { class: 'w-6 h-6' })
+            New Discussion
+          </a>
+        @else
+          <a href="{{ route('auth.signup') }}" class="btn btn-primary btn-block mb-6" up-layer="new" up-mode="modal" up-size="grow">
+            @svg('solar:chat-round-line-bold-duotone', { class: 'w-6 h-6' })
+            New Discussion
+          </a>
+        @endif
       @endif
 
       <form method="GET" action="{{ route('discussions.index') }}" up-target="#discussionList" up-autosubmit="true" up-navigate="false">

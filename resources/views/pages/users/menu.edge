@@ -42,7 +42,7 @@
       @end
     </nav>
 
-    <div class="border-r border-slate-200"></div>
+    <div class="border-r border-base-content/10"></div>
 
     <section class="flex flex-col gap-y-3">
       <div class="flex items-center gap-x-3">
@@ -60,7 +60,7 @@
 
           @let(plan = await auth.user.related('plan').query().firstOrFail())
           @if (auth.user.stripeCustomerId)
-            <button type="submit" form="stripePortalForm" class="text-xs text-black flex items-center gap-1.5">
+            <button type="submit" form="stripePortalForm" class="text-xs text-base-content flex items-center gap-1.5">
               @if (auth.user.stripeSubscriptionStatus === StripeSubscriptionStatuses.PAUSED)
                 <span class="flex p-0.5 rounded bg-orange-100 text-orange-600 uppercase tracking-wider leading-none" style="font-size: .65rem;">
                   {{ auth.user.stripeSubscriptionStatus }}

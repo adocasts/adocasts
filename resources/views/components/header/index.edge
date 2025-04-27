@@ -21,7 +21,7 @@
 
     <div class="flex items-center justify-end gap-3">
       @if (auth.user)
-        <a href="{{ route('users.menu') }}" class="avatar">
+        <a href="{{ route('users.menu') }}" class="avatar" up-layer="new" up-mode="drawer" up-position="right" up-size="large" up-history="false">
           <div class="w-8 rounded-md">
             @!user.avatar({ user: auth.user, alt: auth.user.handle })
           </div>

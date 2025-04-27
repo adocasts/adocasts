@@ -1439,3 +1439,19 @@ pre ul.filepath-list {
   bottom: 2ch;
   right: 0;
 }
+
+up-drawer,
+up-modal {
+  up-drawer-backdrop,
+  up-modal-backdrop {
+    @apply backdrop-blur-sm;
+  }
+
+  up-drawer-box {
+    @apply bg-base-300;
+  }
+
+  up-modal-box {
+    @apply bg-base-300 p-0;
+  }
+}
