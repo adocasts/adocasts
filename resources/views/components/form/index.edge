@@ -1,6 +1,6 @@
 <form 
-  @if (upSubmit)
-    up-submit
+  @if (typeof upSubmit !== 'undefined')
+    up-submit="{{ !!upSubmit }}"
     up-layer="root"
   @elseif (target)
     up-submit
@@ -34,6 +34,13 @@
   @if (fragment)
     <input type="hidden" name="fragment" value="{{ fragment }}" />
   @endif
+
+  @error('form')
+    <div class="alert alert-error alert-soft mb-3">
+      @svg('solar:close-square-line-duotone', { class: 'w-5 h-5' })
+      {{ $message }}
+    </div>
+  @end
 
   {{{ await $slots.main() }}}
 </form>

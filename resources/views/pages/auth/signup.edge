@@ -1,9 +1,10 @@
-@let(plan = request.qs().plan)
+@let(action = request.input('action'))
+@let(plan = request.input('plan'))
 @let(referrer = request.header('referrer'))
 
 @layout()
 
-  @card({ class: html.classNames(['max-w-md mx-auto w-full p-6', { 'my-12': up.isPage }]), accent: false })
+  @card({ class: html.classNames(['w-[27rem] mx-auto p-6', { 'my-12': up.isPage }]), accent: false })
 
     <h1 class="heading-2a !mb-0">Sign up</h1>
     <p class="opacity-60">
@@ -11,7 +12,12 @@
       <a href="{{ route('auth.signin') }}" class="link">Sign in here</a>
     </p>
 
-    @form({ method: 'post', action: form.post('auth.sessions.store'), class: 'flex flex-col mt-6' })
+    @form({ 
+      method: 'post', 
+      action: form.post('auth.sessions.store'), 
+      class: 'flex flex-col mt-6',
+      upSubmit: !plan && action !== 'cms'
+    })
       <input type="hidden" name="options.action" value="{{ old('action', action ?? '') }}">
       <input type="hidden" name="options.plan" value="{{ plan ?? '' }}">
       <input type="hidden" name="options.forward" value="{{ referrer ?? '' }}">
@@ -54,13 +60,13 @@
 
       <div class="mt-8">
         <div class="relative flex items-center opacity-40">
-          <div class="flex-1 border-t"></div>
-          <div class="flex-1 flex justify-center text-sm">
+          <div class="flex-1 border-t border-base-content/10"></div>
+          <div class="flex-1 flex justify-center text-sm text-base-content/40">
             <span class="px-2 whitespace-nowrap">
               Or continue with
             </span>
           </div>
-          <div class="flex-1 border-t"></div>
+          <div class="flex-1 border-t border-base-content/10"></div>
         </div>
       
         <div class="mt-8 grid grid-cols-2 gap-3 relative">
