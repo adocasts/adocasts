@@ -21,7 +21,12 @@ const RenderUserMenu = () => import('#user/actions/render_user_menu')
 const DestroySession = () => import('#auth/actions/destroy_session')
 const RenderSignUpPage = () => import('#auth/actions/render_signup_page')
 const StoreSessionSignIn = () => import('#auth/actions/store_session_signin')
+import Test from '#pages/test'
 import router from '@adonisjs/core/services/router'
+
+router.get('/test', async ({ page }) => {
+  return page(Test)
+})
 
 router.where('slug', router.matchers.slug())
 

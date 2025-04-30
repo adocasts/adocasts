@@ -103,6 +103,10 @@ export default defineConfig({
       reloadServer: false,
     },
     {
+      pattern: 'resources/views/**/*.tsx',
+      reloadServer: false,
+    },
+    {
       pattern: 'public/**',
       reloadServer: false,
     },

@@ -35,7 +35,9 @@
     "#factories/*": "./database/factories/*.js",
     "#start/*": "./start/*.js",
     "#config/*": "./config/*.js",
-    "#mocks/*": "./tests/mocks/*.js"
+    "#mocks/*": "./tests/mocks/*.js",
+    "#pages/*": "./resources/views_jsx/pages/*.js",
+    "#components/*": "./resources/views_jsx/components/*.js"
   },
   "devDependencies": {
     "@adonisjs/assembler": "^7.8.2",
@@ -95,6 +97,7 @@
     "gravatar-gen": "^1.0.2",
     "lodash": "^4.17.21",
     "luxon": "^3.6.1",
+    "mono-jsx": "^0.3.2",
     "node-html-parser": "^7.0.1",
     "pg": "^8.15.6",
     "reading-time": "^1.5.0",

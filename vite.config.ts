@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite'
 import adonisjs from '@adonisjs/vite/client'
 import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
@@ -15,7 +15,7 @@ export default defineConfig({
       /**
        * Paths to watch and reload the browser on file change
        */
-      reload: ['resources/views/**/*.edge'],
+      reload: ['resources/views/**/*.edge', 'resources/views/**/*.tsx'],
     }),
   ],
 })
