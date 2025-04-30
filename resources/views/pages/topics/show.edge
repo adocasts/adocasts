@@ -2,7 +2,7 @@
 
   <div x-data="{ isHeaderVisible: true }">
     <div class="relative" x-intersect:enter="isHeaderVisible = true" x-intersect:leave="isHeaderVisible = false">
-      <img class="absolute top-1/2 right-0 -translate-y-1/2 w-1/3 aspect-square object-cover object-center opacity-20 mask-gradient-to-bl z-[1]" src="/imgs/adonisjs.jpeg" alt="{{ series.name }}">
+      <img class="absolute top-1/2 right-0 -translate-y-1/2 w-1/3 aspect-square object-cover object-center opacity-20 blur-2xl mask-gradient-to-bl z-[1]" src="/imgs/adonisjs.jpeg" alt="{{ series.name }}">
       
       <div class="section-container mx-auto flex items-center xl:min-h-[250px]">
         <div class="flex-1">

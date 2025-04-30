@@ -20,6 +20,7 @@
     "#collection/*": "./app/collection/*.js",
     "#comment/*": "./app/comment/*.js",
     "#core/*": "./app/core/*.js",
+    "#general/*": "./app/general/*.js",
     "#discussion/*": "./app/discussion/*.js",
     "#history/*": "./app/history/*.js",
     "#lesson_request/*": "./app/lesson_request/*.js",

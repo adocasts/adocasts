@@ -7,8 +7,8 @@
 |
 */
 
+const RenderHome = () => import('#general/actions/render_home')
 const RenderSeriesIndex = () => import('#collection/actions/render_series_index')
-const RenderHome = () => import('#core/actions/render_home')
 const RenderSeriesShow = () => import('#collection/actions/render_series_show')
 const RenderTopicsIndex = () => import('#taxonomy/actions/render_topics_index')
 const RenderTopicShow = () => import('#taxonomy/actions/render_topic_show')
