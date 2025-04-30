@@ -1,8 +1,8 @@
 import GetSeriesRecentlyUpdated from '#collection/actions/get_series_recently_updated'
+import BaseAction from '#core/actions/base_action'
 import GetLessonsLatest from '#post/actions/get_lessons_latest'
 import GetTopicList from '#taxonomy/actions/get_topic_list'
 import { HttpContext } from '@adonisjs/core/http'
-import BaseAction from './base_action.js'
 
 export default class RenderHome extends BaseAction {
   async asController({ view }: HttpContext) {

@@ -2,7 +2,7 @@ import CommentVote from '#comment/models/comment_vote'
 import NotImplementedException from '#core/exceptions/not_implemented_exception'
 import DiscussionVote from '#discussion/models/discussion_vote'
 import RequestVote from '#lesson_request/models/request_vote'
-import BaseAction from './base_action.js'
+import BaseAction from '../../core/actions/base_action.js'
 
 type Types = 'discussion' | 'comment' | 'request'
 

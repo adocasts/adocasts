@@ -1,23 +1,5 @@
 import string from '@adonisjs/core/helpers/string'
 import { HttpContext } from '@adonisjs/core/http'
-import { NextFn } from '@adonisjs/core/types/http'
-
-export default class UpMiddleware {
-  async handle(ctx: HttpContext, next: NextFn) {
-    const up = new Up(ctx)
-
-    ctx.up = up
-    ctx.view.share({ up })
-
-    return next()
-  }
-}
-
-declare module '@adonisjs/core/http' {
-  export interface HttpContext {
-    up: Up
-  }
-}
 
 /**
  * A list of supported unpoly headers
@@ -40,7 +22,7 @@ const UNPOLY_HEADERS = [
   'X-Up-Status',
 ]
 
-class Up {
+export default class Up {
   /**
    * The headers to set on the response or flash messages in case of redirect
    */
@@ -114,12 +96,12 @@ class Up {
       }, {}),
       this.headers
     )
-
     if (this.ctx.response.getHeader('Location')) {
       this.setHeadersAsFlashMessages(headers)
     } else {
       this.setHeadersAsResponse(headers)
     }
+    // this.ctx.view.share({ up: this })
   }
 
   get isPage() {

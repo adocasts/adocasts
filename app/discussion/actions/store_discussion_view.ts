@@ -1,5 +1,5 @@
 import BaseAction from '#core/actions/base_action'
-import GetIpAddress from '#core/actions/get_ip_address'
+import GetIpAddress from '../../general/actions/get_ip_address.js'
 import DiscussionViewTypes from '#discussion/enums/discussion_view_types'
 import DiscussionView from '#discussion/models/discussion_view'
 import { HttpContext } from '@adonisjs/core/http'

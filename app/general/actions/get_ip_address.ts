@@ -1,5 +1,5 @@
 import { Request } from '@adonisjs/core/http'
-import BaseAction from './base_action.js'
+import BaseAction from '../../core/actions/base_action.js'
 
 export default class GetIpAddress extends BaseAction<[Request]> {
   handle(request: Request) {

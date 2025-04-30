@@ -38,9 +38,9 @@ router.use([
   () => import('@adonisjs/shield/shield_middleware'),
   () => import('@adonisjs/auth/initialize_auth_middleware'),
   () => import('#core/middleware/initialize_bouncer_middleware'),
-  () => import('#core/middleware/up_middleware'),
   () => import('#core/middleware/action_bindings_middleware'),
   () => import('#auth/middleware/silent_auth_middleware'),
+  () => import('#core/middleware/context/context_middleware'),
 ])
 
 /**
@@ -50,4 +50,5 @@ router.use([
 export const middleware = router.named({
   guest: () => import('#auth/middleware/guest_middleware'),
   auth: () => import('#auth/middleware/auth_middleware'),
+  turnstile: () => import('#core/middleware/turnstile_middleware'),
 })
