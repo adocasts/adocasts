@@ -1,5 +1,6 @@
 import Difficulties from '#core/enums/difficulties'
 import Sorts from '#core/enums/sorts'
+import Status from '#core/enums/status'
 import FormService from '#core/services/form_service'
 import parser_service from '#core/services/parser_service'
 import TimeService from '#core/services/time_service'
@@ -22,6 +23,7 @@ edge.use(edgeIconify)
 
 // enums
 edge.global('Sorts', Sorts)
+edge.global('Status', Status)
 edge.global('Difficulties', Difficulties)
 edge.global('StripeSubscriptionStatuses', StripeSubscriptionStatuses)
 

@@ -1,11 +1,16 @@
 @let(progression = progress.post.get(post.id))
+@let(progressionColor = 'text-transparent')
+
+@if (progression?.watchPercent > 0)
+  @assign(progressionColor = progression.isCompleted ? 'bg-success/10 text-success' : 'bg-primary/10 text-primary')
+@endif
 
 <div class="card bg-base-200 hover:radial-accent-t group/card mb-3">
   <div class="card-border"></div>
   <div class="card-body flex-row items-center gap-6">
     <div 
-      class="radial-progress opacity-60 text-primary text-xl" 
-      style="--value:{{ progression?.watchPercent ?? 0 }}; --size: 5rem; --thickness: .35rem;" 
+      class="{{ html.classNames(['radial-progress opacity-60 text-xl', progressionColor]) }}" 
+      style="--value:{{ progression?.watchPercent ?? 0 }}; --size: 5rem; --thickness: .3rem;" 
       aria-valuenow="{{ progression?.watchPercent ?? 0 }}" 
       role="progressbar">
       <span class="text-base-content font-bold proportional-nums">

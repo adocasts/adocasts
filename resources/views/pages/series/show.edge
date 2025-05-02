@@ -49,13 +49,10 @@
       </div>
     </div>
 
-    @dump(series)
-
     <div class="section-container mx-auto flex flex-wrap items-start gap-6 lg:gap-12 relative z-10">
       <main class="@container flex-1">
         <div class="relative z-[1]">
           <div class="lg:hidden">
-            @!series.nextOnDeck({ series, size: 'wide' })
             @!series.progress({ series })
           </div>
 
@@ -110,52 +107,37 @@
 
       <aside class="@container hidden lg:block w-[36%] sticky top-20">
         <div x-show="!isHeaderVisible" x-transition x-cloak class="p-6 bg-base-200 relative z-10 rounded-[var(--radius-box)] mb-6">
-          <div class="flex gap-2 mb-6">
-            @!difficulty({ item: series })
-          
-            <div class="badge badge-soft opacity-75 group-hover:opacity-100 duration-200">
-              @svg('solar:video-library-bold-duotone', { class: '-ml-1 -my-0.5' })
-              {{ series.meta.posts_count }} Lessons
-            </div>
-          
-            <div class="badge badge-soft opacity-75 group-hover:opacity-100 duration-200">
-              @svg('solar:clock-circle-bold-duotone', { class: '-ml-1 -my-0.5' })
-              {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
-            </div>
-          </div>
-
-          <h2 class="heading-3">
+          <h2 class="heading-4">
             {{ series.name }}
           </h2>
       
           @if (series.description)
-            <p class="max-w-2xl text-pretty font-medium opacity-60 line-clamp-3 max-lg:mx-auto sm:text-base/6">
+            <p class="max-w-2xl text-pretty font-medium opacity-60 line-clamp-3 max-lg:mx-auto sm:text-sm">
               {{ series.description }}
             </p>
           @endif
       
-          <div class="flex items-center justify-between gap-3 mt-10">
+          <div class="flex items-center justify-between gap-3 mt-6">
             <div class="flex flex-1 items-center gap-3">
-              <a href="#" class="btn btn-primary flex-1">
+              <a href="#" class="btn btn-primary btn-sm flex-1">
                 @svg('solar:play-bold')
                 Start Series
               </a>
       
-              <button type="button" class="btn btn-soft">
+              <button type="button" class="btn btn-sm btn-soft">
                 @svg('solar:bookmark-bold')
                 Add to Watchist
               </button>
             </div>
       
             <div class="flex items-center gap-3">
-              <a href="#" class="btn btn-soft btn-square">
+              <a href="#" class="btn btn-sm btn-soft btn-square">
                 @svg('simple-icons:github')
               </a>
             </div>
           </div>
         </div>
       
-        @!series.nextOnDeck({ series, size: 'wide' })
         @!series.progress({ series })
       </aside>
     </div>

@@ -1,40 +1,74 @@
 @let(progression = progress.collection.get(series.id))
 
 @if (progression)
+  @let(progressionFrom = progression.isCompleted ? 'from-success/50' : 'from-primary/50')
+  @let(progressionTo = progression.isCompleted ? 'to-success/20' : 'to-primary/20')
 
+  <div class="mb-6 bg-base-200 relative z-10 rounded-[var(--radius-box)] overflow-hidden {{ $props.class ?? '' }}">
+    <div class="relative text-sm bg-base-200 z-[1] rounded-t-[var(--radius-box)] px-6 py-3 overflow-hidden">
+      <div class="{{ html.classNames(['absolute top-0 left-0 h-full bg-gradient-to-r', progressionFrom, progressionTo]) }}" style="width: {{ (progression.watchPercent / 100).toLocaleString([], { style: 'percent' }) }};">
+        <div class="absolute top-0 left-full h-full w-[50px] bg-gradient-to-r from-primary/20 to-base-200"></div>
+      </div>
 
-  <div class="p-6 mb-6 bg-base-200 flex items-center gap-6 relative z-10 rounded-[var(--radius-box)] overflow-hidden {{ $props.class ?? '' }}">
-  <div 
-    class="radial-progress text-primary" 
-    style="--value:{{ progression.watchPercent }}; --size: 4rem; --thickness: .35rem;" 
-    aria-valuenow="{{ progression.watchPercent }}" 
-    role="progressbar">
-    {{ (progression.watchPercent / 100).toLocaleString([], { style: 'percent' }) }}
-  </div>
-
-  <div class="flex flex-col">
-    <div class="flex flex-col mr-2 lg:mr-6 mb-1">
-      <span class="font-bold text-lg">Your Progress</span>
+      <div class="relative z-[1] flex items-center gap-3">
+        <div class="font-bold">{{ (progression.watchPercent / 100).toLocaleString([], { style: 'percent' }) }} Completed</div>
+        @svg('solar:double-alt-arrow-right-line-duotone', { class: 'w-6 h-6' })
+        <div class="opacity-60">
+          @if (progression.watchPercent < 10)
+            You're just getting started with this one!
+          @elseif (progression.watchPercent < 25)
+            You're doing great {{ auth.user.handle }}!
+          @elseif (progression.watchPercent < 50)
+            Going strong, keep it up!
+          @elseif (progression.watchPercent < 75)
+            Keep on cooking, {{ auth.user.handle }}!
+          @elseif (!progression.isCompleted)
+            You're soooo close!
+          @elseif (series.statusId === Status.IN_PROGRESS)
+            You're up-to-date, check back for more lessons soon!
+          @else
+            You rocked this series!
+          @endif
+        </div>
+      </div>
     </div>
 
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-base-200 via-base-300/50 to-base-200 border-y border-base-300/50">
+      <div>
+        <div 
+          class="radial-progress text-primary bg-base-300/25 mr-3" 
+          style="--value:{{ progression.watchPercent }}; --size: 2.5rem; --thickness: .25rem;" 
+          aria-valuenow="{{ progression.watchPercent }}" 
+          role="progressbar"
+        ></div>
+      </div>
+
       <div class="flex-col mr-2 lg:mr-6 flex">
-        <span class="text-xs opacity-60">Completed</span>
+        <span class="text-2xs @md:text-xs font-semibold opacity-60">Lessons</span>
         <span class="text-sm">
           <span class="font-bold">{{ progression.completedLessons }}</span>
-          <span class="opacity-60">of {{ series.meta.posts_count }} Lessons</span>
+          <span class="opacity-60">of {{ series.meta.posts_count }} Completed</span>
         </span>
       </div>
 
       <div class="flex-col hidden md:flex">
-        <span class="text-xs opacity-60">Time Watched</span>
+        <span class="text-2xs @md:text-xs font-semibold opacity-60">Time Watched</span>
         <span class="text-sm">
           <span class="font-bold">{{ TimeService.secondsToTimestring(progression.watchSeconds) }}</span>
           <span class="opacity-60">of {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}</span>
         </span>
       </div>
     </div>
+
+    <div>
+      @post.card({ post: series.modules.at(0).lessons.at(0), size: 'wide', class: 'rounded-t-none' })
+        @slot('badge')
+          <div class="badge badge-xs @xl:badge-sm badge-secondary">
+            Next On Deck
+          </div>
+        @endslot
+      @end
+    </div>
   </div>
-</div>
 
 @endif
