@@ -1,96 +1,98 @@
-import ProgressBuilder from '#progress/builders/progress_builder'
+import ProgressDto from '#progress/dtos/progress'
 import Progress from '#progress/models/progress'
 import { HttpContext } from '@adonisjs/core/http'
+import db from '@adonisjs/lucid/services/db'
 
-export type ProgressContext = {
-  isLoaded: boolean
-  postIds: number[]
-  collectionIds: number[]
-  records: Progress[]
-  commit: () => Promise<Progress[]>
-  post: (id: number) => Progress | undefined
-  collection: (id: number) => Progress | undefined
-  addCollectionIds: (ids: number[]) => void
-  addPostIds: (ids: number[]) => void
+export interface ProgressType {
+  ids: Set<number>
+  records: Map<number, ProgressDto>
+  get(id: number): ProgressDto | undefined
+  add(ids: number | number[]): void
+}
+
+export interface ProgressContext {
+  isCommitted: boolean
+  post: ProgressType
+  collection: ProgressType
+  commit(): Promise<void>
+}
+
+class ProgressTypeState implements ProgressType {
+  ids = new Set<number>()
+  records = new Map<number, ProgressDto>()
+
+  get(id: number) {
+    return this.records.get(id)
+  }
+
+  add(ids: number | number[]) {
+    if (Array.isArray(ids)) {
+      ids.forEach((id) => this.ids.add(id))
+      return
+    }
+
+    this.ids.add(ids)
+  }
+}
+
+class ProgressState implements ProgressContext {
+  isCommitted: boolean = false
+  post = new ProgressTypeState()
+  collection = new ProgressTypeState()
+
+  get user() {
+    return this.ctx.auth.user
+  }
+
+  constructor(protected ctx: HttpContext) {}
+
+  async commit() {
+    if (this.isCommitted) return
+
+    if (this.user) {
+      this.post.records = await Progress.build(this.user)
+        .for('postId', [...this.post.ids])
+        .toDtoMap()
+
+      this.collection.records = await this.#getCollectionPostProgress()
+    }
+
+    this.ctx.view.share({
+      progress: {
+        post: this.post,
+        collection: this.collection,
+      },
+    })
+
+    this.isCommitted = true
+  }
+
+  async #getCollectionPostProgress() {
+    const results = new Map<number, ProgressDto>()
+
+    for (const collectionId of this.collection.ids) {
+      const postIds: number[] = await db
+        .knexQuery()
+        .from('collection_posts')
+        .where('root_collection_id', collectionId)
+        .pluck('post_id')
+
+      const records = await Progress.build(this.user).for('postId', postIds).dto(ProgressDto)
+      const completed = records.filter((record) => record.isCompleted)
+      const progress = new ProgressDto()
+
+      progress.collectionId = collectionId
+      progress.watchSeconds = records.reduce((sum, row) => (sum += row.watchSeconds), 0)
+      progress.watchPercent = Math.floor((completed.length / postIds.length) * 100)
+      progress.isCompleted = progress.watchPercent === 100
+
+      results.set(collectionId, progress)
+    }
+
+    return results
+  }
 }
 
 export function createProgress(ctx: HttpContext) {
-  const state: ProgressContext = {
-    isLoaded: false,
-    postIds: [],
-    collectionIds: [],
-    records: [],
-
-    /**
-     * add array of collection ids to consider for progression loading
-     * @param ids
-     */
-    addCollectionIds(ids: number[] = []) {
-      ids = ids.filter(Boolean)
-      this.collectionIds = [...this.collectionIds, ...ids]
-    },
-
-    /**
-     * add array of post ids to consider for progression loading
-     * @param ids
-     */
-    addPostIds(ids: number[] = []) {
-      ids = ids.filter(Boolean)
-      this.postIds = [...this.postIds, ...ids]
-    },
-
-    /**
-     * attempt to find progression record for provided post id
-     * @param id
-     */
-    post(id: number) {
-      return this.records.find((record) => record.postId === id)
-    },
-
-    /**
-     * attempt to find collection record for provided collection id
-     * @param id
-     */
-    collection(id: number) {
-      return this.records.find((record) => record.collectionId == id)
-    },
-
-    /**
-     * commit current ids and attempt to load progressions for authenticated user
-     */
-    async commit() {
-      if (this.isLoaded) return []
-
-      let postRecords: Progress[] = []
-      let collectionRecords: Progress[] = []
-
-      if (ctx.auth.user) {
-        const uniquePostIds = [...new Set(this.postIds)]
-        const uniqueCollectionIds = [...new Set(this.collectionIds)]
-
-        postRecords = await ProgressBuilder.new(ctx.auth.user).for('postId', uniquePostIds)
-        collectionRecords = await ProgressBuilder.new(ctx.auth.user).for(
-          'collectionId',
-          uniqueCollectionIds
-        )
-      }
-
-      this.records = [
-        ...postRecords,
-        ...collectionRecords.filter((record) => !postRecords.some((r) => r.id === record.id)),
-      ]
-
-      ctx.view.share({
-        progressions: this.records,
-        progression: {
-          post: this.post.bind(this),
-          collection: this.collection.bind(this),
-        },
-      })
-
-      return this.records
-    },
-  }
-
-  return state
+  return new ProgressState(ctx)
 }

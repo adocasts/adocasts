@@ -1,12 +1,13 @@
 import Collection from '#collection/models/collection'
 import Post from '#post/models/post'
 import ProgressBuilder from '#progress/builders/progress_builder'
+import User from '#user/models/user'
 import { BaseModel, belongsTo, column, computed } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import { DateTime } from 'luxon'
 
 export default class Progress extends BaseModel {
-  static build = () => ProgressBuilder.new()
+  static build = (user?: User) => ProgressBuilder.new(user)
 
   @column({ isPrimary: true })
   declare id: number

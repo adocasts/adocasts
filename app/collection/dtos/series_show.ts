@@ -1,14 +1,17 @@
-import Collection from '#collection/models/collection'
-import SeriesLessonDto from '#post/dtos/series_lesson'
-import ModuleDto from './module.js'
-import BaseModelDto from '#core/dtos/base_model_dto'
 import AssetDto from '#asset/dtos/asset'
+import Collection from '#collection/models/collection'
+import ProgressableDto from '#core/dtos/progressable_dto'
+import SeriesLessonDto from '#post/dtos/series_lesson'
+import ProgressTypes from '#progress/enums/progress_types'
 import TopicDto from '#taxonomy/dtos/topic'
+import ModuleDto from './module.js'
 
-export class SeriesShowDto extends BaseModelDto {
+export class SeriesShowDto extends ProgressableDto {
   static model() {
     return Collection
   }
+
+  progressType = ProgressTypes.COLLECTION
 
   declare id: number
   declare statusId: number

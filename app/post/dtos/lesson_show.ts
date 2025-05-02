@@ -1,16 +1,19 @@
 import AssetDto from '#asset/dtos/asset'
 import LessonSeriesDto from '#collection/dtos/lesson_series'
 import CommentDto from '#comment/dtos/comment'
-import BaseModelDto from '#core/dtos/base_model_dto'
+import ProgressableDto from '#core/dtos/progressable_dto'
 import Post from '#post/models/post'
+import ProgressTypes from '#progress/enums/progress_types'
 import AuthorDto from '#user/dtos/author'
 import CaptionDto from './caption.js'
 import ChapterDto from './chapter.js'
 
-export default class LessonShowDto extends BaseModelDto {
+export default class LessonShowDto extends ProgressableDto {
   static model() {
     return Post
   }
+
+  progressType = ProgressTypes.POST
 
   declare id: number
   declare slug: string
