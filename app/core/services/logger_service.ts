@@ -1,5 +1,5 @@
-import app from '@adonisjs/core/services/app'
 import env from '#start/env'
+import app from '@adonisjs/core/services/app'
 import DiscordLogger from './discord_service.js'
 
 type LogPayload = {
@@ -43,7 +43,6 @@ class LoggerService {
   }
 
   async log(method: 'info' | 'warn' | 'error' | 'debug' | 'silly', payload: LogPayload) {
-    console.log({ method, payload })
     if (app.inTest || !this.enabled) return
     return this.logger[method](payload)
   }

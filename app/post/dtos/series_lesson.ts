@@ -21,8 +21,8 @@ export default class SeriesLessonDto extends ProgressableDto {
   declare routeUrl: string
   declare videoSeconds: number
   declare asset: AssetDto | null
-  declare lessonIndexDisplay: string
-  declare rootIndexDisplay: string
+  declare sortOrder: number
+  declare rootSortOrder: string
   declare meta: Record<string, any>
 
   constructor(post?: Post) {
@@ -41,8 +41,8 @@ export default class SeriesLessonDto extends ProgressableDto {
     this.routeUrl = post.routeUrl
     this.videoSeconds = post.videoSeconds
     this.asset = AssetDto.fromModel(post.assets?.at(0))
-    this.lessonIndexDisplay = post.lessonIndexDisplay
-    this.rootIndexDisplay = post.rootIndexDisplay
+    this.sortOrder = post.$extras?.pivot_sort_order
+    this.rootSortOrder = post.$extras?.pivot_root_sort_order
     this.meta = post.$extras
   }
 }

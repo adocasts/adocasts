@@ -1,15 +1,11 @@
 import CollectionBuilder from '#collection/builders/collection_builder'
 import BaseBuilder from '#core/builders/base_builder'
 import PostBuilder from '#post/builders/post_builder'
-import ProgressDto from '#progress/dtos/progress'
 import Progress from '#progress/models/progress'
 import User from '#user/models/user'
-import { InvalidArgumentsException } from '@adonisjs/core/exceptions'
 import db from '@adonisjs/lucid/services/db'
 
 export default class ProgressBuilder extends BaseBuilder<typeof Progress, Progress> {
-  buildingFor: 'postId' | 'collectionId' | undefined = undefined
-
   constructor(protected user: User | undefined = undefined) {
     super(Progress)
   }
@@ -63,32 +59,11 @@ export default class ProgressBuilder extends BaseBuilder<typeof Progress, Progre
   }
 
   for(column: 'postId' | 'collectionId', ids: number[] | undefined = undefined) {
-    this.buildingFor = column
-
     this.query
       .if(ids, (truthy) => truthy.whereIn(column, ids!))
       .where('userId', this.user!.id)
       .where((q) => q.where('isCompleted', true).orWhere('watchSeconds', '>', 0))
       .whereNotNull(column)
     return this
-  }
-
-  async toDtoMap(buildingFor: 'postId' | 'collectionId' | undefined = this.buildingFor) {
-    if (!buildingFor) {
-      throw new InvalidArgumentsException(
-        'ProgressBuilder.toMap requires a `buildingFor` argument or `for` to be called first'
-      )
-    }
-
-    const records = await this.dto(ProgressDto)
-    const map = new Map<number, ProgressDto>()
-
-    records.forEach((record) => {
-      if (!record[buildingFor]) return
-
-      map.set(record[buildingFor], record)
-    })
-
-    return map
   }
 }

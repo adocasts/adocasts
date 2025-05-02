@@ -16,6 +16,8 @@ export default class ProgressDto extends BaseModelDto {
   declare isCompleted: boolean
   declare hasActivity: boolean
 
+  declare completedLessons: number
+
   constructor(progress?: Progress) {
     super()
 

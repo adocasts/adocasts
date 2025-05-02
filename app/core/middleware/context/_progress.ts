@@ -50,11 +50,8 @@ class ProgressState implements ProgressContext {
     if (this.isCommitted) return
 
     if (this.user) {
-      this.post.records = await Progress.build(this.user)
-        .for('postId', [...this.post.ids])
-        .toDtoMap()
-
-      this.collection.records = await this.#getCollectionPostProgress()
+      await this.#fillPostProgress()
+      await this.#fillCollectionPostProgress()
     }
 
     this.ctx.view.share({
@@ -67,7 +64,15 @@ class ProgressState implements ProgressContext {
     this.isCommitted = true
   }
 
-  async #getCollectionPostProgress() {
+  async #fillPostProgress() {
+    const records = await Progress.build(this.user)
+      .for('postId', [...this.post.ids])
+      .dto(ProgressDto)
+
+    this.addToPostProgress(records)
+  }
+
+  async #fillCollectionPostProgress() {
     const results = new Map<number, ProgressDto>()
 
     for (const collectionId of this.collection.ids) {
@@ -81,15 +86,28 @@ class ProgressState implements ProgressContext {
       const completed = records.filter((record) => record.isCompleted)
       const progress = new ProgressDto()
 
+      this.addToPostProgress(records)
+
       progress.collectionId = collectionId
       progress.watchSeconds = records.reduce((sum, row) => (sum += row.watchSeconds), 0)
       progress.watchPercent = Math.floor((completed.length / postIds.length) * 100)
       progress.isCompleted = progress.watchPercent === 100
+      progress.completedLessons = completed.length
 
       results.set(collectionId, progress)
     }
 
-    return results
+    this.collection.records = results
+  }
+
+  addToPostProgress(records: ProgressDto[]) {
+    for (const record of records) {
+      if (!record.postId || this.post.records.has(record.postId)) {
+        continue
+      }
+
+      this.post.records.set(record.postId, record)
+    }
   }
 }
 

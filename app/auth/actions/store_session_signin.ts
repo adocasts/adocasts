@@ -1,12 +1,12 @@
 import AuthAttempt from '#auth/models/auth_attempt'
 import { signInValidator } from '#auth/validators/auth'
 import BaseAction from '#core/actions/base_action'
-import User from '#user/models/user'
-import { HttpContext } from '@adonisjs/core/http'
-import { Infer } from '@vinejs/vine/types'
-import { errors } from '@adonisjs/auth'
-import { Session } from '@adonisjs/session'
 import stripe from '#plan/services/stripe_service'
+import User from '#user/models/user'
+import { errors } from '@adonisjs/auth'
+import { HttpContext } from '@adonisjs/core/http'
+import { Session } from '@adonisjs/session'
+import { Infer } from '@vinejs/vine/types'
 
 type Validator = Infer<typeof signInValidator>
 
@@ -21,7 +21,7 @@ export default class StoreSessionSignIn extends BaseAction {
       })
       return response.redirect('/forgot-password')
     }
-    console.log('here')
+
     const user = await this.#verifyCredentials(data)
 
     await auth.use('web').login(user, options.remember)
@@ -44,7 +44,6 @@ export default class StoreSessionSignIn extends BaseAction {
     try {
       return await User.verifyCredentials(uid, password)
     } catch (error) {
-      console.log({ error })
       if (error instanceof errors.E_INVALID_CREDENTIALS) {
         AuthAttempt.recordBadLogin(uid)
       }

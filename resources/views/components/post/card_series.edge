@@ -1,9 +1,19 @@
+@let(progression = progress.post.get(post.id))
+
 <div class="card bg-base-200 hover:radial-accent-t group/card mb-3">
   <div class="card-border"></div>
   <div class="card-body flex-row items-center gap-6">
-    <div class="radial-progress opacity-60 text-primary text-xl" style="--value:0; --size: 5rem; --thickness: .35rem;" aria-valuenow="70" role="progressbar">
+    <div 
+      class="radial-progress opacity-60 text-primary text-xl" 
+      style="--value:{{ progression?.watchPercent ?? 0 }}; --size: 5rem; --thickness: .35rem;" 
+      aria-valuenow="{{ progression?.watchPercent ?? 0 }}" 
+      role="progressbar">
       <span class="text-base-content font-bold proportional-nums">
-        {{ mod ? post.lessonIndexDisplay : post.rootIndexDisplay }}
+        @if (mod)
+          {{ mod.moduleNumber }}.{{ post.sortOrder }}
+        @else
+          {{ post.rootSortOrder }}
+        @endif
       </span>
       {{-- @svg('solar:lock-keyhole-minimalistic-bold', { class: 'w-6 h-6' }) --}}
     </div>
