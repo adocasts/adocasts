@@ -1,0 +1,26 @@
+@utility text-2xs {
+  font-size: 0.625rem;
+}
+
+@utility mask-gradient-to-r {
+  mask: linear-gradient(to right, black 55%, transparent);
+}
+
+@utility mask-gradient-to-l {
+  mask: linear-gradient(to left, transparent, black);
+}
+
+@utility mask-gradient-to-t {
+  mask: linear-gradient(to top, black 55%, transparent);
+}
+
+@utility mask-gradient-to-b {
+  mask: linear-gradient(to top, transparent, black);
+}
+
+@utility mask-gradient-to-bl {
+  mask:
+    linear-gradient(to top, transparent, black 50%),
+    linear-gradient(to right, transparent, black 50%);
+  mask-composite: intersect;
+}

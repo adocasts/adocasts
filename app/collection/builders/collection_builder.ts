@@ -196,6 +196,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
             .apply((scope) => scope.published())
             .selectDto(SeriesLessonDto)
         )
+        .orderBy('sortOrder')
         .selectDto(ModuleDto)
     )
     return this

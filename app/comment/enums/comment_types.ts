@@ -4,5 +4,10 @@ enum CommentTypes {
   DISCUSSION = 3,
 }
 
-export default CommentTypes
+export const CommentTypeIdColumn: Record<CommentTypes, string> = {
+  [CommentTypes.POST]: 'postId',
+  [CommentTypes.LESSON_REQUEST]: 'lessonRequestId',
+  [CommentTypes.DISCUSSION]: 'discussionId',
+}
 
+export default CommentTypes

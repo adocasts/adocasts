@@ -1,3 +1,4 @@
+import CommentTypes, { CommentTypeIdColumn } from '#comment/enums/comment_types'
 import Difficulties from '#core/enums/difficulties'
 import Sorts from '#core/enums/sorts'
 import Status from '#core/enums/status'
@@ -25,6 +26,8 @@ edge.use(edgeIconify)
 edge.global('Sorts', Sorts)
 edge.global('Status', Status)
 edge.global('Difficulties', Difficulties)
+edge.global('CommentTypes', CommentTypes)
+edge.global('CommentTypeIdColumn', CommentTypeIdColumn)
 edge.global('StripeSubscriptionStatuses', StripeSubscriptionStatuses)
 
 // utilities

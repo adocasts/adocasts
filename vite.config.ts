@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import adonisjs from '@adonisjs/vite/client'
 import tailwindcss from '@tailwindcss/vite'
+import postcssImport from 'postcss-import'
 
 export default defineConfig({
   plugins: [
@@ -18,4 +19,10 @@ export default defineConfig({
       reload: ['resources/views/**/*.edge'],
     }),
   ],
+
+  css: {
+    postcss: {
+      plugins: [postcssImport()],
+    },
+  },
 })
