@@ -11,7 +11,7 @@
 
 @let(size = sizes.get($props.size ?? 'sm'))
 
-@card({ id: `comment${comment.id}`, accent: '', class: 'mb-6' })
+@card({ id: `comment${comment.id}`, accent: '', class: 'mb-6 group overflow-visible' })
   @if (parent)
     <div class="w-full flex items-center bg-base-100 py-3 px-4 gap-1.5 text-sm rounded-[var(--radius-box)] opacity-60">
       @svg('solar:reply-bold', { class: 'w-8 rotate-180' })
@@ -19,7 +19,7 @@
     </div>
   @endif
 
-  <div class="card-body flex flex-row flex-wrap gap-6">
+  <div x-show="editId !== {{ comment.id }}" class="card-body flex flex-row flex-wrap gap-6">
 
     <div class="flex flex-col">
       @profile.link({ user: comment.author, class: 'h-full' })
@@ -63,14 +63,48 @@
           {{{ await parser.highlight(comment.body) }}}
         </article>
       @endif
-    </div>
-    
-    {{-- <div class="w-full">
-      <div class="w-full flex items-end gap-4 justify-between text-sm">
-        <div class="flex items-center gap-2">
-          {{-- actions --}}
+      
+      <div class="w-full mt-6">
+        <div class="w-full flex items-end gap-4 justify-between text-sm">
+          <div class="flex items-center gap-2">
+            <button class="btn btn-soft btn-sm">
+              @svg('solar:heart-angle-line-duotone', { class: 'w-4 h-4 -ml-1' })
+              0
+            </button>
+
+            <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100">
+              @can('CommentPolicy.reply', comment)
+                <button class="btn btn-soft btn-sm" @click="create({{ comment.id }})">
+                  Reply
+                </button>
+              @endcan
+
+              @can('CommentPolicy.update', comment)
+                <button class="btn btn-soft btn-secondary btn-sm" @click="edit({{ comment.id }})">
+                  Edit
+                </button>
+              @endcan
+
+              @can('CommentPolicy.delete', comment)
+                <button class="btn btn-soft btn-error btn-sm">
+                  Delete
+                </button>
+              @endcan
+            </div>
+          </div>
         </div>
       </div>
-    </div> --}}
+    </div>
   </div>
+
+  @can('CommentPolicy.update', comment)
+    <template x-if="editId === {{ comment.id }}">
+      @!comment.form({
+        commentTypeId: CommentTypes.POST,
+        rootParentId: comment.rootParentId,
+        levelIndex: comment.levelIndex,
+        record: comment,
+      })
+    </template>
+  @endcan
 @end

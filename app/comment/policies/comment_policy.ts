@@ -5,6 +5,10 @@ import { AuthorizerResponse } from '@adonisjs/bouncer/types'
 import States from '#core/enums/states'
 
 export default class CommentPolicy extends BasePolicy {
+  store(_user: User) {
+    return true
+  }
+
   reply(user: User, comment: Comment): AuthorizerResponse {
     if (comment.stateId === States.ARCHIVED) return false
     if (this.isAdmin(user)) return true

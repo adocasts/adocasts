@@ -2,67 +2,75 @@
 @let(record = $props.record)
 @let(levelIndex = $props.levelIndex ?? 0)
 @let(rootParentId = $props.rootParentId)
-@let(replyTo = $props.replyTo)
+@let(replyingTo = $props.replyingTo)
 @let(commentType = $props.commentType ?? CommentTypes.POST)
-@let(body = $props.body ?? '')
+@let(body = old('body', $props.body ?? record?.body ?? ''))
+@let(ability = 'CommentPolicy.store')
 
-@form({ loadable: true })
+@form({ loadable: true, class: $props.class })
 
-  <input type="hidden" name="{{ CommentTypeIdColumn[commentType] }}" value="{{ commentable.id }}">
   <input type="hidden" name="levelIndex" value="{{ levelIndex }}">
+
+  @if (commentable)
+    <input type="hidden" name="{{ CommentTypeIdColumn[commentType] }}" value="{{ commentable.id }}">
+  @endif
 
   @if (rootParentId)
     <input type="hidden" name="rootParentId" value="{{ rootParentId }}">
   @endif
 
-  @if (replyTo)
-    <input type="hidden" name="replyTo" value="{{ replyTo }}">
+  @if (replyingTo)
+    @assign(ability = 'CommentPolicy.reply')
+    <input type="hidden" name="replyTo" value="{{ replyingTo.id }}">
   @endif
 
-  @tiptap({ value: body, class: 'mb-6', wrapClass: 'comment-wrap' })
-    @slot('before')
-      <div class="comment-avatar">
-        <div class="avatar">
-          <div class="w-14 rounded">
-            @if (auth.user.avatar)
-            @!user.avatar({ user: auth.user, loading: 'lazy', alt: auth.user.handle })
-            @endif
+  @authorization.provider({ ability, resource: replyingTo })
+    @tiptap({ value: body, wrapClass: 'comment-wrap' })
+      @slot('before')
+        <div class="comment-avatar">
+          <div class="avatar">
+            <div class="w-14 rounded">
+              @!user.avatar({ user: auth.user, loading: 'lazy', alt: auth.user?.handle })
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="comment-info flex gap-1 items-baseline">
-        <span>{{ auth.user.handle }}</span>
-
-        @if (!auth.user.isFreeTier)
-          <span class="h-2.5 relative ml-1">
-            <img class="h-full" src="/imgs/plus-badge-100.png" alt="Adocasts Plus">
-          </span>
+        @if (auth.user)
+          <div class="comment-info flex gap-1 items-baseline text-sm">
+            <span>{{ auth.user.handle }}</span>
+          
+            @if (!auth.user.isFreeTier)
+              <span class="h-2.5 relative ml-1">
+                <img class="h-full" src="/imgs/plus-badge-100.png" alt="Adocasts Plus">
+              </span>
+            @endif
+          </div>
         @endif
-      </div>
-    @endslot
+      @endslot
 
-    @slot('after')
-      <div class="comment-actions flex gap-3">
-        <button type="submit" class="btn btn-primary" :disabled="sending">
-          <span x-show="sending">
-            @svg('svg-spinners:blocks-shuffle-3', { class: 'w-5 h-5 -ml-1 -my-1' })
-            Saving ...
-          </span>
-          <span x-show="!sending" class="flex gap-3 items-center">
-            @let(icon = replyTo ? 'solar:chat-square-arrow-bold-duotone' : 'solar:chat-square-call-bold-duotone')
-
-            @svg(icon, { class: 'w-5 h-5 -ml-1 -my-1' })
-            Share Comment
-          </span>
-        </button>
-
-        @if (replyTo || record)
-          <button type="cancel" class="btn btn-soft">
-            Cancel
-          </button>
+      @slot('after', props)
+        @if (props.allows)
+          <div class="comment-actions flex justify-end gap-3">
+            @if (replyingTo || record)
+              <button type="button" class="btn btn-soft" @click.prevent="cancel">
+                Cancel
+              </button>
+            @endif
+          
+            <button type="submit" class="btn btn-primary" :disabled="sending">
+              <span x-show="sending" x-cloak>
+                @svg('svg-spinners:blocks-shuffle-3', { class: 'w-5 h-5 -ml-1 -my-1' })
+                {{ record ? 'Updating' : 'Sharing' }} ...
+              </span>
+              <span x-show="!sending" class="flex gap-3 items-center">
+                @let(icon = replyingTo ? 'solar:chat-square-arrow-bold-duotone' : 'solar:chat-square-call-bold-duotone')
+                @svg(icon, { class: 'w-5 h-5 -ml-1 -my-1' })
+                {{ record ? 'Update' : 'Share' }} Comment
+              </span>
+            </button>
+          </div>
         @endif
-      </div>
-    @endslot
+      @endslot
+    @end
   @end
 @end

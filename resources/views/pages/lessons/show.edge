@@ -128,9 +128,8 @@
             </h3>
           </div>
 
-          @!comment.form({ commentable: lesson, commentTypeId: CommentTypes.POST })
-
-          @!comment.list({ comments: lesson.comments })
+          @!comment.form({ commentable: lesson, commentTypeId: CommentTypes.POST, class: 'mb-6' })
+          @!comment.list({ commentable: lesson, comments: lesson.comments })
         </div>
 
         @dump(lesson)

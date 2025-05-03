@@ -6,4 +6,6 @@
 
 @if (avatar)
   <img {{ $props.except(['user']).toAttrs() }} src="{{ avatar }}" />
+@else
+  @!user.avatar.placeholder()
 @endif

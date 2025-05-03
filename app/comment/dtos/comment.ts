@@ -10,6 +10,7 @@ export default class CommentDto extends BaseModelDto {
   declare id: number
   declare userId: number | null
   declare commentTypeId: number
+  declare commentableId: number | null
   declare replyTo: number | null
   declare name: string
   declare body: string
@@ -26,6 +27,7 @@ export default class CommentDto extends BaseModelDto {
     this.id = comment.id
     this.userId = comment.userId
     this.commentTypeId = comment.commentTypeId
+    this.commentableId = comment.commentableId
     this.replyTo = comment.replyTo
     this.name = comment.identity
     this.body = comment.body

@@ -1,49 +1,77 @@
 @let(name = $props.name ?? 'body')
 @let(value = $props.value ?? '')
+@let(allows = $context.allows ?? true)
 @let(editorProps = {
   value,
   isFreeTier: auth.user?.isFreeTier
 })
 
-<div x-data="editor({{ js.stringify(editorProps) }})">
-  <div class="bubble-menu bg-base-100 text-sm py-1 px-2 rounded-md">
-    <template x-if="typeof isInitialized === 'boolean'">
-      <div class="flex items-center space-x-2">
-        <button type="button" @click="command('h3')" :class="{ 'text-white': isActive('bold') }">
-          H3
-        </button>
-        <button type="button" @click="command('h4')" :class="{ 'text-white': isActive('bold') }">
-          H4
-        </button>
-        <button type="button" @click="command('bold')" :class="{ 'text-white': isActive('bold') }">
-          Bold
-        </button>
-        <button type="button" @click="command('italic')" :class="{ 'text-white': isActive('italic') }">
-          Italic
-        </button>
-        <button type="button" @click="command('strike')" :class="{ 'text-white': isActive('strike') }">
-          Strike
-        </button>
-        <button type="button" @click="command('link')" :class="{ 'text-white': isActive('link') }">
-          Link
-        </button>
-      </div>
-    </template>
+@if (allows)
+
+  <div x-data="editor({{ js.stringify(editorProps) }})">
+    <div class="bubble-menu bg-base-100 text-sm py-1 px-2 rounded-md">
+      <template x-if="typeof isInitialized === 'boolean'">
+        <div class="flex items-center space-x-2">
+          <button type="button" @click="command('h3')" :class="{ 'text-white': isActive('bold') }">
+            H3
+          </button>
+          <button type="button" @click="command('h4')" :class="{ 'text-white': isActive('bold') }">
+            H4
+          </button>
+          <button type="button" @click="command('bold')" :class="{ 'text-white': isActive('bold') }">
+            Bold
+          </button>
+          <button type="button" @click="command('italic')" :class="{ 'text-white': isActive('italic') }">
+            Italic
+          </button>
+          <button type="button" @click="command('strike')" :class="{ 'text-white': isActive('strike') }">
+            Strike
+          </button>
+          <button type="button" @click="command('link')" :class="{ 'text-white': isActive('link') }">
+            Link
+          </button>
+        </div>
+      </template>
+    </div>
+
+    <div 
+      class="{{ html.classNames(['flex-1 relative comment-form', $props.wrapClass]) }}" 
+      :class="[{ 'focused': isFocused }]">
+      @if ($slots.before)
+        {{{ await $slots.before({ allows }) }}}
+      @endif
+
+      <div x-ref="element" class="{{ html.classNames(['prose prose-comment', $props.class]) }}"></div>
+
+      @if ($slots.after)
+        {{{ await $slots.after({ allows }) }}}
+      @endif
+    </div>
+
+    <input type="hidden" name="{{ name }}" :value="content">
   </div>
 
-  <div 
-    class="{{ html.classNames(['flex-1 relative bg-base-200 rounded-[var(--radius-box)] comment-form', $props.wrapClass]) }}" 
-    :class="[{ 'focused': isFocused }]">
+@else
+
+  <div class="{{ html.classNames(['flex-1 relative comment-form', $props.wrapClass]) }}">
     @if ($slots.before)
-      {{{ await $slots.before() }}}
+      {{{ await $slots.before({ allows }) }}}
     @endif
-
-    <div x-ref="element" class="{{ html.classNames(['prose prose-comment', $props.class]) }}"></div>
-
+    
+    <div class="{{ html.classNames(['prose prose-comment', $props.class]) }}">
+      <div class="tiptap ProseMirror hover:bg-base-100 duration-200">
+        <div class="font-semibold text-lg">
+          <a href="{{ route('auth.signup') }}" class="link-grow no-underline" up-layer="new" up-mode="modal" up-size="grow">
+            Share your thoughts!
+          </a>
+        </div>
+        <div>Create a free account to join in on the discussion</div>
+      </div>
+    </div>
+    
     @if ($slots.after)
-      {{{ await $slots.after() }}}
+      {{{ await $slots.after({ allows }) }}}
     @endif
   </div>
 
-  <input type="hidden" name="{{ name }}" :value="content">
-</div>
+@endif

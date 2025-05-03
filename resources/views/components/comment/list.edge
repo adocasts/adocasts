@@ -1,19 +1,47 @@
+@let(commentable = $props.commentable)
 @let(parent = $props.parent)
 @let(levelIndex = $props.levelIndex ?? 0)
 @let(level = comments.filter((comment) => comment.replyTo == parent?.id))
 
-<ol class="{{ html.classNames(['list-none', { 'ml-3 lg:ml-6 relative': levelIndex === 1 }]) }}">
+<ol {{
+  html.attrs({
+    'x-data': levelIndex === 0 ? 'comments' : null,
+    class: ['list-none', { 'ml-3 lg:ml-6 relative': levelIndex === 1 }]
+  })
+}}>
   @if (levelIndex === 1)
     <div class="absolute -left-3 lg:-left-6 -top-10 rotate-180 w-1.5 h-[calc(100%_+_2.5rem)] bg-gradient-to-t from-base-200 to-base-200/0 rounded-full"></div>
+  @endif
+
+  @if ($slots.before)
+    {{{ await $slots.before() }}}
   @endif
 
   @each (comment in level)
     <li class="relative">
       @!comment.card({ comment, parent, levelIndex })
 
-      @if (comments.some((c) => c.replyTo === comment.id))
-        @!comment.list({ comments, parent: comment, levelIndex: levelIndex + 1 })
-      @endif
+      @comment.list({ commentable, comments, parent: comment, levelIndex: levelIndex + 1 })
+        @slot('before')
+          @can('CommentPolicy.reply', comment)
+            <template x-if="createId === {{ comment.id }}">
+              <li class="mb-6">
+                @!comment.form({ 
+                  commentTypeId: CommentTypes.POST,
+                  rootParentId: comment.rootParentId,
+                  replyingTo: comment,
+                  commentable, 
+                  levelIndex,
+                })
+              </li>
+            </template>
+          @endcan
+        @endslot
+      @end
     </li>
   @endeach
+
+  @if ($slots.after)
+    {{{ await $slots.after() }}}
+  @endif
 </ol>

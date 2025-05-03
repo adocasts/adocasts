@@ -117,6 +117,17 @@ export default class Comment extends BaseModel {
     return `/go/posts/${this.postId}/comment/${this.id}`
   }
 
+  get commentableId() {
+    switch (this.commentTypeId) {
+      case CommentTypes.POST:
+        return this.postId
+      case CommentTypes.DISCUSSION:
+        return this.discussionId
+      case CommentTypes.LESSON_REQUEST:
+        return this.lessonRequestId
+    }
+  }
+
   @beforeCreate()
   static async fillDefaults(comment: Comment) {
     if (!comment.rootParentId) {

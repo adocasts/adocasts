@@ -361,8 +361,24 @@ pre ul.filepath-list {
 }
 
 .comment-wrap {
+  &:has(.comment-info) .ProseMirror {
+    @apply pt-16;
+  }
+
+  &:has(.comment-avatar) .ProseMirror {
+    @apply pl-26;
+  }
+
+  &:has(.comment-actions) .ProseMirror {
+    @apply pb-26;
+  }
+
+  &:not(:has(.comment.info)):not(:has(.comment-actions)) .ProseMirror {
+    @apply min-h-26
+  }
+
   .ProseMirror {
-    @apply pl-26 pt-16 pb-26;
+    @apply p-6;
   }
 
   .comment-avatar {
@@ -374,6 +390,6 @@ pre ul.filepath-list {
   }
 
   .comment-actions {
-    @apply absolute left-26 bottom-6 z-10;
+    @apply absolute right-6 bottom-6 z-10;
   }
 }

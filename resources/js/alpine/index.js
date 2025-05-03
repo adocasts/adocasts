@@ -5,6 +5,7 @@ import './_series'
 import './_carousel'
 import './_starfield'
 import './_editor'
+import './_comment'
 
 window.Alpine = Alpine
 

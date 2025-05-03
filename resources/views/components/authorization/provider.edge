@@ -1,0 +1,10 @@
+@let(ability = $props.ability)
+@let(resource = $props.resource)
+
+@can(ability, resource)
+  @inject({ allows: true })
+@else
+  @inject({ allows: false })
+@endcan
+
+{{{ await $slots.main() }}}
