@@ -21,11 +21,20 @@ const RenderUserMenu = () => import('#user/actions/render_user_menu')
 const DestroySession = () => import('#auth/actions/destroy_session')
 const RenderSignUpPage = () => import('#auth/actions/render_signup_page')
 const StoreSessionSignIn = () => import('#auth/actions/store_session_signin')
+const ShowAsset = () => import('#asset/actions/show_asset')
+const StoreAsset = () => import('#asset/actions/store_asset')
+const StoreComment = () => import('#comment/actions/store_comment')
 import router from '@adonisjs/core/services/router'
+import { middleware } from './kernel.js'
 
 router.where('slug', router.matchers.slug())
 
 router.get('/', [RenderHome]).as('home')
+
+//* Assets
+router.get('/img/:userId/:filename', [ShowAsset]).as('assets.img.user')
+router.get('/img/*', [ShowAsset]).as('assets.img')
+router.post('/api/image/upload', [StoreAsset]).as('assets.img.store').use(middleware.auth())
 
 //* Auth
 router.get('/signin', [RenderSignInPage]).as('auth.signin')
@@ -33,7 +42,7 @@ router.get('/signup', [RenderSignUpPage]).as('auth.signup')
 router.post('/sessions', [StoreSessionSignIn]).as('auth.sessions.store')
 router.delete('/sessions', [DestroySession]).as('auth.sessions.destroy')
 
-//* User
+//* Users
 router.get('/users/menu', [RenderUserMenu]).as('users.menu')
 
 //* Series
@@ -52,3 +61,6 @@ router.get('/lessons/:slug', [RenderLessonShow]).as('lessons.show')
 //* Discussions
 router.get('/forum', [RenderDiscussionsIndex]).as('discussions.index')
 router.get('/forum/:slug', [RenderDiscussionsShow]).as('discussions.show')
+
+//* Comments
+router.post('/comments', [StoreComment]).as('comments.store')

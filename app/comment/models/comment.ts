@@ -1,12 +1,23 @@
 import CommentTypes from '#comment/enums/comment_types'
 import { commentValidator } from '#comment/validators/comment'
+import States from '#core/enums/states'
 import State from '#core/enums/states'
+import SanitizeService from '#core/services/sanitize_service'
 import TimeService from '#core/services/time_service'
 import Discussion from '#discussion/models/discussion'
 import LessonRequest from '#lesson_request/models/lesson_request'
 import Post from '#post/models/post'
 import User from '#user/models/user'
-import { BaseModel, belongsTo, column, computed, hasMany, manyToMany } from '@adonisjs/lucid/orm'
+import {
+  BaseModel,
+  beforeCreate,
+  beforeSave,
+  belongsTo,
+  column,
+  computed,
+  hasMany,
+  manyToMany,
+} from '@adonisjs/lucid/orm'
 import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { Infer } from '@vinejs/vine/types'
 import { DateTime } from 'luxon'
@@ -92,6 +103,33 @@ export default class Comment extends BaseModel {
 
   get timeago() {
     return TimeService.timeago(this.createdAt)
+  }
+
+  get goPath() {
+    if (this.lessonRequestId) {
+      return `/go/requests/lessons/${this.lessonRequestId}/comment/${this.id}`
+    }
+
+    if (this.discussionId) {
+      return `/go/discussions/${this.discussionId}/comment/${this.id}`
+    }
+
+    return `/go/posts/${this.postId}/comment/${this.id}`
+  }
+
+  @beforeCreate()
+  static async fillDefaults(comment: Comment) {
+    if (!comment.rootParentId) {
+      comment.rootParentId = comment.id
+    }
+
+    comment.commentTypeId = this.getTypeId(comment)
+    comment.stateId = States.PUBLIC
+  }
+
+  @beforeSave()
+  static async sanitize(comment: Comment) {
+    comment.body = SanitizeService.sanitize(comment.body)
   }
 
   static getTypeId(comment: Comment | Infer<typeof commentValidator>) {
