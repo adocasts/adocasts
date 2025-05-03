@@ -216,21 +216,51 @@ class HtmlParser {
             code = code.replace(filepath[0], '')
           }
 
-          const lines = code.split('\r\n')
+          if (code.startsWith('\n')) {
+            code = code.replace('\n', '')
+          }
+
+          // older tiptap version newlines
+          let lines = code.split('\r\n')
+
+          // newer tiptap version newlines
+          if (lines.length === 1) {
+            lines = code.split('\n')
+          }
+
           const delLineNumbers = lines
             .map((line, i) => (line.startsWith('--') ? i + 1 : undefined))
             .filter(Boolean)
           const addLineNumbers = lines
             .map((line, i) => (line.startsWith('++') ? i + 1 : undefined))
             .filter(Boolean)
-          const codeLessChange = code.replaceAll('\r\n--', '\r\n').replaceAll('\r\n++', '\r\n')
+          const codeLessChange = code
+            .replaceAll('--', '')
+            .replaceAll('++', '')
+
           let highlighted = highlighter.codeToHtml(codeLessChange, lang, shikiTheme, {
             lang,
-            lineOptions: [
-              ...delLineNumbers.map((x) => ({ line: x!, classes: ['del'] })),
-              ...addLineNumbers.map((x) => ({ line: x!, classes: ['add'] })),
-            ],
+            //! line options stopped working, desparately need to update shiki anyways
+            // lineOptions: [
+            //   ...delLineNumbers.map((x) => ({ line: x!, classes: ['del'] })),
+            //   ...addLineNumbers.map((x) => ({ line: x!, classes: ['add'] })),
+            // ],
           })
+
+          //! so lets just monkeypatch for now
+          let highlightedLines = highlighted.split('\n').map((line, index) => {
+            if (delLineNumbers.includes(index + 1)) {
+              line = line.replace('<span class="line">', '<span class="line del">')
+            }
+
+            if (addLineNumbers.includes(index + 1)) {
+              line = line.replace('<span class="line">', '<span class="line add">')
+            }
+
+            return line
+          })
+
+          highlighted = highlightedLines.join('\n')
 
           const copyCode = this.getCopyCode(code, lang)
           const copy = `<div class="code-copy">${await edge.render('components/clipboard/copy', {
