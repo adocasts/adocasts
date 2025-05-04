@@ -1,7 +1,9 @@
 import AssetDto from '#asset/dtos/asset'
 import Collection from '#collection/models/collection'
 import BaseBuilder from '#core/builders/base_builder'
+import Sorts from '#core/enums/sorts'
 import States from '#core/enums/states'
+import NotImplementedException from '#core/exceptions/not_implemented_exception'
 import PostTypes from '#post/enums/post_types'
 import Post from '#post/models/post'
 import Taxonomy from '#taxonomy/models/taxonomy'
@@ -159,6 +161,31 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
 
   withChapters() {
     this.query.preload('chapters', (query) => query.orderBy('sort_order'))
+    return this
+  }
+
+  orderBySort(sort?: Sorts) {
+    if (!sort) return this
+
+    this.query.clearOrder()
+
+    switch (sort) {
+      case Sorts.ALPHA:
+        this.orderBy('title', 'asc')
+        break
+      case Sorts.LATEST:
+        this.orderPublished()
+        break
+      case Sorts.LONGEST:
+        this.orderBy('videoSeconds', 'desc')
+        break
+      case Sorts.SHORTEST:
+        this.orderBy('videoSeconds', 'asc')
+        break
+      case Sorts.POPULAR:
+        throw new NotImplementedException(`PostBuilder.orderBySort has not yet implemented popular`)
+    }
+
     return this
   }
 

@@ -28,7 +28,7 @@
           <div class="font-semibold opacity-60 text-sm mb-3">Order by</div>
           @form.select({ name: 'sort', selected: filters?.sort })
             @!form.select.option({ value: Sorts.LATEST, text: 'Latest' })
-            @!form.select.option({ value: Sorts.POPULAR, text: 'Popular' })
+            {{-- @!form.select.option({ value: Sorts.POPULAR, text: 'Popular' }) --}}
             @!form.select.option({ value: Sorts.ALPHA, text: 'Alphabetical' })
             @!form.select.option({ value: Sorts.LONGEST, text: 'Longest duration' })
             @!form.select.option({ value: Sorts.SHORTEST, text: 'Shortest duration' })

@@ -17,6 +17,7 @@ export default class GetLessonsPaginated extends BaseAction<[Filters, string | u
       .search(pattern)
       .whereLesson()
       .whereHasTaxonomy(topic)
+      .orderBySort(sort)
       .paginate(page, perPage)
 
     if (routeIdentifier) {

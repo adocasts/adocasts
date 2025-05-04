@@ -71,7 +71,7 @@
           </article>
         @else
           <p class="opacity-60 xl:max-w-4xl">
-            {{ string.truncate(await parser.stripHtml(discussion.body), 240) }}
+            {{ string.excerpt(await parser.stripHtml(discussion.body), 240, { completeWords: true }) }}
           </p>
         @endif
       @endif
