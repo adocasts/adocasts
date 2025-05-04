@@ -121,19 +121,17 @@
           </article>
         @endif
 
-        <div class="mt-8 lg:mt-12 -mx-6">
+        <div class="mt-8 lg:mt-12 -mx-6" up-comments>
           <div class="p-6 bg-base-200 rounded-[var(--radius-box)] mb-6">
             <h3 class="heading-3 !mb-0">
               Join the Discussion
+              <span class="opacity-60 font-normal">({{ lesson.comments.length }} comments)</span>
             </h3>
           </div>
 
           @!comment.form({ commentable: lesson, commentTypeId: CommentTypes.POST, class: 'mb-6' })
           @!comment.list({ commentable: lesson, comments: lesson.comments })
         </div>
-
-        @dump(lesson)
-        @dump(series)
       </div>
 
     </div>

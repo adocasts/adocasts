@@ -1,4 +1,4 @@
-import { commentValidator } from '#comment/validators/comment'
+import { commentStoreValidator } from '#comment/validators/comment'
 import BaseAction from '#core/actions/base_action'
 import SendCommentNotification from '#notification/actions/send_comment_notification'
 import SendMentionNotification from '#notification/actions/send_mention_notification'
@@ -7,20 +7,19 @@ import { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import { Infer } from '@vinejs/vine/types'
 
-type Validator = Infer<typeof commentValidator>
+type Validator = Infer<typeof commentStoreValidator>
 
 export default class StoreComment extends BaseAction<[user: User, data: Validator]> {
-  validator = commentValidator
+  validator = commentStoreValidator
 
-  async asController({ request, response, session, auth }: HttpContext, data: Validator) {
-    const comment = await this.handle(auth.user!, data)
-    const referrer = request.header('referrer')
+  async asController({ response, session, auth, bouncer }: HttpContext, data: Validator) {
+    await bouncer.with('CommentPolicy').authorize('store')
+
+    await this.handle(auth.user!, data)
 
     session.flash('success', 'Thanks for your comment!')
 
-    return referrer
-      ? response.redirect(`${referrer}#comment${comment.id}`)
-      : response.redirect().back()
+    return response.redirect().back()
   }
 
   async handle(user: User, data: Validator) {

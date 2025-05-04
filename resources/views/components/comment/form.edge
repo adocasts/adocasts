@@ -6,8 +6,9 @@
 @let(commentType = $props.commentType ?? CommentTypes.POST)
 @let(body = old('body', $props.body ?? record?.body ?? ''))
 @let(ability = 'CommentPolicy.store')
+@let(action = record ? null : route('comments.store'))
 
-@form({ loadable: true, class: $props.class })
+@form({ action, loadable: true, class: $props.class, 'up-scroll': 'preserve' })
 
   <input type="hidden" name="levelIndex" value="{{ levelIndex }}">
 

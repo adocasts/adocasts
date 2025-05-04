@@ -26,6 +26,9 @@ const StoreAsset = () => import('#asset/actions/store_asset')
 const StoreComment = () => import('#comment/actions/store_comment')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const DestroyComment = () => import('#comment/actions/destroy_comment')
+const ToggleLikeComment = () => import('#comment/actions/toggle_like_comment')
+const UpdateComment = () => import('#comment/actions/update_comment')
 
 router.where('slug', router.matchers.slug())
 
@@ -64,3 +67,6 @@ router.get('/forum/:slug', [RenderDiscussionsShow]).as('discussions.show')
 
 //* Comments
 router.post('/comments', [StoreComment]).as('comments.store')
+router.put('/comments/:id', [UpdateComment]).as('comments.update')
+router.patch('/comments/:id/like', [ToggleLikeComment]).as('comments.like')
+router.delete('/comments/:id', [DestroyComment]).as('comments.destroy')

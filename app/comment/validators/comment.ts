@@ -1,6 +1,6 @@
 import vine from '@vinejs/vine'
 
-export const commentValidator = vine.compile(
+export const commentStoreValidator = vine.compile(
   vine.object({
     postId: vine.number().optional(),
     lessonRequestId: vine.number().optional(),
@@ -9,5 +9,11 @@ export const commentValidator = vine.compile(
     replyTo: vine.number().optional(),
     body: vine.string().trim(),
     levelIndex: vine.number().positive(),
+  })
+)
+
+export const commentUpdateValidator = vine.compile(
+  vine.object({
+    body: vine.string().trim(),
   })
 )

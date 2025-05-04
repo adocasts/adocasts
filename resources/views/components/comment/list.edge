@@ -9,15 +9,15 @@
     class: ['list-none', { 'ml-3 lg:ml-6 relative': levelIndex === 1 }]
   })
 }}>
-  @if (levelIndex === 1)
+  @if (levelIndex === 1 && level.length)
     <div class="absolute -left-3 lg:-left-6 -top-10 rotate-180 w-1.5 h-[calc(100%_+_2.5rem)] bg-gradient-to-t from-base-200 to-base-200/0 rounded-full"></div>
   @endif
 
   @if ($slots.before)
-    {{{ await $slots.before() }}}
+    {{{ await $slots.before({ level }) }}}
   @endif
 
-  @each (comment in level)
+  @each (comment in _.orderBy(level, (item) => item.userVotes.length, ['desc']))
     <li class="relative">
       @!comment.card({ comment, parent, levelIndex })
 
@@ -42,6 +42,6 @@
   @endeach
 
   @if ($slots.after)
-    {{{ await $slots.after() }}}
+    {{{ await $slots.after({ level }) }}}
   @endif
 </ol>

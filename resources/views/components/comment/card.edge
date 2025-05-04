@@ -25,9 +25,7 @@
       @profile.link({ user: comment.author, class: 'h-full' })
         <div class="avatar">
           <div class="w-14 rounded">
-            @if (comment.author?.avatar)
-              @!user.avatar({ user: comment.author, loading: 'lazy', alt: comment.author.handle })
-            @endif
+            @!user.avatar({ user: comment.author, loading: 'lazy', alt: comment.author?.handle ?? 'Anonymous user' })
           </div>
         </div>
       @end
@@ -47,6 +45,13 @@
               </span>
             @endif
           @end
+        @else
+          <div class="flex gap-1 items-baseline">
+            Anonymous
+            @if (comment.name)
+              <span class="opacity-60">({{ comment.name }})</span>
+            @endif
+          </div>
         @endif
 
         <span class="text-primary relative top-[0.175rem]">
@@ -67,10 +72,7 @@
       <div class="w-full mt-6">
         <div class="w-full flex items-end gap-4 justify-between text-sm">
           <div class="flex items-center gap-2">
-            <button class="btn btn-soft btn-sm">
-              @svg('solar:heart-angle-line-duotone', { class: 'w-4 h-4 -ml-1' })
-              0
-            </button>
+            @!frags.comment.like({ comment })
 
             <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100">
               @can('CommentPolicy.reply', comment)
@@ -86,9 +88,16 @@
               @endcan
 
               @can('CommentPolicy.delete', comment)
-                <button class="btn btn-soft btn-error btn-sm">
-                  Delete
-                </button>
+                @form({ 
+                  action: form.delete('comments.destroy', { id: comment.id }),
+                  'up-confirm': `Are you sure you'd like to delete your comment?`,
+                  'up-target': '[up-comments]',
+                  'up-scroll': 'preserve',
+                })
+                  <button type="submit" class="btn btn-soft btn-error btn-sm">
+                    Delete
+                  </button>
+                @end
               @endcan
             </div>
           </div>

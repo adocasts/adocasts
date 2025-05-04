@@ -2,10 +2,9 @@
   @if (typeof upSubmit !== 'undefined')
     up-submit="{{ !!upSubmit }}"
     up-layer="root"
-  @elseif (target)
-    up-submit
-    up-target="[{{ target }}]"
-    {{ target }}
+  @elseif (is.object(target))
+    @let(upTarget = Object.entries(target).map(([key, value]) => `${key}='${value}'`).join(', '))
+    {{ html.attrs({ 'up-submit': true, 'up-target': `[${upTarget}]`, ...target }) }}
   @endif
 
   @if (loadable)

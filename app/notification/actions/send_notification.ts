@@ -38,7 +38,7 @@ export default class SendNotification<T extends LucidModel> extends BaseAction<
       { client: data.trx }
     )
 
-    await notification.trySendEmail(data.notifyUserId, trx)
+    await notification.trySendEmail(data.notifyUserId, data.trx)
 
     return [data.notifyUserId]
   }

@@ -24,6 +24,10 @@ export default class CommentPolicy extends BasePolicy {
     return isOwner
   }
 
+  like(_user: User, _comment: Comment) {
+    return true
+  }
+
   delete(user: User, comment: Comment): AuthorizerResponse {
     if (comment.stateId === States.ARCHIVED) return false
     if (this.isAdmin(user)) return true

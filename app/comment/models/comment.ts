@@ -1,5 +1,5 @@
 import CommentTypes from '#comment/enums/comment_types'
-import { commentValidator } from '#comment/validators/comment'
+import { commentStoreValidator } from '#comment/validators/comment'
 import States from '#core/enums/states'
 import State from '#core/enums/states'
 import SanitizeService from '#core/services/sanitize_service'
@@ -128,6 +128,16 @@ export default class Comment extends BaseModel {
     }
   }
 
+  async archive() {
+    if (this.stateId === States.ARCHIVED) return
+
+    this.stateId = States.ARCHIVED
+    this.userId = null
+    this.body = '[deleted]'
+
+    await this.save()
+  }
+
   @beforeCreate()
   static async fillDefaults(comment: Comment) {
     if (!comment.rootParentId) {
@@ -143,7 +153,7 @@ export default class Comment extends BaseModel {
     comment.body = SanitizeService.sanitize(comment.body)
   }
 
-  static getTypeId(comment: Comment | Infer<typeof commentValidator>) {
+  static getTypeId(comment: Comment | Infer<typeof commentStoreValidator>) {
     if (comment.lessonRequestId) return CommentTypes.LESSON_REQUEST
     if (comment.discussionId) return CommentTypes.DISCUSSION
     return CommentTypes.POST

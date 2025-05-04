@@ -9,16 +9,21 @@ import SendNotification from './send_notification.js'
 import router from '@adonisjs/core/services/router'
 import NotImplementedException from '#core/exceptions/not_implemented_exception'
 import NotificationTypes from '#notification/enums/notification_types'
+import GetMentions from './get_mentions.js'
+import { InvalidArgumentsException } from '@adonisjs/core/exceptions'
+
+type Record = Comment | Discussion | LessonRequest
 
 export interface SendMentionNotificationInterface {
-  record: Comment | Discussion | LessonRequest
+  record: Record
   user: User
+  mentions?: string[]
   skipUserIds?: number[]
   trx?: TransactionClientContract
 }
 
 interface MentionNotificationInterface {
-  record: Comment | Discussion | LessonRequest
+  record: Record
   notifyUserId: number
   initiatingUserId: number
   title: string
@@ -28,36 +33,38 @@ interface MentionNotificationInterface {
 export default class SendMentionNotification extends BaseAction<
   [SendMentionNotificationInterface]
 > {
-  async handle({ record, user, skipUserIds, trx }: SendMentionNotificationInterface) {
-    if (!record.body.includes('data-type="mention"')) return
+  async handle({ record, user, mentions, skipUserIds, trx }: SendMentionNotificationInterface) {
+    return this.#manage(record, async () => {
+      const userIds: number[] = []
+      const usernames = mentions ?? GetMentions.run(record.body)
 
-    const usernames = this.#checkForMentions(record.body)
+      if (!usernames.length) return userIds
 
-    // silence if no mentions found or to many mentions are found
-    if (!usernames.length || usernames.length > 5) return
+      if (usernames.length > 3) {
+        throw new InvalidArgumentsException(
+          `To many users were mentioned. To help limit spam, we ask that you please keep to a maximum of 3 mentions. Thank you`
+        )
+      }
 
-    for (const username of usernames) {
-      const mentioned = await User.query().whereRaw('lower(username) = ?', [username]).first()
+      for (const username of usernames) {
+        const mentioned = await User.query().whereRaw('lower(username) = ?', [username]).first()
 
-      if (!mentioned) continue
-      if (skipUserIds?.includes(mentioned.id)) continue
+        if (!mentioned) continue
+        if (skipUserIds?.includes(mentioned.id)) continue
 
-      return this.#createNotification({
-        trx,
-        record,
-        notifyUserId: mentioned.id,
-        initiatingUserId: user.id,
-        title: `${user.handle} mentioned you in their comment`,
-      })
-    }
-  }
+        const ids = await this.#createNotification({
+          trx,
+          record,
+          notifyUserId: mentioned.id,
+          initiatingUserId: user.id,
+          title: `${user.handle} mentioned you in their comment`,
+        })
 
-  #checkForMentions(body: string) {
-    // get usernames from each data-id="id" where username can be alpha-numeric, dash, underscore, or period
-    const matches = body.matchAll(/data-id="([a-zA-Z0-9_.-]+)"/g)
+        userIds.push(...ids)
+      }
 
-    // get usernames from regex matches
-    return Array.from(matches).map((match) => match[1])
+      return userIds
+    })
   }
 
   async #createNotification(data: MentionNotificationInterface) {
@@ -95,12 +102,12 @@ export default class SendMentionNotification extends BaseAction<
     )
   }
 
-  async #manage(comment: Comment, callback: () => Promise<number[]>) {
+  async #manage(record: Record, callback: () => Promise<number[]>) {
     try {
       return callback()
     } catch (error) {
       await logger.error('Failed to create mention notification', {
-        comment: comment.serialize(),
+        record: record.serialize(),
         error,
       })
 

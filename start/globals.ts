@@ -12,9 +12,10 @@ import { icons as simpleIcons } from '@iconify-json/simple-icons'
 import { icons as solarIcons } from '@iconify-json/solar'
 import { icons as svgSpinners } from '@iconify-json/svg-spinners'
 import { addCollection, edgeIconify } from 'edge-iconify'
-import edge from 'edge.js'
 import { image as gravatar } from 'gravatar-gen'
 import { DateTime } from 'luxon'
+import edge from 'edge.js'
+import _ from 'lodash'
 
 addCollection(solarIcons)
 addCollection(simpleIcons)
@@ -31,6 +32,7 @@ edge.global('CommentTypeIdColumn', CommentTypeIdColumn)
 edge.global('StripeSubscriptionStatuses', StripeSubscriptionStatuses)
 
 // utilities
+edge.global('_', _)
 edge.global('string', stringHelpers)
 edge.global('DateTime', DateTime)
 edge.global('TimeService', TimeService)

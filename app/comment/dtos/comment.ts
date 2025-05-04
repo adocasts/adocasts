@@ -18,6 +18,7 @@ export default class CommentDto extends BaseModelDto {
   declare author: AuthorDto | null
   declare levelIndex: number
   declare createdAt: string
+  declare userVotes: number[]
 
   constructor(comment?: Comment) {
     super()
@@ -35,5 +36,6 @@ export default class CommentDto extends BaseModelDto {
     this.author = AuthorDto.fromModel(comment.user)
     this.levelIndex = comment.levelIndex
     this.createdAt = comment.createdAt?.toISO()!
+    this.userVotes = comment.userVotes?.map((vote) => vote.id) ?? []
   }
 }

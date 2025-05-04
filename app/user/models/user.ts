@@ -242,6 +242,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @manyToMany(() => Comment, {
     pivotTable: 'comment_votes',
+    pivotTimestamps: true,
   })
   declare commentVotes: ManyToMany<typeof Comment>
 
