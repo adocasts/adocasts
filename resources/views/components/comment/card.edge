@@ -1,7 +1,7 @@
 @let(sizes = new Map([
   ['sm', {
     title: 'text-base @xl:text-lg',
-    byline: 'text-sm',
+    byline: 'text-base',
   }],
   ['md', {
     title: 'text-xl @xl:text-2xl',
@@ -32,7 +32,7 @@
     </div>
 
     <div class="flex-1 -mb-2">
-      <div class="{{ html.classNames(['flex gap-x-3 items-baseline mb-3', size.byline]) }}">
+      <div class="{{ html.classNames(['flex gap-x-3 items-baseline mb-1.5', size.byline]) }}">
         @if (comment.author)
           @profile.link({ user: comment.author, class: ['flex gap-1', 'items-baseline'] })
             <span>

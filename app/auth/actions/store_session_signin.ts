@@ -1,6 +1,7 @@
 import AuthAttempt from '#auth/models/auth_attempt'
 import { signInValidator } from '#auth/validators/auth'
 import BaseAction from '#core/actions/base_action'
+import GetRouteReferrer from '#general/actions/get_route_referrer'
 import stripe from '#plan/services/stripe_service'
 import User from '#user/models/user'
 import { errors } from '@adonisjs/auth'
@@ -62,7 +63,9 @@ export default class StoreSessionSignIn extends BaseAction {
       case 'cms':
         return 'https://cms.adocasts.com'
       default:
-        return options.forward ?? '/'
+        const match = GetRouteReferrer.run(options.forward)
+        console.log({ match, options })
+        return match.referrer ?? '/'
     }
   }
 

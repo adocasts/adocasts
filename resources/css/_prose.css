@@ -362,7 +362,7 @@ pre ul.filepath-list {
 
 .comment-wrap {
   &:has(.comment-info) .ProseMirror {
-    @apply pt-16;
+    @apply pt-14;
   }
 
   &:has(.comment-avatar) .ProseMirror {

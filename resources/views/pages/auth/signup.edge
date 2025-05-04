@@ -1,6 +1,6 @@
 @let(action = request.input('action'))
 @let(plan = request.input('plan'))
-@let(referrer = request.header('referrer'))
+@let(forward = request.input('forward', request.header('referrer')))
 
 @layout()
 
@@ -9,7 +9,7 @@
     <h1 class="heading-2a !mb-0">Sign up</h1>
     <p class="opacity-60">
       Already have an account?
-      <a href="{{ route('auth.signin') }}" class="link">Sign in here</a>
+      <a href="{{ route('auth.signin', {}, { qs: { forward: encodeURI(forward) } }) }}" class="link">Sign in here</a>
     </p>
 
     @form({ 
@@ -20,7 +20,7 @@
     })
       <input type="hidden" name="options.action" value="{{ old('action', action ?? '') }}">
       <input type="hidden" name="options.plan" value="{{ plan ?? '' }}">
-      <input type="hidden" name="options.forward" value="{{ referrer ?? '' }}">
+      <input type="hidden" name="options.forward" value="{{ forward ?? '' }}">
 
       @error('E_INVALID_CREDENTIALS')
         <div class="text-error">

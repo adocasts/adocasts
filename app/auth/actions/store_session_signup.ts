@@ -1,5 +1,6 @@
 import { signUpValidator } from '#auth/validators/auth'
 import BaseAction from '#core/actions/base_action'
+import GetRouteReferrer from '#general/actions/get_route_referrer'
 import stripe from '#plan/services/stripe_service'
 import User from '#user/models/user'
 import { HttpContext } from '@adonisjs/core/http'
@@ -17,7 +18,7 @@ export default class StoreSessionSignUp extends BaseAction {
     await user.related('profile').create({})
     await auth.use('web').login(user, options.remember)
 
-    const redirect = await this.#getRedirectLocation(options)
+    const redirect = await this.#getRedirectLocation(session, options)
     const checkout = await this.#checkForPlan(user, options)
 
     if (checkout.bail) {
@@ -39,7 +40,8 @@ export default class StoreSessionSignUp extends BaseAction {
       case 'cms':
         return 'https://cms.adocasts.com'
       default:
-        return options.forward ?? '/'
+        const match = GetRouteReferrer.run(options.forward)
+        return match.referrer ?? '/'
     }
   }
 

@@ -32,7 +32,7 @@
         @!menu.link({ text: 'Taxonomies', href: 'https://cms.adocasts.com/taxonomies' })
       @endif
 
-      @form({ action: form.delete('auth.sessions.destroy') })
+      @form({ action: form.delete('auth.sessions.destroy'), 'up-target': 'root', 'up-layer': 'root' })
         @if (request.header('referrer'))
           <input type="hidden" name="forward" value="{{ request.header('referrer') }}" />
         @endif

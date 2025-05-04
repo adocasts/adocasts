@@ -37,7 +37,7 @@
         </div>
 
         @if (auth.user)
-          <div class="comment-info flex gap-1 items-baseline text-sm">
+          <div class="comment-info flex gap-1 items-baseline">
             <span>{{ auth.user.handle }}</span>
           
             @if (!auth.user.isFreeTier)
