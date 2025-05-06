@@ -4,7 +4,7 @@
     <div class="relative" x-intersect:enter="isHeaderVisible = true" x-intersect:leave="isHeaderVisible = false">
       <img class="absolute top-1/2 right-0 -translate-y-1/2 w-2/3 aspect-video object-cover object-center opacity-20 mask-gradient-to-bl z-[1]" src="/imgs/example-series-bg.png" alt="{{ series.name }}">
 
-      <div class="section-container mx-auto flex items-center xl:min-h-[350px]">
+      <div class="section-container mx-auto flex items-center xl:min-h-[350px] relative z-10">
         <div>
           <div class="flex gap-2 mb-6 lg:mb-8">
             @!difficulty({ item: series })
@@ -41,9 +41,11 @@
               Add to Watchist
             </button>
             
-            <a href="#" class="btn btn-soft btn-square">
-              @svg('simple-icons:github')
-            </a>
+            @if (series.repositoryUrl)
+              <a href="{{ series.repositoryUrl }}" target="_blank" class="btn btn-soft btn-square">
+                @svg('simple-icons:github')
+              </a>
+            @endif
           </div>
         </div>
       </div>
