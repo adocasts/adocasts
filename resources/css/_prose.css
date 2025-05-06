@@ -14,6 +14,12 @@
   color: var(--color-primary);
 }
 
+.prose {
+  & :where(code):not(pre > code) {
+    @apply bg-base-content/5 border-base-content/8;
+  }
+}
+
 .prose.no-max {
   max-width: 100%;
 }
@@ -339,7 +345,7 @@ pre ul.filepath-list {
   max-width: 100%;
 
   .ProseMirror {
-    @apply rounded-[var(--radius-box)] bg-base-200 border-none p-6 pb-20;
+    @apply bg-base-200 p-6 pb-20 border-none rounded-[var(--radius-box)];
     min-height: 200px;
   }
 }
@@ -382,14 +388,14 @@ pre ul.filepath-list {
   }
 
   .comment-avatar {
-    @apply absolute left-6 top-6 z-10;
+    @apply top-6 left-6 z-10 absolute;
   }
 
   .comment-info {
-    @apply absolute left-26 top-6 z-10;
+    @apply top-6 left-26 z-10 absolute;
   }
 
   .comment-actions {
-    @apply absolute right-6 bottom-6 z-10;
+    @apply right-6 bottom-6 z-10 absolute;
   }
 }

@@ -19,7 +19,7 @@
 
   @each (comment in _.orderBy(level, (item) => item.userVotes.length, ['desc']))
     <li class="relative">
-      @!comment.card({ comment, parent, levelIndex })
+      @!comment.card({ comment, parent, commentable, levelIndex })
 
       @comment.list({ commentable, comments, parent: comment, levelIndex: levelIndex + 1 })
         @slot('before')

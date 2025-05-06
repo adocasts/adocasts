@@ -25,7 +25,7 @@
     </div>
 
     @!discussion.card({ discussion, show: true })
-    @!comment.list({ comments: discussion.comments })
-
+    @!comment.list({ comments: discussion.comments, commentable: discussion })
+    @dump(discussion)
   @end
 @end

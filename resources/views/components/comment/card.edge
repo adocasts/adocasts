@@ -1,3 +1,4 @@
+@let(isOp = $props.commentable?.showOp && $props.commentable.authorId === comment.author?.id)
 @let(sizes = new Map([
   ['sm', {
     title: 'text-base @xl:text-lg',
@@ -34,7 +35,7 @@
     <div class="flex-1 -mb-2">
       <div class="{{ html.classNames(['flex gap-x-3 items-baseline mb-1.5', size.byline]) }}">
         @if (comment.author)
-          @profile.link({ user: comment.author, class: ['flex gap-1', 'items-baseline'] })
+          @profile.link({ user: comment.author, class: ['flex gap-1', 'items-center'] })
             <span>
               {{ comment.author.handle }} 
             </span>
@@ -43,6 +44,10 @@
               <span class="h-2.5 relative ml-1">
                 <img class="h-full" src="/imgs/plus-badge-100.png" alt="Adocasts Plus" />
               </span>
+            @endif
+
+            @if (isOp)
+              <div class="badge badge-xs badge-soft badge-secondary ml-1">OP</div>
             @endif
           @end
         @else

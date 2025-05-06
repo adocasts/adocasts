@@ -22,6 +22,12 @@ export default class DiscussionShowDto extends BaseModelDto {
   declare comments: CommentDto[]
   declare meta: Record<string, any>
 
+  showOp = true
+
+  get authorId() {
+    return this.author?.id
+  }
+
   constructor(discussion?: Discussion) {
     super()
 
