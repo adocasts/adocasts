@@ -30,7 +30,7 @@
 
         <div class="mb-3 md:mb-6">
           <div class="font-semibold opacity-60 text-sm mb-3">Filter by feed</div>
-          <ul x-data="{ feed: {{ feed }} }" class="menu w-full gap-1 p-0">
+          <ul x-data="{ feed: {{ js.stringify(feed) }} }" class="menu w-full gap-1 p-0">
             <li>
               <label :class="{ 'menu-active': !feed }">
                 @!form.filter.reset({ name: 'feed', label: 'All Discussions', class: 'sr-only', 'x-model': 'feed' })

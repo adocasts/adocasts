@@ -3,7 +3,7 @@
 @let(levelIndex = $props.levelIndex ?? 0)
 @let(rootParentId = $props.rootParentId)
 @let(replyingTo = $props.replyingTo)
-@let(commentType = $props.commentType ?? CommentTypes.POST)
+@let(commentTypeId = $props.commentTypeId ?? CommentTypes.POST)
 @let(body = old('body', $props.body ?? record?.body ?? ''))
 @let(ability = 'CommentPolicy.store')
 @let(action = record ? null : route('comments.store'))
@@ -11,9 +11,9 @@
 @form({ action, loadable: true, class: $props.class, 'up-scroll': 'preserve' })
 
   <input type="hidden" name="levelIndex" value="{{ levelIndex }}">
-
+  
   @if (commentable)
-    <input type="hidden" name="{{ CommentTypeIdColumn[commentType] }}" value="{{ commentable.id }}">
+    <input type="hidden" name="{{ CommentTypeIdColumn[commentTypeId] }}" value="{{ commentable.id }}">
   @endif
 
   @if (rootParentId)

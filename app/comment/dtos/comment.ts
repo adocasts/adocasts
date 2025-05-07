@@ -30,7 +30,7 @@ export default class CommentDto extends BaseModelDto {
     this.commentTypeId = comment.commentTypeId
     this.commentableId = comment.commentableId
     this.replyTo = comment.replyTo
-    this.name = comment.identity
+    this.name = comment.name
     this.body = comment.body
     this.stateId = comment.stateId
     this.author = AuthorDto.fromModel(comment.user)

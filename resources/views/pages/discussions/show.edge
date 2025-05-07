@@ -11,21 +11,45 @@
         Back
       </a>
 
-      <div class="flex items-center gap-3">
-        <button type="button" class="btn btn-soft btn-sm">
-          @svg('solar:reply-bold')
-          Reply
-        </button>
+      <div x-data class="flex items-center gap-3">
+        @if (auth.user)
+          <button 
+            type="button" 
+            class="btn btn-soft btn-sm" 
+            @click.prevent="() => {
+              const el = document.querySelector('.ProseMirror')
+              el?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+              setTimeout(() => el?.focus(), 300)
+            }">
+            @svg('solar:reply-bold')
+            Reply
+          </button>
+        @else
+          <a href="{{ route('auth.signup') }}" class="btn btn-soft btn-sm" up-layer="new" up-mode="modal" up-size="grow">
+            @svg('solar:reply-bold')
+            Reply
+          </button>
+        @endif
 
-        <button type="button" class="btn btn-soft btn-sm">
-          @svg('solar:bell-linear')
-          Subscribe
-        </button>
+        @if (auth.user)
+          <button type="button" class="btn btn-soft btn-sm">
+            @svg('solar:bell-linear')
+            Subscribe
+          </button>
+        @else
+          <a href="{{ route('auth.signup') }}" class="btn btn-soft btn-sm" up-layer="new" up-mode="modal" up-size="grow">
+            @svg('solar:bell-linear')
+            Subscribe
+          </a>
+        @endif
       </div>
     </div>
 
     @!discussion.card({ discussion, show: true })
-    @!comment.list({ comments: discussion.comments, commentable: discussion })
-    @dump(discussion)
+    
+    <div up-comments>
+      @!comment.form({ commentable: discussion, commentTypeId: CommentTypes.DISCUSSION, class: 'mb-6' })
+      @!comment.list({ commentable: discussion, comments: discussion.comments })
+    </div>
   @end
 @end

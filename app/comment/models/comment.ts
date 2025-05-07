@@ -1,7 +1,6 @@
 import CommentTypes from '#comment/enums/comment_types'
 import { commentStoreValidator } from '#comment/validators/comment'
-import States from '#core/enums/states'
-import State from '#core/enums/states'
+import { default as State, default as States } from '#core/enums/states'
 import SanitizeService from '#core/services/sanitize_service'
 import TimeService from '#core/services/time_service'
 import Discussion from '#discussion/models/discussion'
@@ -61,7 +60,7 @@ export default class Comment extends BaseModel {
   bodyDisplay: string = ''
 
   @column({ serializeAs: null })
-  declare identity: string
+  declare identity: string | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
