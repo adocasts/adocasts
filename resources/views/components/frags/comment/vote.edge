@@ -1,10 +1,10 @@
 @let(hasLiked = comment.userVotes.includes(auth.user?.id))
 @let(likeIcon = hasLiked ? 'solar:heart-angle-bold' : 'solar:heart-angle-line-duotone')
 
-@can('CommentPolicy.like')
+@can('CommentPolicy.vote')
 
   @form({
-    action: form.patch('comments.like', { id: comment.id }),
+    action: form.patch('comments.vote', { id: comment.id }),
     target: { 'up-comment-like': comment.id },
   })
     <button {{ html.attrs({ type: 'submit', class: ['btn btn-soft btn-sm', { 'btn-primary' : hasLiked }] }) }}>

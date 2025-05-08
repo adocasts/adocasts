@@ -4,17 +4,17 @@ import BaseAction from '#core/actions/base_action'
 import User from '#user/models/user'
 import { HttpContext } from '@adonisjs/http-server'
 
-export default class ToggleLikeComment extends BaseAction<[User, number]> {
+export default class ToggleCommentVote extends BaseAction<[User, number]> {
   async asController({ view, params, auth, bouncer }: HttpContext) {
     const comment = await Comment.findOrFail(params.id)
 
-    await bouncer.with('CommentPolicy').authorize('like', comment)
+    await bouncer.with('CommentPolicy').authorize('vote')
 
     await this.handle(auth.user!, params.id)
 
     await comment.load('userVotes', (query) => query.select('id'))
 
-    return view.render('components/frags/comment/like', {
+    return view.render('components/frags/comment/vote', {
       comment: CommentDto.fromModel(comment),
     })
   }

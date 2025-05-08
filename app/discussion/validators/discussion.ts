@@ -31,3 +31,11 @@ export const discussionCreateValidator = vine.compile(
     taxonomyId: vine.number().positive().exists({ table: 'taxonomies', column: 'id' }).optional(),
   })
 )
+
+export const discussionVoteValidator = vine.compile(
+  vine.object({
+    params: vine.object({
+      id: vine.number().exists({ table: 'discussions', column: 'id' }),
+    }),
+  })
+)

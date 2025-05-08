@@ -1,8 +1,8 @@
-import User from '#user/models/user'
 import Comment from '#comment/models/comment'
-import BasePolicy from '#core/policies/base_policy'
-import { AuthorizerResponse } from '@adonisjs/bouncer/types'
 import States from '#core/enums/states'
+import BasePolicy from '#core/policies/base_policy'
+import User from '#user/models/user'
+import { AuthorizerResponse } from '@adonisjs/bouncer/types'
 
 export default class CommentPolicy extends BasePolicy {
   store(_user: User) {
@@ -24,7 +24,7 @@ export default class CommentPolicy extends BasePolicy {
     return isOwner
   }
 
-  like(_user: User, _comment: Comment) {
+  vote(_user: User) {
     return true
   }
 

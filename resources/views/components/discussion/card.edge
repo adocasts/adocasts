@@ -101,7 +101,7 @@
             </a>
           @end
 
-          {{-- @!discussion.vote({ item }) --}}
+          @!frags.discussion.vote({ discussion })
 
           {{-- @tooltip({ text: `${impressionCount.toLocaleString()} ${string.pluralize('Views', impressionCount)}`, position: 'bottom' })
             <div class="badge">
@@ -111,16 +111,19 @@
           @end --}}
 
           @tooltip({ text: `${viewCount.toLocaleString()} ${string.pluralize('Views', viewCount)}`, position: 'bottom' })
-          <div class="badge">
-            @svg('solar:eye-bold-duotone', { class: '-ml-1 -my-0.5' })
-            {{ viewCount.toLocaleString() }}
-          </div>
+            <div class="badge">
+              @svg('solar:eye-bold-duotone', { class: '-ml-1 -my-0.5' })
+              {{ viewCount.toLocaleString() }}
+            </div>
           @end
         </div>
 
         @if (discussion.topic)
           <div>
-            <a href="{{ route('discussions.index', {}, { qs: { topic: discussion.topic.slug }}) }}" class="btn btn-soft btn-xs">
+            <a {{ html.attrs({ 
+              href: route('discussions.index', {}, { qs: { topic: discussion.topic.slug }}),
+              class: ['btn btn-soft', { 'btn-xs': !show, 'btn-sm': show }]
+            }) }}>
               {{ discussion.topic.name }}
             </a>
           </div>

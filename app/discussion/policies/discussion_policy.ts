@@ -1,8 +1,8 @@
-import User from '#user/models/user'
-import Discussion from '#discussion/models/discussion'
-import BasePolicy from '#core/policies/base_policy'
-import { AuthorizerResponse } from '@adonisjs/bouncer/types'
 import States from '#core/enums/states'
+import BasePolicy from '#core/policies/base_policy'
+import Discussion from '#discussion/models/discussion'
+import User from '#user/models/user'
+import { AuthorizerResponse } from '@adonisjs/bouncer/types'
 
 export default class DiscussionPolicy extends BasePolicy {
   before(user: User) {

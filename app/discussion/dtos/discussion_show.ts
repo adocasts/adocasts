@@ -3,7 +3,6 @@ import BaseModelDto from '#core/dtos/base_model_dto'
 import Discussion from '#discussion/models/discussion'
 import TopicDto from '#taxonomy/dtos/topic'
 import AuthorDto from '#user/dtos/author'
-import DiscussionVoteDto from './discussion_vote.js'
 
 export default class DiscussionShowDto extends BaseModelDto {
   static model() {
@@ -17,9 +16,9 @@ export default class DiscussionShowDto extends BaseModelDto {
   declare createdAt: string
   declare updatedAt: string
   declare topic: TopicDto | null
-  declare votes: DiscussionVoteDto[]
   declare author: AuthorDto | null
   declare comments: CommentDto[]
+  declare userVotes: number[]
   declare meta: Record<string, any>
 
   showOp = true
@@ -39,10 +38,10 @@ export default class DiscussionShowDto extends BaseModelDto {
     this.body = discussion.body
     this.createdAt = discussion.createdAt?.toISO()!
     this.updatedAt = discussion.updatedAt?.toISO()!
+    this.userVotes = discussion.votes?.map((vote) => vote.userId) ?? []
     this.meta = discussion.$extras
 
     this.topic = TopicDto.fromModel(discussion.taxonomy)
-    this.votes = DiscussionVoteDto.fromArray(discussion.votes)
     this.author = AuthorDto.fromModel(discussion.user)
     this.comments = CommentDto.fromArray(discussion.comments)
   }

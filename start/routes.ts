@@ -24,12 +24,14 @@ const StoreSessionSignIn = () => import('#auth/actions/store_session_signin')
 const ShowAsset = () => import('#asset/actions/show_asset')
 const StoreAsset = () => import('#asset/actions/store_asset')
 const StoreComment = () => import('#comment/actions/store_comment')
+const ToggleCommentVote = () => import('#comment/actions/toggle_comment_vote')
+const ToggleDiscussionVote = () => import('#discussion/actions/toggle_discussion_vote')
+const DestroyComment = () => import('#comment/actions/destroy_comment')
+const UpdateComment = () => import('#comment/actions/update_comment')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
-const DestroyComment = () => import('#comment/actions/destroy_comment')
-const ToggleLikeComment = () => import('#comment/actions/toggle_like_comment')
-const UpdateComment = () => import('#comment/actions/update_comment')
 
+router.where('id', router.matchers.number())
 router.where('slug', router.matchers.slug())
 
 router.get('/', [RenderHome]).as('home')
@@ -64,9 +66,10 @@ router.get('/lessons/:slug', [RenderLessonShow]).as('lessons.show')
 //* Discussions
 router.get('/forum', [RenderDiscussionsIndex]).as('discussions.index')
 router.get('/forum/:slug', [RenderDiscussionsShow]).as('discussions.show')
+router.patch('/forum/:id/vote', [ToggleDiscussionVote]).as('discussions.vote')
 
 //* Comments
 router.post('/comments', [StoreComment]).as('comments.store')
 router.put('/comments/:id', [UpdateComment]).as('comments.update')
-router.patch('/comments/:id/like', [ToggleLikeComment]).as('comments.like')
+router.patch('/comments/:id/vote', [ToggleCommentVote]).as('comments.vote')
 router.delete('/comments/:id', [DestroyComment]).as('comments.destroy')

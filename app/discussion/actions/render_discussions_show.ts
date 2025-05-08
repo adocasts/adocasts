@@ -1,9 +1,9 @@
 import BaseAction from '#core/actions/base_action'
+import DiscussionViewTypes from '#discussion/enums/discussion_view_types'
 import GetTopicsFilter from '#taxonomy/actions/get_topics_filter'
 import { HttpContext } from '@adonisjs/http-server'
 import GetDiscussion from './get_discussion.js'
 import StoreDiscussionView from './store_discussion_view.js'
-import DiscussionViewTypes from '#discussion/enums/discussion_view_types'
 
 export default class RenderDiscussionsShow extends BaseAction {
   async asController({ view, params, request, auth }: HttpContext) {
