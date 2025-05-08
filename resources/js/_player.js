@@ -359,12 +359,26 @@ class VideoPlayer {
     }
 
     player.addEventListener('hls-error', (event) => {
-      console.debug({ hlsError: event })
+      console.error({ hlsError: event })
 
       const error = event.detail
       const status = error.response.code
       const text = error.response.text
       const message = error.error.message
+
+      HyperDX.addAction('R2 HLS Error', {
+        authorizationV,
+        authorizationKey,
+        authorizationExp,
+        userId,
+        error: JSON.stringify(error),
+        videoId: this.videoId,
+      });
+
+      // might be network hiccup
+      if (message?.toLowerCase() === 'http error 0') {
+        return
+      }
 
       onError(status, text, message)
     })

@@ -80,6 +80,7 @@
     "@adonisjs/vite": "^3.0.0",
     "@alpinejs/intersect": "^3.14.3",
     "@google-cloud/storage": "^7.14.0",
+    "@hyperdx/browser": "^0.21.2",
     "@iconify-json/ph": "^1.2.1",
     "@iconify-json/simple-icons": "^1.2.10",
     "@iconify-json/svg-spinners": "^1.2.1",

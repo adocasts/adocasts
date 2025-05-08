@@ -4,12 +4,22 @@ import Cookies from 'js-cookie'
 import { DateTime } from 'luxon'
 // import posthog from 'posthog-js'
 import './_player'
+import HyperDX from '@hyperdx/browser';
+ 
+HyperDX.init({
+  apiKey: 'ccf58ca0-80fd-415a-840e-db52e041c349',
+  service: 'adocasts-client-side',
+  tracePropagationTargets: [/adocasts.com/i, /vid.adocasts.com/i], // Set to link traces from frontend to backend requests
+  consoleCapture: false, // Capture console logs (default false)
+  advancedNetworkCapture: false, // Capture full HTTP request/response headers and bodies (default false)
+});
 
 Cookies.set('timezone', DateTime.now().zoneName)
 
 const INPUT_TAGS = ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON']
 
 window.axios = axios
+window.HyperDX = HyperDX
 // window.posthog = posthog
 
 window.onfocus = async function () {
