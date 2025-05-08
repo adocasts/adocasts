@@ -1,5 +1,5 @@
 import { HttpContext } from '@adonisjs/core/http'
-import TurnstileService from '#core/services/turnstile_service'
+import TurnstileService from '#services/turnstile_service'
 
 declare module '@adonisjs/core/http' {
   interface HttpContext {

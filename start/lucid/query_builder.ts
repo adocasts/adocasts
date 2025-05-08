@@ -1,4 +1,4 @@
-import BaseModelDto, { StaticModelDto } from '#core/dtos/base_model_dto'
+import BaseModelDto, { StaticModelDto } from '#dtos/base_model_dto'
 import { ModelQueryBuilder } from '@adonisjs/lucid/orm'
 import { LucidRow } from '@adonisjs/lucid/types/model'
 
