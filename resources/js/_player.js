@@ -362,9 +362,9 @@ class VideoPlayer {
       console.error({ hlsError: event })
 
       const error = event.detail
-      const status = error.response.code
-      const text = error.response.text
-      const message = error.error.message
+      const status = error.response?.code
+      const text = error.response?.text
+      const message = error.error?.message
 
       HyperDX.addAction('R2 HLS Error', {
         authorizationV,
