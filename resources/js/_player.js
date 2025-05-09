@@ -376,11 +376,11 @@ class VideoPlayer {
       });
 
       // might be network hiccup
-      if (message?.toLowerCase() === 'http error 0') {
-        return
-      }
+      // if (message?.toLowerCase() === 'http error 0') {
+      //   return
+      // }
 
-      onError(status, text, message)
+      // onError(status, text, message)
     })
 
     player.addEventListener('error', (event) => {
