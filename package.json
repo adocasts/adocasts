@@ -97,7 +97,7 @@
     "gravatar-gen": "^1.0.2",
     "lodash": "^4.17.21",
     "luxon": "^3.6.1",
-    "mono-jsx": "^0.3.2",
+    "mono-jsx": "^0.4.0",
     "node-html-parser": "^7.0.1",
     "pg": "^8.15.6",
     "reading-time": "^1.5.0",
