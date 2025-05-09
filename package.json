@@ -145,7 +145,7 @@
     "ua-parser-js": "^1.0.39",
     "unique-names-generator": "^4.7.1",
     "unpoly": "^3.9.3",
-    "vidstack": "^1.12.12"
+    "vidstack": "^1.12.13"
   },
   "eslintConfig": {
     "extends": "@adonisjs/eslint-config/app"
