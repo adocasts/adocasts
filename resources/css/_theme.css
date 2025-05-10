@@ -104,7 +104,7 @@
   /* Darker error content */
 
   /* Custom Radius and Border */
-  --radius-selector: .25rem;
+  --radius-selector: .5rem;
   --radius-field: 0.5rem;
   --radius-box: 1rem;
   --size-selector: 0.25rem;

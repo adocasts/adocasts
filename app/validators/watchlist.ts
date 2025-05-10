@@ -10,3 +10,11 @@ export const watchlistValidator = vine.compile(
     target: vine.string().optional(),
   })
 )
+
+export const watchlistCollectionValidator = vine.compile(
+  vine.object({
+    params: vine.object({
+      slug: vine.string().exists({ table: 'collections', column: 'slug' }),
+    }),
+  })
+)

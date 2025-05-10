@@ -33,7 +33,7 @@
       @endif
     </div>
 
-    <div class="flex-1 -mb-2">
+    <div class="flex-1">
       @if (!show)
         <h2 class="card-title font-bold text-base-title {{ size.title }}">
           <a href="{{ route('discussions.show', { slug: discussion.slug }) }}" class="link-grow">
@@ -94,35 +94,34 @@
             @endif
           </div>
 
-          @tooltip({ text: `${commentCount.toLocaleString()} ${string.pluralize('Reply', commentCount)}`, position: 'bottom' })
-            <a href="#comments" class="badge">
-              @svg('solar:chat-round-call-bold-duotone', { class: '-ml-1 -my-0.5' })
-              {{ commentCount.toLocaleString() }}
-            </a>
-          @end
+          @if (!show)
+            @tooltip({ text: `${commentCount.toLocaleString()} ${string.pluralize('Reply', commentCount)}`, position: 'bottom' })
+              <a href="#comments" class="badge badge-soft badge-lg">
+                @svg('solar:chat-round-call-bold-duotone', { class: '-ml-1 -my-0.5 w-4 h-4' })
+                {{ commentCount.toLocaleString() }}
+              </a>
+            @end
+          @endif
 
-          @!frags.discussion.vote({ discussion })
+          @if (!show)
+            @tooltip({ text: `${viewCount.toLocaleString()} ${string.pluralize('Views', viewCount)}`, position: 'bottom' })
+              <div class="badge badge-soft badge-lg">
+                @svg('solar:eye-bold-duotone', { class: '-ml-1 -my-0.5 w-4 h-4' })
+                {{ viewCount.toLocaleString() }}
+              </div>
+            @end
+          @endif
 
-          {{-- @tooltip({ text: `${impressionCount.toLocaleString()} ${string.pluralize('Views', impressionCount)}`, position: 'bottom' })
-            <div class="badge">
-              @svg('solar:eye-bold-duotone', { class: '-ml-1 -my-0.5' })
-              {{ impressionCount.toLocaleString() }}
-            </div>
-          @end --}}
-
-          @tooltip({ text: `${viewCount.toLocaleString()} ${string.pluralize('Views', viewCount)}`, position: 'bottom' })
-            <div class="badge">
-              @svg('solar:eye-bold-duotone', { class: '-ml-1 -my-0.5' })
-              {{ viewCount.toLocaleString() }}
-            </div>
-          @end
+          @if (show)
+            @!frags.discussion.vote({ discussion })
+          @endif
         </div>
 
         @if (discussion.topic)
           <div>
             <a {{ html.attrs({ 
               href: route('discussions.index', {}, { qs: { topic: discussion.topic.slug }}),
-              class: ['btn btn-soft', { 'btn-xs': !show, 'btn-sm': show }]
+              class: ['btn btn-soft btn-sm']
             }) }}>
               {{ discussion.topic.name }}
             </a>

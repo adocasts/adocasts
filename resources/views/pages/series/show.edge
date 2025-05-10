@@ -36,10 +36,11 @@
               Start Series
             </a>
         
-            <button type="button" class="btn btn-soft btn-wide">
-              @svg('solar:bookmark-bold')
-              Add to Watchist
-            </button>
+            @!frags.series.watchlistToggle({ 
+              id: 'series-watchlist-foot',
+              target: 'series-watchlist-head,series-watchlist-foot',
+              series 
+            })
             
             @if (series.repositoryUrl)
               <a href="{{ series.repositoryUrl }}" target="_blank" class="btn btn-soft btn-square">
@@ -105,6 +106,25 @@
             @!post.cardSeries({ post })
           @endeach
         </div>
+
+        @if (series.statusId === Status.IN_PROGRESS)
+          <div class="bg-base-200 py-4 px-12 rounded-[var(--radius-box)] flex items-center gap-6">
+            <div>
+              <img class="w-32" src="/imgs/robot/slice6.svg" alt="excited robot" />
+            </div>
+            <div class="flex flex-col">
+              <h4 class="font-black uppercase tracking-wider text-sm">More in the works!</h4>
+              <p class="text-sm text-slate-600">Add to your watchlist to get notified when new lessons are added</p>
+              <div class="mt-2 max-w-fit">
+                @!frags.series.watchlistToggle({ 
+                  id: 'series-watchlist-foot',
+                  target: 'series-watchlist-head,series-watchlist-foot',
+                  series
+                })
+              </div>
+            </div>
+          </div>
+        @endif
       </main>
 
       <aside class="@container hidden lg:block w-[36%] sticky top-20">

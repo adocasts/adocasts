@@ -39,4 +39,16 @@ export default class Watchlist extends BaseModel {
 
   @belongsTo(() => Taxonomy)
   declare taxonomy: BelongsTo<typeof Taxonomy>
+
+  static async forCollection(userId: number | undefined, collectionId: number) {
+    if (!userId) return false
+    const result = await this.query().where({ userId, collectionId }).select('id').first()
+    return !!result
+  }
+
+  static async forPost(userId: number | undefined, postId: number) {
+    if (!userId) return false
+    const result = await this.query().where({ userId, postId }).select('id').first()
+    return !!result
+  }
 }

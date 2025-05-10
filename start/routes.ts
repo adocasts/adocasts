@@ -30,6 +30,7 @@ const RenderDiscussionsShow = () => import('#actions/discussions/render_discussi
 const ToggleDiscussionVote = () => import('#actions/discussions/toggle_discussion_vote')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const ToggleSeriesWatchlist = () => import('#actions/collections/toggle_series_watchlist')
 
 router.where('id', router.matchers.number())
 router.where('slug', router.matchers.slug())
@@ -53,6 +54,7 @@ router.get('/users/menu', [RenderUserMenu]).as('users.menu')
 //* Series
 router.get('/series', [RenderSeriesIndex]).as('series.index')
 router.get('/series/:slug', [RenderSeriesShow]).as('series.show')
+router.patch('/series/:slug/watchlist', [ToggleSeriesWatchlist]).as('series.watchlist')
 router.get('/series/:series/lessons/:slug', [RenderLessonShow]).as('series.lessons.show')
 
 //* Topics

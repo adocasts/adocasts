@@ -1,5 +1,5 @@
 import GetSeriesList, { DbOptions } from './get_series_list.js'
-import SeriesListDto from '#enums/series_list'
+import SeriesListDto from '#dtos/series_list'
 import BaseAction from '#actions/base_action'
 
 interface CacheOptions {

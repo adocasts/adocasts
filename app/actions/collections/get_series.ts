@@ -1,12 +1,16 @@
-import { SeriesShowDto } from '#enums/series_show'
+import { SeriesShowDto } from '#dtos/series_show'
 import Collection from '#models/collection'
 import SeriesLessonDto from '../../dtos/series_lesson.js'
 import TopicDto from '../../dtos/topic.js'
 import BaseAction from '#actions/base_action'
+import Watchlist from '#models/watchlist'
 
-export default class GetSeries extends BaseAction<[string]> {
-  async handle(slug: string) {
+export default class GetSeries extends BaseAction<[number | string, number | undefined]> {
+  async handle(slug: string, userId?: number) {
     const series = await this.fromDb(slug)
+    const isInWatchlist = await Watchlist.forCollection(userId, series.id)
+
+    series.meta.isInWatchlist = isInWatchlist
 
     // TODO: cache
 

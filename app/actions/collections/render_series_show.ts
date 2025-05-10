@@ -3,8 +3,8 @@ import { HttpContext } from '@adonisjs/core/http'
 import GetSeries from './get_series.js'
 
 export default class RenderSeriesShow extends BaseAction {
-  async asController({ view, params }: HttpContext) {
-    const series = await GetSeries.run(params.slug)
+  async asController({ view, params, auth }: HttpContext) {
+    const series = await GetSeries.run(params.slug, auth.user?.id)
 
     return view.render('pages/series/show', { series })
   }

@@ -1,8 +1,8 @@
-import AssetDto from '../dtos/asset.js'
-import TopicDto from '../dtos/topic.js'
+import AssetDto from './asset.js'
+import TopicDto from './topic.js'
 import Collection from '#models/collection'
 import BaseModelDto from '#dtos/base_model_dto'
-import SeriesLessonDto from '../dtos/series_lesson.js'
+import SeriesLessonDto from './series_lesson.js'
 
 export default class SeriesListDto extends BaseModelDto {
   static model() {

@@ -1,4 +1,4 @@
-import ModuleDto from '#enums/module'
+import ModuleDto from '#dtos/module'
 import CollectionTypes from '#enums/collection_types'
 import Collection from '#models/collection'
 import BaseBuilder from '#builders/base_builder'

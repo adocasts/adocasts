@@ -1,4 +1,4 @@
-import SeriesListDto from '#enums/series_list'
+import SeriesListDto from '#dtos/series_list'
 import Collection from '#models/collection'
 import { seriesIndexValidator } from '#validators/series'
 import Sorts from '#enums/sorts'

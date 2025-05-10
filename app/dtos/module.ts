@@ -1,6 +1,6 @@
 import Collection from '#models/collection'
 import BaseModelDto from '#dtos/base_model_dto'
-import SeriesLessonDto from '../dtos/series_lesson.js'
+import SeriesLessonDto from './series_lesson.js'
 
 export default class ModuleDto extends BaseModelDto {
   static selectExtras = ['sortOrder']

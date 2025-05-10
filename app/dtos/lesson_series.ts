@@ -1,4 +1,4 @@
-import AssetDto from '../dtos/asset.js'
+import AssetDto from './asset.js'
 import Collection from '#models/collection'
 import BaseModelDto from '#dtos/base_model_dto'
 

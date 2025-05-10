@@ -1,5 +1,5 @@
 import AssetDto from './asset.js'
-import LessonSeriesDto from '#enums/lesson_series'
+import LessonSeriesDto from '#dtos/lesson_series'
 import ProgressableDto from '#dtos/progressable_dto'
 import Post from '#models/post'
 import ProgressTypes from '#enums/progress_types'

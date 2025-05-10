@@ -111,7 +111,6 @@
     "luxon": "^3.6.1",
     "node-html-parser": "^7.0.1",
     "pg": "^8.15.6",
-    "postcss-import": "^16.1.0",
     "reading-time": "^1.5.0",
     "reflect-metadata": "^0.2.2",
     "sanitize-html": "^2.16.0",

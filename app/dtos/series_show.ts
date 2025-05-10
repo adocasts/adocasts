@@ -1,10 +1,10 @@
-import AssetDto from '../dtos/asset.js'
+import AssetDto from './asset.js'
 import Collection from '#models/collection'
 import ProgressableDto from '#dtos/progressable_dto'
 import { ProgressContext } from '#middleware/context/_progress'
-import SeriesLessonDto from '../dtos/series_lesson.js'
+import SeriesLessonDto from './series_lesson.js'
 import ProgressTypes from '#enums/progress_types'
-import TopicDto from '../dtos/topic.js'
+import TopicDto from './topic.js'
 import ModuleDto from './module.js'
 
 export class SeriesShowDto extends ProgressableDto {
