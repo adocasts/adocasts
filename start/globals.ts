@@ -16,12 +16,16 @@ import { image as gravatar } from 'gravatar-gen'
 import { DateTime } from 'luxon'
 import edge from 'edge.js'
 import _ from 'lodash'
+import GetUnreadNotificationCount from '#actions/notifications/get_unread_notification_count'
 
 addCollection(solarIcons)
 addCollection(simpleIcons)
 addCollection(svgSpinners)
 
 edge.use(edgeIconify)
+
+// actions
+edge.global('GetUnreadNotificationCount', GetUnreadNotificationCount)
 
 // enums
 edge.global('Sorts', Sorts)

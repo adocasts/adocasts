@@ -9,7 +9,7 @@
       ? 'bg-base-200/75 backdrop-blur-md shadow-sm'
       : 'bg-base-200/0 shadow-none']"
   @scroll.window="onWindowScroll"
-  up-hungry>
+>
   <div class="{{ container }} mx-auto flex justify-between items-center h-full">
     <div class="relative h-full">
       <a class="absolute w-36 left-0 top-1/2 -translate-y-1/2" href="{{ route('home') }}">
@@ -18,22 +18,6 @@
     </div>
 
     @!header.nav()
-
-    <div class="flex items-center justify-end gap-3">
-      @if (auth.user)
-        <a href="{{ route('users.menu') }}" class="avatar" up-layer="new" up-mode="drawer" up-position="right" up-size="large" up-history="false">
-          <div class="w-8 rounded-md">
-            @!user.avatar({ user: auth.user, alt: auth.user.handle })
-          </div>
-        </a>
-      @else
-        <a href="{{ route('auth.signin') }}" class="btn btn-ghost-soft" up-layer="new" up-mode="modal" up-size="grow">
-          Sign In
-        </a>
-        <a href="{{ route('auth.signup') }}" class="btn btn-primary" up-layer="new" up-mode="modal" up-size="grow">
-          Sign Up
-        </a>
-      @endif
-    </div>
+    @!frags.header.auth()
   </div>
 </header>

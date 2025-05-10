@@ -30,12 +30,15 @@ const RenderDiscussionsShow = () => import('#actions/discussions/render_discussi
 const ToggleDiscussionVote = () => import('#actions/discussions/toggle_discussion_vote')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const RenderFrag = () => import('#actions/general/render_frag')
 const ToggleSeriesWatchlist = () => import('#actions/collections/toggle_series_watchlist')
 
 router.where('id', router.matchers.number())
 router.where('slug', router.matchers.slug())
 
+//* General
 router.get('/', [RenderHome]).as('home')
+router.get('/frags/*', [RenderFrag]).as('frag')
 
 //* Assets
 router.get('/img/:userId/:filename', [ShowAsset]).as('assets.img.user')

@@ -16,9 +16,7 @@
   </head>
   <body data-theme="adocasts-dark" class="max-w-[120rem] mx-auto">
     @if ($slots.header)
-      <div id="slot-header" up-hungry>
-        {{{ await $slots.header() }}}
-      </div>
+      {{{ await $slots.header() }}}
     @else
       @!header()
     @end

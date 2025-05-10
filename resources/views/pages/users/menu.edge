@@ -1,6 +1,6 @@
 @layout()
 
-  <div class="max-w-[100vw] flex gap-x-3 md:gap-x-6 p-3 md:p-6" x-data x-init="document.getElementById('unreadNotifications').dispatchEvent(new CustomEvent('read'))">
+  <div class="max-w-[100vw] flex gap-x-3 md:gap-x-6 p-3 md:p-6" x-data x-init="up.reload('[up-header-auth]', { url: '{{ route('frag', ['header', 'auth']) }}', layer: 'root', background: true })">
     <nav class="flex flex-col sticky top-6 -mx-2 group">
       {{-- <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mb-2">Content</p>
       @!menu.link({ text: 'Watchlist', href: route('users.watchlist'), 'up-follow': true, 'up-layer': 'root' })
@@ -97,7 +97,7 @@
         </div>
       </div>
 
-      {{-- <div class="flex flex-col">
+      <div class="flex flex-col">
         @if (notifications.unread.length)
           <div class="mb-6">
             <h3 class="pb-2 pt-2 text-lg font-semibold">
@@ -132,7 +132,7 @@
             </p>
           </div>
         @endif
-      </div> --}}
+      </div>
     </section>
   </div>
 
