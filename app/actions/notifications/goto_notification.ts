@@ -24,7 +24,7 @@ export default class GoToNotification extends BaseAction {
     }
   }
 
-  async #goToComment({ response, session }: HttpContext, params: Params) {
+  async #goToComment({ response, session, up }: HttpContext, params: Params) {
     const comment = await Comment.find(params.targetId)
     const commentable = await comment?.getCommentable()
 
@@ -49,6 +49,11 @@ export default class GoToNotification extends BaseAction {
     if (commentable instanceof LessonRequest) {
       session.flash('error', 'Lesson requests on Adocasts have been archived')
       return response.redirect().back()
+    }
+
+    if (up.isUnpolyRequest) {
+      // using actual hash gets stripped out of xhr response url for unpoly
+      return response.redirect(`${commentable.routeUrl}?hash=comment${comment.id}`)
     }
 
     return response.redirect(`${commentable.routeUrl}#comment${comment.id}`)

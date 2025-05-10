@@ -12,7 +12,13 @@
 
 @let(size = sizes.get($props.size ?? 'sm'))
 
-@card({ id: `comment${comment.id}`, accent: '', class: 'mb-6 group overflow-visible' })
+@card({ 
+  id: `comment${comment.id}`, 
+  accent: '', 
+  class: 'mb-6 group overflow-visible', 
+  ':class': "{ 'outline outline-primary': window.location.hash === `#${$el.id}` }",
+  'x-init': 'typeof up !== undefined && window.location.hash === `#${$el.id}` && up?.reveal($el, { top: true, behavior: \'smooth\' })'
+})
   @if (parent)
     <div class="w-full flex items-center bg-base-100 py-3 px-4 gap-1.5 text-sm rounded-[var(--radius-box)] opacity-60">
       @svg('solar:reply-bold', { class: 'w-8 rotate-180' })

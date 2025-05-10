@@ -21,13 +21,24 @@ up.layer.config.modal.onDismissed = () => document.body.classList.remove('overfl
 
 up.on('up:fragment:loaded', function (event) {
   const target = event.renderOptions.target
-  console.log({ event })
+
   // custom match to update any matching target with fragment
   if (target?.includes(':any') && event.response.text) {
-    console.log('here')
     event.preventDefault()
     event.target.querySelectorAll(target).forEach((element) => {
       up.render({ target: element, fragment: event.response.text })
     })
   }
+
+  if (event?.response?.url?.includes('hash=')) {
+    const url = new URL(location.origin + event.response.url)
+    const hash = url.searchParams.get('hash')
+
+    url.searchParams.delete('hash')
+    url.hash = `#${hash}`
+    
+    event.response.url = url.toString()
+  }
+
+  console.log({ event })
 })

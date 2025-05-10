@@ -14,3 +14,8 @@ up-modal {
     @apply bg-base-300 p-0;
   }
 }
+
+:focus:not(:focus-visible, .up-focus-visible),
+.up-focus-hidden {
+  outline: none !important;
+}
