@@ -10,6 +10,7 @@ import { BaseModel, beforeSave, belongsTo, column, computed, hasMany } from '@ad
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import { DateTime } from 'luxon'
 import DiscussionVote from './discussion_vote.js'
+import router from '@adonisjs/core/services/router'
 
 export default class Discussion extends BaseModel {
   static build = () => DiscussionBuilder.new()
@@ -71,6 +72,11 @@ export default class Discussion extends BaseModel {
   @computed()
   get updatedAgo() {
     return TimeService.timeago(this.updatedAt)
+  }
+
+  @computed()
+  get routeUrl() {
+    return router.makeUrl('discussions.show', { slug: this.slug })
   }
 
   @belongsTo(() => User)

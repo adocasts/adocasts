@@ -127,6 +127,17 @@ export default class Comment extends BaseModel {
     }
   }
 
+  async getCommentable() {
+    switch (this.commentTypeId) {
+      case CommentTypes.POST:
+        return Post.find(this.postId)
+      case CommentTypes.DISCUSSION:
+        return Discussion.find(this.discussionId)
+      case CommentTypes.LESSON_REQUEST:
+        return LessonRequest.find(this.lessonRequestId)
+    }
+  }
+
   async archive() {
     if (this.stateId === States.ARCHIVED) return
 

@@ -72,4 +72,9 @@ export default class LessonRequest extends BaseModel {
 
     return StateDesc[this.stateId]
   }
+
+  @computed()
+  get routeUrl() {
+    return `/requests/${this.id}`
+  }
 }
