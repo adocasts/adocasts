@@ -2,10 +2,24 @@ import Alpine from 'alpinejs'
 
 Alpine.data('header', () => ({
   isWindowScrolled: false,
+  isShown: true,
+
+  init() {
+    this.onLocationChange({
+      detail: {
+        location: window.location.href
+      }
+    })
+  },
 
   onWindowScroll() {
     this.isWindowScrolled = window.scrollY > 0
   },
+
+  onLocationChange(event) {
+    const location = event.detail.location
+    this.isShown = !location.includes('/lessons/')
+  }
 }))
 
 Alpine.data('nav', () => ({

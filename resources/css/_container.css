@@ -1,4 +1,5 @@
 .container,
+.container-x,
 .section-container,
 .container-vars {
   --max-width: 100%;
@@ -48,6 +49,12 @@
   @variant sm {
     max-width: calc(var(--max-width) + (var(--padding-x) * 2));
   }
+}
+
+.container-x {
+  width: 100%;
+  padding-right: var(--padding-x);
+  padding-left: var(--padding-x);
 }
 
 .section-container,

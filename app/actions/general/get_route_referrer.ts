@@ -26,9 +26,7 @@ export default class GetRouteReferrer extends BaseAction<[Request | string]> {
         result.referrer = url.pathname + url.search
         result.route = route
       }
-    } catch (_) {
-      console.log({ _ })
-    }
+    } catch (_) {}
 
     return result
   }

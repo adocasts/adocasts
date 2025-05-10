@@ -1,7 +1,4 @@
 @layout()
-  @slot('header')
-  @endslot
-
   <main class="w-full lg:w-[calc(100%_-_325px)]">
     <div class="p-3 lg:p-6 !pb-0">
       <div class="w-full bg-base-100/25 flex items-center justify-between gap-0.5 rounded-t-[var(--radius-box)] px-3 py-1.5">
@@ -13,8 +10,8 @@
           <div class="h-5 w-px bg-base-100 mx-3"></div>
 
           <a href="{{ route('series.show', { slug: series.slug }) }}" class="btn btn-ghost">
-            @svg('solar:book-2-bold-duotone', { class: 'w-4 h-4 mr-1' })
-            {{ series.name }}
+            @svg('solar:double-alt-arrow-left-line-duotone', { class: 'w-4 h-4' })
+            Series Details
           </a>
         </div>
 
@@ -56,6 +53,10 @@
               </button>
             @end
           </div>
+
+          <div class="h-5 w-px bg-base-100 ml-3 mr-6"></div>
+
+          @!frags.header.auth()
         </div>
       </div>
 
@@ -161,6 +162,8 @@
             <div class="collapse-content !p-0">
               <ol class="list-plain mb-3">
                 @each (item in module.lessons)
+                  @let(progression = progress.post.get(item.id))
+
                   <li>
                     <a 
                       href="{{ item.routeUrl }}" 
@@ -170,12 +173,20 @@
                           'bg-primary/80 hover:bg-primary text-base-content/80 hover:text-base-content': lesson.id === item.id
                         }
                       ]) }}">
-                      <div class="w-7 h-7 text-[.6rem] rounded bg-base-100 group-hover/modles:bg-primary duration-200 flex items-center justify-center">
-                        {{ module.moduleNumber }}.{{ item.sortOrder }}
+
+                      @let(boxColor = progression?.isCompleted ? 'bg-success/10 group-hover/modles:bg-success text-success group-hover/modles:text-success-content' : 'bg-base-100 group-hover/modles:bg-primary')
+                      <div {{ html.attrs({ class: ['w-7 h-7 text-[.6rem] rounded duration-200 flex items-center justify-center', boxColor]}) }}>
+                        @if (progression?.isCompleted)
+                          @svg('solar:check-read-line-duotone', { class: 'w-4 h-4' })
+                        @else
+                          {{ module.moduleNumber }}.{{ item.sortOrder }}
+                        @endif
                       </div>
+                      
                       <div class="flex-1 text-xs">
                         {{ item.title }}
                       </div>
+                      
                       <div class="text-2xs opacity-60 group-hover/card:opacity-100 duration-200">
                         {{ TimeService.secondsToTimestring(item.videoSeconds) }}
                       </div>

@@ -39,6 +39,14 @@ up.on('up:fragment:loaded', function (event) {
     
     event.response.url = url.toString()
   }
+})
 
-  console.log({ event })
+const header = document.querySelector('header')
+
+up.on('up:location:changed', function () {
+  const detail = {
+    location: up.history.location
+  }
+
+  header.dispatchEvent(new CustomEvent('location', { detail }))
 })
