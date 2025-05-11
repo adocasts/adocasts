@@ -41,69 +41,17 @@
 
     <div class="section-container mx-auto flex flex-wrap items-start gap-6 lg:gap-12 relative z-10">
       <main class="@container flex-1" up-main-content>
-        @if (topic.children?.length)
-          <section class="section-y">
-            <h3 class="heading-3">Sub-Topics</h3>
-            <div class="grid grid-cols-2 @lg:grid-cols-3 @xl:grid-cols-4 gap-3">
-              @each (subtopic in topic.children)
-                @!topic.card({ topic: subtopic, size: 'sm' })
-              @endeach
-            </div>
-          </section>
-        @endif
-
         @if (series.data.length)
           <section class="section-y">
-            <div class="flex justify-between gap-6 items-baseline">
-              <h3 class="heading-3">Series</h3>
-              <div>
-                <a href="{{ route('topics.show.series', { slug: topic.slug }) }}" class="link link-hover opacity-60 hover:opacity-100 duration-200" up-target="[up-main-content], [up-main-menu]" up-scroll="target">
-                  View All ({{ series.meta.total }})
-                </a>
-              </div>
-            </div>
+            <h3 class="heading-3">Series</h3>
             <main class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6 " series-list>
               @each (item in series.data)
                 @!series.card({ series: item, size: 'sm' })
               @endeach
             </main>
           </section>
-        @endif
 
-        @if (discussions.data.length)
-          <section class="section-y">
-            <div class="flex justify-between gap-6 items-baseline">
-              <h3 class="heading-3">Discussions</h3>
-              <div>
-                <a href="{{ route('topics.show.discussions', { slug: topic.slug }) }}" class="link link-hover opacity-60 hover:opacity-100 duration-200" up-target="[up-main-content], [up-main-menu]" up-scroll="target">
-                  View All ({{ discussions.meta.total }})
-                </a>
-              </div>
-            </div>
-            <main class="flex-1 flex flex-col gap-3 lg:gap-6">
-              @each (item in discussions.data)
-                @!discussion.card({ discussion: item, size: 'sm' })
-              @endeach
-            </main>
-          </section>
-        @endif
-
-        @if (lessons.data.length)
-          <section class="section-y">
-            <div class="flex justify-between gap-6 items-baseline">
-              <h3 class="heading-3">Lessons</h3>
-              <div>
-                <a href="{{ route('topics.show.lessons', { slug: topic.slug }) }}" class="link link-hover opacity-60 hover:opacity-100 duration-200" up-target="[up-main-content], [up-main-menu]" up-scroll="target">
-                  View All ({{ lessons.meta.total }})
-                </a>
-              </div>
-            </div>
-            <main class="flex-1 grid grid-cols-2 @lg:grid-cols-3 gap-3 @lg:gap-6">
-              @each (item in lessons.data)
-                @!lesson.card({ lesson: item, size: 'sm' })
-              @endeach
-            </main>
-          </section>
+          @!pagination({ meta: series.meta })
         @endif
       </main>
 
@@ -150,7 +98,7 @@
               </a>
             </li>
             <li>
-              <a href="{{ route('topics.show.series', { slug: topic.slug }) }}" class="flex justify-between" up-target="[up-main-content], [up-main-menu]" up-scroll="target">
+              <a href="{{ route('topics.show.series', { slug: topic.slug }) }}" class="flex justify-between menu-active" up-target="[up-main-content], [up-main-menu]" up-scroll="target">
                 <span>Series</span>
                 <div class="badge badge-sm">{{ series.meta.total }}</div>
               </a>

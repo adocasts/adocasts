@@ -31,6 +31,9 @@ const ToggleDiscussionVote = () => import('#actions/discussions/toggle_discussio
 const GoToNotification = () => import('#actions/notifications/goto_notification')
 const RenderFrag = () => import('#actions/general/render_frag')
 const ToggleSeriesWatchlist = () => import('#actions/collections/toggle_series_watchlist')
+const RenderTopicShowSeries = () => import('#actions/taxonomies/render_topic_show_series')
+const RenderTopicShowDiscussions = () => import('#actions/taxonomies/render_topic_show_discussions')
+const RenderTopicShowLessons = () => import('#actions/taxonomies/render_topic_show_lessons')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 
@@ -67,6 +70,9 @@ router.get('/series/:series/lessons/:slug', [RenderLessonShow]).as('series.lesso
 //* Topics
 router.get('/topics', [RenderTopicsIndex]).as('topics.index')
 router.get('/topics/:slug', [RenderTopicShow]).as('topics.show')
+router.get('/topics/:slug/series', [RenderTopicShowSeries]).as('topics.show.series')
+router.get('/topics/:slug/discussions', [RenderTopicShowDiscussions]).as('topics.show.discussions')
+router.get('/topics/:slug/lessons', [RenderTopicShowLessons]).as('topics.show.lessons')
 
 //* Lessons
 router.get('/lessons', [RenderLessonsIndex]).as('lessons.index')
