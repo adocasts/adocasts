@@ -34,6 +34,8 @@ const ToggleSeriesWatchlist = () => import('#actions/collections/toggle_series_w
 const RenderTopicShowSeries = () => import('#actions/taxonomies/render_topic_show_series')
 const RenderTopicShowDiscussions = () => import('#actions/taxonomies/render_topic_show_discussions')
 const RenderTopicShowLessons = () => import('#actions/taxonomies/render_topic_show_lessons')
+const RenderBlogsIndex = () => import('#actions/posts/render_blogs_index')
+const RenderBlogsShow = () => import('#actions/posts/render_blogs_show')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 
@@ -77,6 +79,10 @@ router.get('/topics/:slug/lessons', [RenderTopicShowLessons]).as('topics.show.le
 //* Lessons
 router.get('/lessons', [RenderLessonsIndex]).as('lessons.index')
 router.get('/lessons/:slug', [RenderLessonShow]).as('lessons.show')
+
+//* Blogs
+router.get('/blog', [RenderBlogsIndex]).as('blogs.index')
+router.get('/blog/:slug', [RenderBlogsShow]).as('blogs.show')
 
 //* Discussions
 router.get('/forum', [RenderDiscussionsIndex]).as('discussions.index')

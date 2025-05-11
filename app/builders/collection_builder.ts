@@ -1,14 +1,14 @@
+import BaseBuilder from '#builders/base_builder'
 import ModuleDto from '#dtos/module'
 import CollectionTypes from '#enums/collection_types'
-import Collection from '#models/collection'
-import BaseBuilder from '#builders/base_builder'
 import States from '#enums/states'
 import Status from '#enums/status'
-import SeriesLessonDto from '../dtos/series_lesson.js'
+import Collection from '#models/collection'
 import Post from '#models/post'
 import Taxonomy from '#models/taxonomy'
 import is from '@adonisjs/core/helpers/is'
 import { ManyToManyQueryBuilderContract } from '@adonisjs/lucid/types/relations'
+import SeriesLessonDto from '../dtos/series_lesson.js'
 
 export default class CollectionBuilder extends BaseBuilder<typeof Collection, Collection> {
   constructor() {
@@ -147,7 +147,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
   ) {
     this.query.preload('posts', (query) =>
       query
-        .apply((scope) => scope.forDisplay())
+        .apply((scope) => scope.forLessonDisplay())
         .apply((scope) => scope.published())
         .orderBy(orderBy, direction)
         .if(typeof postQuery === 'function', (q) => postQuery!(q))
@@ -171,7 +171,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
   ) {
     this.query.preload('postsFlattened', (query) =>
       query
-        .apply((scope) => scope.forDisplay())
+        .apply((scope) => scope.forLessonDisplay())
         .apply((scope) => scope.published())
         .orderBy(orderBy, direction)
         .if(limit, (truthy) => truthy.groupLimit(limit!))

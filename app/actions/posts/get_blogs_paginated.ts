@@ -1,19 +1,19 @@
 import BaseAction from '#actions/base_action'
-import LessonListDto from '../../dtos/lesson_list.js'
 import Post from '#models/post'
 import { postSearchValidator } from '#validators/post'
 import router from '@adonisjs/core/services/router'
 import { Infer } from '@vinejs/vine/types'
+import BlogListDto from '#dtos/blog_list'
 
 type Filters = Infer<typeof postSearchValidator> | undefined
 
-export default class GetLessonsPaginated extends BaseAction<[Filters, string | undefined]> {
+export default class GetBlogsPaginated extends BaseAction<[Filters, string | undefined]> {
   async handle(
     { page = 1, perPage = 20, pattern, topic, sort }: Filters = {},
     routeIdentifier?: string
   ) {
     const paginator = await Post.build()
-      .displayLesson()
+      .displayBlog()
       .search(pattern)
       .whereHasTaxonomy(topic)
       .orderBySort(sort)
@@ -26,6 +26,6 @@ export default class GetLessonsPaginated extends BaseAction<[Filters, string | u
 
     paginator.queryString({ page, pattern, topic, sort })
 
-    return LessonListDto.fromPaginator(paginator, { start: 1, end: paginator.lastPage })
+    return BlogListDto.fromPaginator(paginator, { start: 1, end: paginator.lastPage })
   }
 }

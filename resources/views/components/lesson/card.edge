@@ -23,7 +23,7 @@
       </div>
 
       <h2 class="card-title text-lg lg:text-xl max-w-[32ch] font-semibold text-base-title">
-        <a href="{{ route('lessons.show', { slug: lesson.slug }) }}" class="link-grow">
+        <a href="{{ lesson.routeUrl }}" class="link-grow">
           {{ lesson.title }}
         </a>
       </h2>
@@ -59,7 +59,7 @@
       </div>
 
       <h2 class="card-title font-semibold text-base-title text-base md:text-lg">
-        <a href="{{ route('lessons.show', { slug: lesson.slug }) }}" class="link-grow">
+        <a href="{{ lesson.routeUrl }}" class="link-grow">
           {{ lesson.title }}
         </a>
       </h2>

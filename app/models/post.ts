@@ -555,18 +555,19 @@ export default class Post extends BaseModel {
     )
   })
 
-  static forDisplay = scope<typeof Post, (query: ModelQueryBuilderContract<typeof Post>) => void>(
-    (query) => {
-      query
-        .preload('thumbnails', (thumbnails) => thumbnails.selectDto(AssetDto))
-        .preload('rootSeries', (series) => series.selectDto(LessonSeriesDto))
-        .preload('series', (series) => series.selectDto(LessonSeriesDto))
-        .preload('authors', (authors) => authors.selectDto(AuthorDto))
-        .preload('taxonomies', (taxonomies) => taxonomies.selectDto(TopicDto))
-    }
-  )
+  static forLessonDisplay = scope<
+    typeof Post,
+    (query: ModelQueryBuilderContract<typeof Post>) => void
+  >((query) => {
+    query
+      .preload('thumbnails', (thumbnails) => thumbnails.selectDto(AssetDto))
+      .preload('rootSeries', (series) => series.selectDto(LessonSeriesDto))
+      .preload('series', (series) => series.selectDto(LessonSeriesDto))
+      .preload('authors', (authors) => authors.selectDto(AuthorDto))
+      .preload('taxonomies', (taxonomies) => taxonomies.selectDto(TopicDto))
+  })
 
-  static forDisplayShow = scope<
+  static forLessonDisplayShow = scope<
     typeof Post,
     (query: ModelQueryBuilderContract<typeof Post>) => void
   >((query) => {
@@ -576,6 +577,28 @@ export default class Post extends BaseModel {
         series.preload('asset', (asset) => asset.selectDto(AssetDto)).selectDto(LessonSeriesDto)
       )
       .preload('series', (series) => series.selectDto(LessonSeriesDto))
+      .preload('authors', (authors) => authors.selectDto(AuthorDto))
+      .preload('taxonomies', (taxonomies) => taxonomies.selectDto(TopicDto))
+      .preload('captions', (captions) => captions.orderBy('sort_order').selectDto(CaptionDto))
+      .preload('chapters', (chapters) => chapters.orderBy('sort_order').selectDto(ChapterDto))
+  })
+
+  static forBlogDisplay = scope<
+    typeof Post,
+    (query: ModelQueryBuilderContract<typeof Post>) => void
+  >((query) => {
+    query
+      .preload('thumbnails', (thumbnails) => thumbnails.selectDto(AssetDto))
+      .preload('authors', (authors) => authors.selectDto(AuthorDto))
+      .preload('taxonomies', (taxonomies) => taxonomies.selectDto(TopicDto))
+  })
+
+  static forBlogDisplayShow = scope<
+    typeof Post,
+    (query: ModelQueryBuilderContract<typeof Post>) => void
+  >((query) => {
+    query
+      .preload('thumbnails', (thumbnails) => thumbnails.selectDto(AssetDto))
       .preload('authors', (authors) => authors.selectDto(AuthorDto))
       .preload('taxonomies', (taxonomies) => taxonomies.selectDto(TopicDto))
       .preload('captions', (captions) => captions.orderBy('sort_order').selectDto(CaptionDto))

@@ -19,15 +19,31 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
     return new PostBuilder()
   }
 
-  display({ skipPublishCheck = false } = {}) {
+  displayLesson({ skipPublishCheck = false } = {}) {
+    this.whereLesson()
     this.if(!skipPublishCheck, (builder) => builder.published())
-    this.orderPublished().query.apply((scope) => scope.forDisplay())
+    this.orderPublished().query.apply((scope) => scope.forLessonDisplay())
     return this
   }
 
-  displayShow({ skipPublishCheck = false } = {}) {
+  displayLessonShow({ skipPublishCheck = false } = {}) {
+    this.whereLesson()
     this.if(!skipPublishCheck, (builder) => builder.published())
-    this.orderPublished().query.apply((scope) => scope.forDisplayShow())
+    this.orderPublished().query.apply((scope) => scope.forLessonDisplayShow())
+    return this
+  }
+
+  displayBlog({ skipPublishCheck = false } = {}) {
+    this.whereBlog()
+    this.if(!skipPublishCheck, (builder) => builder.published())
+    this.orderPublished().query.apply((scope) => scope.forBlogDisplay())
+    return this
+  }
+
+  displayBlogShow({ skipPublishCheck = false } = {}) {
+    this.whereBlog()
+    this.if(!skipPublishCheck, (builder) => builder.published())
+    this.orderPublished().query.apply((scope) => scope.forBlogDisplayShow())
     return this
   }
 

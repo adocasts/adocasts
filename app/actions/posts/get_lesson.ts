@@ -13,8 +13,7 @@ export default class GetLesson extends BaseAction<[string]> {
 
   static async fromDb(slug: string) {
     return Post.build()
-      .displayShow()
-      .whereLesson()
+      .displayLessonShow()
       .where({ slug })
       .withComments()
       .firstOrFail(LessonShowDto)
