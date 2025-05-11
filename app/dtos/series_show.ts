@@ -61,28 +61,41 @@ export class SeriesShowDto extends ProgressableDto {
     this.meta = series.$extras
   }
 
-  findNextUserLesson(progress: ProgressContext) {
-    if (!this.postIds?.length) return
+  getFlatLessons() {
+    if (this.lessons.length) return this.lessons
 
-    for (const id of this.postIds) {
-      const progression = progress.post.get(id)
+    return this.modules.reduce<SeriesLessonDto[]>((flat, mod) => [...flat, ...mod.lessons], [])
+  }
+
+  findNextUserLesson(progress: ProgressContext) {
+    const lessons = this.getFlatLessons()
+    if (!lessons?.length) return
+
+    for (const lesson of lessons) {
+      const progression = progress.post.get(lesson.id)
 
       // if post is completed, skip
       if (progression?.isCompleted) continue
 
-      // find post within series
-      let lesson = this.lessons.find((post) => post.id === id)
-
-      // if post is found, return it
-      if (lesson) return lesson
-
-      // find post within modules
-      for (const module of this.modules) {
-        lesson = module.lessons.find((post) => post.id === id)
-        if (lesson) return lesson
-      }
+      return lesson
     }
 
-    return this.lessons?.at(0) ?? this.modules?.at(0)?.lessons?.at(0)
+    return lessons.at(0)
+  }
+
+  findNextLesson(lessonId: number) {
+    const lessons = this.getFlatLessons()
+    const lessonIndex = lessons.findIndex((post) => post.id === lessonId)
+    const nextIndex = lessonIndex + 1
+
+    return nextIndex > -1 ? lessons.at(nextIndex) : undefined
+  }
+
+  findPrevLesson(lessonId: number) {
+    const lessons = this.getFlatLessons()
+    const lessonIndex = lessons.findIndex((post) => post.id === lessonId)
+    const prevIndex = lessonIndex - 1
+
+    return prevIndex > -1 ? lessons.at(prevIndex) : undefined
   }
 }

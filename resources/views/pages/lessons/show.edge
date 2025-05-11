@@ -41,16 +41,18 @@
 
           <div class="h-5 w-px bg-base-100 mx-3"></div>
           
+          @let(nextLesson = series.findNextLesson(lesson.id))
+          @let(prevLesson = series.findPrevLesson(lesson.id))
           <div class="flex items-center justify-end">
             @tooltip({ text: 'Previous Lesson', class: 'tooltip-bottom' })
-              <button type="button" class="btn btn-ghost btn-square">
+              <a {{ html.attrs({ href: prevLesson?.routeUrl, class: 'btn btn-ghost btn-square', disabled: !prevLesson }) }}>
                 @svg('solar:arrow-left-line-duotone', { class: 'w-5 h-5' })
-              </button>
+              </a>
             @end
             @tooltip({ text: 'Next Lesson', class: 'tooltip-bottom' })
-              <button type="button" class="btn btn-ghost btn-square">
+              <a {{ html.attrs({ href: nextLesson?.routeUrl, class: 'btn btn-ghost btn-square', disabled: !nextLesson }) }}>
                 @svg('solar:arrow-right-line-duotone', { class: 'w-5 h-5' })
-              </button>
+              </a>
             @end
           </div>
 
