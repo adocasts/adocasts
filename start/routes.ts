@@ -40,6 +40,7 @@ const StoreDiscussion = () => import('#actions/discussions/store_discussion')
 const RenderDiscussionsCreate = () => import('#actions/discussions/render_discussions_create')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const DestroyDiscussion = () => import('#actions/discussions/destroy_discussion')
 const UpdateDiscussion = () => import('#actions/discussions/update_discussion')
 const RenderDiscussionsEdit = () => import('#actions/discussions/render_discussions_edit')
 
@@ -96,6 +97,7 @@ router.get('/forum/:slug', [RenderDiscussionsShow]).as('discussions.show')
 router.get('/forum/:slug/edit', [RenderDiscussionsEdit]).as('discussions.edit')
 router.put('/forum/:slug', [UpdateDiscussion]).as('discussions.update')
 router.patch('/forum/:id/vote', [ToggleDiscussionVote]).as('discussions.vote')
+router.delete('/forum/:slug', [DestroyDiscussion]).as('discussions.destroy')
 
 //* Comments
 router.post('/comments', [StoreComment]).as('comments.store')

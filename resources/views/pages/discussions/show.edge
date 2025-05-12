@@ -25,9 +25,11 @@
         @endcan
 
         @can('DiscussionPolicy.delete', discussion)
-          <a href="#" class="btn btn-soft btn-error btn-sm">
-            Delete
-          </a>
+          @form({ action: form.delete('discussions.destroy', { slug: discussion.slug }), 'up-confirm': "Are you sure you'd like to delete your discussion?" })
+            <button type="submit" class="btn btn-soft btn-error btn-sm">
+              Delete
+            </button>
+          @end
         @endcan
       </div>
 
