@@ -32,6 +32,12 @@ export const discussionValidator = vine.compile(
   })
 )
 
+export const discussionSolvedValidator = vine.compile(
+  vine.object({
+    commentId: vine.number().exists({ table: 'comments', column: 'id' }),
+  })
+)
+
 export const discussionVoteValidator = vine.compile(
   vine.object({
     params: vine.object({

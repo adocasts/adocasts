@@ -117,16 +117,22 @@
           @endif
         </div>
 
-        @if (discussion.topic)
-          <div>
+        <div class="flex items-center justify-end gap-2">
+          @if (discussion.solvedAt)
+            <div class="btn btn-soft btn-xs !text-success" disabled="disabled">
+              Answered
+            </div>
+          @endif
+
+          @if (discussion.topic)
             <a {{ html.attrs({ 
               href: route('discussions.index', {}, { qs: { topic: discussion.topic.slug }}),
               class: ['btn btn-soft btn-xs']
             }) }}>
               {{ discussion.topic.name }}
             </a>
-          </div>
-        @endif
+          @endif
+        </div>
       </div>
     </div>
   </div>

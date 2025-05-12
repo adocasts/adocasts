@@ -19,7 +19,13 @@
 
   @each (comment in _.orderBy(level, (item) => item.userVotes.length, ['desc']))
     <li class="relative">
-      @!comment.card({ comment, parent, commentable, levelIndex })
+      @comment.card({ comment, parent, commentable, levelIndex, solved: commentable.solvedCommentId === comment.id })
+        @slot('actions', scope)
+          @if ($slots.actions)
+            {{{ await $slots.actions(scope) }}}
+          @endif
+        @endslot
+      @end
 
       @comment.list({ commentable, comments, parent: comment, levelIndex: levelIndex + 1 })
         @slot('before')

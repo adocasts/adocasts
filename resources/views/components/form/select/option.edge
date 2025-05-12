@@ -1,6 +1,6 @@
 @let(selected = $context.selected === $props.value ? { selected: 'selected' } : {})
 
-<option {{ $props.except(['text']).merge(selected).toAttrs() }}>
+<option {{ $props.except(['text', 'value']).merge(selected).toAttrs() }} value="{{ value }}">
   @if (text)
     {{ text }}
   @else

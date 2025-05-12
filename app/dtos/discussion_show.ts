@@ -15,6 +15,8 @@ export default class DiscussionShowDto extends BaseModelDto {
   declare title: string
   declare slug: string
   declare body: string
+  declare solvedCommentId: number | null
+  declare solvedAt: string | null
   declare createdAt: string
   declare updatedAt: string
   declare topic: TopicDto | null
@@ -40,6 +42,8 @@ export default class DiscussionShowDto extends BaseModelDto {
     this.title = discussion.title
     this.slug = discussion.slug
     this.body = discussion.body
+    this.solvedCommentId = discussion.solvedCommentId
+    this.solvedAt = discussion.solvedAt?.toISO()!
     this.createdAt = discussion.createdAt?.toISO()!
     this.updatedAt = discussion.updatedAt?.toISO()!
     this.userVotes = discussion.votes?.map((vote) => vote.userId) ?? []

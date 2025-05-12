@@ -18,6 +18,12 @@
 
         <div class="w-px h-4 bg-base-200"></div>
 
+        @if (discussion.solvedAt)
+          <div class="btn btn-soft btn-sm !text-success" disabled="disabled">
+            Answered
+          </div>
+        @endif
+
         @can('DiscussionPolicy.update', discussion)
           <a href="{{ route('discussions.edit', { slug: discussion.slug }) }}" class="btn btn-soft btn-info btn-sm">
             Edit
@@ -89,7 +95,30 @@
     
     <div up-comments>
       @!comment.form({ commentable: discussion, commentTypeId: CommentTypes.DISCUSSION, class: 'mb-6' })
-      @!comment.list({ commentable: discussion, comments: discussion.comments })
+
+      @comment.list({ commentable: discussion, comments: discussion.comments })
+        @slot('actions', scope)
+          @if (scope.comment.id === discussion.solvedCommentId)
+            @can('DiscussionPolicy.update', discussion)
+              @form({ action: form.patch('discussions.solved', { slug: discussion.slug }) })
+                <input type="hidden" name="commentId" value="{{ scope.comment.id }}">
+                <button type="submit" class="btn btn-soft btn-warning btn-sm">
+                  Mark as Unsolved
+                </button>
+              @end
+            @endcan
+          @elseif (!discussion.solvedCommentId)
+            @can('DiscussionPolicy.update', discussion)
+              @form({ action: form.patch('discussions.solved', { slug: discussion.slug }), 'up-scroll': 'preserve' })
+                <input type="hidden" name="commentId" value="{{ scope.comment.id }}">
+                <button type="submit" class="btn btn-soft hover:btn-success btn-sm">
+                  Mark as Answer
+                </button>
+              @end
+            @endcan
+          @endif
+        @endslot
+      @end
     </div>
   @end
 @end

@@ -1,16 +1,16 @@
-import Comment from '#models/comment'
-import SlugService from '#services/slug_service'
-import TimeService from '#services/time_service'
 import DiscussionBuilder from '#builders/discussion_builder'
 import DiscussionViewTypes from '#enums/discussion_view_types'
+import Comment from '#models/comment'
 import DiscussionView from '#models/discussion_view'
 import Taxonomy from '#models/taxonomy'
 import User from '#models/user'
+import SlugService from '#services/slug_service'
+import TimeService from '#services/time_service'
+import router from '@adonisjs/core/services/router'
 import { BaseModel, beforeSave, belongsTo, column, computed, hasMany } from '@adonisjs/lucid/orm'
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import { DateTime } from 'luxon'
 import DiscussionVote from './discussion_vote.js'
-import router from '@adonisjs/core/services/router'
 
 export default class Discussion extends BaseModel {
   static build = () => DiscussionBuilder.new()
@@ -35,6 +35,12 @@ export default class Discussion extends BaseModel {
 
   @column()
   declare body: string
+
+  @column()
+  declare solvedCommentId: number | null
+
+  @column.dateTime()
+  declare solvedAt: DateTime | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -87,6 +93,11 @@ export default class Discussion extends BaseModel {
 
   @hasMany(() => Comment)
   declare comments: HasMany<typeof Comment>
+
+  @belongsTo(() => Comment, {
+    foreignKey: 'solved_comment_id',
+  })
+  declare solvedComment: BelongsTo<typeof Comment>
 
   @hasMany(() => DiscussionView, {
     onQuery(query) {

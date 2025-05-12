@@ -1,4 +1,5 @@
 @let(isOp = $props.commentable?.showOp && $props.commentable.authorId === comment.author?.id)
+@let(solved = $props.solved ?? false)
 @let(sizes = new Map([
   ['sm', {
     title: 'text-base @xl:text-lg',
@@ -15,7 +16,7 @@
 @card({ 
   id: `comment${comment.id}`, 
   accent: '', 
-  class: 'mb-6 group overflow-visible', 
+  class: ['mb-6 group overflow-visible', { 'card-border border-success': solved }], 
   ':class': "{ 'outline outline-primary': window.location.hash === `#${$el.id}` }",
   'x-init': 'typeof up !== undefined && window.location.hash === `#${$el.id}` && up?.reveal($el, { top: true, behavior: \'smooth\' })'
 })
@@ -39,39 +40,47 @@
     </div>
 
     <div class="flex-1 -mb-2">
-      <div class="{{ html.classNames(['flex gap-x-3 items-baseline mb-1.5', size.byline]) }}">
-        @if (comment.author)
-          @profile.link({ user: comment.author, class: ['flex gap-1', 'items-center'] })
-            <span>
-              {{ comment.author.handle }} 
-            </span>
-
-            @if (!comment.author.isFreeTier)
-              <span class="h-2.5 relative ml-1">
-                <img class="h-full" src="/imgs/plus-badge-100.png" alt="Adocasts Plus" />
+      <div class="flex items-center justify-between">
+        <div class="{{ html.classNames(['flex gap-x-3 items-baseline mb-1.5', size.byline]) }}">
+          @if (comment.author)
+            @profile.link({ user: comment.author, class: ['flex gap-1', 'items-center'] })
+              <span>
+                {{ comment.author.handle }} 
               </span>
-            @endif
 
-            @if (isOp)
-              <div class="badge badge-xs badge-soft badge-secondary ml-1">OP</div>
-            @endif
-          @end
-        @else
-          <div class="flex gap-1 items-baseline">
-            Anonymous
-            @if (comment.name)
-              <span class="opacity-60">({{ comment.name }})</span>
-            @endif
+              @if (!comment.author.isFreeTier)
+                <span class="h-2.5 relative ml-1">
+                  <img class="h-full" src="/imgs/plus-badge-100.png" alt="Adocasts Plus" />
+                </span>
+              @endif
+
+              @if (isOp)
+                <div class="badge badge-xs badge-soft badge-secondary ml-1">OP</div>
+              @endif
+            @end
+          @else
+            <div class="flex gap-1 items-baseline">
+              Anonymous
+              @if (comment.name)
+                <span class="opacity-60">({{ comment.name }})</span>
+              @endif
+            </div>
+          @endif
+
+          <span class="text-primary relative top-[0.175rem]">
+            @svg('solar:double-alt-arrow-right-broken', { class: 'w-4 h-4' })
+          </span>
+
+          <span class="flex-none opacity-60 text-sm">
+            <time datetime="{{ comment.createdAt }}">{{ TimeService.timeago(comment.createdAt) }}</time>
+          </span>
+        </div>
+
+        @if (solved)
+          <div>
+            <div class="badge badge-success">Answer</div>
           </div>
         @endif
-
-        <span class="text-primary relative top-[0.175rem]">
-          @svg('solar:double-alt-arrow-right-broken', { class: 'w-4 h-4' })
-        </span>
-
-        <span class="flex-none opacity-60 text-sm">
-          <time datetime="{{ comment.createdAt }}">{{ TimeService.timeago(comment.createdAt) }}</time>
-        </span>
       </div>
       
       @if (comment.body)
@@ -84,6 +93,10 @@
         <div class="w-full flex items-end gap-4 justify-between text-sm">
           <div class="flex items-center gap-2">
             @!frags.comment.vote({ comment })
+
+            @if ($slots.actions)
+              {{{ await $slots.actions({ comment }) }}}
+            @endif
 
             <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100">
               @can('CommentPolicy.reply', comment)

@@ -16,9 +16,11 @@
         @endif
       </h1>
 
+      {{ inspect(flashMessages.all()) }}
+
       @form.field({ label: 'Topic', name: 'topic' })
-        @form.select({ name: 'taxonomyId', selected: discussion?.taxonomyId })
-          @!form.select.option({ value: null, text: 'Select a topic to share to', disabled: true })
+        @form.select({ name: 'taxonomyId', selected: discussion?.taxonomyId || '' })
+          @!form.select.option({ value: '', text: 'Select a topic to share to', disabled: true })
           @each (topic in topics)
             @!form.select.option({ value: topic.id, text: topic.name })
           @endeach
