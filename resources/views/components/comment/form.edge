@@ -26,7 +26,7 @@
   @endif
 
   @authorization.provider({ ability, resource: replyingTo })
-    @tiptap({ value: body, wrapClass: 'comment-wrap' })
+    @tiptap({ value: body, wrapClass: 'comment-form comment-wrap', class: 'prose-comment' })
       @slot('before')
         <div class="comment-avatar">
           <div class="avatar">

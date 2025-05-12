@@ -1,12 +1,18 @@
 @let(value = $props.value ?? '')
-@let(data = { name, value, maxlength, minlength })
+@let(required = $props.required ?? false)
+@let(data = { name, value, maxlength, minlength, required })
 @assign(el = el || 'label')
 
 @inject({ ...data, model })
 
 <{{ el }} class="flex flex-col mb-3 lg:mb-6 relative {{ $props.class }}">
   @if (label)
-    <span class="block text-sm font-semibold leading-6">{{ label }}</span>
+    <span class="block text-sm font-semibold leading-6">
+      {{ label }}
+      @if (required)
+        <sup class="text-error">*</sup>
+      @endif
+    </span>
   @endif
 
   @if (help)

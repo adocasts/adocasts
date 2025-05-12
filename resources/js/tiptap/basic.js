@@ -1,26 +1,30 @@
 import { Editor } from '@tiptap/core'
-import StarterKit from '@tiptap/starter-kit'
-import Placeholder from '@tiptap/extension-placeholder'
-import Link from '@tiptap/extension-link'
-import Commands from './commands'
-import { getSuggestions } from './commands/suggestions'
-import BubbleMenu from '@tiptap/extension-bubble-menu'
-import CodeBlock from '@tiptap/extension-code-block'
-import { commandList } from './commands/list'
-import { languages } from '../syntax/languages'
 import Blockquote from '@tiptap/extension-blockquote'
+import BubbleMenu from '@tiptap/extension-bubble-menu'
+import CharacterCount from '@tiptap/extension-character-count'
+import CodeBlock from '@tiptap/extension-code-block'
 import Dropcursor from '@tiptap/extension-dropcursor'
 import HardBreak from '@tiptap/extension-hard-break'
-import CharacterCount from '@tiptap/extension-character-count'
-import YouTube from '@tiptap/extension-youtube'
 import Image from '@tiptap/extension-image'
+import Link from '@tiptap/extension-link'
+import Placeholder from '@tiptap/extension-placeholder'
 import { Typography } from '@tiptap/extension-typography'
+import YouTube from '@tiptap/extension-youtube'
+import StarterKit from '@tiptap/starter-kit'
+import axios from 'axios'
+import { languages } from '../syntax/languages'
+import Commands from './commands'
+import { commandList } from './commands/list'
+import { getSuggestions } from './commands/suggestions'
 import { Mention } from './mentions'
 import mentionSuggestions from './mentions/suggestions'
 import UploadImage from './upload_image'
-import axios from 'axios'
 
-export const setupEditor = function ({ value = '', isFreeUser = true }) {
+export const setupEditor = function ({
+  value = '',
+  placeholder = 'Type / to see available commands',
+  isFreeUser = true,
+}) {
   let editor
 
   return {
@@ -74,9 +78,7 @@ export const setupEditor = function ({ value = '', isFreeUser = true }) {
           BubbleMenu.configure({
             element: document.querySelector('.bubble-menu'),
           }),
-          Placeholder.configure({
-            placeholder: 'Type / to see available commands',
-          }),
+          Placeholder.configure({ placeholder }),
           Link.configure({
             autolink: true,
             linkOnPaste: true,

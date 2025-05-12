@@ -1,11 +1,11 @@
 <div>
   <div class="section-container mx-auto flex flex-wrap items-start gap-6 lg:gap-12 relative z-10">
-    <aside class="@container w-[300px] lg:sticky top-20">
+    <aside class="@container w-[300px] lg:w-[330px] lg:sticky top-20 lg:pr-6 lg:border-r border-base-content/10">
       @if ($slots.actions)
         {{{ await $slots.actions() }}}
       @else
         @if (auth.user)
-          <a href="#" class="btn btn-primary btn-block mb-6">
+          <a href="{{ route('discussions.create') }}" class="btn btn-primary btn-block mb-6">
             @svg('solar:chat-round-line-bold-duotone', { class: 'w-6 h-6' })
             New Discussion
           </a>

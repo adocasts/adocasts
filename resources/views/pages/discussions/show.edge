@@ -10,44 +10,53 @@
     </h1>
 
     <div class="flex justify-between items-center gap-3">
-      <a href="{{ route('discussions.index') }}" class="btn btn-soft" up-back>
-        @svg('solar:double-alt-arrow-left-line-duotone', { class: 'w-4 h-4' })
-        Back
-      </a>
+      <div class="flex items-center gap-3">
+        <a href="{{ route('discussions.index') }}" class="btn btn-soft btn-sm" up-back>
+          @svg('solar:double-alt-arrow-left-line-duotone', { class: 'w-4 h-4' })
+          Back
+        </a>
+
+        <div class="w-px h-4 bg-base-200"></div>
+
+        @can('DiscussionPolicy.update', discussion)
+          <a href="{{ route('discussions.edit', { slug: discussion.slug }) }}" class="btn btn-soft btn-info btn-sm">
+            Edit
+          </a>
+        @endcan
+
+        @can('DiscussionPolicy.delete', discussion)
+          <a href="#" class="btn btn-soft btn-error btn-sm">
+            Delete
+          </a>
+        @endcan
+      </div>
 
       <div x-data class="flex items-center gap-3">
         <div class="flex items-center gap-3">
-          @tooltip({ text: `${commentCount.toLocaleString()} ${string.pluralize('Reply', commentCount)}`, position: 'bottom' })
-            <a href="#comments" class="btn btn-soft">
-              @svg('solar:chat-round-call-bold-duotone', { class: 'w-4 h-4' })
-              {{ commentCount.toLocaleString() }}
-            </a>
-          @end
-
-          {{-- @tooltip({ text: `${impressionCount.toLocaleString()} ${string.pluralize('Views', impressionCount)}`, position: 'bottom' })
-            <div class="badge">
-              @svg('solar:eye-bold-duotone', { class: 'w-4 h-4' })
-              {{ impressionCount.toLocaleString() }}
-            </div>
-          @end --}}
-
           @tooltip({ text: `${viewCount.toLocaleString()} ${string.pluralize('Views', viewCount)}`, position: 'bottom' })
-            <div class="btn btn-soft hover:btn-soft">
+            <div class="flex items-center gap-1.5 px-1 text-sm opacity-60">
               @svg('solar:eye-bold-duotone', { class: 'w-4 h-4' })
               {{ viewCount.toLocaleString() }}
             </div>
           @end
+
+          @tooltip({ text: `${commentCount.toLocaleString()} ${string.pluralize('Reply', commentCount)}`, position: 'bottom' })
+            <a href="#comments" class="flex items-center gap-1.5 px-1 text-sm opacity-60 hover:opacity-100 duration-200">
+              @svg('solar:chat-round-call-bold-duotone', { class: 'w-4 h-4' })
+              {{ commentCount.toLocaleString() }}
+            </a>
+          @end
         </div>
 
-        <div class="w-px h-8 bg-base-200 mx-3"></div>
+        <div class="w-px h-4 bg-base-200 mr-3 ml-1.5"></div>
 
         @if (auth.user)
-          <button type="button" class="btn btn-soft">
+          <button type="button" class="btn btn-soft btn-sm">
             @svg('solar:bell-linear', { class: 'w-4 h-4' })
             Subscribe
           </button>
         @else
-          <a href="{{ route('auth.signup') }}" class="btn btn-soft" up-layer="new" up-mode="modal" up-size="grow">
+          <a href="{{ route('auth.signup') }}" class="btn btn-soft btn-sm" up-layer="new" up-mode="modal" up-size="grow">
             @svg('solar:bell-linear', { class: 'w-4 h-4' })
             Subscribe
           </a>
@@ -56,7 +65,7 @@
         @if (auth.user)
           <button 
             type="button" 
-            class="btn btn-soft btn-primary" 
+            class="btn btn-soft btn-primary btn-sm" 
             @click.prevent="() => {
               const el = document.querySelector('.ProseMirror')
               el?.scrollIntoView({ block: 'center', behavior: 'smooth' })
@@ -66,7 +75,7 @@
             Reply
           </button>
         @else
-          <a href="{{ route('auth.signup') }}" class="btn btn-soft btn-primary" up-layer="new" up-mode="modal" up-size="grow">
+          <a href="{{ route('auth.signup') }}" class="btn btn-soft btn-primary btn-sm" up-layer="new" up-mode="modal" up-size="grow">
             @svg('solar:reply-bold', { class: 'w-4 h-4' })
             Reply
           </a>

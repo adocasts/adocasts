@@ -1,7 +1,8 @@
+import DiscussionShowDto from '#dtos/discussion_show'
 import States from '#enums/states'
-import BasePolicy from '#policies/base_policy'
 import Discussion from '#models/discussion'
 import User from '#models/user'
+import BasePolicy from '#policies/base_policy'
 import { AuthorizerResponse } from '@adonisjs/bouncer/types'
 
 export default class DiscussionPolicy extends BasePolicy {
@@ -17,13 +18,13 @@ export default class DiscussionPolicy extends BasePolicy {
     return true // if they're authenticated they can request
   }
 
-  update(user: User, discussion: Discussion): AuthorizerResponse {
+  update(user: User, discussion: Discussion | DiscussionShowDto): AuthorizerResponse {
     if (discussion.stateId === States.ARCHIVED) return false
     const isOwner = discussion.userId === user.id
     return isOwner
   }
 
-  delete(user: User, discussion: Discussion): AuthorizerResponse {
+  delete(user: User, discussion: Discussion | DiscussionShowDto): AuthorizerResponse {
     if (discussion.stateId === States.ARCHIVED) return false
     const isOwner = discussion.userId === user.id
     return isOwner

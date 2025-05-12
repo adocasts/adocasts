@@ -36,8 +36,12 @@ const RenderTopicShowDiscussions = () => import('#actions/taxonomies/render_topi
 const RenderTopicShowLessons = () => import('#actions/taxonomies/render_topic_show_lessons')
 const RenderBlogsIndex = () => import('#actions/posts/render_blogs_index')
 const RenderBlogsShow = () => import('#actions/posts/render_blogs_show')
+const StoreDiscussion = () => import('#actions/discussions/store_discussion')
+const RenderDiscussionsCreate = () => import('#actions/discussions/render_discussions_create')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const UpdateDiscussion = () => import('#actions/discussions/update_discussion')
+const RenderDiscussionsEdit = () => import('#actions/discussions/render_discussions_edit')
 
 router.where('id', router.matchers.number())
 router.where('slug', router.matchers.slug())
@@ -86,7 +90,11 @@ router.get('/blog/:slug', [RenderBlogsShow]).as('blogs.show')
 
 //* Discussions
 router.get('/forum', [RenderDiscussionsIndex]).as('discussions.index')
+router.get('/forum/create', [RenderDiscussionsCreate]).as('discussions.create')
+router.post('/forum', [StoreDiscussion]).as('discussions.store')
 router.get('/forum/:slug', [RenderDiscussionsShow]).as('discussions.show')
+router.get('/forum/:slug/edit', [RenderDiscussionsEdit]).as('discussions.edit')
+router.put('/forum/:slug', [UpdateDiscussion]).as('discussions.update')
 router.patch('/forum/:id/vote', [ToggleDiscussionVote]).as('discussions.vote')
 
 //* Comments

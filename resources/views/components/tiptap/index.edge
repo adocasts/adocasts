@@ -1,8 +1,10 @@
-@let(name = $props.name ?? 'body')
-@let(value = $props.value ?? '')
-@let(allows = $context.allows ?? true)
+@let($$props = Object.assign($context, $props))
+@let(name = $$props.name ?? 'body')
+@let(value = $$props.value ?? '')
+@let(allows = $$props.allows ?? true)
 @let(editorProps = {
   value,
+  placeholder: $$props.placeholder,
   isFreeTier: auth.user?.isFreeTier
 })
 
@@ -35,13 +37,13 @@
     </div>
 
     <div 
-      class="{{ html.classNames(['flex-1 relative comment-form', $props.wrapClass]) }}" 
+      class="{{ html.classNames(['flex-1 relative', $props.wrapClass]) }}" 
       :class="[{ 'focused': isFocused }]">
       @if ($slots.before)
         {{{ await $slots.before({ allows }) }}}
       @endif
 
-      <div x-ref="element" class="{{ html.classNames(['prose prose-comment', $props.class]) }}"></div>
+      <div x-ref="element" class="{{ html.classNames(['prose', $props.class]) }}"></div>
 
       @if ($slots.after)
         {{{ await $slots.after({ allows }) }}}
@@ -53,12 +55,12 @@
 
 @else
 
-  <div class="{{ html.classNames(['flex-1 relative comment-form', $props.wrapClass]) }}">
+  <div class="{{ html.classNames(['flex-1 relative', $props.wrapClass]) }}">
     @if ($slots.before)
       {{{ await $slots.before({ allows }) }}}
     @endif
     
-    <div class="{{ html.classNames(['prose prose-comment', $props.class]) }}">
+    <div class="{{ html.classNames(['prose', $props.class]) }}">
       <div class="tiptap ProseMirror hover:bg-base-100 duration-200">
         <div class="font-semibold text-lg">
           <a href="{{ route('auth.signup') }}" class="link-grow no-underline" up-layer="new" up-mode="modal" up-size="grow">

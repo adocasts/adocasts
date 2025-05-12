@@ -1,0 +1,49 @@
+@let(isEditing = discussion?.id)
+@let(action = isEditing ? form.put('discussions.update', { slug: discussion.slug }) : form.post('discussions.store'))
+
+@layout()
+  @discussion.shell({ feed: 'none', topics })
+    @slot('actions')
+    @endslot
+
+    
+    @form({ action, class: 'container mx-auto' })
+      <h1 class="heading-3">
+        @if (isEditing)
+          Editing "{{ discussion.title }}"
+        @else
+          Start a new discusssion
+        @endif
+      </h1>
+
+      @form.field({ label: 'Topic', name: 'topic' })
+        @form.select({ name: 'taxonomyId', selected: discussion?.taxonomyId })
+          @!form.select.option({ value: null, text: 'Select a topic to share to', disabled: true })
+          @each (topic in topics)
+            @!form.select.option({ value: topic.id, text: topic.name })
+          @endeach
+        @end
+      @end
+
+      @form.field({ label: 'Title', name: 'title', class: 'w-full', value: discussion?.title, required: true })
+        @!form.input({ type: 'text', class: 'w-full', placeholder: 'What are we discussing today?' })
+      @end
+
+      @form.field({ label: 'Body text', name: 'body', value: discussion?.body, required: true })
+        @!tiptap({ class: 'textarea' })
+      @end
+
+      <div class="flex gap-3 mt-12">
+        <button type="submit" class="btn btn-primary">
+          @svg('solar:chat-round-line-bold-duotone', { class: 'w-4 h-4' })
+          {{ isEditing ? 'Update' : 'Start' }} Discussion
+        </button>
+
+        <a href="{{ route('discussions.index') }}" class="btn btn-soft" up-back>
+          Cancel
+        </a>
+      </div>
+
+    @end
+  @end
+@end

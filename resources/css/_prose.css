@@ -18,6 +18,26 @@
   & :where(code):not(pre > code) {
     @apply bg-base-content/5 border-base-content/8;
   }
+
+  &.textarea {
+    width: 100%;
+    max-width: 100%;
+    padding-block: 0;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+
+    .tiptap {
+      height: 100%;
+      min-height: calc(0.25rem * 20);
+      padding-block: calc(0.25rem * 2);
+      padding-inline-start: 0.75rem;
+      padding-inline-end: 0.75rem;
+
+      &:focus-visible {
+        outline: none;
+      }
+    }
+  }
 }
 
 .prose.no-max {

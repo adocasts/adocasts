@@ -96,7 +96,7 @@
 
           @if (!show)
             @tooltip({ text: `${commentCount.toLocaleString()} ${string.pluralize('Reply', commentCount)}`, position: 'bottom' })
-              <a href="#comments" class="badge badge-soft badge-lg">
+              <a href="#comments" class="badge badge-soft">
                 @svg('solar:chat-round-call-bold-duotone', { class: '-ml-1 -my-0.5 w-4 h-4' })
                 {{ commentCount.toLocaleString() }}
               </a>
@@ -105,7 +105,7 @@
 
           @if (!show)
             @tooltip({ text: `${viewCount.toLocaleString()} ${string.pluralize('Views', viewCount)}`, position: 'bottom' })
-              <div class="badge badge-soft badge-lg">
+              <div class="badge badge-soft">
                 @svg('solar:eye-bold-duotone', { class: '-ml-1 -my-0.5 w-4 h-4' })
                 {{ viewCount.toLocaleString() }}
               </div>
@@ -121,7 +121,7 @@
           <div>
             <a {{ html.attrs({ 
               href: route('discussions.index', {}, { qs: { topic: discussion.topic.slug }}),
-              class: ['btn btn-soft btn-sm']
+              class: ['btn btn-soft btn-xs']
             }) }}>
               {{ discussion.topic.name }}
             </a>

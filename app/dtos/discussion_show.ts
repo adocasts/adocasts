@@ -1,8 +1,8 @@
-import CommentDto from './comment.js'
 import BaseModelDto from '#dtos/base_model_dto'
 import Discussion from '#models/discussion'
-import TopicDto from './topic.js'
 import AuthorDto from './author.js'
+import CommentDto from './comment.js'
+import TopicDto from './topic.js'
 
 export default class DiscussionShowDto extends BaseModelDto {
   static model() {
@@ -10,6 +10,8 @@ export default class DiscussionShowDto extends BaseModelDto {
   }
 
   declare id: number
+  declare stateId: number
+  declare userId: number
   declare title: string
   declare slug: string
   declare body: string
@@ -33,6 +35,8 @@ export default class DiscussionShowDto extends BaseModelDto {
     if (!discussion) return
 
     this.id = discussion.id
+    this.stateId = discussion.stateId
+    this.userId = discussion.userId
     this.title = discussion.title
     this.slug = discussion.slug
     this.body = discussion.body

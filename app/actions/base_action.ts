@@ -13,7 +13,7 @@ export interface BaseActionable {
   handle?(...args: any[]): any
   asController?(ctx: HttpContext, data?: unknown, ...args: any[]): Promise<any>
   asListener?(...args: any[]): Promise<any>
-  authorize?(ctx: HttpContext): Promise<boolean> | boolean
+  authorize?(ctx: HttpContext): Promise<any> | any
   validator?: VineValidator<any, any>
   validatorOptions?: RequestValidationOptions<any>
 }
@@ -23,6 +23,7 @@ export interface Actionable extends BaseActionable {}
 export default abstract class BaseAction<HandleArgs extends any[] = []> implements BaseActionable {
   asController?(ctx: HttpContext, ...args: any[]): Promise<any>
   asListener?(...args: any[]): Promise<any>
+  authorize?(ctx: HttpContext): Promise<any> | any
   handle?(...args: HandleArgs): any
 
   static run<T extends BaseAction<any>>(
@@ -61,8 +62,10 @@ export default abstract class BaseAction<HandleArgs extends any[] = []> implemen
 
     if (typeof this.authorize === 'function') {
       const authorized = await this.authorize(ctx)
-      if (!authorized) {
-        throw new ForbiddenException()
+
+      if (typeof authorized !== 'undefined') {
+        if (!authorized) throw new ForbiddenException()
+        args.unshift(authorized)
       }
     }
 
