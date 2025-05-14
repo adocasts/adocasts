@@ -3,15 +3,15 @@ import GetTopicsFilter from '#actions/taxonomies/get_topics_filter'
 import { postSearchValidator } from '#validators/post'
 import { HttpContext } from '@adonisjs/core/http'
 import { Infer } from '@vinejs/vine/types'
-import GetLessonsPaginated from './get_lessons_paginated.js'
+import GetSnippetsPaginated from './get_snippets_paginated.js'
 
-export default class RenderLessonsIndex extends BaseAction {
+export default class RenderSnippetsIndex extends BaseAction {
   validator = postSearchValidator
 
   async asController({ view }: HttpContext, filters: Infer<typeof this.validator>) {
-    const lessons = await GetLessonsPaginated.run(filters, 'lessons.index')
-    const topics = await GetTopicsFilter.run('lessons')
+    const snippets = await GetSnippetsPaginated.run(filters, 'snippets.index')
+    const topics = await GetTopicsFilter.run('snippets')
 
-    return view.render('pages/lessons/index', { lessons, topics })
+    return view.render('pages/snippets/index', { snippets, topics })
   }
 }

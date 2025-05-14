@@ -10,7 +10,7 @@ export default class RenderBlogsIndex extends BaseAction {
 
   async asController({ view }: HttpContext, filters: Infer<typeof this.validator>) {
     const blogs = await GetBlogsPaginated.run(filters, 'blogs.index')
-    const topics = await GetTopicsFilter.run('posts')
+    const topics = await GetTopicsFilter.run('blogs')
 
     return view.render('pages/blogs/index', { blogs, topics })
   }

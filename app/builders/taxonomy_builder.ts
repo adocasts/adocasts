@@ -1,5 +1,6 @@
-import AssetTypes from '#enums/asset_types'
 import BaseBuilder from '#builders/base_builder'
+import AssetTypes from '#enums/asset_types'
+import PostTypes from '#enums/post_types'
 import Post from '#models/post'
 import Taxonomy from '#models/taxonomy'
 
@@ -15,6 +16,9 @@ export default class TaxonomyBuilder extends BaseBuilder<typeof Taxonomy, Taxono
   display() {
     this.public()
       .withPostCount()
+      .withLessonCount()
+      .withBlogCount()
+      .withSnippetCount()
       .withCollectionCount()
       .withTotalMinutes()
       .query.preload('asset')
@@ -39,6 +43,27 @@ export default class TaxonomyBuilder extends BaseBuilder<typeof Taxonomy, Taxono
 
   withPostCount() {
     this.query.withCount('posts')
+    return this
+  }
+
+  withLessonCount() {
+    this.query.withCount('posts', (q) =>
+      q.whereIn('postTypeId', [PostTypes.LESSON, PostTypes.LIVESTREAM]).as('lessons_count')
+    )
+    return this
+  }
+
+  withBlogCount() {
+    this.query.withCount('posts', (q) =>
+      q.whereIn('postTypeId', [PostTypes.BLOG, PostTypes.NEWS]).as('blogs_count')
+    )
+    return this
+  }
+
+  withSnippetCount() {
+    this.query.withCount('posts', (q) =>
+      q.where('postTypeId', PostTypes.SNIPPET).as('snippets_count')
+    )
     return this
   }
 

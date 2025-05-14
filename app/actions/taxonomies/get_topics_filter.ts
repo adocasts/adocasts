@@ -1,32 +1,30 @@
 import BaseAction from '#actions/base_action'
-import NotImplementedException from '#exceptions/not_implemented_exception'
 import GetTopicList from '#actions/taxonomies/get_topic_list'
-import TopicDto from '../../dtos/topic.js'
+import NotImplementedException from '#exceptions/not_implemented_exception'
 import Taxonomy from '#models/taxonomy'
+import TopicDto from '../../dtos/topic.js'
 
 export default class GetTopicsFilter extends BaseAction<['collections' | 'posts' | 'discussions']> {
-  async handle(type: 'collections' | 'posts' | 'discussions') {
+  async handle(type: 'collections' | 'posts' | 'lessons' | 'blogs' | 'snippets' | 'discussions') {
     switch (type) {
       case 'collections':
-        return this.forCollections()
+        return this.#get('collections_count')
       case 'posts':
-        return this.forPosts()
+        return this.#get('posts_count')
+      case 'lessons':
+        return this.#get('lessons_count')
+      case 'blogs':
+        return this.#get('blogs_count')
+      case 'snippets':
+        return this.#get('snippets_count')
       case 'discussions':
-        return this.forDiscussions()
+        return this.#forDiscussions()
       default:
         throw new NotImplementedException(`${this.constructor.name} does not implement ${type}`)
     }
   }
 
-  async forCollections() {
-    return this.#get('collections_count')
-  }
-
-  async forPosts() {
-    return this.#get('posts_count')
-  }
-
-  async forDiscussions() {
+  async #forDiscussions() {
     const topics = await Taxonomy.build()
       .orderBy('name')
       .withDiscussionCount()

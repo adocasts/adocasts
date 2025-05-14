@@ -1,0 +1,80 @@
+@layout()
+  <main class="container mx-auto">
+    <div class="p-3 lg:p-6 !pb-0">
+      <div class="aspect-video max-h-[calc(100vh_-_120px)] mx-auto bg-base-200 rounded-[var(--radius-box)]"></div>
+    </div>
+
+    <div class="max-w-prose mx-auto flex gap-3 lg:gap-6 mt-6 lg:mt-8">
+      <div class="@container flex-1">
+        <h1 class="heading-2a">
+          {{ snippet.title }}
+        </h1>
+
+        @if (snippet.author)
+          <div class="flex gap-3 lg:gap-3 items-center mb-6">
+            @profile.link({ user: snippet.author })
+              <div class="avatar">
+                <div class="w-10 rounded-full">
+                  @!user.avatar({ user: snippet.author, loading: 'lazy', alt: snippet.author.handle })
+                </div>
+              </div>
+            @end
+
+            <div class="flex flex-col">
+              <h5 class="text-xs opacity-60">Published by</h5>
+              <div class="flex gap-x-3 items-baseline">
+                @profile.link({ user: snippet.author })
+                  <span>
+                    {{ snippet.author.handle }} 
+                  </span>
+                @end
+              
+                <span class="text-primary relative top-[0.25rem]">
+                  @svg('solar:double-alt-arrow-right-broken', { class: 'w-4 h-4' })
+                </span>
+
+                <span class="flex-none opacity-60 text-sm">
+                  <time datetime="{{ snippet.createdAt }}">{{ TimeService.timeago(snippet.publishAt) }}</time>
+                </span>
+              </div>
+            </div>
+          </div>
+        @endif
+
+        <div class="flex items-center text-sm uppercase gap-2 -ml-7">
+          @svg('solar:double-alt-arrow-right-broken', { class: 'w-5 h-5 text-primary' })
+          In This snippet
+        </div>
+        <p class="text-pretty font-medium opacity-60 sm:text-lg mb-6">
+          @if (snippet.description.startsWith('In this snippet,'))
+            @let([char, ...desc] = snippet.description.replace('In this snippet,', '').trim())
+            
+            {{ [char?.toUpperCase(), ...desc].join('') }}
+          @else
+            {{ snippet.description }}
+          @endif
+        </p>
+
+        @if (snippet.body)
+          <article class="prose">
+            {{{ await parser.highlight(snippet.body) }}}
+          </article>
+        @endif
+
+        <div class="mt-8 lg:mt-12 -mx-6" up-comments>
+          <div class="p-6 bg-base-200 rounded-[var(--radius-box)] mb-6">
+            <h3 class="heading-3 !mb-0">
+              Join the Discussion
+              <span class="opacity-60 font-normal">({{ snippet.comments.length }} comments)</span>
+            </h3>
+          </div>
+
+          @!comment.form({ commentable: snippet, commentTypeId: CommentTypes.POST, class: 'mb-6' })
+          @!comment.list({ commentable: snippet, comments: snippet.comments })
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+@end

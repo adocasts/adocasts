@@ -1,14 +1,14 @@
-import AssetDto from '../dtos/asset.js'
-import Collection from '#models/collection'
 import BaseBuilder from '#builders/base_builder'
+import PostTypes from '#enums/post_types'
 import Sorts from '#enums/sorts'
 import States from '#enums/states'
 import NotImplementedException from '#exceptions/not_implemented_exception'
-import PostTypes from '#enums/post_types'
+import Collection from '#models/collection'
 import Post from '#models/post'
 import Taxonomy from '#models/taxonomy'
-import AuthorDto from '../dtos/author.js'
 import { RelationQueryBuilderContract } from '@adonisjs/lucid/types/relations'
+import AssetDto from '../dtos/asset.js'
+import AuthorDto from '../dtos/author.js'
 
 export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
   constructor() {
@@ -42,6 +42,20 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
 
   displayBlogShow({ skipPublishCheck = false } = {}) {
     this.whereBlog()
+    this.if(!skipPublishCheck, (builder) => builder.published())
+    this.orderPublished().query.apply((scope) => scope.forBlogDisplayShow())
+    return this
+  }
+
+  displaySnippet({ skipPublishCheck = false } = {}) {
+    this.whereType(PostTypes.SNIPPET)
+    this.if(!skipPublishCheck, (builder) => builder.published())
+    this.orderPublished().query.apply((scope) => scope.forBlogDisplay())
+    return this
+  }
+
+  displaySnippetShow({ skipPublishCheck = false } = {}) {
+    this.whereType(PostTypes.SNIPPET)
     this.if(!skipPublishCheck, (builder) => builder.published())
     this.orderPublished().query.apply((scope) => scope.forBlogDisplayShow())
     return this

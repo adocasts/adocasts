@@ -40,6 +40,8 @@ const StoreDiscussion = () => import('#actions/discussions/store_discussion')
 const RenderDiscussionsCreate = () => import('#actions/discussions/render_discussions_create')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const RenderSnippetsShow = () => import('#actions/posts/render_snippets_show')
+const RenderSnippetsIndex = () => import('#actions/posts/render_snippets_index')
 const ToggleDiscussionSolvedAt = () => import('#actions/discussions/toggle_discussion_solved_at')
 const DestroyDiscussion = () => import('#actions/discussions/destroy_discussion')
 const UpdateDiscussion = () => import('#actions/discussions/update_discussion')
@@ -89,6 +91,10 @@ router.get('/lessons/:slug', [RenderLessonShow]).as('lessons.show')
 //* Blogs
 router.get('/blog', [RenderBlogsIndex]).as('blogs.index')
 router.get('/blog/:slug', [RenderBlogsShow]).as('blogs.show')
+
+//* Snippets
+router.get('/snippets', [RenderSnippetsIndex]).as('snippets.index')
+router.get('/snippets/:slug', [RenderSnippetsShow]).as('snippets.show')
 
 //* Discussions
 router.get('/forum', [RenderDiscussionsIndex]).as('discussions.index')
