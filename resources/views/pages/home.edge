@@ -11,13 +11,13 @@
           Here's What You've Been Up To!
         </h3>
 
-        @!stat.user()
+        @!stat.user({ stats })
       @else
         <h3 class="text-2xl font-black mb-3">
           We'll Be Here When You're Ready!
         </h3>
         
-        @!stat.adocasts()
+        @!stat.adocasts({ stats })
       @endif
     </div>
   </section>

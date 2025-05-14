@@ -2,7 +2,7 @@
   @!stat.item({
     color: 'text-primary',
     icon: 'solar:video-library-bold-duotone',
-    stat: '375+',
+    stat: stats.lessons.toLocaleString(),
     title: 'An Ever Growing Library',
     desc: 'Lessons Available'
   })
@@ -10,7 +10,7 @@
   @!stat.item({
     color: 'text-secondary',
     icon: 'solar:star-rainbow-bold-duotone',
-    stat: '24k+',
+    stat: stats.completed.toLocaleString(),
     title: 'So Much Learned',
     desc: '<span class="hidden lg:inline">Member</span> Completed Lessons'
   })
@@ -18,7 +18,7 @@
   @!stat.item({
     color: 'text-accent',
     icon: 'solar:rocket-2-bold-duotone',
-    stat: '3k+',
+    stat: stats.users.toLocaleString(),
     title: 'Thousands of Us',
     desc: 'Free & Plus Members'
   })
@@ -26,7 +26,7 @@
   @!stat.item({
     color: 'text-info',
     icon: 'solar:chat-round-like-bold-duotone',
-    stat: '775+',
+    stat: stats.comments.toLocaleString(),
     title: 'Constantly Discussing',
     desc: 'Comments Contributed'
   })

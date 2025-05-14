@@ -1,8 +1,8 @@
+import BaseModelDto, { StaticModelDto } from '#dtos/base_model_dto'
 import is from '@adonisjs/core/helpers/is'
 import stringHelpers from '@adonisjs/core/helpers/string'
 import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 import { StrictValues } from '@adonisjs/lucid/types/querybuilder'
-import BaseModelDto, { StaticModelDto } from '#dtos/base_model_dto'
 
 export default class BaseBuilder<Model extends LucidModel, Row extends LucidRow> {
   qthen:
@@ -101,12 +101,12 @@ export default class BaseBuilder<Model extends LucidModel, Row extends LucidRow>
 
   async count(column: string = '*') {
     const result = await this.query.count(column, 'total').first()
-    return result?.$extras.total ?? 0
+    return Number(result?.$extras.total) ?? 0
   }
 
   async sum(column: string) {
     const result = await this.query.sum(column, 'sum').first()
-    return result?.$extras.sum ?? 0
+    return Number(result?.$extras.sum) ?? 0
   }
 
   select(...columns: any[]) {

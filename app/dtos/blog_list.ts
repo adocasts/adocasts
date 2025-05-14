@@ -1,6 +1,7 @@
-import AssetDto from './asset.js'
 import Post from '#models/post'
+import AssetDto from './asset.js'
 import BaseModelDto from './base_model_dto.js'
+import TopicDto from './topic.js'
 
 export default class BlogListDto extends BaseModelDto {
   static model() {
@@ -17,6 +18,7 @@ export default class BlogListDto extends BaseModelDto {
   declare routeUrl: string
   declare videoSeconds: number
   declare asset: AssetDto | null
+  declare topics: TopicDto[]
   declare meta: Record<string, any>
 
   constructor(post?: Post) {
@@ -34,6 +36,7 @@ export default class BlogListDto extends BaseModelDto {
     this.routeUrl = post.routeUrl
     this.videoSeconds = post.videoSeconds
     this.asset = AssetDto.fromModel(post.assets?.at(0))
+    this.topics = TopicDto.fromArray(post.taxonomies)
     this.meta = post.$extras
   }
 }

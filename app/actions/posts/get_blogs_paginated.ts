@@ -1,9 +1,10 @@
 import BaseAction from '#actions/base_action'
+import BlogListDto from '#dtos/blog_list'
+import TopicDto from '#dtos/topic'
 import Post from '#models/post'
 import { postSearchValidator } from '#validators/post'
 import router from '@adonisjs/core/services/router'
 import { Infer } from '@vinejs/vine/types'
-import BlogListDto from '#dtos/blog_list'
 
 type Filters = Infer<typeof postSearchValidator> | undefined
 
@@ -15,6 +16,7 @@ export default class GetBlogsPaginated extends BaseAction<[Filters, string | und
     const paginator = await Post.build()
       .displayBlog()
       .search(pattern)
+      .withTaxonomies((q) => q.selectDto(TopicDto))
       .whereHasTaxonomy(topic)
       .orderBySort(sort)
       .paginate(page, perPage)

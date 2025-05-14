@@ -1,0 +1,23 @@
+@card({ class: $props.class })
+  <div class="card-body !static">
+    <div class="flex items-center gap-3 lg:mb-1.5">
+      @each (topic in blog.topics)
+        <div class="badge badge-soft badge-sm badge-primary">
+          {{ topic.name }}
+        </div>
+      @endeach
+
+      <div class="badge badge-xs lg:badge-sm badge-accent">NEW</div>
+    </div>
+
+    <h2 class="card-title font-semibold text-base-title text-base md:text-lg">
+      <a href="{{ blog.routeUrl }}" class="link-grow">
+        {{ blog.title }}
+      </a>
+    </h2>
+
+    <p class="line-clamp-3 opacity-60 text-sm">
+      {{ blog.description }}
+    </p>
+  </div>
+@end

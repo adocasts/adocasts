@@ -54,8 +54,8 @@
 
     <main class="flex-1" blog-list>
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6">
-        @each (lesson in blogs.data)
-          @!lesson.card({ lesson })
+        @each (blog in blogs.data)
+          @!blog.card({ blog })
         @endeach
       </div>
 
