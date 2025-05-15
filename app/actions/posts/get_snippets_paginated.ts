@@ -10,23 +10,24 @@ type Filters = Infer<typeof postSearchValidator> | undefined
 
 export default class GetSnippetsPaginated extends BaseAction<[Filters, string | undefined]> {
   async handle(
-    { page = 1, perPage = 20, pattern, topic, sort }: Filters = {},
-    routeIdentifier?: string
+    { page = 1, perPage = 20, ...filters }: Filters = {},
+    routeIdentifier: string = '',
+    routeParams: Record<string, any> = {}
   ) {
     const paginator = await Post.build()
       .displaySnippet()
-      .search(pattern)
+      .search(filters.pattern)
       .withTaxonomies((q) => q.selectDto(TopicDto))
-      .whereHasTaxonomy(topic)
-      .orderBySort(sort)
+      .whereHasTaxonomy(filters.topic)
+      .orderBySort(filters.sort)
       .paginate(page, perPage)
 
     if (routeIdentifier) {
-      const baseUrl = router.makeUrl(routeIdentifier)
+      const baseUrl = router.makeUrl(routeIdentifier, routeParams)
       paginator.baseUrl(baseUrl)
     }
 
-    paginator.queryString({ page, pattern, topic, sort })
+    paginator.queryString(filters)
 
     return BlogListDto.fromPaginator(paginator, { start: 1, end: paginator.lastPage })
   }

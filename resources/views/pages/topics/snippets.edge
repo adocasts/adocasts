@@ -43,15 +43,15 @@
       <main class="@container flex-1" up-main-content>
         @if (lessons.data.length)
           <section class="section-y">
-            <h3 class="heading-3">Lessons</h3>
+            <h3 class="heading-3">Snippets</h3>
             <main class="flex-1 grid grid-cols-2 @lg:grid-cols-3 gap-3 @lg:gap-6">
-              @each (item in lessons.data)
-                @!lesson.card({ lesson: item, size: 'sm' })
+              @each (item in snippets.data)
+                @!blog.card({ blog: item, size: 'sm' })
               @endeach
             </main>
           </section>
 
-          @!pagination({ meta: lessons.meta })
+          @!pagination({ meta: snippets.meta })
         @endif
       </main>
 

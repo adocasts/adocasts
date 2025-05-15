@@ -40,6 +40,7 @@ const StoreDiscussion = () => import('#actions/discussions/store_discussion')
 const RenderDiscussionsCreate = () => import('#actions/discussions/render_discussions_create')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const RenderTopicShowSnippets = () => import('#actions/taxonomies/render_topic_show_snippets')
 const RenderSnippetsShow = () => import('#actions/posts/render_snippets_show')
 const RenderSnippetsIndex = () => import('#actions/posts/render_snippets_index')
 const ToggleDiscussionSolvedAt = () => import('#actions/discussions/toggle_discussion_solved_at')
@@ -83,6 +84,7 @@ router.get('/topics/:slug', [RenderTopicShow]).as('topics.show')
 router.get('/topics/:slug/series', [RenderTopicShowSeries]).as('topics.show.series')
 router.get('/topics/:slug/discussions', [RenderTopicShowDiscussions]).as('topics.show.discussions')
 router.get('/topics/:slug/lessons', [RenderTopicShowLessons]).as('topics.show.lessons')
+router.get('/topics/:slug/snippets', [RenderTopicShowSnippets]).as('topics.show.snippets')
 
 //* Lessons
 router.get('/lessons', [RenderLessonsIndex]).as('lessons.index')

@@ -1,0 +1,9 @@
+@let(active = request.ctx.route.name === $props.identifier)
+@let(href = route($props.identifier, { slug: $props.topic.slug }))
+@let(classes = html.classNames(['flex justify-between', $props.class, { 'menu-active': active }]))
+
+<li>
+  <a {{ $props.except(['identifier', 'topic']).merge({ class: classes, href }).toAttrs() }} up-target="[up-main-content], [up-main-menu]" up-scroll="target">
+    {{{ await $slots.main() }}}
+  </a>
+</li>

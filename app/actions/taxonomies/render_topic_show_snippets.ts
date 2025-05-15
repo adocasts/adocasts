@@ -10,21 +10,23 @@ import GetTopic from './get_topic.js'
 
 type Validator = Infer<typeof topicPaginatorValidator>
 
-export default class RenderTopicShowLessons extends BaseAction {
+export default class RenderTopicShowSnippets extends BaseAction {
   validator = topicPaginatorValidator
 
   async asController({ view, params }: HttpContext, data: Validator) {
     const topic = await GetTopic.run(params.slug)
-    const lessons = await this.#getLessons(params.slug, data)
+    const snippets = await this.#getSnippets(params.slug, data)
 
     const series = await GetSeriesPaginated.run({ topic: topic.slug, perPage: 1 })
     const discussions = await GetDiscussionsPaginated.run({ topic: topic.slug, perPage: 1 })
-    const snippets = await GetSnippetsPaginated.run({ topic: topic.slug, perPage: 1 })
+    const lessons = await GetLessonsPaginated.run({ topic: topic.slug, perPage: 1 })
 
-    return view.render('pages/topics/lessons', { topic, series, discussions, lessons, snippets })
+    return view.render('pages/topics/snippets', { topic, series, discussions, lessons, snippets })
   }
 
-  #getLessons(topic: string, { page, perPage }: Validator) {
-    return GetLessonsPaginated.run({ topic, page, perPage }, 'topics.show.lessons', { slug: topic })
+  #getSnippets(topic: string, { page, perPage }: Validator) {
+    return GetSnippetsPaginated.run({ topic, page, perPage }, 'topics.show.snippets', {
+      slug: topic,
+    })
   }
 }

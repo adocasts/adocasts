@@ -105,6 +105,24 @@
             </main>
           </section>
         @endif
+
+        @if (snippets.data.length)
+          <section class="section-y">
+            <div class="flex justify-between gap-6 items-baseline">
+              <h3 class="heading-3">Snippets</h3>
+              <div>
+                <a href="{{ route('topics.show.snippets', { slug: topic.slug }) }}" class="link link-hover opacity-60 hover:opacity-100 duration-200" up-target="[up-main-content], [up-main-menu]" up-scroll="target">
+                  View All ({{ snippets.meta.total }})
+                </a>
+              </div>
+            </div>
+            <main class="flex-1 grid grid-cols-2 @lg:grid-cols-3 gap-3 @lg:gap-6">
+              @each (item in snippets.data)
+                @!blog.card({ blog: item, size: 'sm' })
+              @endeach
+            </main>
+          </section>
+        @endif
       </main>
 
       <aside class="@container hidden lg:block w-[350px] section-vars mt-[calc(var(--padding-y)_+_28px_+_.75rem)] sticky top-20">
@@ -140,41 +158,7 @@
           @endif
         </div>
 
-        <div class="p-6 bg-base-200 rounded-[var(--radius-box)] mb-6">
-          <ul class="menu !p-0 w-full">
-            <li class="menu-title">{{ topic.name }} Content</li>
-            <li>
-              <a href="{{ route('topics.show', { slug: topic.slug }) }}" class="flex justify-between" up-target="[up-main-content], [up-main-menu]" up-scroll="target">
-                <span>Sub-Topics</span>
-                <div class="badge badge-sm">{{ topic.children?.length }}</div>
-              </a>
-            </li>
-            <li>
-              <a href="{{ route('topics.show.series', { slug: topic.slug }) }}" class="flex justify-between" up-target="[up-main-content], [up-main-menu]" up-scroll="target">
-                <span>Series</span>
-                <div class="badge badge-sm">{{ series.meta.total }}</div>
-              </a>
-            </li>
-            <li>
-              <a href="{{ route('topics.show.discussions', { slug: topic.slug }) }}" class="flex justify-between" up-target="[up-main-content], [up-main-menu]" up-scroll="target">
-                <span>Discussions</span>
-                <div class="badge badge-sm">{{ discussions.meta.total }}</div>
-              </a>
-            </li>
-            {{-- <li>
-              <a href="{{ route('topics.show.series', { slug: topic.slug }) }}" class="flex justify-between" up-target="[up-main-content], [up-main-menu]" up-scroll="target">
-                <span>Snippets</span>
-                <div class="badge badge-sm">{{ topic.children?.length }}</div>
-              </a>
-            </li> --}}
-            <li>
-              <a href="{{ route('topics.show.lessons', { slug: topic.slug }) }}" class="flex justify-between" up-target="[up-main-content], [up-main-menu]" up-scroll="target">
-                <span>Lessons</span>
-                <div class="badge badge-sm">{{ lessons.meta?.total }}</div>
-              </a>
-            </li>
-          </ul>
-        </div>
+        @include('partials/topics/nav')
       </aside>
     </div>
   </div>

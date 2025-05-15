@@ -1,30 +1,31 @@
 import BaseAction from '#actions/base_action'
-import LessonListDto from '../../dtos/lesson_list.js'
+import SeriesListDto from '#dtos/series_list'
+import TopicDto from '#dtos/topic'
+import Collection from '#models/collection'
+import { seriesPaginatorValidator } from '#validators/series'
 import router from '@adonisjs/core/services/router'
 import { Infer } from '@vinejs/vine/types'
+import LessonListDto from '../../dtos/lesson_list.js'
 import GetSeriesList, { DbOptions } from './get_series_list.js'
-import Collection from '#models/collection'
-import TopicDto from '#dtos/topic'
-import { seriesPaginatorValidator } from '#validators/series'
-import SeriesListDto from '#dtos/series_list'
 
 type Filters = Infer<typeof seriesPaginatorValidator>
 
 export default class GetSeriesPaginated extends BaseAction<[Filters, string | undefined]> {
   async handle(
     { page = 1, perPage = 20, difficulty, topic, sort }: Filters = {},
-    routeIdentifier?: string
+    routeIdentifier: string = '',
+    routeParams: Record<string, any> = {}
   ) {
     const paginator = await GetSeriesList.fromDb({ topic })
       .selectDto(SeriesListDto)
       .paginate(page, perPage)
 
     if (routeIdentifier) {
-      const baseUrl = router.makeUrl(routeIdentifier)
+      const baseUrl = router.makeUrl(routeIdentifier, routeParams)
       paginator.baseUrl(baseUrl)
     }
 
-    paginator.queryString({ page, difficulty, topic, sort })
+    paginator.queryString({ difficulty, topic, sort })
 
     return SeriesListDto.fromPaginator(paginator, { start: 1, end: paginator.lastPage })
   }
