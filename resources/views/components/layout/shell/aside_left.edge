@@ -1,0 +1,21 @@
+@let(main = $props.main || {})
+@let(aside = $props.aside || {})
+
+@assign(main.class = html.classNames(['@container section-y flex-1', $props.main?.class]))
+@assign(aside.class = html.classNames(['@container w-[300px] lg:w-[330px] section-y lg:pr-10 lg:border-r border-base-100/50', $props.aside?.class]))
+
+<div class="container mx-auto flex flex-wrap gap-6 lg:gap-12 relative z-10">
+  <aside {{ html.attrs(aside) }}>
+    @if (sticky)
+      <div class="lg:sticky top-24">
+        {{{ await $slots.aside() }}}
+      </div>
+    @else
+      {{{ await $slots.aside() }}}
+    @endif
+  </aside>
+
+  <main {{ html.attrs(main) }}>
+    {{{ await $slots.main() }}}
+  </main>
+</div>

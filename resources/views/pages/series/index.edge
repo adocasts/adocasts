@@ -1,16 +1,49 @@
 @layout()
+  @layout.shell.asideLeft({ sticky: true })
+    @slot('aside')
 
-  <div class="container mx-auto relative">
-    <div class="absolute bottom-3/4 -right-48 translate-y-1/2 w-3/4 apsect-3/2 faded-pattern to-base-300">
-      <img 
-        src="/imgs/patterns/pattern_01.svg" 
-        alt="Background pattern" 
-        class="object-contain object-center grayscale opacity-10"
-      >
-    </div>
-  </div>
+      <form method="GET" action="{{ route('series.index') }}" up-target="[series-list]" up-scroll="false" up-autosubmit>
+        <div class="mb-3 md:mb-6">
+          <div class="font-semibold opacity-60 text-sm mb-3">Order by</div>
+          @form.select({ name: 'sort', selected: filters?.sort })
+            @!form.select.option({ value: Sorts.LATEST, text: 'Latest' })
+            {{-- @!form.select.option({ value: Sorts.POPULAR, text: 'Popular' }) --}}
+            @!form.select.option({ value: Sorts.ALPHA, text: 'Alphabetical' })
+            @!form.select.option({ value: Sorts.LONGEST, text: 'Longest duration' })
+            @!form.select.option({ value: Sorts.SHORTEST, text: 'Shortest duration' })
+          @end
+        </div>
 
-  <section class="section-container mx-auto relative z-[1]">
+        <div class="mb-3 md:mb-6">
+          <div class="font-semibold opacity-60 text-sm mb-3">Filter by difficulty</div>
+          @form.filter({ name: 'difficulty', checked: filters?.difficulty })
+            @!form.filter.option({ value: Difficulties.BEGINNER, label: 'Beginner' })
+            @!form.filter.option({ value: Difficulties.INTERMEDIATE, label: 'Intermediate' })
+            @!form.filter.option({ value: Difficulties.ADVANCED, label: 'Advanced' })
+          @end
+        </div>
+        
+        {{-- <div class="mb-3 md:mb-6">
+          <div class="font-bold text-sm mb-3">Filter by access</div>
+          <div class="filter">
+            <input class="btn filter-reset" type="radio" name="topics" aria-label="All" />
+            <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="access" value="free" aria-label="Free">
+            <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="access" value="plus" aria-label="Adocasts Plus">
+          </div>
+        </div> --}}
+        
+        <div class="mb-3 md:mb-6">
+          <div class="font-semibold opacity-60 text-sm mb-3">Filter by topic</div>
+          @form.filter({ name: 'topic', checked: filters?.topic })
+            @each (topic in topics)
+              @!form.filter.option({ value: topic.slug, label: topic.name })
+            @endeach
+          @end
+        </div>
+      </form>
+
+    @endslot
+
     <h1 class="heading-2">
       Series
     </h1>
@@ -20,59 +53,10 @@
       Series are a great way to learn a topic in a structured way.
     </p>
     
-    <div class="flex flex-wrap gap-3 lg:gap-6">
-      <aside class="w-full md:w-[300px]">
-        <form method="GET" action="{{ route('series.index') }}" up-target="[series-list]" up-scroll="false" up-autosubmit>
-          <h3 class="heading-3">
-            Filter
-          </h3>
-          
-          <div class="mb-3 md:mb-6">
-            <div class="font-semibold opacity-60 text-sm mb-3">Order by</div>
-            @form.select({ name: 'sort', selected: filters?.sort })
-              @!form.select.option({ value: Sorts.LATEST, text: 'Latest' })
-              {{-- @!form.select.option({ value: Sorts.POPULAR, text: 'Popular' }) --}}
-              @!form.select.option({ value: Sorts.ALPHA, text: 'Alphabetical' })
-              @!form.select.option({ value: Sorts.LONGEST, text: 'Longest duration' })
-              @!form.select.option({ value: Sorts.SHORTEST, text: 'Shortest duration' })
-            @end
-          </div>
-
-          <div class="mb-3 md:mb-6">
-            <div class="font-semibold opacity-60 text-sm mb-3">Filter by difficulty</div>
-            @form.filter({ name: 'difficulty', checked: filters?.difficulty })
-              @!form.filter.option({ value: Difficulties.BEGINNER, label: 'Beginner' })
-              @!form.filter.option({ value: Difficulties.INTERMEDIATE, label: 'Intermediate' })
-              @!form.filter.option({ value: Difficulties.ADVANCED, label: 'Advanced' })
-            @end
-          </div>
-          
-          {{-- <div class="mb-3 md:mb-6">
-            <div class="font-bold text-sm mb-3">Filter by access</div>
-            <div class="filter">
-              <input class="btn filter-reset" type="radio" name="topics" aria-label="All" />
-              <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="access" value="free" aria-label="Free">
-              <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="access" value="plus" aria-label="Adocasts Plus">
-            </div>
-          </div> --}}
-          
-          <div class="mb-3 md:mb-6">
-            <div class="font-semibold opacity-60 text-sm mb-3">Filter by topic</div>
-            @form.filter({ name: 'topic', checked: filters?.topic })
-              @each (topic in topics)
-                @!form.filter.option({ value: topic.slug, label: topic.name })
-              @endeach
-            @end
-          </div>
-        </form>
-      </aside>
-
-      <main class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-6 " series-list>
-        @each (item in series)
-          @!series.card({ series: item })
-        @endeach
-      </main>
-    </div>
-  </section>
-
+    <section class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-6 " series-list>
+      @each (item in series)
+        @!series.card({ series: item })
+      @endeach
+    </section>
+  @end
 @end

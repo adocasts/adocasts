@@ -1,23 +1,7 @@
 @layout()
+  @layout.shell.asideLeft({ sticky: true }) 
+    @slot('aside')
 
-<div class="container mx-auto relative">
-  <div class="absolute bottom-3/4 -right-48 translate-y-1/2 w-3/4 apsect-3/2 faded-pattern to-base-300">
-    <img src="/imgs/patterns/pattern_01.svg" alt="Background pattern"
-      class="object-contain object-center grayscale opacity-10">
-  </div>
-</div>
-
-<section class="section-container mx-auto relative z-[1]">
-  <h1 class="heading-2">
-    Blog
-  </h1>
-
-  <p class="mt-6 mb-12 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
-    Some test or something ...
-  </p>
-
-  <div class="flex flex-wrap gap-3 lg:gap-6">
-    <aside class="w-full md:w-[300px]">
       <form method="GET" action="{{ route('blogs.index') }}" up-target="[blog-list]" up-scroll="false" up-autosubmit>
         <h3 class="heading-3">
           Filter
@@ -50,9 +34,18 @@
           @end
         </div>
       </form>
-    </aside>
 
-    <main class="flex-1" blog-list>
+    @endslot
+
+    <h1 class="heading-2">
+      Blog
+    </h1>
+
+    <p class="mt-6 mb-12 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
+      Some test or something ...
+    </p>
+
+    <section class="flex-1" blog-list>
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6">
         @each (blog in blogs.data)
           @!blog.card({ blog })
@@ -60,8 +53,6 @@
       </div>
 
       @!pagination({ meta: blogs.meta })
-    </main>
-  </div>
-</section>
-
+    </section>
+  @end
 @end
