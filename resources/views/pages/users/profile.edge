@@ -1,0 +1,77 @@
+@layout()
+
+<div x-data="{ isHeaderVisible: true }">
+  <div class="relative" x-intersect:enter="isHeaderVisible = true" x-intersect:leave="isHeaderVisible = false">
+    <img
+      class="absolute top-1/2 right-0 -translate-y-1/2 w-1/3 aspect-square object-cover object-center opacity-20 blur-2xl mask-gradient-to-bl z-[1]"
+      src="{{ user.avatar }}" alt="{{ user.handle }}">
+
+    <div class="section-container mx-auto flex items-center xl:min-h-[250px]">
+      <div class="flex-1">
+        <h1 class="heading-2">
+          {{ user.handle }}
+        </h1>
+
+        @if (user.profile.biography)
+          <p class="max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-base/6">
+            {{ user.profile.biography }}
+          </p>
+        @endif
+      </div>
+
+      <div class="lg:w-[350px] flex justify-center items-center">
+        <div class="w-56 relative">
+          <img src="{{ user.avatar }}" class="rounded-xl relative z-10" alt="{{ user.handle }}">
+          <img src="{{ user.avatar }}" class="opacity-60 rotate-12 origin-center absolute inset-0 blur-2xl"
+            alt="{{ user.handle }}">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-container mx-auto flex flex-wrap items-start gap-6 lg:gap-12 !pt-0 relative z-10">
+    <main class="@container flex-1" up-main-content>
+      {{-- @if (lessons.data.length)
+        <section class="section-y">
+          <h3 class="heading-3">Lessons</h3>
+          <main class="flex-1 grid grid-cols-2 @lg:grid-cols-3 gap-3 @lg:gap-6">
+            @each (item in lessons.data)
+              @!lesson.card({ lesson: item, size: 'sm' })
+            @endeach
+          </main>
+        </section>
+
+        @!pagination({ meta: lessons.meta })
+      @endif --}}
+    </main>
+
+    <aside
+      class="@container hidden lg:block w-[350px] section-vars mt-[calc(var(--padding-y)_+_28px_+_.75rem)] sticky top-20">
+      <div x-show="!isHeaderVisible" x-transition x-cloak
+        class="p-6 bg-base-200 relative z-10 rounded-[var(--radius-box)] mb-6">
+        <div class="flex items-center gap-6 mb-6">
+          <div class="w-20 relative">
+            <img src="{{ user.avatar }}" class="rounded-xl relative z-10"
+              alt="{{ user.handle }}">
+          </div>
+
+          <div>
+            <h2 class="heading-3">
+              {{ user.handle }}
+            </h2>
+          </div>
+        </div>
+
+        @if (user.profile.biography)
+          <p class="max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-base/6">
+            {{ user.profile.biography }}
+          </p>
+        @endif
+      </div>
+
+      @include('partials/users/profile/nav')
+    </aside>
+  </div>
+</div>
+
+@end

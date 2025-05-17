@@ -40,6 +40,7 @@ const StoreDiscussion = () => import('#actions/discussions/store_discussion')
 const RenderDiscussionsCreate = () => import('#actions/discussions/render_discussions_create')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const RenderUserProfile = () => import('#actions/users/render_user_profile')
 const RenderTopicShowSnippets = () => import('#actions/taxonomies/render_topic_show_snippets')
 const RenderSnippetsShow = () => import('#actions/posts/render_snippets_show')
 const RenderSnippetsIndex = () => import('#actions/posts/render_snippets_index')
@@ -71,6 +72,7 @@ router.delete('/sessions', [DestroySession]).as('auth.sessions.destroy')
 
 //* Users
 router.get('/users/menu', [RenderUserMenu]).as('users.menu')
+router.get('/:handle/:tab?', [RenderUserProfile]).as('users.profile')
 
 //* Series
 router.get('/series', [RenderSeriesIndex]).as('series.index')
