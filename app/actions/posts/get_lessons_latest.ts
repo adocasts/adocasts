@@ -1,6 +1,6 @@
-import LessonListDto from '../../dtos/lesson_list.js'
-import Post from '#models/post'
 import BaseAction from '#actions/base_action'
+import Post from '#models/post'
+import LessonListDto from '../../dtos/lesson_list.js'
 
 type Options = {
   limit?: number
@@ -15,7 +15,7 @@ export default class GetLessonsLatest extends BaseAction<[Options]> {
     return lessons
   }
 
-  static async fromDb({ limit = 12 }: Options = {}) {
+  static async fromDb({ limit = 10 }: Options = {}) {
     return Post.build().displayLesson().orderPublished().limit(limit).dto(LessonListDto)
   }
 }

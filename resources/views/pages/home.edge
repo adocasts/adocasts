@@ -1,11 +1,69 @@
 @layout()
 
-  <section class="relative z-[2]">
-    @!hero.getShipDone()
+  <section class="container-2xl section-y mx-auto relative z-[2]">
+    {{-- @!hero.getShipDone() --}}
+
+    <div class="container mx-auto h-[calc(100%-125px)] flex flex-col justify-center relative z-20">
+      <h2
+        class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl 2xl:text-9xl font-black mb-3 sm:mb-4 uppercase drop-shadow-lg">
+        <span class="inline-block bg-primary bg-gradient-to-b from-white via-white/75 to-base-content/50 bg-clip-text text-transparent">
+          Get
+        </span>
+        <span class="inline-block bg-primary bg-gradient-to-b from-white via-white/75 to-base-content/50 bg-clip-text text-transparent">
+          Ship
+        </span>
+        <span class="inline-block bg-primary bg-gradient-to-b from-white via-white/75 to-base-content/50 bg-clip-text text-transparent">
+          Done
+        </span>
+      </h2>
+
+      <h1 class="md:text-lg lg:text-2xl 3xl:text-3xl mb-8 lg:mb-12 2xl:mb-16 drop-shadow-sm max-w-[42ch]">
+        Adocasts teaches you how to ship NodeJS apps in no time using AdonisJS and it's built-in batteries.
+      </h1>
+
+      <div class="flex flex-wrap items-center gap-y-1.5 gap-x-3 md:gap-x-6">
+        <a href="/series/lets-learn-adonisjs-6" class="btn btn-accent btn-soft md:btn-wide">
+          Ship Your First App
+          @svg('solar:map-arrow-right-bold-duotone')
+        </a>
+
+        <a href="/signup" class="btn btn-soft md:btn-wide">
+          Get Started for Free
+        </a>
+      </div>
+
+      <div class="absolute right-16 top-1/2 -translate-y-1/2 prose scale-75 origin-right w-1/2 !max-w-full">
+        @let(code = `
+@inject()
+export default class HomeController {
+  constructor(protected postService: PostService) {}
+
+  async handle({ view, auth }: HttpContext) {
+    if (auth.user) {
+      const inProgress = await auth.user.related('progressions')
+        .query()
+        .apply((scope) => scope.whereSeries())
+        .orderBy('updatedAt', 'desc')
+        .limit(6)
+
+      view.share({ inProgress })
+    }
+
+    return view.render('pages/home', { 
+      topics: await Topics.query().orderBy('name'),
+      series: await Series.query().orderBy('updatedAt', 'desc').limit(5),
+      lessons: await this.postService.getLatestLessons({ limit: 12 }),
+    })
+  }
+}
+        `.trim())
+        {{{ await parser.highlight(`<pre><code class="language-typescript">${code}</code></pre>`) }}}
+      </div>
+    </div>
   </section>
 
   <section class="mb-12 pb-8 pt-24 -mt-8 bg-gradient-to-b from-base-300 to-base-200 relative z-[1]">
-    <div class="container mx-auto flex flex-col items-center">
+    <div class="container mx-auto flex flex-col">
       @if (auth.user)
         <h3 class="heading-3">
           Here's What You've Been Up To!
@@ -13,7 +71,7 @@
 
         @!stat.user({ stats })
       @else
-        <h3 class="text-2xl font-black mb-3">
+        <h3 class="heading-3">
           We'll Be Here When You're Ready!
         </h3>
         
@@ -21,16 +79,6 @@
       @endif
     </div>
   </section>
-
-  <div class="container mx-auto relative">
-    <div class="absolute bottom-3/4 -left-32 translate-y-3/4 w-3/4 apsect-3/2 faded-pattern-br to-base-300">
-      <img 
-        src="/imgs/patterns/pattern_01.svg" 
-        alt="Background pattern" 
-        class="object-contain object-center grayscale rotate-180 opacity-10"
-      >
-    </div>
-  </div>
 
   <section class="section-container mx-auto relative z-[1]">
     <h2 class="heading-2">
@@ -52,16 +100,6 @@
     </div>
   </section>
 
-  <div class="container mx-auto relative">
-    <div class="absolute bottom-3/4 left-1/2 -translate-x-1/2 translate-y-3/4 w-3/4 apsect-3/2 faded-pattern-x to-base-300">
-      <img 
-        src="/imgs/patterns/pattern_01.svg" 
-        alt="Background pattern" 
-        class="object-contain object-center grayscale opacity-10"
-      >
-    </div>
-  </div>
-
   <section class="section-y relative z-[1]">
     @let(featTopic1 = topics.find(topic => topic.name === 'AdonisJS'))
     @let(featTopic2 = topics.find(topic => topic.name === 'EdgeJS'))
@@ -81,32 +119,14 @@
         @!topic.card({ topic: featTopic3, size: 'lg' })
         @!topic.card({ topic: featTopic4, size: 'lg' })
       </div>
-    </div>
 
-    @carousel.viewport({ class: 'to-base-300' })
-      @utils.chunk({ data: otherTopics, size: 3 })
-        @slot('main', state)
-          <div class="carousel-item">
-            <div class="flex flex-col gap-3">
-              @each (topic in state.chunk)
-                @!topic.card({ topic, size: 'sm' })
-              @endeach
-            </div>
-          </div>
-        @endslot
-      @end
-    @end
+      <div class="grid sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
+        @each (topic in otherTopics)
+          @!topic.card({ topic, size: 'sm' })
+        @endeach
+      </div>
+    </div>
   </section>
-
-  <div class="container mx-auto relative">
-    <div class="absolute bottom-3/4 -right-48 translate-y-1/2 w-3/4 apsect-3/2 faded-pattern to-base-300">
-      <img 
-        src="/imgs/patterns/pattern_01.svg" 
-        alt="Background pattern" 
-        class="object-contain object-center grayscale opacity-10"
-      >
-    </div>
-  </div>
 
   <section class="section-y relative z-[1]">
     <div class="container mx-auto">
@@ -119,54 +139,14 @@
         @!lesson.card({ lesson: featuredLesson1, size: 'lg' })
         @!lesson.card({ lesson: featuredLesson2, size: 'lg' })
       </div>
+
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        @each (lesson in otherLessons)
+          @!lesson.card({ lesson })
+        @endeach
+      </div>
     </div>
-
-    @carousel.viewport({ class: 'to-base-300 mb-6 lg:mb-12' })
-      @each (lesson in otherLessons)
-        <div class="carousel-item">
-          @!lesson.card({ lesson, class: 'w-68 md:w-76 lg:w-96' })
-        </div>
-      @endeach
-    @end
-
-    <div class="container mx-auto">
-      <h4 class="heading-4">
-        Latest blog posts  
-      </h4>
-    </div>
-
-    @carousel.viewport({ class: 'to-base-300 mb-6 lg:mb-12' })
-      @each (post in otherLessons)
-        <div class="carousel-item">
-          @!post.card({ post, class: 'w-68 md:w-76 lg:w-96' })
-        </div>
-      @endeach
-    @end
-
-    <div class="container mx-auto">
-      <h4 class="heading-4">
-        Latest news
-      </h4>
-    </div>
-
-    @carousel.viewport({ class: 'to-base-300' })
-      @each (post in otherLessons)
-        <div class="carousel-item">
-          @!post.card({ post, class: 'w-68 md:w-76 lg:w-96' })
-        </div>
-      @endeach
-    @end
   </section>
-
-  <div class="container mx-auto relative">
-    <div class="absolute bottom-3/4 -left-32 translate-y-3/4 w-3/4 apsect-3/2 faded-pattern to-base-300">
-      <img 
-        src="/imgs/patterns/pattern_01.svg" 
-        alt="Background pattern" 
-        class="object-contain object-center grayscale rotate-180 opacity-10"
-      >
-    </div>
-  </div>
 
   <section class="pt-24 mx-auto relative z-[1]">
     @!pricing.hero()

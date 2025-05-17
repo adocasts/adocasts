@@ -207,14 +207,13 @@ code {
   word-wrap: break-word;
   box-decoration-break: clone;
   padding: .1rem .3rem .2rem;
-  border-radius: .2rem;
+  border-radius: var(--radius-box);
 }
 
 code .line:before {
-  width: 2.5rem;
+  width: 2rem;
   text-align: right;
   margin-right: 1rem;
-  margin-left: -1.6666666em;
   padding-right: .65rem;
   display: inline-block;
   opacity: .4;
@@ -282,12 +281,16 @@ pre .filepath .lang-icon {
 
 pre.shiki.github-dark,
 .code-block pre {
-  @apply !bg-base-100/50;
+  @apply !bg-base-100/50 px-1 pb-1 rounded-[var(--radius-box)] border border-base-100/50;
+
+  code {
+    @apply !bg-base-100/50 rounded-[calc(var(--radius-box)_-_.25rem)] py-3;
+  }
 
   &:before {
     content: "";
     margin-bottom: .75rem;
-    margin-left: -1rem;
+    margin-left: -.5rem;
     display: block;
     height: .75rem;
     width: .75rem;
@@ -311,7 +314,7 @@ pre.shiki.github-dark,
 .code-copy {
   position: absolute;
   top: .375rem;
-  right: .375rem;
+  right: 1rem;
 }
 
 pre ul.filepath-list {
