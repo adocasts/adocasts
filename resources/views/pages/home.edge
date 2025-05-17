@@ -135,12 +135,12 @@ export default class HomeController {
       </h2>
 
       @let([featuredLesson1, featuredLesson2, ...otherLessons] = lessons)
-      <div class="w-full grid grid-cols-2 gap-6 mb-3">
+      <div class="w-full grid grid-cols-2 gap-3 mb-3">
         @!lesson.card({ lesson: featuredLesson1, size: 'lg' })
         @!lesson.card({ lesson: featuredLesson2, size: 'lg' })
       </div>
 
-      <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         @each (lesson in otherLessons)
           @!lesson.card({ lesson })
         @endeach
