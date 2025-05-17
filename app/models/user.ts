@@ -12,33 +12,33 @@ import {
 import type { BelongsTo, HasMany, HasOne, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { DateTime } from 'luxon'
 // import { slugify } from '@ioc:Adonis/Addons/LucidSlugify' // TODO
+import Plans from '#enums/plans'
+import Roles from '#enums/roles'
+import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
+import Themes from '#enums/themes'
 import Advertisement from '#models/advertisement'
-import SessionLog from '#models/session_log'
 import Collection from '#models/collection'
 import Comment from '#models/comment'
-import Roles from '#enums/roles'
-import Themes from '#enums/themes'
-import Role from './role.js'
-import SlugService from '#services/slug_service'
 import Discussion from '#models/discussion'
+import EmailHistory from '#models/email_history'
 import History from '#models/history'
-import LessonRequest from '#models/lesson_request'
-import RequestVote from '#models/request_vote'
-import Notification from '#models/notification'
-import Plans from '#enums/plans'
-import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
 import Invoice from '#models/invoice'
+import LessonRequest from '#models/lesson_request'
+import Notification from '#models/notification'
 import Plan from '#models/plan'
 import Post from '#models/post'
-import Progress from '#models/progress'
-import env from '#start/env'
-import EmailHistory from '#models/email_history'
 import Profile from '#models/profile'
+import Progress from '#models/progress'
+import RequestVote from '#models/request_vote'
+import SessionLog from '#models/session_log'
 import Watchlist from '#models/watchlist'
+import SlugService from '#services/slug_service'
+import env from '#start/env'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
 import { compose } from '@adonisjs/core/helpers'
 import hash from '@adonisjs/core/services/hash'
+import Role from './role.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('argon'), {
   uids: ['email', 'username'],
@@ -145,6 +145,17 @@ export default class User extends compose(BaseModel, AuthFinder) {
   get memberDuration() {
     if (!this.createdAt) return
     return this.createdAt.toRelative()
+  }
+
+  @computed()
+  get avatarRelative() {
+    if (this.avatarUrl) {
+      if (this.avatarUrl.startsWith('https://')) {
+        return
+      }
+
+      return `/img/${this.avatarUrl}`
+    }
   }
 
   @computed()

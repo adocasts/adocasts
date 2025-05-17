@@ -42,9 +42,7 @@ export default class HomeController {
     if (auth.user) {
       const inProgress = await auth.user.related('progressions')
         .query()
-        .apply((scope) => scope.whereSeries())
-        .orderBy('updatedAt', 'desc')
-        .limit(6)
+        .apply((scope) => scope.latestSeries({ limit: 6 }))
 
       view.share({ inProgress })
     }

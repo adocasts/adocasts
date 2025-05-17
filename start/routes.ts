@@ -72,7 +72,7 @@ router.delete('/sessions', [DestroySession]).as('auth.sessions.destroy')
 
 //* Users
 router.get('/users/menu', [RenderUserMenu]).as('users.menu')
-router.get('/:handle/:tab?', [RenderUserProfile]).as('users.profile')
+router.get('/:handle/:tab?', [RenderUserProfile]).as('users.profile').where('handle', /^@/)
 
 //* Series
 router.get('/series', [RenderSeriesIndex]).as('series.index')
