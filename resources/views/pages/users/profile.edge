@@ -57,7 +57,6 @@
       @!stat.user({ stats, size: 'base', offset: false, class: 'w-full bg-base-200 my-6' })
 
       <main class="@container flex-1" up-main-content>
-        @let(tab = request.params().tab ?? 'activity')
         <div class="tabs tabs-box">
           <a 
             class="tab {{ html.classNames([{ 'tab-active': tab === 'activity' }]) }}" 
@@ -76,6 +75,16 @@
             Discussions
           </a>
         </div>
+
+        @if (tab === 'activity')
+          <h4 class="heading-3 !mb-0 mt-6">Recent Activity</h4>
+          <p class="text-base-content/60 mb-6">
+            Here's what {{ user.handle }} has been up to this past year
+          </p>
+          @!profile.activity({ activity })
+        @else
+
+        @endif
       </main>
     </div>
   </div>
