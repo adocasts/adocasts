@@ -1,0 +1,57 @@
+<div class="flex flex-wrap gap-1 {{ $props.class }}">
+  @if (user.profile.githubUrl)
+    @tooltip({ text: 'GitHub', position: 'bottom' })
+      <a href="{{ user.profile.githubUrl }}" target="_blank" class="btn btn-square btn-soft">
+        @svg('simple-icons:github')
+      </a>
+    @end
+  @endif
+  @if (user.profile.youtubeUrl)
+    @tooltip({ text: 'YouTube', position: 'bottom' })
+      <a href="{{ user.profile.youtubeUrl }}" target="_blank" class="btn btn-square btn-soft">
+        @svg('simple-icons:youtube')
+      </a>
+    @end
+  @endif
+  @if (user.profile.blueskyUrl)
+    @tooltip({ text: 'Bluesky', position: 'bottom' })
+      <a href="{{ user.profile.blueskyUrl }}" target="_blank" class="btn btn-square btn-soft">
+        @svg('simple-icons:bluesky')
+      </a>
+    @end
+  @endif
+  @if (user.profile.twitterUrl)
+    @tooltip({ text: 'Twitter', position: 'bottom' })
+      <a href="{{ user.profile.twitterUrl }}" target="_blank" class="btn btn-square btn-soft">
+        @svg('simple-icons:twitter')
+      </a>
+    @end
+  @endif
+  @if (user.profile.facebookUrl)
+    @tooltip({ text: 'Facebook', position: 'bottom' })
+      <a href="{{ user.profile.facebookUrl }}" target="_blank" class="btn btn-square btn-soft">
+        @svg('simple-icons:facebook')
+      </a>
+    @end
+  @endif
+  @if (user.profile.instagramUrl)
+    @tooltip({ text: 'Instagram', position: 'bottom' })
+      <a href="{{ user.profile.instagramUrl }}" target="_blank" class="btn btn-square btn-soft">
+        @svg('simple-icons:instagram')
+      </a>
+    @end
+  @endif
+  @if (user.profile.threadsUrl)
+    @tooltip({ text: 'Threads', position: 'bottom' })
+      <a href="{{ user.profile.threadsUrl }}" target="_blank" class="btn btn-square btn-soft">
+        @svg('simple-icons:threads')
+      </a>
+    @end
+  @endif
+  @if (user.profile.website)
+    <a href="{{ user.profile.websiteUrl }}" target="_blank" class="btn btn-soft">
+      @svg('solar:globus-linear', { class: 'text-sm' })
+      Visit Website
+    </a>
+  @endif
+</div>

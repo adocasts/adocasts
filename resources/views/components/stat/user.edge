@@ -1,10 +1,18 @@
-<div class="stats stats-lg">
+@let(offset = $props.offset ?? true)
+@let(size = $props.size ?? 'lg')
+@let(sizes = new Map([
+  ['base', ''],
+  ['lg', 'stats-lg']
+]))
+
+<div class="stats {{ sizes.get(size) }} {{ $props.class }}">
   @if (!stats.comments)
     @!stat.item({
       color: 'text-info',
       icon: 'solar:user-hand-up-bold-duotone',
       stat: auth.user.createdAt?.toFormat('MMM yy'),
-      desc: 'Member Since'
+      desc: 'Member Since',
+      class: offset && 'lg:!pl-0'
     })
   @endif
   
@@ -12,7 +20,8 @@
     color: 'text-primary',
     icon: 'solar:video-library-bold-duotone',
     stat: stats.started.toLocaleString(),
-    desc: 'Lessons Started'
+    desc: 'Lessons Started',
+    class: offset && stats.comments ? 'lg:!pl-0' : '',
   })
 
   @!stat.item({
@@ -34,7 +43,8 @@
       color: 'text-info',
       icon: 'solar:chat-round-like-bold-duotone',
       stat: stats.comments.toLocaleString(),
-      desc: 'Comments Contributed'
+      desc: 'Comments Contributed',
+      class: offset && 'lg:!pr-0'
     })
   @endif
 </div>

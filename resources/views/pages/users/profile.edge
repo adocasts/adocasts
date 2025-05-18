@@ -6,9 +6,9 @@
       <div class="h-24 absolute top-0 left-0 w-full bg-gradient-to-br from-primary via-secondary to-accent"></div>
     {{-- @end --}}
     
-    <div class="max-w-2xl mx-auto pt-8">
+    <div class="max-w-[810px] mx-auto pt-8 relative">
       <div class="avatar mb-6">
-        <div class="w-32 rounded-[var(--radius-box)]">
+        <div class="w-32 border-4 border-base-300 rounded-[var(--radius-box)]">
           <img class="aspect-square object-cover object-center" src="{{ user.avatar }}" alt="{{ user.handle }}">
         </div>
       </div>
@@ -19,28 +19,63 @@
       @else
         <h1 class="heading-2">{{ user.handle }}</h1>
       @endif
+
+      @!profile.socialLinks({ user, class: 'absolute top-27 right-0' })
     </div>
 
-    <div class="max-w-2xl mx-auto">
+    <div class="max-w-[810px] mx-auto">
       @if (user.profile.biography)
         <p class="max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-base/6">
           {{ user.profile.biography }}
         </p>
       @endif
 
-      <main class="@container flex-1" up-main-content>
-        {{-- @if (lessons.data.length)
-          <section class="section-y">
-            <h3 class="heading-3">Lessons</h3>
-            <main class="flex-1 grid grid-cols-2 @lg:grid-cols-3 gap-3 @lg:gap-6">
-              @each (item in lessons.data)
-                @!lesson.card({ lesson: item, size: 'sm' })
-              @endeach
-            </main>
-          </section>
+      <div class="flex flex-wrap gap-4 text-sm lg:text-base mt-3">
+        @if (user.profile.company)
+          <p class="flex items-center gap-1.5 truncate">
+            @svg('solar:buildings-bold-duotone', { class: 'w-4 h-4' })
+            {{ user.profile.company }}
+          </p>
+        @endif
+        @if (user.profile.location)
+          <p class="flex items-center gap-1.5 truncate">
+            @svg('solar:point-on-map-bold-duotone', { class: 'w-4 h-4' })
+            {{ user.profile.location }}
+          </p>
+        @endif
+      </div>
 
-          @!pagination({ meta: lessons.meta })
-        @endif --}}
+      @if (!user.isEnabledProfile)
+        <div role="alert" class="alert alert-warning alert-soft mt-6">
+          <span>
+            Your profile is private and can only be seen by you. 
+            {{-- You can change this anytime within your <a href="{{ route('users.settings.index', { section: 'account' }) }}" class="link">account settings</a>. --}}
+          </span>
+        </div>
+      @endif
+
+      @!stat.user({ stats, size: 'base', offset: false, class: 'w-full bg-base-200 my-6' })
+
+      <main class="@container flex-1" up-main-content>
+        @let(tab = request.params().tab ?? 'activity')
+        <div class="tabs tabs-box">
+          <a 
+            class="tab {{ html.classNames([{ 'tab-active': tab === 'activity' }]) }}" 
+            href="{{ route('users.profile', { handle: user.handle }) }}" 
+            up-scroll="preserve">
+            @svg('solar:pulse-bold-duotone', { class: 'w-4 h-4 mr-2', })
+            Activity
+          </a>
+
+          <a 
+            role="tab" 
+            class="tab {{ html.classNames([{ 'tab-active': tab === 'discussions' }]) }}" 
+            href="{{ route('users.profile', { handle: user.handle, tab: 'discussions' })}}" 
+            up-scroll="preserve">
+            @svg('solar:chat-line-bold-duotone', { class: 'w-4 h-4 mr-2' })
+            Discussions
+          </a>
+        </div>
       </main>
     </div>
   </div>
