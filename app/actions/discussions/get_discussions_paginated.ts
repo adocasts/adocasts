@@ -14,6 +14,7 @@ export default class GetDiscussionsPaginated extends BaseAction<[Filters, string
     routeParams: Record<string, any> = {}
   ) {
     const paginator = await Discussion.build()
+      .if(filters.userId, (query) => query.where({ userId: filters.userId! }))
       .search(filters.pattern)
       .whereFeed(filters.feed)
       .whereHasTaxonomy(filters.topic)

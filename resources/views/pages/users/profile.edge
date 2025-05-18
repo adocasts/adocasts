@@ -1,10 +1,10 @@
 @layout()
   <div class="relative">
-    {{-- @if (user.avatarRelative)
+    @if (user.avatarRelative)
       <div x-data="color('{{ user.avatarRelative }}', 2)" class="h-24 absolute top-0 left-0 w-full" :style="style"></div>
-    @else --}}
+    @else
       <div class="h-24 absolute top-0 left-0 w-full bg-gradient-to-br from-primary via-secondary to-accent"></div>
-    {{-- @end --}}
+    @end
     
     <div class="max-w-[810px] mx-auto pt-8 relative">
       <div class="avatar mb-6">
@@ -39,7 +39,7 @@
         @endif
         @if (user.profile.location)
           <p class="flex items-center gap-1.5 truncate">
-            @svg('solar:point-on-map-bold-duotone', { class: 'w-4 h-4' })
+            @svg('solar:earth-bold-duotone', { class: 'w-4 h-4' })
             {{ user.profile.location }}
           </p>
         @endif
@@ -83,7 +83,20 @@
           </p>
           @!profile.activity({ activity })
         @else
+          <h4 class="heading-3 !mb-0 mt-6">Discussions</h4>
+          <p class="text-base-content/60 mb-6">
+            Discussions {{ user.handle }} has started
+          </p>
 
+          <div class="flex flex-col gap-3">
+            @each (discussion in discussions.data)
+              @!discussion.card({ discussion })
+            @endeach
+
+            <div class="-mt-3">
+              @!pagination({ meta: discussions.meta })
+            </div>
+          </div>
         @endif
       </main>
     </div>

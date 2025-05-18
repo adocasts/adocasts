@@ -4,9 +4,9 @@ import { prominent } from "color.js"
 Alpine.data('color', function (src, amount = 2) {
   return {
     colors: [
-      'var(--primary)',
-      'var(--secondary)',
-      'var(--accent)',
+      'var(--color-primary)',
+      'var(--color-secondary)',
+      'var(--color-accent)',
     ],
 
     get style() {
@@ -15,10 +15,12 @@ Alpine.data('color', function (src, amount = 2) {
       }
     },
 
-    async init() {
-      const main = await prominent(src, { amount })
-      console.log({ main })
+    init() {
+      this.loadColors()  
+    },
 
+    async loadColors() {
+      const main = await prominent(src, { amount })
       this.colors = main.map((rgb) => `rgb(${rgb.join(', ')})`)
     }
   }

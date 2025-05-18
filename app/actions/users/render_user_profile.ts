@@ -1,11 +1,13 @@
 import BaseAction from '#actions/base_action'
+import GetDiscussionsPaginated from '#actions/discussions/get_discussions_paginated'
+import { discussionSearchValidator } from '#validators/discussion'
 import { HttpContext } from '@adonisjs/core/http'
 import GetUserActivity from './get_user_activity.js'
 import GetUserProfile from './get_user_profile.js'
 import GetUserStats from './get_user_stats.js'
 
 export default class RenderUserProfile extends BaseAction {
-  async asController({ view, params }: HttpContext) {
+  async asController({ view, request, params }: HttpContext) {
     const user = await GetUserProfile.run(params.handle)
     const stats = await GetUserStats.run(user)
     const tab = params.tab === 'discussions' ? 'discussions' : 'activity'
@@ -14,6 +16,14 @@ export default class RenderUserProfile extends BaseAction {
       const activity = await GetUserActivity.run(user)
       view.share({ activity })
     } else {
+      const filters = await request.validateUsing(discussionSearchValidator)
+      const discussions = await GetDiscussionsPaginated.run(
+        { ...filters, userId: user.id },
+        'users.profile',
+        { handle: user.handle }
+      )
+
+      view.share({ discussions })
     }
 
     return view.render('pages/users/profile', { user, stats, tab })
