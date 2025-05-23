@@ -40,6 +40,7 @@ const StoreDiscussion = () => import('#actions/discussions/store_discussion')
 const RenderDiscussionsCreate = () => import('#actions/discussions/render_discussions_create')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const RenderUserSettings = () => import('#actions/users/render_user_settings')
 const RenderUserProfile = () => import('#actions/users/render_user_profile')
 const RenderTopicShowSnippets = () => import('#actions/taxonomies/render_topic_show_snippets')
 const RenderSnippetsShow = () => import('#actions/posts/render_snippets_show')
@@ -116,3 +117,6 @@ router.post('/comments', [StoreComment]).as('comments.store')
 router.put('/comments/:id', [UpdateComment]).as('comments.update')
 router.patch('/comments/:id/vote', [ToggleCommentVote]).as('comments.vote')
 router.delete('/comments/:id', [DestroyComment]).as('comments.destroy')
+
+//* Settings
+router.get('/settings/:section?', [RenderUserSettings]).as('settings').use(middleware.auth())

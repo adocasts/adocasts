@@ -17,6 +17,7 @@ import edge from 'edge.js'
 import { image as gravatar } from 'gravatar-gen'
 import _ from 'lodash'
 import { DateTime } from 'luxon'
+import env from './env.js'
 
 addCollection(solarIcons)
 addCollection(simpleIcons)
@@ -37,6 +38,7 @@ edge.global('StripeSubscriptionStatuses', StripeSubscriptionStatuses)
 
 // utilities
 edge.global('_', _)
+edge.global('env', (key: string) => env.get(key))
 edge.global('string', stringHelpers)
 edge.global('DateTime', DateTime)
 edge.global('TimeService', TimeService)

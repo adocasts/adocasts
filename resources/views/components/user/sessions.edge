@@ -1,0 +1,62 @@
+<div up-user-sessions>
+  @if (sessions.length)
+    <div class="mt-3 flow-root overflow-hidden">
+      <div class="mx-auto max-w-7xl">
+        <table class="w-full text-left">
+          <thead>
+            <tr>
+              <th scope="col" class="relative isolate py-3.5 pr-3 text-left text-sm font-semibold">
+                Last Activity
+              </th>
+              <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold sm:table-cell">Browser</th>
+              <th scope="col" class="hidden px-3 py-3.5 text-right text-sm font-semibold md:table-cell">Location</th>
+              <th scope="col" class="pl-3 py-3.5 text-right text-sm font-semibold">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @each (session in sessions)
+              <tr>
+                <td class="relative py-4 pr-3 text-sm font-medium">
+                  <div>
+                    {{ string.titleCase(session.lastTouchedAgo) || '--' }}
+                  </div>
+                  @if (session.lastTouchedAt || session.loginAt)
+                    <div class="text-xs text-base-content/60">
+                      {{ (session.lastTouchedAt ?? session.loginAt).toFormat('MMM dd, yyyy') }}
+                    </div>
+                  @endif
+                </td>
+                <td class="hidden px-3 py-4 text-sm text-base-content/60 md:table-cell">
+                  {{ session.browser }}
+                </td>
+                <td class="hidden px-3 py-4 text-right text-sm text-base-content/60 sm:table-cell">
+                  {{ session.location }}
+                </td>
+                <td class="relative py-4 pl-3 text-right text-sm font-medium">
+                  @if (session.isCurrentSession)
+                    <span class="italic">Current session</span>
+                  @else
+                    {{-- @form({ action: form.delete('users.sessions.destroy', { id: session.id }), 'up-autosubmit': true, 'up-target': '[up-user-sessions]', 'up-scroll': 'restore' })
+                      @tooltip({ position: 'left', text: "Will immediately end this session", block: false })
+                        @button.outline({ type: 'submit' })
+                          End Session
+                        @end
+                      @end
+                    @end --}}
+                  @endif
+                </td>
+              </tr>
+            @endeach
+          </tbody>
+        </table>
+      </div>
+    </div>
+  @else
+    <div class="p-6 rounded-xl border-[3px] border-dashed border-slate-300 text-slate-600">
+      <strong>No Sessions Found</strong>
+      <p class="text-slate-600">
+        Looks like you don't have any active sessions.
+      </p>
+    </div>
+  @endif
+</div>

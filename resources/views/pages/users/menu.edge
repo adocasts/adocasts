@@ -9,19 +9,18 @@
       @if (!auth.user.isFreeTier)
         <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8 mb-2 white">Plus</p>
         @!menu.link({ text: 'Ad Portal', href: route('advertisements.index'), 'up-follow': true, 'up-layer': 'root' })
-      @endif
+      @endif --}}
 
       <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8 mb-2">Settings</p>
 
-      @!menu.link({ text: 'Account', href: route('users.settings.index', { section: 'account' }), 'up-follow': true, 'up-layer': 'root' })
-      @!menu.link({ text: 'Profile', href: route('users.settings.index', { section: 'profile' }), 'up-follow': true, 'up-layer': 'root' })
+      @!menu.link({ text: 'Account', href: route('settings', { section: 'account' }), 'up-layer': 'root' })
+      @!menu.link({ text: 'Profile', href: route('settings', { section: 'profile' }), 'up-layer': 'root' })
+      @!menu.link({ text: 'Preferences', href: route('settings', { section: 'preferences' }), 'up-layer': 'root' })
+      @!menu.link({ text: 'Notifications', href: route('settings', { section: 'notifications' }), 'up-layer': 'root' })
 
       @if (env('STRIPE_ENABLED'))
-        @!menu.link({ text: 'Billing', href: route('users.settings.index', { section: 'billing' }), 'up-follow': true, 'up-layer': 'root' })
+        @!menu.link({ text: 'Billing', href: route('settings', { section: 'billing' }), 'up-layer': 'root' })
       @endif
-
-      @!menu.link({ text: 'Notifications', href: route('users.settings.index', { section: 'notifications' }), 'up-follow': true, 'up-layer': 'root' })
-      @!menu.link({ text: 'Data', href: route('users.settings.index', { section: 'data' }), 'up-follow': true, 'up-layer': 'root' }) --}}
 
       @if (auth.user?.isAdmin || auth.user?.isContributor)
         <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8 mb-2">CMS</p>

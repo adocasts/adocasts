@@ -1,0 +1,131 @@
+@layout()
+  @layout.shell.asideLeft() 
+    @slot('aside')
+      @include('partials/users/settings/nav')
+    @endslot
+
+    <h1 class="heading-2">Account</h1>
+
+    @card({ accent: false, class: 'mb-6' })
+      @form({ class: 'card-body lg:flex-row lg:gap-6 xl:gap-10' })
+        <div class="w-full lg:w-1/3">
+          <h3 class="card-title">Change Username</h3>
+          <p class="text-base-content/60">Update your publicly displayed username</p>
+        </div>
+
+        <div class="flex-1">
+          @form.field({ label: 'Username', help: 'Minimum of 3 characters using letters, numbers, _, or -', name: 'username' })
+            @!form.input({ type: 'text', autocomplete: 'username', placeholder: auth.user.username, class: 'w-full' })
+          @end
+
+          <div class="flex justify-end pt-3">
+            <button type="submit" class="btn btn-soft">
+              Update Username
+            </button>
+          </div>
+        </div>
+      @end
+    @end
+
+    @card({ accent: false, class: 'mb-6' })
+      @form({ class: 'card-body lg:flex-row lg:gap-6 xl:gap-10' })
+        <div class="w-full lg:w-1/3">
+          <h3 class="card-title">Change Email</h3>
+          <p class="text-base-content/60">Update your account's email address</p>
+        </div>
+
+        <div class="flex-1">
+          @form.field({ label: 'Email', help: 'Please enter the email you\'d like to use', name: 'email' })
+            @!form.input({ type: 'email', autocomplete: 'email', placeholder: auth.user.email, class: 'w-full' })
+          @end
+
+          @form.field({ label: 'Confirm Password', help: 'Please confirm your password to change your email', name: 'password' })
+            @!form.input({ type: 'password', class: 'w-full' })
+          @end
+
+          <div class="flex justify-end pt-3">
+            <button type="submit" class="btn btn-soft">
+              Update Email
+            </button>
+          </div>
+        </div>
+      @end
+    @end
+
+    @card({ accent: false, class: 'mb-6' })
+      @form({ class: 'card-body lg:flex-row lg:gap-6 xl:gap-10' })
+        @let(isGoogleUser = auth.user.googleId || auth.user.googleEmail)
+        @let(isGitHubUser = auth.user.githubId || auth.user.githubEmail)
+
+        <div class="w-full lg:w-1/3">
+          <h3 class="card-title">Social Authentication</h3>
+          <p class="text-base-content/60">
+            Manage your ability to login with a social provider in addition to your email and password 
+          </p>
+        </div>
+
+        <div class="flex-1 grid grid-cols-2 items-center gap-3">
+          <div class="flex flex-col items-center">
+            <a {{ html.attrs({ href: '/google/redirect', 'up-follow': 'false', class: ['btn btn-soft btn-block', { 'btn-primary': isGoogleUser }]}) }}>
+              @svg('simple-icons:google', { class: 'w-5 h-5' })
+              @if (isGoogleUser)
+                <div class="text-sm ml-3">
+                  <span>{{ auth.user.googleEmail ?? auth.user.email }}</span>
+                </div>
+              @else
+                <span class="sr-only">Link Google to Your Account</span>
+              @endif
+            </a>
+            @if (isGoogleUser)
+              <a href="/google/unlink" class="underline text-sm mt-2">Unlink your Google account</a>
+            @endif
+          </div>
+    
+          <div class="flex flex-col items-center">
+            <a {{ html.attrs({ href: '/github/redirect', 'up-follow': 'false', class: ['btn btn-soft btn-block', { 'btn-primary': isGitHubUser }]}) }}>
+              @svg('simple-icons:github', { class: 'w-5 h-5' })
+              @if (isGitHubUser)
+                <div class="text-sm ml-3">
+                  <span>{{ auth.user.githubEmail ?? auth.user.email }}</span>
+                </div>
+              @else
+                <span class="sr-only">Link GitHub to Your Account</span>
+              @endif
+            </a>
+            @if (isGitHubUser)
+              <a href="/github/unlink" class="underline text-sm mt-2">Unlink your GitHub account</a>
+            @endif
+          </div>
+        </div>
+      @end
+    @end
+
+    @card({ accent: false, class: 'mb-6' })
+      <div class="card-body">
+        <div class="flex items-center justify-between">
+          <h3 class="card-title">
+            Active Sessions
+          </h3>
+
+          {{-- @form({ action: form.delete('users.sessions.destroy'), 'up-autosubmit': true, 'up-target': '[up-user-sessions]', 'up-scroll': 'restore' })
+            @tooltip({ position: 'left', text: "Will immediately end all sessions, except the current session", block: false })
+              @button.outline({ type: 'submit' })
+                End All Sessions
+              @end
+            @end
+          @end --}}
+        </div>
+
+        <p class="text-base-content/60 text-sm">
+          Below are the last 15 active sessions for your account. 
+          Active sessions are sessions that haven't signed out or expired.
+          Location information is provided by <a class="anchor" href="https://lite.ip2location.com" target="_blank">IP2Location</a> 
+          and is based on the IP Address of the session, accuracy will vary depending on the ISP/VPN.
+        </p>
+
+        @!user.sessions({ sessions })
+      </div>
+    @end
+
+  @end
+@end
