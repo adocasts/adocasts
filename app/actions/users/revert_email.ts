@@ -40,9 +40,6 @@ export default class RevertEmail extends BaseAction<[number, string, string]> {
 
     await emitter.emit('email:reverted', { user })
 
-    return router.makeSignedUrl('auth.password.reset', {
-      params: { email: emailFrom },
-      expiresIn: '30m',
-    })
+    return router.makeSignedUrl('auth.password.reset', { email: emailFrom }, { expiresIn: '30m' })
   }
 }

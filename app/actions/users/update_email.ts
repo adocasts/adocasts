@@ -5,6 +5,7 @@ import { updateEmailValidator } from '#validators/user_setting'
 import { HttpContext } from '@adonisjs/core/http'
 import emitter from '@adonisjs/core/services/emitter'
 import router from '@adonisjs/core/services/router'
+import db from '@adonisjs/lucid/services/db'
 import { Infer } from '@vinejs/vine/types'
 
 type Validator = Infer<typeof updateEmailValidator>
@@ -32,10 +33,8 @@ export default class UpdateEmail extends BaseAction<[User, Validator]> {
     }
 
     if (await this.#isPasswordInvalid(user, data)) {
-      session.flashErrors({
-        form: 'Your password was incorrect. Please try again.',
-      })
-
+      session.flash('email', data.email)
+      session.flash('errors.password', 'Your password was incorrect, please try again')
       return response.redirect().back()
     }
 
@@ -47,12 +46,19 @@ export default class UpdateEmail extends BaseAction<[User, Validator]> {
   }
 
   async handle(user: User, data: Validator) {
-    const history = await user.related('emailHistory').create({
-      emailFrom: user.email,
-      emailTo: data.email,
-    })
+    const history = await db.transaction(async (trx) => {
+      user.useTransaction(trx)
 
-    await AuthAttempt.clear(user.email)
+      const emailHistory = await user.related('emailHistory').create({
+        emailFrom: user.email,
+        emailTo: data.email,
+      })
+
+      await user.merge({ email: data.email }).save()
+      await AuthAttempt.clear(user.email, trx)
+
+      return emailHistory
+    })
 
     const signedUrl = router.makeSignedUrl(
       'settings.revert.email',
@@ -72,12 +78,11 @@ export default class UpdateEmail extends BaseAction<[User, Validator]> {
   }
 
   async #isPasswordInvalid(user: User, data: Validator) {
-    const isPasswordValid = await User.verifyCredentials(data.email, data.password)
-
-    if (!isPasswordValid) {
+    try {
+      await User.verifyCredentials(user.email, data.password)
+    } catch (_error) {
       await AuthAttempt.recordBadEmailChange(user.email)
+      return true
     }
-
-    return !isPasswordValid
   }
 }

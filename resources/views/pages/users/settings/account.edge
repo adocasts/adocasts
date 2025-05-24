@@ -7,7 +7,7 @@
     <h1 class="heading-2">Account</h1>
 
     @card({ accent: false, class: 'mb-6' })
-      @form({ action: form.patch('settings.username'), class: 'card-body lg:flex-row lg:gap-6 xl:gap-10' })
+      @form({ action: form.patch('settings.username'), class: 'card-body lg:flex-row lg:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
         <div class="w-full lg:w-1/3">
           <h3 class="card-title">Change Username</h3>
           <p class="text-base-content/60">Update your publicly displayed username</p>
@@ -28,7 +28,7 @@
     @end
 
     @card({ accent: false, class: 'mb-6' })
-      @form({ action: form.put('settings.email'), class: 'card-body lg:flex-row lg:gap-6 xl:gap-10' })
+      @form({ action: form.put('settings.email'), class: 'card-body lg:flex-row lg:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
         <div class="w-full lg:w-1/3">
           <h3 class="card-title">Change Email</h3>
           <p class="text-base-content/60">Update your account's email address</p>
@@ -50,10 +50,11 @@
           </div>
         </div>
       @end
+      @dump(flashMessages.all())
     @end
 
     @card({ accent: false, class: 'mb-6' })
-      @form({ class: 'card-body lg:flex-row lg:gap-6 xl:gap-10' })
+      @form({ class: 'card-body lg:flex-row lg:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
         @let(isGoogleUser = auth.user.googleId || auth.user.googleEmail)
         @let(isGitHubUser = auth.user.githubId || auth.user.githubEmail)
 

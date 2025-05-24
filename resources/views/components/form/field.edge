@@ -23,7 +23,8 @@
 
   <div x-data="{{ js.stringify(data) }}">
     @if(flashMessages.has(`errors.${name}`))
-      <span class="text-xs text-error">{{ flashMessages.get(`errors.${name}`).join(', ') }}</span>
+      @let(message = flashMessages.get(`errors.${name}`))
+      <span class="text-xs text-error">{{ Array.isArray(message) ? message.join(', ') : message }}</span>
     @elseif(hint)
       <div class="text-xs text-right pt-1 absolute right-0 opacity-60" style="bottom: -1rem">
         {{ hint }}

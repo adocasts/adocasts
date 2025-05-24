@@ -7,7 +7,7 @@
     : ''
 ])
 @let(name = $$props?.name)
-@let(internalValue = flashMessages.get(name) || ($$props.value ?? ''))
+@let(internalValue = old(name) || ($$props.value ?? ''))
 
 <span class="{{ html.classNames(classes) }}">
   @if ($slots.prefix)

@@ -1,6 +1,7 @@
-import { DateTime } from 'luxon'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
 import AuthAttemptPurposes from '#enums/auth_attempt_purposes'
+import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { TransactionClientContract } from '@adonisjs/lucid/types/database'
+import { DateTime } from 'luxon'
 
 export default class AuthAttempt extends BaseModel {
   protected static allowedAttempts = 3
@@ -56,8 +57,8 @@ export default class AuthAttempt extends BaseModel {
   //#endregion
   //#region Actions
 
-  static async clear(uid: string) {
-    await AuthAttempt.query()
+  static async clear(uid: string, trx?: TransactionClientContract) {
+    await AuthAttempt.query({ client: trx })
       .where({ uid })
       .whereNull('deletedAt')
       .update({ deletedAt: DateTime.now() })
