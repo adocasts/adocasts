@@ -51,7 +51,9 @@ export default class SendForgotPassword extends BaseAction<[Validator, string]> 
 
       const signedUrl = router.makeSignedUrl('auth.password.reset', { email }, { expiresIn: '1h' })
       await emitter.emit('email:password_reset', { user, signedUrl })
-    } catch (_error) {}
+    } catch (_error) {
+      console.log({ _error })
+    }
 
     result.success = true
     return result
