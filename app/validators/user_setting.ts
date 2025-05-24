@@ -1,4 +1,18 @@
 import vine from '@vinejs/vine'
+import { emailRule, usernameRule } from './auth.js'
+
+export const updateUsernameValidator = vine.compile(
+  vine.object({
+    username: usernameRule,
+  })
+)
+
+export const updateEmailValidator = vine.compile(
+  vine.object({
+    email: emailRule,
+    password: vine.string(),
+  })
+)
 
 export const emailNotificationValidator = vine.compile(
   vine.object({

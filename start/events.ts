@@ -3,6 +3,7 @@ import Notification from '#models/notification'
 import User from '#models/user'
 import emitter from '@adonisjs/core/services/emitter'
 import { PostShowVM } from '../app/view_models/post.js'
+import { OnPendingEmailChange } from '#listeners/account_listener'
 const SessionListener = () => import('#listeners/session_listener')
 const PostListener = () => import('#listeners/post_listener')
 const AccountListener = () => import('#listeners/account_listener')
@@ -13,6 +14,7 @@ declare module '@adonisjs/core/types' {
     'post:sync': { post: PostShowVM; views: number }
     'email:password_reset': { user: User; signedUrl: string }
     'email:password_reset_success': { user: User }
+    'email:change:attempted': OnPendingEmailChange
     'email:changed': { user: User; oldEmail: string; signedUrl: string }
     'email:reverted': { user: User }
     'email:new_device': { user: User; log: SessionLog }

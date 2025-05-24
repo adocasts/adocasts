@@ -40,6 +40,9 @@ const StoreDiscussion = () => import('#actions/discussions/store_discussion')
 const RenderDiscussionsCreate = () => import('#actions/discussions/render_discussions_create')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const UpdateUsername = () => import('#actions/users/update_username')
+const UpdateEmail = () => import('#actions/users/update_email')
+const RevertEmail = () => import('#actions/users/revert_email')
 const RenderUserSettings = () => import('#actions/users/render_user_settings')
 const RenderUserProfile = () => import('#actions/users/render_user_profile')
 const RenderTopicShowSnippets = () => import('#actions/taxonomies/render_topic_show_snippets')
@@ -120,3 +123,6 @@ router.delete('/comments/:id', [DestroyComment]).as('comments.destroy')
 
 //* Settings
 router.get('/settings/:section?', [RenderUserSettings]).as('settings').use(middleware.auth())
+router.patch('/settings/username', [UpdateUsername]).as('settings.username').use(middleware.auth())
+router.put('/settings/email', [UpdateEmail]).as('settings.email').use(middleware.auth())
+router.get('/settings/revert/:id/:oldEmail/:newEmail', [RevertEmail]).as('settings.revert.email')

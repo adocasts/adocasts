@@ -30,6 +30,12 @@ export const usernameRule = vine
   ])
   .unique({ table: 'users', column: 'username', caseInsensitive: true })
 
+export const emailRule = vine
+  .string()
+  .trim()
+  .email()
+  .unique({ table: 'users', column: 'email', caseInsensitive: true })
+
 export const signInValidator = vine.compile(
   vine.object({
     options: vine.object({
@@ -52,11 +58,7 @@ export const signUpValidator = vine.compile(
       plan: vine.string().exists({ table: 'plans', column: 'slug' }).optional(),
     }),
     username: usernameRule,
-    email: vine
-      .string()
-      .trim()
-      .email()
-      .unique({ table: 'users', column: 'email', caseInsensitive: true }),
+    email: emailRule,
     password: vine.string().minLength(8),
   })
 )
