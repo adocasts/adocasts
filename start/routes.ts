@@ -40,6 +40,11 @@ const StoreDiscussion = () => import('#actions/discussions/store_discussion')
 const RenderDiscussionsCreate = () => import('#actions/discussions/render_discussions_create')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const RenderForgotPassword = () => import('#actions/auth/password/render_forgot_password')
+const RenderForgotPasswordSent = () => import('#actions/auth/password/render_forgot_password_sent')
+const SendForgotPassword = () => import('#actions/auth/password/send_forgot_password')
+const RenderResetPassword = () => import('#actions/auth/password/render_reset_password')
+const ResetPassword = () => import('#actions/auth/password/reset_password')
 const UpdateUsername = () => import('#actions/users/update_username')
 const UpdateEmail = () => import('#actions/users/update_email')
 const RevertEmail = () => import('#actions/users/revert_email')
@@ -52,6 +57,8 @@ const ToggleDiscussionSolvedAt = () => import('#actions/discussions/toggle_discu
 const DestroyDiscussion = () => import('#actions/discussions/destroy_discussion')
 const UpdateDiscussion = () => import('#actions/discussions/update_discussion')
 const RenderDiscussionsEdit = () => import('#actions/discussions/render_discussions_edit')
+
+/* eslint-disable */
 
 router.where('id', router.matchers.number())
 router.where('slug', router.matchers.slug())
@@ -73,6 +80,13 @@ router.get('/signin', [RenderSignInPage]).as('auth.signin')
 router.get('/signup', [RenderSignUpPage]).as('auth.signup')
 router.post('/sessions', [StoreSessionSignIn]).as('auth.sessions.store')
 router.delete('/sessions', [DestroySession]).as('auth.sessions.destroy')
+
+//* Password Reset
+router.get('/forgot-password', [RenderForgotPassword]).as('auth.password.forgot')
+router.get('/forgot-password/sent', [RenderForgotPasswordSent]).as('auth.password.forgot.sent')
+router.post('/forgot-password', [SendForgotPassword]).as('auth.password.forgot.send').use(middleware.turnstile())
+router.get('/reset-password/:email', [RenderResetPassword]).as('auth.password.reset')
+router.post('/reset-password', [ResetPassword]).as('auth.password.reset.store')
 
 //* Users
 router.get('/users/menu', [RenderUserMenu]).as('users.menu')
