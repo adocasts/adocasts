@@ -36,13 +36,13 @@
                   @if (session.isCurrentSession)
                     <span class="italic">Current session</span>
                   @else
-                    {{-- @form({ action: form.delete('users.sessions.destroy', { id: session.id }), 'up-autosubmit': true, 'up-target': '[up-user-sessions]', 'up-scroll': 'restore' })
-                      @tooltip({ position: 'left', text: "Will immediately end this session", block: false })
-                        @button.outline({ type: 'submit' })
-                          End Session
-                        @end
+                    @form({ action: form.delete('settings.session.destroy', { id: session.id }), 'up-target': '[up-user-sessions]', 'up-scroll': 'restore' })
+                      @tooltip({ text: "Will immediately end this session", class: 'tooltip-left' })
+                        <button type="submit" class="btn btn-soft hover:btn-error btn-sm">
+                          End session
+                        </button>
                       @end
-                    @end --}}
+                    @end
                   @endif
                 </td>
               </tr>

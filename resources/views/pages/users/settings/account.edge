@@ -50,7 +50,6 @@
           </div>
         </div>
       @end
-      @dump(flashMessages.all())
     @end
 
     @card({ accent: false, class: 'mb-6' })
@@ -108,16 +107,16 @@
             Active Sessions
           </h3>
 
-          {{-- @form({ action: form.delete('users.sessions.destroy'), 'up-autosubmit': true, 'up-target': '[up-user-sessions]', 'up-scroll': 'restore' })
-            @tooltip({ position: 'left', text: "Will immediately end all sessions, except the current session", block: false })
-              @button.outline({ type: 'submit' })
-                End All Sessions
-              @end
+          @form({ action: form.delete('settings.session.destroy'), 'up-target': '[up-user-sessions]', 'up-scroll': 'restore' })
+            @tooltip({ text: "Will immediately end all sessions, except the current session", class: 'tooltip-left' })
+              <button type="submit" class="btn btn-soft btn-error btn-sm">
+                End all sessions
+              </button>
             @end
-          @end --}}
+          @end
         </div>
 
-        <p class="text-base-content/60 text-sm">
+        <p class="text-base-content/60 text-sm mt-3">
           Below are the last 15 active sessions for your account. 
           Active sessions are sessions that haven't signed out or expired.
           Location information is provided by <a class="anchor" href="https://lite.ip2location.com" target="_blank">IP2Location</a> 
