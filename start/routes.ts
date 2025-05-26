@@ -40,6 +40,8 @@ const StoreDiscussion = () => import('#actions/discussions/store_discussion')
 const RenderDiscussionsCreate = () => import('#actions/discussions/render_discussions_create')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const UpdateUserProfile = () => import('#actions/users/update_user_profile')
+const UpdateUserPreferences = () => import('#actions/users/update_user_preferences')
 const ForceSignOut = () => import('#actions/auth/force_signout')
 const RenderForgotPassword = () => import('#actions/auth/password/render_forgot_password')
 const RenderForgotPasswordSent = () => import('#actions/auth/password/render_forgot_password_sent')
@@ -141,4 +143,6 @@ router.get('/settings/:section?', [RenderUserSettings]).as('settings').use(middl
 router.patch('/settings/username', [UpdateUsername]).as('settings.username').use(middleware.auth())
 router.put('/settings/email', [UpdateEmail]).as('settings.email').use(middleware.auth())
 router.get('/settings/revert/:id/:oldEmail/:newEmail', [RevertEmail]).as('settings.revert.email')
+router.put('/settings/profile', [UpdateUserProfile]).as('settings.profile').use(middleware.auth())
+router.put('/settings/preferences', [UpdateUserPreferences]).as('settings.preferences').use(middleware.auth())
 router.delete('/settings/session/:id?', [ForceSignOut]).as('settings.session.destroy')

@@ -1,0 +1,27 @@
+@let($$props = Object.assign($context, $props))
+@let(classes = [
+  'textarea',
+  $$props.class || '',
+  $$props?.error || flashMessages.get(`errors.${name}`)
+    ? 'textarea-error'
+    : ''
+])
+@let(name = $$props?.name)
+@let(internalValue = flashMessages.get(name) || ($$props.value ?? ''))
+
+<textarea 
+  x-data="{{ js.stringify({ name, internalValue }) }}"
+
+  @if ($$props?.model)
+    x-modelable="internalValue"
+    x-model="{{ $$props?.model }}"
+  @else
+    x-model="internalValue"
+  @endif
+
+  @if (name)
+    name="{{ name }}"
+  @endif
+
+  {{ $props.except(['value', 'name', 'model', 'upSubmit']).merge({ ...$context, class: classes }).toAttrs() }} 
+></textarea>

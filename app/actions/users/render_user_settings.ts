@@ -11,6 +11,6 @@ export default class RenderUserSettings extends BaseAction {
       view.share({ sessions })
     }
 
-    return view.render('pages/users/settings/account', { section })
+    return view.render(`pages/users/settings/${section}`, { section })
   }
 }
