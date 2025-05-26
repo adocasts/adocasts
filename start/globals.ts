@@ -1,9 +1,11 @@
 import GetUnreadNotificationCount from '#actions/notifications/get_unread_notification_count'
 import CommentTypes, { CommentTypeIdColumn } from '#enums/comment_types'
 import Difficulties from '#enums/difficulties'
+import Plans from '#enums/plans'
 import Sorts from '#enums/sorts'
 import Status from '#enums/status'
 import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
+import CurrencyService from '#services/currency_service'
 import FormService from '#services/form_service'
 import parserService from '#services/parser_service'
 import TimeService from '#services/time_service'
@@ -31,6 +33,7 @@ edge.global('GetUnreadNotificationCount', GetUnreadNotificationCount)
 // enums
 edge.global('Sorts', Sorts)
 edge.global('Status', Status)
+edge.global('Plans', Plans)
 edge.global('Difficulties', Difficulties)
 edge.global('CommentTypes', CommentTypes)
 edge.global('CommentTypeIdColumn', CommentTypeIdColumn)
@@ -44,5 +47,6 @@ edge.global('DateTime', DateTime)
 edge.global('TimeService', TimeService)
 edge.global('is', is)
 edge.global('parser', parserService)
+edge.global('currency', CurrencyService)
 edge.global('form', FormService)
 edge.global('gravatar', gravatar)

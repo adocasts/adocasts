@@ -1,0 +1,120 @@
+@let(timezone = request.ctx.timezone)
+
+@layout()
+  @layout.shell.asideLeft() 
+    @slot('aside')
+      @include('partials/users/settings/nav')
+    @endslot
+
+    <h1 class="heading-2">Billing</h1>
+
+    @card({ accent: false, class: 'mb-6' })
+      <div class="card-body text-base">
+        <h3 class="card-title">Subscription details</h3>
+        @!user.subscription.details()
+      </div>
+    @end
+
+    @if (invoices.length)
+      @card({ accent: false, class: 'mb-6' })
+        <div class="card-body">
+          <h3 class="card-title">Invoices</h3>
+
+          @table({ rows: invoices })
+            @table.column({ title: 'Date' })
+              @slot('cell', scope)
+                @if (scope.row.lines.data.length && scope.row.lines.data[0].period?.start)
+                  {{ TimeService.fromStripe(scope.row.lines.data[0].period.start).setZone(timezone).toFormat('MMM dd, yyyy') }} 
+                @elseif (scope.row.period_start)
+                  {{ TimeService.fromStripe(scope.row.period_start).setZone(timezone).toFormat('MMM dd, yyyy') }}
+                @else
+                  {{ TimeService.fromStripe(scope.row.created).setZone(timezone).toFormat('MMM dd, yyyy') }}
+                @endif
+              @endslot
+            @end
+
+            @table.column({ title: 'Status' })
+              @slot('cell', scope)
+                @if (scope.row.status === 'paid')
+                  <div class="text-success flex items-center gap-x-1.5 capitalize">
+                    @svg('solar:dollar-bold-duotone')
+                    <span>{{ scope.row.status }}</span>
+                  </div>
+                @elseif (scope.row.status === 'open')
+                  <div class="text-warning flex items-center gap-x-1.5 capitalize">
+                    @svg('solar:lightbulb-bolt-line-duotone')
+                    <span>{{ scope.row.status }}</span>
+                  </div>
+                @elseif (scope.row.status === 'draft')
+                  <div class="text-blue-600 flex items-center gap-x-1.5 capitalize">
+                    @svg('solar:bill-list-bold-duotone')
+                    <span>{{ scope.row.status }}</span>
+                  </div>
+                @else
+                  <div class="text-base-content/60 flex items-center gap-x-1.5 capitalize">
+                    @svg('solar:shield-warning-bold-duotone')
+                    <span>{{ scope.row.status }}</span>
+                  </div>
+                @endif
+              @endslot
+            @end
+
+            @!table.column({ title: 'Amount', format: (_, row) => currency.format(row.amount_due, row.currency) })
+            
+            @table.column({ title: 'Invoice' })
+              @slot('cell', scope)
+                {{-- <a href="{{ route('users.settings.invoice', { invoice: invoice.number }) }}" target="_blank" up-follow="false" class="link">
+                  View Invoice
+                </a> --}}
+              @endslot
+            @end
+          @end
+        </div>
+      @end
+    @endif
+
+    @if (charges.length)
+      @card({ accent: false, class: 'mb-6' })
+        <div class="card-body">
+          <h3 class="card-title">Receipts</h3>
+
+          @table({ rows: charges })
+            @!table.column({ title: 'Date', field: 'created', format: (v) => TimeService.fromStripe(v).setZone(timezone).toFormat('MMM dd, yyyy') })
+
+            @table.column({ title: 'Status' })
+              @slot('cell', scope)
+                @if (scope.row.status === 'succeeded')
+                  <div class="text-success flex items-center gap-x-1.5 capitalize">
+                    @svg('solar:bill-check-bold-duotone')
+                    <span>{{ scope.row.status }}</span>
+                  </div>
+                @elseif (scope.row.status === 'pending')
+                  <div class="text-info flex items-center gap-x-1.5 capitalize">
+                    @svg('solar:bill-list-line-duotone')
+                    <span>{{ scope.row.status }}</span>
+                  </div>
+                @else
+                  <div class="text-warning flex items-center gap-x-1.5 capitalize">
+                    @svg('solar:bill-cross-bold-duotone')
+                    <span>{{ scope.row.status }}</span>
+                  </div>
+                @endif
+              @endslot
+            @end
+
+            @!table.column({ title: 'Charge', format: (_, row) => currency.format(row.amount, row.currency) })
+            
+            @table.column({ title: 'Receipt' })
+              @slot('cell', scope)
+                @if (scope.row.receipt_url)
+                  <a href="{{ scope.row.receipt_url }}" target="_blank" class="link">View Receipt</span></a>
+                @endif
+              @endslot
+            @end
+          @end
+        </div>
+      @end
+    @endif
+
+  @end
+@end

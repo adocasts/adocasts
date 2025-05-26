@@ -91,6 +91,11 @@ export default class TimeService {
     return `${(hours + '').padStart(2, '0')}:${short}`
   }
 
+  static fromStripe(seconds: number | undefined) {
+    if (!seconds) return
+    return DateTime.fromSeconds(seconds, { zone: 'UTC' })
+  }
+
   /**
    * returns date in relative human readable time ago string
    * @param date
