@@ -40,6 +40,7 @@ const StoreDiscussion = () => import('#actions/discussions/store_discussion')
 const RenderDiscussionsCreate = () => import('#actions/discussions/render_discussions_create')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const UpdateUserNotifications = () => import('#actions/users/update_user_notifications')
 const UpdateUserProfile = () => import('#actions/users/update_user_profile')
 const UpdateUserPreferences = () => import('#actions/users/update_user_preferences')
 const ForceSignOut = () => import('#actions/auth/force_signout')
@@ -145,4 +146,5 @@ router.put('/settings/email', [UpdateEmail]).as('settings.email').use(middleware
 router.get('/settings/revert/:id/:oldEmail/:newEmail', [RevertEmail]).as('settings.revert.email')
 router.put('/settings/profile', [UpdateUserProfile]).as('settings.profile').use(middleware.auth())
 router.put('/settings/preferences', [UpdateUserPreferences]).as('settings.preferences').use(middleware.auth())
+router.put('/settings/notifications', [UpdateUserNotifications]).as('settings.notifications').use(middleware.auth())
 router.delete('/settings/session/:id?', [ForceSignOut]).as('settings.session.destroy')

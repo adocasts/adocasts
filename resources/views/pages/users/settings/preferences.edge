@@ -1,5 +1,3 @@
-@let(profile = await auth.user.related('profile').query().firstOrFail())
-
 @layout()
   @layout.shell.asideLeft() 
     @slot('aside')

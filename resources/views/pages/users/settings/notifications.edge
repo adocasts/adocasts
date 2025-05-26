@@ -1,0 +1,83 @@
+@let(profile = await auth.user.related('profile').query().firstOrFail())
+
+@layout()
+  @layout.shell.asideLeft() 
+    @slot('aside')
+      @include('partials/users/settings/nav')
+    @endslot
+
+    <h1 class="heading-2">Notifiations</h1>
+
+    @card({ accent: false, class: 'mb-6' })
+      @form({ action: form.put('settings.notifications'), class: 'card-body lg:flex-row lg:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
+        <div class="w-full lg:w-1/3">
+          <h3 class="card-title">Email notifications</h3>
+          <p class="text-base-content/60">Manage what we notify you about via email</p>
+        </div>
+
+        <div class="flex-1 flex flex-col gap-6">
+          @form.switch({ name: 'emailOnNewDeviceLogin', value: profile.emailOnNewDeviceLogin })
+            <div class="flex flex-col ml-3">
+              <strong class="text-base-content">New device sign in</strong>
+              <p class="text-base-content/60 text-xs">
+                Get notified when a new device signs into your Adocasts account
+              </p>
+            </div>
+          @end
+
+          @form.switch({ name: 'emailOnComment', value: profile.emailOnComment })
+            <div class="flex flex-col ml-3">
+              <strong class="text-base-content">New comments</strong>
+              <p class="text-base-content/60 text-xs">
+                Get notified when someone posts a new comment on one of your posts or discussions
+              </p>
+            </div>
+          @end
+
+          @form.switch({ name: 'emailOnCommentReply', value: profile.emailOnCommentReply })
+            <div class="flex flex-col ml-3">
+              <strong class="text-base-content">Comment reply</strong>
+              <p class="text-base-content/60 text-xs">
+                Get notified when someone replies to one of your comments
+              </p>
+            </div>
+          @end
+
+          @form.switch({ name: 'emailOnWatchlist', value: profile.emailOnWatchlist })
+            <div class="flex flex-col ml-3">
+              <strong class="text-base-content">New watchlist lesson</strong>
+              <p class="text-base-content/60 text-xs">
+                Get notified when new lessons land in your watchlist
+              </p>
+            </div>
+          @end
+
+          @form.switch({ name: 'emailOnMention', value: profile.emailOnMention })
+            <div class="flex flex-col ml-3">
+              <strong class="text-base-content">When mentioned</strong>
+              <p class="text-base-content/60 text-xs">
+                Get notified when others mention you in their content
+              </p>
+            </div>
+          @end
+
+          @form.switch({ name: 'emailOnAchievement', value: profile.emailOnAchievement })
+            <div class="flex flex-col ml-3">
+              <strong class="text-base-content">On achievement</strong>
+              <p class="text-base-content/60 text-xs">
+                Get notified when you unlock an achievement (coming soon)
+              </p>
+            </div>
+          @end
+
+          <div class="flex justify-end gap-3 pt-6">
+            <button type="submit" class="btn btn-primary">
+              Update notifications
+            </button>
+          </div>
+        </div>
+      @end
+    @end
+
+  @end
+@end
