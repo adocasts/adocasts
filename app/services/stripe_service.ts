@@ -2,12 +2,12 @@ import Plans from '#enums/plans'
 import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
 import Plan from '#models/plan'
 import User from '#models/user'
+import logger from '#services/logger_service'
 import env from '#start/env'
 import { Request } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
 import { DateTime } from 'luxon'
 import Stripe from 'stripe'
-import logger from '#services/logger_service'
 
 class StripeService {
   static isActive: boolean = !!(env.get('STRIPE_ENABLED') ?? true)
@@ -76,7 +76,7 @@ class StripeService {
 
   async getInvoices(user: User) {
     if (!user.stripeCustomerId) return []
-    const { data } = await this.stripe.invoices.list({ customer: user.stripeCustomerId })
+    const { data } = await this.stripe.invoices.list({ customer: user.stripeCustomerId, limit: 15 })
     return data.filter(
       (invoice: any) => invoice.status && ['void', 'paid'].includes(invoice.status)
     )
@@ -103,7 +103,7 @@ class StripeService {
 
   async getCharges(user: User) {
     if (!user.stripeCustomerId) return []
-    const { data } = await this.stripe.charges.list({ customer: user.stripeCustomerId })
+    const { data } = await this.stripe.charges.list({ customer: user.stripeCustomerId, limit: 15 })
     return data
   }
 

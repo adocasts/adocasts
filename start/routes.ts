@@ -40,6 +40,7 @@ const StoreDiscussion = () => import('#actions/discussions/store_discussion')
 const RenderDiscussionsCreate = () => import('#actions/discussions/render_discussions_create')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const DestroyAccount = () => import('#actions/users/destroy_account')
 const UpdateUserBillTo = () => import('#actions/users/update_user_billto')
 const RenderUserInvoice = () => import('#actions/users/render_user_invoice')
 const UpdateUserNotifications = () => import('#actions/users/update_user_notifications')
@@ -151,4 +152,5 @@ router.get('/settings/revert/:id/:oldEmail/:newEmail', [RevertEmail]).as('settin
 router.put('/settings/profile', [UpdateUserProfile]).as('settings.profile').use(middleware.auth())
 router.put('/settings/preferences', [UpdateUserPreferences]).as('settings.preferences').use(middleware.auth())
 router.put('/settings/notifications', [UpdateUserNotifications]).as('settings.notifications').use(middleware.auth())
-router.delete('/settings/session/:id?', [ForceSignOut]).as('settings.session.destroy')
+router.delete('/settings/session/:id?', [ForceSignOut]).as('settings.session.destroy').use(middleware.auth())
+router.delete('/settings/account', [DestroyAccount]).as('settings.account.destroy').use(middleware.auth())

@@ -96,7 +96,12 @@
                 @else
                   <div class="text-warning flex items-center gap-x-1.5 capitalize">
                     @svg('solar:bill-cross-bold-duotone')
-                    <span>{{ scope.row.status }}</span>
+                    <span>
+                      {{ scope.row.status }}
+                      @if (scope.row.failure_message)
+                        <span class="text-base-content/60">&nbsp;&mdash;&nbsp;{{ scope.row.failure_message }}</span>
+                      @endif
+                    </span>
                   </div>
                 @endif
               @endslot
