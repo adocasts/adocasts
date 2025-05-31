@@ -63,9 +63,9 @@
             
             @table.column({ title: 'Invoice' })
               @slot('cell', scope)
-                {{-- <a href="{{ route('users.settings.invoice', { invoice: invoice.number }) }}" target="_blank" up-follow="false" class="link">
+                <a href="{{ route('settings.invoice', { invoice: scope.row.number }) }}" target="_blank" up-follow="false" class="link">
                   View Invoice
-                </a> --}}
+                </a>
               @endslot
             @end
           @end

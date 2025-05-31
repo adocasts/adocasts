@@ -18,7 +18,7 @@ const shieldConfig = defineConfig({
   csrf: {
     enabled: true,
     exceptRoutes: ['/stripe/webhook'],
-    enableXsrfCookie: false,
+    enableXsrfCookie: true,
     methods: ['POST', 'PUT', 'PATCH', 'DELETE'],
   },
 

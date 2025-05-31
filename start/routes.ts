@@ -40,6 +40,8 @@ const StoreDiscussion = () => import('#actions/discussions/store_discussion')
 const RenderDiscussionsCreate = () => import('#actions/discussions/render_discussions_create')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const UpdateUserBillTo = () => import('#actions/users/update_user_billto')
+const RenderUserInvoice = () => import('#actions/users/render_user_invoice')
 const UpdateUserNotifications = () => import('#actions/users/update_user_notifications')
 const UpdateUserProfile = () => import('#actions/users/update_user_profile')
 const UpdateUserPreferences = () => import('#actions/users/update_user_preferences')
@@ -141,6 +143,8 @@ router.delete('/comments/:id', [DestroyComment]).as('comments.destroy')
 
 //* Settings
 router.get('/settings/:section?', [RenderUserSettings]).as('settings').use(middleware.auth())
+router.get('/settings/invoices/:invoice', [RenderUserInvoice]).as('settings.invoice').use(middleware.auth())
+router.patch('/settings/invoices/billto', [UpdateUserBillTo]).as('settings.invoice.billto').use(middleware.auth())
 router.patch('/settings/username', [UpdateUsername]).as('settings.username').use(middleware.auth())
 router.put('/settings/email', [UpdateEmail]).as('settings.email').use(middleware.auth())
 router.get('/settings/revert/:id/:oldEmail/:newEmail', [RevertEmail]).as('settings.revert.email')
