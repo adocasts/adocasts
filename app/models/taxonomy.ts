@@ -1,18 +1,18 @@
-import { DateTime } from 'luxon'
 import { beforeSave, belongsTo, column, hasMany, manyToMany, scope } from '@adonisjs/lucid/orm'
 import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
+import { DateTime } from 'luxon'
 // import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
-import Database from '@adonisjs/lucid/services/db'
+import HistoryTypes from '#enums/history_types'
+import States from '#enums/states'
+import AppBaseModel from '#models/app_base_model'
 import Asset from '#models/asset'
 import Collection from '#models/collection'
+import History from '#models/history'
 import Post from '#models/post'
 import User from '#models/user'
-import AppBaseModel from '#models/app_base_model'
-import States from '#enums/states'
-import History from '#models/history'
-import HistoryTypes from '#enums/history_types'
-import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 import SlugService from '#services/slug_service'
+import Database from '@adonisjs/lucid/services/db'
+import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 
 export default class Taxonomy extends AppBaseModel {
   @column({ isPrimary: true })
@@ -107,7 +107,7 @@ export default class Taxonomy extends AppBaseModel {
         strategy: 'dbIncrement',
         fields: ['name'],
       })
-      taxonomy.name = await slugify.make(Taxonomy, 'slug', taxonomy.name)
+      taxonomy.slug = await slugify.make(Taxonomy, 'slug', taxonomy.name)
     }
   }
 
