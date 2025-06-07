@@ -1,13 +1,13 @@
-import AuthAttempt from '#models/auth_attempt'
-import { signInValidator } from '#validators/auth'
 import BaseAction from '#actions/base_action'
-import GetRouteReferrer from '../general/get_route_referrer.js'
-import stripe from '#services/stripe_service'
+import AuthAttempt from '#models/auth_attempt'
 import User from '#models/user'
+import stripe from '#services/stripe_service'
+import { signInValidator } from '#validators/auth'
 import { errors } from '@adonisjs/auth'
 import { HttpContext } from '@adonisjs/core/http'
 import { Session } from '@adonisjs/session'
 import { Infer } from '@vinejs/vine/types'
+import GetRouteReferrer from '../general/get_route_referrer.js'
 
 type Validator = Infer<typeof signInValidator>
 
@@ -64,7 +64,6 @@ export default class StoreSessionSignIn extends BaseAction {
         return 'https://cms.adocasts.com'
       default:
         const match = GetRouteReferrer.run(options.forward)
-        console.log({ match, options })
         return match.referrer ?? '/'
     }
   }
