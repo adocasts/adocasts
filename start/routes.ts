@@ -38,12 +38,12 @@ const RenderBlogsIndex = () => import('#actions/posts/render_blogs_index')
 const RenderBlogsShow = () => import('#actions/posts/render_blogs_show')
 const StoreDiscussion = () => import('#actions/discussions/store_discussion')
 const RenderDiscussionsCreate = () => import('#actions/discussions/render_discussions_create')
-import HandleAllyCallback from '#actions/auth/social/handle_ally_callback'
-import HandleAllyRedirect from '#actions/auth/social/handle_ally_redirect'
-import HandleAllyUnlink from '#actions/auth/social/handle_ally_unlink'
+const HandleAllyCallback = () => import('#actions/auth/social/handle_ally_callback')
+const HandleAllyRedirect = () => import('#actions/auth/social/handle_ally_redirect')
+const HandleAllyUnlink = () => import('#actions/auth/social/handle_ally_unlink')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
-cns = () => impot()cns = () => iport()cns = () => impot()const DestroyAccount = () => import('#actions/users/destroy_account')
+const DestroyAccount = () => import('#actions/users/destroy_account')
 const UpdateUserBillTo = () => import('#actions/users/update_user_billto')
 const RenderUserInvoice = () => import('#actions/users/render_user_invoice')
 const UpdateUserNotifications = () => import('#actions/users/update_user_notifications')

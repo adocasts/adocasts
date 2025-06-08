@@ -1,9 +1,10 @@
+import BaseAction from '#actions/base_action'
 import { ImageOptions } from '#services/asset_service'
 import assetStorage from '#services/asset_storage_service'
-import BaseAction from '#actions/base_action'
 
 export default class GetAsset extends BaseAction<[ImageOptions]> {
   async handle(options: ImageOptions) {
+    console.log({ options })
     if (options.shouldSkip) {
       return assetStorage.get(options.path)
     }

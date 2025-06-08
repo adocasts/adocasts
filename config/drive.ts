@@ -9,9 +9,14 @@ const driveConfig = defineConfig({
    * services each using the same or a different driver.
    */
   services: {
-    gcs: services.gcs({
-      credentials: env.get('GCS_KEY'),
-      bucket: env.get('GCS_BUCKET'),
+    r2: services.s3({
+      credentials: {
+        accessKeyId: env.get('R2_KEY'),
+        secretAccessKey: env.get('R2_SECRET'),
+      },
+      region: 'auto',
+      bucket: env.get('R2_BUCKET'),
+      endpoint: env.get('R2_ENDPOINT'),
       visibility: 'public',
     }),
   },
@@ -20,5 +25,5 @@ const driveConfig = defineConfig({
 export default driveConfig
 
 declare module '@adonisjs/drive/types' {
-  export interface DriveDisks extends InferDriveDisks<typeof driveConfig> {}
+  export interface DriveDisks extends InferDriveDisks<typeof driveConfig> { }
 }

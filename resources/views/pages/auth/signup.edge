@@ -12,9 +12,9 @@
       <a href="{{ route('auth.signin', {}, { qs: { forward: encodeURI(forward) } }) }}" class="link">Sign in here</a>
     </p>
 
-    @form({ 
-      method: 'post', 
-      action: form.post('auth.sessions.store'), 
+    @form({
+      method: 'post',
+      action: form.post('auth.sessions.store'),
       class: 'flex flex-col mt-6',
       upSubmit: !plan && action !== 'cms'
     })
@@ -68,16 +68,16 @@
           </div>
           <div class="flex-1 border-t border-base-content/10"></div>
         </div>
-      
+
         <div class="mt-8 grid grid-cols-2 gap-3 relative">
-          <a href="#" class="btn btn-soft flex-1">
+          <a href="{{ route('auth.social.redirect', { provider: 'google' }, { qs: request.qs() }) }}" class="btn btn-soft flex-1" up-follow="false">
             @svg('simple-icons:google', { class: 'w-5 h-5' })
-            <span class="sr-only">Sign up with Google</span>
+            <span class="sr-only">Sign in with Google</span>
           </a>
-    
-          <a href="#" class="btn btn-soft flex-1">
+
+          <a href="{{ route('auth.social.redirect', { provider: 'github' }, { qs: request.qs() }) }}" class="btn btn-soft flex-1" up-follow="false">
             @svg('simple-icons:github', { class: 'w-5 h-5' })
-            <span class="sr-only">Sign up with GitHub</span>
+            <span class="sr-only">Sign in with GitHub</span>
           </a>
         </div>
       </div>
