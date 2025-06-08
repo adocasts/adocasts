@@ -4,6 +4,7 @@ import app from '@adonisjs/core/services/app'
 import { AllyUserContract, GithubToken, GoogleToken } from '@adonisjs/ally/types'
 import storage from './storage_service.js'
 import crossFetch from 'cross-fetch'
+import logger from './logger_service.js'
 
 export class ImageOptions {
   declare width: number
@@ -78,24 +79,28 @@ export default class AssetService {
   }
 
   static async refreshAvatar(user: User, socialUser: AllyUserContract<GithubToken | GoogleToken>) {
-    if (!socialUser.avatarUrl || user.avatarUrl?.startsWith(`${user.id}/profile/`)) return
+    try {
+      if (!socialUser.avatarUrl || user.avatarUrl?.startsWith(`${user.id}/profile/`)) return
 
-    const response = await crossFetch(socialUser.avatarUrl)
-    const arrayBuffer = await response.arrayBuffer()
-    const buffer = new Buffer(arrayBuffer)
-    const filename = this.getAvatarFilename(user, socialUser.avatarUrl)
+      const response = await crossFetch(socialUser.avatarUrl)
+      const arrayBuffer = await response.arrayBuffer()
+      const buffer = new Buffer(arrayBuffer)
+      const filename = this.getAvatarFilename(user, socialUser.avatarUrl)
 
-    if (user.avatarUrl === filename) return
+      if (user.avatarUrl === filename) return
 
-    if (app.inProduction && (await storage.exists(filename))) {
-      await storage.destroy(filename)
+      if (app.inProduction && (await storage.exists(filename))) {
+        await storage.destroy(filename)
+      }
+
+      await storage.store(filename, buffer)
+
+      user.avatarUrl = filename
+
+      await user.save()
+    } catch (error) {
+      await logger.error('AssetService.refreshAvatar', error)
     }
-
-    await storage.store(filename, buffer)
-
-    user.avatarUrl = filename
-
-    await user.save()
   }
 
   static getAvatarFilename(user: User, url: string) {
