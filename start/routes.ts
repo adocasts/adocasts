@@ -41,6 +41,7 @@ const RenderDiscussionsCreate = () => import('#actions/discussions/render_discus
 const HandleAllyCallback = () => import('#actions/auth/social/handle_ally_callback')
 const HandleAllyRedirect = () => import('#actions/auth/social/handle_ally_redirect')
 const HandleAllyUnlink = () => import('#actions/auth/social/handle_ally_unlink')
+const RenderRssXml = () => import('#actions/syndication/render_rss_xml')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 const DestroyAccount = () => import('#actions/users/destroy_account')
@@ -77,6 +78,9 @@ router.where('slug', router.matchers.slug())
 router.get('/', [RenderHome]).as('home')
 router.get('/frags/*', [RenderFrag]).as('frag')
 
+//* Syndication
+router.get('/rss', [RenderRssXml]).as('rss')
+
 //* Go
 router.get('/go/:entity/:entityId/:target/:targetId', [GoToNotification]).as('go.notification')
 
@@ -91,9 +95,7 @@ router.get('/signup', [RenderSignUpPage]).as('auth.signup')
 router.post('/sessions', [StoreSessionSignIn]).as('auth.sessions.store')
 router.delete('/sessions', [DestroySession]).as('auth.sessions.destroy')
 
-/**
- * auth social
- */
+//* Auth Social
 router.get('/:provider/redirect', [HandleAllyRedirect]).as('auth.social.redirect')
 router.get('/:provider/callback', [HandleAllyCallback]).as('auth.social.callback')
 router.get('/:provider/unlink', [HandleAllyUnlink]).as('auth.social.unlink').use(middleware.auth())
