@@ -1,7 +1,7 @@
 @layout()
   <main class="container mx-auto">
     <div class="p-3 lg:p-6 !pb-0">
-      <div class="aspect-video max-h-[calc(100vh_-_120px)] mx-auto bg-base-200 rounded-[var(--radius-box)]"></div>
+      <div class="aspect-video max-h-[calc(100vh_-_120px)] mx-auto bg-base-200 rounded-base"></div>
     </div>
 
     <div class="max-w-prose mx-auto flex gap-3 lg:gap-6 mt-6 lg:mt-8">
@@ -25,10 +25,10 @@
               <div class="flex gap-x-3 items-baseline">
                 @profile.link({ user: snippet.author })
                   <span>
-                    {{ snippet.author.handle }} 
+                    {{ snippet.author.handle }}
                   </span>
                 @end
-              
+
                 <span class="text-primary relative top-[0.25rem]">
                   @svg('solar:double-alt-arrow-right-broken', { class: 'w-4 h-4' })
                 </span>
@@ -48,7 +48,7 @@
         <p class="text-pretty font-medium opacity-60 sm:text-lg mb-6">
           @if (snippet.description.startsWith('In this snippet,'))
             @let([char, ...desc] = snippet.description.replace('In this snippet,', '').trim())
-            
+
             {{ [char?.toUpperCase(), ...desc].join('') }}
           @else
             {{ snippet.description }}
@@ -62,7 +62,7 @@
         @endif
 
         <div class="mt-8 lg:mt-12 -mx-6" up-comments>
-          <div class="p-6 bg-base-200 rounded-[var(--radius-box)] mb-6">
+          <div class="p-6 bg-base-200 rounded-base mb-6">
             <h3 class="heading-3 !mb-0">
               Join the Discussion
               <span class="opacity-60 font-normal">({{ snippet.comments.length }} comments)</span>

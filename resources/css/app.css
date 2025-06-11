@@ -20,9 +20,7 @@ body {
 }
 
 body {
-  --section-spacing: theme('spacing.12')
-
-  --mono: 0;
+  --section-spacing: theme('spacing.12') --mono: 0;
   --casl: 0.5;
   --wght: 400;
   --slnt: 0;
@@ -130,6 +128,10 @@ a.link-grow {
   }
 }
 
+.rounded-base {
+  border-radius: var(--radius-box);
+}
+
 .border-base {
   border-color: var(--color-base-300);
   border-width: var(--border);
@@ -158,16 +160,12 @@ a.link-grow {
   &.mouseover {
     --btn-shadow: '';
     --btn-fg: var(--btn-color, var(--color-base-content));
-    --btn-bg: color-mix(
-      in oklab,
-      var(--btn-color, var(--color-base-content)) 8%,
-      var(--color-base-100)
-    );
-    --btn-border: color-mix(
-      in oklab,
-      var(--btn-color, var(--color-base-content)) 10%,
-      var(--color-base-100)
-    );
+    --btn-bg: color-mix(in oklab,
+        var(--btn-color, var(--color-base-content)) 8%,
+        var(--color-base-100));
+    --btn-border: color-mix(in oklab,
+        var(--btn-color, var(--color-base-content)) 10%,
+        var(--color-base-100));
     --btn-noise: none;
   }
 }
@@ -189,7 +187,7 @@ a.link-grow {
     border: 3px solid transparent;
     background: linear-gradient(to bottom, transparent, var(--color-base-100)) border-box;
     mask:
-      linear-gradient(#000 0 0) padding-box, 
+      linear-gradient(#000 0 0) padding-box,
       linear-gradient(#000 0 0);
     mask-composite: exclude;
     opacity: 0;
@@ -361,13 +359,16 @@ a.link-grow {
     transform: scale(0);
     opacity: 0;
   }
+
   40% {
     opacity: 1;
   }
+
   80% {
     transform: scale(1.2);
     opacity: 1;
   }
+
   100% {
     transform: scale(1);
     opacity: 1;
@@ -384,6 +385,7 @@ a.link-grow {
   0% {
     transform: translateX(0)
   }
+
   100% {
     transform: translateX(-100%)
   }

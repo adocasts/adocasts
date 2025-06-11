@@ -5,10 +5,10 @@
     @else
       <div class="h-24 absolute top-0 left-0 w-full bg-gradient-to-br from-primary via-secondary to-accent"></div>
     @end
-    
+
     <div class="max-w-[810px] mx-auto pt-8 relative">
       <div class="avatar mb-6">
-        <div class="w-32 border-4 border-base-300 rounded-[var(--radius-box)]">
+        <div class="w-32 border-4 border-base-300 rounded-base">
           <img class="aspect-square object-cover object-center" src="{{ user.avatar }}" alt="{{ user.handle }}">
         </div>
       </div>
@@ -48,7 +48,7 @@
       @if (!user.isEnabledProfile)
         <div role="alert" class="alert alert-warning alert-soft mt-6">
           <span>
-            Your profile is private and can only be seen by you. 
+            Your profile is private and can only be seen by you.
             {{-- You can change this anytime within your <a href="{{ route('users.settings.index', { section: 'account' }) }}" class="link">account settings</a>. --}}
           </span>
         </div>
@@ -58,18 +58,18 @@
 
       <main class="@container flex-1" up-main-content>
         <div class="tabs tabs-box">
-          <a 
-            class="tab {{ html.classNames([{ 'tab-active': tab === 'activity' }]) }}" 
-            href="{{ route('users.profile', { handle: user.handle }) }}" 
+          <a
+            class="tab {{ html.classNames([{ 'tab-active': tab === 'activity' }]) }}"
+            href="{{ route('users.profile', { handle: user.handle }) }}"
             up-scroll="preserve">
             @svg('solar:pulse-bold-duotone', { class: 'w-4 h-4 mr-2', })
             Activity
           </a>
 
-          <a 
-            role="tab" 
-            class="tab {{ html.classNames([{ 'tab-active': tab === 'discussions' }]) }}" 
-            href="{{ route('users.profile', { handle: user.handle, tab: 'discussions' })}}" 
+          <a
+            role="tab"
+            class="tab {{ html.classNames([{ 'tab-active': tab === 'discussions' }]) }}"
+            href="{{ route('users.profile', { handle: user.handle, tab: 'discussions' })}}"
             up-scroll="preserve">
             @svg('solar:chat-line-bold-duotone', { class: 'w-4 h-4 mr-2' })
             Discussions

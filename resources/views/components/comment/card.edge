@@ -13,15 +13,15 @@
 
 @let(size = sizes.get($props.size ?? 'sm'))
 
-@card({ 
-  id: `comment${comment.id}`, 
-  accent: '', 
-  class: ['mb-6 group overflow-visible', { 'card-border border-success': solved }], 
+@card({
+  id: `comment${comment.id}`,
+  accent: '',
+  class: ['mb-6 group overflow-visible', { 'card-border border-success': solved }],
   ':class': "{ 'outline outline-primary': window.location.hash === `#${$el.id}` }",
   'x-init': 'typeof up !== undefined && window.location.hash === `#${$el.id}` && up?.reveal($el, { top: true, behavior: \'smooth\' })'
 })
   @if (parent)
-    <div class="w-full flex items-center bg-base-100 py-3 px-4 gap-1.5 text-sm rounded-[var(--radius-box)] opacity-60">
+    <div class="w-full flex items-center bg-base-100 py-3 px-4 gap-1.5 text-sm rounded-base opacity-60">
       @svg('solar:reply-bold', { class: 'w-8 rotate-180' })
       Responding to {{ parent.author?.username }}
     </div>
@@ -45,7 +45,7 @@
           @if (comment.author)
             @profile.link({ user: comment.author, class: ['flex gap-1', 'items-center'] })
               <span>
-                {{ comment.author.handle }} 
+                {{ comment.author.handle }}
               </span>
 
               @if (!comment.author.isFreeTier)
@@ -82,13 +82,13 @@
           </div>
         @endif
       </div>
-      
+
       @if (comment.body)
         <article class="prose max-w-4xl">
           {{{ await parser.highlight(comment.body) }}}
         </article>
       @endif
-      
+
       <div class="w-full mt-6">
         <div class="w-full flex items-end gap-4 justify-between text-sm">
           <div class="flex items-center gap-2">
@@ -112,7 +112,7 @@
               @endcan
 
               @can('CommentPolicy.delete', comment)
-                @form({ 
+                @form({
                   action: form.delete('comments.destroy', { id: comment.id }),
                   'up-confirm': `Are you sure you'd like to delete your comment?`,
                   'up-target': '[up-comments]',

@@ -1,6 +1,6 @@
 <li class="relative">
   @if (item.href)
-    <a href="{{ item.href }}" up-layer="root" class="flex flex-col px-4 py-2 hover:bg-base-100 rounded-[var(--radius-box)] my-1 duration-150">
+    <a href="{{ item.href }}" up-layer="root" class="flex flex-col px-4 py-2 hover:bg-base-100 rounded-base my-1 duration-150">
       <strong class="text-xs opacity-60">{{ item.title }}</strong>
       <div class="break-all md:break-keep md:break-words text-xs md:text-sm">
         {{ string.excerpt(item.body, 500, { completeWords: true }) }}
@@ -14,7 +14,7 @@
       </div>
     </div>
   @endif
-  
+
   @if (!last)
     <div class="px-4">
       <div class="w-full h-px bg-base-100"></div>

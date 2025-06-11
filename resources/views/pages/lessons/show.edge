@@ -40,7 +40,7 @@
           </div>
 
           <div class="h-5 w-px bg-base-100 mx-3"></div>
-          
+
           @let(nextLesson = series.findNextLesson(lesson.id))
           @let(prevLesson = series.findPrevLesson(lesson.id))
           <div class="flex items-center justify-end">
@@ -63,7 +63,7 @@
       </div>
 
       <div class="bg-base-100/25 rounded-b-[var(--radius-box)]">
-        <div class="aspect-video bg-base-200 rounded-[var(--radius-box)]"></div>
+        <div class="aspect-video bg-base-200 rounded-base"></div>
       </div>
     </div>
 
@@ -88,10 +88,10 @@
               <div class="flex gap-x-3 items-baseline">
                 @profile.link({ user: lesson.author })
                   <span>
-                    {{ lesson.author.handle }} 
+                    {{ lesson.author.handle }}
                   </span>
                 @end
-              
+
                 <span class="text-primary relative top-[0.25rem]">
                   @svg('solar:double-alt-arrow-right-broken', { class: 'w-4 h-4' })
                 </span>
@@ -111,7 +111,7 @@
         <p class="text-pretty font-medium opacity-60 sm:text-lg mb-6">
           @if (lesson.description.startsWith('In this lesson,'))
             @let([char, ...desc] = lesson.description.replace('In this lesson,', '').trim())
-            
+
             {{ [char?.toUpperCase(), ...desc].join('') }}
           @else
             {{ lesson.description }}
@@ -125,7 +125,7 @@
         @endif
 
         <div class="mt-8 lg:mt-12 -mx-6" up-comments>
-          <div class="p-6 bg-base-200 rounded-[var(--radius-box)] mb-6">
+          <div class="p-6 bg-base-200 rounded-base mb-6">
             <h3 class="heading-3 !mb-0">
               Join the Discussion
               <span class="opacity-60 font-normal">({{ lesson.comments.length }} comments)</span>
@@ -139,7 +139,7 @@
 
     </div>
   </main>
-  
+
   <aside class="w-[325px] bg-base-200 fixed right-0 top-0 h-full flex flex-col overflow-hidden">
     <div class="px-6 pt-6 pb-3">
       <h3 class="heading-4 !mb-0">
@@ -160,15 +160,15 @@
                 </h5>
               </div>
             </summary>
-            
+
             <div class="collapse-content !p-0">
               <ol class="list-plain mb-3">
                 @each (item in module.lessons)
                   @let(progression = progress.post.get(item.id))
 
                   <li>
-                    <a 
-                      href="{{ item.routeUrl }}" 
+                    <a
+                      href="{{ item.routeUrl }}"
                       class="{{ html.classNames([
                         'group/modles text-sm duration-200 pl-1 pr-2 p-1 flex items-center gap-3 rounded-md', {
                           'bg-base-100/0 hover:bg-base-100 text-base-content/60 hover:text-base-content': lesson.id !== item.id,
@@ -184,11 +184,11 @@
                           {{ module.moduleNumber }}.{{ item.sortOrder }}
                         @endif
                       </div>
-                      
+
                       <div class="flex-1 text-xs">
                         {{ item.title }}
                       </div>
-                      
+
                       <div class="text-2xs opacity-60 group-hover/card:opacity-100 duration-200">
                         {{ TimeService.secondsToTimestring(item.videoSeconds) }}
                       </div>

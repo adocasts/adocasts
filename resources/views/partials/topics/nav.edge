@@ -1,4 +1,4 @@
-<div class="p-6 bg-base-200 rounded-[var(--radius-box)] mb-6">
+<div class="p-6 bg-base-200 rounded-base mb-6">
   <ul class="menu !p-0 w-full">
     <li class="menu-title">{{ topic.name }} Content</li>
     @topic.nav.item({ identifier: 'topics.show', topic })
@@ -10,17 +10,17 @@
       <span>Series</span>
       <div class="badge badge-sm">{{ series.meta.total }}</div>
     @end
-    
+
     @topic.nav.item({ identifier: 'topics.show.lessons', topic })
       <span>Lessons</span>
       <div class="badge badge-sm">{{ lessons.meta?.total }}</div>
     @end
-    
+
     @topic.nav.item({ identifier: 'topics.show.snippets', topic })
       <span>Snippets</span>
       <div class="badge badge-sm">{{ snippets.meta?.total }}</div>
     @end
-    
+
     @topic.nav.item({ identifier: 'topics.show.discussions', topic })
       <span>Discussions</span>
       <div class="badge badge-sm">{{ discussions.meta.total }}</div>

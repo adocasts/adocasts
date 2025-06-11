@@ -1,9 +1,9 @@
-@layout.shell.asideLeft({ 
-  sticky: true, 
-  main: { 
+@layout.shell.asideLeft({
+  sticky: true,
+  main: {
     id: 'discussionList',
     class: 'flex flex-col gap-3 lg:gap-6'
-  } 
+  }
 })
   @slot('aside')
 
@@ -23,7 +23,7 @@
       @endif
     @endif
 
-    <form method="GET" action="{{ route('discussions.index') }}" up-target="#discussionList" up-autosubmit="true" up-navigate="false">
+    <form method="GET" action="{{ route('discussions.index') }}" up-target="#discussionList" up-autosubmit="true" up-focus="keep">
       <div class="mb-3 md:mb-6">
         @form.field({ name: 'pattern', as: 'div', class: 'w-full' })
           @form.input({ type: 'search', value: filters?.pattern, placeholder: 'Search discussions ...', class: 'w-full', 'up-watch-delay': 500 })
@@ -74,7 +74,7 @@
           </li>
         </ul>
       </div>
-    
+
       <div class="mb-3 md:mb-6">
         <div class="font-semibold opacity-60 text-sm mb-3">Filter by topics</div>
         @form.filter({ name: 'topic', checked: filters?.topic })

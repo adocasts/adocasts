@@ -281,7 +281,7 @@ pre .filepath .lang-icon {
 
 pre.shiki.github-dark,
 .code-block pre {
-  @apply !bg-base-100/50 px-1 pb-1 rounded-[var(--radius-box)] border border-base-100/50;
+  @apply !bg-base-100/50 px-1 pb-1 rounded-base border border-base-100/50;
 
   code {
     @apply !bg-base-100/50 rounded-[calc(var(--radius-box)_-_.25rem)] py-3;
@@ -368,7 +368,7 @@ pre ul.filepath-list {
   max-width: 100%;
 
   .ProseMirror {
-    @apply bg-base-200 p-6 pb-20 border-none rounded-[var(--radius-box)];
+    @apply bg-base-200 p-6 pb-20 border-none rounded-base;
     min-height: 200px;
   }
 }
@@ -381,11 +381,11 @@ pre ul.filepath-list {
   pointer-events: none;
 }
 
-.ProseMirror > :first-child {
+.ProseMirror> :first-child {
   margin-top: 0;
 }
 
-.ProseMirror > :last-child {
+.ProseMirror> :last-child {
   margin-bottom: 0;
 }
 

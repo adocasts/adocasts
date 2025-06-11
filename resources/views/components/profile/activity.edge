@@ -31,7 +31,7 @@
                 @endif
               </p>
               @if (['comment', 'reply'].includes(item.type) && item.body)
-                <div class="w-full profile prose prose-sm !max-w-full text-base-content/60 mt-3 bg-base-200 p-3 lg:p-6 rounded-[var(--radius-box)]">
+                <div class="w-full profile prose prose-sm !max-w-full text-base-content/60 mt-3 bg-base-200 p-3 lg:p-6 rounded-base">
                   {{{ await parser.highlight(item.body) }}}
                 </div>
               @endif

@@ -3,13 +3,13 @@
   <div x-data="{ isHeaderVisible: true }">
     <div class="relative" x-intersect:enter="isHeaderVisible = true" x-intersect:leave="isHeaderVisible = false">
       <img class="absolute top-1/2 right-0 -translate-y-1/2 w-1/3 aspect-square object-cover object-center opacity-20 blur-2xl mask-gradient-to-bl z-[1]" src="/imgs/adonisjs.jpeg" alt="{{ series.name }}">
-      
+
       <div class="section-container mx-auto flex items-center xl:min-h-[250px]">
         <div class="flex-1">
           <h1 class="heading-2">
             {{ topic.name }}
           </h1>
-        
+
           @if (topic.description)
             <p class="max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-base/6">
               {{ topic.description }}
@@ -126,7 +126,7 @@
       </main>
 
       <aside class="@container hidden lg:block w-[350px] section-vars mt-[calc(var(--padding-y)_+_28px_+_.75rem)] sticky top-20">
-        <div x-show="!isHeaderVisible" x-transition x-cloak class="p-6 bg-base-200 relative z-10 rounded-[var(--radius-box)] mb-6">
+        <div x-show="!isHeaderVisible" x-transition x-cloak class="p-6 bg-base-200 relative z-10 rounded-base mb-6">
           <div class="flex items-center gap-6 mb-6">
             <div class="w-20 relative">
               <img src="/imgs/adonisjs.jpeg" class="rounded-xl relative z-10" alt="{{ topic.asset.altText ?? topic.name }}">
@@ -142,7 +142,7 @@
                   @svg('solar:book-2-bold-duotone', { class: '-ml-1 -my-0.5' })
                   {{ topic.meta.collections_count }} Series
                 </div>
-              
+
                 <div class="badge badge-soft opacity-75 group-hover:opacity-100 duration-200">
                   @svg('solar:video-library-bold-duotone', { class: '-ml-1 -my-0.5' })
                   {{ topic.meta.posts_count }} Lessons
@@ -150,7 +150,7 @@
               </div>
             </div>
           </div>
-          
+
           @if (topic.description)
             <p class="max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-base/6">
               {{ topic.description }}

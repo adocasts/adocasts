@@ -8,12 +8,12 @@
         <div>
           <div class="flex gap-2 mb-6 lg:mb-8">
             @!difficulty({ item: series })
-          
+
             <div class="badge badge-soft opacity-75 group-hover:opacity-100 duration-200">
               @svg('solar:video-library-bold-duotone', { class: '-ml-1 -my-0.5' })
               {{ series.meta.posts_count }} Lessons
             </div>
-          
+
             <div class="badge badge-soft opacity-75 group-hover:opacity-100 duration-200">
               @svg('solar:clock-circle-bold-duotone', { class: '-ml-1 -my-0.5' })
               {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
@@ -35,13 +35,13 @@
               @svg('solar:play-bold')
               Start Series
             </a>
-        
-            @!frags.series.watchlistToggle({ 
+
+            @!frags.series.watchlistToggle({
               id: 'series-watchlist-foot',
               target: 'series-watchlist-head,series-watchlist-foot',
-              series 
+              series
             })
-            
+
             @if (series.repositoryUrl)
               <a href="{{ series.repositoryUrl }}" target="_blank" class="btn btn-soft btn-square">
                 @svg('simple-icons:github')
@@ -74,7 +74,7 @@
 
           @each (mod in series.modules)
             <details class="collapse rounded-none group" open>
-              <summary class="collapse-title !flex items-center justify-between gap-3 border-base-100 border-[3px] backdrop-blur-md mb-3 !px-6 rounded-[var(--radius-box)]">
+              <summary class="collapse-title !flex items-center justify-between gap-3 border-base-100 border-[3px] backdrop-blur-md mb-3 !px-6 rounded-base">
                 <div class="flex items-center gap-6">
                   <h3 class="heading-4 !mb-0 flex items-center gap-3">
                     <div class="text-primary proportional-nums">
@@ -108,7 +108,7 @@
         </div>
 
         @if (series.statusId === Status.IN_PROGRESS)
-          <div class="bg-base-200 py-4 px-12 rounded-[var(--radius-box)] flex items-center gap-6">
+          <div class="bg-base-200 py-4 px-12 rounded-base flex items-center gap-6">
             <div>
               <img class="w-32" src="/imgs/robot/slice6.svg" alt="excited robot" />
             </div>
@@ -116,7 +116,7 @@
               <h4 class="font-black uppercase tracking-wider text-sm">More in the works!</h4>
               <p class="text-sm text-slate-600">Add to your watchlist to get notified when new lessons are added</p>
               <div class="mt-2 max-w-fit">
-                @!frags.series.watchlistToggle({ 
+                @!frags.series.watchlistToggle({
                   id: 'series-watchlist-foot',
                   target: 'series-watchlist-head,series-watchlist-foot',
                   series
@@ -128,30 +128,30 @@
       </main>
 
       <aside class="@container hidden lg:block w-[36%] sticky top-20">
-        <div x-show="!isHeaderVisible" x-transition x-cloak class="p-6 bg-base-200 relative z-10 rounded-[var(--radius-box)] mb-6">
+        <div x-show="!isHeaderVisible" x-transition x-cloak class="p-6 bg-base-200 relative z-10 rounded-base mb-6">
           <h2 class="heading-4">
             {{ series.name }}
           </h2>
-      
+
           @if (series.description)
             <p class="max-w-2xl text-pretty font-medium opacity-60 line-clamp-3 max-lg:mx-auto sm:text-sm">
               {{ series.description }}
             </p>
           @endif
-      
+
           <div class="flex items-center justify-between gap-3 mt-6">
             <div class="flex flex-1 items-center gap-3">
               <a href="#" class="btn btn-primary btn-sm flex-1">
                 @svg('solar:play-bold')
                 Start Series
               </a>
-      
+
               <button type="button" class="btn btn-sm btn-soft">
                 @svg('solar:bookmark-bold')
                 Add to Watchist
               </button>
             </div>
-      
+
             <div class="flex items-center gap-3">
               <a href="#" class="btn btn-sm btn-soft btn-square">
                 @svg('simple-icons:github')
@@ -159,7 +159,7 @@
             </div>
           </div>
         </div>
-      
+
         @!series.progress({ series })
       </aside>
     </div>
