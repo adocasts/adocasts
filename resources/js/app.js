@@ -1,15 +1,15 @@
-import '../css/app.css'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { DateTime } from 'luxon'
+import '../css/app.css'
 // import posthog from 'posthog-js'
+import HyperDX from '@hyperdx/browser'
 import './_player'
-import HyperDX from '@hyperdx/browser';
  
 HyperDX.init({
   apiKey: 'ccf58ca0-80fd-415a-840e-db52e041c349',
   service: 'adocasts-client-side',
-  tracePropagationTargets: [/adocasts.com/i, /vid.adocasts.com/i], // Set to link traces from frontend to backend requests
+  tracePropagationTargets: [/^adocasts.com/i, /^vid.adocasts.com/i], // Set to link traces from frontend to backend requests
   consoleCapture: false, // Capture console logs (default false)
   advancedNetworkCapture: false, // Capture full HTTP request/response headers and bodies (default false)
 });
