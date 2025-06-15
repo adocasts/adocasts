@@ -1,4 +1,6 @@
-@layout()
+@layout({
+  style: '--aside-width: 325px; --footer-less-width: var(--aside-width);',
+})
   <main class="w-full lg:w-[calc(100%_-_325px)]">
     <div class="p-3 lg:p-6 !pb-0">
       <div class="w-full bg-base-100/25 flex items-center justify-between gap-0.5 rounded-t-[var(--radius-box)] px-3 py-1.5">
@@ -125,7 +127,7 @@
         @endif
 
         <div class="mt-8 lg:mt-12 -mx-6" up-comments>
-          <div class="p-6 bg-base-200 rounded-base mb-6">
+          <div class="p-6 border border-base-100 rounded-base mb-6">
             <h3 class="heading-3 !mb-0">
               Join the Discussion
               <span class="opacity-60 font-normal">({{ lesson.comments.length }} comments)</span>

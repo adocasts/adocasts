@@ -3,31 +3,31 @@
 @if (size === 'lg')
 
   @card({ class: 'card-sm' })
-    <div class="card-body items-center md:py-6 bg-gradient-to-b from-base-200/0 to-base-200">
+    <div class="card-body items-center md:py-6 bg-gradient-to-b from-base-200/0 to-base-300">
       <div class="avatar w-1/2 group-hover:scale-105 duration-200 relative">
         <div class="rounded-xl">
           <img src="/imgs/adonisjs.jpeg" alt="{{ topic.asset.altText ?? topic.name }}" class="relative z-10">
         </div>
       </div>
-  
+
       <div class="mt-1.5 md:mt-3">
         <h2 class="card-title text-lg md:text-2xl font-bold text-base-title justify-center">
           <a href="{{ route('topics.show', { slug: topic.slug }) }}" class="link-grow">
             {{ topic.name }}
           </a>
         </h2>
-  
+
         <div class="text-sm md:text-base opacity-60 flex flex-col md:flex-row items-center justify-center md:gap-4 mt-1.5 md:mt-0">
           @if (topic.meta.collections_count !== '0')
-          <span>
-            {{ topic.meta.collections_count }} series
-          </span>
+            <span>
+              {{ topic.meta.collections_count }} series
+            </span>
           @endif
-  
+
           @if (topic.meta.posts_count !== '0')
-          <span>
-            {{ topic.meta.posts_count }} lessons
-          </span>
+            <span>
+              {{ topic.meta.posts_count }} lessons
+            </span>
           @endif
         </div>
       </div>
@@ -50,25 +50,25 @@
           <img src="/imgs/adonisjs.jpeg" alt="{{ topic.asset.altText ?? topic.name }}">
         </div>
       </div>
-  
+
       <div class="mt-1.5">
         <h2 class="card-title font-bold text-base-title justify-center">
           <a href="{{ route('topics.show', { slug: topic.slug }) }}" class="link-grow">
             {{ topic.name }}
           </a>
         </h2>
-  
+
         <div class="text-xs opacity-60 flex items-center justify-center gap-4">
           @if (topic.meta.collections_count !== '0')
-          <span>
-            {{ topic.meta.collections_count }} series
-          </span>
+            <span>
+              {{ topic.meta.collections_count }} series
+            </span>
           @endif
-  
+
           @if (topic.meta.posts_count !== '0')
-          <span>
-            {{ topic.meta.posts_count }} lessons
-          </span>
+            <span>
+              {{ topic.meta.posts_count }} lessons
+            </span>
           @endif
         </div>
       </div>
@@ -84,25 +84,25 @@
           <img src="/imgs/adonisjs.jpeg" alt="{{ topic.asset.altText ?? topic.name }}">
         </div>
       </div>
-  
+
       <div>
         <h2 class="card-title font-bold text-base-title">
           <a href="{{ route('topics.show', { slug: topic.slug }) }}" class="link-grow">
             {{ topic.name }}
           </a>
         </h2>
-  
+
         <div class="text-xs opacity-60 flex items-center gap-4">
           @if (topic.meta.collections_count !== '0')
-          <span>
-            {{ topic.meta.collections_count }} series
-          </span>
+            <span>
+              {{ topic.meta.collections_count }} series
+            </span>
           @endif
-  
+
           @if (topic.meta.posts_count !== '0')
-          <span>
-            {{ topic.meta.posts_count }} lessons
-          </span>
+            <span>
+              {{ topic.meta.posts_count }} lessons
+            </span>
           @endif
         </div>
       </div>

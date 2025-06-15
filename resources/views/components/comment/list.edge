@@ -10,7 +10,7 @@
   })
 }}>
   @if (levelIndex === 1 && level.length)
-    <div class="absolute -left-3 lg:-left-6 -top-10 rotate-180 w-1.5 h-[calc(100%_+_2.5rem)] bg-gradient-to-t from-base-200 to-base-200/0 rounded-full"></div>
+    <div class="absolute -left-3 lg:-left-6 -top-10 rotate-180 w-px h-[calc(100%_+_2.5rem)] bg-gradient-to-t from-base-100 to-base-300/0"></div>
   @endif
 
   @if ($slots.before)
@@ -32,16 +32,22 @@
           @can('CommentPolicy.reply', comment)
             <template x-if="createId === {{ comment.id }}">
               <li class="mb-6">
-                @!comment.form({ 
+                @!comment.form({
                   commentTypeId: CommentTypes.POST,
                   rootParentId: comment.rootParentId,
                   replyingTo: comment,
-                  commentable, 
+                  commentable,
                   levelIndex,
                 })
               </li>
             </template>
           @endcan
+        @endslot
+
+        @slot('actions', scope)
+          @if ($slots.actions)
+            {{{ await $slots.actions(scope) }}}
+          @endif
         @endslot
       @end
     </li>

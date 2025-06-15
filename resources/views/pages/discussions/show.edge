@@ -11,28 +11,28 @@
 
     <div class="flex justify-between items-center gap-3">
       <div class="flex items-center gap-3">
-        <a href="{{ route('discussions.index') }}" class="btn btn-soft btn-sm" up-back>
+        <a href="{{ route('discussions.index') }}" class="btn btn-outline btn-sm" up-back>
           @svg('solar:double-alt-arrow-left-line-duotone', { class: 'w-4 h-4' })
           Back
         </a>
 
-        <div class="w-px h-4 bg-base-200"></div>
+        <div class="w-px h-4 bg-base-100"></div>
 
         @if (discussion.solvedAt)
-          <div class="btn btn-soft btn-sm !text-success" disabled="disabled">
+          <div class="btn btn-outline btn-sm !text-success" disabled="disabled">
             Answered
           </div>
         @endif
 
         @can('DiscussionPolicy.update', discussion)
-          <a href="{{ route('discussions.edit', { slug: discussion.slug }) }}" class="btn btn-soft btn-info btn-sm">
+          <a href="{{ route('discussions.edit', { slug: discussion.slug }) }}" class="btn btn-outline btn-info btn-sm">
             Edit
           </a>
         @endcan
 
         @can('DiscussionPolicy.delete', discussion)
           @form({ action: form.delete('discussions.destroy', { slug: discussion.slug }), 'up-confirm': "Are you sure you'd like to delete your discussion?" })
-            <button type="submit" class="btn btn-soft btn-error btn-sm">
+            <button type="submit" class="btn btn-outline btn-error btn-sm">
               Delete
             </button>
           @end
@@ -56,24 +56,24 @@
           @end
         </div>
 
-        <div class="w-px h-4 bg-base-200 mr-3 ml-1.5"></div>
+        <div class="w-px h-4 bg-base-100 mr-3 ml-1.5"></div>
 
         @if (auth.user)
-          <button type="button" class="btn btn-soft btn-sm">
+          <button type="button" class="btn btn-outline btn-sm">
             @svg('solar:bell-linear', { class: 'w-4 h-4' })
             Subscribe
           </button>
         @else
-          <a href="{{ route('auth.signup') }}" class="btn btn-soft btn-sm" up-layer="new" up-mode="modal" up-size="grow">
+          <a href="{{ route('auth.signup') }}" class="btn btn-outline btn-sm" up-layer="new" up-mode="modal" up-size="grow">
             @svg('solar:bell-linear', { class: 'w-4 h-4' })
             Subscribe
           </a>
         @endif
 
         @if (auth.user)
-          <button 
-            type="button" 
-            class="btn btn-soft btn-primary btn-sm" 
+          <button
+            type="button"
+            class="btn btn-outline btn-primary btn-sm"
             @click.prevent="() => {
               const el = document.querySelector('.ProseMirror')
               el?.scrollIntoView({ block: 'center', behavior: 'smooth' })
@@ -83,7 +83,7 @@
             Reply
           </button>
         @else
-          <a href="{{ route('auth.signup') }}" class="btn btn-soft btn-primary btn-sm" up-layer="new" up-mode="modal" up-size="grow">
+          <a href="{{ route('auth.signup') }}" class="btn btn-outline btn-primary btn-sm" up-layer="new" up-mode="modal" up-size="grow">
             @svg('solar:reply-bold', { class: 'w-4 h-4' })
             Reply
           </a>
@@ -92,7 +92,7 @@
     </div>
 
     @!discussion.card({ discussion, show: true })
-    
+
     <div up-comments>
       @!comment.form({ commentable: discussion, commentTypeId: CommentTypes.DISCUSSION, class: 'mb-6' })
 
@@ -100,9 +100,9 @@
         @slot('actions', scope)
           @if (scope.comment.id === discussion.solvedCommentId)
             @can('DiscussionPolicy.update', discussion)
-              @form({ action: form.patch('discussions.solved', { slug: discussion.slug }) })
+              @form({ action: form.patch('discussions.solved', { slug: discussion.slug }), 'up-scroll': 'preserve' })
                 <input type="hidden" name="commentId" value="{{ scope.comment.id }}">
-                <button type="submit" class="btn btn-soft btn-warning btn-sm">
+                <button type="submit" class="btn btn-outline btn-warning btn-sm">
                   Mark as Unsolved
                 </button>
               @end
@@ -111,7 +111,7 @@
             @can('DiscussionPolicy.update', discussion)
               @form({ action: form.patch('discussions.solved', { slug: discussion.slug }), 'up-scroll': 'preserve' })
                 <input type="hidden" name="commentId" value="{{ scope.comment.id }}">
-                <button type="submit" class="btn btn-soft hover:btn-success btn-sm">
+                <button type="submit" class="btn btn-outline hover:btn-success btn-sm">
                   Mark as Answer
                 </button>
               @end

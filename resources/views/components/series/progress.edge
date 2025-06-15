@@ -5,10 +5,10 @@
   @let(progressionTo = progression.isCompleted ? 'to-success/20' : 'to-primary/20')
   @let(nextUp = series.findNextUserLesson(progress))
 
-  <div class="mb-6 bg-base-200 relative z-10 rounded-base overflow-hidden {{ $props.class ?? '' }}">
-    <div class="relative text-sm bg-base-200 z-[1] rounded-t-[var(--radius-box)] px-6 py-3 overflow-hidden">
+  <div class="mb-6 border border-base-100 relative z-10 rounded-base overflow-hidden {{ $props.class ?? '' }}">
+    <div class="relative text-sm z-[1] rounded-t-[var(--radius-box)] px-6 py-3 overflow-hidden">
       <div class="{{ html.classNames(['absolute top-0 left-0 h-full bg-gradient-to-r', progressionFrom, progressionTo]) }}" style="width: {{ (progression.watchPercent / 100).toLocaleString([], { style: 'percent' }) }};">
-        <div class="absolute top-0 left-full h-full w-[50px] bg-gradient-to-r from-primary/20 to-base-200"></div>
+        <div class="absolute top-0 left-full h-full w-[50px] bg-gradient-to-r from-primary/20 to-base-300"></div>
       </div>
 
       <div class="relative z-[1] flex items-center gap-3">
@@ -34,7 +34,7 @@
       </div>
     </div>
 
-    <div class="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-base-200 via-base-300/50 to-base-200 border-y border-base-300/50">
+    <div class="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-base-200/50 via-base-300/50 to-base-200/50 border-y border-base-100">
       <div>
         <div
           class="radial-progress text-primary bg-base-300/25 mr-3"
@@ -62,7 +62,7 @@
     </div>
 
     @if (nextUp)
-      <div>
+      <div class="-m-px">
         @post.card({ post: nextUp, size: 'wide', class: 'rounded-t-none' })
           @slot('badge')
             <div class="badge badge-xs @xl:badge-sm badge-secondary">

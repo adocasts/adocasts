@@ -36,7 +36,7 @@ up.on('up:fragment:loaded', function (event) {
 
     url.searchParams.delete('hash')
     url.hash = `#${hash}`
-    
+
     event.response.url = url.toString()
   }
 })
@@ -49,4 +49,12 @@ up.on('up:location:changed', function () {
   }
 
   header.dispatchEvent(new CustomEvent('location', { detail }))
+})
+
+up.on('up:request:loaded', function (event) {
+  // sync body styles on every request
+  if (event.response.text.includes('<body')) {
+    const doc = new DOMParser().parseFromString(event.response.text, 'text/html')
+    document.body.style = doc.body.style.cssText
+  }
 })

@@ -21,7 +21,7 @@
   'x-init': 'typeof up !== undefined && window.location.hash === `#${$el.id}` && up?.reveal($el, { top: true, behavior: \'smooth\' })'
 })
   @if (parent)
-    <div class="w-full flex items-center bg-base-100 py-3 px-4 gap-1.5 text-sm rounded-base opacity-60">
+    <div class="flex items-center border border-base-100 py-3 px-4 -mt-px -mx-px w-[calc(100%_+_2px)] gap-1.5 text-sm rounded-base text-base-content/40 relative -z-10">
       @svg('solar:reply-bold', { class: 'w-8 rotate-180' })
       Responding to {{ parent.author?.username }}
     </div>
@@ -55,7 +55,7 @@
               @endif
 
               @if (isOp)
-                <div class="badge badge-xs badge-soft badge-secondary ml-1">OP</div>
+                <div class="badge badge-xs badge-dash badge-secondary ml-1">OP</div>
               @endif
             @end
           @else
@@ -78,7 +78,7 @@
 
         @if (solved)
           <div>
-            <div class="badge badge-success">Answer</div>
+            <div class="badge badge-outline badge-success">Answer</div>
           </div>
         @endif
       </div>
@@ -100,13 +100,13 @@
 
             <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100">
               @can('CommentPolicy.reply', comment)
-                <button class="btn btn-soft btn-sm" @click="create({{ comment.id }})">
+                <button class="btn btn-outline btn-sm" @click="create({{ comment.id }})">
                   Reply
                 </button>
               @endcan
 
               @can('CommentPolicy.update', comment)
-                <button class="btn btn-soft btn-secondary btn-sm" @click="edit({{ comment.id }})">
+                <button class="btn btn-outline btn-secondary btn-sm" @click="edit({{ comment.id }})">
                   Edit
                 </button>
               @endcan
@@ -118,7 +118,7 @@
                   'up-target': '[up-comments]',
                   'up-scroll': 'preserve',
                 })
-                  <button type="submit" class="btn btn-soft btn-error btn-sm">
+                  <button type="submit" class="btn btn-outline btn-error btn-sm">
                     Delete
                   </button>
                 @end

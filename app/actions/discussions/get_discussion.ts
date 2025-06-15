@@ -1,6 +1,6 @@
 import BaseAction from '#actions/base_action'
-import DiscussionShowDto from '../../dtos/discussion_show.js'
 import Discussion from '#models/discussion'
+import DiscussionShowDto from '../../dtos/discussion_show.js'
 
 export default class GetDiscussion extends BaseAction<[string | number]> {
   async handle(slugOrId: string | number) {

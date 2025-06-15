@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import "tailwindcss-animated";
 @import "./_theme.css";
+@import "./_footer.css";
 @import "./_accents.css";
 @import "./_container.css";
 @import "./_fades.css";
@@ -51,15 +52,15 @@ body {
 }
 
 .heading-2 {
-  @apply z-10 relative mb-6 font-semibold text-4xl max-lg:text-center text-balance tracking-tight;
+  @apply z-10 relative mb-6 font-semibold text-3xl text-balance tracking-tight;
 
   @variant lg {
-    @apply text-5xl;
+    @apply text-4xl;
   }
 }
 
 .heading-2a {
-  @apply z-10 relative mb-6 font-semibold text-2xl max-lg:text-center text-balance tracking-tight;
+  @apply z-10 relative mb-6 font-semibold text-2xl text-balance tracking-tight;
 
   @variant lg {
     @apply text-3xl;
@@ -126,10 +127,6 @@ a.link-grow {
     height: 100%;
     z-index: 50;
   }
-}
-
-.rounded-base {
-  border-radius: var(--radius-box);
 }
 
 .border-base {

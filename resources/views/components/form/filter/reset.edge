@@ -1,13 +1,13 @@
 @let(name = $props.name ?? $context.name)
 @let(label = $props.label ?? $context.resetLabel)
-@let(className = $props.class ?? 'btn filter-reset btn-sm mb-0.5 mr-0.5')
+@let(className = $props.class ?? 'btn filter-reset btn-outline btn-sm mb-0.5 mr-0.5')
 
-<input 
+<input
   x-data
-  class="{{ className }}" 
-  type="radio" 
-  name="{{ name }}" 
-  aria-label="{{ label || 'All' }}" 
+  class="{{ className }}"
+  type="radio"
+  name="{{ name }}"
+  aria-label="{{ label || 'All' }}"
   @change="document.querySelectorAll(`input[name='${$el.name}']:checked`).forEach(el => (el.checked = false))"
   {{ $props.except(['name', 'label', 'class']).toAttrs() }}
 />

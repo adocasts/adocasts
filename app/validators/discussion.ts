@@ -16,7 +16,7 @@ export const discussionSearchValidator = vine.compile(
       .optional(),
     userId: vine.number().exists({ table: 'users', column: 'id' }).optional(),
     pattern: vine.string().trim().optional(),
-    feed: vine.enum(['popular', 'noreplies', 'unsolved', 'solved']).optional(),
+    feed: vine.enum(['none', 'popular', 'noreplies', 'unsolved', 'solved']).optional(),
     topic: vine.string().optional(),
   })
 )

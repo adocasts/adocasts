@@ -2,16 +2,16 @@
 @let(iconClass = isSmall ? '-mx-1 -my-0.5' : '-ml-1 -my-0.5')
 
 @if (item.difficultyId)
-  <div class="{{ 
+  <div class="{{
     html.classNames([
-    'badge badge-soft flex items-center gap-1.5', 
-      { 
+    'badge badge-outline flex items-center gap-1.5',
+      {
         'badge-success': item.difficultyId === Difficulties.BEGINNER,
         'badge-warning': item.difficultyId === Difficulties.INTERMEDIATE,
         'badge-error': item.difficultyId === Difficulties.ADVANCED
       },
       $props.class
-    ]) 
+    ])
   }}">
     @if (item.difficultyId === Difficulties.BEGINNER)
       @svg('solar:spedometer-low-bold', { class: iconClass })
@@ -20,7 +20,7 @@
     @else
       @svg('solar:spedometer-max-bold', { class: iconClass })
     @endif
-    
+
     @if (!$props.class?.includes('badge-sm'))
       {{ string.capitalCase(Difficulties[item.difficultyId]) }}
     @endif

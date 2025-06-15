@@ -32,13 +32,13 @@
         </div>
       </div>
     </main>
-    
+
     @if (showLessons)
       <aside class="relative z-[60]">
         <div class="flex items-center justify-between gap-3 mb-3">
           <div class="text-xs opacity-60 tracking-wide">Latest Lessons</div>
         </div>
-        <div x-data="seriesCard" class="-mx-2 mb-0 faded-scroll-y to-base-200" :style="overflowStyle">
+        <div x-data="seriesCard" class="-mx-2 mb-0 faded-scroll-y to-base-300" :style="overflowStyle">
           <ul class="list" @scroll="handleScroll">
             @each(lesson in series.lessons)
               @!series.listItemSmall({ lesson })

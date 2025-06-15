@@ -64,3 +64,57 @@ body[data-theme="adocasts-light"] {
     display: none;
   }
 }
+
+.btn-outline,
+.badge-outline {
+  border-color: var(--color-base-100);
+
+  &.btn-primary,
+  &.btn-secondary,
+  &.btn-neutral,
+  &.btn-success,
+  &.btn-warning,
+  &.btn-error,
+  &.btn-info {
+    border-color: color-mix(in oklab, var(--btn-border, var(--color-base-content)), transparent 75%);
+  }
+
+  &.badge-primary,
+  &.badge-secondary,
+  &.badge-neutral,
+  &.badge-success,
+  &.badge-warning,
+  &.badge-error,
+  &.badge-info {
+    border-color: color-mix(in oklab, var(--badge-color, var(--color-base-content)), transparent 75%);
+  }
+}
+
+.input,
+.select {
+  background-color: transparent;
+  border-color: var(--color-base-100);
+
+  &:hover,
+  &:focus-within {
+    background-color: color-mix(in oklab, var(--color-base-100), transparent 75%);
+  }
+}
+
+.menu-active {
+  background-color: color-mix(in oklab, var(--color-primary), transparent 75%);
+  border: 1px solid var(--color-primary);
+  margin: -1px;
+}
+
+.menu li:not(.menu-title, .disabled) label:not(.menu-active):hover {
+  background-color: color-mix(in oklab, var(--color-base-100), transparent 75%);
+  border: 1px solid var(--color-base-100);
+  margin: -1px;
+}
+
+.avatar-group {
+  & :where(.avatar) {
+    border-color: var(--color-base-300);
+  }
+}

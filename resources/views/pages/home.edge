@@ -47,7 +47,7 @@ export default class HomeController {
       view.share({ inProgress })
     }
 
-    return view.render('pages/home', { 
+    return view.render('pages/home', {
       topics: await Topics.query().orderBy('name'),
       series: await Series.query().orderBy('updatedAt', 'desc').limit(5),
       lessons: await this.postService.getLatestLessons({ limit: 12 }),
@@ -72,7 +72,7 @@ export default class HomeController {
         <h3 class="heading-3">
           We'll Be Here When You're Ready!
         </h3>
-        
+
         @!stat.adocasts({ stats })
       @endif
     </div>

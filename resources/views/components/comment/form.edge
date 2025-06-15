@@ -11,7 +11,7 @@
 @form({ action, loadable: true, class: $props.class, 'up-scroll': 'preserve' })
 
   <input type="hidden" name="levelIndex" value="{{ levelIndex }}">
-  
+
   @if (commentable)
     <input type="hidden" name="{{ CommentTypeIdColumn[commentTypeId] }}" value="{{ commentable.id }}">
   @endif
@@ -39,7 +39,7 @@
         @if (auth.user)
           <div class="comment-info flex gap-1 items-baseline">
             <span>{{ auth.user.handle }}</span>
-          
+
             @if (!auth.user.isFreeTier)
               <span class="h-2.5 relative ml-1">
                 <img class="h-full" src="/imgs/plus-badge-100.png" alt="Adocasts Plus">
@@ -53,12 +53,12 @@
         @if (props.allows)
           <div class="comment-actions flex justify-end gap-3">
             @if (replyingTo || record)
-              <button type="button" class="btn btn-soft" @click.prevent="cancel">
+              <button type="button" class="btn btn-outline" @click.prevent="cancel">
                 Cancel
               </button>
             @endif
-          
-            <button type="submit" class="btn btn-primary" :disabled="sending">
+
+            <button type="submit" class="btn btn-outline btn-primary" :disabled="sending">
               <span x-show="sending" x-cloak>
                 @svg('svg-spinners:blocks-shuffle-3', { class: 'w-5 h-5 -ml-1 -my-1' })
                 {{ record ? 'Updating' : 'Sharing' }} ...

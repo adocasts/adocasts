@@ -9,18 +9,18 @@
           <div class="flex gap-2 mb-6 lg:mb-8">
             @!difficulty({ item: series })
 
-            <div class="badge badge-soft opacity-75 group-hover:opacity-100 duration-200">
+            <div class="badge badge-outline opacity-80 group-hover:opacity-100 duration-200">
               @svg('solar:video-library-bold-duotone', { class: '-ml-1 -my-0.5' })
               {{ series.meta.posts_count }} Lessons
             </div>
 
-            <div class="badge badge-soft opacity-75 group-hover:opacity-100 duration-200">
+            <div class="badge badge-outline opacity-80 group-hover:opacity-100 duration-200">
               @svg('solar:clock-circle-bold-duotone', { class: '-ml-1 -my-0.5' })
               {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
             </div>
           </div>
 
-          <h1 class="heading-2">
+          <h1 class="heading-2 !mb-3">
             {{ series.name }}
           </h1>
 
@@ -31,7 +31,7 @@
           @endif
 
           <div class="flex flex-1 items-center gap-3 mt-10">
-            <a href="#" class="btn btn-primary btn-wide">
+            <a href="#" class="btn btn-outline btn-primary btn-wide">
               @svg('solar:play-bold')
               Start Series
             </a>
@@ -43,7 +43,7 @@
             })
 
             @if (series.repositoryUrl)
-              <a href="{{ series.repositoryUrl }}" target="_blank" class="btn btn-soft btn-square">
+              <a href="{{ series.repositoryUrl }}" target="_blank" class="btn btn-outline btn-square">
                 @svg('simple-icons:github')
               </a>
             @endif
@@ -108,13 +108,13 @@
         </div>
 
         @if (series.statusId === Status.IN_PROGRESS)
-          <div class="bg-base-200 py-4 px-12 rounded-base flex items-center gap-6">
+          <div class="border-[3px] border-base-100 py-4 px-12 rounded-base flex items-center gap-6">
             <div>
               <img class="w-32" src="/imgs/robot/slice6.svg" alt="excited robot" />
             </div>
             <div class="flex flex-col">
-              <h4 class="font-black uppercase tracking-wider text-sm">More in the works!</h4>
-              <p class="text-sm text-slate-600">Add to your watchlist to get notified when new lessons are added</p>
+              <h4 class="text-lg font-semibold">More in the works!</h4>
+              <p class="text-sm opacity-60">Add to your watchlist to get notified when new lessons are added</p>
               <div class="mt-2 max-w-fit">
                 @!frags.series.watchlistToggle({
                   id: 'series-watchlist-foot',
@@ -128,7 +128,7 @@
       </main>
 
       <aside class="@container hidden lg:block w-[36%] sticky top-20">
-        <div x-show="!isHeaderVisible" x-transition x-cloak class="p-6 bg-base-200 relative z-10 rounded-base mb-6">
+        <div x-show="!isHeaderVisible" x-transition x-cloak class="mt-6 relative z-10 rounded-base mb-6">
           <h2 class="heading-4">
             {{ series.name }}
           </h2>
@@ -141,19 +141,19 @@
 
           <div class="flex items-center justify-between gap-3 mt-6">
             <div class="flex flex-1 items-center gap-3">
-              <a href="#" class="btn btn-primary btn-sm flex-1">
+              <a href="#" class="btn btn-outline btn-primary btn-sm flex-1">
                 @svg('solar:play-bold')
                 Start Series
               </a>
 
-              <button type="button" class="btn btn-sm btn-soft">
+              <button type="button" class="btn btn-outline btn-sm">
                 @svg('solar:bookmark-bold')
                 Add to Watchist
               </button>
             </div>
 
             <div class="flex items-center gap-3">
-              <a href="#" class="btn btn-sm btn-soft btn-square">
+              <a href="#" class="btn btn-sm btn-outline btn-square">
                 @svg('simple-icons:github')
               </a>
             </div>

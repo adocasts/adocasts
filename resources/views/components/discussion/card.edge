@@ -28,7 +28,7 @@
 
       @if (!show && commentCount)
         <div class="flex justify-center h-full mt-2">
-          <div class="w-[3px] h-[calc(100%_+_1.25rem)] rounded-full bg-base-content/10"></div>
+          <div class="w-px h-[calc(100%_+_1.25rem)] rounded-full bg-base-content/10"></div>
         </div>
       @endif
     </div>
@@ -45,7 +45,7 @@
       <div class="{{ html.classNames(['flex gap-x-3 items-baseline mb-3', size.byline]) }}">
         @profile.link({ user: discussion.author, class: ['flex gap-1', 'items-baseline'] })
           <span>
-            {{ discussion.author.handle }} 
+            {{ discussion.author.handle }}
           </span>
 
           @if (!discussion.author.isFreeTier)
@@ -63,7 +63,7 @@
           <time datetime="{{ discussion.createdAt }}">{{ TimeService.timeago(discussion.createdAt) }}</time>
         </span>
       </div>
-      
+
       @if (discussion.body)
         @if (show)
           <article class="prose max-w-4xl">
@@ -76,7 +76,7 @@
         @endif
       @endif
     </div>
-    
+
     <div class="w-full">
       <div class="w-full flex items-end gap-4 justify-between text-sm">
         <div class="flex items-center gap-2">
@@ -96,7 +96,7 @@
 
           @if (!show)
             @tooltip({ text: `${commentCount.toLocaleString()} ${string.pluralize('Reply', commentCount)}`, position: 'bottom' })
-              <a href="#comments" class="badge badge-soft">
+              <a href="#comments" class="badge badge-outline">
                 @svg('solar:chat-round-call-bold-duotone', { class: '-ml-1 -my-0.5 w-4 h-4' })
                 {{ commentCount.toLocaleString() }}
               </a>
@@ -105,7 +105,7 @@
 
           @if (!show)
             @tooltip({ text: `${viewCount.toLocaleString()} ${string.pluralize('Views', viewCount)}`, position: 'bottom' })
-              <div class="badge badge-soft">
+              <div class="badge badge-outline">
                 @svg('solar:eye-bold-duotone', { class: '-ml-1 -my-0.5 w-4 h-4' })
                 {{ viewCount.toLocaleString() }}
               </div>
@@ -119,15 +119,15 @@
 
         <div class="flex items-center justify-end gap-2">
           @if (discussion.solvedAt)
-            <div class="btn btn-soft btn-xs !text-success" disabled="disabled">
+            <div class="btn btn-outline btn-xs !text-success" disabled="disabled">
               Answered
             </div>
           @endif
 
           @if (discussion.topic)
-            <a {{ html.attrs({ 
+            <a {{ html.attrs({
               href: route('discussions.index', {}, { qs: { topic: discussion.topic.slug }}),
-              class: ['btn btn-soft btn-xs']
+              class: ['btn btn-outline', show ? 'btn-sm' : 'btn-xs']
             }) }}>
               {{ discussion.topic.name }}
             </a>

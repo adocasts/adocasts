@@ -11,12 +11,12 @@
       {{{ await $slots.actions() }}}
     @else
       @if (auth.user)
-        <a href="{{ route('discussions.create') }}" class="btn btn-primary btn-block mb-6">
+        <a href="{{ route('discussions.create') }}" class="btn btn-outline btn-primary btn-block mb-3">
           @svg('solar:chat-round-line-bold-duotone', { class: 'w-6 h-6' })
           New Discussion
         </a>
       @else
-        <a href="{{ route('auth.signup') }}" class="btn btn-primary btn-block mb-6" up-layer="new" up-mode="modal" up-size="grow">
+        <a href="{{ route('auth.signup') }}" class="btn btn-outline btn-primary btn-block mb-3" up-layer="new" up-mode="modal" up-size="grow">
           @svg('solar:chat-round-line-bold-duotone', { class: 'w-6 h-6' })
           New Discussion
         </a>
@@ -39,7 +39,7 @@
         <ul x-data="{ feed: {{ js.stringify(feed) }} }" class="menu w-full gap-1 p-0">
           <li>
             <label :class="{ 'menu-active': !feed }">
-              @!form.filter.reset({ name: 'feed', label: 'All Discussions', class: 'sr-only', 'x-model': 'feed' })
+              <input type="radio" name="feed" x-model="feed" class="sr-only" @click="feed = null; up.submit($el.form);">
               @svg('solar:chat-round-call-bold-duotone', { class: 'w-6 h-6' })
               All discussions
             </label>

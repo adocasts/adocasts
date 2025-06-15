@@ -7,7 +7,7 @@
     action: form.patch('discussions.vote', { id: discussion.id }),
     target: { 'up-discussion-like': discussion.id },
   })
-    <button {{ html.attrs({ type: 'submit', class: ['btn btn-soft btn-sm', { 'btn-primary' : hasLiked }] }) }}>
+    <button {{ html.attrs({ type: 'submit', class: ['btn btn-outline btn-sm', { 'btn-primary' : hasLiked }] }) }}>
       @svg(likeIcon, { class: 'w-4 h-4 -ml-1' })
       {{ discussion.userVotes.length }}
     </button>
@@ -15,7 +15,7 @@
 
 @else
 
-  <div up-discussion-like="{{ discussion.id }}" class="btn btn-soft btn-sm" disabled="disabled">
+  <div up-discussion-like="{{ discussion.id }}" class="btn btn-outline btn-sm" disabled="disabled">
     @svg(likeIcon, { class: 'w-4 h-4 -ml-1' })
     {{ discussion.userVotes.length }}
   </div>

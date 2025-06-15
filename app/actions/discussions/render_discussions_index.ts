@@ -1,9 +1,9 @@
 import BaseAction from '#actions/base_action'
+import GetTopicsFilter from '#actions/taxonomies/get_topics_filter'
 import { discussionSearchValidator } from '#validators/discussion'
 import { HttpContext } from '@adonisjs/core/http'
 import { Infer } from '@vinejs/vine/types'
 import GetDiscussionsPaginated from './get_discussions_paginated.js'
-import GetTopicsFilter from '#actions/taxonomies/get_topics_filter'
 
 export default class RenderDiscussionsIndex extends BaseAction {
   validator = discussionSearchValidator

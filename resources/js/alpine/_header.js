@@ -5,6 +5,7 @@ Alpine.data('header', () => ({
   isShown: true,
 
   init() {
+    this.isWindowScrolled = window.scrollY > 0
     this.onLocationChange({
       detail: {
         location: window.location.href

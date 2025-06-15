@@ -2,6 +2,10 @@
   font-size: 0.625rem;
 }
 
+@utility rounded-base {
+  border-radius: var(--radius-box);
+}
+
 @utility mask-gradient-to-r {
   mask: linear-gradient(to right, black 55%, transparent);
 }

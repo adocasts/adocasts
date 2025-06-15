@@ -62,7 +62,7 @@
                 </a>
               </div>
             </div>
-            <main class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6 " series-list>
+            <main class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3" series-list>
               @each (item in series.data)
                 @!series.card({ series: item, size: 'sm' })
               @endeach
@@ -80,7 +80,7 @@
                 </a>
               </div>
             </div>
-            <main class="flex-1 flex flex-col gap-3 lg:gap-6">
+            <main class="flex-1 flex flex-col gap-3">
               @each (item in discussions.data)
                 @!discussion.card({ discussion: item, size: 'sm' })
               @endeach
@@ -98,7 +98,7 @@
                 </a>
               </div>
             </div>
-            <main class="flex-1 grid grid-cols-2 @lg:grid-cols-3 gap-3 @lg:gap-6">
+            <main class="flex-1 grid grid-cols-2 @lg:grid-cols-3 gap-3">
               @each (item in lessons.data)
                 @!lesson.card({ lesson: item, size: 'sm' })
               @endeach
@@ -116,7 +116,7 @@
                 </a>
               </div>
             </div>
-            <main class="flex-1 grid grid-cols-2 @lg:grid-cols-3 gap-3 @lg:gap-6">
+            <main class="flex-1 grid grid-cols-2 @lg:grid-cols-3 gap-3">
               @each (item in snippets.data)
                 @!blog.card({ blog: item, size: 'sm' })
               @endeach
@@ -126,24 +126,24 @@
       </main>
 
       <aside class="@container hidden lg:block w-[350px] section-vars mt-[calc(var(--padding-y)_+_28px_+_.75rem)] sticky top-20">
-        <div x-show="!isHeaderVisible" x-transition x-cloak class="p-6 bg-base-200 relative z-10 rounded-base mb-6">
+        <div x-show="!isHeaderVisible" x-transition x-cloak class="relative z-10 rounded-base mt-6 mb-3">
           <div class="flex items-center gap-6 mb-6">
             <div class="w-20 relative">
               <img src="/imgs/adonisjs.jpeg" class="rounded-xl relative z-10" alt="{{ topic.asset.altText ?? topic.name }}">
             </div>
 
             <div>
-              <h2 class="heading-3">
+              <h2 class="heading-3 !mb-1">
                 {{ topic.name }}
               </h2>
 
-              <div class="flex gap-2">
-                <div class="badge badge-soft opacity-75 group-hover:opacity-100 duration-200">
+              <div class="flex flex-col">
+                <div class="opacity-60 text-sm flex items-center gap-1.5">
                   @svg('solar:book-2-bold-duotone', { class: '-ml-1 -my-0.5' })
                   {{ topic.meta.collections_count }} Series
                 </div>
 
-                <div class="badge badge-soft opacity-75 group-hover:opacity-100 duration-200">
+                <div class="opacity-60 text-sm flex items-center gap-1.5">
                   @svg('solar:video-library-bold-duotone', { class: '-ml-1 -my-0.5' })
                   {{ topic.meta.posts_count }} Lessons
                 </div>
@@ -152,7 +152,7 @@
           </div>
 
           @if (topic.description)
-            <p class="max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-base/6">
+            <p class="max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-sm/5">
               {{ topic.description }}
             </p>
           @endif

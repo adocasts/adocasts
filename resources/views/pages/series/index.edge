@@ -22,7 +22,7 @@
             @!form.filter.option({ value: Difficulties.ADVANCED, label: 'Advanced' })
           @end
         </div>
-        
+
         {{-- <div class="mb-3 md:mb-6">
           <div class="font-bold text-sm mb-3">Filter by access</div>
           <div class="filter">
@@ -31,7 +31,7 @@
             <input class="btn btn-sm mb-0.5 mr-0.5" type="radio" name="access" value="plus" aria-label="Adocasts Plus">
           </div>
         </div> --}}
-        
+
         <div class="mb-3 md:mb-6">
           <div class="font-semibold opacity-60 text-sm mb-3">Filter by topic</div>
           @form.filter({ name: 'topic', checked: filters?.topic })
@@ -44,16 +44,16 @@
 
     @endslot
 
-    <h1 class="heading-2">
+    <h1 class="heading-2 !mb-3">
       Series
     </h1>
 
-    <p class="mt-6 mb-12 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
-      Our series are curated collections of lessons that walk through a specific topic from beginning to end. 
+    <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
+      Our series are curated collections of lessons that walk through a specific topic from beginning to end.
       Series are a great way to learn a topic in a structured way.
     </p>
-    
-    <section class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-6 " series-list>
+
+    <section class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-3" series-list>
       @each (item in series)
         @!series.card({ series: item })
       @endeach
