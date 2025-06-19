@@ -7,7 +7,7 @@
         <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md absolute top-0 left-0 w-full h-full blur-lg opacity-0 group-hover:opacity-50 duration-200">
       </figure>
     </div>
-  
+
     <div class="flex-1 card-body !static">
       <div class="flex items-center gap-6">
         @if (lesson.series)
@@ -18,8 +18,6 @@
             <span class="opacity-60">#{{ lesson.order }}</span>
           </h6>
         @endif
-      
-        <div class="badge badge-xs badge-accent">NEW</div>
       </div>
 
       <h2 class="card-title text-lg lg:text-xl max-w-[32ch] font-semibold text-base-title">
@@ -27,7 +25,7 @@
           {{ lesson.title }}
         </a>
       </h2>
-  
+
       <p class="line-clamp-5 @md:line-clamp-4 opacity-60 mb-3">
         {{ lesson.description }}
       </p>
@@ -43,7 +41,7 @@
         <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md absolute top-0 left-0 w-full h-full blur-lg opacity-0 group-hover:opacity-50 duration-200">
       </figure>
     </div>
-  
+
     <div class="card-body !static">
       <div class="flex items-center justify-between gap-3">
         @if (lesson.series)
@@ -54,8 +52,6 @@
             <span class="opacity-60">#{{ lesson.order }}</span>
           </h6>
         @endif
-      
-        <div class="badge badge-xs badge-accent">NEW</div>
       </div>
 
       <h2 class="card-title font-semibold text-base-title text-base md:text-lg">
@@ -63,11 +59,11 @@
           {{ lesson.title }}
         </a>
       </h2>
-  
+
       <p class="line-clamp-3 opacity-60 text-sm">
         {{ lesson.description }}
       </p>
     </div>
   @end
-  
+
 @endif

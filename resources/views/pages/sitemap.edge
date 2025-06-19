@@ -1,0 +1,57 @@
+@layout()
+
+  <div class="section-container mx-auto relative z-[1]">
+    <h1 class="heading-2">Sitemap</h1>
+
+    <section class="section-y">
+      <h3 class="heading-3">Content</h3>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <a href="/" class="link">Home</a>
+        <a href="{{ route('series.index') }}" class="link">Series</a>
+        <a href="{{ route('topics.index') }}" class="link">Topics</a>
+        <a href="{{ route('lessons.index') }}" class="link">Lessons</a>
+        <a href="{{ route('snippets.index') }}" class="link">Snippets</a>
+        <a href="{{ route('blogs.index') }}" class="link">Blogs/News</a>
+        <a href="{{ route('discussions.index') }}" class="link">Forum</a>
+      </div>
+    </section>
+
+    <section class="section-y">
+      <h3 class="heading-3">Series</h3>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        @each (item in series)
+          <a href="{{ route('series.show', { slug: item.slug }) }}" class="link">
+            {{ item.name }}
+          </a>
+        @endeach
+      </div>
+    </section>
+
+    <section class="section-y">
+      <h3 class="heading-3">Topics</h3>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        @each (item in topics)
+          <a href="{{ route('topics.show', { slug: item.slug }) }}" class="link">
+            {{ item.name }}
+          </a>
+        @endeach
+      </div>
+    </section>
+
+    <section class="section-y">
+      <h3 class="heading-3">Support &amp; Legal</h3>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <a href="/contact" class="link">Contact</a>
+        <a href="/pricing" class="link">Pricing</a>
+        <a href="/testimonials" class="link">Testimonials</a>
+        <a href="/schedule" class="link">Schedule</a>
+        <a href="/terms" class="link">Terms of Use</a>
+        <a href="/privacy" class="link">Privacy Policy</a>
+        <a href="/cookie" class="link">Cookie Policy</a>
+        <a href="/guidelines" class="link">Content Guidelines</a>
+        <a href="/sitemap" class="link">Sitemap</a>
+      </div>
+    </section>
+  </div>
+
+@end

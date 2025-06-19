@@ -1,0 +1,17 @@
+<div up-id="toasts" class="toast toast-bottom toast-right fixed z-50" up-hungry>
+  @if(success || flashMessages.has('success'))
+    @!toast.item({ type: 'success', message: success || flashMessages.get('success') })
+  @endif
+
+  @if (info || flashMessages.get('info'))
+    @!toast.item({ type: 'info', message: info || flashMessages.get('info') })
+  @endif
+
+  @if (error || flashMessages.get('error'))
+    @!toast.item({ type: 'error', message: error || flashMessages.get('error') })
+  @endif
+
+  @if (warning || flashMessages.get('warning'))
+    @!toast.item({ type: 'warning', message: warning || flashMessages.get('warning') })
+  @endif
+</div>

@@ -42,6 +42,8 @@ const HandleAllyCallback = () => import('#actions/auth/social/handle_ally_callba
 const HandleAllyRedirect = () => import('#actions/auth/social/handle_ally_redirect')
 const HandleAllyUnlink = () => import('#actions/auth/social/handle_ally_unlink')
 const RenderRssXml = () => import('#actions/syndication/render_rss_xml')
+const RenderSitemapXml = () => import('#actions/syndication/render_sitemap_xml')
+const RenderSitemap = () => import('#actions/syndication/render_sitemap')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 const DestroyAccount = () => import('#actions/users/destroy_account')
@@ -80,6 +82,8 @@ router.get('/frags/*', [RenderFrag]).as('frag')
 
 //* Syndication
 router.get('/rss', [RenderRssXml]).as('rss')
+router.get('/sitemap', [RenderSitemap]).as('sitemap')
+router.get('/sitemap.xml', [RenderSitemapXml]).as('sitemap.xml')
 
 //* Go
 router.get('/go/:entity/:entityId/:target/:targetId', [GoToNotification]).as('go.notification')
@@ -128,10 +132,12 @@ router.get('/topics/:slug/snippets', [RenderTopicShowSnippets]).as('topics.show.
 //* Lessons
 router.get('/lessons', [RenderLessonsIndex]).as('lessons.index')
 router.get('/lessons/:slug', [RenderLessonShow]).as('lessons.show')
+router.get('/streams/:slug', [RenderLessonShow]).as('streams.show')
 
 //* Blogs
 router.get('/blog', [RenderBlogsIndex]).as('blogs.index')
 router.get('/blog/:slug', [RenderBlogsShow]).as('blogs.show')
+router.get('/news/:slug', [RenderBlogsShow]).as('news.show')
 
 //* Snippets
 router.get('/snippets', [RenderSnippetsIndex]).as('snippets.index')
