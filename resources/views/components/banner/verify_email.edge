@@ -1,0 +1,23 @@
+@if (auth && auth.user && !auth.user.isEmailVerified && up.isPage)
+
+  <div class="max-w-full fixed bottom-0 left-0 sm:bottom-3 sm:left-3 z-[100]">
+    @form({ action: form.post('verification.email.send'), upSubmit: true, class: 'w-[410px] max-w-full' })
+      <div class="alert alert-vertical sm:alert-horizontal alert-soft alert-info !bg-base-300/50 !border-info/50 backdrop-blur-2xl">
+        @svg('solar:mailbox-line-duotone', { class: 'w-4 h-4 ml-2' })
+        <div class="flex justify-center sm:justify-start items-center">
+          <p class="ml-2 text-brand-950 truncate">
+            <span class="inline">
+              Please verify your email address
+            </span>
+          </p>
+        </div>
+        <div class="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
+            <button type="submit" class="btn btn-outline btn-sm btn-info">
+              Verify Email
+            </button>
+        </div>
+      </div>
+    @end
+  </div>
+
+@endif

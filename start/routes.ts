@@ -44,6 +44,8 @@ const HandleAllyUnlink = () => import('#actions/auth/social/handle_ally_unlink')
 const RenderRssXml = () => import('#actions/syndication/render_rss_xml')
 const RenderSitemapXml = () => import('#actions/syndication/render_sitemap_xml')
 const RenderSitemap = () => import('#actions/syndication/render_sitemap')
+const SendEmailVerification = () => import('#actions/users/send_email_verification')
+const VerifyEmail = () => import('#actions/users/verify_email')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 const DestroyAccount = () => import('#actions/users/destroy_account')
@@ -172,3 +174,7 @@ router.put('/settings/preferences', [UpdateUserPreferences]).as('settings.prefer
 router.put('/settings/notifications', [UpdateUserNotifications]).as('settings.notifications').use(middleware.auth())
 router.delete('/settings/session/:id?', [ForceSignOut]).as('settings.session.destroy').use(middleware.auth())
 router.delete('/settings/account', [DestroyAccount]).as('settings.account.destroy').use(middleware.auth())
+
+//* Email Verification
+router.post('/verification/email/send', [SendEmailVerification]).as('verification.email.send').use(middleware.auth())
+router.get('/verification/email/:email', [VerifyEmail]).as('verification.email.verify')
