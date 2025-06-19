@@ -142,20 +142,20 @@
     </div>
   </main>
 
-  <aside class="w-[325px] bg-base-200 fixed right-0 top-0 h-full flex flex-col overflow-hidden">
+  <aside class="w-[var(--aside-width)] border-l border-base-100 fixed right-0 top-0 h-full flex flex-col overflow-hidden">
     <div class="px-6 pt-6 pb-3">
-      <h3 class="heading-4 !mb-0">
+      <h3 class="heading-5 !font-semibold !leading-tight !mb-0">
         <a href="{{ route('series.show', { slug: series.slug }) }}">
           {{ series.name }}
         </a>
       </h3>
     </div>
-    <div x-data="seriesCard" class="flex-1 faded-scroll-y to-base-200" :style="overflowStyle">
+    <div x-data="seriesCard" class="flex-1 faded-scroll-y to-base-300" :style="overflowStyle">
       <div class="h-full overflow-y-auto p-3" @scroll="handleScroll">
         @each (module in series.modules)
           <details class="collapse rounded-none group" open>
             <summary class="collapse-title !p-0 min-h-0 mb-3">
-              <div class="flex items-center gap-4 bg-base-100 p-3 pl-2 rounded-md">
+              <div class="flex items-center gap-4 border-2 border-base-100 p-3 pl-2 rounded-md">
                 @svg('solar:double-alt-arrow-right-broken', { class: 'w-5 h-5 text-primary' })
                 <h5 class="font-semibold text-sm">
                   {{ module.name }}
@@ -172,13 +172,18 @@
                     <a
                       href="{{ item.routeUrl }}"
                       class="{{ html.classNames([
-                        'group/modles text-sm duration-200 pl-1 pr-2 p-1 flex items-center gap-3 rounded-md', {
-                          'bg-base-100/0 hover:bg-base-100 text-base-content/60 hover:text-base-content': lesson.id !== item.id,
-                          'bg-primary/80 hover:bg-primary text-base-content/80 hover:text-base-content': lesson.id === item.id
+                        'group/modles text-sm duration-200 pl-1 pr-2 p-1 -mb-px flex items-center gap-3 rounded-md border', {
+                          'border-transparent bg-base-100/0 hover:bg-base-100/25 hover:border-base-100 text-base-content/60 hover:text-base-content': lesson.id !== item.id,
+                          'border-primary/50 bg-primary/25 hover:border-primary text-base-content/80 hover:text-base-content': lesson.id === item.id
                         }
                       ]) }}">
 
-                      @let(boxColor = progression?.isCompleted ? 'bg-success/10 group-hover/modles:bg-success text-success group-hover/modles:text-success-content' : 'bg-base-100 group-hover/modles:bg-primary')
+                      @let(boxColor = progression?.isCompleted
+                        ? 'bg-success/10 group-hover/modles:bg-success text-success group-hover/modles:text-success-content'
+                        : lesson.id === item.id
+                          ? 'bg-primary/25 group-hover/modles:bg-primary'
+                          : 'bg-base-100 group-hover/modles:bg-primary')
+
                       <div {{ html.attrs({ class: ['w-7 h-7 text-[.6rem] rounded duration-200 flex items-center justify-center', boxColor]}) }}>
                         @if (progression?.isCompleted)
                           @svg('solar:check-read-line-duotone', { class: 'w-4 h-4' })

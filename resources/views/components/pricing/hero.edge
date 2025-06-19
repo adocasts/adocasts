@@ -1,14 +1,10 @@
 <div class="container mx-auto max-lg:text-center">
   <h2 class="heading-2">
-    Pricing that grows with your team size
+    Launch Into Adocasts Plus
   </h2>
-  <p class="mt-6 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
-    Choose an affordable plan that’s packed with the best features for engaging your audience, creating customer loyalty, and driving sales.
-  </p>
   <div class="mt-8">
-    <h3 class="text-sm/6 font-medium">What's included with Adocasts Plus:</h3>
     <ul class="mt-3 columns-4 space-y-3">
-      @!pricing.feature({ text: 'Unlock all series, lessons, and asssets' })
+      @!pricing.feature({ text: 'Unlock all series, lessons, and assets' })
       @!pricing.feature({ text: '2 weeks early access to new, free, lessons' })
       @!pricing.feature({ text: 'Download lessons to watch offline anytime' })
       @!pricing.feature({ text: 'Access to series source code' })
@@ -18,7 +14,9 @@
   </div>
 </div>
 <div class="relative pt-12 sm:pt-16">
-  <div class="absolute inset-x-0 bottom-0 top-48 bg-radial-[at_50%_150%] from-accent/50 to-accent/0"></div>
+  <div class="absolute inset-x-0 bottom-0 top-48 bg-radial-[at_50%_150%] from-accent/50 to-accent/0">
+    <div class="w-full h-full bg-gradient-to-b from-base-300 via-base-300/0 to-base-300/0"></div>
+  </div>
   <div class="container mx-auto relative">
     <div class="grid grid-cols-1 gap-10 lg:grid-cols-3">
       @!pricing.card()
@@ -43,11 +41,11 @@
       <div class="relative w-full py-3 mx-auto overflow-hidden text-lg italic tracking-wide text-white sm:text-xs md:text-sm lg:text-lg">
         <div x-ref="content" class="flex animate-marquee animate-duration-[20s]">
           <div x-ref="item" class="flex items-center justify-around flex-shrink-0 py-2 text-white divide-x divide-accent/10 border-r border-accent/10">
-            @!pricing.testimonial() 
-            @!pricing.testimonial() 
-            @!pricing.testimonial() 
-            @!pricing.testimonial() 
-            @!pricing.testimonial() 
+            @!pricing.testimonial()
+            @!pricing.testimonial()
+            @!pricing.testimonial()
+            @!pricing.testimonial()
+            @!pricing.testimonial()
           </div>
         </div>
       </div>

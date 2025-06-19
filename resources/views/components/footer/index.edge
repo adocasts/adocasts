@@ -1,5 +1,5 @@
-<footer class="bg-base-200 text-base-content p-10">
-  <div class="footer sm:footer-horizontal container mx-auto">
+<footer class="border-t border-base-100 text-base-content py-10">
+  <div class="footer sm:footer-horizontal max-w-[1000px] container mx-auto">
     <nav>
       <h6 class="footer-title">Content</h6>
       <a href="{{ route('series.index') }}" class="link link-hover">Series</a>
@@ -27,11 +27,11 @@
       <a class="link link-hover">Cookie policy</a>
       <a class="link link-hover">Sitemap</a>
     </nav>
-    <form>
+    <form class="flex-1">
       <h6 class="footer-title">Newsletter</h6>
-      <fieldset class="w-80">
+      <fieldset class="flex flex-col w-full">
         <label>Enter your email address</label>
-        <div class="join">
+        <div class="join mt-1">
           <input
             type="text"
             placeholder="username@site.com"

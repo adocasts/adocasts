@@ -22,12 +22,12 @@
         </h1>
 
         <div class="flex flex-wrap items-center justify-center gap-y-1.5 gap-x-3 md:gap-x-6">
-          <a href="/series/lets-learn-adonisjs-6" class="btn btn-accent btn-soft md:btn-wide md:btn-lg">
+          <a href="/series/lets-learn-adonisjs-6" class="btn btn-accent btn-outline bg-accent/10 hover:bg-accent backdrop-blur-md md:btn-wide md:btn-lg">
             Ship Your First App
             @svg('solar:map-arrow-right-bold-duotone')
           </a>
 
-          <a href="/signup" class="btn btn-soft md:btn-wide md:btn-lg">
+          <a href="/signup" class="btn btn-outline bg-base-100/10 hover:bg-base-100 backdrop-blur-md md:btn-wide md:btn-lg">
             Get Started for Free
           </a>
         </div>
@@ -35,7 +35,7 @@
     </div>
 
     <div class="absolute bottom-0 left-0 w-full h-full z-30">
-      <img src="/imgs/cockpit_no_divider.svg" class="object-cover scale-105 object-bottom w-full h-full relative z-10" alt="Spaceship Cockpit" />
+      <img src="/imgs/cockpit_no_divider.svg" class="object-cover scale-110 object-bottom w-full h-full relative z-10" alt="Spaceship Cockpit" />
       <div class="absolute left-1/2 bottom-0 w-[150%] h-1/2 -translate-x-1/2 bg-radial-[at_50%_100%] from-accent to-50% to-accent/0 animate-pulse animate-duration-[5s] animate-infinite"></div>
     </div>
 
@@ -46,22 +46,10 @@
     <div class="bg-gradient-to-t from-base-100/50 to-base-100/0 absolute top-0 left-0 w-full h-full z-20">
     </div>
 
-    {{-- <div
-      class="bg-radial-[at_0%_0%] from-base-100/75 via-base-100/0 to-base-100/0 absolute -top-2 -left-2 w-1/2 aspect-square z-20">
-    </div> --}}
-{{-- 
-    <div
-      class="bg-radial-[at_100%_100%] from-base-100/75 via-base-100/0 to-base-100/0 absolute -bottom-4 -right-2 w-1/2 aspect-square z-20">
-    </div> --}}
-
     <div class="absolute top-0 left-0 w-full h-full z-10">
       <div x-data="starfield" class="starfield w-full h-full">
         <div class="starfield-origin"></div>
       </div>
     </div>
-
-    {{-- <video
-      class="w-full h-full object-cover object-center bg-blend-color absolute top-1/2 left-1/2 -translate-1/2"
-      src="/vids/space-01.mp4" autoplay loop></video> --}}
   </div>
 </div>

@@ -34,21 +34,19 @@
     content: '';
     width: 100%;
     height: 100%;
-    background-image: conic-gradient(
-      from var(--hero-card-border-angle),
-      color-mix(in oklab, var(--color-primary) 0%, transparent),
-      color-mix(in oklab, var(--color-primary) 0%, transparent),
-      color-mix(in oklab, var(--color-primary) 0%, transparent),
-      var(--color-primary),
-      var(--color-secondary),
-      var(--color-accent),
-      var(--color-accent),
-      var(--color-secondary),
-      var(--color-primary),
-      color-mix(in oklab, var(--color-primary) 0%, transparent),
-      color-mix(in oklab, var(--color-primary) 0%, transparent),
-      color-mix(in oklab, var(--color-primary) 0%, transparent)
-    );
+    background-image: conic-gradient(from var(--hero-card-border-angle),
+        color-mix(in oklab, var(--color-primary) 0%, transparent),
+        color-mix(in oklab, var(--color-primary) 0%, transparent),
+        color-mix(in oklab, var(--color-primary) 0%, transparent),
+        var(--color-primary),
+        var(--color-secondary),
+        var(--color-accent),
+        var(--color-accent),
+        var(--color-secondary),
+        var(--color-primary),
+        color-mix(in oklab, var(--color-primary) 0%, transparent),
+        color-mix(in oklab, var(--color-primary) 0%, transparent),
+        color-mix(in oklab, var(--color-primary) 0%, transparent));
     position: absolute;
     top: 0;
     left: 0;
@@ -138,6 +136,7 @@
 }
 
 .group {
+
   .group-hover\:radial-accent-tl,
   .group-hover\:radial-accent-t,
   .group-hover\:radial-accent-tr {
@@ -196,15 +195,13 @@
     width: 100%;
     opacity: var(--opacity, 1);
     transition: all 200ms ease-in-out;
-    background-image: radial-gradient(
-      40% 30px at var(--offset-x, 30%) 0%,
-      color-mix(in oklab, var(--color-primary) var(--offset-x-half, 15%), transparent),
-      color-mix(in oklab, var(--color-primary) 0%, transparent)
-    );
+    background-image: radial-gradient(40% 30px at var(--offset-x, 30%) 0%,
+        color-mix(in oklab, var(--color-primary) var(--offset-x-half, 15%), transparent),
+        color-mix(in oklab, var(--color-primary) 0%, transparent));
   }
 
   &:after {
-    @apply bg-gradient-to-r from-primary/0 from-[var(--offset-x-half,30%)] via-primary/30 to-primary/0;
+    @apply bg-gradient-to-r from-primary/0 from-[var(--offset-x-half)] via-primary/30 to-primary/0;
 
     content: "";
     width: 80%;
@@ -232,11 +229,9 @@
     height: var(--height);
     border-top-right-radius: var(--radius-box);
     border-top-left-radius: var(--radius-box);
-    background-image: linear-gradient(
-      to var(--direction),
-      color-mix(in oklab, var(--color) 3%, transparent) 0%,
-      color-mix(in oklab, var(--color) 0%, transparent) 75%
-    );
+    background-image: linear-gradient(to var(--direction),
+        color-mix(in oklab, var(--color) 3%, transparent) 0%,
+        color-mix(in oklab, var(--color) 0%, transparent) 75%);
   }
 
   &:before {
@@ -289,5 +284,21 @@
     top: 0;
     left: 0;
     z-index: 1;
+  }
+}
+
+.border-base-gradient {
+  background-clip: padding-box;
+  border: solid 1px transparent;
+
+  &:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 15px;
+    border: 1px solid transparent;
+    background: linear-gradient(to bottom, var(--color-base-100), color-mix(in oklab, var(--color-base-content), transparent 75%)) border-box;
+    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
   }
 }

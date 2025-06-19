@@ -1,12 +1,12 @@
-<nav x-data="nav" class="absolute left-1/2 -translate-x-1/2">
-  <ul class="flex items-center">
+<nav x-data="nav" class="absolute left-1/2 -translate-x-1/2" up-id="headerNav" up-hungry>
+  <ul class="flex items-center gap-0.5">
     @!header.nav.item({ text: 'Series', href: route('series.index') })
     @!header.nav.item({ text: 'Topics', href: route('topics.index') })
     @!header.nav.item({ text: 'Lessons', href: route('lessons.index') })
     @!header.nav.item({ text: 'Blog', href: route('blogs.index') })
     @!header.nav.item({ text: 'Forum', href: route('discussions.index') })
   </ul>
-  <div 
+  <div
     x-cloak
     x-ref="dropdown"
     x-show="activeMenu"
@@ -20,7 +20,7 @@
     class="absolute top-0 pt-3 duration-200 ease-out -translate-x-1/2 translate-y-11">
     <div
       class="flex justify-center w-auto h-auto overflow-hidden bg-base-200 border border-base rounded-box shadow-sm">
-    
+
       <div x-show="activeMenu == 'one'"
         class="flex items-stretch justify-center w-full max-w-2xl p-6 gap-x-3">
         <div class="flex-shrink-0 w-48 rounded pt-28 pb-7 bg-gradient-to-br from-base-800 to-black">

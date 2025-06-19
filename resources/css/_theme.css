@@ -71,6 +71,7 @@ body[data-theme="adocasts-light"] {
 
   &.btn-primary,
   &.btn-secondary,
+  &.btn-accent,
   &.btn-neutral,
   &.btn-success,
   &.btn-warning,
@@ -81,6 +82,7 @@ body[data-theme="adocasts-light"] {
 
   &.badge-primary,
   &.badge-secondary,
+  &.badge-accent,
   &.badge-neutral,
   &.badge-success,
   &.badge-warning,
