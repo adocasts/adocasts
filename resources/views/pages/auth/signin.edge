@@ -39,6 +39,24 @@
           </div>
         @endif
 
+        @if (flashMessages.get('errors.action'))
+          <div role="alert" class="bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100 text-sm rounded p-3 mb-4">
+            {{ flashMessages.get('errors.action') }}
+          </div>
+        @endif
+
+        @if (flashMessages.get('errors.plan'))
+          <div role="alert" class="bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100 text-sm rounded p-3 mb-4">
+            {{ flashMessages.get('errors.plan') }}
+          </div>
+        @endif
+
+        @if (flashMessages.get('errors.forward'))
+          <div role="alert" class="bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100 text-sm rounded p-3 mb-4">
+            {{ flashMessages.get('errors.forward') }}
+          </div>
+        @endif
+
         @if (request.qs().plan)
           <div role="alert" class="bg-slate-200 text-slate-800 text-xs rounded p-3 mb-4 flex gap-3">
             @svg('ph:info-fill', { class: 'w-8 h-8' })

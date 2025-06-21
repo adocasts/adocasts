@@ -24,7 +24,7 @@
         @if (request.qs().plan)
           <input type="hidden" name="plan" value="{{ request.qs().plan }}" />
         @endif
-      
+
         @if (request.header('referrer'))
           <input type="hidden" name="forward" value="{{ request.header('referrer') }}" />
         @endif
@@ -32,6 +32,18 @@
         @if (flashMessages.get('errors.form'))
           <div role="alert" class="bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100 text-sm rounded p-3 mb-4">
             {{ flashMessages.get('errors.form') }}
+          </div>
+        @endif
+
+        @if (flashMessages.get('errors.plan'))
+          <div role="alert" class="bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100 text-sm rounded p-3 mb-4">
+            {{ flashMessages.get('errors.plan') }}
+          </div>
+        @endif
+
+        @if (flashMessages.get('errors.forward'))
+          <div role="alert" class="bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100 text-sm rounded p-3 mb-4">
+            {{ flashMessages.get('errors.forward') }}
           </div>
         @endif
 
