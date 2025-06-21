@@ -46,8 +46,11 @@ const RenderSitemapXml = () => import('#actions/syndication/render_sitemap_xml')
 const RenderSitemap = () => import('#actions/syndication/render_sitemap')
 const SendEmailVerification = () => import('#actions/users/send_email_verification')
 const VerifyEmail = () => import('#actions/users/verify_email')
+const RenderUserHistory = () => import('#actions/users/render_user_history')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const RenderUserBookmarks = () => import('#actions/users/render_user_bookmarks')
+const RenderUserWatchlist = () => import('#actions/users/render_user_watchlist')
 const DestroyAccount = () => import('#actions/users/destroy_account')
 const UpdateUserBillTo = () => import('#actions/users/update_user_billto')
 const RenderUserInvoice = () => import('#actions/users/render_user_invoice')
@@ -115,13 +118,17 @@ router.post('/reset-password', [ResetPassword]).as('auth.password.reset.store')
 
 //* Users
 router.get('/users/menu', [RenderUserMenu]).as('users.menu')
+router.get('/users/watchlist', [RenderUserWatchlist]).as('users.watchlist').use(middleware.auth())
+router.get('/users/bookmarks', [RenderUserBookmarks]).as('users.bookmarks').use(middleware.auth())
+router.get('/users/history/:tab?', [RenderUserHistory]).as('users.history').use(middleware.auth())
 router.get('/:handle/:tab?', [RenderUserProfile]).as('users.profile').where('handle', /^@/)
 
 //* Series
 router.get('/series', [RenderSeriesIndex]).as('series.index')
 router.get('/series/:slug', [RenderSeriesShow]).as('series.show')
 router.patch('/series/:slug/watchlist', [ToggleSeriesWatchlist]).as('series.watchlist')
-router.get('/series/:series/lessons/:slug', [RenderLessonShow]).as('series.lessons.show')
+router.get('/series/:series/lessons/:slug', [RenderLessonShow]).as('series.lessons.show').use(middleware.postTypeCheck())
+router.get('/series/:series/streams/:slug', [RenderLessonShow]).as('series.streams.show').use(middleware.postTypeCheck())
 
 //* Topics
 router.get('/topics', [RenderTopicsIndex]).as('topics.index')
@@ -133,17 +140,17 @@ router.get('/topics/:slug/snippets', [RenderTopicShowSnippets]).as('topics.show.
 
 //* Lessons
 router.get('/lessons', [RenderLessonsIndex]).as('lessons.index')
-router.get('/lessons/:slug', [RenderLessonShow]).as('lessons.show')
-router.get('/streams/:slug', [RenderLessonShow]).as('streams.show')
+router.get('/lessons/:slug', [RenderLessonShow]).as('lessons.show').use(middleware.postTypeCheck())
+router.get('/streams/:slug', [RenderLessonShow]).as('streams.show').use(middleware.postTypeCheck())
 
 //* Blogs
 router.get('/blog', [RenderBlogsIndex]).as('blogs.index')
-router.get('/blog/:slug', [RenderBlogsShow]).as('blogs.show')
-router.get('/news/:slug', [RenderBlogsShow]).as('news.show')
+router.get('/blog/:slug', [RenderBlogsShow]).as('blogs.show').use(middleware.postTypeCheck())
+router.get('/news/:slug', [RenderBlogsShow]).as('news.show').use(middleware.postTypeCheck())
 
 //* Snippets
 router.get('/snippets', [RenderSnippetsIndex]).as('snippets.index')
-router.get('/snippets/:slug', [RenderSnippetsShow]).as('snippets.show')
+router.get('/snippets/:slug', [RenderSnippetsShow]).as('snippets.show').use(middleware.postTypeCheck())
 
 //* Discussions
 router.get('/forum', [RenderDiscussionsIndex]).as('discussions.index')

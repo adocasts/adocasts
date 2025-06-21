@@ -1,0 +1,26 @@
+@layout()
+
+  <main class="section-container mx-auto @container flex-1" up-main-content>
+    <h1 class="heading-2">
+      Your Series Watchlist
+    </h1>
+
+    <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
+      Below are series you're actively watching. 
+      @if (profile.emailOnWatchlist)
+        You'll be notified via email when new lessons are released in any of these series!
+      @endif
+    </p>
+
+    <section class="flex-1" series-list>
+      <div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-3">
+        @each (item in series.data)
+          @!series.card({ series: item })
+        @endeach
+      </div>
+
+      @!pagination({ meta: series.meta })
+    </section>
+  </main>
+
+@end

@@ -112,6 +112,11 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     return this
   }
 
+  whereInWatchlist(userId: number) {
+    this.query.whereHas('watchlist', (query) => query.where({ userId }))
+    return this
+  }
+
   withAsset() {
     this.query.preload('asset')
     return this

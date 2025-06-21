@@ -1,0 +1,58 @@
+@layout()
+
+  <main class="section-container mx-auto @container flex-1" up-main-content>
+    <h1 class="heading-2">
+      Your {{ string.capitalCase(tab) }} Progression
+    </h1>
+
+    <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
+      @if (tab === 'series')
+        Below you'll find the series you've started and your progress within those series.
+      @else
+        Below you'll find lessons you've started and your progress within those lessons
+      @end
+    </p>
+
+    <div class="tabs tabs-box mb-6">
+      <a
+        class="tab {{ html.classNames([{ 'tab-active': tab === 'series' }]) }}"
+        href="{{ route('users.history', { tab: 'series' }) }}"
+        up-scroll="preserve">
+        @svg('solar:pulse-bold-duotone', { class: 'w-4 h-4 mr-2', })
+        Series
+      </a>
+
+      <a
+        role="tab"
+        class="tab {{ html.classNames([{ 'tab-active': tab === 'lessons' }]) }}"
+        href="{{ route('users.history', { tab: 'lessons' })}}"
+        up-scroll="preserve">
+        @svg('solar:chat-line-bold-duotone', { class: 'w-4 h-4 mr-2' })
+        Lessons
+      </a>
+    </div>
+
+    @if (tab === 'series')
+      <section class="flex-1" series-list>
+        <div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-3">
+          @each (item in series.data)
+            @!series.card({ series: item })
+          @endeach
+        </div>
+
+        @!pagination({ meta: series.meta })
+      </section>
+    @elseif (tab === 'lessons')
+      <section class="flex-1" lesson-list>
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-3">
+          @each (lesson in lessons.data)
+            @!lesson.card({ lesson })
+          @endeach
+        </div>
+
+        @!pagination({ meta: lessons.meta })
+      </section>
+    @endif
+  </main>
+
+@end

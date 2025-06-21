@@ -120,6 +120,11 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
     return this
   }
 
+  whereInWatchlist(userId: number) {
+    this.query.whereHas('watchlist', (query) => query.where({ userId }))
+    return this
+  }
+
   withSeries(
     seriesQuery?: (
       query: RelationQueryBuilderContract<typeof Collection, any>

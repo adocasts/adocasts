@@ -48,6 +48,7 @@ router.use([
  * the routes or the routes group.
  */
 export const middleware = router.named({
+  postTypeCheck: () => import('#middleware/post_type_check_middleware'),
   guest: () => import('#middleware/guest_middleware'),
   auth: () => import('#middleware/auth_middleware'),
   turnstile: () => import('#middleware/turnstile_middleware'),

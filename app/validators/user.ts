@@ -17,3 +17,25 @@ export const mentionListValidator = vine.compile(
     pattern: vine.string().trim().toLowerCase().optional(),
   })
 )
+
+export const userHistoryValidator = vine.compile(
+  vine.object({
+    page: vine
+      .number()
+      .parse((v) => v ?? 1)
+      .positive()
+      .optional(),
+    perPage: vine
+      .number()
+      .parse((v) => v ?? 20)
+      .positive()
+      .max(50)
+      .optional(),
+    params: vine.object({
+      tab: vine
+        .enum(['series', 'lessons'])
+        .parse((v) => v ?? 'series')
+        .optional(),
+    }),
+  })
+)

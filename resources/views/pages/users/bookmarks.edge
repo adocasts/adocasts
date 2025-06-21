@@ -1,0 +1,19 @@
+@layout()
+
+  <main class="section-container mx-auto @container flex-1" up-main-content>
+    <h1 class="heading-2">
+      Your Lesson Bookmarks
+    </h1>
+
+    <section class="flex-1" lesson-list>
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-3">
+        @each (lesson in lessons.data)
+          @!lesson.card({ lesson })
+        @endeach
+      </div>
+
+      @!pagination({ meta: lessons.meta })
+    </section>
+  </main>
+
+@end

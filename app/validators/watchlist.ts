@@ -18,3 +18,19 @@ export const watchlistCollectionValidator = vine.compile(
     }),
   })
 )
+
+export const watchlistShowValidator = vine.compile(
+  vine.object({
+    page: vine
+      .number()
+      .parse((v) => v ?? 1)
+      .positive()
+      .optional(),
+    perPage: vine
+      .number()
+      .parse((v) => v ?? 20)
+      .positive()
+      .max(50)
+      .optional(),
+  })
+)
