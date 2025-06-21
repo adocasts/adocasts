@@ -1,0 +1,23 @@
+@if (auth.user)
+
+  @form({
+    action: form.patch('lessons.watchlist', { slug: lesson.slug }),
+    target: { 'up-lesson-bookmark': `${lesson.id}:any` },
+  })
+
+    <button {{ html.attrs({ type: 'submit', class: ['btn btn-toggle btn-square', { 'active': lesson.meta.isInWatchlist }] }) }}>
+      @if (lesson.meta.isInWatchlist)
+        @svg('solar:bookmark-bold', { class: 'w-5 h-5' })
+      @else
+        @svg('solar:bookmark-line-duotone', { class: 'w-5 h-5' })
+      @endif
+    </button>
+  @end
+
+@else
+
+  <a href="{{ route('auth.signup') }}" class="btn btn-outline btn-wide" up-layer="new" up-mode="modal" up-size="grow">
+    @svg('solar:bookmark-line-duotone', { class: 'w-5 h-5' })
+  </a>
+
+@endif

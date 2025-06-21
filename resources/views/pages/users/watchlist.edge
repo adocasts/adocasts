@@ -5,12 +5,16 @@
       Your Series Watchlist
     </h1>
 
-    <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
-      Below are series you're actively watching. 
-      @if (profile.emailOnWatchlist)
-        You'll be notified via email when new lessons are released in any of these series!
-      @endif
-    </p>
+    <div class="flex items-center justify-between gap-6">
+      <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
+        Below are series you're actively watching. 
+        @if (profile.emailOnWatchlist)
+          You'll be notified via email when new lessons are released in any of these series!
+        @else
+          To get notified via email when new lessons are released, <a href="">enable watchlist notifications</a> in your settings.
+        @endif
+      </p>
+    </div>
 
     <section class="flex-1" series-list>
       <div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-3">

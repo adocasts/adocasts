@@ -19,6 +19,14 @@ export const watchlistCollectionValidator = vine.compile(
   })
 )
 
+export const watchlistPostValidator = vine.compile(
+  vine.object({
+    params: vine.object({
+      slug: vine.string().exists({ table: 'posts', column: 'slug' }),
+    }),
+  })
+)
+
 export const watchlistShowValidator = vine.compile(
   vine.object({
     page: vine

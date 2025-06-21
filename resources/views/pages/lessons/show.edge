@@ -24,6 +24,9 @@
                 @svg('solar:playlist-bold-duotone', { class: 'w-5 h-5' })
               </button>
             @end
+            @tooltip({ text: 'Toggle Bookmark', class: 'tooltip-bottom' })
+              @!frags.lesson.bookmarkToggle({ lesson })
+            @end
             @tooltip({ text: 'Toggle Transcript', class: 'tooltip-bottom' })
               <button type="button" class="btn btn-ghost btn-square">
                 @svg('solar:document-text-line-duotone', { class: 'w-5 h-5' })

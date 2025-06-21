@@ -1,12 +1,12 @@
-import GetSeries from '../collections/get_series.js'
 import BaseAction from '#actions/base_action'
-import LessonShowDto from '../../dtos/lesson_show.js'
 import { HttpContext } from '@adonisjs/core/http'
+import LessonShowDto from '../../dtos/lesson_show.js'
+import GetSeries from '../collections/get_series.js'
 import GetLesson from './get_lesson.js'
 
 export default class RenderLessonShow extends BaseAction {
-  async asController({ view, params }: HttpContext) {
-    const lesson = await GetLesson.run(params.slug)
+  async asController({ view, params, auth }: HttpContext) {
+    const lesson = await GetLesson.run(params.slug, auth.user?.id)
     const series = await this.#getLessonSeries(lesson, params)
 
     return view.render('pages/lessons/show', { lesson, series })

@@ -120,3 +120,11 @@ body[data-theme="adocasts-light"] {
     border-color: var(--color-base-300);
   }
 }
+
+.btn-toggle {
+  @apply btn-ghost border border-transparent hover:border-success/50 hover:text-success;
+
+  &.active {
+    @apply text-success;
+  }
+}
