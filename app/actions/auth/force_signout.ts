@@ -10,9 +10,9 @@ export default class ForceSignOut extends BaseAction<
     await this.handle(auth.user!, request.sessionToken, params.id)
 
     if (params.id) {
-      session.flash('success', 'Session has been terminated')
+      session.toast('success', 'Session has been terminated')
     } else {
-      session.flash('success', 'All sessions, except your current session, have been terminated')
+      session.toast('success', 'All sessions, except your current session, have been terminated')
     }
 
     return response.redirect().back()

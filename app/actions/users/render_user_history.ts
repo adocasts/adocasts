@@ -4,17 +4,17 @@ import SeriesListDto from '#dtos/series_list'
 import TopicDto from '#dtos/topic'
 import Progress from '#models/progress'
 import User from '#models/user'
-import { watchlistShowValidator } from '#validators/watchlist'
+import { progressShowValidator } from '#validators/history'
 import { HttpContext } from '@adonisjs/core/http'
 import router from '@adonisjs/core/services/router'
 import { Infer } from '@vinejs/vine/types'
 
-type Validator = Infer<typeof watchlistShowValidator>
+type Validator = Infer<typeof progressShowValidator>
 
 export default class RenderUserHistory extends BaseAction {
   #routeIdentifier = 'users.history'
 
-  validator = watchlistShowValidator
+  validator = progressShowValidator
 
   async asController({ view, auth }: HttpContext, { params, page, perPage }: Validator) {
     const user = auth.user!

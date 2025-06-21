@@ -7,15 +7,15 @@
 
     <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
       @if (tab === 'series')
-        Below you'll find the series you've started and your progress within those series.
+        Easily keep track of the series you're watching. See what you've started, where you left off, and what you've completed.
       @else
-        Below you'll find lessons you've started and your progress within those lessons
+        Stay on top of your learning! View lessons you've started, track your progress, and what you've completed.
       @end
     </p>
 
-    <div class="tabs tabs-box mb-6">
+    <div class="tabs tabs-box mb-6 border border-base-100 bg-transparent">
       <a
-        class="tab {{ html.classNames([{ 'tab-active': tab === 'series' }]) }}"
+        class="tab {{ html.classNames([{ 'bg-primary/10 !border !border-primary/50 !text-primary-content': tab === 'series' }]) }}"
         href="{{ route('users.history', { tab: 'series' }) }}"
         up-scroll="preserve">
         @svg('solar:pulse-bold-duotone', { class: 'w-4 h-4 mr-2', })
@@ -24,7 +24,7 @@
 
       <a
         role="tab"
-        class="tab {{ html.classNames([{ 'tab-active': tab === 'lessons' }]) }}"
+        class="tab {{ html.classNames([{ 'bg-primary/10 !border !border-primary/50 !text-primary-content': tab === 'lessons' }]) }}"
         href="{{ route('users.history', { tab: 'lessons' })}}"
         up-scroll="preserve">
         @svg('solar:chat-line-bold-duotone', { class: 'w-4 h-4 mr-2' })

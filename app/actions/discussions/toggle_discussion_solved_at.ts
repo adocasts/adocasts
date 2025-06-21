@@ -23,7 +23,7 @@ export default class ToggleDiscussionSolvedAt extends BaseAction<[Discussion, nu
   ) {
     await this.handle(discussion, commentId)
 
-    session.flash(
+    session.toast(
       'success',
       discussion.solvedAt
         ? 'Your discussion has been marked as solved'

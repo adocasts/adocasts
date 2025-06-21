@@ -18,11 +18,11 @@ export default class SendForgotPassword extends BaseAction<[Validator, string]> 
     const { throttled } = await this.handle(data, ipAddress)
 
     if (throttled) {
-      session.flash('error', 'Too many attempts. Please try again later.')
+      session.toast('error', 'Too many attempts. Please try again later.')
       return response.redirect().back()
     }
 
-    session.flash(
+    session.toast(
       'success',
       'If an account exists with that email, a password reset link has been sent.'
     )

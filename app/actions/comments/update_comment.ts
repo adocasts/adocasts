@@ -21,7 +21,7 @@ export default class UpdateComment extends BaseAction<[User, Comment, string]> {
 
     await this.handle(auth.user!, comment, body)
 
-    session.flash('success', 'Your comment has been updated')
+    session.toast('success', 'Your comment has been updated')
 
     return response.redirect().back()
   }

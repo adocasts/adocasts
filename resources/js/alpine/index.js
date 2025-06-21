@@ -6,6 +6,7 @@ import './_comment'
 import './_editor'
 import './_header'
 import './_series'
+import './_toaster'
 import './_starfield'
 
 window.Alpine = Alpine

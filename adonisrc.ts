@@ -70,6 +70,7 @@ export default defineConfig({
     () => import('#start/lucid/base_model'),
     () => import('#start/lucid/query_builder'),
     () => import('#start/context/index'),
+    () => import('#start/session/toast')
   ],
 
   /*

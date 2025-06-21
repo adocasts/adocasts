@@ -29,12 +29,12 @@ export default class GoToNotification extends BaseAction {
     const commentable = await comment?.getCommentable()
 
     if (!comment) {
-      session.flash('error', 'The comment could not be found and may have been deleted.')
+      session.toast('error', 'The comment could not be found and may have been deleted.')
       return response.redirect().back()
     }
 
     if (!commentable) {
-      session.flash(
+      session.toast(
         'error',
         'The content associated with the comment could not be found and may have been deleted.'
       )
@@ -42,12 +42,12 @@ export default class GoToNotification extends BaseAction {
     }
 
     if (!comment.isPublic) {
-      session.flash('error', 'The comment has not been made public and may be under review.')
+      session.toast('error', 'The comment has not been made public and may be under review.')
       return response.redirect().back()
     }
 
     if (commentable instanceof LessonRequest) {
-      session.flash('error', 'Lesson requests on Adocasts have been archived')
+      session.toast('error', 'Lesson requests on Adocasts have been archived')
       return response.redirect().back()
     }
 

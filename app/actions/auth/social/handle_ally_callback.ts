@@ -26,7 +26,7 @@ export default class HandleAllyCallback extends BaseAction {
     // await posthog.onAuthenticated(user!)
 
     if (wasAuthenticated) {
-      session.flash('success', `Your ${params.provider} account has been successfully linked`)
+      session.toast('success', `Your ${params.provider} account has been successfully linked`)
       return response.redirect().toRoute('users.settings.index')
     }
 
@@ -37,14 +37,14 @@ export default class HandleAllyCallback extends BaseAction {
       )
 
       if (status === 'warning' || status === 'error') {
-        session.flash(status, message)
+        session.toast(status, message)
         return response.redirect('/')
       }
 
       return response.redirect(checkout!.url!)
     }
 
-    session.flash(
+    session.toast(
       'success',
       hasProfile
         ? `Welcome back, ${auth.user!.username}`

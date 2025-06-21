@@ -19,7 +19,7 @@ export default class StoreComment extends BaseAction<[user: User, data: Validato
   async asController({ response, session, auth }: HttpContext, data: Validator) {
     await this.handle(auth.user!, data)
 
-    session.flash('success', 'Thanks for your comment!')
+    session.toast('success', 'Thanks for your comment!')
 
     return response.redirect().back()
   }

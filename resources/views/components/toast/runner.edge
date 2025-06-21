@@ -1,0 +1,4 @@
+@if (flashMessages.has('toasts'))
+  @let(toasts = flashMessages.get('toasts') || [])
+  <div x-data x-init="toasts.dispatchEvent(new CustomEvent('run', { detail: {{ js.stringify(toasts) }} }))"></div>
+@endif

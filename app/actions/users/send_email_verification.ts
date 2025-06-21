@@ -6,7 +6,7 @@ export default class SendEmailVerification extends BaseAction {
   async asController({ response, session, auth }: HttpContext) {
     await emitter.emit('email:email_verification', { user: auth.user! })
 
-    session.flash('success', 'Please check your email, a verification link will be sent shortly!')
+    session.toast('success', 'Please check your email, a verification link will be sent shortly!')
 
     return response.redirect().back()
   }

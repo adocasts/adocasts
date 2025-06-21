@@ -7,10 +7,12 @@ import GetDiscussion from './get_discussion.js'
 export default class ToggleDiscussionVote extends BaseAction<[User, number]> {
   validator = discussionVoteValidator
 
-  async asController({ view, params, auth, bouncer }: HttpContext) {
+  async asController({ view, params, auth, bouncer, up }: HttpContext) {
     await bouncer.with('DiscussionPolicy').authorize('vote')
 
     await this.handle(auth.user!, params.id)
+
+    view.share({ isFragment: true })
 
     return view.render('components/frags/discussion/vote', {
       discussion: await GetDiscussion.run(params.id),

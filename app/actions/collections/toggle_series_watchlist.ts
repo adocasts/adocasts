@@ -7,11 +7,13 @@ import GetSeries from './get_series.js'
 export default class ToggleSeriesWatchlist extends BaseAction<[User, number]> {
   validator = watchlistCollectionValidator
 
-  async asController({ view, auth, params }: HttpContext) {
+  async asController({ view, auth, params, up }: HttpContext) {
     const series = await GetSeries.run(params.slug)
     const result = await this.handle(auth.user!, series.id)
 
     series.meta.isInWatchlist = result.isInWatchlist
+
+    view.share({ isFragment: true })
 
     return view.render('components/frags/series/watchlist_toggle', { series })
   }

@@ -14,7 +14,7 @@ export default class DestroyComment extends BaseAction<[Comment]> {
 
     await this.handle(comment)
 
-    session.flash('success', 'Your comment has been deleted')
+    session.toast('success', 'Your comment has been deleted')
 
     return response.redirect().back()
   }

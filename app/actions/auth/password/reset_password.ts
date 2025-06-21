@@ -24,14 +24,14 @@ export default class ResetPassword extends BaseAction<[Validator]> {
 
       await auth.use('web').login(user)
 
-      session.flash('success', 'Your password has been successfully reset')
+      session.toast('success', 'Your password has been successfully reset')
 
       return response.redirect('/')
     } catch (error) {
       const { email } = request.only(['email'])
       logger.error('PasswordResetController.resetPasswordStore', { email, error })
 
-      session.flash(
+      session.toast(
         'error',
         'Something went wrong and we may not have been able to reset your password.'
       )

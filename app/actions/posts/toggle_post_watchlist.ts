@@ -13,6 +13,8 @@ export default class TogglePostWatchlist extends BaseAction<[User, number]> {
 
     lesson.meta.isInWatchlist = result.isInWatchlist
 
+    view.share({ isFragment: true })
+
     return view.render('components/frags/lesson/bookmark_toggle', { lesson })
   }
 

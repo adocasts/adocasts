@@ -12,12 +12,16 @@
         @svg('solar:bookmark-line-duotone', { class: 'w-5 h-5' })
       @endif
     </button>
+
+    @!frags.toaster()
   @end
 
 @else
 
   <a href="{{ route('auth.signup') }}" class="btn btn-outline btn-wide" up-layer="new" up-mode="modal" up-size="grow">
     @svg('solar:bookmark-line-duotone', { class: 'w-5 h-5' })
+
+    @!frags.toaster()
   </a>
 
 @endif

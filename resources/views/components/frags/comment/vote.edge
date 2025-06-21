@@ -11,6 +11,8 @@
       @svg(likeIcon, { class: 'w-4 h-4 -ml-1' })
       {{ comment.userVotes.length }}
     </button>
+
+    @!frags.toaster()
   @end
 
 @else
@@ -18,6 +20,8 @@
   <div up-comment-like="{{ comment.id }}" class="btn btn-outline btn-sm" disabled="disabled">
     @svg(likeIcon, { class: 'w-4 h-4 -ml-1' })
     {{ comment.userVotes.length }}
+    
+    @!frags.toaster()
   </div>
 
 @endcan

@@ -20,7 +20,7 @@ export default class RevertEmail extends BaseAction<[number, string, string]> {
 
     const signedUrl = await this.handle(id, oldEmail, newEmail)
 
-    session.flash(
+    session.toast(
       'success',
       'Your email has been reverted. Please resecure your account by changing your password.'
     )

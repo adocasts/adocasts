@@ -40,7 +40,7 @@ export default class UpdateEmail extends BaseAction<[User, Validator]> {
 
     await this.handle(user, data)
 
-    session.flash('success', 'Your email has been successfully updated')
+    session.toast('success', 'Your email has been successfully updated')
 
     return response.redirect().back()
   }

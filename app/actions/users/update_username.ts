@@ -17,7 +17,7 @@ export default class UpdateUsername extends BaseAction<[User, string]> {
 
     if (hasChangedCase) {
       await this.handle(user, username)
-      session.flash('success', 'The casing in your username has been successfully updated')
+      session.toast('success', 'The casing in your username has been successfully updated')
       return response.redirect().back()
     }
 
@@ -25,7 +25,7 @@ export default class UpdateUsername extends BaseAction<[User, string]> {
 
     await this.handle(user, data.username)
 
-    session.flash('success', 'Your username has been successfully updated')
+    session.toast('success', 'Your username has been successfully updated')
 
     return response.redirect().back()
   }

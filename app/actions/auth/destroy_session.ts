@@ -9,7 +9,7 @@ export default class DestroySession extends BaseAction {
 
     await auth.use('web').logout()
 
-    session.flash('success', 'You have been signed out. See you next time!')
+    session.toast('success', 'You have been signed out. See you next time!')
 
     if (this.forwardIgnore.some((path) => forward.includes(path))) {
       forward = '/'

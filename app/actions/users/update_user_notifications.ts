@@ -13,7 +13,7 @@ export default class UpdateUserNotifications extends BaseAction<[User, Validator
   async asController({ response, session, auth }: HttpContext, data: Validator) {
     await this.handle(auth.user!, data)
 
-    session.flash('success', 'Your email notification settings have been updated')
+    session.toast('success', 'Your email notification settings have been updated')
 
     return response.redirect().back()
   }

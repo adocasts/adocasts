@@ -25,7 +25,7 @@ export default class UpdateUserPreferences extends BaseAction<
       isEnabledProfile: !!data.isEnabledProfile,
     })
 
-    session.flash('success', 'Your preferences have been updated!')
+    session.toast('success', 'Your preferences have been updated!')
 
     return response.redirect().back()
   }

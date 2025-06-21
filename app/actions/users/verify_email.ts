@@ -6,7 +6,7 @@ import { DateTime } from 'luxon'
 export default class VerifyEmail extends BaseAction<[string]> {
   async asController({ request, response, session, params, auth }: HttpContext) {
     if (!request.hasValidSignature('email_verification')) {
-      session.flash(
+      session.toast(
         'error',
         'Your email verification link is either invalid or expired. Please try again.'
       )
@@ -28,7 +28,7 @@ export default class VerifyEmail extends BaseAction<[string]> {
 
     await this.handle(params.email)
 
-    session.flash('success', 'Your email has been successfully verified, thank you!')
+    session.toast('success', 'Your email has been successfully verified, thank you!')
 
     return response.redirect().toPath('/')
   }

@@ -15,7 +15,7 @@ export default class DestroyAccount extends BaseAction<[User]> {
     const success = await this.handle(auth.user!)
 
     if (!success) {
-      session.flash(
+      session.toast(
         'error',
         'Apologies, but something went wrong. Please email tom@adocasts.com if this persists.'
       )
@@ -24,7 +24,7 @@ export default class DestroyAccount extends BaseAction<[User]> {
 
     await auth.use('web').logout()
 
-    session.flash('success', 'Your account has been successfully deleted.')
+    session.toast('success', 'Your account has been successfully deleted.')
 
     return response.redirect().toPath('/')
   }

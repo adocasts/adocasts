@@ -32,11 +32,11 @@ export default class StoreSessionSignIn extends BaseAction {
     const checkout = await this.#checkForPlan(user, options)
 
     if (checkout.bail) {
-      session.flash(checkout.status, checkout.message)
+      session.toast(checkout.status, checkout.message)
       return checkout.redirect ? response.redirect(checkout.redirect) : response.redirect().back()
     }
 
-    session.flash('success', `Welcome back, ${user.handle}!`)
+    session.toast('success', `Welcome back, ${user.handle}!`)
 
     return response.redirect(redirect)
   }

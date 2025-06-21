@@ -12,7 +12,7 @@ export default class HandleAllyUnlink extends BaseAction<[User, keyof SocialProv
       const opts = { expiresIn: '1h' }
       const signedUrl = router.makeSignedUrl('auth.password.reset', { email: user.email }, opts)
 
-      session.flash(
+      session.toast(
         'error',
         `Please create a password for your account by following the password reset flow before unlinking ${params.provider}`
       )
@@ -22,7 +22,7 @@ export default class HandleAllyUnlink extends BaseAction<[User, keyof SocialProv
 
     await this.handle(user, params.provider)
 
-    session.flash('success', `Your ${params.provider} account was unlinked from your account`)
+    session.toast('success', `Your ${params.provider} account was unlinked from your account`)
 
     return response.redirect().back()
   }
