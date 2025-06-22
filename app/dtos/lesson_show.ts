@@ -24,6 +24,7 @@ export default class LessonShowDto extends ProgressableDto {
   declare stateId: number
   declare publishAt?: string | null
   declare routeUrl: string
+  declare repositoryUrl: string | null
   declare body: string | null
   declare videoSeconds: number
   declare thumbnail: AssetDto | null
@@ -51,6 +52,7 @@ export default class LessonShowDto extends ProgressableDto {
     this.stateId = post.stateId
     this.publishAt = post.publishAt?.toISO()
     this.routeUrl = post.routeUrl
+    this.repositoryUrl = post.repositoryUrl
     this.body = post.body
     this.videoSeconds = post.videoSeconds
     this.lessonIndexDisplay = post.lessonIndexDisplay

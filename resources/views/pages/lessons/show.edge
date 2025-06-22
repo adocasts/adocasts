@@ -20,9 +20,7 @@
         <div class="flex justify-end items-center">
           <div class="flex items-center justify-end">
             @tooltip({ text: 'Toggle Autoplay', class: 'tooltip-bottom' })
-              <button type="button" class="btn btn-ghost btn-square">
-                @svg('solar:playlist-bold-duotone', { class: 'w-5 h-5' })
-              </button>
+              @!frags.lesson.autoplayToggle({ lesson }) 
             @end
             @tooltip({ text: 'Toggle Bookmark', class: 'tooltip-bottom' })
               @!frags.lesson.bookmarkToggle({ lesson })
@@ -33,9 +31,9 @@
               </button>
             @end
             @tooltip({ text: 'View Lesson Repository', class: 'tooltip-bottom' })
-              <button type="button" class="btn btn-ghost btn-square">
+              <a href="{{ lesson.repositoryUrl }}" class="btn btn-ghost btn-square" up-follow="false" target="_blank">
                 @svg('solar:code-line-duotone', { class: 'w-5 h-5' })
-              </button>
+              </a>
             @end
             @tooltip({ text: 'Download Lesson', class: 'tooltip-bottom' })
               <button type="button" class="btn btn-ghost btn-square">
@@ -77,7 +75,7 @@
         <h1 class="heading-2a">
           {{ lesson.title }}
         </h1>
-
+@dump(lesson)
         @if (lesson.author)
           <div class="flex gap-3 lg:gap-3 items-center mb-6">
             @profile.link({ user: lesson.author })

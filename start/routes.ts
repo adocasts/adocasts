@@ -49,6 +49,7 @@ const VerifyEmail = () => import('#actions/users/verify_email')
 const RenderUserHistory = () => import('#actions/users/render_user_history')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const TogglePostAutoplay = () => import('#actions/posts/toggle_post_autoplay')
 const TogglePostWatchlist = () => import('#actions/posts/toggle_post_watchlist')
 const RenderUserBookmarks = () => import('#actions/users/render_user_bookmarks')
 const RenderUserWatchlist = () => import('#actions/users/render_user_watchlist')
@@ -141,7 +142,8 @@ router.get('/topics/:slug/snippets', [RenderTopicShowSnippets]).as('topics.show.
 
 //* Lessons
 router.get('/lessons', [RenderLessonsIndex]).as('lessons.index')
-router.patch('/lessons/:slug/watchlist', [TogglePostWatchlist]).as('lessons.watchlist')
+router.patch('/lessons/:slug/watchlist', [TogglePostWatchlist]).as('lessons.watchlist').use(middleware.auth())
+router.patch('/lessons/:slug/autoplay', [TogglePostAutoplay]).as('lessons.autoplay')
 router.get('/lessons/:slug', [RenderLessonShow]).as('lessons.show').use(middleware.postTypeCheck())
 router.get('/streams/:slug', [RenderLessonShow]).as('streams.show').use(middleware.postTypeCheck())
 
