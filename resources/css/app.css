@@ -387,3 +387,21 @@ a.link-grow {
     transform: translateX(-100%)
   }
 }
+
+.animation-float {
+  animation: float 3s linear infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(-.25rem);
+  }
+
+  50% {
+    transform: translateY(.25rem);
+  }
+
+  100% {
+    transform: translateY(-.25rem);
+  }
+}

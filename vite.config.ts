@@ -3,6 +3,9 @@ import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
+  server: {
+    allowedHosts: ['adocasts.local'],
+  },
   plugins: [
     tailwindcss(),
     adonisjs({

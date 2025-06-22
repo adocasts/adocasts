@@ -1,0 +1,152 @@
+@if (lesson.hasVideo)
+  @can('PostPolicy.view', lesson)
+    @let(videoTypeId = lesson.videoTypeId)
+    
+    <div
+      id="videoPlayerPlaceholder{{ lesson.id }}"
+      video-placeholder
+      x-data="videoPlaceholder"
+      data-is-enabled-mini-player="{{ auth.user?.isEnabledMiniPlayer ?? true }}"
+      data-path="{{ request.url() }}"
+      class="bg-[rgb(0,0,0)] fixed bottom-0 right-0 z-[100]"
+      data-post-id="{{ lesson.id }}"
+      @close="close"
+      @open="open">
+      <div id="videoContents" class="flex flex-col">
+        @if (lesson.livestreamUrl && lesson.isLive)
+          <div class="mb-3">
+            @!lessons.liveIndicator()
+          </div>
+        @endif
+        <div class="w-full h-full mx-auto" style="max-width: 150vh;">
+          <div class="w-full aspect-video relative overflow-hidden">
+            @if (videoTypeId === VideoTypes.YOUTUBE)
+              <div
+                id="lessonVideoEmbed"
+                class="absolute top-0 left-0 w-full h-full"
+                data-plyr-provider="youtube"
+                data-plyr-embed-id="{{ lesson.isLive && lesson.livestreamUrl ? lesson.streamId : lesson.videoYouTubeId }}"
+                data-is-live="{{ lesson.livestreamUrl && lesson.isLive }}"
+                data-video-id="{{ lesson.isLive && lesson.livestreamUrl ? lesson.streamId : lesson.videoYouTubeId }}"
+                data-watch-seconds="{{ userProgression?.watchSeconds ?? 0 }}"
+                data-is-completed="{{ userProgression?.isCompleted ?? false }}"
+                data-http-url="{{ route('api.histories.progression', { id: userProgression?.id }) }}"
+                data-payload-post-id="{{ lesson.id }}"
+                data-payload-collection-id="{{ series?.id ?? '' }}"
+                data-payload-user-id="{{ auth.user?.id ?? '' }}"
+                data-payload-route="{{ request.ctx.route?.name ?? '' }}"
+              >
+              </div>
+            @elseif (videoTypeId === VideoTypes.BUNNY)
+              <iframe
+                id="lessonVideoEmbed"
+                class="absolute top-0 left-0 w-full h-full"
+                data-is-live="false"
+                data-video-id="{{ lesson.videoBunnyId }}"
+                data-plyr-provider="bunny"
+                data-watch-seconds="{{ userProgression?.watchSeconds ?? 0 }}"
+                data-is-completed="{{ userProgression?.isCompleted ?? false }}"
+                data-http-url="{{ route('api.histories.progression', { id: userProgression?.id }) }}"
+                data-payload-post-id="{{ lesson.id }}"
+                data-payload-collection-id="{{ series?.id ?? '' }}"
+                data-payload-user-id="{{ auth.user?.id ?? '' }}"
+                data-payload-route="{{ request.ctx.route?.name ?? '' }}"
+                src="https://iframe.mediadelivery.net/embed/164208/{{ lesson.videoBunnyId }}?autoplay=false&preload=true&responsive=true" 
+                loading="lazy" 
+                allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" 
+                allowfullscreen="true"
+              ></iframe>
+            @elseif (videoTypeId === VideoTypes.R2)
+              @let(sig = hls.getSignature(auth.user, lesson))
+              <div
+                id="lessonVideoEmbed"
+                class="absolute top-0 left-0 w-full h-full"
+                data-plyr-provider="r2"
+                data-is-live="{{ lesson.livestreamUrl && lesson.isLive }}"
+                data-video-id="{{ lesson.videoR2Id }}"
+                data-watch-seconds="{{ userProgression?.watchSeconds ?? 0 }}"
+                data-is-completed="{{ userProgression?.isCompleted ?? false }}"
+                data-title="{{ lesson.title }}"
+                data-captions="{{ js.stringify(lesson.captions ?? []) }}"
+                data-chapters="{{ js.stringify(lesson.chapters ?? []) }}"
+                data-poster="{{ lesson.asset?.filename ? `/img/${lesson.asset.filename}` : '' }}"
+                data-http-url="{{ route('api.histories.progression', { id: userProgression?.id }) }}"
+                data-payload-post-id="{{ lesson.id }}"
+                data-payload-collection-id="{{ series?.id ?? '' }}"
+                data-payload-user-id="{{ auth.user?.id ?? '' }}"
+                data-payload-route="{{ request.ctx.route?.name ?? '' }}"
+                data-authorization-v="{{ sig.version }}"
+                data-authorization-key="{{ sig.signature }}"
+                data-authorization-exp="{{ sig.expiration }}"
+                data-user-id="{{ sig.userId }}"
+              >
+              </div>
+            @endif
+            @if (nextLesson)
+              <div 
+                x-cloak
+                id="lessonVideoNextUp" 
+                x-data="videoAutoPlayNext({{ auth.user?.isEnabledAutoplayNext ?? true }}, '{{ nextLesson.routeUrl }}')" 
+                class="absolute top-1.5 right-1.5 z-10 p-3 bg-slate-base-900/75 text-slate-base-100 rounded-md flex flex-col transition-transform duration-300"
+                :class="[displayed ? 'translate-x-0' : 'translate-x-[200px]']"
+                @timeupdate="onTimeUpdate">
+                <h6 class="font-bold tracking-wider uppercase text-slate-base-300" style="font-size: .65rem;">Playing Next Lesson In</h6>
+                <div class="text-sm uppercase tracking-wider">
+                  <span x-ref="countdown" x-text="timeRemaining"></span> seconds
+                </div>
+                <div class="flex gap-3 mt-3">
+                  <button @click="onPlayNext" class="text-brand-base-50 bg-brand-base-600 hover:bg-brand-base-500 text-xs px-1.5 py-0.5 rounded-md flex-1">
+                    Play Now
+                  </button>
+                  <button @click="onCancel" class="text-slate-base-50 bg-slate-base-600 hover:bg-slate-base-500 text-xs px-1.5 py-0.5 rounded-md flex-1">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            @endif
+          </div>
+        </div>
+
+        <div class="bg-slate-100 flex flex-col video-small-details p-1.5 md:p-4">
+          @if (path)
+            {{-- <h5 class="hidden md:block font-semibold uppercase text-2xs tracking-wider text-slate-600 hover:text-accent-800 duration-150 mb-1">
+              <a href="{{ route('paths.show', { slug: path.slug }) }}">
+                {{ path.name }}
+                <span class="inline-block ml-1 font-normal">
+                  #{{ lesson.lessonIndexDisplay }}
+                </span>
+              </a>
+            </h5> --}}
+          @elseif (series)
+            <h5 class="hidden md:block font-semibold uppercase text-2xs tracking-wider text-slate-600 hover:text-accent-800 duration-150 mb-1">
+              <a href="{{ route('series.show', { slug: series.slug }) }}">
+                {{ series.name }}
+                <span class="inline-block ml-1 font-normal">
+                  #{{ lesson.series.lessonIndexDisplay }}
+                </span>
+              </a>
+            </h5>
+          @endif
+
+          <h3 class="hidden md:block font-semibold text-sm">
+            <a href="{{ lesson.routeUrl }}" up-follow>
+              {{ lesson.title }}
+            </a>
+          </h3>
+
+          <div class="flex video-small-actions items-center gap-3 md:mt-6">
+            <a href="{{ lesson.routeUrl }}" class="btn btn-block btn-outline btn-xs">
+              @svg('ph:folder-notch-open-fill', { class: 'w-4 h-4' })
+              Re-Open
+            </a>
+
+            <button type="button" class="btn btn-block btn-outline btn-xs" @click="close">
+              @svg('solar:close-square-line-duotone', { class: 'w-4 h-4' })
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endcan
+@endif

@@ -35,6 +35,8 @@ export default class LessonShowDto extends ProgressableDto {
   declare routeUrl: string
   declare repositoryUrl: string | null
   declare body: string | null
+  declare livestreamUrl: string | null
+  declare isLive: boolean
   declare videoSeconds: number
   declare thumbnail: AssetDto | null
   declare author: AuthorDto | null
@@ -72,6 +74,8 @@ export default class LessonShowDto extends ProgressableDto {
     this.routeUrl = post.routeUrl
     this.repositoryUrl = post.repositoryUrl
     this.body = post.body
+    this.livestreamUrl = post.livestreamUrl
+    this.isLive = !!post.isLive
     this.videoSeconds = post.videoSeconds
     this.lessonIndexDisplay = post.lessonIndexDisplay
     this.rootIndexDisplay = post.rootIndexDisplay

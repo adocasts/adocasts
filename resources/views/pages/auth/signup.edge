@@ -29,9 +29,12 @@
       @end
 
       @if (plan)
-        <div role="alert">
-          First create an account, then we'll get you set up with
-          <span class="lowercase">PLAN_NAME</span>!
+        @let(desiredPlan = await PlanService.getBySlug(plan))
+        <div role="alert" class="alert alert-outline alert-info mb-6">
+          <span>
+            First create an account, then we'll get you set up with
+            <span class="lowercase">{{ desiredPlan?.name }}</span>!
+          </span>
         </div>
       @endif
 

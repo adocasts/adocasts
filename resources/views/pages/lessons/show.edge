@@ -62,8 +62,23 @@
         </div>
       </div>
 
-      <div class="bg-base-100/25 rounded-b-[var(--radius-box)]">
-        <div class="aspect-video bg-base-200 rounded-base"></div>
+      <div class="bg-base-100/10 rounded-b-[var(--radius-box)]">
+        <div class="aspect-video bg-base-200/50 rounded-base">
+          @cannot('PostPolicy.view', lesson)
+            <div class="no-access relative w-full h-full flex items-center justify-center">
+              @!plus.lessonCta({ 
+                lesson, 
+                plusMonthly, 
+                variant: 'lightBase',
+                outlineVariant: 'lightBase', 
+                size: 'lg', 
+                countdown: true 
+              })
+            </div>
+          @else
+            @!lesson.video({ lesson })
+          @end
+        </div>
       </div>
     </div>
 
@@ -72,7 +87,7 @@
         <h1 class="heading-2a">
           {{ lesson.title }}
         </h1>
-
+@dump(lesson)
         @if (lesson.author)
           <div class="flex gap-3 lg:gap-3 items-center mb-6">
             @profile.link({ user: lesson.author })

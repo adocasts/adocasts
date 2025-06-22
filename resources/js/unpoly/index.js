@@ -52,8 +52,10 @@ up.on('up:location:changed', function () {
 })
 
 up.on('up:request:loaded', function (event) {
+  const isNewLayer = event.origin?.getAttribute('up-layer') === 'new'
+  
   // sync body styles on every request
-  if (event.response.text.includes('<body')) {
+  if (!isNewLayer && event.response.text.includes('<body')) {
     const doc = new DOMParser().parseFromString(event.response.text, 'text/html')
     document.body.style = doc.body.style.cssText
   }

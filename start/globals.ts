@@ -21,6 +21,9 @@ import _ from 'lodash'
 import { DateTime } from 'luxon'
 import env from './env.js'
 import HlsService from '#services/hls_service'
+import plan from '#services/plan_service'
+import PaywallTypes from '#enums/paywall_types'
+import VideoTypes from '#enums/video_types'
 
 addCollection(solarIcons)
 addCollection(simpleIcons)
@@ -35,10 +38,12 @@ edge.global('GetUnreadNotificationCount', GetUnreadNotificationCount)
 edge.global('Sorts', Sorts)
 edge.global('Status', Status)
 edge.global('Plans', Plans)
+edge.global('PaywallTypes', PaywallTypes)
 edge.global('Difficulties', Difficulties)
 edge.global('CommentTypes', CommentTypes)
 edge.global('CommentTypeIdColumn', CommentTypeIdColumn)
 edge.global('StripeSubscriptionStatuses', StripeSubscriptionStatuses)
+edge.global('VideoTypes', VideoTypes)
 
 // utilities
 edge.global('_', _)
@@ -52,3 +57,4 @@ edge.global('currency', CurrencyService)
 edge.global('form', FormService)
 edge.global('gravatar', gravatar)
 edge.global('hls', HlsService)
+edge.global('PlanService', plan)

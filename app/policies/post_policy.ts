@@ -4,17 +4,17 @@ import Post from '#models/post'
 import User from '#models/user'
 import { action } from '@adonisjs/bouncer'
 import type { AuthorizerResponse } from '@adonisjs/bouncer/types'
-// import { PostListVM, PostShowVM } from '../view_models/post.js'
-// import PostService from '#services/post_service'
+import TimeService from '#services/time_service'
+import LessonShowDto from '#dtos/lesson_show'
 
 export default class PostPolicy extends BasePolicy {
   @action({ allowGuest: true })
-  view(user: User, post: Post | PostListVM | PostShowVM): AuthorizerResponse {
+  view(user: User, post: Post | LessonShowDto): AuthorizerResponse {
     if (user && !user.isFreeTier) return true
     if (post.paywallTypeId === PaywallTypes.NONE) return true
     if (post.paywallTypeId === PaywallTypes.FULL) return false
 
-    return !PostService.getIsPaywalled(post)
+    return !TimeService.getIsPaywalled(post)
   }
 
   @action({ allowGuest: true })

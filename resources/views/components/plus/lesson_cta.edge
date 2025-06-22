@@ -1,0 +1,67 @@
+@let(plusMonthly = $props.plusMonthly || await PlanService.get(Plans.PLUS_MONTHLY))
+@let(isDelayedRelease = lesson.paywallTypeId === PaywallTypes.DELAYED_RELEASE)
+@let(size = $props.size ?? 'base')
+@let(sizes = {
+  base: {
+    heading: 'text-xl !mt-0 !mb-2 relative z-10',
+    p: 'max-w-lg text-sm relative z-10',
+    action: 'mt-3 flex flex-wrap items-center gap-6 relative z-10'
+  },
+  lg: {
+    heading: `heading-2 lg:text-3xl tracking-wider relative z-10 ${isDelayedRelease ? 'border-t border-base-100 mt-6 pt-6' : ''}`,
+    p: 'lg:text-lg max-w-lg mt-3 mb-10 relative z-10 text-base-content/80',
+    action: 'mt-10 flex flex-wrap items-center gap-6 relative z-10'
+  }
+})
+
+@let(classes = sizes[size])
+@let(cta = plusMonthly.hasActiveSale ? `, on sale now for ${plusMonthly.displaySalePrice}/mo` : ` for ${plusMonthly.displayPrice}/mo`)
+
+@if (isDelayedRelease)
+  <div class="relative z-10">
+    @if (countdown)
+      @!countdown({ dateTime: DateTime.fromISO(lesson.publishAtISO).plus({ days: 14 }).toISO() })
+    @endif
+    <h3 class="{{ classes.heading }}">
+      Adocasts Plus Timed Exclusive
+    </h3>
+    <p class="{{ classes.p }}">
+      @if (auth.user)
+        Please check back {{ TimeService.paywallTimeAgo(lesson) }}. Get immediate access to this lesson and more by joining Adocasts Plus{{ cta }}.
+      @else
+        Please check back {{ TimeService.paywallTimeAgo(lesson) }}. Get immediate access to this lesson and more by joining Adocasts Plus{{ cta }} or signing into your existing Adocasts Plus account.
+      @endif
+    </p>
+    <div class="{{ classes.action }}">
+      @!plus.cta({ variant, outlineVariant, plusMonthly })
+    </div>
+
+    @if (size === 'lg')
+      <div class="absolute bottom-4 right-2 md:-left-36 md:-bottom-28 w-20 md:w-28 h-full">
+        <img class="animation-float" src="/imgs/robot/slice1.svg" alt="robot mascot smiling" />
+      </div>
+    @endif
+  </div>
+@else
+  <div class="relative z-10 pl-3">
+    <h3 class="{{ classes.heading }}">
+      Ready to get started?
+    </h3>
+    <p class="{{ classes.p }}">
+      @if (auth.user)
+        Join Adocasts Plus{{ cta }}, to get immediate access to this lesson and more.
+      @else
+        Join Adocasts Plus{{ cta }}, or sign into an existing Adocasts Plus account, to get access to all of our lessons.
+      @endif
+    </p>
+    <div class="{{ classes.action }}">
+      @!plus.cta({ variant, outlineVariant, plusMonthly })
+    </div>
+
+    @if (size === 'lg')
+      <div class="absolute right-0 bottom-2 md:-left-36 md:bottom-4 w-10 md:w-28 h-full">
+        <img class="animation-float" src="/imgs/robot/slice1.svg" alt="robot mascot smiling" />
+      </div>
+    @endif
+  </div>
+@endif

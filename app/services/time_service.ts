@@ -1,3 +1,6 @@
+import LessonShowDto from '#dtos/lesson_show'
+import PaywallTypes from '#enums/paywall_types'
+import Post from '#models/post'
 import { DateTime } from 'luxon'
 
 export default class TimeService {
@@ -96,6 +99,18 @@ export default class TimeService {
     return DateTime.fromSeconds(seconds, { zone: 'UTC' })
   }
 
+  static getIsPaywalled(post: Post | LessonShowDto) {
+    if (post.paywallTypeId === PaywallTypes.NONE) return false
+    if (post.paywallTypeId === PaywallTypes.FULL) return true
+    if (!post.publishAt) return false
+
+    const publishAt =
+      typeof post.publishAt === 'string' ? DateTime.fromISO(post.publishAt) : post.publishAt
+    const { days } = publishAt.plus({ days: 14 }).diffNow('days')
+
+    return days > 0
+  }
+
   /**
    * returns date in relative human readable time ago string
    * @param date
@@ -106,6 +121,13 @@ export default class TimeService {
     }
 
     return date ? date.toRelative() : ''
+  }
+
+  static paywallTimeAgo(post: Post | LessonShowDto) {
+    if (!post.publishAt) return
+    const publishAt =
+      typeof post.publishAt === 'string' ? DateTime.fromISO(post.publishAt) : post.publishAt
+    return this.timeago(publishAt.plus({ days: 14 }))
   }
 
   static dtmHumanShort(iso: string) {

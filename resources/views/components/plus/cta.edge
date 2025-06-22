@@ -1,0 +1,19 @@
+@let(plusMonthly = $props.plusMonthly || await PlanService.get(Plans.PLUS_MONTHLY))
+@let(cta = plusMonthly.hasActiveSale ? `On Sale Now for ${plusMonthly.displaySalePrice}/mo` : `Join for ${plusMonthly.displayPrice}/mo`)
+
+@if (env('STRIPE_ENABLED'))
+  @if (auth.user)
+    @!plus.monthlyForm({ cta, plusMonthly })
+  @else
+    <a href="{{ route('auth.signup', {}, { qs: { plan: plusMonthly?.slug } })}}" up-layer="new" up-size="grow" class="btn btn-outline btn-accent">
+      {{ cta }}
+    </a>
+    <a href="{{ route('auth.signin', {}, { qs: { plan: plusMonthly?.slug } }) }}" up-layer="new" up-size="grow" class="btn btn-outline">
+      Sign in
+    </a>
+  @endif
+@else
+  <div class="border border-transparent bg-slate-100/50 text-slate-600 shadow-sm px-4 py-2 rounded-md text-sm font-medium">
+    Adocasts Plus is coming soon
+  </div>
+@endif
