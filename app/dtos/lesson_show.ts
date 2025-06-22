@@ -21,6 +21,15 @@ export default class LessonShowDto extends ProgressableDto {
   declare description: string | null
   declare postTypeId: number
   declare paywallTypeId: number
+  declare videoTypeId: number | null
+  declare videoUrl: string | null
+  declare videoBunnyId: string | null
+  declare videoYouTubeId: string | null
+  declare videoR2Id: string | null
+  declare videoId: string | null
+  declare bunnyHlsUrl?: string
+  declare transcriptUrl?: string
+  declare hasVideo: boolean
   declare stateId: number
   declare publishAt?: string | null
   declare routeUrl: string
@@ -49,6 +58,15 @@ export default class LessonShowDto extends ProgressableDto {
     this.description = post.description
     this.postTypeId = post.postTypeId
     this.paywallTypeId = post.paywallTypeId
+    this.videoTypeId = post.videoTypeId
+    this.videoUrl = post.videoUrl
+    this.videoBunnyId = post.videoBunnyId
+    this.videoYouTubeId = post.videoYouTubeId
+    this.videoR2Id = post.videoR2Id
+    this.videoId = post.videoId
+    this.bunnyHlsUrl = post.bunnyHlsUrl
+    this.transcriptUrl = post.transcriptUrl
+    this.hasVideo = !!post.hasVideo
     this.stateId = post.stateId
     this.publishAt = post.publishAt?.toISO()
     this.routeUrl = post.routeUrl

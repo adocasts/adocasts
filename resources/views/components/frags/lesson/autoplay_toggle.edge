@@ -1,27 +1,18 @@
-@if (auth.user)
+@let(enabled = auth.user?.isEnabledAutoplayNext ?? session.get('autoplayNext') === 'true')
 
-  @form({
-    action: form.patch('lessons.autoplay', { slug: lesson.slug }),
-    target: { 'up-lesson-autoplay': `${lesson.id}:any` },
-  })
-
-    <button {{ html.attrs({ type: 'submit', class: ['btn btn-toggle btn-square', { 'active': auth.user.isEnabledAutoplayNext }] }) }}>
-      @if (auth.user.isEnabledAutoplayNext)
+@form({
+  action: form.patch('lessons.autoplay', { slug: lesson.slug }),
+  target: { 'up-lesson-autoplay': `${lesson.id}:any` },
+})
+  @tooltip({ text: enabled ? 'Autoplay: Enabled' : 'Autoplay: Disabled', class: 'tooltip-bottom' })
+    <button {{ html.attrs({ type: 'submit', class: ['btn btn-toggle btn-square', { 'active': enabled }] }) }}>
+      @if (enabled)
         @svg('solar:stopwatch-play-bold-duotone', { class: 'w-5 h-5' })
       @else
         @svg('solar:stopwatch-play-line-duotone', { class: 'w-5 h-5' })
       @endif
     </button>
-
-    @!frags.toaster()
   @end
 
-@else
-
-  <a href="{{ route('auth.signup') }}" class="btn btn-outline btn-wide" up-layer="new" up-mode="modal" up-size="grow">
-    @svg('solar:bookmark-line-duotone', { class: 'w-5 h-5' })
-
-    @!frags.toaster()
-  </a>
-
-@endif
+  @!frags.toaster()
+@end

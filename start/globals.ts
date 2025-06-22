@@ -20,6 +20,7 @@ import { image as gravatar } from 'gravatar-gen'
 import _ from 'lodash'
 import { DateTime } from 'luxon'
 import env from './env.js'
+import HlsService from '#services/hls_service'
 
 addCollection(solarIcons)
 addCollection(simpleIcons)
@@ -50,3 +51,4 @@ edge.global('parser', parserService)
 edge.global('currency', CurrencyService)
 edge.global('form', FormService)
 edge.global('gravatar', gravatar)
+edge.global('hls', HlsService)
