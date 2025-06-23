@@ -13,16 +13,16 @@
   @if (item.series)
     @assign(hasSeries = true)
     @let(series = item.series)
-    <h5 class="uppercase flex items-center text-accent-500 hover:text-accent-600 tracking-wide font-sans text-xs">
-      @if (display.seriesName)
-        <a href="{{ route('series.show', { slug: series.slug }) }}" up-follow class="anchor truncate" {{ html.attrs(upAttrs) }}>
+    @if (display.seriesName)
+      <h5 class="anchor tracking-wide font-sans text-xs truncate">
+        <a href="{{ route('series.show', { slug: series.slug }) }}" up-follow class="anchor" {{ html.attrs(upAttrs) }}>
           {{ series.name }}
         </a>
-      @endif
-      <span class="{{ html.classNames(['text-slate-600 whitespace-nowrap duration-150', { 'ml-2': display.seriesName }]) }}">
-        {{ display.seriesName ? '#' : 'Lesson ' }}{{ item.series.lessonIndexDisplay }}
-      </span>
-    </h5>
+      </h5>
+    @endif
+    <span class="{{ html.classNames(['text-xs tracking-wide text-slate-600 whitespace-nowrap duration-150', { 'ml-2': display.seriesName }]) }}">
+      {{ display.seriesName ? '#' : 'Lesson ' }}{{ item.series.lessonIndexDisplay }}
+    </span>
   @elseif (item.paths?.length)
     @assign(hasSeries = true)
     @set(path = item.rootPaths.at(0))
