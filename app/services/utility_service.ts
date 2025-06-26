@@ -1,7 +1,9 @@
+import { forwardValidator } from '#validators/auth_validator'
 import string from '@adonisjs/core/helpers/string'
-import { parse } from 'node-html-parser'
-import { DateTime } from 'luxon'
+import { Request } from '@adonisjs/core/http'
 import dinero, { Currency } from 'dinero.js'
+import { DateTime } from 'luxon'
+import { parse } from 'node-html-parser'
 
 export default class UtilityService {
   /**
@@ -201,5 +203,16 @@ export default class UtilityService {
 
       return [...list, item]
     }, [])
+  }
+
+  static async tryGetForward(request: Request) {
+    let forward: string | null = null
+    
+    try {
+      const forwardData = await request.validateUsing(forwardValidator)
+      forward = forwardData.forward || null
+    } catch (_) {}
+
+    return forward
   }
 }
