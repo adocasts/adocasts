@@ -1,9 +1,9 @@
 import User from '#models/user'
-import { signUpValidator } from '#validators/auth_validator'
-import { inject } from '@adonisjs/core'
-import type { HttpContext } from '@adonisjs/core/http'
 import SessionService from '#services/session_service'
 import StripeService from '#services/stripe_service'
+import { forwardValidator, signUpValidator } from '#validators/auth_validator'
+import { inject } from '@adonisjs/core'
+import type { HttpContext } from '@adonisjs/core/http'
 // import posthog from '#services/posthog_service'
 
 export default class SignUpController {
@@ -23,7 +23,14 @@ export default class SignUpController {
     sessionService: SessionService,
     stripeService: StripeService
   ) {
-    let { forward, plan, ...data } = await request.validateUsing(signUpValidator)
+    let forward: string | null = null
+    let { plan, ...data } = await request.validateUsing(signUpValidator)
+
+    try {
+      const forwardData = await request.validateUsing(forwardValidator)
+      forward = forwardData.forward || null
+    } catch (_) {}
+
     const user = await User.create(data)
 
     await user.related('profile').create({})

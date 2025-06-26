@@ -3,7 +3,7 @@ import User from '#models/user'
 // import posthog from '#services/posthog_service'
 import SessionService from '#services/session_service'
 import StripeService from '#services/stripe_service'
-import { signInValidator } from '#validators/auth_validator'
+import { forwardValidator, signInValidator } from '#validators/auth_validator'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -27,8 +27,14 @@ export default class SignInController {
     stripeService: StripeService
   ) {
     let user: User | null = null
-    let { uid, password, rememberMe, forward, action, plan } =
+    let forward: string | null = null
+    let { uid, password, rememberMe, action, plan } =
       await request.validateUsing(signInValidator)
+
+    try {
+      const forwardData = await request.validateUsing(forwardValidator)
+      forward = forwardData.forward || null
+    } catch (_) {}
 
     if (await AuthAttempt.disallows(uid)) {
       session.flash(

@@ -1,7 +1,7 @@
-import vine from '@vinejs/vine'
-import { exists, unique } from './helpers/db.js'
 import env from '#start/env'
 import app from '@adonisjs/core/services/app'
+import vine from '@vinejs/vine'
+import { exists, unique } from './helpers/db.js'
 
 const host = new URL(env.get('APP_DOMAIN')).hostname
 
@@ -40,7 +40,6 @@ export const signInValidator = vine.compile(
     uid: vine.string(),
     password: vine.string(),
     rememberMe: vine.accepted().optional(),
-    forward: vine.string().url({ require_tld: app.inProduction, host_whitelist: [host] }).optional(),
     action: vine.string().optional(),
     plan: vine.string().exists(exists('plans', 'slug')).optional(),
   })
@@ -55,8 +54,13 @@ export const signUpValidator = vine.compile(
       .email()
       .unique(unique('users', 'email', { caseInsensitive: true })),
     password: vine.string().minLength(8),
-    forward: vine.string().url({ require_tld: app.inProduction, host_whitelist: [host] }).optional(),
     plan: vine.string().exists(exists('plans', 'slug')).optional(),
+  })
+)
+
+export const forwardValidator = vine.compile(
+  vine.object({
+    forward: vine.string().url({ require_tld: app.inProduction, host_whitelist: [host] }).optional(),
   })
 )
 
