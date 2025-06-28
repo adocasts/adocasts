@@ -2,12 +2,14 @@ import BaseModelDto from '#dtos/base_model_dto'
 import PostChapter from '#models/post_chapter'
 
 export default class ChapterDto extends BaseModelDto {
+  static selectExtras = ['start', 'end']
+
   static model() {
     return PostChapter
   }
 
-  declare start: string
-  declare end: string
+  declare startSeconds: number
+  declare endSeconds: number
   declare text: string
   declare sortOrder: number
 
@@ -16,8 +18,8 @@ export default class ChapterDto extends BaseModelDto {
 
     if (!chapter) return
 
-    this.start = chapter.start
-    this.end = chapter.end
+    this.startSeconds = chapter.startSeconds
+    this.endSeconds = chapter.endSeconds
     this.text = chapter.text
     this.sortOrder = chapter.sortOrder
   }

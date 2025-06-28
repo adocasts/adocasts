@@ -8,6 +8,7 @@ import { DateTime } from 'luxon'
 
 export default class Progress extends BaseModel {
   static build = (user?: User) => ProgressBuilder.new(user)
+  static completedPercentThreshold = 90
 
   @column({ isPrimary: true })
   declare id: number

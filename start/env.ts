@@ -20,6 +20,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   APP_LOGO_INV: Env.schema.string(),
   APP_CONTACT_EMAIL: Env.schema.string(),
   APP_DOMAIN: Env.schema.string(),
+  APP_HOSTNAME: Env.schema.string(),
   CMS_SESSION_DOMAIN: Env.schema.string(),
   HOST: Env.schema.string({ format: 'host' }),
   LOG_LEVEL: Env.schema.string(),

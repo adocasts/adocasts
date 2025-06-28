@@ -1,3 +1,5 @@
+@let(userProgress = progress.post.get(lesson.id))
+
 @if (lesson.hasVideo)
   @can('PostPolicy.view', lesson)
     @let(videoTypeId = lesson.videoTypeId)
@@ -5,10 +7,8 @@
     <div
       id="videoPlayerPlaceholder{{ lesson.id }}"
       video-placeholder
-      x-data="videoPlaceholder"
       data-is-enabled-mini-player="{{ auth.user?.isEnabledMiniPlayer ?? true }}"
       data-path="{{ request.url() }}"
-      class="bg-[rgb(0,0,0)] fixed bottom-0 right-0 z-[100]"
       data-post-id="{{ lesson.id }}"
       @close="close"
       @open="open">
@@ -28,9 +28,9 @@
                 data-plyr-embed-id="{{ lesson.isLive && lesson.livestreamUrl ? lesson.streamId : lesson.videoYouTubeId }}"
                 data-is-live="{{ lesson.livestreamUrl && lesson.isLive }}"
                 data-video-id="{{ lesson.isLive && lesson.livestreamUrl ? lesson.streamId : lesson.videoYouTubeId }}"
-                data-watch-seconds="{{ userProgression?.watchSeconds ?? 0 }}"
-                data-is-completed="{{ userProgression?.isCompleted ?? false }}"
-                data-http-url="{{ route('api.histories.progression', { id: userProgression?.id }) }}"
+                data-watch-seconds="{{ userProgress?.watchSeconds ?? 0 }}"
+                data-is-completed="{{ userProgress?.isCompleted ?? false }}"
+                data-http-url="{{ route('progress.store') }}"
                 data-payload-post-id="{{ lesson.id }}"
                 data-payload-collection-id="{{ series?.id ?? '' }}"
                 data-payload-user-id="{{ auth.user?.id ?? '' }}"
@@ -44,9 +44,9 @@
                 data-is-live="false"
                 data-video-id="{{ lesson.videoBunnyId }}"
                 data-plyr-provider="bunny"
-                data-watch-seconds="{{ userProgression?.watchSeconds ?? 0 }}"
-                data-is-completed="{{ userProgression?.isCompleted ?? false }}"
-                data-http-url="{{ route('api.histories.progression', { id: userProgression?.id }) }}"
+                data-watch-seconds="{{ userProgress?.watchSeconds ?? 0 }}"
+                data-is-completed="{{ userProgress?.isCompleted ?? false }}"
+                data-http-url="{{ route('progress.store') }}"
                 data-payload-post-id="{{ lesson.id }}"
                 data-payload-collection-id="{{ series?.id ?? '' }}"
                 data-payload-user-id="{{ auth.user?.id ?? '' }}"
@@ -64,13 +64,13 @@
                 data-plyr-provider="r2"
                 data-is-live="{{ lesson.livestreamUrl && lesson.isLive }}"
                 data-video-id="{{ lesson.videoR2Id }}"
-                data-watch-seconds="{{ userProgression?.watchSeconds ?? 0 }}"
-                data-is-completed="{{ userProgression?.isCompleted ?? false }}"
+                data-watch-seconds="{{ userProgress?.watchSeconds ?? 0 }}"
+                data-is-completed="{{ userProgress?.isCompleted ?? false }}"
                 data-title="{{ lesson.title }}"
                 data-captions="{{ js.stringify(lesson.captions ?? []) }}"
                 data-chapters="{{ js.stringify(lesson.chapters ?? []) }}"
                 data-poster="{{ lesson.asset?.filename ? `/img/${lesson.asset.filename}` : '' }}"
-                data-http-url="{{ route('api.histories.progression', { id: userProgression?.id }) }}"
+                data-http-url="{{ route('progress.store') }}"
                 data-payload-post-id="{{ lesson.id }}"
                 data-payload-collection-id="{{ series?.id ?? '' }}"
                 data-payload-user-id="{{ auth.user?.id ?? '' }}"
@@ -104,46 +104,6 @@
                 </div>
               </div>
             @endif
-          </div>
-        </div>
-
-        <div class="bg-slate-100 flex flex-col video-small-details p-1.5 md:p-4">
-          @if (path)
-            {{-- <h5 class="hidden md:block font-semibold uppercase text-2xs tracking-wider text-slate-600 hover:text-accent-800 duration-150 mb-1">
-              <a href="{{ route('paths.show', { slug: path.slug }) }}">
-                {{ path.name }}
-                <span class="inline-block ml-1 font-normal">
-                  #{{ lesson.lessonIndexDisplay }}
-                </span>
-              </a>
-            </h5> --}}
-          @elseif (series)
-            <h5 class="hidden md:block font-semibold uppercase text-2xs tracking-wider text-slate-600 hover:text-accent-800 duration-150 mb-1">
-              <a href="{{ route('series.show', { slug: series.slug }) }}">
-                {{ series.name }}
-                <span class="inline-block ml-1 font-normal">
-                  #{{ lesson.series.lessonIndexDisplay }}
-                </span>
-              </a>
-            </h5>
-          @endif
-
-          <h3 class="hidden md:block font-semibold text-sm">
-            <a href="{{ lesson.routeUrl }}" up-follow>
-              {{ lesson.title }}
-            </a>
-          </h3>
-
-          <div class="flex video-small-actions items-center gap-3 md:mt-6">
-            <a href="{{ lesson.routeUrl }}" class="btn btn-block btn-outline btn-xs">
-              @svg('ph:folder-notch-open-fill', { class: 'w-4 h-4' })
-              Re-Open
-            </a>
-
-            <button type="button" class="btn btn-block btn-outline btn-xs" @click="close">
-              @svg('solar:close-square-line-duotone', { class: 'w-4 h-4' })
-              Close
-            </button>
           </div>
         </div>
       </div>

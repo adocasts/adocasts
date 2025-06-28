@@ -49,6 +49,8 @@ const VerifyEmail = () => import('#actions/users/verify_email')
 const RenderUserHistory = () => import('#actions/users/render_user_history')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const StoreProgress = () => import('#actions/progress/store_progress')
+const ToggleProgressCompletion = () => import('#actions/progress/toggle_progress_completion')
 const TogglePostAutoplay = () => import('#actions/posts/toggle_post_autoplay')
 const TogglePostWatchlist = () => import('#actions/posts/toggle_post_watchlist')
 const RenderUserBookmarks = () => import('#actions/users/render_user_bookmarks')
@@ -189,3 +191,7 @@ router.delete('/settings/account', [DestroyAccount]).as('settings.account.destro
 //* Email Verification
 router.post('/verification/email/send', [SendEmailVerification]).as('verification.email.send').use(middleware.auth())
 router.get('/verification/email/:email', [VerifyEmail]).as('verification.email.verify')
+
+//* Progression
+router.post('/progress', [StoreProgress]).as('progress.store')
+router.patch('/progress/toggle', [ToggleProgressCompletion]).as('progress.toggle').use(middleware.auth())
