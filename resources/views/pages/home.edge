@@ -1,82 +1,78 @@
 @layout()
 
-  <section class="container-2xl section-y mx-auto relative z-[2]">
-{{-- @!hero.getShipDone() --}}
-
-    <div class="container mx-auto h-[calc(100%-125px)] flex flex-col justify-center relative z-20">
-      <h2
-        class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl 2xl:text-9xl font-black mb-3 sm:mb-4 uppercase drop-shadow-lg">
-        <span class="inline-block bg-primary bg-gradient-to-b from-white via-white/75 to-base-content/50 bg-clip-text text-transparent">
-          Get
-        </span>
-        <span class="inline-block bg-primary bg-gradient-to-b from-white via-white/75 to-base-content/50 bg-clip-text text-transparent">
-          Ship
-        </span>
-        <span class="inline-block bg-primary bg-gradient-to-b from-white via-white/75 to-base-content/50 bg-clip-text text-transparent">
-          Done
-        </span>
-      </h2>
-
-      <h1 class="md:text-lg lg:text-2xl 3xl:text-3xl mb-8 lg:mb-12 2xl:mb-16 drop-shadow-sm max-w-[42ch]">
-        Adocasts teaches you how to ship NodeJS apps in no time using AdonisJS and it's built-in batteries.
-      </h1>
-
-      <div class="flex flex-wrap items-center gap-y-1.5 gap-x-3 md:gap-x-6">
-        <a href="/series/lets-learn-adonisjs-6" class="btn btn-accent btn-soft md:btn-wide">
-          Ship Your First App
-          @svg('solar:map-arrow-right-bold-duotone')
-        </a>
-
-        <a href="/signup" class="btn btn-soft md:btn-wide">
-          Get Started for Free
-        </a>
+  <div class="relative -mt-16 pt-28">
+    <div class="absolute inset-x-0 bottom-0 top-0 bg-radial-[at_50%_-50%] from-secondary/50 to-secondary/0 z-1">
+      <div id="hero" x-data="stars" class="absolute w-full h-full z-[999] pointer-events-none">
+        <div class="absolute w-full h-full z-50 bg-radial-[at_50%_-50%] from-secondary/0 to-base-300"></div>
+        <div class="absolute w-full h-full bg-gradient-to-t from-base-300 via-base-300/0 to-base-300/0"></div>
       </div>
+      <div class="w-full h-full bg-gradient-to-t from-base-300 via-base-300/0 to-base-300/0"></div>
+    </div>
 
-      <div class="absolute right-16 top-1/2 -translate-y-1/2 prose scale-75 origin-right w-1/2 !max-w-full">
-        @let(code = `
-@inject()
-export default class HomeController {
-  constructor(protected postService: PostService) {}
+    <section class="container-2xl section-y mx-auto relative z-[2]">
+      {{-- @!hero.getShipDone() --}}
 
-  async handle({ view, auth }: HttpContext) {
-    if (auth.user) {
-      const inProgress = await auth.user.related('progressions')
-        .query()
-        .apply((scope) => scope.latestSeries({ limit: 6 }))
+      <div class="container mx-auto h-[calc(100%-125px)] flex justify-between gap-16 relative z-20">
+        <div class="flex flex-col justify-center">
+          <h2
+            class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl 2xl:text-9xl font-black mb-3 sm:mb-4 uppercase drop-shadow-lg">
+            <span class="inline-block bg-primary bg-gradient-to-b from-white via-white/75 to-base-content/50 bg-clip-text text-transparent">
+              Get
+            </span>
+            <span class="inline-block bg-primary bg-gradient-to-b from-white via-white/75 to-base-content/50 bg-clip-text text-transparent">
+              Ship
+            </span>
+            <span class="inline-block bg-primary bg-gradient-to-b from-white via-white/75 to-base-content/50 bg-clip-text text-transparent">
+              Done
+            </span>
+          </h2>
 
-      view.share({ inProgress })
-    }
+          <h1 class="md:text-lg lg:text-2xl 3xl:text-3xl mb-8 lg:mb-12 2xl:mb-16 drop-shadow-sm max-w-[42ch]">
+            Adocasts teaches you how to ship NodeJS apps in no time using AdonisJS and it's built-in batteries.
+          </h1>
 
-    return view.render('pages/home', {
-      topics: await Topics.query().orderBy('name'),
-      series: await Series.query().orderBy('updatedAt', 'desc').limit(5),
-      lessons: await this.postService.getLatestLessons({ limit: 12 }),
-    })
-  }
-}
-        `.trim())
-        {{{ await parser.highlight(`<pre><code class="language-typescript">${code}</code></pre>`) }}}
+          <div class="flex flex-wrap items-center gap-y-1.5 gap-x-3 md:gap-x-6">
+            <a href="/series/lets-learn-adonisjs-6" class="btn btn-secondary btn-outline md:btn-wide">
+              Ship Your First App
+              @svg('solar:map-arrow-right-bold-duotone')
+            </a>
+
+            <a href="/signup" class="btn btn-outline md:btn-wide">
+              Get Started for Free
+            </a>
+          </div>
+        </div>
+
+        <div class="flex-1 card -m-2 ring-1 ring-black/5 border-base-gradient max-lg:mx-auto grid grid-cols-1 max-lg:w-full max-lg:max-w-md">
+          <div class="grid grid-cols-1 rounded-base p-3 shadow-md shadow-black/5">
+            <div class="rounded-[calc(var(--radius-box)_-_.5rem)] backdrop-blur-md p-8 shadow-2xl ring-1 ring-black/5">
+              <div class="aspect-video">
+
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="mb-12 pb-8 pt-24 -mt-8 bg-gradient-to-b from-base-100/50 to-base-100/10 border-b border-base-100/50 relative z-[1]">
-    <div class="container mx-auto flex flex-col">
-      @if (auth.user)
-        <h3 class="heading-3">
-          Here's What You've Been Up To!
-        </h3>
+    <section class="mb-12 pb-8 pt-24 -mt-8 bg-gradient-to-b from-base-100/0 to-base-100/10 border-b border-base-100/50 relative z-[1]">
+      <div class="container mx-auto flex flex-col">
+        @if (auth.user)
+          <h3 class="heading-3">
+            Here's What You've Been Up To!
+          </h3>
 
-        @!stat.user({ stats })
-      @else
-        <h3 class="heading-3">
-          We'll Be Here When You're Ready!
-        </h3>
+          @!stat.user({ stats })
+        @else
+          <h3 class="heading-3">
+            We'll Be Here When You're Ready!
+          </h3>
 
-        @!stat.adocasts({ stats })
-      @endif
-    </div>
-  </section>
+          @!stat.adocasts({ stats })
+        @endif
+      </div>
+    </section>
+  </div>
 
   <section class="section-container mx-auto relative z-[1]">
     <h2 class="heading-2">

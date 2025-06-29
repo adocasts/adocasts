@@ -5,9 +5,9 @@
     <h1 class="heading-2a !mb-0">Reset your password</h1>
 
     @if (isSignatureValid)
-      @form({ 
-        method: 'post', 
-        action: form.post('auth.password.reset.store'), 
+      @form({
+        method: 'post',
+        action: form.post('auth.password.reset.store'),
         class: 'flex flex-col mt-6',
       })
         <input type="hidden" name="email" value="{{ email }}">
@@ -17,7 +17,7 @@
           @!form.input({ type: 'password', class: 'w-full', placeholder: 'Enter a new and secure password', required: true, autofocus: true })
         @end
 
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-outline btn-primary">
           Update password
         </button>
       @end
@@ -26,7 +26,7 @@
         Your password reset link is invalid or expired
       </p>
 
-      <a href="{{ route('auth.password.forgot') }}" class="btn btn-block btn-soft btn-error">
+      <a href="{{ route('auth.password.forgot') }}" class="btn btn-block btn-outline btn-error">
         Try again
       </a>
     @endif
