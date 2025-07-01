@@ -19,7 +19,8 @@
 
         <div class="flex justify-end items-center">
           <div class="flex items-center justify-end">
-            @!frags.lesson.autoplayToggle({ lesson }) 
+            @!frags.lesson.completedToggle({ lesson, series })
+            @!frags.lesson.autoplayToggle({ lesson })
             @!frags.lesson.bookmarkToggle({ lesson })
 
             @tooltip({ text: 'Toggle Transcript', class: 'tooltip-bottom' })
@@ -27,7 +28,7 @@
                 @svg('solar:document-text-line-duotone', { class: 'w-5 h-5' })
               </button>
             @end
-            
+
             @if (lesson.repositoryUrl)
               @tooltip({ text: 'View Lesson Repository', class: 'tooltip-bottom' })
                 <a href="{{ lesson.repositoryUrl }}" class="btn btn-ghost btn-square" up-follow="false" target="_blank">
@@ -66,13 +67,13 @@
         <div class="aspect-video bg-base-200/50 rounded-base overflow-hidden">
           @cannot('PostPolicy.view', lesson)
             <div class="no-access relative w-full h-full flex items-center justify-center">
-              @!plus.lessonCta({ 
-                lesson, 
-                plusMonthly, 
+              @!plus.lessonCta({
+                lesson,
+                plusMonthly,
                 variant: 'lightBase',
-                outlineVariant: 'lightBase', 
-                size: 'lg', 
-                countdown: true 
+                outlineVariant: 'lightBase',
+                size: 'lg',
+                countdown: true
               })
             </div>
           @else
@@ -87,7 +88,7 @@
         <h1 class="heading-2a">
           {{ lesson.title }}
         </h1>
-@dump(lesson)
+
         @if (lesson.author)
           <div class="flex gap-3 lg:gap-3 items-center mb-6">
             @profile.link({ user: lesson.author })
@@ -190,19 +191,24 @@
                           'border-primary/50 bg-primary/25 hover:border-primary text-base-content/80 hover:text-base-content': lesson.id === item.id
                         }
                       ]) }}">
-
-                      @let(boxColor = progression?.isCompleted
-                        ? 'bg-success/10 group-hover/modles:bg-success text-success group-hover/modles:text-success-content'
-                        : lesson.id === item.id
-                          ? 'bg-primary/25 group-hover/modles:bg-primary'
-                          : 'bg-base-100 group-hover/modles:bg-primary')
-
-                      <div {{ html.attrs({ class: ['w-7 h-7 text-[.6rem] rounded duration-200 flex items-center justify-center', boxColor]}) }}>
-                        @if (progression?.isCompleted)
-                          @svg('solar:check-read-line-duotone', { class: 'w-4 h-4' })
-                        @else
-                          {{ module.moduleNumber }}.{{ item.sortOrder }}
-                        @endif
+                      <div data-series-lesson="{{ item.id }}" x-data="{ isCompleted: {{ progression?.isCompleted ?? false }}, id: {{ item.id }} }" @toggle="isCompleted = $event.detail">
+                        <div :class="{
+                          'w-7 h-7 text-[.6rem] rounded duration-200 flex items-center justify-center': true,
+                          'bg-success/10 group-hover/modles:bg-success text-success group-hover/modles:text-success-content': isCompleted,
+                          'bg-primary/25 group-hover/modles:bg-primary': !isCompleted && id === {{ lesson.id }},
+                          'bg-base-100 group-hover/modles:bg-primary': !isCompleted && id !== {{ lesson.id }}
+                        }">
+                          <template x-if="isCompleted">
+                            <span>
+                              @svg('solar:check-read-line-duotone', { class: 'w-4 h-4' })
+                            </span>
+                          </template>
+                          <template x-if="!isCompleted">
+                            <span>
+                              {{ module.moduleNumber }}.{{ item.sortOrder }}
+                            </span>
+                          </template>
+                        </div>
                       </div>
 
                       <div class="flex-1 text-xs">

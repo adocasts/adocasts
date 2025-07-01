@@ -1,9 +1,9 @@
 import BaseAction from '#actions/base_action'
+import Progress from '#models/progress'
 import { progressValidator } from '#validators/history'
 import { HttpContext } from '@adonisjs/core/http'
 import { Infer } from '@vinejs/vine/types'
 import GetOrCreateProgress from './get_or_create_progress.js'
-import Progress from '#models/progress'
 
 type Validator = Infer<typeof progressValidator>
 
@@ -11,9 +11,9 @@ export default class ToggleProgressCompletion extends BaseAction<[number, Valida
   validator = progressValidator
 
   async asController({ view, auth }: HttpContext, data: Validator) {
-    const progress = await this.handle(auth.user!.id, data)
+    const progression = await this.handle(auth.user!.id, data)
 
-    return view.render('components/frags/lesson/completed_toggle', { progress })
+    return view.render('components/frags/lesson/completed_toggle', { progression, rerender: true })
   }
 
   async handle(userId: number, data: Validator) {
