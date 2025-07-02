@@ -1,0 +1,50 @@
+@let(lessons = $props.lessons ?? $props.module?.lessons)
+
+<ol class="list-plain mb-3">
+  @each (item in lessons)
+    @let(progression = progress.post.get(item.id))
+
+    <li>
+      <a
+        href="{{ item.routeUrl }}"
+        class="{{ html.classNames([
+          'group/modles text-sm duration-200 pl-1 pr-2 p-1 -mb-px flex items-center gap-3 rounded-md border', {
+            'border-transparent bg-base-100/0 hover:bg-base-100/25 hover:border-base-100 text-base-content/60 hover:text-base-content': lesson.id !== item.id,
+            'border-primary/50 bg-primary/25 hover:border-primary text-base-content/80 hover:text-base-content': lesson.id === item.id
+          }
+        ]) }}">
+        <div data-series-lesson="{{ item.id }}" x-data="{ isCompleted: {{ progression?.isCompleted ?? false }}, id: {{ item.id }} }" @toggle="isCompleted = $event.detail">
+          <div :class="{
+            'w-7 h-7 text-[.6rem] rounded duration-200 flex items-center justify-center': true,
+            'bg-success/10 group-hover/modles:bg-success text-success group-hover/modles:text-success-content': isCompleted,
+            'bg-primary/25 group-hover/modles:bg-primary': !isCompleted && id === {{ lesson.id }},
+            'bg-base-100 group-hover/modles:bg-primary': !isCompleted && id !== {{ lesson.id }}
+          }">
+            <template x-if="isCompleted">
+              <span>
+                @svg('solar:check-read-line-duotone', { class: 'w-4 h-4' })
+              </span>
+            </template>
+            <template x-if="!isCompleted">
+              <span>
+                @if (module)
+                  {{ module.moduleNumber }}.{{ item.sortOrder }}
+                @else
+                  {{ item.rootSortOrder }}
+                @endif
+              </span>
+            </template>
+          </div>
+        </div>
+
+        <div class="flex-1 text-xs">
+          {{ item.title }}
+        </div>
+
+        <div class="text-2xs opacity-60 group-hover/card:opacity-100 duration-200">
+          {{ TimeService.secondsToTimestring(item.videoSeconds) }}
+        </div>
+      </a>
+    </li>
+  @endeach
+</ol>

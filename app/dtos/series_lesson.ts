@@ -1,7 +1,7 @@
-import AssetDto from './asset.js'
 import ProgressableDto from '#dtos/progressable_dto'
-import Post from '#models/post'
 import ProgressTypes from '#enums/progress_types'
+import Post from '#models/post'
+import AssetDto from './asset.js'
 
 export default class SeriesLessonDto extends ProgressableDto {
   static model() {
@@ -42,7 +42,7 @@ export default class SeriesLessonDto extends ProgressableDto {
     this.videoSeconds = post.videoSeconds
     this.asset = AssetDto.fromModel(post.assets?.at(0))
     this.sortOrder = post.$extras?.pivot_sort_order
-    this.rootSortOrder = post.$extras?.pivot_root_sort_order
+    this.rootSortOrder = post.$extras?.pivot_root_sort_order + 1
     this.meta = post.$extras
   }
 }

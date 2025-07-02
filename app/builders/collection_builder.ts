@@ -144,7 +144,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     ) => ManyToManyQueryBuilderContract<typeof Post, any>,
     {
       orderBy = 'pivot_root_sort_order',
-      direction = 'desc',
+      direction = 'asc',
     }: {
       orderBy?: 'pivot_sort_order' | 'pivot_root_sort_order'
       direction?: 'asc' | 'desc'

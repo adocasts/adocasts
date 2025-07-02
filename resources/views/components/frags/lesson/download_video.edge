@@ -12,12 +12,12 @@
         </span>
       @endslot
 
-      <button type="button" class="btn btn-ghost btn-square" @click="download" :disabled="isDownloading">
+      <button type="button" class="group/down btn btn-ghost btn-square" @click="download" :disabled="isDownloading">
         <span x-show="isDownloading" class="text-info">
           @svg('svg-spinners:ring-resize', { class: 'w-5 h-5' })
         </span>
         <span x-show="!isDownloading">
-          @svg('solar:download-minimalistic-bold-duotone', { class: 'w-5 h-5' })
+          @svg('solar:download-minimalistic-bold-duotone', { class: 'w-5 h-5 text-base-content/60 group-hover/down:text-base-content duration-200' })
         </span>
       </button>
     @end
@@ -37,12 +37,12 @@
         </span>
       @endslot
 
-      <button type="button" class="btn btn-ghost btn-square" @click="download" :disabled="isDownloading">
+      <button type="button" class="group/down btn btn-ghost btn-square" @click="download" :disabled="isDownloading">
         <span x-show="isDownloading" class="text-info">
           @svg('svg-spinners:ring-resize', { class: 'w-5 h-5' })
         </span>
         <span x-show="!isDownloading">
-          @svg('solar:download-minimalistic-bold-duotone', { class: 'w-5 h-5' })
+          @svg('solar:download-minimalistic-bold-duotone', { class: 'w-5 h-5 text-base-content/60 group-hover/down:text-base-content duration-200' })
         </span>
       </button>
     @end
