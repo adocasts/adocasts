@@ -3,13 +3,13 @@
   <ul x-data="{ policy: {{ js.stringify(policy) }} }" class="menu w-full gap-1 p-0">
     <li>
       <a href="{{ route('terms') }}" :class="{ 'menu-active': policy === 'terms' }">
-        @svg('solar:donut-bitten-line-duotone', { class: 'w-6 h-6' })
+        @svg('solar:clipboard-list-linear', { class: 'w-6 h-6' })
         Terms of Use
       </a>
     </li>
     <li>
       <a href="{{ route('privacy') }}" :class="{ 'menu-active': policy === 'privacy' }">
-        @svg('solar:donut-bitten-line-duotone', { class: 'w-6 h-6' })
+        @svg('solar:ghost-smile-linear', { class: 'w-6 h-6' })
         Privacy Policy
       </a>
     </li>
@@ -21,7 +21,7 @@
     </li>
     <li>
       <a href="{{ route('guidelines') }}" :class="{ 'menu-active': policy === 'guidelines' }">
-        @svg('solar:donut-bitten-line-duotone', { class: 'w-6 h-6' })
+        @svg('solar:file-text-line-duotone', { class: 'w-6 h-6' })
         Content Guidelines
       </a>
     </li>
