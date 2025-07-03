@@ -11,7 +11,7 @@
 
           <div class="h-5 w-px bg-base-100 mx-3"></div>
 
-          <a href="{{ route('series.show', { slug: series.slug }) }}" class="btn btn-ghost">
+          <a href="{{ route('series.show', { slug: series.slug }) }}" class="btn btn-ghost btn-primary">
             @svg('solar:double-alt-arrow-left-line-duotone', { class: 'w-4 h-4' })
             Series Details
           </a>
@@ -46,12 +46,12 @@
           @let(prevLesson = series.findPrevLesson(lesson.id))
           <div class="flex items-center justify-end">
             @tooltip({ text: 'Previous Lesson', class: 'tooltip-bottom' })
-              <a {{ html.attrs({ href: prevLesson?.routeUrl, class: 'btn btn-ghost btn-square', disabled: !prevLesson }) }}>
+              <a {{ html.attrs({ href: prevLesson?.routeUrl, class: 'btn btn-ghost btn-primary btn-square', disabled: !prevLesson }) }}>
                 @svg('solar:arrow-left-line-duotone', { class: 'w-5 h-5' })
               </a>
             @end
             @tooltip({ text: 'Next Lesson', class: 'tooltip-bottom' })
-              <a {{ html.attrs({ href: nextLesson?.routeUrl, class: 'btn btn-ghost btn-square', disabled: !nextLesson }) }}>
+              <a {{ html.attrs({ href: nextLesson?.routeUrl, class: 'btn btn-ghost btn-primary btn-square', disabled: !nextLesson }) }}>
                 @svg('solar:arrow-right-line-duotone', { class: 'w-5 h-5' })
               </a>
             @end
@@ -157,12 +157,28 @@
   </main>
 
   <aside class="w-[var(--aside-width)] border-l border-base-100 fixed right-0 top-0 h-full flex flex-col overflow-hidden">
-    <div class="px-6 pt-6 pb-3">
+    <div class="px-6 pt-6 pb-3 group">
       <h3 class="heading-5 !font-semibold !leading-tight !mb-0">
         <a href="{{ route('series.show', { slug: series.slug }) }}">
           {{ series.name }}
         </a>
       </h3>
+
+      <div class="flex items-center gap-3 mt-1">
+        <div class="flex items-center gap-1 text-xs">
+          @svg('solar:video-library-bold-duotone', { class: '-mt-px opacity-80 group-hover:opacity-100 duration-200' })
+          <span class="opacity-60 group-hover:opacity-100 duration-200">
+            {{ series.meta.posts_count }} Lessons
+          </span>
+        </div>
+
+        <div class="flex items-center gap-1 text-xs group">
+          @svg('solar:clock-circle-bold-duotone', { class: 'opacity-80 group-hover:opacity-100 duration-200' })
+          <span class="opacity-60 group-hover:opacity-100 duration-200">
+            {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
+          </span>
+        </div>
+      </div>
     </div>
     <div x-data="seriesCard" class="flex-1 faded-scroll-y to-base-300" :style="overflowStyle">
       <div class="h-full overflow-y-auto p-3" @scroll="handleScroll">

@@ -124,7 +124,23 @@ body[data-theme="adocasts-light"] {
 .btn-toggle {
   @apply btn-ghost border border-transparent hover:border-success/50 hover:text-success;
 
+  &.btn-primary,
+  &.btn-secondary,
+  &.btn-accent,
+  &.btn-neutral,
+  &.btn-success,
+  &.btn-warning,
+  &.btn-error,
+  &.btn-info {
+    background-color: transparent;
+    border-color: color-mix(in oklab, var(--btn-border, var(--color-base-content)), transparent 50%);
+
+    &:hover {
+      color: var(--btn-color);
+    }
+  }
+
   &.active {
-    @apply text-success;
+    color: var(--btn-color);
   }
 }

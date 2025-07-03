@@ -27,15 +27,18 @@
       <a class="link link-hover">Cookie policy</a>
       <a class="link link-hover">Sitemap</a>
     </nav>
-    <form class="flex-1">
+    <form class="flex-1" method="POST" action="https://app.convertkit.com/forms/3870934/subscriptions" up-submit="false">
       <h6 class="footer-title">Newsletter</h6>
       <fieldset class="flex flex-col w-full">
-        <label>Enter your email address</label>
+        <label>Enter your email to subscribe</label>
         <div class="join mt-1">
           <input
-            type="text"
+            type="email"
+            name="email_address"
             placeholder="username@site.com"
-            class="input input-bordered join-item" />
+            class="input input-bordered join-item"
+            required
+          />
           <button class="btn btn-outline btn-primary join-item">Subscribe</button>
         </div>
       </fieldset>
