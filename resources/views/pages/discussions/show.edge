@@ -12,7 +12,7 @@
     <div class="flex justify-between items-center gap-3">
       <div class="flex items-center gap-3">
         <a href="{{ route('discussions.index') }}" class="btn btn-outline btn-sm" up-back>
-          @svg('solar:double-alt-arrow-left-line-duotone', { class: 'w-4 h-4' })
+          @svg('solar:double-alt-arrow-left-outline', { class: 'w-4 h-4' })
           Back
         </a>
 
@@ -43,14 +43,14 @@
         <div class="flex items-center gap-3">
           @tooltip({ text: `${viewCount.toLocaleString()} ${string.pluralize('Views', viewCount)}`, position: 'bottom' })
             <div class="flex items-center gap-1.5 px-1 text-sm opacity-60">
-              @svg('solar:eye-bold-duotone', { class: 'w-4 h-4' })
+              @svg('solar:eye-outline', { class: 'w-4 h-4' })
               {{ viewCount.toLocaleString() }}
             </div>
           @end
 
           @tooltip({ text: `${commentCount.toLocaleString()} ${string.pluralize('Reply', commentCount)}`, position: 'bottom' })
             <a href="#comments" class="flex items-center gap-1.5 px-1 text-sm opacity-60 hover:opacity-100 duration-200">
-              @svg('solar:chat-round-call-bold-duotone', { class: 'w-4 h-4' })
+              @svg('solar:chat-round-call-outline', { class: 'w-4 h-4' })
               {{ commentCount.toLocaleString() }}
             </a>
           @end
@@ -58,7 +58,7 @@
 
         <div class="w-px h-4 bg-base-100 mr-3 ml-1.5"></div>
 
-        @if (auth.user)
+        {{--@if (auth.user)
           <button type="button" class="btn btn-outline btn-sm">
             @svg('solar:bell-linear', { class: 'w-4 h-4' })
             Subscribe
@@ -68,7 +68,7 @@
             @svg('solar:bell-linear', { class: 'w-4 h-4' })
             Subscribe
           </a>
-        @endif
+          @endif--}}
 
         @if (auth.user)
           <button

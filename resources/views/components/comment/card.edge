@@ -21,9 +21,9 @@
   'x-init': 'typeof up !== undefined && window.location.hash === `#${$el.id}` && up?.reveal($el, { top: true, behavior: \'smooth\' })'
 })
   @if (parent)
-    <div class="flex items-center border border-base-100 py-3 px-4 -mt-px -mx-px w-[calc(100%_+_2px)] gap-1.5 text-sm rounded-base text-base-content/40 relative -z-10">
+    <div class="flex items-center border border-base-100 py-3 px-4 -mt-px -mx-px w-[calc(100%_+_2px)] gap-1.5 text-sm rounded-base text-base-content/40 relative z-10">
       @svg('solar:reply-bold', { class: 'w-8 rotate-180' })
-      Responding to {{ parent.author?.username }}
+      Responding to {{ parent.author?.username ?? 'anonymous' }}
     </div>
   @endif
 

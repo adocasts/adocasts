@@ -64,7 +64,7 @@
                 {{ record ? 'Updating' : 'Sharing' }} ...
               </span>
               <span x-show="!sending" class="flex gap-3 items-center">
-                @let(icon = replyingTo ? 'solar:chat-square-arrow-bold-duotone' : 'solar:chat-square-call-bold-duotone')
+                @let(icon = replyingTo ? 'solar:chat-square-arrow-outline' : 'solar:chat-round-line-outline')
                 @svg(icon, { class: 'w-5 h-5 -ml-1 -my-1' })
                 {{ record ? 'Update' : 'Share' }} Comment
               </span>

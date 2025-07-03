@@ -1,5 +1,5 @@
 @let(hasLiked = comment.userVotes.includes(auth.user?.id))
-@let(likeIcon = hasLiked ? 'solar:heart-angle-bold' : 'solar:heart-angle-line-duotone')
+@let(likeIcon = hasLiked ? 'solar:heart-angle-bold' : 'solar:heart-angle-outline')
 
 @can('CommentPolicy.vote')
 
@@ -20,7 +20,7 @@
   <div up-comment-like="{{ comment.id }}" class="btn btn-outline btn-sm" disabled="disabled">
     @svg(likeIcon, { class: 'w-4 h-4 -ml-1' })
     {{ comment.userVotes.length }}
-    
+
     @!frags.toaster()
   </div>
 

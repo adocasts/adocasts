@@ -7,9 +7,9 @@
   @tooltip({ text: enabled ? 'Autoplay: Enabled' : 'Autoplay: Disabled', class: 'tooltip-bottom' })
     <button {{ html.attrs({ type: 'submit', class: ['group/tog btn btn-toggle btn-square', { 'active': enabled }] }) }}>
       @if (enabled)
-        @svg('solar:stopwatch-play-line-duotone', { class: 'w-5 h-5' })
+        @svg('solar:stopwatch-play-outline', { class: 'w-5 h-5' })
       @else
-        @svg('solar:stopwatch-play-line-duotone', { class: 'w-5 h-5 text-base-content/60 group-hover/tog:text-base-content duration-200' })
+        @svg('solar:stopwatch-play-outline', { class: 'w-5 h-5 text-base-content/60 group-hover/tog:text-base-content duration-200' })
       @endif
     </button>
   @end

@@ -1,0 +1,11 @@
+<div class="mt-8 lg:mt-12 -mx-6" up-comments>
+  <div class="border-t border-base-100 pt-6 mb-6">
+    <h3 class="heading-3 !mb-0">
+      Join the Discussion
+      <span class="opacity-60 inline-block pl-1 text-sm font-normal">{{ lesson.comments.length }} comments</span>
+    </h3>
+  </div>
+
+  @!comment.form({ commentable: lesson, commentTypeId: CommentTypes.POST, class: 'mb-6' })
+  @!comment.list({ commentable: lesson, comments: lesson.comments })
+</div>

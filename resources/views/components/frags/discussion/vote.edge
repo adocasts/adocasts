@@ -1,5 +1,5 @@
 @let(hasLiked = discussion.userVotes.includes(auth.user?.id))
-@let(likeIcon = hasLiked ? 'solar:heart-angle-bold' : 'solar:heart-angle-line-duotone')
+@let(likeIcon = hasLiked ? 'solar:heart-angle-bold' : 'solar:heart-angle-outline')
 
 @can('DiscussionPolicy.vote')
 

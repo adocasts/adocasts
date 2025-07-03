@@ -96,17 +96,17 @@
 
           @if (!show)
             @tooltip({ text: `${commentCount.toLocaleString()} ${string.pluralize('Reply', commentCount)}`, position: 'bottom' })
-              <a href="#comments" class="badge badge-outline">
-                @svg('solar:chat-round-call-bold-duotone', { class: '-ml-1 -my-0.5 w-4 h-4' })
+              <div class="badge badge-outline text-base-content/60">
+                @svg('solar:chat-round-call-outline', { class: '-ml-1 -my-0.5 w-4 h-4' })
                 {{ commentCount.toLocaleString() }}
-              </a>
+              </div>
             @end
           @endif
 
           @if (!show)
             @tooltip({ text: `${viewCount.toLocaleString()} ${string.pluralize('Views', viewCount)}`, position: 'bottom' })
-              <div class="badge badge-outline">
-                @svg('solar:eye-bold-duotone', { class: '-ml-1 -my-0.5 w-4 h-4' })
+              <div class="badge badge-outline text-base-content/60">
+                @svg('solar:eye-outline', { class: '-ml-1 -my-0.5 w-4 h-4' })
                 {{ viewCount.toLocaleString() }}
               </div>
             @end

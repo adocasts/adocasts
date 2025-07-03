@@ -8,9 +8,9 @@
     @tooltip({ text: enabled ? 'Lesson Is Bookmarked' : 'Bookmark This Lesson?', class: 'tooltip-bottom' })
       <button {{ html.attrs({ type: 'submit', class: ['group/tog btn btn-toggle btn-square', { 'active': enabled }] }) }}>
         @if (enabled)
-          @svg('solar:bookmark-line-duotone', { class: 'w-5 h-5' })
+          @svg('solar:bookmark-outline', { class: 'w-5 h-5' })
         @else
-          @svg('solar:bookmark-line-duotone', { class: 'w-5 h-5 text-base-content/60 group-hover/tog:text-base-content duration-200' })
+          @svg('solar:bookmark-outline', { class: 'w-5 h-5 text-base-content/60 group-hover/tog:text-base-content duration-200' })
         @endif
       </button>
     @end
@@ -22,7 +22,7 @@
 
   @tooltip({ text: 'Bookmark This Lesson?', class: 'tooltip-bottom' })
     <a href="{{ route('auth.signup') }}" class="group/tog btn btn-outline btn-wide" up-layer="new" up-mode="modal" up-size="grow">
-      @svg('solar:bookmark-line-duotone', { class: 'w-5 h-5 text-base-content/60 group-hover/tog:text-base-content duration-200' })
+      @svg('solar:bookmark-outline', { class: 'w-5 h-5 text-base-content/60 group-hover/tog:text-base-content duration-200' })
 
       @!frags.toaster()
     </a>

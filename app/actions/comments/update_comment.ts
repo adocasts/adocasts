@@ -1,10 +1,10 @@
-import { commentUpdateValidator } from '#validators/comment'
 import BaseAction from '#actions/base_action'
-import User from '#models/user'
 import Comment from '#models/comment'
+import User from '#models/user'
+import { commentUpdateValidator } from '#validators/comment'
 import { HttpContext } from '@adonisjs/core/http'
-import { Infer } from '@vinejs/vine/types'
 import db from '@adonisjs/lucid/services/db'
+import { Infer } from '@vinejs/vine/types'
 import GetNewMentions from '../notifications/get_new_mentions.js'
 import SendMentionNotification from '../notifications/send_mention_notification.js'
 
@@ -12,7 +12,7 @@ export default class UpdateComment extends BaseAction<[User, Comment, string]> {
   validator = commentUpdateValidator
 
   async asController(
-    { response, params, bouncer, auth, session }: HttpContext,
+    { response, params, bouncer, auth, session, request }: HttpContext,
     { body }: Infer<typeof this.validator>
   ) {
     const comment = await Comment.findOrFail(params.id)
