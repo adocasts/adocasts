@@ -87,6 +87,10 @@ router.where('slug', router.matchers.slug())
 
 //* General
 router.get('/', [RenderHome]).as('home')
+router.on('/terms').render('pages/policies/terms').as('terms')
+router.on('/privacy').render('pages/policies/privacy').as('privacy')
+router.on('/cookies').render('pages/policies/cookies').as('cookies')
+router.on('/guidelines').render('pages/policies/guidelines').as('guidelines')
 router.get('/frags/*', [RenderFrag]).as('frag')
 
 //* Syndication
