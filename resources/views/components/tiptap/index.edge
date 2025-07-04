@@ -36,8 +36,8 @@
       </template>
     </div>
 
-    <div 
-      class="{{ html.classNames(['flex-1 relative', $props.wrapClass]) }}" 
+    <div
+      class="{{ html.classNames(['flex-1 relative', $props.wrapClass]) }}"
       :class="[{ 'focused': isFocused }]">
       @if ($slots.before)
         {{{ await $slots.before({ allows }) }}}
@@ -59,18 +59,18 @@
     @if ($slots.before)
       {{{ await $slots.before({ allows }) }}}
     @endif
-    
+
     <div class="{{ html.classNames(['prose', $props.class]) }}">
       <div class="tiptap ProseMirror hover:bg-base-100 duration-200">
         <div class="font-semibold text-lg">
-          <a href="{{ route('auth.signup') }}" class="link-grow no-underline" up-layer="new" up-mode="modal" up-size="grow">
+          <a href="{{ route('auth.signup') }}" class="link-grow no-underline" up-auth-modal>
             Share your thoughts!
           </a>
         </div>
         <div>Create a free account to join in on the discussion</div>
       </div>
     </div>
-    
+
     @if ($slots.after)
       {{{ await $slots.after({ allows }) }}}
     @endif

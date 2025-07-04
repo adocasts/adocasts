@@ -12,7 +12,7 @@ export default class UpdateComment extends BaseAction<[User, Comment, string]> {
   validator = commentUpdateValidator
 
   async asController(
-    { response, params, bouncer, auth, session, request }: HttpContext,
+    { response, params, bouncer, auth, session }: HttpContext,
     { body }: Infer<typeof this.validator>
   ) {
     const comment = await Comment.findOrFail(params.id)

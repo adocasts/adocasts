@@ -49,6 +49,10 @@ const VerifyEmail = () => import('#actions/users/verify_email')
 const RenderUserHistory = () => import('#actions/users/render_user_history')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const HandleStripeWebhook = () => import('#actions/plus/handle_stripe_webhook')
+const HandleStripeCheckoutSuccess = () => import('#actions/plus/handle_stripe_checkout_success')
+const RedirectStripeCheckout = () => import('#actions/plus/redirect_stripe_checkout')
+const RedirectStripePortal = () => import('#actions/plus/redirect_stripe_portal')
 const StoreProgress = () => import('#actions/progress/store_progress')
 const ToggleProgressCompletion = () => import('#actions/progress/toggle_progress_completion')
 const TogglePostAutoplay = () => import('#actions/posts/toggle_post_autoplay')
@@ -85,6 +89,13 @@ const RenderDiscussionsEdit = () => import('#actions/discussions/render_discussi
 router.where('id', router.matchers.number())
 router.where('slug', router.matchers.slug())
 
+//* Redirects
+router.on('/uses').redirectToPath('/credits')
+router.on('/attributions').redirect('/credits')
+router.on('/topics/adonisjs-5').redirectToPath('/topics/adonisjs')
+router.on('/topics/adonis-5').redirectToPath('/topics/adonisjs')
+router.on('/series/lets-learn-adonis-5').redirectToPath('/series/lets-learn-adonisjs-5')
+
 //* General
 router.get('/', [RenderHome]).as('home')
 router.on('/terms').render('pages/policies/terms').as('terms')
@@ -97,6 +108,12 @@ router.get('/frags/*', [RenderFrag]).as('frag')
 router.get('/rss', [RenderRssXml]).as('rss')
 router.get('/sitemap', [RenderSitemap]).as('sitemap')
 router.get('/sitemap.xml', [RenderSitemapXml]).as('sitemap.xml')
+
+//* Stripe
+router.post('/stripe/webhook', [HandleStripeWebhook])
+router.get('/stripe/subscription/success', [HandleStripeCheckoutSuccess]).as('stripe.success')
+router.post('/stripe/subscription/checkout/:slug', [RedirectStripeCheckout]).as('stripe.checkout').use(middleware.auth())
+router.post('/stripe/subscription/portal', [RedirectStripePortal]).as('stripe.portal').use(middleware.auth())
 
 //* Go
 router.get('/go/:entity/:entityId/:target/:targetId', [GoToNotification]).as('go.notification')

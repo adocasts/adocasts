@@ -19,6 +19,12 @@ up.layer.config.modal.size = 'grow'
 up.layer.config.modal.onOpened = () => document.body.classList.add('overflow-hidden')
 up.layer.config.modal.onDismissed = () => document.body.classList.remove('overflow-hidden')
 
+up.macro('[up-auth-modal]', function (link) {
+  link.setAttribute('up-layer', 'new')
+  link.setAttribute('up-mode', 'modal')
+  link.setAttribute('up-size', 'grow')
+})
+
 up.on('up:fragment:loaded', function (event) {
   const target = event.renderOptions.target
 
@@ -53,7 +59,7 @@ up.on('up:location:changed', function () {
 
 up.on('up:request:loaded', function (event) {
   const isNewLayer = event.origin?.getAttribute('up-layer') === 'new'
-  
+
   // sync body styles on every request
   if (!isNewLayer && event.response.text.includes('<body')) {
     const doc = new DOMParser().parseFromString(event.response.text, 'text/html')

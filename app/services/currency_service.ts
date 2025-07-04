@@ -2,7 +2,13 @@ import dinero, { Currency } from 'dinero.js'
 
 export default class CurrencyService {
   static format(amount: number, currencyCode: Currency | undefined = 'USD') {
-    return dinero({ amount, currency: currencyCode }).toFormat('$0,0.00')
+    const price = dinero({ amount, currency: currencyCode }).toFormat('$0,0.00')
+
+    if (price.endsWith('.00')) {
+      return price.replace('.00', '')
+    }
+
+    return price
   }
 
   static centsToDollars(

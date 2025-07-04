@@ -64,7 +64,7 @@
             Subscribe
           </button>
         @else
-          <a href="{{ route('auth.signup') }}" class="btn btn-outline btn-sm" up-layer="new" up-mode="modal" up-size="grow">
+          <a href="{{ route('auth.signup') }}" class="btn btn-outline btn-sm" up-auth-modal>
             @svg('solar:bell-linear', { class: 'w-4 h-4' })
             Subscribe
           </a>
@@ -83,7 +83,7 @@
             Reply
           </button>
         @else
-          <a href="{{ route('auth.signup') }}" class="btn btn-outline btn-primary btn-sm" up-layer="new" up-mode="modal" up-size="grow">
+          <a href="{{ route('auth.signup') }}" class="btn btn-outline btn-primary btn-sm" up-auth-modal>
             @svg('solar:reply-bold', { class: 'w-4 h-4' })
             Reply
           </a>

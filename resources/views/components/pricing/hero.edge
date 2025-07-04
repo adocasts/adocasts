@@ -2,6 +2,12 @@
   <h2 class="heading-2">
     Launch Into Adocasts Plus
   </h2>
+
+  <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
+    Get access to all the tools, tips, and real-world knowledge to build with confidence.
+    Just choose the plan that fits you best.
+  </p>
+
   <div class="mt-8">
     <ul class="mt-3 columns-4 space-y-3">
       @!pricing.feature({ text: 'Unlock all series, lessons, and assets' })
@@ -19,9 +25,26 @@
   </div>
   <div class="container mx-auto relative">
     <div class="grid grid-cols-1 gap-10 lg:grid-cols-3">
-      @!pricing.card()
-      @!pricing.card()
-      @!pricing.card()
+      @!pricing.card({
+        name: 'Monthly',
+        plan: await PlanService.get(Plans.PLUS_MONTHLY),
+        description: 'Just getting started? Try Adocasts Plus on a month-by-month basis and unlock everything instantly with no strings attached.',
+        cta: 'Start Monthly',
+      })
+
+      @!pricing.card({
+        name: 'Annual',
+        plan: await PlanService.get(Plans.PLUS_ANNUAL),
+        description: 'Ready to level up your Node game? Go annual and save big while accessing all premium content, all year long.',
+        cta: 'Go Annual',
+      })
+
+      @!pricing.card({
+        name: 'Forever',
+        plan: await PlanService.get(Plans.FOREVER),
+        description: 'All-in forever? One-time payment, lifetime access. Everything we make, now and in the future, is yours.',
+        cta: 'Unlock Forever',
+      })
     </div>
   </div>
   <div>
