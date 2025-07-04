@@ -98,6 +98,7 @@ router.on('/series/lets-learn-adonis-5').redirectToPath('/series/lets-learn-adon
 
 //* General
 router.get('/', [RenderHome]).as('home')
+router.on('/pricing').render('pages/pricing').as('pricing')
 router.on('/terms').render('pages/policies/terms').as('terms')
 router.on('/privacy').render('pages/policies/privacy').as('privacy')
 router.on('/cookies').render('pages/policies/cookies').as('cookies')

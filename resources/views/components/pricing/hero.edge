@@ -1,7 +1,11 @@
-<div class="container mx-auto max-lg:text-center">
-  <h2 class="heading-2">
+@let(container = $props.container ?? 'container mx-auto')
+@let(containerCards = $props.containerCards ?? container)
+@let(cardAccent = $props.cardAccent)
+
+<div {{ html.attrs({ class: ['max-lg:text-center', container] }) }}>
+  <h1 class="heading-2">
     Launch Into Adocasts Plus
-  </h2>
+  </h1>
 
   <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
     Get access to all the tools, tips, and real-world knowledge to build with confidence.
@@ -9,24 +13,28 @@
   </p>
 
   <div class="mt-8">
-    <ul class="mt-3 columns-4 space-y-3">
-      @!pricing.feature({ text: 'Unlock all series, lessons, and assets' })
-      @!pricing.feature({ text: '2 weeks early access to new, free, lessons' })
-      @!pricing.feature({ text: 'Download lessons to watch offline anytime' })
-      @!pricing.feature({ text: 'Access to series source code' })
-      @!pricing.feature({ text: 'Shared discussions across Adocasts' })
-      @!pricing.feature({ text: 'Renewal reminders; cancel anytime' })
+    <ul class="mt-3 columns-3 max-w-[1000px] space-y-3">
+      @!pricing.feature.line({ icon: 'solar:lock-password-unlocked-outline', text: 'Unlock all series, lessons, and assets' })
+      @!pricing.feature.line({ icon: 'solar:clock-circle-outline', text: '2 weeks early access to new free lessons' })
+      @!pricing.feature.line({ icon: 'solar:download-minimalistic-outline', text: 'Download lessons to watch offline anytime' })
+      @!pricing.feature.line({ icon: 'solar:code-outline', text: 'Access to series source code' })
+      @!pricing.feature.line({ icon: 'solar:help-outline', text: 'Priority lesson support' })
+      @!pricing.feature.line({ icon: 'solar:power-outline', text: 'Renewal reminders; cancel anytime' })
     </ul>
   </div>
 </div>
 <div class="relative pt-12 sm:pt-16">
-  <div class="absolute inset-x-0 bottom-0 top-48 bg-radial-[at_50%_150%] from-secondary/50 to-secondary/0">
-    <div class="w-full h-full bg-gradient-to-b from-base-300 via-base-300/0 to-base-300/0"></div>
-  </div>
-  <div class="container mx-auto relative">
+  @if (testimonials)
+    <div class="absolute inset-x-0 bottom-0 top-48 bg-radial-[at_50%_150%] from-secondary/50 to-secondary/0">
+      <div class="w-full h-full bg-gradient-to-b from-base-300 via-base-300/0 to-base-300/0"></div>
+    </div>
+  @endif
+
+  <div {{ html.attrs({ class: ['relative', containerCards] }) }}>
     <div class="grid grid-cols-1 gap-10 lg:grid-cols-3">
       @!pricing.card({
         name: 'Monthly',
+        accent: cardAccent,
         plan: await PlanService.get(Plans.PLUS_MONTHLY),
         description: 'Just getting started? Try Adocasts Plus on a month-by-month basis and unlock everything instantly with no strings attached.',
         cta: 'Start Monthly',
@@ -34,6 +42,7 @@
 
       @!pricing.card({
         name: 'Annual',
+        accent: cardAccent,
         plan: await PlanService.get(Plans.PLUS_ANNUAL),
         description: 'Ready to level up your Node game? Go annual and save big while accessing all premium content, all year long.',
         cta: 'Go Annual',
@@ -41,13 +50,15 @@
 
       @!pricing.card({
         name: 'Forever',
+        accent: cardAccent,
         plan: await PlanService.get(Plans.FOREVER),
         description: 'All-in forever? One-time payment, lifetime access. Everything we make, now and in the future, is yours.',
         cta: 'Unlock Forever',
       })
     </div>
   </div>
-  <div>
+
+  @if (testimonials)
     <div
       x-data
       x-init="
@@ -73,5 +84,5 @@
         </div>
       </div>
     </div>
-  </div>
+  @endif
 </div>

@@ -287,7 +287,8 @@
   }
 }
 
-.border-base-gradient {
+.border-base-gradient-to-b,
+.border-base-gradient-to-t {
   background-clip: padding-box;
   border: solid 1px transparent;
 
@@ -297,8 +298,12 @@
     inset: 0;
     border-radius: 15px;
     border: 1px solid transparent;
-    background: linear-gradient(to bottom, var(--color-base-100), color-mix(in oklab, var(--color-base-content), transparent 75%)) border-box;
+    background: linear-gradient(var(--bg-direction, to bottom), var(--color-base-100), color-mix(in oklab, var(--color-base-content), transparent 75%)) border-box;
     mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
     mask-composite: exclude;
   }
+}
+
+.border-base-gradient-to-t {
+  --bg-direction: to top;
 }

@@ -43,7 +43,7 @@
           </div>
         </div>
 
-        <div class="flex-1 card -m-2 ring-1 ring-black/5 border-base-gradient max-lg:mx-auto grid grid-cols-1 max-lg:w-full max-lg:max-w-md">
+        <div class="flex-1 card -m-2 ring-1 ring-black/5 border-base-gradient-to-b max-lg:mx-auto grid grid-cols-1 max-lg:w-full max-lg:max-w-md">
           <div class="grid grid-cols-1 rounded-base p-3 shadow-md shadow-black/5">
             <div class="rounded-[calc(var(--radius-box)_-_.5rem)] backdrop-blur-md p-8 shadow-2xl ring-1 ring-black/5">
               <div class="aspect-video">
@@ -143,7 +143,7 @@
   </section>
 
   <section class="pt-24 mx-auto relative z-[1]">
-    @!pricing.hero()
+    @!pricing.hero({ testimonials: true })
   </section>
 
 @end

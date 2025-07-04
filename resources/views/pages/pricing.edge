@@ -1,0 +1,147 @@
+@layout()
+  <section class="-mt-16 section-y !pt-28 mx-auto relative">
+    <div class="absolute inset-x-0 bottom-0 top-0 bg-radial-[at_50%_-50%] from-secondary/50 to-secondary/0 z-1">
+      <div id="hero" x-data="stars" class="absolute w-full h-full z-[999] pointer-events-none">
+        <div class="absolute w-full h-full z-50 bg-radial-[at_50%_-50%] from-secondary/0 to-base-300"></div>
+        <div class="absolute w-full h-full bg-gradient-to-t from-base-300 via-base-300/0 to-base-300/0"></div>
+      </div>
+      <div class="w-full h-full bg-gradient-to-t from-base-300 via-base-300/0 to-base-300/0"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+      @!pricing.hero({
+        container: '',
+        containerCards: '2xl:-mx-10',
+        cardAccent: 'border-base-gradient-to-t'
+      })
+    </div>
+  </section>
+
+  <section class="max-w-7xl section-y mx-auto overflow-hidden">
+    <div class="max-w-2xl">
+      <h2 class="text-base/7 font-semibold text-primary">Features &amp; Perks</h2>
+      <p class="heading-2">Unlock Everything!</p>
+      <p class="mb-12 text-pretty text-lg/8 text-base-content/60">
+        Ready to get the most out of your learning?
+        Adocasts Plus opens the door to everything we create and lets you dive deeper, earlier, and with fewer limits.
+        If you've been enjoying the free content, you'll ove what's waiting for you inside!
+      </p>
+    </div>
+    <div class="mx-auto lg:max-w-none">
+      <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
+        @!pricing.feature.block({
+          icon: 'solar:lock-password-unlocked-outline',
+          title: 'Unlock all content',
+          description: 'With full access to the Adocasts library, every series and lesson is open to you so you can learn what you want, when you want.'
+        })
+
+        @!pricing.feature.block({
+          icon: 'solar:clock-circle-outline',
+          title: 'Early access to new free lessons',
+          description: 'When new free lessons drop, Adocasts Plus subscribers get first access for 14 days before anyone else.'
+        })
+
+        @!pricing.feature.block({
+          icon: 'solar:download-minimalistic-outline',
+          title: 'Download lessons',
+          description: "Download any video lessons that aren't hosted on YouTube and watch it on your device whenever it's convenient, even when you're offline."
+        })
+
+        @!pricing.feature.block({
+          icon: 'solar:code-outline',
+          title: 'Access source code',
+          description: "Get access to our private GitHub organization where you'll find the complete source code for every series we publish."
+        })
+
+        @!pricing.feature.block({
+          icon: 'solar:help-outline',
+          title: 'Priority support',
+          description: 'Jump straight to the front of the line for support so your questions get answered faster and you can keep learning without waiting.'
+        })
+
+        @!pricing.feature.block({
+          icon: 'solar:power-outline',
+          title: 'Cancel anytime',
+          description: "We'll send you a reminder a week before your subscription renews, and if you ever need to cancel, it only takes a few clicks."
+        })
+      </dl>
+    </div>
+  </section>
+
+  <section class="max-w-7xl mx-auto section-y">
+    <h2 class="heading-2">Frequently Asked Questions</h2>
+
+    <p class="mb-12 max-w-2xl text-pretty text-lg/8 text-base-content/60">
+      Got questions? We'vep ut together answers to the most common ones to help you get the info you need quickly.
+      If you don't see what you're looking for, <a class="link" href="/contact">just reach out!</a>
+    </p>
+
+    <dl class="mt-20 divide-y divide-base-100/50">
+      @faq.item({ title: 'What do I get with Adocasts Plus?' })
+        <p class="text-base/7 text-base-content/60">
+          The complete breakdown of Adocasts Plus benefits are listed just above.
+          The main benefit, however, is that it gives you full access to all content offered on the Adocasts website.
+          This includes all series, lessons, and other materials.
+        </p>
+      @end
+
+      @faq.item({ title: 'What do I get with the free tier?' })
+        <p class="text-base/7 text-base-content/60">
+          A free Adocasts account, without the plus, still comes with some pretty nifty features.
+          Apart from access to our free series and lessons, you'll get access to things like progression tracking, watch history, and you can participate in comments and our forum discussions.
+        </p>
+      @end
+
+      @faq.item({ title: 'Can I cancel my subscription anytime?' })
+        <p class="text-base/7 text-base-content/60 mb-3">
+          Yes! Unless you’re on our Forever Plan, you can easily cancel your subscription anytime through your billing settings.
+          After canceling, you’ll still have full access to Adocasts Plus until the end of your current billing period.
+          Once that period ends, your subscription will not renew and you won’t be charged again.
+        </p>
+
+        <p class="text-base/7 text-base-content/60">
+          The Forever Plan is a one-time purchase and is not a recurring subscription.
+        </p>
+      @end
+
+      @faq.item({ title: 'Can I change plans anytime?' })
+        <p class="text-base/7 text-base-content/60">
+          Yes! Unless you’re on our Forever Plan, you can switch anytime between monthly, annual, or even upgrade to the Forever Plan by visiting your billing settings.
+          If you’re already on the Forever Plan, then you’re all set!
+        </p>
+      @end
+
+      @faq.item({ title: "Can I get a refund if I’m not satisfied?" })
+        <p class="text-base/7 text-base-content/60">
+          Absolutely! If you’re not completely satisfied, just reach out within 14 days and we’ll gladly provide a full refund — no questions asked.
+        </p>
+      @end
+
+      @faq.item({ title: 'What if I need help or support?' })
+        <p class="text-base/7 text-base-content/60 mb-3">
+          Have a question about a specific lesson? Leave a comment with your question on that lesson's page.
+          For general help, feel free to <a class="link" href="{{ route('discussions.create') }}">start a chat in our forum</a>.
+          Need help with your account, subscription, or something personal? Reach out through our <a class="link" href="/contact">contact page</a> and we’ll get back to you as soon as we can.
+        </p>
+        <p class="text-base/7 text-base-content/60">
+          Plus, if you’re a subscriber, you get priority support which means your requests jump to the front of the line.
+        </p>
+      @end
+
+      @faq.item({ title: 'Do you offer student or other discounts?' })
+        <p class="text-base/7 text-base-content/60 mb-3">
+          We want learning AdonisJs to be affordable for everyone.
+          If our base plan price of $8 per month feels too high for you because of financial reasons or unfair
+          currency conversion rates please <a class="link" href="/contact">contact us</a>.
+          We're happy to work with you to find a solution that fits your budget.
+        </p>
+
+        <p class="text-base/7 text-base-content/60">
+          If you’re visiting from a country with an unfair currency conversion rate,
+          you might automatically see a banner at the top of this page offering a Purchase Power Parity (PPP) discount.
+          Feel free to use the coupon code provided in that banner.
+        </p>
+      @end
+    </dl>
+  </section>
+@end
