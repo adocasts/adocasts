@@ -18,7 +18,7 @@
         class="tab {{ html.classNames([{ 'bg-primary/10 !border !border-primary/50 !text-primary-content': tab === 'series' }]) }}"
         href="{{ route('users.history', { tab: 'series' }) }}"
         up-scroll="preserve">
-        @svg('solar:pulse-bold-duotone', { class: 'w-4 h-4 mr-2', })
+        @svg('solar:playlist-outline', { class: 'w-4 h-4 mr-2', })
         Series
       </a>
 
@@ -27,7 +27,7 @@
         class="tab {{ html.classNames([{ 'bg-primary/10 !border !border-primary/50 !text-primary-content': tab === 'lessons' }]) }}"
         href="{{ route('users.history', { tab: 'lessons' })}}"
         up-scroll="preserve">
-        @svg('solar:chat-line-bold-duotone', { class: 'w-4 h-4 mr-2' })
+        @svg('solar:video-library-outline', { class: 'w-4 h-4 mr-2' })
         Lessons
       </a>
     </div>
