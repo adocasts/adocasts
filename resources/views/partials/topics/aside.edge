@@ -1,0 +1,35 @@
+<aside class="@container hidden lg:block w-[350px] section-vars mt-[calc(var(--padding-y)_+_28px_+_.75rem)] sticky top-20">
+  <div x-show="!isHeaderVisible" x-transition x-cloak class="relative z-10 rounded-base mt-6 mb-3">
+    <div class="flex items-center gap-6 mb-6">
+      <div class="w-20 relative">
+        <img src="/imgs/adonisjs.jpeg" class="rounded-xl relative z-10" alt="{{ topic.asset.altText ?? topic.name }}">
+      </div>
+
+      <div>
+        <h2 class="heading-3 !mb-1">
+          {{ topic.name }}
+        </h2>
+
+        <div class="flex flex-col">
+          <div class="opacity-60 text-sm flex items-center gap-1.5">
+            @svg('solar:playlist-outline', { class: '-ml-1 -my-0.5' })
+            {{ topic.meta.collections_count }} Series
+          </div>
+
+          <div class="opacity-60 text-sm flex items-center gap-1.5">
+            @svg('solar:video-library-outline', { class: '-ml-1 -my-0.5' })
+            {{ topic.meta.posts_count }} Lessons
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @if (topic.description)
+      <p class="max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-sm/5">
+        {{ topic.description }}
+      </p>
+    @endif
+  </div>
+
+  @include('partials/topics/nav')
+</aside>

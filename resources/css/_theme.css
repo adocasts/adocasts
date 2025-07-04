@@ -101,7 +101,8 @@ body[data-theme='adocasts-light'] {
 }
 
 .input,
-.select {
+.select,
+.textarea {
   background-color: transparent;
   border-color: var(--color-base-100);
 

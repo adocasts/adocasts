@@ -6,7 +6,7 @@
     @slot('actions')
     @endslot
 
-    
+
     @form({ action, class: 'container mx-auto' })
       <h1 class="heading-3">
         @if (isEditing)
@@ -15,8 +15,6 @@
           Start a new discusssion
         @endif
       </h1>
-
-      {{ inspect(flashMessages.all()) }}
 
       @form.field({ label: 'Topic', name: 'topic' })
         @form.select({ name: 'taxonomyId', selected: discussion?.taxonomyId || '' })
@@ -36,12 +34,12 @@
       @end
 
       <div class="flex gap-3 mt-12">
-        <button type="submit" class="btn btn-primary">
-          @svg('solar:chat-round-line-bold-duotone', { class: 'w-4 h-4' })
+        <button type="submit" class="btn btn-outline btn-primary">
+          @svg('solar:chat-round-line-outline', { class: 'w-4 h-4' })
           {{ isEditing ? 'Update' : 'Start' }} Discussion
         </button>
 
-        <a href="{{ route('discussions.index') }}" class="btn btn-soft" up-back>
+        <a href="{{ route('discussions.index') }}" class="btn btn-outline" up-back>
           Cancel
         </a>
       </div>
