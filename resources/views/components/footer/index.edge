@@ -1,7 +1,7 @@
 <footer class="border-t border-base-100 text-base-content py-10">
   <div class="footer sm:footer-horizontal max-w-[1000px] container mx-auto">
     <nav>
-      <h6 class="footer-title">Content</h6>
+      <h6 class="footer-title">Explore</h6>
       <a href="{{ route('series.index') }}" class="link link-hover">Series</a>
       <a href="{{ route('topics.index') }}" class="link link-hover">Topics</a>
       <a href="{{ route('lessons.index') }}" class="link link-hover">Lessons</a>
@@ -9,16 +9,17 @@
       <a href="{{ route('discussions.index') }}" class="link link-hover">Forum</a>
     </nav>
     <nav>
-      <h6 class="footer-title">Info</h6>
+      <h6 class="footer-title">Resources</h6>
       <a class="link link-hover">Schedule</a>
-      <a class="link link-hover">Blog</a>
-      <a class="link link-hover">News</a>
+      <a href="{{ route('blogs.index') }}" class="link link-hover">Blog &amp; News</a>
       <a class="link link-hover">Contact</a>
     </nav>
     <nav>
-      <h6 class="footer-title">Plus</h6>
-      <a class="link link-hover">Pricing</a>
-      <a class="link link-hover">Testimonials</a>
+      <h6 class="footer-title">Adocasts Plus</h6>
+      <a href="{{ route('pricing') }}" class="link link-hover">Pricing</a>
+      <a href="{{ route('pricing') }}#testimonials" class="link link-hover">Testimonials</a>
+      <a href="{{ route('pricing') }}#features" class="link link-hover">Features &amp; Perks</a>
+      <a href="{{ route('pricing') }}#faqs" class="link link-hover">FAQs</a>
     </nav>
     <nav>
       <h6 class="footer-title">Legal</h6>

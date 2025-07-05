@@ -1,5 +1,5 @@
 @layout()
-  <section class="-mt-16 section-y !pt-28 mx-auto relative">
+  <div class="-mt-16 pt-28 relative">
     <div class="absolute inset-x-0 bottom-0 top-0 bg-radial-[at_50%_-50%] from-secondary/50 to-secondary/0 z-1">
       <div id="hero" x-data="stars" class="absolute w-full h-full z-[999] pointer-events-none">
         <div class="absolute w-full h-full z-50 bg-radial-[at_50%_-50%] from-secondary/0 to-base-300"></div>
@@ -8,19 +8,118 @@
       <div class="w-full h-full bg-gradient-to-t from-base-300 via-base-300/0 to-base-300/0"></div>
     </div>
 
-    <div class="max-w-7xl mx-auto relative z-10">
-      @!pricing.hero({
-        container: '',
-        containerCards: '2xl:-mx-10',
-        cardAccent: 'border-base-gradient-to-t'
-      })
-    </div>
-  </section>
+    <section class="section-y mx-auto">
+      <div class="max-w-7xl px-6 lg:px-8 2xl:px-10 mx-auto relative z-10">
+        @!pricing.hero({
+          container: '',
+          containerCards: '2xl:-mx-10',
+          cardAccent: 'border-base-gradient-to-t'
+        })
+      </div>
+    </section>
 
-  <section class="max-w-7xl section-y mx-auto overflow-hidden">
+    <div class="relative isolate section-y z-1">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8 2xl:px-10">
+        <div class="max-w-2xl">
+          <h2 class="text-base/7 font-semibold text-primary">Testimonials</h2>
+          <p class="heading-2">These stories are why we do this</p>
+          <p class="mb-12 text-pretty text-lg/8 text-base-content/60">
+            We're proud to support amazing people doing incredible things.
+            Here's a look at some of their journeys and how we've been lucky enough to play a small part.
+          </p>
+        </div>
+        <div class="mx-auto mt-6 grid max-w-2xl grid-cols-1 grid-rows-1 gap-8 text-sm/6 text-base-content sm:mt-12 sm:grid-cols-2 xl:mx-0 xl:max-w-none xl:grid-flow-col xl:grid-cols-4">
+          <figure class="rounded-2xl backdrop-blur-sm border border-base-100/50 shadow-lg ring-1 ring-base-content/5 sm:col-span-2 xl:row-end-1">
+            <blockquote class="p-6 text-lg font-semibold tracking-tight text-base-content sm:p-12 sm:text-xl/8">
+              <p>“Integer id nunc sit semper purus. Bibendum at lacus ut arcu blandit montes vitae auctor libero. Hac condimentum dignissim nibh vulputate ut nunc. Amet nibh orci mi venenatis blandit vel et proin. Non hendrerit in vel ac diam.”</p>
+            </blockquote>
+            <figcaption class="flex flex-wrap items-center gap-x-4 gap-y-4 border-t border-base-100/50 px-6 py-4 sm:flex-nowrap">
+              <img class="size-10 flex-none rounded-full bg-base-300" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=1024&h=1024&q=80" alt="" />
+              <div class="flex-auto">
+                <div class="font-semibold">Brenna Goyette</div>
+                <div class="text-base-content/60">@brennagoyette</div>
+              </div>
+              <img class="h-10 w-auto flex-none" src="https://tailwindcss.com/plus-assets/img/logos/savvycal-logo-gray-900.svg" alt="" />
+            </figcaption>
+          </figure>
+          <div class="space-y-8 xl:contents xl:space-y-0">
+            <div class="space-y-8 xl:col-start-3 xl:row-span-2">
+              <figure class="rounded-2xl backdrop-blur-sm border border-base-100/50 p-6 shadow-lg ring-1 ring-base-content/5">
+                <blockquote class="text-base-content">
+                  <p>“Laborum quis quam. Dolorum et ut quod quia. Voluptas numquam delectus nihil. Aut enim doloremque et ipsam.”</p>
+                </blockquote>
+                <figcaption class="mt-6 flex items-center gap-x-4">
+                  <img class="size-10 rounded-full bg-base-300" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+                  <div>
+                    <div class="font-semibold">Leslie Alexander</div>
+                    <div class="text-base-content/60">@lesliealexander</div>
+                  </div>
+                </figcaption>
+              </figure>
+
+              <!-- More testimonials... -->
+            </div>
+            <div class="space-y-8 xl:row-start-1">
+              <figure class="rounded-2xl backdrop-blur-sm border border-base-100/50 p-6 shadow-lg ring-1 ring-base-content/5">
+                <blockquote class="text-base-content">
+                  <p>“Aut reprehenderit voluptatem eum asperiores beatae id. Iure molestiae ipsam ut officia rem nulla blanditiis.”</p>
+                </blockquote>
+                <figcaption class="mt-6 flex items-center gap-x-4">
+                  <img class="size-10 rounded-full bg-base-300" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+                  <div>
+                    <div class="font-semibold">Lindsay Walton</div>
+                    <div class="text-base-content/60">@lindsaywalton</div>
+                  </div>
+                </figcaption>
+              </figure>
+
+              <!-- More testimonials... -->
+            </div>
+          </div>
+          <div class="space-y-8 xl:contents xl:space-y-0">
+            <div class="space-y-8 xl:row-start-1">
+              <figure class="rounded-2xl backdrop-blur-sm border border-base-100/50 p-6 shadow-lg ring-1 ring-base-content/5">
+                <blockquote class="text-base-content">
+                  <p>“Voluptas quos itaque ipsam in voluptatem est. Iste eos blanditiis repudiandae. Earum deserunt enim molestiae ipsum perferendis recusandae saepe corrupti.”</p>
+                </blockquote>
+                <figcaption class="mt-6 flex items-center gap-x-4">
+                  <img class="size-10 rounded-full bg-base-300" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+                  <div>
+                    <div class="font-semibold">Tom Cook</div>
+                    <div class="text-base-content/60">@tomcook</div>
+                  </div>
+                </figcaption>
+              </figure>
+
+              <!-- More testimonials... -->
+            </div>
+            <div class="space-y-8 xl:row-span-2">
+              <figure class="rounded-2xl backdrop-blur-sm border border-base-100/50 p-6 shadow-lg ring-1 ring-base-content/5">
+                <blockquote class="text-base-content">
+                  <p>“Molestias ea earum quos nostrum doloremque sed. Quaerat quasi aut velit incidunt excepturi rerum voluptatem minus harum.”</p>
+                </blockquote>
+                <figcaption class="mt-6 flex items-center gap-x-4">
+                  <img class="size-10 rounded-full bg-base-300" src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+                  <div>
+                    <div class="font-semibold">Leonard Krasner</div>
+                    <div class="text-base-content/60">@leonardkrasner</div>
+                  </div>
+                </figcaption>
+              </figure>
+
+              <!-- More testimonials... -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <section id="features" class="max-w-7xl px-6 lg:px-8 2xl:px-10 section-y mx-auto overflow-hidden">
     <div class="max-w-2xl">
       <h2 class="text-base/7 font-semibold text-primary">Features &amp; Perks</h2>
-      <p class="heading-2">Unlock Everything!</p>
+      <p class="heading-2">Unlock everything!</p>
       <p class="mb-12 text-pretty text-lg/8 text-base-content/60">
         Ready to get the most out of your learning?
         Adocasts Plus opens the door to everything we create and lets you dive deeper, earlier, and with fewer limits.
@@ -68,8 +167,9 @@
     </div>
   </section>
 
-  <section class="max-w-7xl mx-auto section-y">
-    <h2 class="heading-2">Frequently Asked Questions</h2>
+  <section id="faqs" class="max-w-7xl px-6 lg:px-8 2xl:px-10 mx-auto section-y">
+    <h2 class="text-base/7 font-semibold text-primary">Freqently Asked Questions</h2>
+    <p class="heading-2">Common questions, straight answers</p>
 
     <p class="mb-12 max-w-2xl text-pretty text-lg/8 text-base-content/60">
       Got questions? We'vep ut together answers to the most common ones to help you get the info you need quickly.
