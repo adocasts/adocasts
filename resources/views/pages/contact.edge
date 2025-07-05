@@ -1,0 +1,82 @@
+@layout()
+  <section class="max-w-2xl section-y mx-auto">
+    <h1 class="heading-2">Reach out anytime</h1>
+    <p class="mb-8 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
+      Whether you've got a question, ran into an issue, or just want to connect, we'd love to hear from you. 
+      Use the form here or find us on your favorite social platform.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:flex gap-6 items-center text-sm mb-12">
+      <div class="flex flex-col gap-1">
+        <span class="font-medium">Location</span>
+        <div class="flex items-center gap-1.5 text-base-content/60">
+          @svg('solar:map-point-outline', { class: 'size-4' })
+          <span>Burlington, KY</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <span class="font-medium">Timezone</span>
+        <div class="flex items-center gap-1.5 text-base-content/60">
+          @svg('solar:clock-circle-outline', { class: 'size-4' })
+          <span>EST ({{ DateTime.now().setZone('America/New_York').toFormat('h:mm a') }})</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <span class="font-medium">Email</span>
+        <a href="mailto:contact@adocasts.com" class="flex items-center gap-1.5 text-base-content/60">
+          @svg('solar:mention-circle-outline', { class: 'size-4' })
+          <span>contact@adocasts.com</span>
+        </a>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <span class="font-medium">Social media</span>
+        <div class="flex items-center gap-1.5 text-base-content/60">
+          <a href="https://github.com/adocasts">
+            @svg('simple-icons:github', { class: 'size-4' })
+          </a>
+          <a href="https://bsky.app/profile/adocasts.com">
+            @svg('simple-icons:bluesky', { class: 'size-4' })
+          </a>
+          <a href="https://twitter.com/adocasts">
+            @svg('simple-icons:twitter', { class: 'size-4' })
+          </a>
+          <a href="https://fosstodon.org/@adocasts">
+            @svg('simple-icons:mastodon', { class: 'size-4' })
+          </a>
+        </div>
+      </div>
+    </div>
+
+    @form({ action: form.post('contact.send'), class: 'w-full', 'up-disable': 'true' })
+      @form.field({ label: 'Name', name: 'name' })
+        @!form.input({ required: true, class: 'w-full' })
+      @end
+
+      @form.field({ label: 'Email', name: 'email' })
+        @!form.input({ type: 'email', required: true, class: 'w-full' })
+      @end
+
+      @form.field({ label: 'Subject', name: 'subject' })
+        @!form.input({ required: true, class: 'w-full' })
+      @end
+
+      @form.field({ label: 'Message', name: 'body' })
+        @!form.textarea({ rows: 6, required: true, class: 'w-full' })
+
+        @slot('after')
+          <p class="text-xs text-base-content/60 mt-1.5">
+            We'll send a copy of your message to your inbox for your records.
+          </p>
+        @endslot
+      @end
+
+      <button type="submit" class="btn btn-outline btn-primary btn-wide mt-6">
+        @svg('solar:letter-outline', { class: 'size-5 mr-1' })
+        Send Message
+      </button>
+    @end
+  </section>
+@end

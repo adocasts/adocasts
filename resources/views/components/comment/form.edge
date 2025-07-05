@@ -8,7 +8,7 @@
 @let(ability = 'CommentPolicy.store')
 @let(action = record ? route('comments.update', { id: record.id }, { qs: { _method: 'PUT' } }) : route('comments.store'))
 
-@form({ action, loadable: true, class: $props.class, 'up-scroll': 'preserve' })
+@form({ action, loadable: true, class: $props.class, 'up-disable': 'true', 'up-scroll': 'preserve' })
 
   <input type="hidden" name="levelIndex" value="{{ levelIndex }}">
 

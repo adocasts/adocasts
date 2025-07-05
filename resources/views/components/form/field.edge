@@ -39,4 +39,8 @@
       </div>
     @end
   </div>
+
+  @if ($slots.after)
+    {{{ await $slots.after() }}}
+  @endif
 </{{ el }}>
