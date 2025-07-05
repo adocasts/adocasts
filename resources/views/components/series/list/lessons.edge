@@ -20,20 +20,29 @@
             'bg-primary/25 group-hover/modles:bg-primary': !isCompleted && id === {{ lesson.id }},
             'bg-base-100 group-hover/modles:bg-primary': !isCompleted && id !== {{ lesson.id }}
           }">
-            <template x-if="isCompleted">
-              <span>
-                @svg('solar:check-read-outline', { class: 'w-4 h-4' })
-              </span>
-            </template>
-            <template x-if="!isCompleted">
-              <span>
-                @if (module)
-                  {{ module.moduleNumber }}.{{ item.sortOrder }}
-                @else
-                  {{ item.rootSortOrder }}
-                @endif
-              </span>
-            </template>
+            @cannot('PostPolicy.view', item)
+              @let(icon = item.paywallTypeId === PaywallTypes.DELAYED_RELEASE ? 'solar:clock-circle-outline' :
+              'solar:lock-keyhole-minimalistic-outline')
+              
+              <div class="text-base-content/40">
+                @svg(icon, { class: 'size-4' })
+              </div>
+            @else
+              <template x-if="isCompleted">
+                <span>
+                  @svg('solar:check-read-outline', { class: 'size-4' })
+                </span>
+              </template>
+              <template x-if="!isCompleted">
+                <span>
+                  @if (module)
+                    {{ module.moduleNumber }}.{{ item.sortOrder }}
+                  @else
+                    {{ item.rootSortOrder }}
+                  @endif
+                </span>
+              </template>
+            @end
           </div>
         </div>
 

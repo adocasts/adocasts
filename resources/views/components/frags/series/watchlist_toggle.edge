@@ -1,3 +1,5 @@
+@let(size = $props.size ?? 'size-5')
+
 @if (auth.user)
 
   @form({
@@ -7,10 +9,10 @@
 
     <button {{ html.attrs({ type: 'submit', class: ['btn btn-outline', { 'btn-success': series.meta.isInWatchlist }] }) }}>
       @if (series.meta.isInWatchlist)
-        @svg('solar:bookmark-bold')
+        @svg('solar:bookmark-outline', { class: `${size} mr-1` })
         In Your Watchist
       @else
-        @svg('solar:bookmark-bold')
+        @svg('solar:bookmark-outline', { class: `${size} mr-1 text-base-content/60 group-hover/tog:text-base-content duration-200` })
         Add to Watchist
       @endif
     </button>
@@ -21,7 +23,7 @@
 @else
 
   <a href="{{ route('auth.signup') }}" class="btn btn-outline btn-wide" up-auth-modal>
-    @svg('solar:bookmark-bold')
+    @svg('solar:bookmark-outline', { class: `${size} mr-1 text-base-content/60 group-hover/tog:text-base-content duration-200` })
     Add to Watchist
 
     @!frags.toaster()

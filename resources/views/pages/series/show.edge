@@ -10,12 +10,12 @@
             @!difficulty({ item: series })
 
             <div class="badge badge-outline opacity-80 group-hover:opacity-100 duration-200">
-              @svg('solar:video-library-bold-duotone', { class: '-ml-1 -my-0.5' })
+              @svg('solar:video-library-outline', { class: '-ml-1 -my-0.5' })
               {{ series.meta.posts_count }} Lessons
             </div>
 
             <div class="badge badge-outline opacity-80 group-hover:opacity-100 duration-200">
-              @svg('solar:clock-circle-bold-duotone', { class: '-ml-1 -my-0.5' })
+              @svg('solar:clock-circle-outline', { class: '-ml-1 -my-0.5' })
               {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
             </div>
           </div>
@@ -32,19 +32,19 @@
 
           <div class="flex flex-1 items-center gap-3 mt-10">
             <a href="#" class="btn btn-outline btn-primary btn-wide">
-              @svg('solar:play-bold')
+              @svg('solar:play-outline', { class: 'size-5 mr-1' })
               Start Series
             </a>
 
             @!frags.series.watchlistToggle({
-              id: 'series-watchlist-foot',
-              target: 'series-watchlist-head,series-watchlist-foot',
+              id: 'series-watchlist-head',
+              target: 'series-watchlist-head,series-watchlist-foot,series-wachlist-aside',
               series
             })
 
             @if (series.repositoryUrl)
               <a href="{{ series.repositoryUrl }}" target="_blank" class="btn btn-outline btn-square">
-                @svg('simple-icons:github')
+                @svg('simple-icons:github', { class: 'size-5' })
               </a>
             @endif
           </div>
@@ -118,7 +118,7 @@
               <div class="mt-2 max-w-fit">
                 @!frags.series.watchlistToggle({
                   id: 'series-watchlist-foot',
-                  target: 'series-watchlist-head,series-watchlist-foot',
+                  target: 'series-watchlist-head,series-watchlist-foot,series-wachlist-aside',
                   series
                 })
               </div>
@@ -141,20 +141,22 @@
 
           <div class="flex items-center justify-between gap-3 mt-6">
             <div class="flex flex-1 items-center gap-3">
-              <a href="#" class="btn btn-outline btn-primary btn-sm flex-1">
-                @svg('solar:play-bold')
+              <a href="#" class="btn btn-outline btn-primary flex-1">
+                @svg('solar:play-outline', { class: 'size-4 mr-1' })
                 Start Series
               </a>
 
-              <button type="button" class="btn btn-outline btn-sm">
-                @svg('solar:bookmark-bold')
-                Add to Watchist
-              </button>
+              @!frags.series.watchlistToggle({
+                id: 'series-watchlist-aside',
+                target: 'series-watchlist-head,series-watchlist-foot,series-wachlist-aside',
+                size: 'size-4',
+                series
+              })
             </div>
 
             <div class="flex items-center gap-3">
-              <a href="#" class="btn btn-sm btn-outline btn-square">
-                @svg('simple-icons:github')
+              <a href="#" class="btn btn-outline btn-square">
+                @svg('simple-icons:github', { class: 'size-4' })
               </a>
             </div>
           </div>
