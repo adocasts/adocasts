@@ -10,11 +10,13 @@ import VideoTypes from '#enums/video_types'
 import CurrencyService from '#services/currency_service'
 import FormService from '#services/form_service'
 import HlsService from '#services/hls_service'
+import NumberService from '#services/number_service'
 import Pagination from '#services/pagination_service'
 import parserService from '#services/parser_service'
 import plan from '#services/plan_service'
 import TimeService from '#services/time_service'
 import { SimplePaginatorDtoMetaContract } from '@adocasts.com/dto/types'
+import { cuid } from '@adonisjs/core/helpers'
 import is from '@adonisjs/core/helpers/is'
 import stringHelpers from '@adonisjs/core/helpers/string'
 import { icons as simpleIcons } from '@iconify-json/simple-icons'
@@ -26,7 +28,6 @@ import { image as gravatar } from 'gravatar-gen'
 import _ from 'lodash'
 import { DateTime } from 'luxon'
 import env from './env.js'
-import NumberService from '#services/number_service'
 
 addCollection(solarIcons)
 addCollection(simpleIcons)
@@ -64,3 +65,4 @@ edge.global('PlanService', plan)
 edge.global('assetDomain', env.get('ASSET_DOMAIN', ''))
 edge.global('pagination', (meta: SimplePaginatorDtoMetaContract) => new Pagination(meta))
 edge.global('number', NumberService)
+edge.global('cuid', cuid)

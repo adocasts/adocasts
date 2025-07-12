@@ -15,6 +15,9 @@
     @stack('dumper')
   </head>
   <body data-theme="adocasts-{{ theme }}" class="max-w-[120rem] mx-auto" {{ html.attrs({ style: $props.style }) }}>
+    <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>
+    <div id="portal"></div>
+
     @if ($slots.header)
       {{{ await $slots.header() }}}
     @else
@@ -36,5 +39,9 @@
     <div id="banners" up-hungry>
       @!banner.verifyEmail()
     </div>
+
+    <div up-modal-fragment></div>
+
+    @stack('modals')
   </body>
 </html>

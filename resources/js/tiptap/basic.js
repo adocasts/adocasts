@@ -1,7 +1,6 @@
 import { Editor } from '@tiptap/core'
 import Blockquote from '@tiptap/extension-blockquote'
 import BubbleMenu from '@tiptap/extension-bubble-menu'
-import CharacterCount from '@tiptap/extension-character-count'
 import CodeBlock from '@tiptap/extension-code-block'
 import Dropcursor from '@tiptap/extension-dropcursor'
 import HardBreak from '@tiptap/extension-hard-break'
@@ -25,8 +24,6 @@ export const setupEditor = function ({
   placeholder = 'Type / to see available commands',
   isFreeUser = true,
 }) {
-  let editor
-
   return {
     editor: null,
 
@@ -38,40 +35,35 @@ export const setupEditor = function ({
     language: 'ts',
     languages: [...languages],
 
-    characterLimit: isFreeUser ? 500 : null,
+    characterLimit: null,
     characterCount: 0,
 
     isActive(type, opts = {}) {
-      return editor.isActive(type, opts)
+      return this.editor.isActive(type, opts)
     },
 
     chain() {
-      return editor.chain()
+      return this.editor.chain()
     },
 
     command(name) {
-      return commandList.find((cmd) => cmd.name === name).command({ editor })
+      return commandList.find((cmd) => cmd.name === name).command({ editor: this.editor })
     },
 
     init() {
-      const tieredExtensions = isFreeUser
-        ? [
-            CharacterCount.configure({
-              limit: this.characterLimit,
-            }),
-          ]
-        : [
-            YouTube.configure({
-              width: 1280,
-              height: 720,
-            }),
-            UploadImage.configure({
-              uploadFn: this.uploadImage,
-            }),
-          ]
+      // removing free account restrictions
+      const tieredExtensions = [
+        YouTube.configure({
+          width: 1280,
+          height: 720,
+        }),
+        UploadImage.configure({
+          uploadFn: this.uploadImage,
+        }),
+      ]
 
       this.editor = new Editor({
-        element: this.$refs.element,
+        element: this.$el.querySelector('[tiptap-editor]'),
         extensions: [
           ...tieredExtensions,
           StarterKit,
