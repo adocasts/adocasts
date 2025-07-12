@@ -1,0 +1,79 @@
+@let(lazy = $props.lazy ?? true)
+@let(progression = progress.post.get(item.id))
+
+@if (item.thumbnail)
+  @let(img = item.thumbnail)
+  <figure class="relative overflow-visible group-hover:scale-105 duration-200">
+    @picture({
+      ...$props,
+      ratio: 'aspect-video',
+      fit: 'object-cover',
+      class: [`rounded-md overflow-hidden z-[1]`, ($props.class || [])],
+      filename: img.filename,
+      altText: img.altText,
+      lazy,
+    })
+      @if (preview && item.animatedPreviewUrl)
+        <div 
+          x-show="hovered" 
+          x-transition:enter.duration.600ms.delay.600ms
+          x-transition:leave.duration.600ms
+          x-cloak
+          class="absolute -top-px -left-px w-[calc(100%+3px)] h-[calc(100%+2px)] z-10 pointer-events-none">
+          <img class="w-full" src="{{ item.animatedPreviewUrl }}" alt="Video preview" loading="lazy" />
+        </div>
+      @endif
+      
+      @cannot('PostPolicy.view', item)
+        <div class="absolute bottom-1 left-1 p-1 bg-slate-base-900/80 backdrop-blur-md text-slate-base-50 flex items-center rounded-sm z-20">
+          <div class="h-2.5 mr-1 rounded-md text-slate-base-200 flex items-center justify-center">
+            <img class="h-2.5" src="/imgs/plus-badge-100.png" alt="Adocasts Plus Exclusive" />
+          </div>
+          @if (item.paywallTypeId === PaywallTypes.DELAYED_RELEASE)
+            <div class="text-[0.5rem] uppercase font-bold pr-0.5 leading-none">
+              Free {{ TimeService.paywallTimeAgo(item) }} 
+            </div>
+          @else
+            <div class="text-[0.5rem] uppercase font-bold pr-0.5 leading-none">
+              Exclusive
+            </div>
+          @endif
+        </div>
+      @elseif (progression?.watchPercent)
+        <div class="flex items-center gap-1.5 px-2 py-1.5 rounded-md bg-base-300/50 backdrop-blur-sm absolute bottom-1 left-1">
+          <div
+            {{ html.attrs({
+              role: 'progressbar',
+              class: ['radial-progress', progression.watchPercent ? 'text-primary' : 'text-primary/0'],
+              style: `--value: ${progression.watchPercent}; --size: .9rem; --thickness: .15rem;`,
+              'aria-valuenow': progression.watchPercent,
+            }) }}
+          ></div>
+          
+          <div class="font-mono inline-block rounded-full leading-none text-2xs {{ text }}">
+            {{ progression.watchPercent }}%
+          </div>
+        </div>
+      @endcannot
+    @end
+
+    @if (!preview || !item.animatedPreviewUrl)
+      @!picture({
+        class: ['rounded-md !absolute top-0 left-0 w-full h-full pointer-events-none'],
+        classImg: ['blur-lg opacity-0 group-hover:opacity-50 duration-200'],
+        filename: img.filename,
+        altText: img.altText,
+        lazy: true,
+      })
+    @else
+      <div 
+        x-show="hovered" 
+        x-transition:enter.duration.600ms.delay.600ms
+        x-transition:leave.duration.600ms
+        x-cloak
+        class="rounded-md absolute top-0 left-0 w-full h-full blur-lg opacity-75 pointer-event-none">
+        <img class="w-full" src="{{ item.animatedPreviewUrl }}" alt="Video preview" loading="lazy" />
+      </div>
+    @endif
+  </figure>
+@endif

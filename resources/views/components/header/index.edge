@@ -8,7 +8,7 @@
   up-fixed="top"
   :class="['w-full h-16 border border-base-content/10 sticky top-0 z-30 duration-300',
     isWindowScrolled || {{ forceBackdrop }}
-      ? 'bg-base-200/75 backdrop-blur-md shadow-sm'
+      ? 'bg-base-200/75 midnight:bg-base-300/75 backdrop-blur-md shadow-sm'
       : 'bg-base-300/10 backdrop-blur-xs shadow-none']"
   @scroll.window="onWindowScroll"
   @location="onLocationChange"
@@ -17,14 +17,18 @@
   <div class="{{ container }} mx-auto flex justify-between items-center h-full">
     <div class="h-full flex items-center gap-6">
       <div class="relative border-r border-base-content/10 pr-6">
-        <a href="{{ route('home') }}">
-          <img src="/imgs/logo-white.svg" alt="Adocasts" width="142px" height="50px" />
+        <a class="w-36" href="{{ route('home') }}">
+          <img class="logo-dark" src="/imgs/logo-white.svg" alt="Adocasts" width="168px" height="50px" />
+          <img class="logo-light" src="/imgs/logo-black.svg" alt="Adocasts" width="168px" height="50px" />
         </a>
       </div>
   
       @!header.nav()
     </div>
 
-    @!frags.header.auth()
+    <div class="flex items-center justify-end gap-3">
+      @!frags.header.theme()
+      @!frags.header.auth()
+    </div>
   </div>
 </header>

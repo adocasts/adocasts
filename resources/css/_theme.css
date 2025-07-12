@@ -1,18 +1,18 @@
 @theme {
   --font-sans: 'Red Hat Display', sans-serif;
   --font-mono: 'Red Hat Mono', monospace;
-  /* --color-base-title: oklch(93.53% 0.0592 304.85); */
 }
 
-@plugin "daisyui" {
-  /* themes: 'dark'; */
-}
+@plugin "daisyui" {}
 
 @plugin "daisyui/theme" {
-  name: 'night';
+  name: 'adocasts-dark';
   default: false;
   prefersdark: true;
   color-scheme: 'dark';
+
+  --color-white: white;
+  --color-black: black;
 
   --color-base-100: oklch(0.26 0.068 287.4);
   --color-base-200: oklch(0.23 0.056 287.5);
@@ -53,7 +53,107 @@
   --noise: 0;
 }
 
-body[data-theme='adocasts-dark'] {
+@plugin "daisyui/theme" {
+  name: 'adocasts-midnight';
+  default: false;
+  prefersdark: false;
+  color-scheme: 'midnight';
+
+  --color-white: white;
+  --color-black: black;
+
+  --color-base-100: oklch(0.2418 0.0395 287.6);
+  --color-base-200: oklch(0.1853 0.0395 287.6);
+  --color-base-300: oklch(8% 0.025 287.6);
+  --color-base-content: oklch(90% 0.035 288.4);
+
+  --color-primary: oklch(0.55 0.15 276.5);
+  --color-primary-content: oklch(0.93 0.048 275.7);
+
+  --color-secondary: oklch(80% 0.1 230.5);
+  --color-secondary-content: oklch(12% 0.03 276.9);
+
+  --color-accent: oklch(90% 0.08 180.6);
+  --color-accent-content: oklch(13% 0.033 350.1);
+
+  --color-neutral: oklch(0.18 0.04 287.4); /* Matches new --color-base-100 */
+  --color-neutral-content: oklch(90% 0.05 287.6); /* Slightly lighter for better contrast */
+
+  --color-info: oklch(68% 0.15 237.2);
+  --color-info-content: oklch(0% 0 0);
+
+  --color-success: oklch(77% 0.13 182);
+  --color-success-content: oklch(15.5% 0.025 182);
+
+  --color-warning: oklch(82% 0.13 83);
+  --color-warning-content: oklch(15.5% 0.02 83);
+
+  --color-error: oklch(70% 0.17 13.2);
+  --color-error-content: oklch(13% 0.03 13.1);
+
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+@plugin "daisyui/theme" {
+  name: 'adocasts-light';
+  default: false;
+  prefersdark: false;
+  color-scheme: 'light';
+
+  --color-white: black;
+  --color-black: white;
+
+  --color-base-300: oklch(99% 0.005 287.6);
+  --color-base-200: oklch(0.9794 0.0074 287.6);
+  --color-base-100: oklch(0.95 0.0197 287.6);
+  --color-base-content: oklch(18% 0.03 288.4);
+
+  --color-primary: oklch(0.6059 0.1554 276.5);
+  --color-primary-content: oklch(0.93 0.048 275.7);
+
+  --color-secondary: oklch(0.5794 0.0888 230.5);
+  --color-secondary-content: oklch(0.95 0.03 276.9);
+
+  --color-accent: oklch(0.6382 0.1061 180.6);
+  --color-accent-content: oklch(0.98 0.02 350.1);
+
+  --color-neutral: oklch(95% 0.01 287.4);
+  --color-neutral-content: oklch(25% 0.03 287.6);
+
+  --color-info: oklch(0.5618 0.1406 237.2);
+  --color-info-content: oklch(0% 0 0);
+
+  --color-success: oklch(0.6382 0.1159 182);
+  --color-success-content: oklch(0.98 0.01 182);
+
+  --color-warning: oklch(0.6853 0.1529 83);
+  --color-warning-content: oklch(0.15 0.02 83);
+
+  --color-error: oklch(0.5412 0.1776 13.2);
+  --color-error-content: oklch(0.98 0.02 13.1);
+
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+@custom-variant dark (&:where([data-theme=adocasts-dark], [data-theme=adocasts-dark] *), &:where([data-theme=adocasts-midnight], [data-theme=adocasts-midnight] *));
+@custom-variant midnight (&:where([data-theme=adocasts-midnight], [data-theme=adocasts-midnight] *));
+
+body[data-theme='adocasts-dark'],
+body[data-theme='adocasts-midnight'] {
   .logo-light {
     display: none;
   }

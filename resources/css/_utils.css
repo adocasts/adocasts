@@ -28,3 +28,13 @@
     linear-gradient(to right, transparent, black 50%);
   mask-composite: intersect;
 }
+
+@utility btn-not-square {
+  width: unset;
+  height: var(--size);
+  padding-inline: var(--btn-p);
+}
+
+@utility wm-vertical {
+  writing-mode: vertical-rl;
+}

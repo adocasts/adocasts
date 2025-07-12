@@ -49,6 +49,7 @@ const VerifyEmail = () => import('#actions/users/verify_email')
 const RenderUserHistory = () => import('#actions/users/render_user_history')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const UpdateUserTheme = () => import('#actions/users/update_user_theme')
 const SendContactEmail = () => import('#actions/general/send_contact_email')
 const HandleStripeWebhook = () => import('#actions/plus/handle_stripe_webhook')
 const HandleStripeCheckoutSuccess = () => import('#actions/plus/handle_stripe_checkout_success')
@@ -151,6 +152,7 @@ router.get('/users/watchlist', [RenderUserWatchlist]).as('users.watchlist').use(
 router.get('/users/bookmarks', [RenderUserBookmarks]).as('users.bookmarks').use(middleware.auth())
 router.get('/users/history/:tab?', [RenderUserHistory]).as('users.history').use(middleware.auth())
 router.get('/:handle/:tab?', [RenderUserProfile]).as('users.profile').where('handle', /^@/)
+router.patch('/users/theme', [UpdateUserTheme]).as('users.theme')
 
 //* Series
 router.get('/series', [RenderSeriesIndex]).as('series.index')

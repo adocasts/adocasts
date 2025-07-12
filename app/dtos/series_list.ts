@@ -1,13 +1,16 @@
-import AssetDto from './asset.js'
-import TopicDto from './topic.js'
+import ProgressTypes from '#enums/progress_types'
 import Collection from '#models/collection'
-import BaseModelDto from '#dtos/base_model_dto'
+import AssetDto from './asset.js'
+import ProgressableDto from './progressable_dto.js'
 import SeriesLessonDto from './series_lesson.js'
+import TopicDto from './topic.js'
 
-export default class SeriesListDto extends BaseModelDto {
+export default class SeriesListDto extends ProgressableDto {
   static model() {
     return Collection
   }
+
+  progressType = ProgressTypes.COLLECTION
 
   declare id: number
   declare difficultyId: number | null

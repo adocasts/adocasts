@@ -1,59 +1,39 @@
 @layout()
 
-  <div x-data="{ isHeaderVisible: true }">
-    <div class="relative" x-intersect:enter="isHeaderVisible = true" x-intersect:leave="isHeaderVisible = false">
-      <img class="absolute top-1/2 right-0 -translate-y-1/2 w-2/3 aspect-video object-cover object-center opacity-20 mask-gradient-to-bl z-[1]" src="/imgs/example-series-bg.png" alt="{{ series.name }}">
+  <div x-data="{ isHeaderVisible: true }" class="flex justify-between items-start container gap-6 xl:gap-12 mx-auto">
+    <div class="flex-1">
+      <div class="@container section-y" x-intersect:enter="isHeaderVisible = true" x-intersect:leave="isHeaderVisible = false">
+        <h1 class="heading-2 !mb-3">
+          {{ series.name }}
+        </h1>
 
-      <div class="section-container mx-auto flex items-center xl:min-h-[350px] relative z-10">
-        <div>
-          <div class="flex gap-2 mb-6 lg:mb-8">
-            @!difficulty({ item: series })
+        @if (series.description)
+          <p class="max-w-2xl text-pretty font-medium text-base-content/60 max-lg:mx-auto sm:text-base/6 mb-6 lg:mb-8">
+            {{ series.description }}
+          </p>
+        @endif
 
-            <div class="badge badge-outline opacity-80 group-hover:opacity-100 duration-200">
-              @svg('solar:video-library-outline', { class: '-ml-1 -my-0.5' })
-              {{ series.meta.posts_count }} Lessons
-            </div>
+        <div class="flex flex-1 items-center gap-3 mt-10">
+          <a href="#" class="btn btn-outline btn-primary btn-wide">
+            @svg('solar:play-outline', { class: 'size-4 mr-1' })
+            Start Series
+          </a>
 
-            <div class="badge badge-outline opacity-80 group-hover:opacity-100 duration-200">
-              @svg('solar:clock-circle-outline', { class: '-ml-1 -my-0.5' })
-              {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
-            </div>
-          </div>
+          @!frags.series.watchlistToggle({
+            id: 'series-watchlist-head',
+            target: 'series-watchlist-head,series-watchlist-foot,series-wachlist-aside',
+            series
+          })
 
-          <h1 class="heading-2 !mb-3">
-            {{ series.name }}
-          </h1>
-
-          @if (series.description)
-            <p class="max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-base/6 mb-6 lg:mb-8">
-              {{ series.description }}
-            </p>
-          @endif
-
-          <div class="flex flex-1 items-center gap-3 mt-10">
-            <a href="#" class="btn btn-outline btn-primary btn-wide">
-              @svg('solar:play-outline', { class: 'size-5 mr-1' })
-              Start Series
+          @if (series.repositoryUrl)
+            <a href="{{ series.repositoryUrl }}" target="_blank" class="btn btn-outline btn-square">
+              @svg('simple-icons:github', { class: 'size-4' })
             </a>
-
-            @!frags.series.watchlistToggle({
-              id: 'series-watchlist-head',
-              target: 'series-watchlist-head,series-watchlist-foot,series-wachlist-aside',
-              series
-            })
-
-            @if (series.repositoryUrl)
-              <a href="{{ series.repositoryUrl }}" target="_blank" class="btn btn-outline btn-square">
-                @svg('simple-icons:github', { class: 'size-5' })
-              </a>
-            @endif
-          </div>
+          @endif
         </div>
       </div>
-    </div>
 
-    <div class="section-container mx-auto flex flex-wrap items-start gap-6 lg:gap-12 relative z-10">
-      <main class="@container flex-1">
+      <main class="section-b pt-8 @container flex-1">
         <div class="relative z-[1]">
           <div class="lg:hidden">
             @!series.progress({ series })
@@ -126,45 +106,45 @@
           </div>
         @endif
       </main>
+    </div>
 
-      <aside class="@container hidden lg:block w-[36%] sticky top-20">
-        <div x-show="!isHeaderVisible" x-transition x-cloak class="mt-6 relative z-10 rounded-base mb-6">
-          <h2 class="heading-4">
-            {{ series.name }}
-          </h2>
+    <aside class="section-y @container hidden lg:block w-[36%] max-w-sm sticky top-8 -mb-3">
+      <div x-show="!isHeaderVisible" x-transition x-cloak class="mt-6 relative z-10 rounded-base mb-6">
+        <h2 class="heading-4">
+          {{ series.name }}
+        </h2>
 
-          @if (series.description)
-            <p class="max-w-2xl text-pretty font-medium opacity-60 line-clamp-3 max-lg:mx-auto sm:text-sm">
-              {{ series.description }}
-            </p>
-          @endif
+        @if (series.description)
+          <p class="max-w-2xl text-pretty font-medium opacity-60 line-clamp-5 max-lg:mx-auto sm:text-sm">
+            {{ series.description }}
+          </p>
+        @endif
 
-          <div class="flex items-center justify-between gap-3 mt-6">
-            <div class="flex flex-1 items-center gap-3">
-              <a href="#" class="btn btn-outline btn-primary flex-1">
-                @svg('solar:play-outline', { class: 'size-4 mr-1' })
-                Start Series
-              </a>
+        <div class="flex items-center justify-between gap-3 mt-6">
+          <div class="flex flex-1 items-center gap-3">
+            <a href="#" class="btn btn-outline btn-primary flex-1">
+              @svg('solar:play-outline', { class: 'size-4 mr-1' })
+              Start Series
+            </a>
 
-              @!frags.series.watchlistToggle({
-                id: 'series-watchlist-aside',
-                target: 'series-watchlist-head,series-watchlist-foot,series-wachlist-aside',
-                size: 'size-4',
-                series
-              })
-            </div>
+            @!frags.series.watchlistToggle({
+              id: 'series-watchlist-aside',
+              target: 'series-watchlist-head,series-watchlist-foot,series-wachlist-aside',
+              size: 'size-4',
+              series
+            })
 
-            <div class="flex items-center gap-3">
-              <a href="#" class="btn btn-outline btn-square">
+            @if (series.repositoryUrl)
+              <a href="{{ series.repositoryUrl }}" target="_blank" class="btn btn-outline btn-square">
                 @svg('simple-icons:github', { class: 'size-4' })
               </a>
-            </div>
+            @endif
           </div>
         </div>
+      </div>
 
-        @!series.progress({ series })
-      </aside>
-    </div>
+      @!series.progress({ series, size: 'base', showImage: false })
+    </aside>
   </div>
 
 @end

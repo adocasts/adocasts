@@ -13,13 +13,7 @@
       $props.class
     ])
   }}">
-    @if (item.difficultyId === Difficulties.BEGINNER)
-      @svg('solar:spedometer-low-bold', { class: iconClass })
-    @elseif (item.difficultyId === Difficulties.INTERMEDIATE)
-      @svg('solar:spedometer-middle-bold', { class: iconClass })
-    @else
-      @svg('solar:spedometer-max-bold', { class: iconClass })
-    @endif
+    @!difficulty.icon({ id: item.difficultyId, class: 'size-4' })
 
     @if (!$props.class?.includes('badge-sm'))
       {{ string.capitalCase(Difficulties[item.difficultyId]) }}

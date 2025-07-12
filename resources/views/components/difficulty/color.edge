@@ -1,0 +1,25 @@
+@let(badge = new Map([
+  [Difficulties.BEGINNER, 'badge-success'],
+  [Difficulties.INTERMEDIATE, 'badge-warning'],
+  [Difficulties.ADVANCED, 'badge-error'],
+]))
+
+@let(border = new Map([
+  [Difficulties.BEGINNER, 'border-success'],
+  [Difficulties.INTERMEDIATE, 'border-warning'],
+  [Difficulties.ADVANCED, 'border-error'],
+]))
+
+@let(bg = new Map([
+  [Difficulties.BEGINNER, 'bg-success'],
+  [Difficulties.INTERMEDIATE, 'bg-warning'],
+  [Difficulties.ADVANCED, 'bg-error'],
+]))
+
+@let(text = new Map([
+  [Difficulties.BEGINNER, 'text-success'],
+  [Difficulties.INTERMEDIATE, 'text-warning'],
+  [Difficulties.ADVANCED, 'text-error'],
+]))
+
+{{{ await $slots.main({ badge, border, bg, text }) }}}

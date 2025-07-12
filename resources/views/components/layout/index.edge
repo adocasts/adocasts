@@ -14,7 +14,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('dumper')
   </head>
-  <body data-theme="adocasts-dark" class="max-w-[120rem] mx-auto" {{ html.attrs({ style: $props.style }) }}>
+  <body data-theme="adocasts-{{ theme }}" class="max-w-[120rem] mx-auto" {{ html.attrs({ style: $props.style }) }}>
     @if ($slots.header)
       {{{ await $slots.header() }}}
     @else

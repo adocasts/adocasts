@@ -1,7 +1,7 @@
+import { MoveDirection, OutMode, tsParticles } from "@tsparticles/engine"
 import Alpine from 'alpinejs'
-import Starfield from '../vendor/starfield'
-import { tsParticles, MoveDirection, OutMode } from "@tsparticles/engine"
 import { loadFull } from 'tsparticles'
+import Starfield from '../vendor/starfield'
 
 Alpine.data('starfield', () => ({
   init() {
@@ -29,6 +29,9 @@ Alpine.data('stars', () => ({
   async init() {
     if (!this.$el.id) return console.error('Alpine.stars: please ensure the element has a unique id')
 
+    const theme = document.body.getAttribute('data-theme')
+    const isDark = theme === 'adocasts-dark'
+
     await loadFull(tsParticles)
 
     this.container = await tsParticles.load({
@@ -39,8 +42,9 @@ Alpine.data('stars', () => ({
         // },
         fullScreen: false,
         particles: {
+          color: isDark ? '#fff' : '#5d65c7',
           number: {
-            value: 300,
+            value: 400,
           },
           move: {
             direction: MoveDirection.bottom,
@@ -65,45 +69,45 @@ Alpine.data('stars', () => ({
           },
         },
         interactivity: {
-          detectsOn: "canvas",
+          detectsOn: 'canvas',
           events: {
             onHover: {
               enable: true,
-              mode: "bubble"
+              mode: 'bubble',
             },
             onClick: {
               enable: true,
-              mode: "push"
+              mode: 'push',
             },
-            resize: true
+            resize: true,
           },
           modes: {
             grab: {
               distance: 400,
               links: {
-                opacity: 1
-              }
+                opacity: 1,
+              },
             },
             bubble: {
               distance: 83.9,
               size: 1,
               duration: 3,
               opacity: 1,
-              speed: 3
+              speed: 3,
             },
             repulse: {
               distance: 200,
-              duration: 0.4
+              duration: 0.4,
             },
             push: {
-              quantity: 4
+              quantity: 4,
             },
             remove: {
-              quantity: 2
-            }
-          }
+              quantity: 2,
+            },
+          },
         },
-      }
+      },
     })
   },
 

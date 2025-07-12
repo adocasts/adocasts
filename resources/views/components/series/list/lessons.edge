@@ -4,21 +4,24 @@
   @each (item in lessons)
     @let(progression = progress.post.get(item.id))
 
-    <li>
+    <li 
+      data-series-lesson="{{ item.id }}" 
+      x-data="{ isCompleted: {{ progression?.isCompleted ?? false }}, id: {{ item.id }}, lessonId: {{ lesson.id }}, itemId: {{ item.id }} }" 
+      @toggle="isCompleted = $event.detail">
       <a
         href="{{ item.routeUrl }}"
-        class="{{ html.classNames([
-          'group/modles text-sm duration-200 pl-1 pr-2 p-1 -mb-px flex items-center gap-3 rounded-md border', {
-            'border-transparent bg-base-100/0 hover:bg-base-100/25 hover:border-base-100 text-base-content/60 hover:text-base-content': lesson.id !== item.id,
-            'border-primary/50 bg-primary/25 hover:border-primary text-base-content/80 hover:text-base-content': lesson.id === item.id
-          }
-        ]) }}">
-        <div data-series-lesson="{{ item.id }}" x-data="{ isCompleted: {{ progression?.isCompleted ?? false }}, id: {{ item.id }} }" @toggle="isCompleted = $event.detail">
+        class="group/modles text-sm duration-200 pl-1 pr-2 p-1 -mb-px flex items-center gap-3 rounded-md border border-transparent"
+        :class="{
+          'border-transparent bg-base-100/0 hover:bg-base-100/25 hover:border-primary/25 text-base-content/60 hover:text-base-content': lessonId !== itemId,
+          'border-primary/50 bg-primary/25 hover:border-primary text-base-content/80 hover:text-base-content': lessonId === itemId && !isCompleted,
+          'border-success/50 bg-success/10 hover:border-success text-base-content/80 hover:text-base-content': lessonId === itemId && isCompleted,
+        }">
+        <div>
           <div :class="{
             'w-7 h-7 text-[.6rem] rounded duration-200 flex items-center justify-center': true,
             'bg-success/10 group-hover/modles:bg-success text-success group-hover/modles:text-success-content': isCompleted,
-            'bg-primary/25 group-hover/modles:bg-primary': !isCompleted && id === {{ lesson.id }},
-            'bg-base-100 group-hover/modles:bg-primary': !isCompleted && id !== {{ lesson.id }}
+            'bg-primary/25 group-hover/modles:bg-primary group-hover/modles:text-primary-content': !isCompleted && id === {{ lesson.id }},
+            'bg-base-100 group-hover/modles:bg-primary group-hover/modles:text-primary-content': !isCompleted && id !== {{ lesson.id }}
           }">
             @cannot('PostPolicy.view', item)
               @let(icon = item.paywallTypeId === PaywallTypes.DELAYED_RELEASE ? 'solar:clock-circle-outline' :

@@ -1,3 +1,5 @@
+@let(showDescription = typeof description !== 'boolean' || description)
+
 @if (size == 'lg')
 
   @card({ class: `md:card-side ${$props.class || ''}`, border: 'flex md:card-side items-center' })
@@ -25,9 +27,11 @@
         </a>
       </h2>
 
-      <p class="line-clamp-5 md:line-clamp-3 lg:line-clamp-5 lg:text-lg opacity-60 mb-3">
-        {{ post.description }}
-      </p>
+      @if (showDescription)
+        <p class="line-clamp-5 md:line-clamp-3 lg:line-clamp-5 lg:text-lg opacity-60 mb-3">
+          {{ post.description }}
+        </p>
+      @endif
     </div>
   @end
 
@@ -62,13 +66,13 @@
         </a>
       </h2>
 
-      <p class="line-clamp-2 opacity-60 text-sm">
-        {{ post.description }}
-      </p>
+      @if (showDescription)
+        <p class="line-clamp-2 opacity-60 text-sm">
+          {{ post.description }}
+        </p>
+      @endif
     </div>
   @end
-
-@elseif (size == '')
 
 @else
 
@@ -90,9 +94,11 @@
         </a>
       </h2>
 
-      <p class="line-clamp-3 opacity-60 text-sm">
-        {{ post.description }}
-      </p>
+      @if (showDescription)
+        <p class="line-clamp-3 opacity-60 text-sm">
+          {{ post.description }}
+        </p>
+      @endif
     </div>
   @end
 

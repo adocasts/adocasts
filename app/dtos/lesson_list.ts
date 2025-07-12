@@ -1,8 +1,8 @@
-import AssetDto from './asset.js'
 import LessonSeriesDto from '#dtos/lesson_series'
 import ProgressableDto from '#dtos/progressable_dto'
-import Post from '#models/post'
 import ProgressTypes from '#enums/progress_types'
+import Post from '#models/post'
+import AssetDto from './asset.js'
 
 export default class LessonListDto extends ProgressableDto {
   static model() {
@@ -21,7 +21,8 @@ export default class LessonListDto extends ProgressableDto {
   declare publishAt?: string | null
   declare routeUrl: string
   declare videoSeconds: number
-  declare asset: AssetDto | null
+  declare thumbnail: AssetDto | null
+  declare animatedPreviewUrl?: string
   declare series: LessonSeriesDto | null
   declare seriesParent: LessonSeriesDto | null
   declare meta: Record<string, any>
@@ -57,7 +58,8 @@ export default class LessonListDto extends ProgressableDto {
     this.publishAt = post.publishAt?.toISO()
     this.routeUrl = post.routeUrl
     this.videoSeconds = post.videoSeconds
-    this.asset = AssetDto.fromModel(post.assets?.at(0))
+    this.animatedPreviewUrl = post.animatedPreviewUrl
+    this.thumbnail = AssetDto.fromModel(post.thumbnails?.at(0))
     this.series = LessonSeriesDto.fromModel(post.rootSeries?.at(0))
     this.seriesParent = LessonSeriesDto.fromModel(post.series?.at(0))
     this.meta = post.$extras

@@ -1,17 +1,18 @@
-<li class="list-row p-2 relative">
-  {{-- <div class="text-2xl font-thin opacity-30 tabular-nums">{{ lesson.rootSortOrder.toLocaleString([], { minimumIntegerDigits: 2 }) }}</div> --}}
-  <div class="list-col-grow">
-    <div class="line-clamp-1 text-sm">
-      <a href="{{ lesson.routeUrl }}" class="link-grow">
-        {{ lesson.title }}
-      </a>
+<li class="list-row !px-2 py-1 relative">
+  <div class="flex justify-between items-center py-1 border border-transparent hover:border-base-100 hover:bg-base-100/20 rounded-base duration-200">
+    <div class="list-col-grow">
+      <div class="line-clamp-1 text-sm">
+        <a href="{{ lesson.routeUrl }}" class="link-grow">
+          {{ lesson.title }}
+        </a>
+      </div>
+      <div class="text-2xs font-semibold opacity-60 flex items-center gap-4">
+        <div>{{ TimeService.dtmHumanShort(lesson.publishAt) }}</div>
+        <div>{{ TimeService.secondsToTimestring(lesson.videoSeconds) }}</div>
+      </div>
     </div>
-    <div class="text-2xs font-semibold opacity-60 flex items-center gap-4">
-      <div>{{ TimeService.dtmHumanShort(lesson.publishAt) }}</div>
-      <div>{{ TimeService.secondsToTimestring(lesson.videoSeconds) }}</div>
-    </div>
+    <button class="btn btn-neutral btn-square btn-ghost">
+      @svg('solar:play-outline', { class: 'size-[1.2em]'})
+    </button>
   </div>
-  <button class="btn btn-neutral btn-square btn-ghost">
-    @svg('solar:play-bold', { class: 'size-[1.2em]'})
-  </button>
 </li>

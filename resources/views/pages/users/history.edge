@@ -36,7 +36,7 @@
       <section class="flex-1" series-list>
         <div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-3">
           @each (item in series.data)
-            @!series.card({ series: item })
+            @!series.cardProgress({ series: item })
           @endeach
         </div>
 

@@ -9,7 +9,7 @@
   <div class="card-border"></div>
   <div class="card-body flex-row items-center gap-6">
     <div
-      class="{{ html.classNames(['relative radial-progress opacity-60 text-xl', progressionColor]) }}"
+      class="{{ html.classNames(['relative radial-progress bg-transparent opacity-60 text-xl', progressionColor]) }}"
       style="--value:{{ progression?.watchPercent ?? 0 }}; --size: 5rem; --thickness: .3rem;"
       aria-valuenow="{{ progression?.watchPercent ?? 0 }}"
       role="progressbar">

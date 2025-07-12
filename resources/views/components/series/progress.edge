@@ -2,68 +2,99 @@
 
 @if (progression)
   @let(progressionFrom = progression.isCompleted ? 'from-success/50' : 'from-primary/50')
-  @let(progressionTo = progression.isCompleted ? 'to-success/20' : 'to-primary/20')
+  @let(progressionTo = progression.isCompleted ? 'to-success/20' : 'to-primary/20 dark:to-primary/20')
   @let(nextUp = series.findNextUserLesson(progress))
 
   <div class="mb-6 border border-base-100 relative z-10 rounded-base overflow-hidden {{ $props.class ?? '' }}">
-    <div class="relative text-sm z-[1] rounded-t-[var(--radius-box)] px-6 py-3 overflow-hidden">
-      <div class="{{ html.classNames(['absolute top-0 left-0 h-full bg-gradient-to-r', progressionFrom, progressionTo]) }}" style="width: {{ (progression.watchPercent / 100).toLocaleString([], { style: 'percent' }) }};">
-        <div class="absolute top-0 left-full h-full w-[50px] bg-gradient-to-r from-primary/20 to-base-300"></div>
-      </div>
+    <div class="relative text-sm z-[1] rounded-t-[var(--radius-box)] px-6 pt-6 pb-3 overflow-hidden">
+      @if (progression.watchPercent)
+        <div class="{{ html.classNames(['absolute top-0 left-0 h-1 bg-gradient-to-r', progressionFrom, progressionTo]) }}" style="width: {{ (progression.watchPercent / 100).toLocaleString([], { style: 'percent' }) }};">
+          <div class="absolute top-0 left-full h-full w-[50px] bg-gradient-to-r from-primary/20 dark:from-primary/20 to-base-300/0"></div>
+        </div>
+      @endif
 
-      <div class="relative z-[1] flex items-center gap-3">
-        <div class="font-bold">{{ (progression.watchPercent / 100).toLocaleString([], { style: 'percent' }) }} Completed</div>
-        @svg('solar:double-alt-arrow-right-line-duotone', { class: 'w-6 h-6' })
-        <div class="opacity-60">
-          @if (progression.watchPercent < 10)
-            You're just getting started with this one!
-          @elseif (progression.watchPercent < 25)
-            You're doing great {{ auth.user.handle }}!
-          @elseif (progression.watchPercent < 50)
-            Going strong, keep it up!
-          @elseif (progression.watchPercent < 75)
-            Keep on cooking, {{ auth.user.handle }}!
-          @elseif (!progression.isCompleted)
-            You're soooo close!
-          @elseif (series.statusId === Status.IN_PROGRESS)
-            You're up-to-date, check back for more lessons soon!
-          @else
-            You rocked this series!
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <div class="font-bold">{{ (progression.watchPercent / 100).toLocaleString([], { style: 'percent' }) }} Completed</div>
+          <div class="opacity-60">
+            @if (!progression.watchPercent)
+              You haven't started this one yet!
+            @elseif (progression.watchPercent < 10)
+              You're just getting started with this one!
+            @elseif (progression.watchPercent < 25)
+              You're doing great {{ auth.user.handle }}!
+            @elseif (progression.watchPercent < 50)
+              Going strong, keep it up!
+            @elseif (progression.watchPercent < 75)
+              Keep on cooking, {{ auth.user.handle }}!
+            @elseif (!progression.isCompleted)
+              You're soooo close!
+            @elseif (series.statusId === Status.IN_PROGRESS)
+              You're up-to-date, check back for more lessons soon!
+            @else
+              You rocked this series!
+            @endif
+          </div>
+        </div>
+        <div>
+          @if (progression.watchPercent)
+            <div
+              {{ html.attrs({
+                role: 'progressbar',
+                class: ['radial-progress bg-base-100/25', progression.watchPercent ? 'text-primary' : 'text-primary/0'],
+                style: `--value: ${progression.watchPercent}; --size: 2.5rem; --thickness: .2rem;`,
+                'aria-valuenow': progression.watchPercent,
+              }) }}
+            ></div>
           @endif
         </div>
       </div>
     </div>
 
-    <div class="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-base-200/50 via-base-300/50 to-base-200/50 border-y border-base-100">
-      <div>
-        <div
-          class="radial-progress text-primary bg-base-300/25 mr-3"
-          style="--value:{{ progression.watchPercent }}; --size: 2.5rem; --thickness: .25rem;"
-          aria-valuenow="{{ progression.watchPercent }}"
-          role="progressbar"
-        ></div>
+    <div class="flex flex-col gap-3 px-6 pt-3 pb-6 border-b border-base-100">
+      @if (series.difficultyId)
+        @difficulty.color()
+          @slot('main', scope)
+            @let(color = scope.text.get(series.difficultyId))
+            <div class="flex items-center gap-3">
+              @!difficulty.icon({ id: series.difficultyId, class: `size-6 opacity-60 ${color}` })
+              <div class="flex-col mr-2 lg:mr-6 flex leading-tight">
+                <span class="text-2xs @md:text-xs font-semibold opacity-60">Difficulty</span>
+                <span class="text-sm font-bold {{ color }}">
+                  {{ string.capitalCase(Difficulties[series.difficultyId]) }}
+                </span>
+              </div>
+            </div>
+          @end
+        @end
+      @endif
+
+      <div class="flex items-center gap-3">
+        @svg('solar:video-library-outline', { class: 'size-6 text-base-content/60' })
+        <div class="flex-col mr-2 lg:mr-6 flex leading-tight">
+          <span class="text-2xs @md:text-xs font-semibold opacity-60">Lessons</span>
+          <span class="text-sm">
+            <span class="font-bold">{{ progression.completedLessons }}</span>
+            <span class="opacity-60">of {{ series.meta.posts_count }} Completed</span>
+          </span>
+        </div>
       </div>
 
-      <div class="flex-col mr-2 lg:mr-6 flex">
-        <span class="text-2xs @md:text-xs font-semibold opacity-60">Lessons</span>
-        <span class="text-sm">
-          <span class="font-bold">{{ progression.completedLessons }}</span>
-          <span class="opacity-60">of {{ series.meta.posts_count }} Completed</span>
-        </span>
-      </div>
-
-      <div class="flex-col hidden md:flex">
-        <span class="text-2xs @md:text-xs font-semibold opacity-60">Time Watched</span>
-        <span class="text-sm">
-          <span class="font-bold">{{ TimeService.secondsToTimestring(progression.watchSeconds) }}</span>
-          <span class="opacity-60">of {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}</span>
-        </span>
+      <div class="flex items-center gap-3">
+        @svg('solar:clock-circle-outline', { class: 'size-6 text-base-content/60' })
+        <div class="flex-col hidden md:flex leading-tight">
+          <span class="text-2xs @md:text-xs font-semibold opacity-60">Time Watched</span>
+          <span class="text-sm">
+            <span class="font-bold">{{ TimeService.secondsToTimestring(progression.watchSeconds) }}</span>
+            <span class="opacity-60">of {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}</span>
+          </span>
+        </div>
       </div>
     </div>
 
     @if (nextUp)
       <div class="-m-px">
-        @post.card({ post: nextUp, size: 'wide', class: 'rounded-t-none' })
+        @lesson.card({ lesson: nextUp, size: $props.size ?? 'wide', showImage: $props.showImage, class: 'rounded-t-none', description })
           @slot('badge')
             <div class="badge badge-outline badge-xs @xl:badge-sm badge-secondary">
               Next On Deck
@@ -72,6 +103,53 @@
         @end
       </div>
     @endif
+  </div>
+
+@else
+
+  <div class="mb-6 border border-base-100 relative z-10 rounded-base overflow-hidden {{ $props.class ?? '' }}">
+    <div class="flex flex-col gap-3 px-6 py-6 border-b border-base-100">
+      @if (series.difficultyId)
+        @difficulty.color()
+          @slot('main', scope)
+            @let(color = scope.text.get(series.difficultyId))
+            <div class="flex items-center gap-3">
+              @!difficulty.icon({ id: series.difficultyId, class: `size-6 opacity-60 ${color}` })
+              <div class="flex-col mr-2 lg:mr-6 flex leading-tight">
+                <span class="text-2xs @md:text-xs font-semibold opacity-60">Difficulty</span>
+                <span class="text-sm font-bold {{ color }}">
+                  {{ string.capitalCase(Difficulties[series.difficultyId]) }}
+                </span>
+              </div>
+            </div>
+          @end
+        @end
+      @endif
+
+      <div class="flex items-center gap-3">
+        @svg('solar:video-library-outline', { class: 'size-6 text-base-content/60' })
+        <div class="flex-col mr-2 lg:mr-6 flex leading-tight">
+          <span class="text-2xs @md:text-xs font-semibold opacity-60">What's Inside</span>
+          <span class="text-sm">
+            {{ series.meta.posts_count }} Lessons
+          </span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        @svg('solar:clock-circle-outline', { class: 'size-6 text-base-content/60' })
+        <div class="flex-col hidden md:flex leading-tight">
+          <span class="text-2xs @md:text-xs font-semibold opacity-60">Viewing Time</span>
+          <span class="text-sm">
+            {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <a href="{{ route('auth.signup') }}" class="btn-block p-6 btn btn-ghost hover:bg-secondary/10 hover:btn-secondary hover:text-secondary rounded-b-[var(--radius-box)] rounded-t-none" up-auth-modal>
+      <span class="opacity-80">Sign up to save progress</span>
+    </a>
   </div>
 
 @endif

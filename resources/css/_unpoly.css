@@ -12,6 +12,7 @@ up-modal {
 
   up-modal-box {
     @apply bg-base-300 p-0;
+    border-radius: var(--radius-box);
   }
 }
 

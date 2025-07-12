@@ -1,4 +1,5 @@
 import ProgressableDto from '#dtos/progressable_dto'
+import { SimplePaginatorDto } from '@adocasts.com/dto/paginator'
 import is from '@adonisjs/core/helpers/is'
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
@@ -16,12 +17,13 @@ export default class ContextMiddleware {
   async handle(ctx: HttpContext, next: NextFn) {
     const viewRender = ctx.view.render
     const viewShare = ctx.view.share
+    const theme = ctx.auth.user?.theme ?? ctx.request.cookie('adocasts-theme', 'system')
 
     ctx.up = new Up(ctx)
     ctx.progress = createProgress(ctx)
-
     ctx.view.share({
       up: ctx.up,
+      theme,
     })
 
     ctx.view.render = async (templatePath: string, state?: Record<string, any>) => {
@@ -55,8 +57,18 @@ function checkForProgressIds(progress: ProgressContext, state?: Record<string, a
 
     if (is.object(data) && data instanceof ProgressableDto) {
       data.addToProgress(progress)
-    } else if (is.array(data) && data.every((item) => item instanceof ProgressableDto)) {
-      data.forEach((item) => item.addToProgress(progress))
+    } else if (data instanceof SimplePaginatorDto) {
+      checkArrayForProgressIds(progress, data.data)
+    } else if (is.array(data)) {
+      checkArrayForProgressIds(progress, data)
     }
   }
+}
+
+function checkArrayForProgressIds(progress: ProgressContext, array: unknown[]) {
+  array.forEach((item) => {
+    if (item instanceof ProgressableDto) {
+      item.addToProgress(progress)
+    }
+  })
 }
