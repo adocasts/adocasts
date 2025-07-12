@@ -26,6 +26,7 @@ import { image as gravatar } from 'gravatar-gen'
 import _ from 'lodash'
 import { DateTime } from 'luxon'
 import env from './env.js'
+import NumberService from '#services/number_service'
 
 addCollection(solarIcons)
 addCollection(simpleIcons)
@@ -62,3 +63,4 @@ edge.global('hls', HlsService)
 edge.global('PlanService', plan)
 edge.global('assetDomain', env.get('ASSET_DOMAIN', ''))
 edge.global('pagination', (meta: SimplePaginatorDtoMetaContract) => new Pagination(meta))
+edge.global('number', NumberService)

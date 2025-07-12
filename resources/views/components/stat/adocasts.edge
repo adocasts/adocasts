@@ -2,34 +2,34 @@
   @!stat.item({
     color: 'text-primary',
     icon: 'solar:video-library-bold-duotone',
-    stat: stats.lessons.toLocaleString(),
-    title: 'An Ever Growing Library',
-    desc: 'Lessons Available',
+    stat: number.abbreviated(stats.lessons),
+    title: 'Comprehensive library',
+    desc: 'Lessons & counting',
     class: 'lg:!pl-0'
   })
 
   @!stat.item({
     color: 'text-secondary',
     icon: 'solar:star-rainbow-bold-duotone',
-    stat: stats.completed.toLocaleString(),
-    title: 'So Much Learned',
-    desc: '<span class="hidden lg:inline">Member</span> Completed Lessons'
+    stat: number.abbreviated(stats.completed),
+    title: 'Skills mastered',
+    desc: 'Lesson completions'
   })
 
   @!stat.item({
     color: 'text-accent',
     icon: 'solar:rocket-2-bold-duotone',
-    stat: stats.users.toLocaleString(),
-    title: 'Thousands of Us',
-    desc: 'Free & Plus Members'
+    stat: number.abbreviated(stats.users),
+    title: 'Growing community',
+    desc: 'Members strong'
   })
 
   @!stat.item({
     color: 'text-info',
     icon: 'solar:chat-round-like-bold-duotone',
-    stat: stats.comments.toLocaleString(),
-    title: 'Constantly Discussing',
-    desc: 'Comments Contributed',
+    stat: number.abbreviated(Number(stats.comments) + Number(stats.discussions)),
+    title: 'Vibrant discussions',
+    desc: 'Comments & forum posts',
     class: 'lg:!pr-0'
   })
 </div>

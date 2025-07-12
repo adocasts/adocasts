@@ -1,5 +1,6 @@
 import BaseAction from '#actions/base_action'
 import Comment from '#models/comment'
+import Discussion from '#models/discussion'
 import Post from '#models/post'
 import Progress from '#models/progress'
 import User from '#models/user'
@@ -11,6 +12,7 @@ export default class GetSiteStats extends BaseAction {
       completed: await Progress.build().where({ isCompleted: true }).count(),
       users: await User.query().getCount(),
       comments: await Comment.query().getCount(),
+      discussions: await Discussion.query().getCount(),
     }
   }
 }

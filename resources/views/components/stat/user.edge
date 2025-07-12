@@ -11,7 +11,8 @@
       color: 'text-info',
       icon: 'solar:user-hand-up-bold-duotone',
       stat: auth.user.createdAt?.toFormat('MMM yy'),
-      desc: 'Member Since',
+      title: 'Journey began',
+      desc: 'Member since',
       class: offset && 'lg:!pl-0'
     })
   @endif
@@ -19,31 +20,35 @@
   @!stat.item({
     color: 'text-primary',
     icon: 'solar:video-library-bold-duotone',
-    stat: stats.started.toLocaleString(),
-    desc: 'Lessons Started',
+    stat: number.abbreviated(stats.started),
+    title: 'Learning initiated',
+    desc: `${string.pluralize('Lesson', stats.started)} started`,
     class: offset && stats.comments ? 'lg:!pl-0' : '',
   })
 
   @!stat.item({
     color: 'text-secondary',
     icon: 'solar:star-rainbow-bold-duotone',
-    stat: stats.completed.toLocaleString(),
-    desc: 'Lessons Completed'
+    stat: number.abbreviated(stats.completed),
+    title: 'Knowledge gained',
+    desc: `${string.pluralize('Lesson', stats.completed)} completed`
   })
 
   @!stat.item({
     color: 'text-accent',
     icon: 'solar:rocket-2-bold-duotone',
     stat: TimeService.secondsToTimestring(stats.seconds),
-    desc: 'Spent Learning'
+    title: 'Total learning time',
+    desc: 'Spent learning'
   })
 
   @if (stats.comments)
     @!stat.item({
       color: 'text-info',
       icon: 'solar:chat-round-like-bold-duotone',
-      stat: stats.comments.toLocaleString(),
-      desc: 'Comments Contributed',
+      stat: number.abbreviated(Number(stats.comments) + Number(stats.discussions)),
+      title: 'Community impact',
+      desc: 'Comments & forum posts',
       class: offset && 'lg:!pr-0'
     })
   @endif

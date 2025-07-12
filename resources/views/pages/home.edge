@@ -57,15 +57,15 @@
 
     <section class="mb-12 pb-8 pt-24 -mt-8 bg-gradient-to-b from-base-100/0 to-base-100/10 border-b border-base-100/50 relative z-[1]">
       <div class="container mx-auto flex flex-col">
-        @if (auth.user)
+        @if (auth.user && stats.started)
           <h3 class="heading-3">
-            Here's What You've Been Up To!
+            Your learning journey
           </h3>
 
           @!stat.user({ stats })
         @else
           <h3 class="heading-3">
-            We'll Be Here When You're Ready!
+            Adocasts by the numbers
           </h3>
 
           @!stat.adocasts({ stats })
