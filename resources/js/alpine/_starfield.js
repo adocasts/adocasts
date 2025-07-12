@@ -29,9 +29,6 @@ Alpine.data('stars', () => ({
   async init() {
     if (!this.$el.id) return console.error('Alpine.stars: please ensure the element has a unique id')
 
-    const theme = document.body.getAttribute('data-theme')
-    const isDark = theme === 'adocasts-dark'
-
     await loadFull(tsParticles)
 
     this.container = await tsParticles.load({
@@ -42,7 +39,7 @@ Alpine.data('stars', () => ({
         // },
         fullScreen: false,
         particles: {
-          color: isDark ? '#fff' : '#5d65c7',
+          color: '#6ab7dc',
           number: {
             value: 400,
           },

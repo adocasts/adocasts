@@ -19,11 +19,11 @@
   --color-base-300: oklch(16.8% 0.055 287.6);
   --color-base-content: oklch(83% 0.039 288.4);
 
-  --color-primary: oklch(0.55 0.15 276.5);
-  --color-primary-content: oklch(0.93 0.048 275.7);
+  --color-primary: oklch(80% 0.1 230.5);
+  --color-primary-content: oklch(12% 0.03 276.9);
 
-  --color-secondary: oklch(80% 0.1 230.5);
-  --color-secondary-content: oklch(12% 0.03 276.9);
+  --color-secondary: oklch(0.55 0.15 276.5);
+  --color-secondary-content: oklch(0.93 0.048 275.7);
 
   --color-accent: oklch(90% 0.08 180.6);
   --color-accent-content: oklch(13% 0.033 350.1);
@@ -66,12 +66,12 @@
   --color-base-200: oklch(0.1853 0.0395 287.6);
   --color-base-300: oklch(8% 0.025 287.6);
   --color-base-content: oklch(90% 0.035 288.4);
+  
+  --color-primary: oklch(80% 0.1 230.5);
+  --color-primary-content: oklch(12% 0.03 276.9);
 
-  --color-primary: oklch(0.55 0.15 276.5);
-  --color-primary-content: oklch(0.93 0.048 275.7);
-
-  --color-secondary: oklch(80% 0.1 230.5);
-  --color-secondary-content: oklch(12% 0.03 276.9);
+  --color-secondary: oklch(0.55 0.15 276.5);
+  --color-secondary-content: oklch(0.93 0.048 275.7);
 
   --color-accent: oklch(90% 0.08 180.6);
   --color-accent-content: oklch(13% 0.033 350.1);
@@ -149,8 +149,21 @@
   --noise: 0;
 }
 
-@custom-variant dark (&:where([data-theme=adocasts-dark], [data-theme=adocasts-dark] *), &:where([data-theme=adocasts-midnight], [data-theme=adocasts-midnight] *));
+@custom-variant dark (
+  &:where([data-theme=adocasts-dark], [data-theme=adocasts-dark] *), 
+  &:where([data-theme=adocasts-midnight], [data-theme=adocasts-midnight] *),
+  &:where([data-theme=adocasts-system][prefers-color-scheme=dark], [data-theme=adocasts-system][prefers-color-scheme=dark] *)
+);
+
 @custom-variant midnight (&:where([data-theme=adocasts-midnight], [data-theme=adocasts-midnight] *));
+
+@media (prefers-color-scheme: dark) {
+  body[data-theme='adocasts-system'] {
+    .logo-light {
+      display: none;
+    }
+  }
+}
 
 body[data-theme='adocasts-dark'],
 body[data-theme='adocasts-midnight'] {

@@ -184,6 +184,7 @@
 .hover\:radial-accent-tr,
 .group-hover\:radial-accent-tr {
   --accent-height: 1px;
+  --color: var(--color-secondary);
 
   position: relative;
   overflow: hidden;
@@ -196,12 +197,12 @@
     opacity: var(--opacity, 1);
     transition: all 200ms ease-in-out;
     background-image: radial-gradient(40% 30px at var(--offset-x, 30%) 0%,
-        color-mix(in oklab, var(--color-primary) var(--offset-x-half, 15%), transparent),
-        color-mix(in oklab, var(--color-primary) 0%, transparent));
+        color-mix(in oklab, var(--color) var(--offset-x-half, 15%), transparent),
+        color-mix(in oklab, var(--color) 0%, transparent));
   }
 
   &:after {
-    @apply bg-gradient-to-r from-primary/0 from-[var(--offset-x-half)] via-primary/30 to-primary/0;
+    @apply bg-gradient-to-r from-primary/0 from-[var(--offset-x-half)] via-primary/30 to-primary/0 dark:from-secondary/0 dark:via-secondary/30 dark:to-secondary/0;
 
     content: "";
     width: 80%;
@@ -212,6 +213,21 @@
     top: 0;
     right: var(--offset-x, 30%);
     z-index: 10;
+  }
+}
+
+body[data-theme='adocasts-light'],
+body[data-theme='adocasts-system'][prefers-color-scheme='light'] {
+  .radial-accent-tl,
+  .hover\:radial-accent-tl,
+  .group-hover\:radial-accent-tl,
+  .radial-accent-t,
+  .hover\:radial-accent-t,
+  .group-hover\:radial-accent-t,
+  .radial-accent-tr,
+  .hover\:radial-accent-tr,
+  .group-hover\:radial-accent-tr {
+    --color: var(--color-primary);
   }
 }
 

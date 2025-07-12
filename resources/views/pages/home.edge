@@ -1,7 +1,7 @@
 @layout()
 
   <div class="relative -mt-16 pt-28">
-    <div class="absolute inset-x-0 bottom-0 top-0 bg-radial-[at_50%_-50%] from-primary/35 to-primary/0 dark:from-secondary/50 dark:to-secondary/0 z-1">
+    <div class="absolute inset-x-0 bottom-0 top-0 bg-radial-[at_50%_-50%] from-primary/50 to-primary/0 dark:from-secondary/50 dark:to-secondary/0 z-1">
       <div id="hero" x-data="stars" class="absolute w-full h-full z-[999] pointer-events-none">
         <div class="absolute w-full h-full z-50 bg-radial-[at_50%_-50%] from-primary/0 dark:from-secondary/0 to-base-300"></div>
         <div class="absolute w-full h-full bg-gradient-to-t from-base-300 via-base-300/0 to-base-300/0"></div>
@@ -16,13 +16,13 @@
         <div class="flex flex-col justify-center">
           <h2
             class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl 2xl:text-9xl font-black mb-3 sm:mb-4 uppercase drop-shadow-lg">
-            <span class="inline-block bg-primary bg-gradient-to-b from-white/0 via-white/25 dark:from-white dark:via-white/75 to-base-content/50 bg-clip-text text-transparent">
+            <span class="inline-block bg-base-content dark:bg-secondary bg-gradient-to-b from-black/35 via-black/20 dark:from-white dark:via-white/75 to-base-content/50 bg-clip-text text-transparent">
               Get
             </span>
-            <span class="inline-block bg-primary bg-gradient-to-b from-white/0 via-white/25 dark:from-white dark:via-white/75 to-base-content/50 bg-clip-text text-transparent">
+            <span class="inline-block bg-base-content dark:bg-secondary bg-gradient-to-b from-black/35 via-black/20 dark:from-white dark:via-white/75 to-base-content/50 bg-clip-text text-transparent">
               Ship
             </span>
-            <span class="inline-block bg-primary bg-gradient-to-b from-white/0 via-white/25 dark:from-white dark:via-white/75 to-base-content/50 bg-clip-text text-transparent">
+            <span class="inline-block bg-base-content dark:bg-secondary bg-gradient-to-b from-black/35 via-black/20 dark:from-white dark:via-white/75 to-base-content/50 bg-clip-text text-transparent">
               Done
             </span>
           </h2>
@@ -32,7 +32,7 @@
           </h1>
 
           <div class="flex flex-wrap items-center gap-y-1.5 gap-x-3 md:gap-x-6">
-            <a href="/series/lets-learn-adonisjs-6" class="btn btn-secondary btn-outline !border-secondary/50 backdrop-blur-sm md:btn-wide">
+            <a href="/series/lets-learn-adonisjs-6" class="btn btn-primary btn-outline !border-primary/50 backdrop-blur-sm md:btn-wide">
               Ship Your First App
               @svg('solar:map-arrow-right-bold-duotone')
             </a>

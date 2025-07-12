@@ -1,6 +1,22 @@
 import './unpoly'
 import './alpine'
 
+// set system color scheme preference
+const updateColorScheme = (e) => {
+  const isDark = e.matches ?? window.matchMedia('(prefers-color-scheme: dark)').matches;
+  document.body.setAttribute('prefers-color-scheme', isDark ? 'dark' : 'light');
+};
+
+const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+updateColorScheme(mediaQuery);
+
+if (typeof mediaQuery.addEventListener === 'function') {
+  mediaQuery.addEventListener('change', updateColorScheme);
+} else {
+  mediaQuery.addListener(updateColorScheme);
+}
+
 /**
  * grabs query string off location href and adds object representation on window.$params
  * then clears the query string from the url to prevent future side-effects
