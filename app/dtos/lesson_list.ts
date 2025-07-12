@@ -5,6 +5,8 @@ import Post from '#models/post'
 import AssetDto from './asset.js'
 
 export default class LessonListDto extends ProgressableDto {
+  static selectExtras = ['videoTypeId', 'videoYouTubeId', 'videoUrl', 'videoBunnyId']
+
   static model() {
     return Post
   }
@@ -47,6 +49,8 @@ export default class LessonListDto extends ProgressableDto {
     super()
 
     if (!post) return
+
+    console.log({ post })
 
     this.id = post.id
     this.slug = post.slug

@@ -1,8 +1,4 @@
-@let(display = 5)
-@let(displaySplit = Math.floor(display / 2))
-@let(rangeStart = Math.max(1, meta.currentPage - displaySplit))
-@let(rangeEnd = Math.min(meta.lastPage, meta.currentPage + displaySplit))
-@let(rangeArray = [...new Array(rangeEnd - rangeStart + 1)].map((_, i) => i + rangeStart))
+@let(range = pagination(meta))
 
 <div class="flex items-center justify-between w-full h-16 mt-3 lg:mt-6">
   <p class="text-xs md:text-sm opacity-60">
@@ -16,37 +12,25 @@
   </p>
 
   <nav>
-    @if (meta.pagesInRange.length > 1)
+    @if (range.pages.length > 1)
       <div class="join">
-        @if (meta.currentPage > displaySplit + 1)
-          @let(page = meta.pagesInRange.find((item) => item.page === 1))
-          
-          <a href="{{ page.url }}" class="join-item btn btn-soft">1</a>
-          
-          @if (meta.currentPage > displaySplit + 2)
-            <button class="join-item btn btn-disabled">...</button>
-          @endif
-        @endif
+        <a {{ html.attrs({ href: meta.previousPageUrl, class: ['join-item btn btn-outline btn-square', { 'btn-disabled': !meta.previousPageUrl }] }) }}>
+          @svg('solar:alt-arrow-left-outline', { class: 'size-5' })
+        </a>
 
-        @each (item in rangeArray)
-          @let(page = meta.pagesInRange.find((page) => page.page === item))
-          
-          @if (page)
-            <a href="{{ page.url }}" class="join-item btn {{ page.isActive ? 'btn-active' : '' }}">
+        @each(page in range.pages)
+          @if (page.type === 'ellipsis')
+            <button class="join-item btn btn-outline btn-disabled">...</button>
+          @else
+            <a href="{{ page.url }}" class="join-item btn btn-outline {{ page.isActive ? 'btn-primary' : '' }}">
               {{ page.page }}
             </a>
           @endif
         @endeach
 
-        @if (meta.currentPage < meta.lastPage - (displaySplit + 1))
-          @let(page = meta.pagesInRange.find((item) => item.page === meta.lastPage))
-          
-          @if (meta.currentPage < meta.lastPage - (displaySplit + 2))
-            <button class="join-item btn btn-disabled">...</button>
-          @endif
-
-          <a href="{{ page.url }}" class="join-item btn btn-soft">{{ meta.lastPage }}</a>
-        @endif
+        <a {{ html.attrs({ href: meta.nextPageUrl, class: ['join-item btn btn-outline btn-square', { 'btn-disabled': !meta.nextPageUrl }] }) }}>
+          @svg('solar:alt-arrow-right-outline', { class: 'size-5' })
+        </a>
       </div>
     @endif
   </nav>

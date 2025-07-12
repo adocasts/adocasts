@@ -4,11 +4,7 @@
 
   @card({ class: html.classNames(['md:card-side', $props.class]), border: 'flex md:card-side items-center' })
     <div class="md:w-1/2 @lg:w-2/5 pb-0 md:pb-[var(--card-p,1.5rem)] p-[var(--card-p,1.5rem)] md:pr-0">
-      <figure class="relative !overflow-visible group-hover:scale-[102.5%] duration-200">
-        @!post.picture({ item: lesson, class: 'h-full', lazy: lazyItem, preview: true })
-        {{-- <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md relative z-10">
-        <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md absolute top-0 left-0 w-full h-full blur-lg opacity-0 group-hover:opacity-50 duration-200"> --}}
-      </figure>
+      @!post.picture({ item: lesson, class: 'h-full', lazy: lazyItem, preview: true })
     </div>
 
     <div class="flex-1 card-body !static">
@@ -39,11 +35,7 @@
 
   @card({ class: `@md:card-side ${$props.class || ''}` })
     <div class="@sm:w-2/5 pb-0 @sm:pb-[var(--card-p,1.5rem)] p-[var(--card-p,1.5rem)] md:pr-0">
-      <figure class="relative overflow-visible group-hover:scale-[102.5%] duration-200">
-        @!post.picture({ item: lesson, class: 'h-full', lazy: lazyItem, preview: true })
-        {{-- <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md relative z-10">
-        <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md absolute top-0 left-0 w-full h-full blur-lg opacity-0 group-hover:opacity-75 duraton-200"> --}}
-      </figure>
+      @!post.picture({ item: lesson, class: 'h-full', lazy: lazyItem, preview: true })
     </div>
 
     <div class="flex-1 card-body">
@@ -81,8 +73,6 @@
     @if (showImage)
       <div class="p-[var(--card-p,1.5rem)] pb-0">
         @!post.picture({ item: lesson, class: 'h-full', lazy: lazyItem, preview: true })
-        {{-- <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md relative z-10">
-        <img src="/imgs/thumbnail_01.jpg" alt="Shoes" class="rounded-md absolute top-0 left-0 w-full h-full blur-lg opacity-0 group-hover:opacity-50 duration-200"> --}}
       </div>
     @endif
 

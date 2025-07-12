@@ -3,7 +3,7 @@
 
 @if (item.thumbnail)
   @let(img = item.thumbnail)
-  <figure class="relative overflow-visible group-hover:scale-105 duration-200">
+  <figure class="relative !overflow-visible group-hover:scale-105 duration-200">
     @picture({
       ...$props,
       ratio: 'aspect-video',
@@ -59,8 +59,7 @@
 
     @if (!preview || !item.animatedPreviewUrl)
       @!picture({
-        class: ['rounded-md !absolute top-0 left-0 w-full h-full pointer-events-none'],
-        classImg: ['blur-lg opacity-0 group-hover:opacity-50 duration-200'],
+        class: ['rounded-md !absolute top-0 left-0 w-full h-full pointer-events-none blur-lg opacity-0 group-hover:opacity-100 duration-200 !overflow-visible'],
         filename: img.filename,
         altText: img.altText,
         lazy: true,
