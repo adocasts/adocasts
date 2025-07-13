@@ -1,8 +1,10 @@
-import SessionLog from '#models/session_log'
+const OnAuthenticationFailed = () => import('#actions/auth/on_authentication_failed')
+import OnPendingEmailChange from '#listeners/account_listener'
 import Notification from '#models/notification'
+import SessionLog from '#models/session_log'
 import User from '#models/user'
 import emitter from '@adonisjs/core/services/emitter'
-import { OnPendingEmailChange } from '#listeners/account_listener'
+const OnAuthenticationSucceeded = () => import('#actions/auth/on_authentication_succeeded')
 const OnSignOutSucceeded = () => import('#actions/auth/on_signout_succeeded')
 const OnSignInSucceeded = () => import('#actions/auth/on_signin_succeeded')
 const SessionListener = () => import('#listeners/session_listener')
@@ -37,5 +39,7 @@ emitter.on('email:email_verification', [AccountListener, 'onVerifyEmail'])
 emitter.on('notification:send', [NotificationListener, 'onSend'])
 
 // done: migrated to actions
-emitter.on('session_auth:login_succeeded', [OnSignInSucceeded, 'asListener'])
-emitter.on('session_auth:logged_out', [OnSignOutSucceeded, 'asListener'])
+// emitter.on('session_auth:login_succeeded', [OnSignInSucceeded, 'asListener'])
+// emitter.on('session_auth:logged_out', [OnSignOutSucceeded, 'asListener'])
+// emitter.on('session_auth:authentication_succeeded', [OnAuthenticationSucceeded, 'asListener'])
+emitter.on('session_auth:authentication_failed', [OnAuthenticationFailed, 'asListener'])

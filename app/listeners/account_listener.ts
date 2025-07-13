@@ -1,6 +1,6 @@
 import SessionLog from '#models/session_log'
-import env from '#start/env'
 import User from '#models/user'
+import env from '#start/env'
 import router from '@adonisjs/core/services/router'
 import mail from '@adonisjs/mail/services/main'
 import edge from 'edge.js'
@@ -62,8 +62,7 @@ export default class AccountListener {
   }
 
   async onNewDevice({ user, log }: { user: User; log: SessionLog }) {
-    const href =
-      env.get('APP_DOMAIN') + router.makeUrl('users.settings.index', { section: 'account' })
+    const href = env.get('APP_DOMAIN') + router.makeUrl('settings', { section: 'account' })
     const html = await edge.render('emails/new_device', { user, log, href })
 
     await mail.send((mailer) => {

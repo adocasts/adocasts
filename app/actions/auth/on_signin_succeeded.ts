@@ -1,16 +1,17 @@
 import BaseAction from '#actions/base_action'
 import GetIpAddress from '#actions/general/get_ip_address'
+import GetIpLocation from '#actions/general/get_ip_location'
 import GetUserAgent from '#actions/general/get_user_agent'
+import { rememberMeTokensAge, sessionLogCookieName } from '#config/auth'
 import User from '#models/user'
 import { RememberMeToken } from '@adonisjs/auth/session'
 import stringHelpers from '@adonisjs/core/helpers/string'
-import { HttpContext } from '@adonisjs/core/http'
-import DestroyExpiredSessions from './destroy_expired_sessions.js'
-import GetIpLocation from '#actions/general/get_ip_location'
-import { DateTime } from 'luxon'
-import { rememberMeTokensAge, sessionLogCookieName } from '#config/auth'
+import { HttpContext, Request, Response } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
 import emitter from '@adonisjs/core/services/emitter'
+import { Session } from '@adonisjs/session'
+import { DateTime } from 'luxon'
+import DestroyExpiredSessions from './destroy_expired_sessions.js'
 
 interface Event {
   ctx: HttpContext
@@ -20,8 +21,20 @@ interface Event {
   rememberMeToken?: RememberMeToken
 }
 
-export default class OnSignInSucceeded extends BaseAction {
-  async asListener({ ctx, user, rememberMeToken, sessionId }: Event) {
+type Arguments = [
+  ctx: { request: Request; response: Response; session: Session },
+  user: User,
+  isRememberSession: boolean | undefined,
+]
+
+export default class OnSignInSucceeded extends BaseAction<Arguments> {
+  async asListener({ ctx, user, rememberMeToken }: Event) {
+    await this.handle(ctx, user, !!rememberMeToken)
+  }
+
+  async handle(...args: Arguments) {
+    const [ctx, user, isRememberSession] = args
+
     const ipAddress = await GetIpAddress.run(ctx.request)
     const userAgent = ctx.request.header('user-agent')
     const ua = await GetUserAgent.run(ctx.request)
@@ -43,9 +56,8 @@ export default class OnSignInSucceeded extends BaseAction {
       osName: ua?.os?.name,
       osVersion: ua?.os?.version,
       city,
-      isRememberSession: !!rememberMeToken,
-      rememberMeTokenId: rememberMeToken?.identifier ?? null,
-      sessionId,
+      isRememberSession,
+      sessionId: ctx.session.sessionId,
       country: countryLong,
       countryCode: countryShort,
       token: token,
@@ -62,65 +74,50 @@ export default class OnSignInSucceeded extends BaseAction {
       await emitter.emit('email:new_device', { user, log })
     }
 
+    console.log('setting token', token)
+
     ctx.response.encryptedCookie(sessionLogCookieName, token, {
       maxAge: rememberMeTokensAge,
       httpOnly: true,
     })
+
+    ctx.session.put(sessionLogCookieName, token)
   }
 
   async #getKnown(
     user: User,
     ipAddress: string,
     userAgent: string | undefined,
-    uaResult: UAParser.IResult | undefined
+    ua: UAParser.IResult | undefined
   ) {
-    // Attempt a strong match first
-    const strongMatch = await user
+    return user
       .related('sessions')
       .query()
-      .where('loginSuccessful', true)
-      .andWhere((query) => {
-        query.where('ipAddress', ipAddress)
-
-        if (uaResult?.browser.name) {
-          query.where('browserName', uaResult.browser.name)
+      .where((query) => {
+        // confirm ip address, browser name, device model, os name, os version match current session
+        if (
+          ipAddress &&
+          ua?.browser?.name &&
+          ua?.device?.model &&
+          ua?.os?.name &&
+          ua?.os?.version
+        ) {
+          query.where((uaQuery) => {
+            uaQuery
+              .where({ ipAddress })
+              .where('browserName', ua.browser.name!)
+              .where('deviceModel', ua.device.model!)
+              .where('osName', ua.os.name!)
+              .where('osVersion', ua.os.version!)
+          })
         }
 
-        if (uaResult?.os.name) {
-          query.where('osName', uaResult.os.name)
-        }
-
-        if (uaResult?.os.version) {
-          const majorOsVersion = uaResult.os.version.split('.')[0]
-          query.where('osVersion', majorOsVersion)
-        }
-
-        if (uaResult?.device.type) {
-          query.where('deviceType', uaResult.device.type)
-        }
-
-        if (uaResult?.device.model) {
-          query.where('deviceModel', uaResult.device.model)
-        } else {
-          query.whereNull('deviceModel')
+        // or confirm ip address and user agent string as a whole match current session
+        if (ipAddress && userAgent) {
+          query.orWhere((ipQuery) => ipQuery.where({ ipAddress, userAgent }))
         }
       })
-      .first()
-
-    if (strongMatch) {
-      return strongMatch
-    }
-
-    const weakMatch = await user
-      .related('sessions')
-      .query()
       .where('loginSuccessful', true)
-      .where({
-        ipAddress: ipAddress,
-        userAgent: userAgent,
-      })
       .first()
-
-    return weakMatch
   }
 }

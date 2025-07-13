@@ -257,8 +257,6 @@ export default class SessionService {
     const expiry = DateTime.now().minus({ milliseconds: ms('2h') })
     const rememberExpiry = DateTime.now().minus({ years: 5 }) // rememberMeToken = 5yr duration
 
-    console.log(`Signing out expired sessions for user ${user.id}. Expiry = ${expiry.toString()}`)
-
     return user
       .related('sessions')
       .query()

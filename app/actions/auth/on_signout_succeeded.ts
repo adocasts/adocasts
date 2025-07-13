@@ -1,11 +1,10 @@
 import BaseAction from '#actions/base_action'
-import GetIpAddress from '#actions/general/get_ip_address'
-import GetUserAgent from '#actions/general/get_user_agent'
 import { sessionLogCookieName } from '#config/auth'
-import SessionLog from '#models/session_log'
 import User from '#models/user'
-import { HttpContext } from '@adonisjs/core/http'
+import { HttpContext, Request, Response } from '@adonisjs/core/http'
+import { Session } from '@adonisjs/session'
 import { DateTime } from 'luxon'
+import GetSessionLogToken from './get_session_log_token.js'
 
 interface Event {
   ctx: HttpContext
@@ -14,50 +13,37 @@ interface Event {
   sessionId: string
 }
 
-export default class OnSignOutSucceeded extends BaseAction {
-  async asListener({ ctx, user, sessionId }: Event) {
+type Arguments = [ctx: { request: Request; response: Response; session: Session }, user: User]
+
+export default class OnSignOutSucceeded extends BaseAction<Arguments> {
+  async asListener({ ctx, user }: Event) {
     if (!user) return
-
-    const ipAddress = await GetIpAddress.run(ctx.request)
-    const userAgent = ctx.request.header('user-agent')
-    const token = ctx.request.encryptedCookie(sessionLogCookieName)
-    let log = await this.#getLatest(user, token)
-
-    if (!log) {
-      const ua = await GetUserAgent.run(ctx.request)
-
-      log = new SessionLog().merge({
-        userId: user.id,
-        ipAddress,
-        userAgent,
-        sessionId,
-        browserName: ua?.browser?.name,
-        browserEngine: ua?.engine?.name,
-        browserVersion: ua?.browser?.version,
-        deviceModel: ua?.device?.model,
-        deviceType: ua?.device?.type,
-        deviceVendor: ua?.device?.vendor,
-        osName: ua?.os?.name,
-        osVersion: ua?.os?.version,
-      })
-    }
-
-    log.logoutAt = DateTime.now()
-
-    await log.save()
-
-    ctx.response.clearCookie(sessionLogCookieName)
+    await this.handle(ctx, user)
   }
 
-  async #getLatest(user: User, token: string | undefined) {
-    if (!token) return
+  async handle(...args: Arguments) {
+    const [ctx, user] = args
+    const token = await GetSessionLogToken.run(ctx)
+    const logs = await this.#getLogs(user, token)
+
+    for (const log of logs) {
+      log.logoutAt = DateTime.now()
+      await log.save()
+    }
+
+    ctx.response.clearCookie(sessionLogCookieName)
+    ctx.session.forget(sessionLogCookieName)
+  }
+
+  async #getLogs(user: User, token: string | undefined) {
+    if (!token) return []
 
     return user
       .related('sessions')
       .query()
       .where('token', token)
       .where('loginSuccessful', true)
+      .whereNull('logoutAt')
       .orderBy('loginAt', 'desc')
-      .first()
   }
 }
