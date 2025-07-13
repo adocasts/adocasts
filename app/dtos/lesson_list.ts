@@ -50,8 +50,6 @@ export default class LessonListDto extends ProgressableDto {
 
     if (!post) return
 
-    console.log({ post })
-
     this.id = post.id
     this.slug = post.slug
     this.title = post.title

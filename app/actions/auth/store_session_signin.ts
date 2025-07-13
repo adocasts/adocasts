@@ -8,6 +8,8 @@ import { HttpContext } from '@adonisjs/core/http'
 import { Session } from '@adonisjs/session'
 import { Infer } from '@vinejs/vine/types'
 import GetRouteReferrer from '../general/get_route_referrer.js'
+import { inject } from '@adonisjs/core'
+import SessionService from '#services/session_service'
 
 type Validator = Infer<typeof signInValidator>
 
@@ -15,7 +17,12 @@ export default class StoreSessionSignIn extends BaseAction {
   forwardIgnore = ['signin', 'signup', 'users/menu']
   validator = signInValidator
 
-  async asController({ response, auth, session }: HttpContext, { options, ...data }: Validator) {
+  @inject()
+  async asController(
+    { response, auth, session }: HttpContext,
+    { options, ...data }: Validator,
+    sessionService: SessionService
+  ) {
     if (await AuthAttempt.disallows(data.uid)) {
       session.flashErrors({
         form: 'Your account has been locked due to repeated bad login attempts. Please reset your password.',
@@ -27,6 +34,7 @@ export default class StoreSessionSignIn extends BaseAction {
 
     await auth.use('web').login(user, options.remember)
     await AuthAttempt.clear(data.uid)
+    await sessionService.onSignInSuccess(user, options.remember)
 
     const redirect = await this.#getRedirectLocation(options, session)
     const checkout = await this.#checkForPlan(user, options)
@@ -63,7 +71,7 @@ export default class StoreSessionSignIn extends BaseAction {
       case 'cms':
         return 'https://cms.adocasts.com'
       default:
-        const match = GetRouteReferrer.run(options.forward)
+        const match = await GetRouteReferrer.run(options.forward)
         return match.referrer ?? '/'
     }
   }

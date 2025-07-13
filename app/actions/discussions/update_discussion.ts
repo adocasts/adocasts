@@ -29,7 +29,7 @@ export default class UpdateDiscussion extends BaseAction<[User, Discussion, Vali
 
   async handle(user: User, record: Discussion, data: Validator) {
     const bodyOld = record.body
-    const mentions = GetNewMentions.run(bodyOld, data.body)
+    const mentions = await GetNewMentions.run(bodyOld, data.body)
 
     return db.transaction(async (trx) => {
       record.useTransaction(trx)

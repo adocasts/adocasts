@@ -28,7 +28,7 @@ export default class UpdateComment extends BaseAction<[User, Comment, string]> {
 
   async handle(user: User, record: Comment, body: string) {
     const bodyOld = record.body
-    const mentions = GetNewMentions.run(bodyOld, body)
+    const mentions = await GetNewMentions.run(bodyOld, body)
 
     return db.transaction(async (trx) => {
       record.useTransaction(trx)

@@ -40,7 +40,7 @@ export default class StoreSessionSignUp extends BaseAction {
       case 'cms':
         return 'https://cms.adocasts.com'
       default:
-        const match = GetRouteReferrer.run(options.forward)
+        const match = await GetRouteReferrer.run(options.forward)
         return match.referrer ?? '/'
     }
   }

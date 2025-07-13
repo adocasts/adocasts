@@ -2,8 +2,9 @@ import SessionLog from '#models/session_log'
 import Notification from '#models/notification'
 import User from '#models/user'
 import emitter from '@adonisjs/core/services/emitter'
-import { PostShowVM } from '../app/view_models/post.js'
 import { OnPendingEmailChange } from '#listeners/account_listener'
+const OnSignOutSucceeded = () => import('#actions/auth/on_signout_succeeded')
+const OnSignInSucceeded = () => import('#actions/auth/on_signin_succeeded')
 const SessionListener = () => import('#listeners/session_listener')
 const PostListener = () => import('#listeners/post_listener')
 const AccountListener = () => import('#listeners/account_listener')
@@ -11,7 +12,7 @@ const NotificationListener = () => import('#listeners/notification_listener')
 
 declare module '@adonisjs/core/types' {
   interface EventsList {
-    'post:sync': { post: PostShowVM; views: number }
+    // 'post:sync': { post: PostShowVM; views: number }
     'email:password_reset': { user: User; signedUrl: string }
     'email:password_reset_success': { user: User }
     'email:change:attempted': OnPendingEmailChange
@@ -24,8 +25,9 @@ declare module '@adonisjs/core/types' {
   }
 }
 
+// todo: migrate to actions
 emitter.on('session:migrated', [SessionListener, 'onMigrated'])
-emitter.on('post:sync', [PostListener, 'onViewSync'])
+// emitter.on('post:sync', [PostListener, 'onViewSync'])
 emitter.on('email:password_reset', [AccountListener, 'onPasswordReset'])
 emitter.on('email:password_reset_success', [AccountListener, 'onPasswordResetSuccess'])
 emitter.on('email:changed', [AccountListener, 'onEmailChanged'])
@@ -33,3 +35,7 @@ emitter.on('email:reverted', [AccountListener, 'onEmailReverted'])
 emitter.on('email:new_device', [AccountListener, 'onNewDevice'])
 emitter.on('email:email_verification', [AccountListener, 'onVerifyEmail'])
 emitter.on('notification:send', [NotificationListener, 'onSend'])
+
+// done: migrated to actions
+emitter.on('session_auth:login_succeeded', [OnSignInSucceeded, 'asListener'])
+emitter.on('session_auth:logged_out', [OnSignOutSucceeded, 'asListener'])

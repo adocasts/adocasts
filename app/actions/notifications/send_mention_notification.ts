@@ -36,7 +36,7 @@ export default class SendMentionNotification extends BaseAction<
   async handle({ record, user, mentions, skipUserIds, trx }: SendMentionNotificationInterface) {
     return this.#manage(record, async () => {
       const userIds: number[] = []
-      const usernames = mentions ?? GetMentions.run(record.body)
+      const usernames = mentions ?? (await GetMentions.run(record.body))
 
       if (!usernames.length) return userIds
 

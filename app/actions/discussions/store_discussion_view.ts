@@ -12,7 +12,7 @@ export default class StoreDiscussionView extends BaseAction<[HttpContextPartial,
       discussionId: id,
       typeId: type,
       userId: auth.user?.id,
-      ipAddress: GetIpAddress.run(request),
+      ipAddress: await GetIpAddress.run(request),
       userAgent: request.header('user-agent'),
     })
   }

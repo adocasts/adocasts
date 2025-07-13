@@ -14,7 +14,7 @@ export default class SendForgotPassword extends BaseAction<[Validator, string]> 
   validator = emailValidator
 
   async asController({ request, response, session }: HttpContext, data: Validator) {
-    const ipAddress = GetIpAddress.run(request)
+    const ipAddress = await GetIpAddress.run(request)
     const { throttled } = await this.handle(data, ipAddress)
 
     if (throttled) {

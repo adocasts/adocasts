@@ -11,13 +11,15 @@ export default class SendContactEmail extends BaseAction {
   validator = contactValidator
 
   async asController({ response, request, session, auth }: HttpContext, data: Validator) {
+    const ip = await GetIpAddress.run(request)
+
     await mail.send((message) => {
       message
         .from('contact@adocasts.com', 'Contact Form on Adocasts')
         .replyTo(data.email)
         .to('contact@adocasts.com')
         .subject(data.subject).html(`
-          <p><strong>IP:</strong> ${GetIpAddress.run(request)}</p>
+          <p><strong>IP:</strong> ${ip}</p>
           <p><strong>User Id:</strong> ${auth.user?.id}</p>
           <p><strong>Email:</strong> ${data.email}</p>
           <p>${data.body}</p>

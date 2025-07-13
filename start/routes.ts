@@ -85,8 +85,11 @@ const ToggleDiscussionSolvedAt = () => import('#actions/discussions/toggle_discu
 const DestroyDiscussion = () => import('#actions/discussions/destroy_discussion')
 const UpdateDiscussion = () => import('#actions/discussions/update_discussion')
 const RenderDiscussionsEdit = () => import('#actions/discussions/render_discussions_edit')
+import '#start/router/actions'
 
 /* eslint-disable */
+
+router.useActionHandlers()
 
 router.where('id', router.matchers.number())
 router.where('slug', router.matchers.slug())

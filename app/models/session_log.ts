@@ -16,6 +16,12 @@ export default class SessionLog extends BaseModel {
   declare token: string
 
   @column()
+  declare sessionId: string | null
+
+  @column()
+  declare rememberMeTokenId: string | number | BigInt | null
+
+  @column()
   declare ipAddress: string | null
 
   @column()
