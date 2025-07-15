@@ -11,7 +11,10 @@ export default class RenderHome extends BaseAction {
     const topics = await GetTopicList.run()
     const lessons = await GetLessonsLatest.run()
     const series = await GetSeriesRecentlyUpdated.run({ limit: 5 })
-    const stats = auth.user ? await GetUserStats.run(auth.user) : await GetSiteStats.run()
+    const stats = {
+      site: await GetSiteStats.run(),
+      user: auth.user && (await GetUserStats.run(auth.user)),
+    }
 
     return view.render('pages/home', { series, topics, lessons, stats })
   }

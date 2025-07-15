@@ -3,16 +3,17 @@ import Profile from '#models/profile'
 import stripe from '#services/stripe_service'
 import { HttpContext } from '@adonisjs/core/http'
 import GetAllyUser from './get_ally_user.js'
+import OnSignInSucceeded from '../on_signin_succeeded.js'
 
 export default class HandleAllyCallback extends BaseAction {
-  async asController({ response, auth, ally, params, session }: HttpContext) {
+  async asController({ request, response, auth, ally, params, session }: HttpContext) {
     const wasAuthenticated = !!auth.user
     const social = ally.use(params.provider)
     const { user, ...result } = await GetAllyUser.run(social, params.provider, auth.user)
 
     if (!result.success) {
       session.flash('errors', { form: result.message })
-      return response.redirect().toRoute('auth.signin.create')
+      return response.redirect().toRoute('auth.signin')
     }
 
     await auth.use('web').login(user!, true)
@@ -22,7 +23,7 @@ export default class HandleAllyCallback extends BaseAction {
       await user?.related('profile').create({})
     }
 
-    // await this.sessionService.onSignInSuccess(user!, true)
+    await OnSignInSucceeded.run({ request, response, session }, user!, true)
     // await posthog.onAuthenticated(user!)
 
     if (wasAuthenticated) {

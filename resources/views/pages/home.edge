@@ -10,8 +10,6 @@
     </div>
 
     <section class="container-2xl section-y mx-auto relative z-[2]">
-      {{-- @!hero.getShipDone() --}}
-
       <div class="container mx-auto h-[calc(100%-125px)] flex justify-between gap-16 relative z-20">
         <div class="flex flex-col justify-center">
           <h2
@@ -47,7 +45,7 @@
           <div class="grid grid-cols-1 rounded-base p-3 shadow-md shadow-black/5">
             <div class="rounded-[calc(var(--radius-box)_-_.5rem)] backdrop-blur-md p-8 shadow-2xl ring-1 ring-black/5">
               <div class="aspect-video">
-
+                {{-- need a video or something --}}
               </div>
             </div>
           </div>
@@ -57,18 +55,18 @@
 
     <section class="mb-12 pb-8 pt-24 -mt-8 bg-gradient-to-b from-base-100/0 to-base-100/10 border-b border-base-100/50 relative z-[1]">
       <div class="container mx-auto flex flex-col">
-        @if (auth.user && stats.started)
+        @if (stats.user && stats.started)
           <h3 class="heading-3">
             Your learning journey
           </h3>
 
-          @!stat.user({ stats })
+          @!stat.user({ stats: stats.user })
         @else
           <h3 class="heading-3">
             Adocasts by the numbers
           </h3>
 
-          @!stat.adocasts({ stats })
+          @!stat.adocasts({ stats: stats.site })
         @endif
       </div>
     </section>

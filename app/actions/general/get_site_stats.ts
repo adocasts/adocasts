@@ -4,9 +4,18 @@ import Discussion from '#models/discussion'
 import Post from '#models/post'
 import Progress from '#models/progress'
 import User from '#models/user'
+import cache from '@adonisjs/cache/services/main'
 
 export default class GetSiteStats extends BaseAction {
   async handle() {
+    return cache.getOrSet({
+      key: 'SITE_STATS',
+      ttl: '30 minutes',
+      factory: async () => this.#get(),
+    })
+  }
+
+  async #get() {
     return {
       lessons: await Post.build().count(),
       completed: await Progress.build().where({ isCompleted: true }).count(),

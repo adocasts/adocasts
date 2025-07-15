@@ -5,6 +5,7 @@ import stripe from '#services/stripe_service'
 import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
 import { Infer } from '@vinejs/vine/types'
+import OnSignInSucceeded from './on_signin_succeeded.js'
 
 type Validator = Infer<typeof signUpValidator>
 
@@ -12,11 +13,16 @@ export default class StoreSessionSignUp extends BaseAction {
   forwardIgnore = ['signin', 'signup', 'users/menu']
   validator = signUpValidator
 
-  async asController({ response, auth, session }: HttpContext, { options, ...data }: Validator) {
+  async asController(
+    { request, response, auth, session }: HttpContext,
+    { options, ...data }: Validator
+  ) {
     const user = await User.create(data)
 
     await user.related('profile').create({})
     await auth.use('web').login(user, options.remember)
+
+    await OnSignInSucceeded.run({ request, response, session }, user, options.remember)
 
     const redirect = await this.#getRedirectLocation(options)
     const checkout = await this.#checkForPlan(user, options)

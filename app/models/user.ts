@@ -310,7 +310,10 @@ export default class User extends compose(BaseModel, AuthFinder) {
 }
 
 User['findForAuth'] = function (uids: string[], value: string) {
-  const query = User.query()
-  uids.map((uid) => query.orWhereILike(uid, value))
-  return query.first()
+  return User.query()
+    .whereNotNull('password')
+    .where((query) => {
+      uids.map((uid) => query.orWhereILike(uid, value))
+    })
+    .first()
 }
