@@ -8,7 +8,7 @@
     @tooltip({ text: enabled ? 'Lesson Is Bookmarked' : 'Bookmark This Lesson?', class: 'tooltip-bottom' })
       <button {{ html.attrs({ type: 'submit', class: ['group/tog btn btn-toggle btn-square', { 'active': enabled }] }) }}>
         @if (enabled)
-          @svg('solar:bookmark-outline', { class: 'w-5 h-5' })
+          @svg('solar:bookmark-bold', { class: 'w-5 h-5 text-success' })
         @else
           @svg('solar:bookmark-outline', { class: 'w-5 h-5 text-base-content/60 group-hover/tog:text-base-content duration-200' })
         @endif

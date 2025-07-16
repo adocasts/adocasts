@@ -7,6 +7,7 @@
     <li 
       data-series-lesson="{{ item.id }}" 
       x-data="{ isCompleted: {{ progression?.isCompleted ?? false }}, id: {{ item.id }}, lessonId: {{ lesson.id }}, itemId: {{ item.id }} }" 
+      x-cloak
       @toggle="isCompleted = $event.detail">
       <a
         href="{{ item.routeUrl }}"
@@ -17,8 +18,7 @@
           'border-success/50 bg-success/10 hover:border-success text-base-content/80 hover:text-base-content': lessonId === itemId && isCompleted,
         }">
         <div>
-          <div :class="{
-            'w-7 h-7 text-[.6rem] rounded duration-200 flex items-center justify-center': true,
+          <div class="w-7 h-7 text-[.6rem] rounded duration-200 flex items-center justify-center" :class="{
             'bg-success/10 group-hover/modles:bg-success text-success group-hover/modles:text-success-content': isCompleted,
             'bg-primary/25 group-hover/modles:bg-primary group-hover/modles:text-primary-content': !isCompleted && id === {{ lesson.id }},
             'bg-base-100 group-hover/modles:bg-primary group-hover/modles:text-primary-content': !isCompleted && id !== {{ lesson.id }}
