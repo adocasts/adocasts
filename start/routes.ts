@@ -47,6 +47,7 @@ const RenderSitemap = () => import('#actions/syndication/render_sitemap')
 const SendEmailVerification = () => import('#actions/users/send_email_verification')
 const VerifyEmail = () => import('#actions/users/verify_email')
 const RenderUserHistory = () => import('#actions/users/render_user_history')
+import '#start/router/actions'
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 const UpdateUserTheme = () => import('#actions/users/update_user_theme')
@@ -85,7 +86,7 @@ const ToggleDiscussionSolvedAt = () => import('#actions/discussions/toggle_discu
 const DestroyDiscussion = () => import('#actions/discussions/destroy_discussion')
 const UpdateDiscussion = () => import('#actions/discussions/update_discussion')
 const RenderDiscussionsEdit = () => import('#actions/discussions/render_discussions_edit')
-import '#start/router/actions'
+const RenderSchedule = () => import('#actions/general/render_schedule')
 
 /* eslint-disable */
 
@@ -103,6 +104,7 @@ router.on('/series/lets-learn-adonis-5').redirectToPath('/series/lets-learn-adon
 
 //* General
 router.get('/', [RenderHome]).as('home')
+router.get('/schedule/:year?/:month?', [RenderSchedule]).as('schedules.index').where('year', router.matchers.number()).where('month', router.matchers.number())
 router.on('/pricing').render('pages/pricing').as('pricing')
 router.post('/contact', [SendContactEmail]).as('contact.send')
 router.on('/contact').render('pages/contact').as('contact')

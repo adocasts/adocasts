@@ -1,5 +1,3 @@
-@let(size = $props.size ?? 'size-4')
-
 @if (auth.user)
 
   @form({
@@ -9,12 +7,12 @@
 
     <button {{ html.attrs({ type: 'submit', class: ['btn btn-outline', { 'btn-success': series.meta.isInWatchlist }] }) }}>
       @if (series.meta.isInWatchlist)
-        @svg('solar:bookmark-outline', { class: `${size} mr-1` })
+        @svg('solar:bookmark-bold', { class: `size-4 mr-1` })
         <span class="hidden @lg:inline">
           In Your Watchist
         </span>
       @else
-        @svg('solar:bookmark-outline', { class: `${size} mr-1 text-base-content/60 group-hover/tog:text-base-content duration-200` })
+        @svg('solar:bookmark-outline', { class: `size-4 mr-1 text-base-content/60 group-hover/tog:text-base-content duration-200` })
         <span class="hidden @lg:inline">
           Add to Watchist
         </span>
@@ -27,7 +25,7 @@
 @else
 
   <a href="{{ route('auth.signup') }}" class="btn btn-outline btn-square @lg:btn-not-square" up-auth-modal>
-    @svg('solar:bookmark-outline', { class: `${size} text-base-content/60 group-hover/tog:text-base-content duration-200` })
+    @svg('solar:bookmark-outline', { class: `size-4 text-base-content/60 group-hover/tog:text-base-content duration-200` })
     <span class="hidden @lg:inline ml-1">
       Add to Watchist
     </span>

@@ -1,3 +1,5 @@
+@let(progression = auth.user && progress.collection.get(series.id))
+
 @layout()
 
   <div x-data="{ isHeaderVisible: true }" class="flex justify-between items-start container gap-6 xl:gap-12 mx-auto">
@@ -16,7 +18,11 @@
         <div class="flex flex-1 items-center gap-3 mt-10">
           <a href="#" class="btn btn-outline btn-primary btn-wide">
             @svg('solar:play-outline', { class: 'size-4 mr-1' })
-            Start Series
+            @if (progression.watchPercent)
+              Continue Series
+            @else
+              Start Series
+            @endif
           </a>
 
           @!frags.series.watchlistToggle({
@@ -36,7 +42,7 @@
       <main class="section-b pt-8 @container flex-1">
         <div class="relative z-[1]">
           <div class="lg:hidden">
-            @!series.progress({ series })
+            @!series.progress({ series, progression })
           </div>
 
           @if (series.modules?.length)

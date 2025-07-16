@@ -1,4 +1,4 @@
-@let(progression = progress.collection.get(series.id))
+@let(progression = $props.progression || progress.collection.get(series.id))
 
 @if (progression)
   @let(progressionFrom = progression.isCompleted ? 'from-success/50' : 'from-primary/50')
