@@ -1,5 +1,7 @@
 import BaseAction from '#actions/base_action'
 import SchedulePostDto from '#dtos/schedule_post'
+import ScheduleSeriesDto from '#dtos/schedule_series'
+import CacheNamespaces from '#enums/cache_namespaces'
 import Post from '#models/post'
 import CalendarService from '#services/calendar_service'
 import plotMyCourseService from '#services/plotmycourse_service'
@@ -24,12 +26,27 @@ export default class RenderSchedule extends BaseAction {
 
     const calendar = CalendarService.getMonth(year, month, timezone)
     const posts = await this.#getPosts(year, month)
+    const series = await this.#getSeries()
 
-    return view.render('pages/schedules/index', { calendar, posts })
+    return view.render('pages/schedules/index', { calendar, posts, series })
+  }
+
+  async #getSeries() {
+    return cache.namespace(CacheNamespaces.SCHEDULE).getOrSet({
+      key: 'SERIES',
+      ttl: '30m',
+      factory: async () => {
+        const active = await plotMyCourseService.getSeries()
+
+        return {
+          active: ScheduleSeriesDto.fromArray(active),
+        }
+      },
+    })
   }
 
   async #getPosts(year: number, month: number) {
-    return cache.getOrSet({
+    return cache.namespace(CacheNamespaces.SCHEDULE).getOrSet({
       key: `POSTS_${year}_${month}`,
       ttl: '30m',
       factory: async () => {
@@ -37,8 +54,8 @@ export default class RenderSchedule extends BaseAction {
         const dbPosts = await this.#getPostsFromDb(ranges.db)
         const apiPosts = await plotMyCourseService.getPosts(ranges.api)
 
-        const dbPostVMs = dbPosts.map((post) => new SchedulePostDto(post))
-        const apiPostVMs = apiPosts.map((post: any) => new SchedulePostDto(post))
+        const dbPostVMs = SchedulePostDto.fromArray(dbPosts)
+        const apiPostVMs = SchedulePostDto.fromArray(apiPosts)
 
         return dbPostVMs.concat(apiPostVMs)
       },

@@ -22,4 +22,10 @@
   [Difficulties.ADVANCED, 'text-error'],
 ]))
 
+@let(content = new Map([
+  [Difficulties.BEGINNER, 'text-success-content'],
+  [Difficulties.INTERMEDIATE, 'text-warning-content'],
+  [Difficulties.ADVANCED, 'text-error-content'],
+]))
+
 {{{ await $slots.main({ badge, border, bg, text }) }}}

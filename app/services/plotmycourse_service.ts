@@ -32,7 +32,7 @@ class PlotMyCourseService {
   async getSeries() {
     const { data } = await this.api.post('/courses/search', {
       perPage: 100,
-      statusId: [1, 2, 3, 4, 6, 7, 43, 44],
+      statusId: [2, 3, 4, 6, 7, 44],
     })
 
     return data.data
