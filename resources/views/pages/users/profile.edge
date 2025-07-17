@@ -1,4 +1,13 @@
-@layout()
+@layout({
+  title: `${user.handle}${user.profile.name ? ` (${user.profile.name})` : ''} | Adocasts Profile`,
+  meta: {
+    url: route('profiles.show', { username: user.username }),
+    canonical: route('profiles.show', { username: user.username }),
+    desc: user.profile.biography,
+    asset: null,
+    index: user.isEnabledProfile
+  }
+})
   <div class="relative">
     @if (user.avatarRelative)
       <div x-data="color('{{ user.avatarRelative }}', 2)" class="h-24 absolute top-0 left-0 w-full" :style="style"></div>

@@ -1,4 +1,13 @@
 @layout({
+  title: `${lesson.page_title ?? lesson.title} | Adocasts Lesson`,
+  meta: {
+    url: lesson.routeUrl,
+    canonical: lesson.routeUrl,
+    series: series,
+    desc: string.excerpt(lesson.meta_description ?? lesson.description, 180),
+    asset: lesson.asset,
+    index: await bouncer.can('PostPolicy.index', lesson)
+  },
   style: `--aside-width: ${lesson.hasVideo ? '325px' : '0'}; --footer-less-width: var(--aside-width);`,
 })
   <main {{ html.attrs({ class: ['w-full', lesson.hasVideo ? 'lg:w-[calc(100%_-_var(--aside-width))]' : 'container mx-auto' ] }) }}>

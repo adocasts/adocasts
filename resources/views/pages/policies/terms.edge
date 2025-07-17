@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: "Website Policies & Guidelines | Adocasts Terms of Use",
+  meta: {
+    url: route('terms'),
+    desc: "Review the Terms of Use for Adocasts, outlining the guidelines and policies for using our AdonisJS and NodeJS video lesson platform.",
+    asset: null,
+    index: true
+  }
+})
   @layout.shell.asideLeft({ sticky: true })
     @slot('aside')
       @!policy.nav({ policy: 'terms' })

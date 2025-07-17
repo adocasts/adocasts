@@ -1,7 +1,9 @@
 @let(isEditing = discussion?.id)
 @let(action = isEditing ? form.put('discussions.update', { slug: discussion.slug }) : form.post('discussions.store'))
 
-@layout()
+@layout({
+  title: (isEditing ? `Editing "${discussion.title}"` : 'Start A New Discussion') + ' | Adocasts Forum'
+})
   @discussion.shell({ feed: 'none', topics })
     @slot('actions')
     @endslot

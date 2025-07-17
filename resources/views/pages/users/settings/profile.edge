@@ -1,6 +1,14 @@
 @let(profile = await auth.user.related('profile').query().firstOrFail())
 
-@layout()
+@layout({
+  title: "Update Your Information | Adocasts Profile Settings",
+  meta: {
+    url: route('settings', { section: 'profile' }),
+    desc: `Edit your personal profile details on Adocasts. Update your name, avatar, and other public (or private) information related to your account.`,
+    asset: null,
+    index: false
+  }
+})
   @layout.shell.asideLeft() 
     @slot('aside')
       @include('partials/users/settings/nav')

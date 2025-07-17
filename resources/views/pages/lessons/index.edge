@@ -1,4 +1,13 @@
-@layout()
+@layout({
+  title: 'Individual AdonisJS & NodeJS Tutorials | Adocasts Lessons',
+  meta: {
+    url: url,
+    canonical: lessons.meta.currentPage !== 1 && url,
+    desc: `Access individual lessons on Adocasts for AdonisJS and NodeJS. Learn practical skills and best practices for building modern web applications efficiently.`,
+    asset: null,
+    index: true
+  }
+})
   @layout.shell.asideLeft({ sticky: true })
     @slot('aside')
 

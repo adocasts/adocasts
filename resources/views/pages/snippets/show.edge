@@ -1,4 +1,13 @@
-@layout()
+@layout({
+  title: `${snippet.page_title ?? snippet.title} | Adocasts Snippet`,
+  meta: {
+    url: snippet.routeUrl,
+    canonical: snippet.routeUrl,
+    desc: string.excerpt(snippet.meta_description ?? snippet.description, 180),
+    asset: snippet.asset,
+    index: await bouncer.can('PostPolicy.index', snippet)
+  }
+})
   <main class="container mx-auto">
     <div class="p-3 lg:p-6 !pb-0">
       <div class="aspect-video max-h-[calc(100vh_-_120px)] mx-auto bg-base-200 rounded-base"></div>

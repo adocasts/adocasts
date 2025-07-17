@@ -1,4 +1,13 @@
-@layout()
+@layout({
+  title: `${topic.name} Lessons | Adocasts Topic`,
+  meta: {
+    url: route('topics.show', { slug: topic.slug }),
+    canonical: lessons.meta.currentPage !== 1 && route('topics.show.lessons', { slug: topic.slug }),
+    desc: string.excerpt(topic.description),
+    asset: topic.asset,
+    index: true
+  }
+})
 
   <div x-data="{ isHeaderVisible: true }">
     @include('partials/topics/hero')

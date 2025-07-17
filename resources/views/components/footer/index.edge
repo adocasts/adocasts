@@ -10,7 +10,7 @@
     </nav>
     <nav>
       <h6 class="footer-title">Resources</h6>
-      <a class="link link-hover">Schedule</a>
+      <a href="{{ route('schedules.index') }}" class="link link-hover">Schedule</a>
       <a href="{{ route('blogs.index') }}" class="link link-hover">Blog &amp; News</a>
       <a href="{{ route('contact') }}" class="link link-hover">Contact</a>
     </nav>
@@ -23,10 +23,11 @@
     </nav>
     <nav>
       <h6 class="footer-title">Legal</h6>
-      <a class="link link-hover">Terms of use</a>
-      <a class="link link-hover">Privacy policy</a>
-      <a class="link link-hover">Cookie policy</a>
-      <a class="link link-hover">Sitemap</a>
+      <a href="{{ route('terms') }}" class="link link-hover">Terms of use</a>
+      <a href="{{ route('privacy') }}" class="link link-hover">Privacy policy</a>
+      <a href="{{ route('cookies') }}" class="link link-hover">Cookie policy</a>
+      <a href="{{ route('guidelines') }}" class="link link-hover">Gudelines</a>
+      <a href="{{ route('sitemap') }}" class="link link-hover">Sitemap</a>
     </nav>
     <form class="flex-1" method="POST" action="https://app.convertkit.com/forms/3870934/subscriptions" up-submit="false">
       <h6 class="footer-title">Newsletter</h6>

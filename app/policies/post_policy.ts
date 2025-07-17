@@ -1,11 +1,13 @@
-import BasePolicy from '#policies/base_policy'
+import LessonShowDto from '#dtos/lesson_show'
 import PaywallTypes from '#enums/paywall_types'
+import States from '#enums/states'
 import Post from '#models/post'
 import User from '#models/user'
+import BasePolicy from '#policies/base_policy'
+import TimeService from '#services/time_service'
 import { action } from '@adonisjs/bouncer'
 import type { AuthorizerResponse } from '@adonisjs/bouncer/types'
-import TimeService from '#services/time_service'
-import LessonShowDto from '#dtos/lesson_show'
+import { DateTime } from 'luxon'
 
 export default class PostPolicy extends BasePolicy {
   @action({ allowGuest: true })
@@ -22,5 +24,21 @@ export default class PostPolicy extends BasePolicy {
     if (this.isAdmin(user) || this.isContributorLvl1(user) || this.isContributorLvl2(user))
       return true
     return false
+  }
+
+  @action({ allowGuest: true })
+  index(_user: User, post: Post | LessonShowDto) {
+    const isPublic = post.stateId === States.PUBLIC
+
+    if (!post.publishAt) {
+      return isPublic
+    }
+
+    const publishAt =
+      typeof post.publishAt === 'string' ? DateTime.fromISO(post.publishAt) : post.publishAt
+
+    const isPastPublishAt = publishAt.diffNow().as('seconds')
+
+    return isPublic && isPastPublishAt < 0
   }
 }

@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: "Data Protection & Security | Adocasts Privacy Policy",
+  meta: {
+    url: route('privacy'),
+    desc: "Understand how Adocasts collects, uses, and protects your personal information. Read our Privacy Policy for details on data handling and security.",
+    asset: null,
+    index: true
+  }
+})
   @layout.shell.asideLeft({ sticky: true })
     @slot('aside')
       @!policy.nav({ policy: 'privacy' })

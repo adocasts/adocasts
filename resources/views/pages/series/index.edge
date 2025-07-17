@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: 'Comprehensive AdonisJS & NodeJS Courses | Adocasts Series',
+  meta: {
+    url: route('series.index'),
+    desc: `Dive into comprehensive video series on Adocasts covering AdonisJS and NodeJS development. Each series offers structured lessons to guide you from beginner to advanced topics.`,
+    asset: null,
+    index: true
+  }
+})
   @layout.shell.asideLeft({ sticky: true })
     @slot('aside')
 

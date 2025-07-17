@@ -1,4 +1,13 @@
-@layout()
+@layout({
+  title: `${blog.page_title ?? blog.title} | Adocasts Blog`,
+  meta: {
+    url: blog.routeUrl,
+    canonical: blog.routeUrl,
+    desc: string.excerpt(blog.meta_description ?? blog.description, 180),
+    asset: blog.asset,
+    index: await bouncer.can('PostPolicy.index', blog)
+  }
+})
   <main class="container mx-auto">
     @if (blog.hasVideo)
       <div class="p-3 lg:p-6 !pb-0">

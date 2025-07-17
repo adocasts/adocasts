@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: 'AdonisJS & NodeJS Insights | Adocasts Blog & News',
+  meta: {
+    url: route('blogs.index'),
+    desc: `Stay updated with the latest in AdonisJS and NodeJS development. Read Adocasts blog posts, tutorials, and news to deepen your understanding and skills.`,
+    asset: null,
+    index: true
+  }
+})
   @layout.shell.asideLeft({ sticky: true })
     @slot('aside')
 

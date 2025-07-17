@@ -1,4 +1,9 @@
-@layout()
+@layout({
+  title: 'AdonisJS & NodeJS Community Support | Adocasts Forum',
+  meta: {
+    description: "Connect with other developers, ask questions, and share insights on AdonisJS and NodeJS in the Adocasts community forum. Get help and contribute to the discussion."
+  }
+})
   @discussion.shell({ topics, filters })
 
     @each (discussion in discussions.data)

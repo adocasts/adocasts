@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: 'Reusable AdonisJS & NodeJS Code | Adocasts Snippets',
+  meta: {
+    url: route('snippets.index'),
+    desc: `Discover and utilize practical code snippets for AdonisJS and NodeJS on Adocasts. Quickly implement common functionalities and accelerate your development workflow.`,
+    asset: null,
+    index: true
+  }
+})
   @layout.shell.asideLeft({ sticky: true })
     @slot('aside')
 

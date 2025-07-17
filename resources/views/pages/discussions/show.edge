@@ -2,7 +2,12 @@
 @let(impressionCount = parseInt(discussion.meta.impressions_count))
 @let(viewCount = parseInt(discussion.meta.views_count))
 
-@layout()
+@layout({
+  title: `${discussion.title} | Adocasts Forum`,
+  meta: {
+    description: string.excerpt(discussion.body, 350, { completeWords: true })
+  }
+})
   @discussion.shell({ feed: 'none', topics })
 
     <h1 class="heading-2 !text-wrap">

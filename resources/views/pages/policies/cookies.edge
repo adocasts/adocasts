@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: "Your Privacy & Data Usage | Adocasts Cookie Policy",
+  meta: {
+    url: route('cookies'),
+    desc: "Learn about how Adocasts uses cookies and similar technologies on our website. Our Cookie Policy explains data collection, your choices, and privacy.",
+    asset: null,
+    index: true
+  }
+})
   @layout.shell.asideLeft({ sticky: true })
     @slot('aside')
       @!policy.nav({ policy: 'cookies' })

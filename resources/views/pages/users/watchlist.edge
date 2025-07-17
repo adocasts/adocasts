@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: "Your Saved Series | Adocasts Watchlist",
+  meta: {
+    url: route('users.watchlist'),
+    desc: `View your personalized watchlist of saved AdonisJS and NodeJS video series on Adocasts. Keep track of courses you want to explore next.`,
+    asset: null,
+    index: false
+  }
+})
 
   <main class="section-container mx-auto @container flex-1" up-main-content>
     <h1 class="heading-2">

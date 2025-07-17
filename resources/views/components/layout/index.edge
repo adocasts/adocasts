@@ -3,9 +3,20 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>
-      AdonisJS - A fully featured web framework for Node.js
-    </title>
+
+    @if ($slots.meta)
+      {{{ await $slots.meta() }}}
+    @endif
+
+    @if (meta)
+      @!meta.tags({ ...meta, title })
+    @endif
+
+    @if (!$slots.meta && !meta?.title)
+      <title>
+        {{ env('APP_BRAND') }}
+      </title>
+    @endif
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

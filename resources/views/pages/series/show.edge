@@ -1,6 +1,14 @@
 @let(progression = auth.user && progress.collection.get(series.id))
 
-@layout()
+@layout({
+  title: `${series.name} | Adocasts Series`,
+  meta: {
+    url: route('series.show', { slug: series.slug }),
+    desc: string.excerpt(series.description, 180),
+    asset: series.assets,
+    index: true
+  }
+})
 
   <div x-data="{ isHeaderVisible: true }" class="flex justify-between items-start container gap-6 xl:gap-12 mx-auto">
     <div class="flex-1">

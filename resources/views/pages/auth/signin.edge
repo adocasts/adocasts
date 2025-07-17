@@ -2,7 +2,15 @@
 @let(plan = request.input('plan'))
 @let(forward = request.input('forward', request.header('referrer')))
 
-@layout()
+@layout({
+  title: 'Access Your Account | Adocasts Sign In',
+  meta: {
+    url: route('auth.signin'),
+    desc: `Sign in to your Adocasts account to continue and track your progress with our AdonisJS and NodeJS lessons or contribute and ask questions.`,
+    asset: null,
+    index: true
+  }
+})
 
   @card({ class: html.classNames(['w-[27rem] mx-auto p-6', { 'my-12': up.isPage }]), accent: false })
 

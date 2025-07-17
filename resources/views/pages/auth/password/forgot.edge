@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: 'Account Assistance | Adocasts Forgot Password?',
+  meta: {
+    url: route('auth.password.forgot'),
+    desc: `If you forgot your Adocasts password, use this page to initiate the recovery process and regain access to your AdonisJS and NodeJS learning resources.`,
+    asset: null,
+    index: true
+  }
+})
 
   @card({ class: html.classNames(['w-[27rem] mx-auto p-6', { 'my-12': up.isPage }]), accent: false })
 

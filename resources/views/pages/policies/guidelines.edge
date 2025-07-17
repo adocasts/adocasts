@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: "Community & Usage Standards | Adocasts Content Guidelines",
+  meta: {
+    url: route('guidelines'),
+    desc: "Learn about the content guidelines for Adocasts. These standards ensure a positive and productive learning environment for all users of our AdonisJS and NodeJS resources.",
+    asset: null,
+    index: true
+  }
+})
   @layout.shell.asideLeft({ sticky: true })
     @slot('aside')
       @!policy.nav({ policy: 'guidelines' })

@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: "Navigate Your Account | Adocasts Menu",
+  meta: {
+    url: route('users.menu'),
+    desc: `Explore your Adocasts account menu for quick access to bookmarks, watchlist, settings, and other personalized features for your AdonisJS and NodeJS learning.`,
+    asset: null,
+    index: true
+  }
+})
 
   <div class="max-w-[100vw] flex gap-x-3 md:gap-x-6 p-3 md:p-6" x-data x-init="up.reload('[up-header-auth]', { url: '{{ route('frag', ['header', 'auth']) }}', layer: 'root', background: true })">
     <nav class="flex flex-col sticky top-6 -mx-2 group">

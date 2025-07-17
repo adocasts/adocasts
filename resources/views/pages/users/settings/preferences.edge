@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: "Personalize Your Experience | Adocasts Preference Settings",
+  meta: {
+    url: route('settings', { section: 'preferences' }),
+    desc: `Adjust your learning preferences on Adocasts to personalize your experience. Tailor how AdonisJS and NodeJS content is displayed and recommended.`,
+    asset: null,
+    index: false
+  }
+})
   @layout.shell.asideLeft() 
     @slot('aside')
       @include('partials/users/settings/nav')

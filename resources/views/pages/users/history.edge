@@ -1,4 +1,12 @@
-@layout()
+@layout({
+  title: "Your Lesson Progress | Adocasts History",
+  meta: {
+    url: route('users.history'),
+    desc: `Review your viewing history on Adocasts. See which AdonisJS and NodeJS lessons you've watched and track your progress through various series.`,
+    asset: null,
+    index: false
+  }
+})
 
   <main class="section-container mx-auto @container flex-1" up-main-content>
     <h1 class="heading-2">
@@ -15,7 +23,7 @@
 
     <div class="tabs tabs-box mb-6 border border-base-100 bg-transparent">
       <a
-        class="tab {{ html.classNames([{ 'bg-primary/10 !border !border-primary/50 !text-primary-content': tab === 'series' }]) }}"
+        class="tab {{ html.classNames([{ 'bg-primary/10 !border !border-primary/50 !text-primary': tab === 'series' }]) }}"
         href="{{ route('users.history', { tab: 'series' }) }}"
         up-scroll="preserve">
         @svg('solar:playlist-outline', { class: 'w-4 h-4 mr-2', })
@@ -24,7 +32,7 @@
 
       <a
         role="tab"
-        class="tab {{ html.classNames([{ 'bg-primary/10 !border !border-primary/50 !text-primary-content': tab === 'lessons' }]) }}"
+        class="tab {{ html.classNames([{ 'bg-primary/10 !border !border-primary/50 !text-primary': tab === 'lessons' }]) }}"
         href="{{ route('users.history', { tab: 'lessons' })}}"
         up-scroll="preserve">
         @svg('solar:video-library-outline', { class: 'w-4 h-4 mr-2' })

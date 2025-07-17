@@ -1,6 +1,14 @@
 @let(profile = await auth.user.related('profile').query().firstOrFail())
 
-@layout()
+@layout{
+  title: "Manage Alerts | Adocasts Notification Settings",
+  meta: {
+    url: route('settings', { section: 'notifications' }),
+    desc: `Customize your Adocasts notification preferences. Choose how you receive updates on new AdonisJS and NodeJS content, announcements, and account activities.`,
+    asset: null,
+    index: false
+  }
+})
   @layout.shell.asideLeft() 
     @slot('aside')
       @include('partials/users/settings/nav')
