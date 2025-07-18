@@ -50,6 +50,8 @@ const RenderUserHistory = () => import('#actions/users/render_user_history')
 import '#start/router/actions'
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const DisableNotification = () => import('#actions/notifications/disable_notification')
+const DisableAllNotifications = () => import('#actions/notifications/disable_all_notifications')
 const StoreSessionSignUp = () => import('#actions/auth/store_session_signup')
 const UpdateUserTheme = () => import('#actions/users/update_user_theme')
 const SendContactEmail = () => import('#actions/general/send_contact_email')
@@ -160,6 +162,8 @@ router.get('/users/bookmarks', [RenderUserBookmarks]).as('users.bookmarks').use(
 router.get('/users/history/:tab?', [RenderUserHistory]).as('users.history').use(middleware.auth())
 router.get('/:handle/:tab?', [RenderUserProfile]).as('users.profile').where('handle', /^@/)
 router.patch('/users/theme', [UpdateUserTheme]).as('users.theme')
+router.get('/users/:userId/notifications/:field/off', [DisableNotification]).as('users.notifications.disable.field')
+router.get('/users/:userId/notifications/off', [DisableAllNotifications]).as('users.notifications.disable')
 
 //* Series
 router.get('/series', [RenderSeriesIndex]).as('series.index')

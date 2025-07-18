@@ -1,7 +1,7 @@
 @let(toasts = flashMessages.get('toasts') || [])
 
 <div x-data="toaster({{ js.stringify(toasts) }})" id="toasts" class="toast toast-bottom toast-right fixed z-50" up-hungry @toast="toast($event.detail)" @run="run($event.detail)">
-  <template x-for="item in toasts" :key="item.key">
+  <template x-for="item in toasts" :key="item.type + item.message">
     <div
       x-data="{
         timeout: null,

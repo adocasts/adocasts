@@ -5,7 +5,7 @@ import User from '#models/user'
 import { HttpContext } from '@adonisjs/http-server'
 
 export default class ToggleCommentVote extends BaseAction<[User, number]> {
-  async asController({ view, params, auth, bouncer, up }: HttpContext) {
+  async asController({ view, params, auth, bouncer }: HttpContext) {
     const comment = await Comment.findOrFail(params.id)
 
     await bouncer.with('CommentPolicy').authorize('vote')

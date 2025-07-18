@@ -32,6 +32,7 @@ export default class SendNotification<T extends LucidModel> extends BaseAction<
         notificationTypeId: data.notificationTypeId,
         table: data.model.table,
         tableId: data.record.id,
+        title: data.title,
         body: stringHelpers.excerpt(data.record.body, 255, { completeWords: true }),
         href: data.href,
       },

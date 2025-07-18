@@ -8,6 +8,7 @@ import { authApiClient } from '@adonisjs/auth/plugins/api_client'
 import { shieldApiClient } from '@adonisjs/shield/plugins/api_client'
 import testUtils from '@adonisjs/core/services/test_utils'
 import { sessionLogClient } from '#start/japa/session_log'
+import { toastClient } from '#start/japa/toast'
 
 /**
  * This file is imported by the "bin/test.ts" entrypoint file
@@ -25,6 +26,7 @@ export const plugins: Config['plugins'] = [
   sessionApiClient(app),
   shieldApiClient(),
   sessionLogClient(),
+  toastClient(),
 ]
 
 /**

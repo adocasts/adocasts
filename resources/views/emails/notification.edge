@@ -10,7 +10,7 @@
 
   @emails.paragraph()
     <strong>Comment:</strong><br/>
-    {{ utils.stripHTML(notification.body) }}
+    {{ parser.stripHtml(notification.body) }}
   @end
 
   @emails.button({ href })

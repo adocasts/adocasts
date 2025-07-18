@@ -1,4 +1,5 @@
 import BaseAction from '#actions/base_action'
+import env from '#start/env'
 import { Request } from '@adonisjs/core/http'
 import router from '@adonisjs/core/services/router'
 import { MatchedRoute } from '@adonisjs/core/types/http'
@@ -19,14 +20,14 @@ export default class GetRouteReferrer extends BaseAction<[Request | string]> {
 
       if (!referrer) return result
 
-      const url = new URL(referrer)
+      const url = new URL(referrer, env.get('APP_DOMAIN'))
       const route = router.match(url.pathname, 'GET')
 
       if (route) {
         result.referrer = url.pathname + url.search
         result.route = route
       }
-    } catch (_) {}
+    } catch (e) {}
 
     return result
   }
@@ -34,6 +35,6 @@ export default class GetRouteReferrer extends BaseAction<[Request | string]> {
   #getReferrer(requestOrReferrer: Request | string) {
     if (typeof requestOrReferrer === 'string') return requestOrReferrer
 
-    return requestOrReferrer.header('referrer')
+    return requestOrReferrer.header('referer')
   }
 }

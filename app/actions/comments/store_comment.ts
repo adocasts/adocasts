@@ -6,6 +6,7 @@ import db from '@adonisjs/lucid/services/db'
 import { Infer } from '@vinejs/vine/types'
 import SendCommentNotification from '../notifications/send_comment_notification.js'
 import SendMentionNotification from '../notifications/send_mention_notification.js'
+import GetRouteReferrer from '#actions/general/get_route_referrer'
 
 type Validator = Infer<typeof commentStoreValidator>
 
@@ -16,12 +17,16 @@ export default class StoreComment extends BaseAction<[user: User, data: Validato
     await bouncer.with('CommentPolicy').authorize('store')
   }
 
-  async asController({ response, session, auth }: HttpContext, data: Validator) {
-    await this.handle(auth.user!, data)
+  async asController({ request, response, session, auth }: HttpContext, data: Validator) {
+    const comment = await this.handle(auth.user!, data)
 
     session.toast('success', 'Thanks for your comment!')
 
-    return response.redirect().back()
+    const { referrer } = await GetRouteReferrer.run(request)
+
+    return referrer
+      ? response.redirect(`${referrer}#comment${comment.id}`)
+      : response.redirect().back()
   }
 
   async handle(user: User, data: Validator) {

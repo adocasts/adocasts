@@ -9,7 +9,7 @@
   })
     <button {{ html.attrs({ type: 'submit', class: ['btn btn-outline btn-sm', { 'btn-primary' : hasLiked }] }) }}>
       @svg(likeIcon, { class: 'w-4 h-4 -ml-1' })
-      {{ comment.userVotes.length }}
+      <span class="btn-count">{{ comment.userVotes.length }}</span>
     </button>
 
     @!frags.toaster()
@@ -19,7 +19,7 @@
 
   <div up-comment-like="{{ comment.id }}" class="btn btn-outline btn-sm" disabled="disabled">
     @svg(likeIcon, { class: 'w-4 h-4 -ml-1' })
-    {{ comment.userVotes.length }}
+    <span class="btn-count">{{ comment.userVotes.length }}</span>
 
     @!frags.toaster()
   </div>
