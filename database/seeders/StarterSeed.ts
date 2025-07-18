@@ -3,12 +3,12 @@ import db from '@adonisjs/lucid/services/db'
 import Roles from '#enums/roles'
 import Role from '#models/role'
 import User from '#models/user'
-import UtilityService from '#services/utility_service'
 import app from '@adonisjs/core/services/app'
 import { CollectionFactory } from '#factories/collection_factory'
 import { TaxonomyFactory } from '#factories/taxonomy_factory'
 import { UserFactory } from '#factories/user_factory'
 import { TransactionClientContract } from '@adonisjs/lucid/types/database'
+import { ListService } from '#services/list_service'
 
 export default class StarterSeedSeeder extends BaseSeeder {
   async run() {
@@ -18,7 +18,7 @@ export default class StarterSeedSeeder extends BaseSeeder {
       await this.seedRoles(trx)
 
       if (!app.inTest && !app.inProduction) {
-        await this.seedUsersAndContent(trx)
+        // await this.seedUsersAndContent(trx)
       }
 
       await trx.commit()
@@ -132,11 +132,11 @@ export default class StarterSeedSeeder extends BaseSeeder {
                 assets.apply('thumbnail').pivotAttributes({ sort_order: 0 })
               )
               .with('comments', 6, (comments) =>
-                comments.tap((row) => (row.userId = UtilityService.getRandom(userIds)))
+                comments.tap((row) => (row.userId = ListService.getRandom(userIds)))
               )
               .factory.after('create', async (_, row) => {
                 await row.related('authors').sync([admin.id])
-                await row.related('taxonomies').sync([UtilityService.getRandom(taxonomyIds)])
+                await row.related('taxonomies').sync([ListService.getRandom(taxonomyIds)])
               })
           )
       )
@@ -171,11 +171,11 @@ export default class StarterSeedSeeder extends BaseSeeder {
                 assets.apply('thumbnail').pivotAttributes({ sort_order: 0 })
               )
               .with('comments', 6, (comments) =>
-                comments.tap((row) => (row.userId = UtilityService.getRandom(userIds)))
+                comments.tap((row) => (row.userId = ListService.getRandom(userIds)))
               )
               .factory.after('create', async (_, row) => {
                 await row.related('authors').sync([admin.id])
-                await row.related('taxonomies').sync([UtilityService.getRandom(taxonomyIds)])
+                await row.related('taxonomies').sync([ListService.getRandom(taxonomyIds)])
               })
           )
       )
@@ -210,11 +210,11 @@ export default class StarterSeedSeeder extends BaseSeeder {
                 assets.apply('thumbnail').pivotAttributes({ sort_order: 0 })
               )
               .with('comments', 6, (comments) =>
-                comments.tap((row) => (row.userId = UtilityService.getRandom(userIds)))
+                comments.tap((row) => (row.userId = ListService.getRandom(userIds)))
               )
               .factory.after('create', async (_, row) => {
                 await row.related('authors').sync([contributorLvl2.id])
-                await row.related('taxonomies').sync([UtilityService.getRandom(taxonomyIds)])
+                await row.related('taxonomies').sync([ListService.getRandom(taxonomyIds)])
               })
           )
       )
@@ -243,11 +243,11 @@ export default class StarterSeedSeeder extends BaseSeeder {
             assets.apply('thumbnail').pivotAttributes({ sort_order: 0 })
           )
           .with('comments', 6, (comments) =>
-            comments.tap((row) => (row.userId = UtilityService.getRandom(userIds)))
+            comments.tap((row) => (row.userId = ListService.getRandom(userIds)))
           )
           .factory.after('create', async (_, row) => {
             await row.related('authors').sync([contributorLvl1.id])
-            await row.related('taxonomies').sync([UtilityService.getRandom(taxonomyIds)])
+            await row.related('taxonomies').sync([ListService.getRandom(taxonomyIds)])
           })
       )
       .createMany(3)

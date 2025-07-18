@@ -29,9 +29,9 @@ export default class StoreSessionSignIn extends BaseAction {
 
     const user = await this.#verifyCredentials(data)
 
-    await auth.use('web').login(user, options.remember)
+    await auth.use('web').login(user, options?.remember)
     await AuthAttempt.clear(data.uid)
-    await OnSignInSucceeded.run({ request, response, session }, user, options.remember)
+    await OnSignInSucceeded.run({ request, response, session }, user, options?.remember)
 
     const redirect = await this.#getRedirectLocation(options, session)
     const checkout = await this.#checkForPlan(user, options)
@@ -57,7 +57,7 @@ export default class StoreSessionSignIn extends BaseAction {
     }
   }
 
-  async #getRedirectLocation(options: Validator['options'], session: Session) {
+  async #getRedirectLocation(options: Validator['options'] = {}, session: Session) {
     if (this.forwardIgnore.some((path) => options.forward?.includes(path))) {
       options.forward = '/'
     }
@@ -73,7 +73,7 @@ export default class StoreSessionSignIn extends BaseAction {
     }
   }
 
-  async #checkForPlan(user: User, options: Validator['options']) {
+  async #checkForPlan(user: User, options: Validator['options'] = {}) {
     if (!options.plan) return { bail: false, status: '', message: '' }
 
     const { status, message, checkout } = await stripe.tryCreateCheckoutSession(user, options.plan)

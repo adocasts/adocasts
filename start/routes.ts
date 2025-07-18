@@ -50,6 +50,7 @@ const RenderUserHistory = () => import('#actions/users/render_user_history')
 import '#start/router/actions'
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const StoreSessionSignUp = () => import('#actions/auth/store_session_signup')
 const UpdateUserTheme = () => import('#actions/users/update_user_theme')
 const SendContactEmail = () => import('#actions/general/send_contact_email')
 const HandleStripeWebhook = () => import('#actions/plus/handle_stripe_webhook')
@@ -134,10 +135,11 @@ router.get('/img/*', [ShowAsset]).as('assets.img')
 router.post('/api/image/upload', [StoreAsset]).as('assets.img.store').use(middleware.auth())
 
 //* Auth
-router.get('/signin', [RenderSignInPage]).as('auth.signin')
-router.get('/signup', [RenderSignUpPage]).as('auth.signup')
-router.post('/sessions', [StoreSessionSignIn]).as('auth.sessions.store')
-router.delete('/sessions', [DestroySession]).as('auth.sessions.destroy')
+router.get('/signin', [RenderSignInPage]).as('auth.signin').use(middleware.guest())
+router.get('/signup', [RenderSignUpPage]).as('auth.signup').use(middleware.guest())
+router.post('/signin', [StoreSessionSignIn]).as('auth.signin.store').use(middleware.guest())
+router.post('/signup', [StoreSessionSignUp]).as('auth.signup.store').use(middleware.guest())
+router.delete('/signout', [DestroySession]).as('auth.sessions.destroy')
 
 //* Auth Social
 router.get('/:provider/redirect', [HandleAllyRedirect]).as('auth.social.redirect')

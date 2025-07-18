@@ -38,12 +38,14 @@ export const emailRule = vine
 
 export const signInValidator = vine.compile(
   vine.object({
-    options: vine.object({
-      remember: vine.accepted().optional(),
-      forward: vine.string().optional(),
-      action: vine.string().optional(),
-      plan: vine.string().exists({ table: 'plans', column: 'slug' }).optional(),
-    }),
+    options: vine
+      .object({
+        remember: vine.accepted().optional(),
+        forward: vine.string().optional(),
+        action: vine.string().optional(),
+        plan: vine.string().exists({ table: 'plans', column: 'slug' }).optional(),
+      })
+      .optional(),
     uid: vine.string(),
     password: vine.string(),
   })
@@ -51,12 +53,14 @@ export const signInValidator = vine.compile(
 
 export const signUpValidator = vine.compile(
   vine.object({
-    options: vine.object({
-      remember: vine.accepted().optional(),
-      forward: vine.string().optional(),
-      action: vine.string().optional(),
-      plan: vine.string().exists({ table: 'plans', column: 'slug' }).optional(),
-    }),
+    options: vine
+      .object({
+        remember: vine.accepted().optional(),
+        forward: vine.string().optional(),
+        action: vine.string().optional(),
+        plan: vine.string().exists({ table: 'plans', column: 'slug' }).optional(),
+      })
+      .optional(),
     username: usernameRule,
     email: emailRule,
     password: vine.string().minLength(8),

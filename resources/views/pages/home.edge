@@ -80,73 +80,79 @@
     </section>
   </div>
 
-  <section class="section-container mx-auto relative z-[1]">
-    <h2 class="heading-2">
-      Learn one step at a time
-    </h2>
-
-    <div class="series-bento">
-      @let([firstSeries, ...otherSeries] = series)
-
-      <div class="area-1">
-        @!series.card({ series: firstSeries, showLessons: true })
-      </div>
-
-      <div class="area-2">
-        @each ((item, index) in otherSeries)
-          @!series.card({ series: item })
-        @endeach
-      </div>
-    </div>
-  </section>
-
-  <section class="section-y relative z-[1]">
-    @let(featTopic1 = topics.find(topic => topic.name === 'AdonisJS'))
-    @let(featTopic2 = topics.find(topic => topic.name === 'EdgeJS'))
-    @let(featTopic3 = topics.find(topic => topic.name === 'Lucid'))
-    @let(featTopic4 = topics.find(topic => topic.name === 'Authentication'))
-    @let(featIds = [featTopic1.id, featTopic2.id, featTopic3.id, featTopic4.id])
-    @let(otherTopics = topics.filter(topic => !featIds.includes(topic.id)))
-
-    <div class="container mx-auto">
+  @if (series.length)
+    <section class="section-container mx-auto relative z-[1]">
       <h2 class="heading-2">
-        Dive into a topic
+        Learn one step at a time
       </h2>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
-        @!topic.card({ topic: featTopic1, size: 'lg' })
-        @!topic.card({ topic: featTopic2, size: 'lg' })
-        @!topic.card({ topic: featTopic3, size: 'lg' })
-        @!topic.card({ topic: featTopic4, size: 'lg' })
-      </div>
+      <div class="series-bento">
+        @let([firstSeries, ...otherSeries] = series)
 
-      <div class="grid sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
-        @each (topic in otherTopics)
-          @!topic.card({ topic, size: 'sm' })
-        @endeach
-      </div>
-    </div>
-  </section>
+        <div class="area-1">
+          @!series.card({ series: firstSeries, showLessons: true })
+        </div>
 
-  <section class="section-y relative z-[1]">
-    <div class="container mx-auto">
-      <h2 class="heading-2">
-        Jump straight to the latest
-      </h2>
-
-      @let([featuredLesson1, featuredLesson2, ...otherLessons] = lessons)
-      <div class="w-full grid grid-cols-2 gap-3 mb-3">
-        @!lesson.card({ lesson: featuredLesson1, size: 'lg' })
-        @!lesson.card({ lesson: featuredLesson2, size: 'lg' })
+        <div class="area-2">
+          @each ((item, index) in otherSeries)
+            @!series.card({ series: item })
+          @endeach
+        </div>
       </div>
+    </section>
+  @endif
 
-      <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-        @each (lesson in otherLessons)
-          @!lesson.card({ lesson })
-        @endeach
+  @if (topics.length)
+    <section class="section-y relative z-[1]">
+      @let(featTopic1 = topics.find(topic => topic.name === 'AdonisJS'))
+      @let(featTopic2 = topics.find(topic => topic.name === 'EdgeJS'))
+      @let(featTopic3 = topics.find(topic => topic.name === 'Lucid'))
+      @let(featTopic4 = topics.find(topic => topic.name === 'Authentication'))
+      @let(featIds = [featTopic1.id, featTopic2.id, featTopic3.id, featTopic4.id])
+      @let(otherTopics = topics.filter(topic => !featIds.includes(topic.id)))
+
+      <div class="container mx-auto">
+        <h2 class="heading-2">
+          Dive into a topic
+        </h2>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+          @!topic.card({ topic: featTopic1, size: 'lg' })
+          @!topic.card({ topic: featTopic2, size: 'lg' })
+          @!topic.card({ topic: featTopic3, size: 'lg' })
+          @!topic.card({ topic: featTopic4, size: 'lg' })
+        </div>
+
+        <div class="grid sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
+          @each (topic in otherTopics)
+            @!topic.card({ topic, size: 'sm' })
+          @endeach
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  @endif
+
+  @if (lessons.length)
+    <section class="section-y relative z-[1]">
+      <div class="container mx-auto">
+        <h2 class="heading-2">
+          Jump straight to the latest
+        </h2>
+
+        @let([featuredLesson1, featuredLesson2, ...otherLessons] = lessons)
+        <div class="w-full grid grid-cols-2 gap-3 mb-3">
+          @!lesson.card({ lesson: featuredLesson1, size: 'lg' })
+          @!lesson.card({ lesson: featuredLesson2, size: 'lg' })
+        </div>
+
+        <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          @each (lesson in otherLessons)
+            @!lesson.card({ lesson })
+          @endeach
+        </div>
+      </div>
+    </section>
+  @endif
 
   <section class="pt-24 mx-auto relative z-[1]">
     @!pricing.hero({ testimonials: true })

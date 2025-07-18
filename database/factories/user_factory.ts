@@ -7,6 +7,7 @@ import { PostFactory } from '#factories/post_factory'
 import { ProfileFactory } from '#factories/profile_factory'
 import { CollectionFactory } from '#factories/collection_factory'
 import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
+import { SessionLogFactory } from './session_log_factory.js'
 
 export const UserFactory = Factory.define(User, ({ faker }) => ({
   roleId: Roles.USER,
@@ -37,4 +38,5 @@ export const UserFactory = Factory.define(User, ({ faker }) => ({
   .relation('posts', () => PostFactory)
   .relation('profile', () => ProfileFactory)
   .relation('collections', () => CollectionFactory)
+  .relation('sessions', () => SessionLogFactory)
   .build()

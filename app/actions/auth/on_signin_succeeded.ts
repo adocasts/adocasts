@@ -74,8 +74,6 @@ export default class OnSignInSucceeded extends BaseAction<Arguments> {
       await emitter.emit('email:new_device', { user, log })
     }
 
-    console.log('setting token', token)
-
     ctx.response.encryptedCookie(sessionLogCookieName, token, {
       maxAge: rememberMeTokensAge,
       httpOnly: true,

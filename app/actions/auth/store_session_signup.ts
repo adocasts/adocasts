@@ -6,6 +6,7 @@ import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
 import { Infer } from '@vinejs/vine/types'
 import OnSignInSucceeded from './on_signin_succeeded.js'
+import { Exception } from '@adonisjs/core/exceptions'
 
 type Validator = Infer<typeof signUpValidator>
 
@@ -20,9 +21,9 @@ export default class StoreSessionSignUp extends BaseAction {
     const user = await User.create(data)
 
     await user.related('profile').create({})
-    await auth.use('web').login(user, options.remember)
+    await auth.use('web').login(user, options?.remember)
 
-    await OnSignInSucceeded.run({ request, response, session }, user, options.remember)
+    await OnSignInSucceeded.run({ request, response, session }, user, options?.remember)
 
     const redirect = await this.#getRedirectLocation(options)
     const checkout = await this.#checkForPlan(user, options)
@@ -37,7 +38,7 @@ export default class StoreSessionSignUp extends BaseAction {
     return response.redirect(redirect)
   }
 
-  async #getRedirectLocation(options: Validator['options']) {
+  async #getRedirectLocation(options: Validator['options'] = {}) {
     if (this.forwardIgnore.some((path) => options.forward?.includes(path))) {
       options.forward = '/'
     }
@@ -51,7 +52,7 @@ export default class StoreSessionSignUp extends BaseAction {
     }
   }
 
-  async #checkForPlan(user: User, options: Validator['options']) {
+  async #checkForPlan(user: User, options: Validator['options'] = {}) {
     if (!options.plan) return { bail: false, status: '', message: '' }
 
     const { status, message, checkout } = await stripe.tryCreateCheckoutSession(user, options.plan)
