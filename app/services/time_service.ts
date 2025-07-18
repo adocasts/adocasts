@@ -1,5 +1,6 @@
 import LessonShowDto from '#dtos/lesson_show'
 import PaywallTypes from '#enums/paywall_types'
+import States from '#enums/states'
 import Post from '#models/post'
 import { DateTime } from 'luxon'
 
@@ -109,6 +110,21 @@ export default class TimeService {
     const { days } = publishAt.plus({ days: 14 }).diffNow('days')
 
     return days > 0
+  }
+
+  static getIsPublished(post: Post | LessonShowDto) {
+    const isPublicOrUnlisted = post.stateId === States.PUBLIC || post.stateId === States.UNLISTED
+
+    if (!post.publishAt) {
+      return isPublicOrUnlisted
+    }
+
+    const publishAt =
+      typeof post.publishAt === 'string' ? DateTime.fromISO(post.publishAt) : post.publishAt
+
+    const isPastPublishAt = publishAt.diffNow().as('seconds')
+
+    return isPublicOrUnlisted && isPastPublishAt < 0
   }
 
   /**

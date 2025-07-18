@@ -1,11 +1,12 @@
 import BaseAction from '#actions/base_action'
+import { DisplayOptions } from '#builders/post_builder'
 import Post from '#models/post'
 import Watchlist from '#models/watchlist'
 import LessonShowDto from '../../dtos/lesson_show.js'
 
 export default class GetLesson extends BaseAction<[string]> {
-  async handle(slug: string, userId?: number) {
-    const lesson = await GetLesson.fromDb(slug)
+  async handle(slug: string, userId?: number, options?: DisplayOptions) {
+    const lesson = await GetLesson.fromDb(slug, options)
     const isInWatchlist = await Watchlist.forPost(userId, lesson.id)
 
     lesson.meta.isInWatchlist = isInWatchlist
@@ -15,9 +16,9 @@ export default class GetLesson extends BaseAction<[string]> {
     return lesson
   }
 
-  static async fromDb(slug: string) {
+  static async fromDb(slug: string, options?: DisplayOptions) {
     return Post.build()
-      .displayLessonShow()
+      .displayLessonShow(options)
       .where({ slug })
       .withComments()
       .firstOrFail(LessonShowDto)

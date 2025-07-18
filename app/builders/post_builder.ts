@@ -10,6 +10,10 @@ import { RelationQueryBuilderContract } from '@adonisjs/lucid/types/relations'
 import AssetDto from '../dtos/asset.js'
 import AuthorDto from '../dtos/author.js'
 
+export interface DisplayOptions {
+  skipPublishCheck: boolean
+}
+
 export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
   constructor() {
     super(Post)
@@ -19,44 +23,44 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
     return new PostBuilder()
   }
 
-  displayLesson({ skipPublishCheck = false } = {}) {
+  displayLesson(options?: DisplayOptions) {
     this.whereLesson()
-    this.if(!skipPublishCheck, (builder) => builder.published())
+    this.if(!options?.skipPublishCheck, (builder) => builder.published())
     this.orderPublished().query.apply((scope) => scope.forLessonDisplay())
     return this
   }
 
-  displayLessonShow({ skipPublishCheck = false } = {}) {
+  displayLessonShow(options?: DisplayOptions) {
     this.whereLesson()
-    this.if(!skipPublishCheck, (builder) => builder.published())
+    this.if(!options?.skipPublishCheck, (builder) => builder.published())
     this.orderPublished().query.apply((scope) => scope.forLessonDisplayShow())
     return this
   }
 
-  displayBlog({ skipPublishCheck = false } = {}) {
+  displayBlog(options?: DisplayOptions) {
     this.whereBlog()
-    this.if(!skipPublishCheck, (builder) => builder.published())
+    this.if(!options?.skipPublishCheck, (builder) => builder.published())
     this.orderPublished().query.apply((scope) => scope.forBlogDisplay())
     return this
   }
 
-  displayBlogShow({ skipPublishCheck = false } = {}) {
+  displayBlogShow(options?: DisplayOptions) {
     this.whereBlog()
-    this.if(!skipPublishCheck, (builder) => builder.published())
+    this.if(!options?.skipPublishCheck, (builder) => builder.published())
     this.orderPublished().query.apply((scope) => scope.forBlogDisplayShow())
     return this
   }
 
-  displaySnippet({ skipPublishCheck = false } = {}) {
+  displaySnippet(options?: DisplayOptions) {
     this.whereType(PostTypes.SNIPPET)
-    this.if(!skipPublishCheck, (builder) => builder.published())
+    this.if(!options?.skipPublishCheck, (builder) => builder.published())
     this.orderPublished().query.apply((scope) => scope.forBlogDisplay())
     return this
   }
 
-  displaySnippetShow({ skipPublishCheck = false } = {}) {
+  displaySnippetShow(options?: DisplayOptions) {
     this.whereType(PostTypes.SNIPPET)
-    this.if(!skipPublishCheck, (builder) => builder.published())
+    this.if(!options?.skipPublishCheck, (builder) => builder.published())
     this.orderPublished().query.apply((scope) => scope.forBlogDisplayShow())
     return this
   }

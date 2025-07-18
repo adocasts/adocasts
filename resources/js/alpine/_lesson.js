@@ -1,4 +1,5 @@
 import Alpine from "alpinejs"
+import { DateTime } from 'luxon'
 
 Alpine.data('videoAutoPlayNext', (enabled = true, nextLessonUrl) => {
   return {

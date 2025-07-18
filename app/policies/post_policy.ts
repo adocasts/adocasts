@@ -27,6 +27,22 @@ export default class PostPolicy extends BasePolicy {
   }
 
   @action({ allowGuest: true })
+  state(user: User, post: Post | LessonShowDto) {
+    if (this.isAdmin(user) || this.isContributorLvl1(user) || this.isContributorLvl2(user))
+      return true
+
+    if (post instanceof LessonShowDto && post.author?.id === user?.id) {
+      return true
+    }
+
+    if (post instanceof Post && post.authors.some((author) => author.id === user?.id)) {
+      return true
+    }
+
+    return post.stateId === States.PUBLIC || post.stateId === States.UNLISTED
+  }
+
+  @action({ allowGuest: true })
   index(_user: User, post: Post | LessonShowDto) {
     const isPublic = post.stateId === States.PUBLIC
 

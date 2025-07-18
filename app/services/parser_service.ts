@@ -300,4 +300,5 @@ class ParserService {
   }
 }
 
-export default new ParserService()
+const parser = new ParserService()
+export default parser
