@@ -391,4 +391,5 @@ class StripeService {
 }
 
 const stripe = new StripeService()
+export { StripeService }
 export default stripe
