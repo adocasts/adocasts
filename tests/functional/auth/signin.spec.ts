@@ -1,5 +1,6 @@
 import HttpStatus from '#enums/http_statuses'
 import { UserFactory } from '#factories/user_factory'
+import emitter from '@adonisjs/core/services/emitter'
 import db from '@adonisjs/lucid/services/db'
 import { test } from '@japa/runner'
 
@@ -67,5 +68,27 @@ test.group('Auth sign in', (group) => {
 
     response.assertRedirectsTo(route('home'))
     response.assertTextIncludes('You are already signed in')
+  })
+
+  test('should notify user when a new device signs in', async ({ client, route, assert }) => {
+    const events = emitter.fake()
+    const user = await UserFactory.merge({ password: 'Password!01' })
+      .with('profile', 1, (builder) => builder.merge({ emailOnNewDeviceLogin: true }))
+      .create()
+
+    const response = await client
+      .post(route('auth.signin.store'))
+      .header('Referer', route('auth.signin'))
+      .withCsrfToken()
+      .form({
+        uid: user.email,
+        password: 'Password!01',
+      })
+
+    assert.isTrue(user.profile.emailOnNewDeviceLogin)
+    events.assertEmitted('email:new_device')
+
+    response.assertOk()
+    response.assertRedirectsTo(route('home'))
   })
 })

@@ -2,11 +2,18 @@ import BaseAction from '#actions/base_action'
 import { Request } from '@adonisjs/core/http'
 import { UAParser } from 'ua-parser-js'
 
-type Arguments = [request: Request]
+type Arguments = [requestOrUserAgent: Request | string | undefined]
 
 export default class GetUserAgent extends BaseAction<Arguments> {
   async handle(...args: Arguments) {
-    const [request] = args
-    return UAParser(request.header('User-Agent'))
+    const [requestOrUserAgent] = args
+
+    if (!requestOrUserAgent) return
+
+    if (requestOrUserAgent instanceof Request) {
+      return UAParser(requestOrUserAgent.header('User-Agent'))
+    }
+
+    return UAParser(requestOrUserAgent)
   }
 }

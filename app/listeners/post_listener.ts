@@ -1,8 +1,13 @@
-import Post from '#models/post'
+import Post from '#models/post';
 
 export default class PostListener {
-  async onViewSync({ post, views }: { post: PostShowVM; views: number }) {
+  async onViewSync({ postId, views }: { postId: number; views: number }) {
+    const post = await Post.find(postId)
+    if (!post) return
     if (post.viewCount && views <= post.viewCount) return
-    await Post.query().where('id', post.id).update({ viewCount: views })
+
+    post.viewCount = views
+
+    await post.save()
   }
 }

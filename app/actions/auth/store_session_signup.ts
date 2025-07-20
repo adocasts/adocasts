@@ -1,17 +1,24 @@
-import { signUpValidator } from '#validators/auth'
 import BaseAction from '#actions/base_action'
-import GetRouteReferrer from '../general/get_route_referrer.js'
-import stripe from '#services/stripe_service'
 import User from '#models/user'
+import stripe from '#services/stripe_service'
+import { signUpValidator } from '#validators/auth'
 import { HttpContext } from '@adonisjs/core/http'
 import { Infer } from '@vinejs/vine/types'
+import GetRouteReferrer from '../general/get_route_referrer.js'
 import OnSignInSucceeded from './on_signin_succeeded.js'
-import { Exception } from '@adonisjs/core/exceptions'
 
 type Validator = Infer<typeof signUpValidator>
 
 export default class StoreSessionSignUp extends BaseAction {
-  forwardIgnore = ['signin', 'signup', 'users/menu']
+  forwardIgnore = [
+    'signin',
+    'signup',
+    'users/menu',
+    'forgot-password',
+    'forgot-password/sent',
+    'reset-password',
+  ]
+
   validator = signUpValidator
 
   async asController(

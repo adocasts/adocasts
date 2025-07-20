@@ -13,7 +13,15 @@ import OnSignInSucceeded from './on_signin_succeeded.js'
 type Validator = Infer<typeof signInValidator>
 
 export default class StoreSessionSignIn extends BaseAction {
-  forwardIgnore = ['signin', 'signup', 'users/menu']
+  forwardIgnore = [
+    'signin',
+    'signup',
+    'users/menu',
+    'forgot-password',
+    'forgot-password/sent',
+    'reset-password',
+  ]
+
   validator = signInValidator
 
   async asController(
