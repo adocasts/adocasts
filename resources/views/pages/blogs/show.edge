@@ -67,7 +67,7 @@
         </p>
 
         @if (blog.body)
-          <article class="prose">
+          <article id="proseBody" x-data="proseBody" class="prose">
             {{{ await parser.highlight(blog.body) }}}
           </article>
         @endif
