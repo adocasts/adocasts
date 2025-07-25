@@ -52,6 +52,11 @@
     </div>
 
     <div up-modal-fragment></div>
+    <div up-pricing>
+      @if (isPricingPage)
+        <script src='https://cdn.paritydeals.com/banner.js'></script>
+      @endif
+    </div>
 
     @stack('modals')
   </body>

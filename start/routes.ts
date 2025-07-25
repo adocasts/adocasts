@@ -50,6 +50,7 @@ const RenderUserHistory = () => import('#actions/users/render_user_history')
 import '#start/router/actions'
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const RenderPricing = () => import('#actions/general/render_pricing')
 const DisableNotification = () => import('#actions/notifications/disable_notification')
 const DisableAllNotifications = () => import('#actions/notifications/disable_all_notifications')
 const StoreSessionSignUp = () => import('#actions/auth/store_session_signup')
@@ -99,8 +100,8 @@ router.where('id', router.matchers.number())
 router.where('slug', router.matchers.slug())
 
 //* Redirects
-router.on('/uses').redirectToPath('/credits')
-router.on('/attributions').redirect('/credits')
+router.on('/credits').redirectToPath('/uses')
+router.on('/attributions').redirect('/uses')
 router.on('/topics/adonisjs-5').redirectToPath('/topics/adonisjs')
 router.on('/topics/adonis-5').redirectToPath('/topics/adonisjs')
 router.on('/series/lets-learn-adonis-5').redirectToPath('/series/lets-learn-adonisjs-5')
@@ -108,13 +109,14 @@ router.on('/series/lets-learn-adonis-5').redirectToPath('/series/lets-learn-adon
 //* General
 router.get('/', [RenderHome]).as('home')
 router.get('/schedule/:year?/:month?', [RenderSchedule]).as('schedules.index').where('year', router.matchers.number()).where('month', router.matchers.number())
-router.on('/pricing').render('pages/pricing').as('pricing')
+router.get('/pricing', [RenderPricing]).as('pricing')
 router.post('/contact', [SendContactEmail]).as('contact.send')
 router.on('/contact').render('pages/contact').as('contact')
 router.on('/terms').render('pages/policies/terms').as('terms')
 router.on('/privacy').render('pages/policies/privacy').as('privacy')
 router.on('/cookies').render('pages/policies/cookies').as('cookies')
 router.on('/guidelines').render('pages/policies/guidelines').as('guidelines')
+router.on('/uses').render('pages/uses').as('uses')
 router.get('/frags/*', [RenderFrag]).as('frag')
 
 //* Syndication

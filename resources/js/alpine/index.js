@@ -5,11 +5,10 @@ import './_color'
 import './_comment'
 import './_editor'
 import './_header'
-import './_series'
 import './_lesson'
-import './_player'
-import './_toaster'
+import './_series'
 import './_starfield'
+import './_toaster'
 
 window.Alpine = Alpine
 

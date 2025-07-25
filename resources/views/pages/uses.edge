@@ -1,0 +1,289 @@
+@layout({
+  title: 'Tools & Services That Drive Adocasts | Adocasts Uses',
+  meta: {
+    url: route('uses'),
+    desc: "Here you'll find the tools and services we use here at Adocasts for both coding and content production purposes.",
+    asset: null,
+    index: true
+  }
+})
+
+  @layout.shell.asideLeft({ sticky: true })
+    @slot('aside')
+      
+    @endslot
+
+    <h1 class="heading-2">
+      Used by Adocasts
+    </h1>
+    <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
+      Below you'll find a list of what we use at Adocasts for both coding and content production purposes.
+    </p>
+
+    <article class="prose">
+      <h3>Hosting</h3>
+      <ul>
+        @!uses.item({
+          name: 'Vultr',
+          desc: 'Our reliable cloud compute server that powers our sites.'
+        })
+
+        @!uses.item({
+          name: 'Cleavr',
+          desc: 'For seamless CI/CD and effortless server management.'
+        })
+
+        @!uses.item({
+          name: 'Cloudflare',
+          desc: 'Our go-to for DNS, CDN, firewall, and robust security.'
+        })
+
+        @!uses.item({
+          name: 'Cloudflare R2',
+          desc: 'We host all our recent video content here for fast and efficient delivery.'
+        })
+
+        @!uses.item({
+          name: 'Cloudflare Workers',
+          desc: 'Manages secure authorization access to our Cloudflare R2 videos.'
+        })
+
+        @!uses.item({
+          name: 'Bunny Stream',
+          desc: "Currenlty hosts most of our older videos, they're fanstastic, but we're in the process of migrating them over to Cloudflare R2."
+        })
+
+        @!uses.item({
+          name: 'YouTube',
+          desc: "A home for some of our really old videos, also in the process of migrating to Cloudflare R2."
+        })
+
+        @!uses.item({
+          name: 'Google Cloud Storage',
+          desc: "Stores all our iamges, which are then delivered swiftly via Cloudflare's CDN."
+        })
+      </ul>
+
+      <h3>Editor &amp; Terminal</h3>
+      <ul>
+        @!uses.item({
+          name: 'Visual Studio Code (VS Code)',
+          desc: "My preferred code editor. It's widely familiar to most developers and integrates perfectly with AdonisJS."
+        })
+
+        @!uses.item({
+          name: 'Bearded Theme HC Wonderland Wood',
+          desc: 'My current favorite color theme, with high contrast for improved readability.'
+        })
+
+        @!uses.item({
+          name: 'Bearded Icons',
+          desc: 'The file icon theme I use, mostly because it goes well with the color theme.'
+        })
+
+        @!uses.item({
+          name: 'JuliaMono',
+          desc: "The sleek font I'm currently using for my text editor and terminal, a recent switch from Dank Mono."
+        })
+
+        @!uses.item({
+          name: 'Ghostty',
+          desc: "My terminal application of choice. It's incredibly quick and lightweight."
+        })
+      </ul>
+
+      <h3>Developer Services</h3>
+      <ul>
+        @!uses.item({
+          name: 'Adocasts CMS',
+          desc: 'Our custom-built content management system, handling everything from lessons and series to topics and user management.'
+        })
+
+        @!uses.item({
+          name: 'PlotMyCourse',
+          desc: 'Our in-house course planning software, essential for mapping out our series content.'
+        })
+
+        @!uses.item({
+          name: 'Stripe',
+          desc: 'Our trusted billing and subscription partner for Adocasts Plus.'
+        })
+
+        @!uses.item({
+          name: 'Kit (Formerly ConvertKit)',
+          desc: 'We use this to send our newsletters and manage our subscriber list effectively.'
+        })
+
+        @!uses.item({
+          name: 'Mailjet',
+          desc: 'Powers our transactional and notification-based emails.'
+        })
+
+        @!uses.item({
+          name: 'Plausible',
+          desc: 'Provides privacy-focused analytics for the site.'
+        })
+
+        @!uses.item({
+          name: 'HyperDX',
+          desc: "Our error tracking solution, keeping us in the loop when something isn't quite right."
+        })
+
+        @!uses.item({
+          name: 'Cloudflare Turnstile',
+          desc: "Helps us keep pesky bots from submitting forms they shouldn't, maintaining site integrity."
+        })
+      </ul>
+
+      <h3>Video Apps &amp; Services</h3>
+      <ul>
+        @!uses.item({
+          name: 'Final Cut Pro',
+          desc: 'Our longtime go-to for video editing. The magnetic timeline and the ability to scrub audio directly are huge productivity boosters.'
+        })
+
+        @!uses.item({
+          name: 'Recut',
+          desc: 'An amazing app that automatically splices and cuts out dead air from recordings. I also use it to export multicam sequences directly into Final Cut Pro.'
+        })
+
+        @!uses.item({
+          name: 'Adocasts Transcoder',
+          desc: 'A custom-built desktop application that processes our videos through FFmpeg for compression, transcoding, and generating animated thumbnails for our R2-hosted content.'
+        })
+
+        @!uses.item({
+          name: 'Whisper Transcription',
+          desc: 'We use this to accurately transcribe all our videos and to translate transcriptions into other languages before uploading to R2.'
+        })
+
+        @!uses.item({
+          name: 'Handbrake',
+          desc: 'Our utility for miscellaneous video compression tasks when we need to omptimize file sizes.'
+        })
+
+        @!uses.item({
+          name: 'OBS',
+          desc: 'The software we rely on to record or livestream all our lessons.'
+        })
+
+        @!uses.item({
+          name: 'Freepik',
+          desc: 'A valuable resource for various image, video, and AI-generated assets, primarily used for our lesson thumbanils.'
+        })
+
+        @!uses.item({
+          name: 'Adobe Express',
+          desc: 'A handy service we use to convert our videos into easily shareable chunks for social media.'
+        })
+      </ul>
+
+      <h3>Desktop Apps &amp; Services</h3>
+      <ul>
+        @!uses.item({
+          name: 'PostgreSQL',
+          desc: 'The robust database driver powering the Adocasts site and many of our series.'
+        })
+
+        @!uses.item({
+          name: 'TablePlus',
+          desc: 'My preferred database GUI for querying, inspecting, and backing up data.'
+        })
+
+        @!uses.item({
+          name: 'Medis',
+          desc: 'A convenient Redis GUI I use to query, inspect, and manage our Redis database.'
+        })
+
+        @!uses.item({
+          name: 'Hoppscotch',
+          desc: 'My REST Client GUI of choice for API testing and development.'
+        })
+
+        @!uses.item({
+          name: 'LocalCan',
+          desc: 'A really cool app that lets me expose locally running applications via local, public, or network-accessible domains.'
+        })
+
+        @!uses.item({
+          name: 'Firefox Developer Edition',
+          desc: 'My long-standing browser of choice. The ability to inspect network requests directly from the console is the must-have feature for me.'
+        })
+
+        @!uses.item({
+          name: 'RayCast',
+          desc: "I'm just beginning to explore RayCast's capabilities, currently using it as a command palette, for prompts, and for quick snippets."
+        })
+
+        @!uses.item({
+          name: 'GitHub',
+          desc: 'The central hub where we host all our repositories for version control and collaboration.'
+        })
+
+        @!uses.item({
+          name: 'Amphetamine',
+          desc: 'Essential for keeping my computer awake during long processes, ensuring tasks complete without interruption.'
+        })
+
+        @!uses.item({
+          name: 'BetterDisplay',
+          desc: 'I use this to precisely define my default and recording screen resolutions.'
+        })
+
+        @!uses.item({
+          name: 'ScreenBrush',
+          desc: 'The application I use to draw on the screen during recordings, perfect for emphasizing points.'
+        })
+
+        @!uses.item({
+          name: 'Karabiner Elements',
+          desc: "Indispensable for defining and overriding keyboard shortcuts. It helps me work around MacOS window tiling limitations in apps like VS Code."
+        })
+      </ul>
+
+      <h3>Hardware</h3>
+      <ul>
+        @!uses.item({
+          name: 'M4 Pro Mac Mini',
+          desc: 'The workhorse where we record, edit, and manage everything related to our content.'
+        })
+
+        @!uses.item({
+          name: '27" LG 5K UltraFine',
+          desc: "A beautiful, used display I snagged for a great price on eBay. While stunning, be aware it can be prone to temporary ghosting at the edges."
+        })
+
+        @!uses.item({
+          name: 'Sony ZV-1F',
+          desc: 'The camera that captures me on video! Its large file outputs mean all recordings are run through Handbrake before storage. Also an eBay find!'
+        })
+
+        @!uses.item({
+          name: 'Blue Yeti',
+          desc: 'The microphone responsible for the audio in all our lessons.'
+        })
+
+        @!uses.item({
+          name: 'XP-Pen Artist 15.6 Pro',
+          desc: 'My go-to pen tablet display for drawing on-screen during lessons. Turning it on also conveniently puts my Mac Mini into recording mode, thanks to BetterDisplay. Another eBay score!'
+        })
+
+        @!uses.item({
+          name: 'Apple Keyboard',
+          desc: 'I still use a trusty, super old keyboard that came with an iMac I bought ages ago.'
+        })
+
+        @!uses.item({
+          name: 'Apple Magic Trackpad 2',
+          desc: 'The mouse I use when recording and occasionally during editing sessions. Another item snagged off eBay.'
+        })
+
+        @!uses.item({
+          name: 'Logictech MX Master 3',
+          desc: 'My primary mouse for general use, purchased used, like new, from eBay.'
+        })
+      </ul>
+    </article>
+  @end
+
+@end

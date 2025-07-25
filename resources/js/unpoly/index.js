@@ -1,7 +1,10 @@
 import 'unpoly'
 import 'unpoly/unpoly.css'
+import './_player'
 
 window.up = up
+
+const upPricing = document.querySelector('[up-pricing]')
 
 up.log.enable()
 up.network.config.autoCache = () => false
@@ -23,6 +26,18 @@ up.macro('[up-auth-modal]', function (link) {
   link.setAttribute('up-layer', 'new')
   link.setAttribute('up-mode', 'modal')
   link.setAttribute('up-size', 'grow')
+})
+
+up.on('up:location:changed', function (event) {
+  if (!event.location) return
+
+  if (event.location.toLowerCase().includes('/pricing')) {
+    const script = document.createElement('script')
+    script.src = 'https://cdn.paritydeals.com/banner.js'
+    upPricing.appendChild(script)
+  } else if (upPricing?.children.length) {
+    Array.from(upPricing.children).map((child) => child.remove())
+  }
 })
 
 up.on('up:fragment:loaded', function (event) {
