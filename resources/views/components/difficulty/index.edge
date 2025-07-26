@@ -1,5 +1,5 @@
 @let(isSmall = $props.class?.includes('badge-sm') || $props.class?.includes('badge-xs'))
-@let(iconClass = isSmall ? 'size-3' : 'size-4')
+@let(iconClass = isSmall ? 'size-3 opacity-80' : 'size-4 opacity-80')
 
 @if (item.difficultyId)
   <div class="{{

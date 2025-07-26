@@ -22,12 +22,12 @@
         @!difficulty({ item: series, class: badgeSize })
 
         <div class="badge badge-outline {{ badgeSize }} text-base-content/60 group-hover:text-base-content duration-200">
-          @svg('solar:video-library-outline', { class: '-ml-1 -my-0.5' })
+          @svg('solar:video-library-outline', { class: '-ml-1 -my-0.5 opacity-80' })
           {{ series.meta.posts_count }} Lessons
         </div>
 
         <div class="badge badge-outline {{ badgeSize }} text-base-content/60 group-hover:text-base-content duration-200">
-          @svg('solar:clock-circle-outline', { class: '-ml-1 -my-0.5' })
+          @svg('solar:clock-circle-outline', { class: '-ml-1 -my-0.5 opacity-80' })
           {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
         </div>
       </div>
@@ -47,7 +47,7 @@
             <li class="px-2">
               <a href="#" class="btn btn-primary btn-soft btn-block">
                 View Full Series
-                @svg('solar:map-arrow-right-outline')
+                @svg('solar:map-arrow-right-outline', { class: 'opacity-80' })
               </a>
             </li>
           </ul>

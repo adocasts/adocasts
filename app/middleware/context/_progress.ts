@@ -91,6 +91,7 @@ class ProgressState implements ProgressContext {
       progress.collectionId = collectionId
       progress.watchSeconds = records.reduce((sum, row) => (sum += row.watchSeconds), 0)
       progress.watchPercent = Math.floor((completed.length / postIds.length) * 100)
+      progress.percent = progress.watchPercent
       progress.isCompleted = progress.watchPercent === 100
       progress.completedLessons = completed.length
 

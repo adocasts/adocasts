@@ -8,7 +8,7 @@
 @let(progressionTo = progression.isCompleted ? 'to-success/20' : 'to-primary/20 dark:to-primary/20')
 
 @card({ class: $props.class })
-  <div class="{{ html.classNames(['absolute top-0 left-0 h-1 bg-gradient-to-r', progressionFrom, progressionTo]) }}" style="width: {{ (progression.watchPercent / 100).toLocaleString([], { style: 'percent' }) }};">
+  <div class="{{ html.classNames(['absolute top-0 left-0 h-1 bg-gradient-to-r', progressionFrom, progressionTo]) }}" style="width: {{ (progression.percent / 100).toLocaleString([], { style: 'percent' }) }};">
     <div class="absolute top-0 left-full h-full w-[50px] bg-gradient-to-r from-primary/20 dark:from-primary/20 to-base-300/0"></div>
   </div>
 
@@ -56,14 +56,14 @@
         <div
           {{ html.attrs({
             role: 'progressbar',
-            class: ['radial-progress bg-base-100/25 mb-3', progression.watchPercent ? 'text-primary' : 'text-primary/0'],
-            style: `--value: ${progression.watchPercent}; --size: 1.75rem; --thickness: .15rem;`,
-            'aria-valuenow': progression.watchPercent,
+            class: ['radial-progress bg-base-100/25 mb-3', progression.percent ? 'text-primary' : 'text-primary/0'],
+            style: `--value: ${progression.percent}; --size: 1.75rem; --thickness: .15rem;`,
+            'aria-valuenow': progression.percent,
           }) }}
         ></div>
 
         <div class="wm-vertical font-mono text-xs text-base-content/60">
-          {{ (progression.watchPercent / 100).toLocaleString([], { style: 'percent' }) }} Completed
+          {{ (progression.percent / 100).toLocaleString([], { style: 'percent' }) }} Completed
         </div>
       </div>
     </main>

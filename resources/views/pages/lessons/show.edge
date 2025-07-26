@@ -152,16 +152,16 @@
           </a>
         </h3>
 
-        <div class="flex items-center gap-3 mt-1">
-          <div class="flex items-center gap-1 text-xs">
-            @svg('solar:video-library-bold-duotone', { class: '-mt-px opacity-80 group-hover:opacity-100 duration-200' })
+        <div class="flex items-center gap-3 lg:gap-4 mt-1">
+          <div class="flex items-center gap-1 lg:gap-1.5 text-xs">
+            @svg('solar:video-library-outline', { class: '-mt-px size-3 opacity-80 group-hover:opacity-100 duration-200' })
             <span class="opacity-60 group-hover:opacity-100 duration-200">
               {{ series.meta.posts_count }} Lessons
             </span>
           </div>
 
-          <div class="flex items-center gap-1 text-xs group">
-            @svg('solar:clock-circle-bold-duotone', { class: 'opacity-80 group-hover:opacity-100 duration-200' })
+          <div class="flex items-center gap-1 lg:gap-1.5 text-xs group">
+            @svg('solar:clock-circle-outline', { class: 'size-3 opacity-80 group-hover:opacity-100 duration-200' })
             <span class="opacity-60 group-hover:opacity-100 duration-200">
               {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
             </span>

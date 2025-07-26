@@ -15,6 +15,7 @@ export default class ProgressDto extends BaseModelDto {
   declare watchSeconds: number
   declare isCompleted: boolean
   declare hasActivity: boolean
+  declare percent: number
 
   declare completedLessons: number
 
@@ -32,5 +33,11 @@ export default class ProgressDto extends BaseModelDto {
     this.watchSeconds = progress.watchSeconds
     this.isCompleted = progress.isCompleted
     this.hasActivity = progress.hasActivity
+
+    this.percent = progress.watchPercent || 0
+
+    if (progress.isCompleted) {
+      this.percent = 100
+    }
   }
 }

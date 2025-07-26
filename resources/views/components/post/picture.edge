@@ -39,19 +39,19 @@
             </div>
           @endif
         </div>
-      @elseif (progression?.watchPercent)
+      @elseif (progression?.percent)
         <div class="flex items-center gap-2 px-2 py-1.5 rounded-md bg-base-300/50 backdrop-blur-sm absolute bottom-1 left-1">
           <div
             {{ html.attrs({
               role: 'progressbar',
-              class: ['radial-progress', progression.watchPercent ? 'text-primary' : 'text-primary/0'],
-              style: `--value: ${progression.watchPercent}; --size: 1rem; --thickness: .175rem;`,
-              'aria-valuenow': progression.watchPercent,
+              class: ['radial-progress', progression.percent ? 'text-primary' : 'text-primary/0'],
+              style: `--value: ${progression.percent}; --size: 1rem; --thickness: .175rem;`,
+              'aria-valuenow': progression.percent,
             }) }}
           ></div>
           
           <div class="font-mono inline-block rounded-full leading-none text-2xs {{ text }}">
-            {{ progression.watchPercent }}%
+            {{ progression.percent }}%
           </div>
         </div>
       @endcannot

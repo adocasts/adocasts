@@ -25,8 +25,8 @@
 
         <div class="flex flex-1 items-center gap-3 mt-10">
           <a href="#" class="btn btn-outline btn-primary btn-wide">
-            @svg('solar:play-outline', { class: 'size-4 mr-1' })
-            @if (progression?.watchPercent)
+            @svg('solar:play-outline', { class: 'size-4 mr-1 opacity-80' })
+            @if (progression?.percent)
               Continue Series
             @else
               Start Series
@@ -137,7 +137,7 @@
         <div class="flex items-center justify-between gap-3 mt-6">
           <div class="flex flex-1 items-center gap-3">
             <a href="#" class="btn btn-outline btn-primary flex-1">
-              @svg('solar:play-outline', { class: 'size-4 mr-1' })
+              @svg('solar:play-outline', { class: 'size-4 mr-1 opacity-80' })
               Start Series
             </a>
 

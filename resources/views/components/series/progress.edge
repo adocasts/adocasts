@@ -7,25 +7,25 @@
 
   <div class="mb-6 border border-base-100 relative z-10 rounded-base overflow-hidden {{ $props.class ?? '' }}">
     <div class="relative text-sm z-[1] rounded-t-[var(--radius-box)] px-6 pt-6 pb-3 overflow-hidden">
-      @if (progression.watchPercent)
-        <div class="{{ html.classNames(['absolute top-0 left-0 h-1 bg-gradient-to-r', progressionFrom, progressionTo]) }}" style="width: {{ (progression.watchPercent / 100).toLocaleString([], { style: 'percent' }) }};">
+      @if (progression.percent)
+        <div class="{{ html.classNames(['absolute top-0 left-0 h-1 bg-gradient-to-r', progressionFrom, progressionTo]) }}" style="width: {{ (progression.percent / 100).toLocaleString([], { style: 'percent' }) }};">
           <div class="absolute top-0 left-full h-full w-[50px] bg-gradient-to-r from-primary/20 dark:from-primary/20 to-base-300/0"></div>
         </div>
       @endif
 
       <div class="flex items-center justify-between gap-3">
         <div>
-          <div class="font-bold">{{ (progression.watchPercent / 100).toLocaleString([], { style: 'percent' }) }} Completed</div>
+          <div class="font-bold">{{ (progression.percent / 100).toLocaleString([], { style: 'percent' }) }} Completed</div>
           <div class="opacity-60">
-            @if (!progression.watchPercent)
+            @if (!progression.percent)
               You haven't started this one yet!
-            @elseif (progression.watchPercent < 10)
+            @elseif (progression.percent < 10)
               You're just getting started with this one!
-            @elseif (progression.watchPercent < 25)
+            @elseif (progression.percent < 25)
               You're doing great {{ auth.user.handle }}!
-            @elseif (progression.watchPercent < 50)
+            @elseif (progression.percent < 50)
               Going strong, keep it up!
-            @elseif (progression.watchPercent < 75)
+            @elseif (progression.percent < 75)
               Keep on cooking, {{ auth.user.handle }}!
             @elseif (!progression.isCompleted)
               You're soooo close!
@@ -37,13 +37,13 @@
           </div>
         </div>
         <div>
-          @if (progression.watchPercent)
+          @if (progression.percent)
             <div
               {{ html.attrs({
                 role: 'progressbar',
-                class: ['radial-progress bg-base-100/25', progression.watchPercent ? 'text-primary' : 'text-primary/0'],
-                style: `--value: ${progression.watchPercent}; --size: 2.5rem; --thickness: .2rem;`,
-                'aria-valuenow': progression.watchPercent,
+                class: ['radial-progress bg-base-100/25', progression.percent ? 'text-primary' : 'text-primary/0'],
+                style: `--value: ${progression.percent}; --size: 2.5rem; --thickness: .2rem;`,
+                'aria-valuenow': progression.percent,
               }) }}
             ></div>
           @endif

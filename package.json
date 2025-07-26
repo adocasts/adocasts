@@ -139,6 +139,7 @@
   },
   "hotHook": {
     "boundaries": [
+      "./app/actions/**/*.ts",
       "./app/controllers/**/*.ts",
       "./app/middleware/*.ts"
     ]
