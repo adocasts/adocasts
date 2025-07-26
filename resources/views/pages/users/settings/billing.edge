@@ -92,18 +92,18 @@
             @table.column({ title: 'Status' })
               @slot('cell', scope)
                 @if (scope.row.status === 'succeeded')
-                  <div class="text-success flex items-center gap-x-1.5 capitalize">
-                    @svg('solar:bill-check-bold-duotone')
+                  <div class="text-success flex items-center gap-x-1.5 lg:gap-x-3 capitalize">
+                    @svg('solar:bill-check-outline', { class: 'size-4 opacity-80' })
                     <span>{{ scope.row.status }}</span>
                   </div>
                 @elseif (scope.row.status === 'pending')
-                  <div class="text-info flex items-center gap-x-1.5 capitalize">
-                    @svg('solar:bill-list-line-duotone')
+                  <div class="text-info flex items-center gap-x-1.5 lg:gap-x-3 capitalize">
+                    @svg('solar:bill-list-outline', { class: 'size-4 opacity-80' })
                     <span>{{ scope.row.status }}</span>
                   </div>
                 @else
-                  <div class="text-warning flex items-center gap-x-1.5 capitalize">
-                    @svg('solar:bill-cross-bold-duotone')
+                  <div class="text-warning flex items-center gap-x-1.5 lg:gap-x-3 capitalize">
+                    @svg('solar:bill-cross-outline', { class: 'size-4 opacity-80' })
                     <span>
                       {{ scope.row.status }}
                       @if (scope.row.failure_message)

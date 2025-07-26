@@ -27,7 +27,7 @@
           @end
 
           <div class="flex justify-end pt-3">
-            <button type="submit" class="btn btn-soft">
+            <button type="submit" class="btn btn-outline btn-primary">
               Update Username
             </button>
           </div>
@@ -52,7 +52,7 @@
           @end
 
           <div class="flex justify-end pt-3">
-            <button type="submit" class="btn btn-soft">
+            <button type="submit" class="btn btn-outline btn-primary">
               Update Email
             </button>
           </div>
@@ -74,34 +74,34 @@
 
         <div class="flex-1 grid grid-cols-2 items-center gap-3">
           <div class="flex flex-col items-center">
-            <a {{ html.attrs({ href: '/google/redirect', 'up-follow': 'false', class: ['btn btn-soft btn-block', { 'btn-primary': isGoogleUser }]}) }}>
-              @svg('simple-icons:google', { class: 'w-5 h-5' })
+            <a {{ html.attrs({ href: '/google/redirect', 'up-follow': 'false', class: ['btn btn-outline btn-block flex-col h-auto py-3', { 'btn-primary': isGoogleUser }]}) }}>
+              @svg('simple-icons:google', { class: 'size-5' })
               @if (isGoogleUser)
-                <div class="text-sm ml-3">
+                <div class="text-xs opacity-60">
                   <span>{{ auth.user.googleEmail ?? auth.user.email }}</span>
                 </div>
               @else
-                <span class="sr-only">Link Google to Your Account</span>
+                <span class="text-xs opacity-60">Link Your Google Account</span>
               @endif
             </a>
             @if (isGoogleUser)
-              <a href="/google/unlink" class="underline text-sm mt-2">Unlink your Google account</a>
+              <a href="/google/unlink" class="underline text-sm mt-2">Unlink Your Google Account</a>
             @endif
           </div>
     
           <div class="flex flex-col items-center">
-            <a {{ html.attrs({ href: '/github/redirect', 'up-follow': 'false', class: ['btn btn-soft btn-block', { 'btn-primary': isGitHubUser }]}) }}>
+            <a {{ html.attrs({ href: '/github/redirect', 'up-follow': 'false', class: ['btn btn-outline btn-block flex-col h-auto py-3', { 'btn-primary': isGitHubUser }]}) }}>
               @svg('simple-icons:github', { class: 'w-5 h-5' })
               @if (isGitHubUser)
-                <div class="text-sm ml-3">
+                <div class="text-xs opacity-60">
                   <span>{{ auth.user.githubEmail ?? auth.user.email }}</span>
                 </div>
               @else
-                <span class="sr-only">Link GitHub to Your Account</span>
+                <span class="text-xs opacity-60">Link Your GitHub Account</span>
               @endif
             </a>
             @if (isGitHubUser)
-              <a href="/github/unlink" class="underline text-sm mt-2">Unlink your GitHub account</a>
+              <a href="/github/unlink" class="underline text-sm mt-2">Unlink Your GitHub Account</a>
             @endif
           </div>
         </div>
@@ -117,7 +117,7 @@
 
           @form({ action: form.delete('settings.session.destroy'), 'up-target': '[up-user-sessions]', 'up-scroll': 'restore' })
             @tooltip({ text: "Will immediately end all sessions, except the current session", class: 'tooltip-left' })
-              <button type="submit" class="btn btn-soft btn-error btn-sm">
+              <button type="submit" class="btn btn-outline btn-error btn-sm">
                 End all sessions
               </button>
             @end
@@ -148,7 +148,7 @@
           @end
 
           <div class="flex justify-end pt-3">
-            <button type="submit" class="btn btn-error">
+            <button type="submit" class="btn btn-outline btn-error">
               Delete Account
             </button>
           </div>

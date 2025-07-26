@@ -1,31 +1,31 @@
 <ul class="menu w-full gap-1 p-0">
   <li>
     <a {{ html.attrs({ href: route('settings', { section: 'account' }), class: [{ 'menu-active': section === 'account' }]}) }}>
-      @svg('solar:shield-user-bold-duotone', { class: 'w-6 h-6' })
+      @svg('solar:shield-user-outline', { class: 'size-5 text-base-content/80' })
       Account
     </a>
   </li>
   <li>
     <a {{ html.attrs({ href: route('settings', { section: 'profile' }), class: [{ 'menu-active': section === 'profile' }]}) }}>
-      @svg('solar:user-id-bold-duotone', { class: 'w-6 h-6' })
+      @svg('solar:user-id-outline', { class: 'size-5 text-base-content/80' })
       Profile
     </a>
   </li>
   <li>
     <a {{ html.attrs({ href: route('settings', { section: 'preferences' }), class: [{ 'menu-active': section === 'preferences' }]}) }}>
-      @svg('solar:settings-bold-duotone', { class: 'w-6 h-6' })
+      @svg('solar:settings-outline', { class: 'size-5 text-base-content/80' })
       Preferences
     </a>
   </li>
   <li>
     <a {{ html.attrs({ href: route('settings', { section: 'notifications' }), class: [{ 'menu-active': section === 'notifications' }]}) }}>
-      @svg('solar:notification-unread-bold-duotone', { class: 'w-6 h-6' })
+      @svg('solar:notification-unread-outline', { class: 'size-5 text-base-content/80' })
       Notifications
     </a>
   </li>
   <li>
     <a {{ html.attrs({ href: route('settings', { section: 'billing' }), class: [{ 'menu-active': section === 'billing' }]}) }}>
-      @svg('solar:bill-list-bold-duotone', { class: 'w-6 h-6' })
+      @svg('solar:bill-list-outline', { class: 'size-5 text-base-content/80' })
       Billing
     </a>
   </li>

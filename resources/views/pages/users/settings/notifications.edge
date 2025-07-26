@@ -1,6 +1,6 @@
 @let(profile = await auth.user.related('profile').query().firstOrFail())
 
-@layout{
+@layout({
   title: "Manage Alerts | Adocasts Notification Settings",
   meta: {
     url: route('settings', { section: 'notifications' }),
@@ -79,7 +79,7 @@
           @end
 
           <div class="flex justify-end gap-3 pt-6">
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-outline btn-primary">
               Update notifications
             </button>
           </div>

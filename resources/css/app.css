@@ -138,6 +138,12 @@ a.link-grow {
   width: calc(((100% - var(--container-width)) / 2) + var(--padding-x));
 }
 
+.btn:has(svg),
+.menu > li > label:has(svg),
+.menu > li > a:has(svg) {
+  @apply gap-x-3;
+}
+
 .btn.btn-ghost-soft {
   &:not(.btn-active, .mouseover, :hover, :active:focus, :focus-visible) {
     &:not(:disabled, [disabled], .btn-disabled) {

@@ -3,25 +3,25 @@
   <ul x-data="{ policy: {{ js.stringify(policy) }} }" class="menu w-full gap-1 p-0">
     <li>
       <a href="{{ route('terms') }}" :class="{ 'menu-active': policy === 'terms' }">
-        @svg('solar:clipboard-list-linear', { class: 'w-6 h-6' })
+        @svg('solar:clipboard-list-linear', { class: 'size-5 text-base-content/80' })
         Terms of Use
       </a>
     </li>
     <li>
       <a href="{{ route('privacy') }}" :class="{ 'menu-active': policy === 'privacy' }">
-        @svg('solar:ghost-smile-linear', { class: 'w-6 h-6' })
+        @svg('solar:ghost-smile-linear', { class: 'size-5 text-base-content/80' })
         Privacy Policy
       </a>
     </li>
     <li>
       <a href="{{ route('cookies') }}" :class="{ 'menu-active': policy === 'cookies' }">
-        @svg('solar:donut-bitten-line-duotone', { class: 'w-6 h-6' })
+        @svg('solar:donut-bitten-line-duotone', { class: 'size-5 text-base-content/80' })
         Cookie Policy
       </a>
     </li>
     <li>
       <a href="{{ route('guidelines') }}" :class="{ 'menu-active': policy === 'guidelines' }">
-        @svg('solar:file-text-line-duotone', { class: 'w-6 h-6' })
+        @svg('solar:file-text-linear', { class: 'size-5 text-base-content/80' })
         Content Guidelines
       </a>
     </li>

@@ -25,7 +25,7 @@
       @endif
       
       @cannot('PostPolicy.view', item)
-        <div class="absolute bottom-1 left-1 p-1 bg-slate-base-900/80 backdrop-blur-md text-slate-base-50 flex items-center rounded-sm z-20">
+        <div class="absolute bottom-1 left-1 p-1 bg-base-300/50 backdrop-blur-md text-slate-base-50 flex items-center rounded-sm z-20">
           <div class="h-2.5 mr-1 rounded-md text-slate-base-200 flex items-center justify-center">
             <img class="h-2.5" src="/imgs/plus-badge-100.png" alt="Adocasts Plus Exclusive" />
           </div>
@@ -40,12 +40,12 @@
           @endif
         </div>
       @elseif (progression?.watchPercent)
-        <div class="flex items-center gap-1.5 px-2 py-1.5 rounded-md bg-base-300/50 backdrop-blur-sm absolute bottom-1 left-1">
+        <div class="flex items-center gap-2 px-2 py-1.5 rounded-md bg-base-300/50 backdrop-blur-sm absolute bottom-1 left-1">
           <div
             {{ html.attrs({
               role: 'progressbar',
               class: ['radial-progress', progression.watchPercent ? 'text-primary' : 'text-primary/0'],
-              style: `--value: ${progression.watchPercent}; --size: .9rem; --thickness: .15rem;`,
+              style: `--value: ${progression.watchPercent}; --size: 1rem; --thickness: .175rem;`,
               'aria-valuenow': progression.watchPercent,
             }) }}
           ></div>

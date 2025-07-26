@@ -12,12 +12,12 @@
     @else
       @if (auth.user)
         <a href="{{ route('discussions.create') }}" class="btn btn-outline btn-primary btn-block mb-3">
-          @svg('solar:chat-round-line-outline', { class: 'w-6 h-6' })
+          @svg('solar:chat-round-line-outline', { class: 'size-5' })
           New Discussion
         </a>
       @else
         <a href="{{ route('auth.signup') }}" class="btn btn-outline btn-primary btn-block mb-3" up-auth-modal>
-          @svg('solar:chat-round-line-outline', { class: 'w-6 h-6' })
+          @svg('solar:chat-round-line-outline', { class: 'size-5' })
           New Discussion
         </a>
       @endif
@@ -40,35 +40,35 @@
           <li>
             <label :class="{ 'menu-active': !feed }">
               <input type="radio" name="feed" x-model="feed" class="sr-only" @click="feed = null; up.submit($el.form);">
-              @svg('solar:chat-round-call-outline', { class: 'w-6 h-6' })
+              @svg('solar:chat-round-call-outline', { class: 'size-5 text-base-content/80' })
               All discussions
             </label>
           </li>
           <li>
             <label :class="{ 'menu-active': feed === 'popular' }">
               <input type="radio" name="feed" x-model="feed" value="popular" class="sr-only">
-              @svg('solar:chat-round-like-outline', { class: 'w-6 h-6' })
+              @svg('solar:chat-round-like-outline', { class: 'size-5 text-base-content/80' })
               Popular
             </label>
           </li>
           <li>
             <label :class="{ 'menu-active': feed === 'noreplies' }">
               <input type="radio" name="feed" x-model="feed" value="noreplies" class="sr-only">
-              @svg('solar:chat-round-unread-outline', { class: 'w-6 h-6' })
+              @svg('solar:chat-round-unread-outline', { class: 'size-5 text-base-content/80' })
               No replies
             </label>
           </li>
           <li>
             <label :class="{ 'menu-active': feed === 'unsolved' }">
               <input type="radio" name="feed" x-model="feed" value="unsolved" class="sr-only">
-              @svg('solar:chat-round-dots-outline', { class: 'w-6 h-6' })
+              @svg('solar:chat-round-dots-outline', { class: 'size-5 text-base-content/80' })
               Unsolved
             </label>
           </li>
           <li>
             <label :class="{ 'menu-active': feed === 'solved' }">
               <input type="radio" name="feed" x-model="feed" value="solved" class="sr-only">
-              @svg('solar:chat-round-check-outline', { class: 'w-6 h-6' })
+              @svg('solar:chat-round-check-outline', { class: 'size-5 text-base-content/80' })
               Solved
             </label>
           </li>

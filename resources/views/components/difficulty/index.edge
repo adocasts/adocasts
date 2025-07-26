@@ -1,5 +1,5 @@
-@let(isSmall = $props.class?.includes('badge-sm'))
-@let(iconClass = isSmall ? '-mx-1 -my-0.5' : '-ml-1 -my-0.5')
+@let(isSmall = $props.class?.includes('badge-sm') || $props.class?.includes('badge-xs'))
+@let(iconClass = isSmall ? 'size-3' : 'size-4')
 
 @if (item.difficultyId)
   <div class="{{
@@ -13,7 +13,7 @@
       $props.class
     ])
   }}">
-    @!difficulty.icon({ id: item.difficultyId, class: 'size-4' })
+    @!difficulty.icon({ id: item.difficultyId, class: iconClass })
 
     @if (!$props.class?.includes('badge-sm'))
       {{ string.capitalCase(Difficulties[item.difficultyId]) }}

@@ -38,7 +38,7 @@
                   @else
                     @form({ action: form.delete('settings.session.destroy', { id: session.id }), 'up-target': '[up-user-sessions]', 'up-scroll': 'restore' })
                       @tooltip({ text: "Will immediately end this session", class: 'tooltip-left' })
-                        <button type="submit" class="btn btn-soft hover:btn-error btn-sm">
+                        <button type="submit" class="btn btn-outline hover:btn-error btn-sm">
                           End session
                         </button>
                       @end

@@ -42,9 +42,46 @@
             class="input input-bordered join-item"
             required
           />
-          <button class="btn btn-outline btn-primary join-item">Subscribe</button>
+          <button class="btn btn-outline hover:btn-primary join-item">Subscribe</button>
         </div>
       </fieldset>
     </form>
   </div>
+
+  <div class="border-t border-base-100 pt-5 mt-10">
+    <div class="container mx-auto">
+      <div class="sm:flex sm:items-center sm:justify-between pb-6">
+        <a href="/" class="flex items-center">
+          <img class="logo-dark h-4 w-auto mr-3 sm:h-6" src="/imgs/logo-white.svg" alt="Adocasts" width="146px" height="28px" />
+          <img class="logo-light h-4 w-auto mr-3 sm:h-6" src="/imgs/logo-black.svg" alt="Adocasts" width="146px" height="28px" />
+          <span class="sr-only">Adocasts</span>
+        </a>
+        <span class="text-xs text-base-content/60 sm:text-center">&copy; {{ DateTime.now().year }} <a href="/" class="hover:underline">Adocasts</a>. All Rights Reserved.</span>
+        <div class="flex items-center mt-4 space-x-6 sm:justify-center sm:mt-0">
+          <a href="https://github.com/adocasts" class="text-base-content/60 hover:text-base-content" target="_blank">
+            @svg('simple-icons:github')
+            <span class="sr-only">GitHub account</span>
+          </a>
+          <a href="https://youtube.com/adocasts" class="text-base-content/60 hover:text-base-content" target="_blank">
+            @svg('simple-icons:youtube')
+            <span class="sr-only">YouTube account</span>
+          </a>
+          <a href="https://bsky.app/profile/adocasts.com" class="text-base-content/60 hover:text-base-content" target="_blank">
+            @svg('simple-icons:bluesky')
+            <span class="sr-only">Bluesky account</span>
+          </a>
+          <a href="https://twitter.com/adocasts" class="text-base-content/60 hover:text-base-content" target="_blank">
+            @svg('simple-icons:twitter')
+            <span class="sr-only">Twitter page</span>
+          </a>
+          <a href="/rss" class="text-base-content/60 hover:text-base-content" target="_blank">
+            @svg('simple-icons:rss')
+            <span class="sr-only">RSS feed</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </footer>
+
+
