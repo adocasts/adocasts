@@ -85,7 +85,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   | Variables for configuring the drive package
   |----------------------------------------------------------
   */
-  DRIVE_DISK: Env.schema.enum(['r2'] as const),
+  DRIVE_DISK: Env.schema.enum(['r2', 'gcs'] as const),
   GCS_KEY: Env.schema.string(),
   GCS_BUCKET: Env.schema.string(),
 

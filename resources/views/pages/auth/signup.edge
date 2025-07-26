@@ -24,7 +24,8 @@
       method: 'post',
       action: form.post('auth.signup.store'),
       class: 'flex flex-col mt-6',
-      upSubmit: !plan && action !== 'cms'
+      upSubmit: !plan && action !== 'cms',
+      turnstile: true
     })
       <input type="hidden" name="options.action" value="{{ old('action', action ?? '') }}">
       <input type="hidden" name="options.plan" value="{{ plan ?? '' }}">

@@ -1,8 +1,8 @@
 @layout({
   title: `${user.handle}${user.profile.name ? ` (${user.profile.name})` : ''} | Adocasts Profile`,
   meta: {
-    url: route('profiles.show', { username: user.username }),
-    canonical: route('profiles.show', { username: user.username }),
+    url: route('users.profile', { handle: user.handle }),
+    canonical: route('users.profile', { handle: user.handle }),
     desc: user.profile.biography,
     asset: null,
     index: user.isEnabledProfile
@@ -18,7 +18,7 @@
     <div class="max-w-[810px] mx-auto pt-8 relative">
       <div class="avatar mb-6">
         <div class="w-32 border-4 border-base-300 rounded-base">
-          <img class="aspect-square object-cover object-center" src="{{ user.avatar }}" alt="{{ user.handle }}">
+          @!user.avatar({ user })
         </div>
       </div>
 
@@ -58,14 +58,14 @@
         <div role="alert" class="alert alert-warning alert-soft mt-6">
           <span>
             Your profile is private and can only be seen by you.
-            {{-- You can change this anytime within your <a href="{{ route('users.settings.index', { section: 'account' }) }}" class="link">account settings</a>. --}}
+            You can change this anytime within your <a href="{{ route('settings', { section: 'profile' }) }}" class="link">profile settings</a>.
           </span>
         </div>
       @endif
 
       @!stat.user({ stats, size: 'base', offset: false, class: 'w-full bg-base-200 my-6' })
 
-      <main class="@container flex-1" up-main-content>
+      <main class="@container flex-1 section-b" up-main-content>
         <div class="tabs tabs-box">
           <a
             class="tab {{ html.classNames([{ 'tab-active': tab === 'activity' }]) }}"

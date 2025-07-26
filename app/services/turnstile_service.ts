@@ -25,7 +25,7 @@ export default class TurnstileService {
     this.ctx.session.put('TURNSTILE_STATUS', data.success)
 
     if (!data.success) {
-      this.ctx.session.flash(
+      this.ctx.session.toast(
         'error',
         'Your request has been flagged by Cloudflare and has not been processed'
       )

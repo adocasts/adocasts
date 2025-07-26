@@ -9,6 +9,7 @@ import './_lesson'
 import './_series'
 import './_starfield'
 import './_toaster'
+import './_turnstile'
 
 window.Alpine = Alpine
 

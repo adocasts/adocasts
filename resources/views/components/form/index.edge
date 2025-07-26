@@ -12,7 +12,7 @@
     @submit="sending = true"
   @endif
 
-  {{ $props.except(['upSubmit', 'target', 'fragment']).merge({ method: 'POST' }).toAttrs() }}>
+  {{ $props.except(['upSubmit', 'target', 'fragment', 'turnstile']).merge({ method: 'POST' }).toAttrs() }}>
   
   @if (csrfField)
     {{ csrfField() }}

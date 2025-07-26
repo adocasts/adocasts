@@ -81,12 +81,12 @@
             </button>
             {{-- @!form({ id: 'stripePortalForm', action: route('stripe.portal') }) --}}
             @if (auth.user.isEnabledProfile)
-              @profile.link({ user: auth.user, class: 'text-xs anchor relative -top-0.5', 'up-layer': 'root' })
+              @profile.link({ user: auth.user, class: 'text-xs link text-base-content/60 relative -top-0.5', 'up-layer': 'root' })
                 View Your Profile
               @end
             @end
           @else
-            <p class="text-xs text-slate-700 flex items-center gap-1.5">
+            <p class="text-xs text-base-content flex items-center gap-1.5">
               @if (auth.user.stripeSubscriptionStatus === StripeSubscriptionStatuses.PAUSED)
                 <span class="flex p-0.5 rounded bg-orange-100 text-orange-600 uppercase tracking-wider leading-none" style="font-size: .65rem;">
                   {{ auth.user.stripeSubscriptionStatus }}
@@ -98,7 +98,7 @@
               @endif
               {{ plan.name }}
             </p>
-            @profile.link({ user: auth.user, class: 'text-xs anchor relative -top-0.5' })
+            @profile.link({ user: auth.user, class: 'text-xs link text-base-content/60 relative -top-0.5' })
               View Your Profile
             @end
           @endif
@@ -133,9 +133,9 @@
         @endif
 
         @if (!notifications.unread.length && !notifications.read.length)
-          <div class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center">
+          <div class="border-2 border-dashed border-base-100 rounded-xl p-6 text-center">
             <strong>No Notifications</strong>
-            <p class="text-xs text-slate-600">
+            <p class="text-xs text-base-content/60">
               You're all set! Start a discussion by leaving a comment on a lesson or replying to an existing comment.
             </p>
           </div>

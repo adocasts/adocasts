@@ -110,7 +110,7 @@ router.on('/series/lets-learn-adonis-5').redirectToPath('/series/lets-learn-adon
 router.get('/', [RenderHome]).as('home')
 router.get('/schedule/:year?/:month?', [RenderSchedule]).as('schedules.index').where('year', router.matchers.number()).where('month', router.matchers.number())
 router.get('/pricing', [RenderPricing]).as('pricing')
-router.post('/contact', [SendContactEmail]).as('contact.send')
+router.post('/contact', [SendContactEmail]).as('contact.send').use(middleware.turnstile())
 router.on('/contact').render('pages/contact').as('contact')
 router.on('/terms').render('pages/policies/terms').as('terms')
 router.on('/privacy').render('pages/policies/privacy').as('privacy')
@@ -142,7 +142,7 @@ router.post('/api/image/upload', [StoreAsset]).as('assets.img.store').use(middle
 router.get('/signin', [RenderSignInPage]).as('auth.signin').use(middleware.guest())
 router.get('/signup', [RenderSignUpPage]).as('auth.signup').use(middleware.guest())
 router.post('/signin', [StoreSessionSignIn]).as('auth.signin.store').use(middleware.guest())
-router.post('/signup', [StoreSessionSignUp]).as('auth.signup.store').use(middleware.guest())
+router.post('/signup', [StoreSessionSignUp]).as('auth.signup.store').use([middleware.guest(), middleware.turnstile()])
 router.delete('/signout', [DestroySession]).as('auth.sessions.destroy')
 
 //* Auth Social

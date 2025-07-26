@@ -10,6 +10,7 @@ export default class TopicDto extends BaseModelDto {
   declare id: number
   declare parentId: number | null
   declare name: string
+  declare abbrev: string
   declare slug: string
   declare description: string
   declare isFeatured: boolean
@@ -25,6 +26,7 @@ export default class TopicDto extends BaseModelDto {
     this.id = topic.id
     this.parentId = topic.parentId
     this.name = topic.name
+    this.abbrev = topic.abbrev
     this.slug = topic.slug
     this.description = topic.description
     this.isFeatured = topic.isFeatured

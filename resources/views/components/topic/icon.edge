@@ -1,0 +1,28 @@
+@let(width = $props.width || 56)
+
+@if (item.asset)
+  <picture>
+    <source
+      srcset="
+        {{ img(item.asset.assetUrl, { width: width * 2, format: 'webp' }) }} 2x,
+        {{ img(item.asset.assetUrl, { width, format: 'webp' }) }} 1x
+      "
+      type="image/webp"
+    />
+
+    <img
+      src="{{ img(item.asset.assetUrl, { width: width * 2 }) }}"
+      srcset="
+        {{ img(item.asset.assetUrl, { width: width * 2 }) }} 2x,
+        {{ img(item.asset.assetUrl, { width }) }} 1x,
+      "
+      alt="{{ altText || item.asset.altText }}"
+      class="object-contain object-center {{ $props.class }}" 
+      loading="lazy"
+    />
+  </picture>
+@elseif (item.abbrev)
+  <div class="text-2xl font-semibold flex items-center justify-center mb-3 rounded-md bg-base-100 text-primary {{ className }}">
+    {{ item.abbrev }}
+  </div>
+@endif

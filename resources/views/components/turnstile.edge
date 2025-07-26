@@ -1,0 +1,7 @@
+@if (env('TURNSTILE_ENABLED'))
+  <div 
+    class="cf-turnstile" 
+    x-data="turnstile" 
+    x-init="onRender('{{ env('TURNSTILE_SITE_KEY') }}')"
+  ></div>
+@endif

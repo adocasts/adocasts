@@ -21,9 +21,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+    <script defer data-domain="adocasts.com" src="https://analytics.adocasts.com/js/plausible.js"></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('dumper')
+
+    @if (env('TURNSTILE_ENABLED'))
+      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+    @endif
   </head>
   <body data-theme="adocasts-{{ theme }}" class="max-w-[120rem] mx-auto" {{ html.attrs({ style: $props.style }) }}>
     <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>

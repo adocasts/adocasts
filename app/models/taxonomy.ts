@@ -3,6 +3,7 @@ import {
   beforeSave,
   belongsTo,
   column,
+  computed,
   hasMany,
   manyToMany,
   scope,
@@ -113,6 +114,19 @@ export default class Taxonomy extends BaseModel {
     pivotTable: 'collection_taxonomies',
   })
   declare collections: ManyToMany<typeof Collection>
+
+  @computed()
+  get abbrev() {
+    const acronym = this.name
+      .match(/\b([A-Z])/g)
+      ?.reduce(
+        (previous, next) =>
+          previous + (+next === 0 || Number.parseInt(next) ? Number.parseInt(next) : next[0] || ''),
+        ''
+      )
+      .toUpperCase()
+    return acronym ?? ''
+  }
 
   @beforeSave()
   static async slugifyUsername(taxonomy: Taxonomy) {

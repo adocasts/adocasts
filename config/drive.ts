@@ -1,5 +1,6 @@
 import env from '#start/env'
 import { defineConfig, services } from '@adonisjs/drive'
+import { Storage } from '@google-cloud/storage'
 
 const driveConfig = defineConfig({
   default: env.get('DRIVE_DISK'),
@@ -19,11 +20,18 @@ const driveConfig = defineConfig({
       endpoint: env.get('R2_ENDPOINT'),
       visibility: 'public',
     }),
+    gcs: services.gcs({
+      storage: new Storage({
+        keyFilename: env.get('GCS_KEY'),
+      }),
+      bucket: env.get('GCS_BUCKET'),
+      visibility: 'public',
+    }),
   },
 })
 
 export default driveConfig
 
 declare module '@adonisjs/drive/types' {
-  export interface DriveDisks extends InferDriveDisks<typeof driveConfig> { }
+  export interface DriveDisks extends InferDriveDisks<typeof driveConfig> {}
 }

@@ -66,3 +66,16 @@ edge.global('assetDomain', env.get('ASSET_DOMAIN', ''))
 edge.global('pagination', (meta: SimplePaginatorDtoMetaContract) => new Pagination(meta))
 edge.global('number', NumberService)
 edge.global('cuid', cuid)
+edge.global('img', (filename: string, options?: { width?: number; format?: string }) => {
+  const url = new URL(`${env.get('ASSET_DOMAIN')}${filename}`)
+
+  if (options?.width) {
+    url.searchParams.set('w', options.width.toString())
+  }
+
+  if (options?.format) {
+    url.searchParams.set('f', options.format)
+  }
+
+  return url.toString()
+})
