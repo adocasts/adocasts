@@ -9,7 +9,7 @@
         </div>
       @endif
 
-      <div {{ html.attrs({ class: ['w-8 rounded-md', { 'ring ring-accent': unreadCount }] }) }}>
+      <div {{ html.attrs({ class: ['w-8 xl:w-9 rounded-md', { 'ring ring-accent': unreadCount }] }) }}>
         @!user.avatar({ user: auth.user, alt: auth.user.handle })
       </div>
     </a>

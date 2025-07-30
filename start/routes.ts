@@ -50,6 +50,7 @@ const RenderUserHistory = () => import('#actions/users/render_user_history')
 import '#start/router/actions'
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const RenderSearch = () => import('#actions/general/render_search')
 const RenderPricing = () => import('#actions/general/render_pricing')
 const DisableNotification = () => import('#actions/notifications/disable_notification')
 const DisableAllNotifications = () => import('#actions/notifications/disable_all_notifications')
@@ -110,6 +111,7 @@ router.on('/series/lets-learn-adonis-5').redirectToPath('/series/lets-learn-adon
 router.get('/', [RenderHome]).as('home')
 router.get('/schedule/:year?/:month?', [RenderSchedule]).as('schedules.index').where('year', router.matchers.number()).where('month', router.matchers.number())
 router.get('/pricing', [RenderPricing]).as('pricing')
+router.get('/search', [RenderSearch]).as('search')
 router.post('/contact', [SendContactEmail]).as('contact.send').use(middleware.turnstile())
 router.on('/contact').render('pages/contact').as('contact')
 router.on('/terms').render('pages/policies/terms').as('terms')

@@ -26,8 +26,13 @@
       @!header.nav()
     </div>
 
-    <div class="flex items-center justify-end gap-3">
+    <div class="flex items-center justify-end">
       @!frags.header.theme()
+
+      <a href="{{ route('search') }}" class="btn btn-toggle btn-primary btn-square mr-3">
+        @svg('solar:magnifer-outline', { class: 'size-4' })
+      </a>
+
       @!frags.header.auth()
     </div>
   </div>
