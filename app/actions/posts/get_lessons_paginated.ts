@@ -16,7 +16,7 @@ export default class GetLessonsPaginated extends BaseAction<[Filters, string | u
     const paginator = await Post.build()
       .displayLesson()
       .search(filters.pattern)
-      .whereHasTaxonomy(filters.topic)
+      .whereHasTaxonomy(filters.topics)
       .orderBySort(filters.sort)
       .paginate(page, perPage)
 

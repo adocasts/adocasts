@@ -10,14 +10,14 @@ type Filters = Infer<typeof postSearchValidator> | undefined
 
 export default class GetBlogsPaginated extends BaseAction<[Filters, string | undefined]> {
   async handle(
-    { page = 1, perPage = 20, pattern, topic, sort }: Filters = {},
+    { page = 1, perPage = 20, pattern, topics, sort }: Filters = {},
     routeIdentifier?: string
   ) {
     const paginator = await Post.build()
       .displayBlog()
       .search(pattern)
       .withTaxonomies((q) => q.selectDto(TopicDto))
-      .whereHasTaxonomy(topic)
+      .whereHasTaxonomy(topics)
       .orderBySort(sort)
       .paginate(page, perPage)
 
@@ -26,7 +26,7 @@ export default class GetBlogsPaginated extends BaseAction<[Filters, string | und
       paginator.baseUrl(baseUrl)
     }
 
-    paginator.queryString({ page, pattern, topic, sort })
+    paginator.queryString({ page, pattern, topics, sort })
 
     return BlogListDto.fromPaginator(paginator, { start: 1, end: paginator.lastPage })
   }

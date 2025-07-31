@@ -16,6 +16,6 @@ export const postSearchValidator = vine.compile(
       .optional(),
     pattern: vine.string().trim().optional(),
     sort: vine.enum(Sorts).optional(),
-    topic: vine.string().exists({ table: 'taxonomies', column: 'slug' }).optional(),
+    topics: vine.array(vine.string()).optional(),
   })
 )

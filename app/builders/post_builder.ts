@@ -103,9 +103,13 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
     return this
   }
 
-  whereHasTaxonomy(slug?: string) {
-    if (!slug) return this
-    this.query.whereHas('taxonomies', (query) => query.where('taxonomies.slug', slug))
+  whereHasTaxonomy(slug?: string | string[]) {
+    if (Array.isArray(slug)) {
+      this.query.whereHas('taxonomies', (query) => query.whereIn('taxonomies.slug', slug))
+    } else if (slug) {
+      this.query.whereHas('taxonomies', (query) => query.where('taxonomies.slug', slug))
+    }
+
     return this
   }
 

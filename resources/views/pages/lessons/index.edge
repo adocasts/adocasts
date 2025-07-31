@@ -8,12 +8,11 @@
     index: true
   }
 })
-  @layout.shell.asideLeft({ sticky: true })
+  @layout.shell.asideLeft({ overflow: true })
     @slot('aside')
 
       <form method="GET" action="{{ route('lessons.index') }}" up-target="[lesson-list]" up-scroll="false" up-autosubmit>
-        <div class="mb-3 md:mb-6">
-          <div class="font-semibold opacity-60 text-sm mb-3">Order by</div>
+        @collapse.filter({ title: 'Order by', class: 'collapse', open: true })
           @form.select({ name: 'sort', selected: filters?.sort })
             @!form.select.option({ value: Sorts.LATEST, text: 'Latest' })
             {{-- @!form.select.option({ value: Sorts.POPULAR, text: 'Popular' }) --}}
@@ -21,7 +20,7 @@
             @!form.select.option({ value: Sorts.LONGEST, text: 'Longest duration' })
             @!form.select.option({ value: Sorts.SHORTEST, text: 'Shortest duration' })
           @end
-        </div>
+        @end
 
         {{-- <div class="mb-3 md:mb-6">
           <div class="font-bold text-sm mb-3">Filter by access</div>
@@ -32,14 +31,11 @@
           </div>
         </div> --}}
 
-        <div class="mb-3 md:mb-6">
-          <div class="font-semibold opacity-60 text-sm mb-3">Filter by topic</div>
-          @form.filter({ name: 'topic', checked: filters?.topic })
-            @each (topic in topics)
-              @!form.filter.option({ value: topic.slug, label: topic.name })
-            @endeach
-          @end
-        </div>
+        @collapse.filter({ title: 'Topic', class: 'collapse-arrow !px-0', open: true })
+          @each (topic in topics)
+            @!form.checkbox({ name: 'topics[]', label: topic.name, count: topic.meta.lessons_count, value: topic.slug, fade: true })
+          @endeach
+        @end
       </form>
 
     @endslot

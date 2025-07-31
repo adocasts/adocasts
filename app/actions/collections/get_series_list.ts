@@ -14,8 +14,8 @@ type Validator = Infer<typeof seriesIndexValidator>
 interface CacheOptions {
   limit?: number
   sort?: Validator['sort']
-  topic?: Validator['topic']
-  difficulty?: Validator['difficulty']
+  topics?: Validator['topics']
+  difficulties?: Validator['difficulties']
 }
 
 export interface DbOptions {
@@ -27,26 +27,26 @@ export interface DbOptions {
 }
 
 export default class GetSeriesList extends BaseAction<[CacheOptions]> {
-  async handle(options?: CacheOptions) {
+  async handle({ topics, difficulties, limit, sort }: CacheOptions = {}) {
     let series = await GetSeriesList.fromDb().dto(SeriesListDto)
 
     // todo: cache
 
     // for now, it'll be more efficient to cache all series and then filter & limit
 
-    if (options?.topic) {
-      series = series.filter((s) => s.topics && s.topics.some((t) => t.slug === options.topic))
+    if (Array.isArray(topics)) {
+      series = series.filter((s) => s.topics && s.topics.some((t) => topics.includes(t.slug)))
     }
 
-    if (options?.difficulty) {
-      series = series.filter((s) => s.difficultyId === options?.difficulty)
+    if (Array.isArray(difficulties)) {
+      series = series.filter((s) => s.difficultyId && difficulties.includes(s.difficultyId))
     }
 
-    if (options?.limit) {
-      series = series.slice(0, options.limit)
+    if (limit) {
+      series = series.slice(0, limit)
     }
 
-    return this.#applySort(series, options?.sort)
+    return this.#applySort(series, sort)
   }
 
   static fromDb(options?: DbOptions) {
