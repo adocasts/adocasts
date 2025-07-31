@@ -1,13 +1,13 @@
+import BaseAction from '#actions/base_action'
 import SeriesListDto from '#dtos/series_list'
-import Collection from '#models/collection'
-import { seriesIndexValidator } from '#validators/series'
 import Sorts from '#enums/sorts'
 import NotImplementedException from '#exceptions/not_implemented_exception'
-import LessonListDto from '../../dtos/lesson_list.js'
-import TopicDto from '../../dtos/topic.js'
+import Collection from '#models/collection'
+import { seriesIndexValidator } from '#validators/series'
 import { Infer } from '@vinejs/vine/types'
 import _ from 'lodash'
-import BaseAction from '#actions/base_action'
+import LessonListDto from '../../dtos/lesson_list.js'
+import TopicDto from '../../dtos/topic.js'
 
 type Validator = Infer<typeof seriesIndexValidator>
 
@@ -52,6 +52,7 @@ export default class GetSeriesList extends BaseAction<[CacheOptions]> {
   static fromDb(options?: DbOptions) {
     return Collection.build()
       .series()
+      .whereHasPosts()
       .withPostCount()
       .withTotalMinutes()
       .withTaxonomies((query) => query.selectDto(TopicDto))

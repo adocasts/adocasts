@@ -1,0 +1,78 @@
+@layout.shell.asideLeft({
+  sticky: true,
+  main: {
+    id: 'searchResultList',
+    class: 'flex flex-col gap-3 lg:gap-6'
+  }
+})
+  @slot('aside')
+
+    @if ($slots.actions)
+      {{{ await $slots.actions() }}}
+    @endif
+
+    <form method="GET" action="{{ route('discussions.index') }}" up-target="#searchResultList" up-autosubmit="true" up-focus="keep">
+      @form.field({ name: 'pattern', as: 'div', class: 'w-full' })
+        @form.input({ type: 'search', value: filters?.pattern, placeholder: 'Search ...', class: 'w-full', 'up-watch-delay': 500, autofocus: true })
+          @slot('prefix')
+            @svg('solar:minimalistic-magnifer-outline')
+          @endslot
+        @end
+      @end
+
+      <div class="mb-3 md:mb-6">
+        <ul x-data="{ feed: {{ js.stringify(feed) }} }" class="menu w-full gap-1 p-0">
+          <li>
+            <label :class="{ 'menu-active': !feed }">
+              <input type="radio" name="feed" x-model="feed" class="sr-only" @click="feed = null; up.submit($el.form);">
+              @svg('solar:chat-round-call-outline', { class: 'size-5 text-base-content/80' })
+              All series
+            </label>
+          </li>
+          <li>
+            <label :class="{ 'menu-active': feed === 'popular' }">
+              <input type="radio" name="feed" x-model="feed" value="popular" class="sr-only">
+              @svg('solar:chat-round-like-outline', { class: 'size-5 text-base-content/80' })
+              All lessons
+            </label>
+          </li>
+          <li>
+            <label :class="{ 'menu-active': feed === 'popular' }">
+              <input type="radio" name="feed" x-model="feed" value="popular" class="sr-only">
+              @svg('solar:chat-round-like-outline', { class: 'size-5 text-base-content/80' })
+              Recently released
+            </label>
+          </li>
+          <li>
+            <label :class="{ 'menu-active': feed === 'popular' }">
+              <input type="radio" name="feed" x-model="feed" value="popular" class="sr-only">
+              @svg('solar:chat-round-like-outline', { class: 'size-5 text-base-content/80' })
+              Popular lessons
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div class="mb-3 md:mb-6">
+        <div class="font-semibold opacity-60 text-sm mb-3">Filter by difficulty</div>
+        @form.filter({ name: 'difficulty', checked: filters?.difficulty })
+          @!form.filter.option({ value: Difficulties.BEGINNER, label: 'Beginner' })
+          @!form.filter.option({ value: Difficulties.INTERMEDIATE, label: 'Intermediate' })
+          @!form.filter.option({ value: Difficulties.ADVANCED, label: 'Advanced' })
+        @end
+      </div>
+
+      <div class="mb-3 md:mb-6">
+        <div class="font-semibold opacity-60 text-sm mb-3">Filter by topics</div>
+        @form.filter({ name: 'topic', checked: filters?.topic })
+          @each (topic in topics)
+            @!form.filter.option({ value: topic.slug, label: topic.name })
+          @endeach
+        @end
+      </div>
+    </form>
+
+  @endslot
+
+  {{{ await $slots.main() }}}
+@end

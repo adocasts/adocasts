@@ -6,7 +6,7 @@ import { seriesPaginatorValidator } from '#validators/series'
 import router from '@adonisjs/core/services/router'
 import { Infer } from '@vinejs/vine/types'
 import LessonListDto from '../../dtos/lesson_list.js'
-import GetSeriesList, { DbOptions } from './get_series_list.js'
+import { DbOptions } from './get_series_list.js'
 
 type Filters = Infer<typeof seriesPaginatorValidator>
 
@@ -16,7 +16,7 @@ export default class GetSeriesPaginated extends BaseAction<[Filters, string | un
     routeIdentifier: string = '',
     routeParams: Record<string, any> = {}
   ) {
-    const paginator = await GetSeriesList.fromDb({ topic })
+    const paginator = await GetSeriesPaginated.fromDb({ topic })
       .selectDto(SeriesListDto)
       .paginate(page, perPage)
 
@@ -33,6 +33,7 @@ export default class GetSeriesPaginated extends BaseAction<[Filters, string | un
   static fromDb(options?: DbOptions) {
     return Collection.build()
       .series()
+      .whereHasPosts()
       .withPostCount()
       .withTotalMinutes()
       .withTaxonomies((query) => query.selectDto(TopicDto))

@@ -1,9 +1,15 @@
 @layout()
-  @layout.shell.asideLeft() 
-    
-    @slot('aside')
+  @search.shell() 
 
-    @endslot
+    <h1 class="heading-3 !mb-3">
+      Search Results <span class="font-normal text-base-content/60 text-base">&mdash; {{ series.meta.total }} Matches</span>
+    </h1>
+
+    <section class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-3" series-list>
+      @each (item in series.data)
+        @!series.card({ series: item })
+      @endeach
+    </section>
 
   @end
 @end
