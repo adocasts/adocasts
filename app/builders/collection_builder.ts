@@ -88,11 +88,14 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     return this
   }
 
-  whereHasTaxonomy(idOrSlug: number | string) {
+  whereHasTaxonomy(idOrSlug?: number | string | string[]) {
+    if (!idOrSlug) return this
+
     this.query.whereHas('taxonomies', (taxQuery) =>
       taxQuery
         .if(is.number(idOrSlug), (query) => query.where('taxonomies.id', idOrSlug))
         .if(is.string(idOrSlug), (query) => query.where('taxonomies.slug', idOrSlug))
+        .if(is.array(idOrSlug), (query) => query.whereIn('taxonomies.slug', idOrSlug as string[]))
     )
     return this
   }

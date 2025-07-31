@@ -4,7 +4,7 @@
 @assign(main.class = html.classNames(['@container section-y flex-1', $props.main?.class]))
 
 @if (overflow)
-  @assign(aside.class = html.classNames(['@container w-[300px] lg:w-[330px] max-h-[calc(100vh_-_4rem)] overflow-y-auto sticky top-16 section-y lg:pr-10 lg:border-r border-base-content/10', $props.aside?.class]))
+  @assign(aside.class = html.classNames(['@container w-[300px] lg:w-[330px] max-h-[calc(100vh_-_4rem)] overflow-y-auto section-y -ml-1 pl-1 lg:pr-10 lg:border-r border-base-content/10', $props.aside?.class]))
 @else
   @assign(aside.class = html.classNames(['@container w-[300px] lg:w-[330px] section-y lg:pr-10 lg:border-r border-base-content/10', $props.aside?.class]))
 @endif

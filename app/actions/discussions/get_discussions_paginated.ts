@@ -17,7 +17,7 @@ export default class GetDiscussionsPaginated extends BaseAction<[Filters, string
       .if(filters.userId, (query) => query.where({ userId: filters.userId! }))
       .search(filters.pattern)
       .whereFeed(filters.feed)
-      .whereHasTaxonomy(filters.topic)
+      .whereHasTaxonomy(filters.topics)
       .withCounts()
       .withCommentPreview()
       .withAuthor()

@@ -1,11 +1,11 @@
-import CommentPreviewDto from '../dtos/comment_preview.js'
 import BaseBuilder from '#builders/base_builder'
+import AuthorDto from '#dtos/author'
 import States from '#enums/states'
 import Discussion from '#models/discussion'
 import Taxonomy from '#models/taxonomy'
-import AuthorDto from '#dtos/author'
 import User from '#models/user'
 import { RelationQueryBuilderContract } from '@adonisjs/lucid/types/relations'
+import CommentPreviewDto from '../dtos/comment_preview.js'
 
 export default class DiscussionBuilder extends BaseBuilder<typeof Discussion, Discussion> {
   constructor() {
@@ -51,7 +51,7 @@ export default class DiscussionBuilder extends BaseBuilder<typeof Discussion, Di
     return this
   }
 
-  whereFeed(feed?: 'popular' | 'noreplies' | 'solved' | 'unsolved') {
+  whereFeed(feed?: 'none' | 'popular' | 'noreplies' | 'solved' | 'unsolved') {
     if (!feed) return this
 
     switch (feed) {
@@ -67,10 +67,12 @@ export default class DiscussionBuilder extends BaseBuilder<typeof Discussion, Di
     }
   }
 
-  whereHasTaxonomy(slug?: string) {
-    if (!slug) return this
-
-    this.query.whereHas('taxonomy', (query) => query.where({ slug }))
+  whereHasTaxonomy(slug?: string | string[]) {
+    if (Array.isArray(slug)) {
+      this.query.whereHas('taxonomy', (query) => query.whereIn('slug', slug))
+    } else if (slug) {
+      this.query.whereHas('taxonomy', (query) => query.where({ slug }))
+    }
 
     return this
   }

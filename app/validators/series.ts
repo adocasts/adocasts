@@ -23,8 +23,8 @@ export const seriesPaginatorValidator = vine.compile(
       .positive()
       .max(50)
       .optional(),
-    difficulty: vine.number().enum(Difficulties).optional(),
+    difficulties: vine.array(vine.number().enum(Difficulties)).optional(),
     sort: vine.enum(Sorts).optional(),
-    topic: vine.string().exists({ table: 'taxonomies', column: 'slug' }).optional(),
+    topics: vine.array(vine.string()).optional(),
   })
 )

@@ -1,5 +1,5 @@
 @layout.shell.asideLeft({
-  sticky: true,
+  overflow: true,
   main: {
     id: 'discussionList',
     class: 'flex flex-col gap-3 lg:gap-6'
@@ -35,8 +35,7 @@
       </div>
 
       <div class="mb-3 md:mb-6">
-        <div class="font-semibold opacity-60 text-sm mb-3">Filter by feed</div>
-        <ul x-data="{ feed: {{ js.stringify(feed) }} }" class="menu w-full gap-1 p-0">
+        <ul x-data="{ feed: {{ js.stringify(filters?.feed ?? '') }} }" class="menu w-full gap-1 p-0">
           <li>
             <label :class="{ 'menu-active': !feed }">
               <input type="radio" name="feed" x-model="feed" class="sr-only" @click="feed = null; up.submit($el.form);">
@@ -75,14 +74,17 @@
         </ul>
       </div>
 
-      <div class="mb-3 md:mb-6">
-        <div class="font-semibold opacity-60 text-sm mb-3">Filter by topics</div>
-        @form.filter({ name: 'topic', checked: filters?.topic })
-          @each (topic in topics)
-            @!form.filter.option({ value: topic.slug, label: topic.name })
-          @endeach
-        @end
-      </div>
+      @collapse.filter({ title: 'Topic', class: 'collapse-arrow !px-0', open: true })
+        @each (topic in topics)
+          @!form.checkbox({ 
+            name: 'topics[]', 
+            label: topic.name, 
+            value: topic.slug, 
+            checked: filters?.topics?.includes(topic.slug),
+            fade: true 
+          })
+        @endeach
+      @end
     </form>
 
   @endslot

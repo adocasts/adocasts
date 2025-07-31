@@ -27,9 +27,11 @@ export default class BaseBuilder<Model extends LucidModel, Row extends LucidRow>
     this.query = query
   }
 
-  if(condition: any, cb: (self: this) => this) {
+  if(condition: any, cbTrue: (self: this) => this, cbFalse?: (self: this) => this) {
     if (condition) {
-      return cb(this)
+      return cbTrue(this)
+    } else if (cbFalse) {
+      return cbFalse(this)
     }
     return this
   }

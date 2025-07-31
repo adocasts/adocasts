@@ -1,5 +1,21 @@
 @layout()
-  @search.shell() 
+  @search.shell({ topics }) 
+
+    @form.field({ name: 'pattern', as: 'div', class: 'w-full' })
+      @form.input({ 
+        type: 'search', 
+        value: filters?.pattern, 
+        placeholder: 'Search ...', 
+        class: 'w-full', 
+        'up-watch-delay': 500, 
+        autofocus: true,
+        form: 'searchForm'
+      })
+        @slot('prefix')
+          @svg('solar:minimalistic-magnifer-outline')
+        @endslot
+      @end
+    @end
 
     <h1 class="heading-3 !mb-3">
       Search Results <span class="font-normal text-base-content/60 text-base">&mdash; {{ series.meta.total }} Matches</span>
