@@ -111,7 +111,7 @@ router.on('/series/lets-learn-adonis-5').redirectToPath('/series/lets-learn-adon
 router.get('/', [RenderHome]).as('home')
 router.get('/schedule/:year?/:month?', [RenderSchedule]).as('schedules.index').where('year', router.matchers.number()).where('month', router.matchers.number())
 router.get('/pricing', [RenderPricing]).as('pricing')
-router.get('/search', [RenderSearch]).as('search')
+router.get('/search/:feed?', [RenderSearch]).as('search')
 router.post('/contact', [SendContactEmail]).as('contact.send').use(middleware.turnstile())
 router.on('/contact').render('pages/contact').as('contact')
 router.on('/terms').render('pages/policies/terms').as('terms')

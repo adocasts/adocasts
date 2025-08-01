@@ -32,6 +32,7 @@ export default class GetSeriesPaginated extends BaseAction<[Filters, string | un
   static fromDb(options?: Filters) {
     return Collection.build()
       .series()
+      .search(options?.pattern)
       .whereHasPosts()
       .whereHasTaxonomy(options?.topics)
       .if(options?.difficulties, (query) =>

@@ -1,17 +1,37 @@
 import BaseAction from '#actions/base_action'
 import GetSeriesPaginated from '#actions/collections/get_series_paginated'
+import GetLessonsPaginated from '#actions/posts/get_lessons_paginated'
 import GetTopicsFilter from '#actions/taxonomies/get_topics_filter'
-import { seriesIndexValidator } from '#validators/series'
+import { searchValidator } from '#validators/search'
 import { HttpContext } from '@adonisjs/core/http'
 import { Infer } from '@vinejs/vine/types'
 
-export default class RenderSearch extends BaseAction {
-  validator = seriesIndexValidator
+type Validator = Infer<typeof searchValidator>
 
-  async asController({ view }: HttpContext, filters: Infer<typeof this.validator>) {
-    const series = await GetSeriesPaginated.run(filters)
-    const topics = await GetTopicsFilter.run('collections')
+export default class RenderSearch extends BaseAction<[feed: string, filters: Validator]> {
+  validator = searchValidator
 
-    return view.render('pages/search/index', { series, topics })
+  async asController({ view, params }: HttpContext, filters: Validator) {
+    const feed = params.feed ?? 'series'
+    const data = await this.handle(feed, filters)
+
+    return view.render('pages/search/index', { ...data, filters })
+  }
+
+  async handle(feed: string, filters: Validator) {
+    switch (feed) {
+      case 'lessons':
+        return {
+          feed,
+          lessons: await GetLessonsPaginated.run(filters),
+          topics: await GetTopicsFilter.run('lessons'),
+        }
+      default:
+        return {
+          feed,
+          series: await GetSeriesPaginated.run(filters),
+          topics: await GetTopicsFilter.run('collections'),
+        }
+    }
   }
 }

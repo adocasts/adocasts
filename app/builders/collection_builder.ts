@@ -67,12 +67,15 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     return this
   }
 
-  search(term: string) {
+  search(term?: string) {
+    if (!term) return this
+
     this.query.where((query) =>
       query
         .where('collections.name', 'ILIKE', `%${term}%`)
         .orWhere('collections.description', 'ILIKE', `%${term}%`)
     )
+
     return this
   }
 

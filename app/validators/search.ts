@@ -2,15 +2,7 @@ import Difficulties from '#enums/difficulties'
 import Sorts from '#enums/sorts'
 import vine from '@vinejs/vine'
 
-export const seriesIndexValidator = vine.compile(
-  vine.object({
-    sort: vine.enum(Sorts).optional(),
-    difficulties: vine.array(vine.number().enum(Difficulties)).optional(),
-    topics: vine.array(vine.string()).optional(),
-  })
-)
-
-export const seriesPaginatorValidator = vine.compile(
+export const searchValidator = vine.compile(
   vine.object({
     page: vine
       .number()

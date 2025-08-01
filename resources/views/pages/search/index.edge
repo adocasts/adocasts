@@ -1,5 +1,5 @@
 @layout()
-  @search.shell({ topics }) 
+  @search.shell({ feed, topics, filters }) 
 
     @form.field({ name: 'pattern', as: 'div', class: 'w-full' })
       @form.input({ 
@@ -17,15 +17,35 @@
       @end
     @end
 
-    <h1 class="heading-3 !mb-3">
-      Search Results <span class="font-normal text-base-content/60 text-base">&mdash; {{ series.meta.total }} Matches</span>
-    </h1>
+    <div search-results>
+      @if (feed === 'lessons')
+        <h1 class="heading-3 !mb-3">
+          Lesson Results <span class="font-normal text-base-content/60 text-base">&mdash; {{ lessons.meta.total }} Matches</span>
+        </h1>
+        <section class="flex-1">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+            @each (lesson in lessons.data)
+              @!lesson.card({ lesson })
+            @endeach
+          </div>
 
-    <section class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-3" series-list>
-      @each (item in series.data)
-        @!series.card({ series: item })
-      @endeach
-    </section>
+          @!pagination({ meta: lessons.meta })
+        </section>
+      @else
+        <h1 class="heading-3 !mb-3">
+          Series Results <span class="font-normal text-base-content/60 text-base">&mdash; {{ series.meta.total }} Matches</span>
+        </h1>
+        <section class="flex-1">
+          <div class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-3">
+            @each (item in series.data)
+              @!series.card({ series: item })
+            @endeach
+          </div>
+
+          @!pagination({ meta: series.meta })
+        </section>
+      @endif
+    </div>
 
   @end
 @end
