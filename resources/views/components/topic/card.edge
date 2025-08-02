@@ -80,7 +80,7 @@
 @else
 
   @card({ class: 'card-sm' })
-    <div class="card-body flex-row items-center gap-4">
+    <div class="card-body flex-col sm:flex-row items-center gap-4">
       <div class="avatar group-hover:scale-110 duration-200">
         <div class="w-12 rounded-xl">
           @!topic.icon({ item: topic })
@@ -88,7 +88,7 @@
       </div>
 
       <div>
-        <h2 class="card-title font-bold text-base-title">
+        <h2 class="card-title font-bold text-base-title justify-center sm:justify-start">
           <a href="{{ route('topics.show', { slug: topic.slug }) }}" class="link-grow">
             {{ topic.name }}
           </a>

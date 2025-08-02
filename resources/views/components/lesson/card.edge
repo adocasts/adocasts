@@ -2,34 +2,36 @@
 
 @if (size == 'lg')
 
-  @card({ class: html.classNames(['md:card-side', $props.class]), border: 'flex md:card-side items-center' })
-    <div class="md:w-1/2 @lg:w-2/5 pb-0 md:pb-[var(--card-p,1.5rem)] p-[var(--card-p,1.5rem)] md:pr-0">
-      @!post.picture({ item: lesson, class: 'h-full', lazy: lazyItem, preview: true })
-    </div>
-
-    <div class="flex-1 card-body !static">
-      <div class="flex items-center gap-6">
-        @if (lesson.series)
-          <h6 class="text-xs md:text-sm flex items-center gap-3">
-            <a href="{{ route('series.show', { slug: lesson.series.slug }) }}" class="font-semibold text-primary line-clamp-1">
-              {{ lesson.series.name }}
-            </a>
-            <span class="opacity-60">#{{ lesson.order }}</span>
-          </h6>
-        @endif
+  <div class="@container flex">
+    @card({ class: html.classNames(['@md:card-side', $props.class]), border: 'flex @md:card-side items-center' })
+      <div class="@md:w-1/2 @lg:w-2/5 pb-0 @md:pb-[var(--card-p,1.5rem)] p-[var(--card-p,1.5rem)] @md:pr-0">
+        @!post.picture({ item: lesson, class: 'h-full', lazy: lazyItem, preview: true })
       </div>
 
-      <h2 class="card-title text-lg lg:text-xl max-w-[32ch] font-semibold text-base-title">
-        <a href="{{ lesson.routeUrl }}" class="link-grow">
-          {{ lesson.title }}
-        </a>
-      </h2>
+      <div class="flex-1 card-body !static">
+        <div class="flex items-center gap-6">
+          @if (lesson.series)
+            <h6 class="text-xs md:text-sm flex items-center gap-3">
+              <a href="{{ route('series.show', { slug: lesson.series.slug }) }}" class="font-semibold text-primary line-clamp-1">
+                {{ lesson.series.name }}
+              </a>
+              <span class="opacity-60">#{{ lesson.order }}</span>
+            </h6>
+          @endif
+        </div>
 
-      <p class="line-clamp-4 opacity-60 mb-3">
-        {{ lesson.description }}
-      </p>
-    </div>
-  @end
+        <h2 class="card-title text-lg lg:text-xl max-w-[32ch] font-semibold text-base-title">
+          <a href="{{ lesson.routeUrl }}" class="link-grow">
+            {{ lesson.title }}
+          </a>
+        </h2>
+
+        <p class="line-clamp-4 opacity-60 mb-3">
+          {{ lesson.description }}
+        </p>
+      </div>
+    @end
+  </div>
 
 @elseif (size == 'wide')
 

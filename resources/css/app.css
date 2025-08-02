@@ -257,10 +257,11 @@ a.link-grow {
 
     .card {
       --width: 100%;
-      width: calc(var(--width) - (var(--gap) / 2));
-
+      width: var(--width);
+      
       @variant md {
         --width: 45%;
+        width: calc(var(--width) - (var(--gap) / 2));
       }
 
       main {

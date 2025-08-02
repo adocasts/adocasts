@@ -2,24 +2,24 @@
 @let(containerCards = $props.containerCards ?? container)
 @let(cardAccent = $props.cardAccent)
 
-<div {{ html.attrs({ class: ['max-lg:text-center', container] }) }}>
+<div {{ html.attrs({ class: [container, $props.class] }) }}>
   <h1 class="heading-2">
     Launch into Adocasts Plus
   </h1>
 
-  <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
+  <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 sm:text-lg/8">
     Get access to all the tools, tips, and real-world knowledge to build with confidence.
     Just choose the plan that fits you best.
   </p>
 
   <div class="mt-8">
-    <ul class="mt-3 columns-3 max-w-[1100px] space-y-3">
-      @!pricing.feature.line({ icon: 'solar:lock-password-unlocked-outline', text: 'Unlock all series, lessons, and assets' })
-      @!pricing.feature.line({ icon: 'solar:clock-circle-outline', text: '2 weeks early access to new free lessons' })
-      @!pricing.feature.line({ icon: 'solar:download-minimalistic-outline', text: 'Download lessons to watch offline anytime' })
-      @!pricing.feature.line({ icon: 'solar:code-outline', text: 'Access to series source code' })
-      @!pricing.feature.line({ icon: 'solar:help-outline', text: 'Priority lesson support' })
-      @!pricing.feature.line({ icon: 'solar:power-outline', text: 'Renewal reminders; cancel anytime' })
+    <ul class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 max-w-[850px]">
+      @!pricing.feature.line({ icon: 'solar:lock-password-unlocked-outline', text: 'Unlock all series, lessons, and assets', class: 'md:order-1' })
+      @!pricing.feature.line({ icon: 'solar:clock-circle-outline', text: '2 weeks early access to new free lessons', class: 'md:order-3' })
+      @!pricing.feature.line({ icon: 'solar:download-minimalistic-outline', text: 'Download lessons to watch offline anytime', class: 'md:order-5' })
+      @!pricing.feature.line({ icon: 'solar:code-outline', text: 'Access to series source code', class: 'md:order-2' })
+      @!pricing.feature.line({ icon: 'solar:help-outline', text: 'Priority lesson support', class: 'md:order-4' })
+      @!pricing.feature.line({ icon: 'solar:power-outline', text: 'Renewal reminders; cancel anytime', class: 'md:order-6' })
     </ul>
   </div>
 </div>
@@ -31,7 +31,7 @@
   @endif
 
   <div {{ html.attrs({ class: ['relative', containerCards] }) }}>
-    <div class="grid grid-cols-1 gap-10 lg:grid-cols-3">
+    <div class="grid grid-cols-1 gap-3 lg:gap-10 md:grid-cols-3">
       @!pricing.card({
         name: 'Monthly',
         accent: cardAccent,
@@ -72,7 +72,7 @@
       "
       class="relative w-full container-block py-12 sm:py-16"
     >
-      <div class="relative w-full py-3 mx-auto overflow-hidden text-lg italic tracking-wide text-white sm:text-xs md:text-sm lg:text-lg">
+      <div class="relative w-full py-3 mx-auto overflow-hidden text-lg italic tracking-wide text-white lg:text-lg">
         <div x-ref="content" class="flex animate-marquee animate-duration-[20s]">
           <div x-ref="item" class="flex items-center justify-around flex-shrink-0 py-2 text-white divide-x divide-secondary/10 border-r border-secondary/10">
             @!pricing.testimonial()

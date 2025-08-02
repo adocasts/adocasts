@@ -16,7 +16,9 @@
     @!difficulty.icon({ id: item.difficultyId, class: iconClass })
 
     @if (!$props.class?.includes('badge-sm'))
-      {{ string.capitalCase(Difficulties[item.difficultyId]) }}
+      <span class="{{ $props.labelClass ?? '' }}">
+        {{ string.capitalCase(Difficulties[item.difficultyId]) }}
+      </span>
     @endif
   </div>
 @endif

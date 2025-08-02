@@ -5,7 +5,7 @@
 @let(badgeMargin = size === 'sm' ? 'mt-3 lg:mt-6' : 'mt-6 lg:mt-8')
 
 @card({ class: $props.class })
-  <div class="card-body">
+  <div class="@container card-body">
     <main class="flex-1 flex flex-col justify-between">
       <div>
         <h2 class="card-title {{ titleSize }} font-bold text-base-title mb-3">
@@ -13,23 +13,26 @@
             {{ series.name }}
           </a>
         </h2>
+
         <p class="opacity-60 {{ descSize }}">
           {{ series.description }}
         </p>
       </div>
 
-      <div class="flex gap-2 {{ badgeMargin }}">
-        @!difficulty({ item: series, class: badgeSize })
+      <div class="flex justify-between gap-3 {{ badgeMargin }}">
+        <div class="flex flex-wrap gap-2">
+          <div class="badge badge-outline {{ badgeSize }} text-base-content/60 group-hover:text-base-content duration-200">
+            @svg('solar:video-library-outline', { class: '-ml-1 -my-0.5 opacity-80' })
+            {{ series.meta.posts_count }} Lessons
+          </div>
 
-        <div class="badge badge-outline {{ badgeSize }} text-base-content/60 group-hover:text-base-content duration-200">
-          @svg('solar:video-library-outline', { class: '-ml-1 -my-0.5 opacity-80' })
-          {{ series.meta.posts_count }} Lessons
+          <div class="badge badge-outline {{ badgeSize }} text-base-content/60 group-hover:text-base-content duration-200">
+            @svg('solar:clock-circle-outline', { class: '-ml-1 -my-0.5 opacity-80' })
+            {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
+          </div>
         </div>
 
-        <div class="badge badge-outline {{ badgeSize }} text-base-content/60 group-hover:text-base-content duration-200">
-          @svg('solar:clock-circle-outline', { class: '-ml-1 -my-0.5 opacity-80' })
-          {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
-        </div>
+        @!difficulty({ item: series, class: [badgeSize], labelClass: 'hidden xl:inline-block' })
       </div>
     </main>
 

@@ -123,7 +123,7 @@
           @!topic.card({ topic: featTopic4, size: 'lg' })
         </div>
 
-        <div class="grid sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
           @each (topic in otherTopics)
             @!topic.card({ topic, size: 'sm' })
           @endeach
@@ -140,12 +140,12 @@
         </h2>
 
         @let([featuredLesson1, featuredLesson2, ...otherLessons] = lessons)
-        <div class="w-full grid grid-cols-2 gap-3 mb-3">
+        <div class="w-full grid sm:grid-cols-2 gap-3 mb-3">
           @!lesson.card({ lesson: featuredLesson1, size: 'lg' })
           @!lesson.card({ lesson: featuredLesson2, size: 'lg' })
         </div>
 
-        <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
           @each (lesson in otherLessons)
             @!lesson.card({ lesson })
           @endeach
