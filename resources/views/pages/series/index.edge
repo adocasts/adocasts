@@ -10,17 +10,39 @@
   @layout.shell.asideLeft({ overflow: true })
     @slot('aside')
 
-      <form method="GET" action="{{ route('series.index') }}" up-target="[series-list]" up-scroll="false" up-autosubmit>
-        @collapse.filter({ title: 'Order by', class: 'collapse', open: true })
-          @form.select({ name: 'sort', selected: filters?.sort })
-            @!form.select.option({ value: Sorts.LATEST, text: 'Latest' })
-            {{-- @!form.select.option({ value: Sorts.POPULAR, text: 'Popular' }) --}}
-            @!form.select.option({ value: Sorts.ALPHA, text: 'Alphabetical' })
-            @!form.select.option({ value: Sorts.LONGEST, text: 'Longest duration' })
-            @!form.select.option({ value: Sorts.SHORTEST, text: 'Shortest duration' })
-          @end
-        @end
-
+      <form method="GET" action="{{ route('series.index') }}" up-target="[series-list]" up-scroll="false" up-autosubmit="true">
+        <div class="mb-3 md:mb-6">
+          <ul x-data="{ sort: {{ js.stringify(filters?.sort ?? Sorts.LATEST) }} }" class="menu w-full gap-1 p-0">
+            <li>
+              @!form.select.radio({
+                value: Sorts.LATEST,
+                text: 'Most recently updated',
+                icon: 'solar:graph-new-up-outline'
+              })
+            </li>
+            <li>
+              @!form.select.radio({
+                value: Sorts.ALPHA,
+                text: 'Alphabetical',
+                icon: 'solar:sort-by-alphabet-outline'
+              })
+            </li>
+            <li>
+              @!form.select.radio({
+                value: Sorts.LONGEST,
+                text: 'Longest duration',
+                icon: 'solar:list-arrow-up-minimalistic-outline'
+              })
+            </li>
+            <li>
+              @!form.select.radio({
+                value: Sorts.SHORTEST,
+                text: 'Shortest duration',
+                icon: 'solar:list-arrow-down-minimalistic-outline'
+              })
+            </li>
+          </ul>
+        </div>
 
         @collapse.filter({ title: 'Difficulty', class: 'collapse-arrow !px-0', open: true })
           @!form.checkbox({ name: 'difficulties[]', label: 'Beginner', value: Difficulties.BEGINNER, fade: true })

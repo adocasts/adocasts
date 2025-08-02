@@ -11,17 +11,24 @@
     @slot('aside')
 
       <form method="GET" action="{{ route('blogs.index') }}" up-target="[blog-list]" up-scroll="false" up-autosubmit>
-        <h3 class="heading-3">
-          Filter
-        </h3>
-
-        @collapse.filter({ title: 'Order by', class: 'collapse', open: true })
-          @form.select({ name: 'sort', selected: filters?.sort })
-            @!form.select.option({ value: Sorts.LATEST, text: 'Latest' })
-            {{-- @!form.select.option({ value: Sorts.POPULAR, text: 'Popular' }) --}}
-            @!form.select.option({ value: Sorts.ALPHA, text: 'Alphabetical' })
-          @end
-        @end
+        <div class="mb-3 md:mb-6">
+          <ul x-data="{ sort: {{ js.stringify(filters?.sort ?? Sorts.LATEST) }} }" class="menu w-full gap-1 p-0">
+            <li>
+              @!form.select.radio({
+                value: Sorts.LATEST,
+                text: 'Most recently updated',
+                icon: 'solar:graph-new-up-outline'
+              })
+            </li>
+            <li>
+              @!form.select.radio({
+                value: Sorts.ALPHA,
+                text: 'Alphabetical',
+                icon: 'solar:sort-by-alphabet-outline'
+              })
+            </li>
+          </ul>
+        </div>
 
         {{-- <div class="mb-3 md:mb-6">
           <div class="font-bold text-sm mb-3">Filter by access</div>

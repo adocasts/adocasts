@@ -1,0 +1,18 @@
+@let(name = $props.name ?? 'sort')
+@let(el = $props.href ? 'a' : 'label')
+
+<{{ el }} {{ $props.toAttrs() }} :class="{ 'menu-active': {{ name }} === '{{ value }}' }">
+  @if (el === 'label')
+    <input type="radio" name="{{ name }}" x-model="{{ name }}" value="{{ value }}" class="sr-only">
+  @endif
+  
+  @if (icon)
+    @svg(icon, { class: 'size-5 text-base-content/80' })
+  @endif
+
+  @if (text)
+    {{ text }}
+  @else
+    {{{ await $slots.main() }}}
+  @endif
+</{{ el }}>

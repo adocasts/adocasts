@@ -15,31 +15,23 @@
       <div class="mb-3 md:mb-6">
         <ul x-data="{ feed: {{ js.stringify(feed) }} }" class="menu w-full gap-1 p-0">
           <li>
-            <a href="{{ route('search', { feed: 'series' }) }}" :class="{ 'menu-active': feed === 'series' }">
-              @svg('solar:playlist-outline', { class: 'size-5 text-base-content/80' })
-              All series
-            </a>
+            @!form.select.radio({
+              name: 'feed',
+              value: 'series',
+              href: route('search', { feed: 'series' }),
+              text: 'All series',
+              icon: 'solar:playlist-outline'
+            })
           </li>
           <li>
-            <a href="{{ route('search', { feed: 'lessons' }) }}" :class="{ 'menu-active': feed === 'lessons' }">
-              @svg('solar:video-library-outline', { class: 'size-5 text-base-content/80' })
-              All lessons
-            </a>
+            @!form.select.radio({
+              name: 'feed',
+              value: 'lessons',
+              href: route('search', { feed: 'lessons' }),
+              text: 'All lessons',
+              icon: 'solar:video-library-outline'
+            })
           </li>
-          {{-- <li>
-            <label :class="{ 'menu-active': feed === 'popular' }">
-              <input type="radio" name="feed" x-model="feed" value="recent" class="sr-only">
-              @svg('solar:chat-round-like-outline', { class: 'size-5 text-base-content/80' })
-              Recently released
-            </label>
-          </li>
-          <li>
-            <label :class="{ 'menu-active': feed === 'popular' }">
-              <input type="radio" name="feed" x-model="feed" value="popular" class="sr-only">
-              @svg('solar:chat-round-like-outline', { class: 'size-5 text-base-content/80' })
-              Popular lessons
-            </label>
-          </li> --}}
         </ul>
       </div>
 
