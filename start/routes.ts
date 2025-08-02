@@ -50,6 +50,15 @@ const RenderUserHistory = () => import('#actions/users/render_user_history')
 import '#start/router/actions'
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+import {
+  throttleComments,
+  throttleCommentsBurst,
+  throttleDiscussions,
+  throttleDiscussionsBurst,
+  throttleImageUpload,
+  throttleSignUp,
+  throttleVerifyEmail,
+} from './limiter.js'
 const RenderSearch = () => import('#actions/general/render_search')
 const RenderPricing = () => import('#actions/general/render_pricing')
 const DisableNotification = () => import('#actions/notifications/disable_notification')
@@ -138,13 +147,13 @@ router.get('/go/:entity/:entityId/:target/:targetId', [GoToNotification]).as('go
 //* Assets
 router.get('/img/:userId/:filename', [ShowAsset]).as('assets.img.user')
 router.get('/img/*', [ShowAsset]).as('assets.img')
-router.post('/api/image/upload', [StoreAsset]).as('assets.img.store').use(middleware.auth())
+router.post('/api/image/upload', [StoreAsset]).as('assets.img.store').use([middleware.auth(), throttleImageUpload])
 
 //* Auth
 router.get('/signin', [RenderSignInPage]).as('auth.signin').use(middleware.guest())
 router.get('/signup', [RenderSignUpPage]).as('auth.signup').use(middleware.guest())
 router.post('/signin', [StoreSessionSignIn]).as('auth.signin.store').use(middleware.guest())
-router.post('/signup', [StoreSessionSignUp]).as('auth.signup.store').use([middleware.guest(), middleware.turnstile()])
+router.post('/signup', [StoreSessionSignUp]).as('auth.signup.store').use([middleware.guest(), middleware.turnstile(), throttleSignUp])
 router.delete('/signout', [DestroySession]).as('auth.sessions.destroy')
 
 //* Auth Social
@@ -203,7 +212,7 @@ router.get('/snippets/:slug', [RenderSnippetsShow]).as('snippets.show').use(midd
 //* Discussions
 router.get('/forum', [RenderDiscussionsIndex]).as('discussions.index')
 router.get('/forum/create', [RenderDiscussionsCreate]).as('discussions.create')
-router.post('/forum', [StoreDiscussion]).as('discussions.store')
+router.post('/forum', [StoreDiscussion]).as('discussions.store').use([throttleDiscussions, throttleDiscussionsBurst])
 router.get('/forum/:slug', [RenderDiscussionsShow]).as('discussions.show')
 router.get('/forum/:slug/edit', [RenderDiscussionsEdit]).as('discussions.edit')
 router.put('/forum/:slug', [UpdateDiscussion]).as('discussions.update')
@@ -212,7 +221,7 @@ router.patch('/forum/:slug/solved', [ToggleDiscussionSolvedAt]).as('discussions.
 router.delete('/forum/:slug', [DestroyDiscussion]).as('discussions.destroy')
 
 //* Comments
-router.post('/comments', [StoreComment]).as('comments.store')
+router.post('/comments', [StoreComment]).as('comments.store').use([throttleComments, throttleCommentsBurst])
 router.put('/comments/:id', [UpdateComment]).as('comments.update')
 router.patch('/comments/:id/vote', [ToggleCommentVote]).as('comments.vote')
 router.delete('/comments/:id', [DestroyComment]).as('comments.destroy')
@@ -231,7 +240,7 @@ router.delete('/settings/session/:id?', [ForceSignOut]).as('settings.session.des
 router.delete('/settings/account', [DestroyAccount]).as('settings.account.destroy').use(middleware.auth())
 
 //* Email Verification
-router.post('/verification/email/send', [SendEmailVerification]).as('verification.email.send').use(middleware.auth())
+router.post('/verification/email/send', [SendEmailVerification]).as('verification.email.send').use([middleware.auth(), throttleVerifyEmail])
 router.get('/verification/email/:email', [VerifyEmail]).as('verification.email.verify')
 
 //* Progression

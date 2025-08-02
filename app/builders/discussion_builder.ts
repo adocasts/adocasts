@@ -59,8 +59,10 @@ export default class DiscussionBuilder extends BaseBuilder<typeof Discussion, Di
         this.query.whereDoesntHave('comments', (query) => query.where('stateId', States.PUBLIC))
         return this
       case 'solved':
+        this.query.whereNotNull('solvedAt')
         return this
       case 'unsolved':
+        this.query.whereNull('solvedAt')
         return this
       default:
         return this

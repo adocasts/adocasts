@@ -23,13 +23,13 @@ export default class RenderSearch extends BaseAction<[feed: string, filters: Val
       case 'lessons':
         return {
           feed,
-          lessons: await GetLessonsPaginated.run(filters),
+          lessons: await GetLessonsPaginated.run(filters, 'search', { feed: 'lessons' }),
           topics: await GetTopicsFilter.run('lessons'),
         }
       default:
         return {
           feed,
-          series: await GetSeriesPaginated.run(filters),
+          series: await GetSeriesPaginated.run(filters, 'search', { feed: 'series' }),
           topics: await GetTopicsFilter.run('collections'),
         }
     }
