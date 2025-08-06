@@ -1,8 +1,8 @@
-import { parse } from 'node-html-parser'
-import app from '@adonisjs/core/services/app'
-import edge from 'edge.js'
 import env from '#start/env'
 import string from '@adonisjs/core/helpers/string'
+import app from '@adonisjs/core/services/app'
+import edge from 'edge.js'
+import { parse } from 'node-html-parser'
 import shiki from 'shiki'
 
 const shikiTheme = 'github-dark'
@@ -33,7 +33,7 @@ class HtmlParser {
       case 'vbscript-html':
         return 'edge'
       default:
-        return shiki.BUNDLED_LANGUAGES.some(lang => lang.id === language) ? language : undefined
+        return shiki.BUNDLED_LANGUAGES.some((lang) => lang.id === language) ? language : undefined
     }
   }
 
@@ -234,9 +234,7 @@ class HtmlParser {
           const addLineNumbers = lines
             .map((line, i) => (line.startsWith('++') ? i + 1 : undefined))
             .filter(Boolean)
-          const codeLessChange = code
-            .replaceAll('--', '')
-            .replaceAll('++', '')
+          const codeLessChange = code.replaceAll('--', '').replaceAll('++', '')
 
           let highlighted = highlighter.codeToHtml(codeLessChange, lang, shikiTheme, {
             lang,

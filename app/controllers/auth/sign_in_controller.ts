@@ -1,9 +1,9 @@
 import AuthAttempt from '#models/auth_attempt'
 import User from '#models/user'
+import ForwardService from '#services/forward_service'
 // import posthog from '#services/posthog_service'
 import SessionService from '#services/session_service'
 import StripeService from '#services/stripe_service'
-import UtilityService from '#services/utility_service'
 import { signInValidator } from '#validators/auth_validator'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -29,7 +29,7 @@ export default class SignInController {
   ) {
     let user: User | null = null
     let { uid, password, rememberMe, action, plan } = await request.validateUsing(signInValidator)
-    let forward = await UtilityService.tryGetForward(request)
+    let forward = await ForwardService.tryGet(request)
 
     if (await AuthAttempt.disallows(uid)) {
       session.flash(
