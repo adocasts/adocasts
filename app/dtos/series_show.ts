@@ -1,11 +1,10 @@
-import AssetDto from './asset.js'
-import Collection from '#models/collection'
 import ProgressableDto from '#dtos/progressable_dto'
-import { ProgressContext } from '#middleware/context/_progress'
-import SeriesLessonDto from './series_lesson.js'
 import ProgressTypes from '#enums/progress_types'
-import TopicDto from './topic.js'
+import Collection from '#models/collection'
+import AssetDto from './asset.js'
 import ModuleDto from './module.js'
+import SeriesLessonDto from './series_lesson.js'
+import TopicDto from './topic.js'
 
 export class SeriesShowDto extends ProgressableDto {
   static model() {
@@ -59,43 +58,5 @@ export class SeriesShowDto extends ProgressableDto {
     this.modules = ModuleDto.fromArray(series.children)
     this.lessons = SeriesLessonDto.fromArray(series.posts)
     this.meta = series.$extras
-  }
-
-  getFlatLessons() {
-    if (this.lessons.length) return this.lessons
-
-    return this.modules.reduce<SeriesLessonDto[]>((flat, mod) => [...flat, ...mod.lessons], [])
-  }
-
-  findNextUserLesson(progress: ProgressContext) {
-    const lessons = this.getFlatLessons()
-    if (!lessons?.length) return
-
-    for (const lesson of lessons) {
-      const progression = progress.post.get(lesson.id)
-
-      // if post is completed, skip
-      if (progression?.isCompleted) continue
-
-      return lesson
-    }
-
-    return lessons.at(0)
-  }
-
-  findNextLesson(lessonId: number) {
-    const lessons = this.getFlatLessons()
-    const lessonIndex = lessons.findIndex((post) => post.id === lessonId)
-    const nextIndex = lessonIndex + 1
-
-    return nextIndex > -1 ? lessons.at(nextIndex) : undefined
-  }
-
-  findPrevLesson(lessonId: number) {
-    const lessons = this.getFlatLessons()
-    const lessonIndex = lessons.findIndex((post) => post.id === lessonId)
-    const prevIndex = lessonIndex - 1
-
-    return prevIndex > -1 ? lessons.at(prevIndex) : undefined
   }
 }

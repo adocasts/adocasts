@@ -36,6 +36,6 @@ export default class RenderLessonShow extends BaseAction {
 
     if (!slug) return null
 
-    return await GetSeries.run(slug)
+    return GetSeries.run(slug)
   }
 }

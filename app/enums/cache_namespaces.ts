@@ -5,6 +5,7 @@ const enum CacheNamespaces {
   PLANS = 'PLANS',
   FEED = 'FEED',
   SCHEDULE = 'SCHEDULE',
+  SYNDICATION = 'SYNDICATION',
 }
 
 export default CacheNamespaces

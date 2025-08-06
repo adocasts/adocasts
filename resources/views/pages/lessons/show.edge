@@ -54,8 +54,8 @@
             @if (series)
               <div class="h-5 w-px bg-base-100 mx-3"></div>
 
-              @let(nextLesson = series.findNextLesson(lesson.id))
-              @let(prevLesson = series.findPrevLesson(lesson.id))
+              @let(nextLesson = GetSeries.nextLesson(series, lesson.id))
+              @let(prevLesson = GetSeries.prevLesson(series, lesson.id))
               <div class="flex items-center justify-end">
                 @tooltip({ text: 'Previous Lesson', class: 'tooltip-bottom' })
                   <a {{ html.attrs({ href: prevLesson?.routeUrl, class: 'btn btn-ghost btn-primary btn-square', disabled: !prevLesson }) }}>

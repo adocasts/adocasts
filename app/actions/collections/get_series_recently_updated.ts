@@ -1,6 +1,8 @@
-import GetSeriesList, { DbOptions } from './get_series_list.js'
-import SeriesListDto from '#dtos/series_list'
 import BaseAction from '#actions/base_action'
+import SeriesListDto from '#dtos/series_list'
+import CacheNamespaces from '#enums/cache_namespaces'
+import cache from '@adonisjs/cache/services/main'
+import GetSeriesList, { DbOptions } from './get_series_list.js'
 
 interface CacheOptions {
   limit?: number
@@ -8,15 +10,15 @@ interface CacheOptions {
 
 export default class GetSeriesRecentlyUpdated extends BaseAction<[CacheOptions]> {
   async handle(options?: CacheOptions) {
-    const results = await GetSeriesRecentlyUpdated.fromDb({
-      limit: options?.limit,
-      withPosts: true,
-      postLimit: 5,
+    return cache.namespace(CacheNamespaces.COLLECTIONS).getOrSet({
+      key: `GET_SERIES_RECENTLY_UPDATED_${JSON.stringify(options)}`,
+      factory: () =>
+        GetSeriesRecentlyUpdated.fromDb({
+          limit: options?.limit,
+          withPosts: true,
+          postLimit: 5,
+        }),
     })
-
-    // TODO: cache
-
-    return results
   }
 
   static async fromDb(options?: DbOptions) {

@@ -1,0 +1,262 @@
+@let(title = request.input('title'))
+@let(subtitle = request.input('subtitle'))
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OG Image</title>
+
+  <style>
+    @import url(https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900);
+    html {
+      font-family: 'Red Hat Display', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      background-color: white !important;
+    }
+
+    body {
+      --color-main: oklch(0.83 0.039 288.4);
+      --color-muted: oklab(0.83 0.0123103 -0.0370062 / 0.6);
+      --color-border: oklab(0.83 0.0123103 -0.0370062 / 0.2);
+      --content-margin: 3rem;
+
+      width: 1200px;
+      height: 630px;
+      background-color: oklch(0.168 0.055 287.6);
+      color: var(--color-main);
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .pattern-position {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+      mix-blend-mode: overlay;
+    }
+
+    .pattern-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: rotate(180deg);
+      opacity: .6;
+      mask-image: linear-gradient(to right, black, transparent);
+      -webkit-mask-image: linear-gradient(to right, black, transparent);
+    }
+
+    .radial-accent-position {
+      background-image: radial-gradient(at 50% -50%, oklab(0.8 -0.0636078 -0.0771625 / 0.5) 0%, oklab(0 0 0 / 0) 100%);
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    .radial-accent-1 {
+      background-image: radial-gradient(at 50% -50%, oklab(0 0 0 / 0) 0%, oklch(0.168 0.055 287.6) 100%);
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 50;
+    }
+
+    .radial-accent-2 {
+      background-image: linear-gradient(to top, oklch(0.168 0.055 287.6) 0%, oklab(0 0 0 / 0) 50%, oklab(0 0 0 / 0) 100%);
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .content {
+      flex: 1;
+      padding: var(--content-margin);
+      overflow: hidden;
+      position: relative;
+      z-index: 5;
+    }
+
+    .title {
+      text-wrap: balance;
+      font-size: 4.5rem;
+      line-height: 1;
+      margin: .5rem 0 1.5rem;
+    }
+
+    .subtitle {
+      color: var(--color-muted);
+      max-width: 46ch;
+      font-size: 2rem;
+      line-height: 1.4;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      margin: 0;
+    }
+
+    .footer {
+      width: calc(100% - (var(--content-margin) * 2));
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      font-size: 1.875rem;
+      line-height: 1.2;
+      margin: 0 var(--content-margin) var(--content-margin);
+      padding-top: 1.5rem;
+      position: relative;
+      z-index: 5;
+    }
+
+    .logo-wrap {
+      width: fit-content;
+    }
+
+    .logo-img {
+      width: 168px;
+    }
+
+    .footer-divider {
+      width: 1px;
+      height: 1.5rem;
+      background-color: var(--color-border);
+      margin: 0 1.5rem;
+    }
+
+    .type {
+      color: var(--color-muted);
+      font-size: 1.5rem;
+      line-height: 1.333;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .series-details {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+      padding: 0 var(--content-margin) var(--content-margin);
+      position: relative;
+      z-index: 5;
+    }
+
+    .series-details-item {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .series-details-item-wrap {
+      display: flex;
+      flex-direction: column;
+      margin-right: 1.5rem;
+    }
+
+    .series-details-item-title {
+      color: var(--color-muted);
+      font-size: 1rem;
+      line-height: 1;
+      margin-bottom: .15rem;
+    }
+
+    .series-details-item-text {
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .series-details-item-icon {
+      width: 3rem;
+      height: 3rem;
+      color: var(--color-muted);
+    }
+
+    .lesson-series {
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 0 0 1.5rem;
+    }
+
+    .lesson-series-name {
+      color: oklch(0.8 0.1 230.5);
+      font-weight: bold;
+    }
+
+    .lesson-series-order {
+      opacity: var(--color-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="pattern-position">
+    <img class="pattern-img" src="https://adocasts.com/img/brand/og-pattern-02.png" alt="pattern">
+  </div>
+
+  <div class="radial-accent-position">
+    <div class="radial-accent-1"></div>
+    <div class="radial-accent-2"></div>
+  </div>
+
+  <div class="content">
+    @if (type === 'lesson' && entity.series?.length)
+      <h6 class="lesson-series">
+        <div class="lesson-series-name">
+          {{ entity.series.at(0).name }}
+        </div>
+        <span class="lesson-series-order">#{{ entity.lessonIndexDisplay }}</span>
+      </h6>
+    @endif
+
+    @if (entity)
+      <h1 class="title">{{ entity.name ?? entity.title }}</h1>
+      <p class="subtitle">{{ entity.description }}</p>
+    @else
+      <h1 class="title">{{ title || '' }}</h1>
+      <p class="subtitle">{{ subtitle || '' }}</p>
+    @endif
+  </div>
+
+  @if (type === 'series')
+    <div class="series-details">
+      <div class="series-details-item">
+        @svg('solar:video-library-outline', { class: 'series-details-item-icon' })
+        <div class="series-details-item-wrap">
+          <span class="series-details-item-title">What's Inside</span>
+          <span class="series-details-item-text">
+            {{ entity.meta.posts_count }} Lessons
+          </span>
+        </div>
+      </div>
+
+      <div class="series-details-item">
+        @svg('solar:clock-circle-outline', { class: 'series-details-item-icon' })
+        <div class="series-details-item-wrap">
+          <span class="series-details-item-title">Viewing Time</span>
+          <span class="series-details-item-text">
+            {{ TimeService.secondsToTimestring(entity.meta.video_seconds_sum) }}
+          </span>
+        </div>
+      </div>
+    </div>
+  @endif
+
+  <div class="footer">
+    <div class="logo-wrap">
+      <img class="logo-img" src="https://adocasts.com/img/brand/logo-light.png?w=250">
+    </div>
+    
+    @if (type)
+      <div class="footer-divider"></div>
+      <div class="type">
+        {{ type }}
+      </div>
+    @endif
+  </div>
+</body>
+</html>

@@ -1,3 +1,4 @@
+import GetSeries from '#actions/collections/get_series'
 import GetUnreadNotificationCount from '#actions/notifications/get_unread_notification_count'
 import CommentTypes, { CommentTypeIdColumn } from '#enums/comment_types'
 import Difficulties from '#enums/difficulties'
@@ -37,6 +38,7 @@ edge.use(edgeIconify)
 
 // actions
 edge.global('GetUnreadNotificationCount', GetUnreadNotificationCount)
+edge.global('GetSeries', GetSeries)
 
 // enums
 edge.global('Sorts', Sorts)

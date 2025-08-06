@@ -1,9 +1,11 @@
 import BaseAction from '#actions/base_action'
 import SeriesListDto from '#dtos/series_list'
+import CacheNamespaces from '#enums/cache_namespaces'
 import Sorts from '#enums/sorts'
 import NotImplementedException from '#exceptions/not_implemented_exception'
 import Collection from '#models/collection'
 import { seriesIndexValidator } from '#validators/series'
+import cache from '@adonisjs/cache/services/main'
 import { Infer } from '@vinejs/vine/types'
 import _ from 'lodash'
 import LessonListDto from '../../dtos/lesson_list.js'
@@ -28,11 +30,10 @@ export interface DbOptions {
 
 export default class GetSeriesList extends BaseAction<[CacheOptions]> {
   async handle({ topics, difficulties, limit, sort }: CacheOptions = {}) {
-    let series = await GetSeriesList.fromDb().dto(SeriesListDto)
-
-    // todo: cache
-
-    // for now, it'll be more efficient to cache all series and then filter & limit
+    let series = await cache.namespace(CacheNamespaces.COLLECTIONS).getOrSet({
+      key: `GET_SERIES_LIST`,
+      factory: () => GetSeriesList.fromDb().dto(SeriesListDto),
+    })
 
     if (Array.isArray(topics)) {
       series = series.filter((s) => s.topics && s.topics.some((t) => topics.includes(t.slug)))
