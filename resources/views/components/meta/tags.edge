@@ -1,5 +1,5 @@
 @let(seriesTitle = series?.name && !title.startsWith(series.name) ? `${series.name}: ${title}` : title)
-@let(asset = $props.asset ?? { filename: 'brand/2024/2024-02-adocasts-og.jpg' })
+@let(asset = $props.asset)
 
 <title>{{ (seriesTitle ? seriesTitle : 'Adocasts') }}</title>
 <meta name="description" content="{{ desc }}"  />
@@ -15,7 +15,12 @@
 <meta  property="og:url" content="{{ url }}" />
 <meta  property="og:site_name" content="adocasts.com" />
 @if (asset)
-  <meta  property="og:image" content="https://adocasts.com/img/{{ asset.filename }}?w=900" />
+  <meta property="og:image" content="https://adocasts.com/img/{{ asset.filename }}?w=900" />
+@elseif (ogImage)
+  <meta property="og:image" content="{{ assetDomain }}{{ ogImage }}" />
+@else
+  @let(ogTitle = seriesTitle?.split('|').at(0)?.trim())
+  <meta property="og:image" content="{{ assetDomain }}/og-image?title={{ encodeURIComponent(ogTitle) }}&desc={{ encodeURIComponent(desc) }}" />
 @endif
 
 {{-- Twitter --}}

@@ -1,5 +1,5 @@
 @let(title = request.input('title'))
-@let(subtitle = request.input('subtitle'))
+@let(desc = request.input('desc'))
 
 <!DOCTYPE html>
 <html lang="en">
@@ -88,7 +88,7 @@
       margin: .5rem 0 1.5rem;
     }
 
-    .subtitle {
+    .desc {
       color: var(--color-muted);
       max-width: 46ch;
       font-size: 2rem;
@@ -215,10 +215,10 @@
 
     @if (entity)
       <h1 class="title">{{ entity.name ?? entity.title }}</h1>
-      <p class="subtitle">{{ entity.description }}</p>
+      <p class="desc">{{ entity.description }}</p>
     @else
       <h1 class="title">{{ title || '' }}</h1>
-      <p class="subtitle">{{ subtitle || '' }}</p>
+      <p class="desc">{{ desc || '' }}</p>
     @endif
   </div>
 
