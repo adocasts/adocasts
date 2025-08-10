@@ -14,10 +14,10 @@
       </div>
     </a>
   @else
-    <a href="{{ route('auth.signin') }}" class="btn btn-ghost-soft" up-auth-modal>
+    <a href="{{ route('auth.signin') }}" class="hidden md:flex btn btn-sm lg:btn-md btn-ghost-soft" up-auth-modal>
       Sign In
     </a>
-    <a href="{{ route('auth.signup') }}" class="btn btn-outline btn-primary" up-auth-modal>
+    <a href="{{ route('auth.signup') }}" class="hidden md:flex btn btn-sm lg:btn-md btn-outline btn-primary" up-auth-modal>
       Sign Up
     </a>
   @endif

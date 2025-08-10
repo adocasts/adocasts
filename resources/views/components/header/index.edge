@@ -1,39 +1,88 @@
 @let(container = $props.container ?? 'container')
 @let(forceBackdrop = $props.forceBackdrop ?? false)
 
-<header
-  id="slot-header"
-  x-data="header"
-  x-show="isShown"
-  up-fixed="top"
-  :class="['w-full h-16 border border-base-content/10 sticky top-0 z-30 duration-300',
-    isWindowScrolled || {{ forceBackdrop }}
-      ? 'bg-base-200/75 midnight:bg-base-300/75 backdrop-blur-md shadow-sm'
-      : 'bg-base-300/10 backdrop-blur-xs shadow-none']"
-  @scroll.window="onWindowScroll"
-  @location="onLocationChange"
-  {{ html.attrs({ 'x-cloak': request.url().includes('/lessons/') }) }}
->
-  <div class="{{ container }} mx-auto flex justify-between items-center h-full">
-    <div class="h-full flex items-center gap-6">
-      <div class="relative border-r border-base-content/10 pr-6">
-        <a class="w-36" href="{{ route('home') }}">
-          <img class="logo-dark" src="/imgs/logo-white.svg" alt="Adocasts" width="168px" height="50px" />
-          <img class="logo-light" src="/imgs/logo-black.svg" alt="Adocasts" width="168px" height="50px" />
-        </a>
+<div class="drawer">
+  <input id="my-drawer-3" type="checkbox" class="drawer-toggle">
+  <div class="drawer-content flex flex-col">
+    <header
+      id="slot-header"
+      x-data="header"
+      x-show="isShown"
+      up-fixed="top"
+      :class="['w-full h-16 border border-base-content/10 sticky top-0 z-30 duration-300',
+        isWindowScrolled || {{ forceBackdrop }}
+          ? 'bg-base-200/75 midnight:bg-base-300/75 backdrop-blur-md shadow-sm'
+          : 'bg-base-300/10 backdrop-blur-xs shadow-none']"
+      @scroll.window="onWindowScroll"
+      @location="onLocationChange"
+      {{ html.attrs({ 'x-cloak': request.url().includes('/lessons/') }) }}
+    >
+      <div class="{{ container }} mx-auto flex justify-between items-center h-full">
+        <div class="h-full flex items-center gap-3 lg:gap-6">
+          <div class="flex-none md:hidden border-r border-base-content/10 pr-3 lg:pr-6">
+            <label for="my-drawer-3" aria-label="open sidebar" class="btn btn-square btn-ghost">
+              @svg('solar:hamburger-menu-linear', { class: 'inline-block size-8 stroke-current' })
+            </label>
+          </div>
+
+          <div class="relative md:border-r border-base-content/10 pr-3 lg:pr-6">
+            <a class="flex items-center w-36 lg:w-42" href="{{ route('home') }}">
+              <img class="w-full logo-dark" src="/imgs/logo-white.svg" alt="Adocasts" width="168px" height="50px" />
+              <img class="w-full logo-light" src="/imgs/logo-black.svg" alt="Adocasts" width="168px" height="50px" />
+            </a>
+          </div>
+      
+          <nav class="hidden md:block up-id="headerNav" up-hungry>
+            <ul class="flex items-center gap-0.5">
+              @!header.nav()
+            </ul>
+          </nav>
+        </div>
+
+        <div class="flex items-center justify-end">
+          @!frags.header.theme()
+
+          <a href="{{ route('search') }}" class="btn btn-toggle btn-primary btn-square lg:mr-3">
+            @svg('solar:magnifer-outline', { class: 'size-4' })
+          </a>
+
+          @!frags.header.auth()
+        </div>
       </div>
-  
-      @!header.nav()
-    </div>
+    </header>
+  </div>
+  <div class="drawer-side z-[9999]">
+    <label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
+    <div class="bg-base-300/80 backdrop-blur-md min-h-full w-80 flex flex-col justify-between">
+      <div class="h-16 flex items-center gap-3 lg:gap-6 {{ container }}">
+        <div class="flex-none md:hidden border-r border-base-content/10 pr-3 lg:pr-6">
+          <label for="my-drawer-3" aria-label="open sidebar" class="btn btn-square btn-ghost">
+            @svg('solar:close-square-line-duotone', { class: 'inline-block size-10 stroke-current' })
+          </label>
+        </div>
 
-    <div class="flex items-center justify-end">
-      @!frags.header.theme()
+        <div class="relative md:border-r border-base-content/10 pr-3 lg:pr-6">
+          <a class="flex items-center w-36 lg:w-42" href="{{ route('home') }}">
+            <img class="w-full logo-dark" src="/imgs/logo-white.svg" alt="Adocasts" width="168px" height="50px" />
+            <img class="w-full logo-light" src="/imgs/logo-black.svg" alt="Adocasts" width="168px" height="50px" />
+          </a>
+        </div>
+      </div>
 
-      <a href="{{ route('search') }}" class="btn btn-toggle btn-primary btn-square mr-3">
-        @svg('solar:magnifer-outline', { class: 'size-4' })
-      </a>
+      <ul class="w-full menu p-6">
+        @!header.nav()
+      </ul>
 
-      @!frags.header.auth()
+      @if (!auth.user)
+        <div class="flex flex-col gap-3 p-6">
+          <a href="{{ route('auth.signin') }}" class="btn btn-block btn-outline btn-ghost-soft" up-auth-modal>
+            Sign In
+          </a>
+          <a href="{{ route('auth.signup') }}" class="btn btn-block btn-outline btn-primary" up-auth-modal>
+            Sign Up
+          </a>
+        </div>
+      @endif
     </div>
   </div>
-</header>
+</div>
