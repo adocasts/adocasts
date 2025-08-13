@@ -28,22 +28,7 @@ export default class LessonListDto extends ProgressableDto {
   declare series: LessonSeriesDto | null
   declare seriesParent: LessonSeriesDto | null
   declare meta: Record<string, any>
-
-  get order() {
-    const module = this.seriesParent
-
-    if (!module) {
-      return ''
-    }
-
-    // if not a module, use sort as major
-    if (!module.parentId) {
-      return `${module.meta.pivot_sort_order + 1}.0`
-    }
-
-    // otherwise, use module sort as major and lesson sort as minor
-    return `${module.sortOrder + 1}.${module.meta.pivot_sort_order}`
-  }
+  declare order: string
 
   constructor(post?: Post) {
     super()
@@ -65,5 +50,22 @@ export default class LessonListDto extends ProgressableDto {
     this.series = LessonSeriesDto.fromModel(post.rootSeries?.at(0))
     this.seriesParent = LessonSeriesDto.fromModel(post.series?.at(0))
     this.meta = post.$extras
+    this.order = this.#getOrder()
+  }
+
+  #getOrder() {
+    const module = this.seriesParent
+
+    if (!module) {
+      return ''
+    }
+
+    // if not a module, use sort as major
+    if (!module.parentId) {
+      return `${module.meta.pivot_sort_order + 1}.0`
+    }
+
+    // otherwise, use module sort as major and lesson sort as minor
+    return `${module.sortOrder + 1}.${module.meta.pivot_sort_order}`
   }
 }

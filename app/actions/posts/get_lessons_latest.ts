@@ -16,7 +16,7 @@ export default class GetLessonsLatest extends BaseAction<[Options]> {
     })
   }
 
-  static async fromDb({ limit = 10 }: Options = {}) {
+  static async fromDb({ limit = 15 }: Options = {}) {
     return Post.build().displayLesson().orderPublished().limit(limit).dto(LessonListDto)
   }
 }

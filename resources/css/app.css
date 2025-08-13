@@ -332,6 +332,78 @@ a.link-grow {
   }
 }
 
+.hero-lesson-grid {
+  --columns: 3;
+
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(var(--columns), 1fr);
+
+  @media screen and (width < 490px) {
+    --columns: 3;
+
+    .img:nth-child(2),
+    .img:nth-child(6) {
+      grid-column: span 2/span 2;
+      grid-row: span 2/span 2;
+    }
+  }
+
+  @media screen and (width >= 610px) and (width < 810px) {
+    --columns: 4;
+
+    .img:nth-child(2),
+    .img:nth-child(5) {
+      grid-column: span 2/span 2;
+      grid-row: span 2/span 2;
+    }
+  }
+
+  @media screen and (width >= 810px) and (width < 1400px) {
+    --columns: 5;
+
+    .img:nth-child(2),
+    .img:nth-child(7),
+    .img:nth-child(9) {
+      grid-column: span 2/span 2;
+      grid-row: span 2/span 2;
+    }
+  }
+  
+  @media screen and (width >= 1400px) {
+    --columns: 6;
+
+    .img:nth-child(3),
+    .img:nth-child(9),
+    .img:nth-child(12) {
+      grid-column: span 2/span 2;
+      grid-row: span 2/span 2;
+    }
+  }
+
+  &:before {
+    @apply bg-gradient-to-r from-base-300/85 from-40% to-base-300/50 md:to-base-300/0;
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 5;
+  }
+
+  &:after {
+    @apply bg-gradient-to-b from-transparent to-base-300;
+    content: "";
+    width: 100%;
+    height: 50%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 5;
+  }
+}
+
 .scale-in {
   animation: scale-in 2.5s forwards;
   opacity: 0;

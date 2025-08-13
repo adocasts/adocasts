@@ -8,17 +8,34 @@
   }
 })
 
-  <div class="relative -mt-16 pt-28">
-    <div class="absolute inset-x-0 bottom-0 top-0 bg-radial-[at_50%_-50%] from-primary/50 to-primary/0 dark:from-secondary/50 dark:to-secondary/0 z-1">
-      <div id="hero" x-data="stars" class="absolute w-full h-full z-[999] pointer-events-none">
+  <div class="relative -mt-16 pt-16">
+    <div class="absolute inset-x-0 bottom-0 top-0 bg-radial-[at_50%_-50%] from-primary/50 to-primary/0 dark:from-secondary/50 dark:to-secondary/0 z-5">
+      <div id="hero" class="absolute w-full h-full z-[999] pointer-events-none">
         <div class="absolute w-full h-full z-50 bg-radial-[at_50%_-50%] from-primary/0 dark:from-secondary/0 to-base-300"></div>
         <div class="absolute w-full h-full bg-gradient-to-t from-base-300 via-base-300/0 to-base-300/0"></div>
       </div>
       <div class="w-full h-full bg-gradient-to-t from-base-300 via-base-300/0 to-base-300/0"></div>
     </div>
 
-    <section class="container-2xl section-y mx-auto relative z-[2]">
+    @let(lessonImages = lessons.map((lesson) => lesson.thumbnail).filter(Boolean))
+
+    <div class="hero-lesson-grid absolute top-0 left-0">
+      <div class="mask-gradient-to-r backdrop-blur-sm absolute top-0 left-0 w-3/4 h-full z-10"></div>
+      @each (img in lessonImages)
+        @!picture({
+          ratio: 'aspect-video',
+          fit: 'object-cover',
+          class: [`img w-full z-[1]`],
+          filename: img.filename,
+          altText: img.altText,
+        })
+      @endeach
+    </div>
+
+    <section class="container-2xl section-y mx-auto relative z-10">
       <div class="container mx-auto h-[calc(100%-125px)] flex justify-between gap-16 relative z-20">
+        
+
         <div class="flex flex-col justify-center">
           <h2
             class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl 2xl:text-9xl font-black mb-3 sm:mb-4 uppercase drop-shadow-lg">
@@ -49,7 +66,7 @@
           </div>
         </div>
 
-        <div class="flex-1 card -m-2 ring-1 ring-black/5 border-base-gradient-to-b max-lg:mx-auto grid grid-cols-1 max-lg:w-full max-lg:max-w-md">
+        {{-- <div class="flex-1 card -m-2 ring-1 ring-black/5 border-base-gradient-to-b max-lg:mx-auto grid grid-cols-1 max-lg:w-full max-lg:max-w-md">
           <div class="grid grid-cols-1 rounded-base p-3 shadow-md shadow-black/5">
             <div class="rounded-[calc(var(--radius-box)_-_.5rem)] backdrop-blur-md p-8 shadow-2xl ring-1 ring-black/5">
               <div class="aspect-video">
@@ -57,11 +74,11 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> --}}
       </div>
     </section>
 
-    <section class="mb-12 pb-8 pt-24 -mt-8 bg-gradient-to-b from-base-100/0 to-base-100/10 border-b border-base-100/50 relative z-[1]">
+    <section class="mb-12 pb-8 pt-24 -mt-8 bg-gradient-to-b from-base-100/0 to-base-100/10 border-b border-base-100/50 relative z-10">
       <div class="container mx-auto flex flex-col">
         @if (stats.user && stats.started)
           <h3 class="heading-3">
@@ -146,7 +163,7 @@
         </div>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-          @each (lesson in otherLessons)
+          @each (lesson in otherLessons.slice(0, 8))
             @!lesson.card({ lesson })
           @endeach
         </div>
