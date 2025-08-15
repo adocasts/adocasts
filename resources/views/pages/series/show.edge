@@ -18,13 +18,13 @@
         </h1>
 
         @if (series.description)
-          <p class="max-w-2xl text-pretty font-medium text-base-content/60 max-lg:mx-auto sm:text-base/6 mb-6 lg:mb-8">
+          <p class="max-w-2xl text-pretty font-medium text-base-content/60 sm:text-base/6 mb-6 lg:mb-8">
             {{ series.description }}
           </p>
         @endif
 
         <div class="flex flex-1 items-center gap-3 mt-10">
-          <a href="#" class="btn btn-outline btn-primary btn-wide">
+          <a href="#" class="btn btn-outline btn-primary flex-1 sm:btn-wide">
             @svg('solar:play-outline', { class: 'size-4 mr-1 opacity-80' })
             @if (progression?.percent)
               Continue Series
@@ -70,16 +70,18 @@
             <details class="collapse rounded-none group" open>
               <summary class="collapse-title !flex items-center justify-between gap-3 border-base-100 border-[3px] backdrop-blur-md mb-3 !px-6 rounded-base">
                 <div class="flex items-center gap-6">
-                  <h3 class="heading-4 !mb-0 flex items-center gap-3">
-                    <div class="text-primary proportional-nums">
+                  <h3 class="heading-4 leading-tight !mb-0 flex flex-wrap sm:flex-nowrap items-center gap-x-3">
+                    <div class="text-sm sm:[font-size:inherit] text-primary proportional-nums">
                       Module {{ mod.moduleNumber }}
                     </div>
 
-                    <div>
-                      @svg('solar:double-alt-arrow-right-broken', { class: 'w-6 h-6 text-primary' })
+                    <div class="hidden sm:block">
+                      @svg('solar:double-alt-arrow-right-broken', { class: 'size-4 sm:size-6 text-primary' })
                     </div>
 
-                    {{ mod.name }}
+                    <div class="w-full sm:w-auto truncate">
+                      {{ mod.name }}
+                    </div>
                   </h3>
                 </div>
 
@@ -102,8 +104,8 @@
         </div>
 
         @if (series.statusId === Status.IN_PROGRESS)
-          <div class="border-[3px] border-base-100 py-4 px-12 rounded-base flex items-center gap-6">
-            <div>
+          <div class="border-[3px] border-base-100 py-4 px-4 sm:px-12 rounded-base flex sm:items-center gap-6">
+            <div class="pt-3 sm:pt-0">
               <img class="w-32" src="/imgs/robot/slice6.svg" alt="excited robot" />
             </div>
             <div class="flex flex-col">
@@ -129,7 +131,7 @@
         </h2>
 
         @if (series.description)
-          <p class="max-w-2xl text-pretty font-medium opacity-60 line-clamp-5 max-lg:mx-auto sm:text-sm">
+          <p class="max-w-2xl text-pretty font-medium opacity-60 line-clamp-5 sm:text-sm">
             {{ series.description }}
           </p>
         @endif

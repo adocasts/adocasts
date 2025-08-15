@@ -72,12 +72,12 @@
       Series
     </h1>
 
-    <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
+    <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 sm:text-lg/8">
       Our series are curated collections of lessons that walk through a specific topic from beginning to end.
       Series are a great way to learn a topic in a structured way.
     </p>
 
-    <section class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-3" series-list>
+    <section class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3" series-list>
       @each (item in series)
         @!series.card({ series: item })
       @endeach

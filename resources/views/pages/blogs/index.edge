@@ -52,13 +52,13 @@
       Blog
     </h1>
 
-    <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
+    <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 sm:text-lg/8">
       This blog features news and discussions about coding and content creation. 
       I cover AdonisJS, NodeJS, JavaScript, TypeScript, CSS, and various other development subjects.
     </p>
 
     <section class="flex-1" blog-list>
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
         @each (blog in blogs.data)
           @!blog.card({ blog })
         @endeach

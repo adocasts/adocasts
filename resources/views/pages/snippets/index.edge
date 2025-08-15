@@ -50,12 +50,12 @@
       Snippets
     </h1>
 
-    <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 max-lg:mx-auto sm:text-lg/8">
+    <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 sm:text-lg/8">
       Some test or something ...
     </p>
 
     <section class="flex-1" blog-list>
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 lg:gap-6">
         @each (snippet in snippets.data)
         @!blog.card({ blog: snippet })
         @endeach

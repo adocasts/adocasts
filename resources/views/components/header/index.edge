@@ -1,7 +1,7 @@
 @let(container = $props.container ?? 'container')
 @let(forceBackdrop = $props.forceBackdrop ?? false)
 
-<div class="drawer">
+<div class="drawer sticky top-0 z-30">
   <input id="my-drawer-3" type="checkbox" class="drawer-toggle">
   <div class="drawer-content flex flex-col">
     <header
@@ -9,7 +9,7 @@
       x-data="header"
       x-show="isShown"
       up-fixed="top"
-      :class="['w-full h-16 border border-base-content/10 sticky top-0 z-30 duration-300',
+      :class="['w-full h-16 border border-base-content/10 duration-300',
         isWindowScrolled || {{ forceBackdrop }}
           ? 'bg-base-200/75 midnight:bg-base-300/75 backdrop-blur-md shadow-sm'
           : 'bg-base-300/10 backdrop-blur-xs shadow-none']"

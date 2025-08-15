@@ -7,17 +7,17 @@
 
 <div class="card border border-base-100 hover:radial-accent-t group/card mb-3">
   <div class="card-border"></div>
-  <div class="card-body flex-row items-center gap-6">
+  <div class="card-body flex-row lg:items-center gap-3 md:gap-6">
     <div
-      class="{{ html.classNames(['relative radial-progress bg-transparent opacity-60 text-xl', progressionColor]) }}"
-      style="--value:{{ progression?.percent ?? 0 }}; --size: 5rem; --thickness: .3rem;"
+      class="{{ html.classNames(['relative radial-progress bg-transparent opacity-60 text-2xs md:text-xl [--size:2.5rem] md:[--size:5rem] [--thickness:.15rem] md:[--thickness:.3rem]', progressionColor]) }}"
+      style="--value:{{ progression?.percent ?? 0 }};"
       aria-valuenow="{{ progression?.percent ?? 0 }}"
       role="progressbar">
       @cannot('PostPolicy.view', post)
         @let(icon = post.paywallTypeId === PaywallTypes.DELAYED_RELEASE ? 'solar:clock-circle-outline' : 'solar:lock-keyhole-minimalistic-outline')
 
         <div class="text-base-content/60">
-          @svg(icon, { class: 'size-6' })
+          @svg(icon, { class: 'size-4 lg:size-6' })
         </div>
       @else
         <span class="text-base-content font-bold proportional-nums relative z-10">

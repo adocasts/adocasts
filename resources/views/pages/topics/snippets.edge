@@ -17,7 +17,7 @@
         @if (lessons.data.length)
           <section class="section-y">
             <h3 class="heading-3">Snippets</h3>
-            <main class="flex-1 grid grid-cols-2 @lg:grid-cols-3 gap-3 @lg:gap-6">
+            <main class="flex-1 grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-3 gap-3 @lg:gap-6">
               @each (item in snippets.data)
                 @!blog.card({ blog: item, size: 'sm' })
               @endeach

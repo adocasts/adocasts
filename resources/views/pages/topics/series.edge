@@ -17,7 +17,7 @@
         @if (series.data.length)
           <section class="section-y">
             <h3 class="heading-3">Series</h3>
-            <main class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6 " series-list>
+            <main class="flex-1 grid grid-cols-1 @2xl:grid-cols-2 @4xl:grid-cols-3 gap-3 lg:gap-6 " series-list>
               @each (item in series.data)
                 @!series.card({ series: item, size: 'sm' })
               @endeach
