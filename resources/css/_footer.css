@@ -1,4 +1,8 @@
 footer {
-  width: calc(100% - var(--footer-less-width, 0px));
-  margin-left: calc(0px + var(--footer-offset-left, 0px));
+  width: 100%;
+  
+  @variant xl {
+    width: calc(100% - var(--footer-less-width, 0px));
+    margin-left: calc(0px + var(--footer-offset-left, 0px));
+  }
 }

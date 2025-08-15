@@ -8,7 +8,7 @@
   }
 })
 
-  @layout.shell.asideLeft({ sticky: true })
+  @layout.shell.asideLeft({ sticky: true, label: 'Table of Contents' })
     @slot('aside')
       @toc()
         @!toc.item({ name: 'Hosting', href: '#hosting' })

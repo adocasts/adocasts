@@ -2,7 +2,7 @@
 @let(forceBackdrop = $props.forceBackdrop ?? false)
 
 <div class="drawer sticky top-0 z-30">
-  <input id="my-drawer-3" type="checkbox" class="drawer-toggle">
+  <input id="header-drawer" type="checkbox" class="drawer-toggle">
   <div class="drawer-content flex flex-col">
     <header
       id="slot-header"
@@ -23,7 +23,7 @@
       }">
         <div class="h-full flex items-center gap-3 lg:gap-6">
           <div class="flex-none md:hidden border-r border-base-content/10 pr-3 lg:pr-6">
-            <label for="my-drawer-3" aria-label="open sidebar" class="btn btn-square btn-ghost">
+            <label for="header-drawer" aria-label="open sidebar" class="btn btn-square btn-ghost">
               @svg('solar:hamburger-menu-linear', { class: 'inline-block size-8 stroke-current' })
             </label>
           </div>
@@ -55,11 +55,12 @@
     </header>
   </div>
   <div class="drawer-side z-[9999]">
-    <label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
+    <label for="header-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+
     <div class="bg-base-300/80 backdrop-blur-md min-h-full w-80 flex flex-col justify-between">
       <div class="h-16 flex items-center gap-3 lg:gap-6 {{ container }}">
         <div class="flex-none md:hidden border-r border-base-content/10 pr-3 lg:pr-6">
-          <label for="my-drawer-3" aria-label="open sidebar" class="btn btn-square btn-ghost">
+          <label for="header-drawer" aria-label="open sidebar" class="btn btn-square btn-ghost">
             @svg('solar:close-square-line-duotone', { class: 'inline-block size-10 stroke-current' })
           </label>
         </div>
@@ -85,6 +86,8 @@
             Sign Up
           </a>
         </div>
+      @else
+        <div></div>
       @endif
     </div>
   </div>

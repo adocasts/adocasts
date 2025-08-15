@@ -1,6 +1,6 @@
 @let(accent = $props.accent ?? 'border-base-gradient-to-b')
 
-<div class="@container card -m-2 ring-1 ring-black/5 max-lg:mx-auto grid grid-cols-1 max-lg:w-full group/plan {{ accent }}">
+<div class="@container card ring-1 ring-black/5 max-lg:mx-auto grid grid-cols-1 max-lg:w-full group/plan {{ accent }} {{ $props.class ?? '' }}">
   <div class="grid grid-cols-1 rounded-base p-3 shadow-md shadow-black/5">
     <div class="rounded-[calc(var(--radius-box)_-_.5rem)] backdrop-blur-md p-4 @md:p-8 shadow-2xl ring-1 ring-black/5 hover:radial-accent-t">
       <h2 class="text-sm font-semibold text-primary">{{ name }} <span class="sr-only">plan</span></h2>

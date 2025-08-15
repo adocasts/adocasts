@@ -7,7 +7,7 @@
     index: true
   }
 })
-  <section class="max-w-2xl section-y mx-auto">
+  <section class="max-w-2xl section-y px-6 mx-auto">
     <h1 class="heading-2">Reach out anytime</h1>
     <p class="mb-8 max-w-2xl text-pretty font-medium opacity-60 sm:text-lg/8">
       Whether you've got a question, ran into an issue, or just want to connect, we'd love to hear from you. 
@@ -60,19 +60,19 @@
 
     @form({ action: form.post('contact.send'), class: 'w-full', 'up-disable': 'true' })
       @form.field({ label: 'Name', name: 'name' })
-        @!form.input({ required: true, class: 'w-full' })
+        @!form.input({ required: true, class: 'w-full', placeholder: 'Your name' })
       @end
 
       @form.field({ label: 'Email', name: 'email' })
-        @!form.input({ type: 'email', required: true, class: 'w-full' })
+        @!form.input({ type: 'email', required: true, class: 'w-full', placeholder: 'What email should we respond to?' })
       @end
 
       @form.field({ label: 'Subject', name: 'subject' })
-        @!form.input({ required: true, class: 'w-full' })
+        @!form.input({ required: true, class: 'w-full', placeholder: 'What are you reaching out about?' })
       @end
 
       @form.field({ label: 'Message', name: 'body' })
-        @!form.textarea({ rows: 6, required: true, class: 'w-full' })
+        @!form.textarea({ rows: 6, required: true, class: 'w-full', placeholder: 'How can we help?' })
 
         @slot('after')
           <p class="text-xs text-base-content/60 mt-1.5">

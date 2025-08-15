@@ -31,7 +31,7 @@
   @endif
 
   <div {{ html.attrs({ class: ['relative', containerCards] }) }}>
-    <div class="grid grid-cols-1 gap-3 lg:gap-10 md:grid-cols-3">
+    <div class="grid grid-cols-1 gap-3 xl:gap-10 md:grid-cols-2 lg:grid-cols-3">
       @!pricing.card({
         name: 'Monthly',
         accent: cardAccent,
@@ -54,6 +54,7 @@
         plan: await PlanService.get(Plans.FOREVER),
         description: 'All-in forever? One-time payment, lifetime access. Everything we make, now and in the future, is yours.',
         cta: 'Unlock Forever',
+        class: 'md:col-span-2 lg:col-span-1'
       })
     </div>
   </div>
