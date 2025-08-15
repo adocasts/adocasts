@@ -1,5 +1,5 @@
-<div class="bg-base-100/10 rounded-b-[var(--radius-box)]">
-  <div class="aspect-video bg-base-200/50 rounded-base overflow-hidden max-w-[150vh] mx-auto">
+<div class="bg-base-100/10">
+  <div class="aspect-video bg-base-200/50 max-w-[150vh] mx-auto">
     @cannot('PostPolicy.view', lesson)
       <div class="no-access relative w-full h-full flex items-center justify-center">
         @!plus.lessonCta({

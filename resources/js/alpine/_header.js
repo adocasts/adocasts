@@ -2,7 +2,7 @@ import Alpine from 'alpinejs'
 
 Alpine.data('header', () => ({
   isWindowScrolled: false,
-  isShown: true,
+  isContainer: true,
 
   init() {
     this.isWindowScrolled = window.scrollY > 0
@@ -19,7 +19,7 @@ Alpine.data('header', () => ({
 
   onLocationChange(event) {
     const location = event.detail.location
-    this.isShown = !location.includes('/lessons/')
+    this.isContainer = !location.includes('/lessons/')
   }
 }))
 

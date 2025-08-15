@@ -12,7 +12,7 @@
 <div class="drawer container mx-auto flex flex-wrap gap-6 lg:gap-12 relative z-10">
   <input id="my-aside-drawer" type="checkbox" class="drawer-toggle">
 
-  <div class="drawer-content w-[calc(100%_+_(var(--padding-x)_*_2))] h-12 flex items-center border-b border-base-100/50 lg:hidden -mx-[var(--padding-x)] px-[var(--padding-x)]">
+  <div class="drawer-content w-[calc(100%_+_(var(--padding-x)_*_2))] h-12 flex items-center border-b border-base-content/10 lg:hidden -mx-[var(--padding-x)] px-[var(--padding-x)]">
     <label for="my-aside-drawer" aria-label="open sidebar" class="btn btn-ghost btn-sm">
       @svg('solar:list-outline', { class: 'size-5 opacity-80' })
       {{ label ?? 'Filter' }}
@@ -37,7 +37,7 @@
     <label for="my-aside-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
 
     <div class="@container section-y bg-base-300/80 min-h-full backdrop-blur-md w-92 relative">
-      <div class="py-1 mb-4 -mt-7 sticky top-0 bg-base-300 border-b border-base-100/50 z-10 px-6">
+      <div class="py-1 mb-4 -mt-7 sticky top-0 bg-base-300 border-b border-base-content/10 z-10 px-6">
         <label for="my-aside-drawer" aria-label="close sidebar" class="drawer-overlay btn btn-ghost btn-sm">
           @svg('solar:close-circle-outline', { class: 'size-4' })
           Close

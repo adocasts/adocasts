@@ -10,74 +10,70 @@
   },
   style: `--aside-width: ${lesson.hasVideo ? '325px' : '0'}; --footer-less-width: var(--aside-width);`,
 })
-  <main {{ html.attrs({ class: ['w-full', lesson.hasVideo ? 'lg:w-[calc(100%_-_var(--aside-width))]' : 'container mx-auto' ] }) }}>
-    @if (lesson.hasVideo || await bouncer.cannot('PostPolicy.view', lesson))
-      <div class="p-3 lg:p-6 !pb-0">
-        <div class="w-full bg-base-100/25 flex items-center justify-between gap-0.5 rounded-t-[var(--radius-box)] px-3 py-1.5">
-          <div class="flex items-center">
-            <a href="/" class="btn btn-ghost btn-square opacity-60 hover:opacity-100 duration-200">
-              <img class="w-6 h-6" src="/imgs/logo-icon.svg" alt="Adocasts" />
+  <main {{ html.attrs({ class: ['w-full', lesson.hasVideo ? 'lg:w-[calc(100%_-_var(--aside-width))]' : '' ] }) }}>
+    <div class="border-b border-base-content/10">
+      <div class="flex items-center justify-between gap-0.5 p-1.5">
+        <div class="flex items-center">
+          @if (series)
+            <a href="{{ route('series.show', { slug: series.slug }) }}" class="btn btn-ghost btn-primary">
+              @svg('solar:double-alt-arrow-left-outline', { class: 'w-4 h-4' })
+              <span class="truncate">
+                {{ series.name }}
+              </span>
             </a>
-
-            <div class="h-5 w-px bg-base-100 mx-3"></div>
-
-            @if (series)
-              <a href="{{ route('series.show', { slug: series.slug }) }}" class="btn btn-ghost btn-primary">
-                @svg('solar:double-alt-arrow-left-outline', { class: 'w-4 h-4' })
-                Series Details
-              </a>
-            @else
-              <a href="{{ route('lessons.index') }}" class="btn btn-ghost btn-primary" up-back>
-                @svg('solar:double-alt-arrow-left-outline', { class: 'w-4 h-4' })
-                Go Back
-              </a>
-            @endif
-          </div>
-
-          <div class="flex justify-end items-center">
-            <div class="flex items-center justify-end">
-              @!frags.lesson.completedToggle({ lesson, series })
-              @!frags.lesson.autoplayToggle({ lesson })
-              @!frags.lesson.bookmarkToggle({ lesson })
-
-              @if (lesson.repositoryUrl)
-                @tooltip({ text: 'View Lesson Repository', class: 'tooltip-bottom' })
-                  <a href="{{ lesson.repositoryUrl }}" class="group/tog btn btn-toggle btn-primary btn-square" up-follow="false" target="_blank">
-                    @svg('solar:code-outline', { class: 'w-5 h-5 text-base-content/60 group-hover/tog:text-base-content duration-200' })
-                  </a>
-                @end
-              @endif
-
-              @!frags.lesson.downloadVideo({ lesson })
-            </div>
-
-            @if (series)
-              <div class="h-5 w-px bg-base-100 mx-3"></div>
-
-              @let(nextLesson = GetSeries.nextLesson(series, lesson.id))
-              @let(prevLesson = GetSeries.prevLesson(series, lesson.id))
-              <div class="flex items-center justify-end">
-                @tooltip({ text: 'Previous Lesson', class: 'tooltip-bottom' })
-                  <a {{ html.attrs({ href: prevLesson?.routeUrl, class: 'btn btn-ghost btn-primary btn-square', disabled: !prevLesson }) }}>
-                    @svg('solar:arrow-left-outline', { class: 'w-5 h-5' })
-                  </a>
-                @end
-                @tooltip({ text: 'Next Lesson', class: 'tooltip-bottom' })
-                  <a {{ html.attrs({ href: nextLesson?.routeUrl, class: 'btn btn-ghost btn-primary btn-square', disabled: !nextLesson }) }}>
-                    @svg('solar:arrow-right-outline', { class: 'w-5 h-5' })
-                  </a>
-                @end
-              </div>
-            @endif
-
-            <div class="h-5 w-px bg-base-100 ml-3 mr-6"></div>
-
-            @!frags.header.auth()
-          </div>
+          @else
+            <a href="{{ route('lessons.index') }}" class="btn btn-ghost btn-primary" up-back>
+              @svg('solar:double-alt-arrow-left-outline', { class: 'w-4 h-4' })
+              Go Back
+            </a>
+          @endif
         </div>
 
-        @!lesson.video({ lesson })
+        <div class="flex justify-end items-center">
+          <div class="flex items-center justify-end {{ !series ? 'pr-4.5' : '' }}">
+            @!frags.lesson.completedToggle({ lesson, series })
+            
+            @if (lesson.hasVideo)
+              @!frags.lesson.autoplayToggle({ lesson })
+            @endif
+
+            @!frags.lesson.bookmarkToggle({ lesson })
+
+            @if (lesson.repositoryUrl)
+              @tooltip({ text: 'View Lesson Repository', class: 'tooltip-bottom' })
+                <a href="{{ lesson.repositoryUrl }}" class="group/tog btn btn-toggle btn-primary btn-square" up-follow="false" target="_blank">
+                  @svg('solar:code-outline', { class: 'w-5 h-5 text-base-content/60 group-hover/tog:text-base-content duration-200' })
+                </a>
+              @end
+            @endif
+
+            @!frags.lesson.downloadVideo({ lesson })
+          </div>
+
+          @if (series)
+            <div class="h-5 w-px bg-base-100 mx-3"></div>
+
+            @let(nextLesson = GetSeries.nextLesson(series, lesson.id))
+            @let(prevLesson = GetSeries.prevLesson(series, lesson.id))
+            <div class="flex items-center justify-end">
+              @tooltip({ text: 'Previous Lesson', class: 'tooltip-bottom' })
+                <a {{ html.attrs({ href: prevLesson?.routeUrl, class: 'btn btn-ghost btn-primary btn-square', disabled: !prevLesson }) }}>
+                  @svg('solar:arrow-left-outline', { class: 'w-5 h-5' })
+                </a>
+              @end
+              @tooltip({ text: 'Next Lesson', class: 'tooltip-bottom' })
+                <a {{ html.attrs({ href: nextLesson?.routeUrl, class: 'btn btn-ghost btn-primary btn-square', disabled: !nextLesson }) }}>
+                  @svg('solar:arrow-right-outline', { class: 'w-5 h-5' })
+                </a>
+              @end
+            </div>
+          @endif
+        </div>
       </div>
+    </div>
+
+    @if (lesson.hasVideo || await bouncer.cannot('PostPolicy.view', lesson))
+      @!lesson.video({ lesson })
     @endif
 
     <div class="max-w-prose mx-auto flex gap-3 lg:gap-6 mt-6 lg:mt-8">
@@ -87,7 +83,7 @@
         </h1>
 
         @if (lesson.author)
-          <div class="flex gap-3 lg:gap-3 items-center mb-6">
+          <div class="flex gap-3 lg:gap-3 items-center my-8">
             @profile.link({ user: lesson.author })
               <div class="avatar">
                 <div class="w-10 rounded-full">
@@ -121,7 +117,7 @@
           @svg('solar:double-alt-arrow-right-broken', { class: 'w-5 h-5 text-primary' })
           In This Lesson
         </div>
-        <p class="text-pretty font-medium opacity-60 sm:text-lg mb-6">
+        <p class="text-pretty font-medium opacity-60 sm:text-lg mb-12">
           @if (lesson.description.startsWith('In this lesson,'))
             @let([char, ...desc] = lesson.description.replace('In this lesson,', '').trim())
 
@@ -144,7 +140,7 @@
   </main>
 
   @if (series)
-    <aside class="w-[var(--aside-width)] border-l border-base-100 fixed right-0 top-0 h-full flex flex-col overflow-hidden">
+    <aside class="w-[var(--aside-width)] border-l border-base-100 fixed right-0 top-16 h-[calc(100%_-_4rem)] flex flex-col overflow-hidden">
       <div class="px-6 pt-6 pb-3 group">
         <h3 class="heading-5 !font-semibold !leading-tight !mb-0">
           <a href="{{ route('series.show', { slug: series.slug }) }}">

@@ -281,7 +281,7 @@ pre .filepath .lang-icon {
 
 pre.shiki.github-dark,
 .code-block pre {
-  @apply !bg-base-100/50 px-1 pb-1 rounded-base border border-base-100/50;
+  @apply !bg-base-100/50 px-1 pb-1 rounded-base border border-base-content/10;
 
   code {
     @apply !bg-base-100/50 rounded-[calc(var(--radius-box)_-_.25rem)] py-3;
@@ -374,7 +374,7 @@ pre ul.filepath-list {
   max-width: 100%;
 
   .ProseMirror {
-    @apply border border-base-100 p-6 pb-20 rounded-base;
+    @apply p-6 pb-20 border border-base-100 rounded-base;
     min-height: 200px;
   }
 }
