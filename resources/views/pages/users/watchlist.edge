@@ -25,7 +25,7 @@
     </div>
 
     <section class="flex-1" series-list>
-      <div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-3">
+      <div class="flex-1 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
         @each (item in series.data)
           @!series.cardProgress({ series: item })
         @endeach

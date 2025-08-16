@@ -42,7 +42,7 @@
 
     @if (tab === 'series')
       <section class="flex-1" series-list>
-        <div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-3">
+        <div class="flex-1 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
           @each (item in series.data)
             @!series.cardProgress({ series: item })
           @endeach
@@ -52,7 +52,7 @@
       </section>
     @elseif (tab === 'lessons')
       <section class="flex-1" lesson-list>
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-3">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
           @each (lesson in lessons.data)
             @!lesson.card({ lesson })
           @endeach

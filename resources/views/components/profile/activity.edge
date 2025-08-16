@@ -21,7 +21,7 @@
                   <span class="truncate">{{ item.titleDescriptor }}</span>
                 @endif
                 @if (item.title && item.href)
-                  <a href="{{ item.href }}" class="font-medium text-base-content truncate hover:link" up-follow>
+                  <a href="{{ item.href }}" class="font-medium text-base-content text-wrap truncate hover:link" up-follow>
                     {{ item.title }}
                   </a>
                 @elseif (item.title)

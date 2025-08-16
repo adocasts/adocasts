@@ -7,7 +7,7 @@
     index: false
   }
 })
-  @layout.shell.asideLeft() 
+  @layout.shell.asideLeft({ label: 'Settings Navigation' }) 
     @slot('aside')
       @include('partials/users/settings/nav')
     @endslot
@@ -15,8 +15,8 @@
     <h1 class="heading-2">Preferences</h1>
 
     @card({ accent: false, class: 'mb-6' })
-      @form({ action: form.put('settings.preferences'), class: 'card-body lg:flex-row lg:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
-        <div class="w-full lg:w-1/3">
+      @form({ action: form.put('settings.preferences'), class: 'card-body md:flex-row md:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
+        <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-content/10 md:mb-0 md:pb-0 md:border-b-0">
           <h3 class="card-title">Site preferences</h3>
           <p class="text-base-content/60">Update your Adocasts preferences</p>
         </div>
@@ -25,7 +25,7 @@
           @form.switch({ name: 'isEnabledProfile', value: auth.user.isEnabledProfile })
             <div class="flex flex-col ml-3">
               <strong class="text-base-content">Public profile</strong>
-              <p class="text-base-content/60 text-xs">
+              <p class="text-base-content/60 text-xs text-wrap">
                 <span x-show="switchOn">Your profile is publically viewable by anyone</span>
                 <span x-show="!switchOn">Your profile is private and only you will be able to view it</span>
               </p>
@@ -35,18 +35,18 @@
           @form.switch({ name: 'isEnabledMiniPlayer', value: auth.user.isEnabledMiniPlayer })
             <div class="flex flex-col ml-3">
               <strong class="text-base-content">Mini video player</strong>
-              <p class="text-base-content/60 text-xs">
-                <span x-show="switchOn">The lesson video player will shrink and scroll with you on the page when a video is playing</span>
-                <span x-show="!switchOn">The lesson video player will remain static when you scroll and a video is playing</span>
+              <p class="text-base-content/60 text-xs text-wrap">
+                <span x-show="switchOn" class="text-wrap">The lesson video player will shrink and scroll with you on the page when a video is playing</span>
+                <span x-show="!switchOn" class="text-wrap">The lesson video player will remain static when you scroll and a video is playing</span>
               </p>
-              <p class="text-base-content/60 text-xs">* this feature has currently been removed</p>
+              <p class="text-base-content/60 text-xs text-wrap">* this feature has currently been removed</p>
             </div>
           @end
 
           @form.switch({ name: 'isEnabledAutoplayNext', value: auth.user.isEnabledAutoplayNext })
             <div class="flex flex-col ml-3">
               <strong class="text-base-content">Autoplay next lesson</strong>
-              <p class="text-base-content/60 text-xs">
+              <p class="text-base-content/60 text-xs text-wrap">
                 <span x-show="switchOn">When a lesson ends, the next lesson will start automatically</span>
                 <span x-show="!switchOn">When a lesson ends, the next lesson will not start automatically</span>
               </p>
@@ -56,7 +56,7 @@
           @form.switch({ name: 'isEnabledMentions', value: auth.user.isEnabledMentions })
             <div class="flex flex-col ml-3">
               <strong class="text-base-content">Allow others to mention you</strong>
-              <p class="text-base-content/60 text-xs">
+              <p class="text-base-content/60 text-xs text-wrap">
                 <span x-show="switchOn">Others can mention you (via {{ auth.user.handle }}) in comments and discussions</span>
                 <span x-show="!switchOn">Others can not mention you</span>
               </p>

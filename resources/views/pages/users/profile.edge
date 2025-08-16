@@ -12,10 +12,10 @@
     @if (user.avatarRelative)
       <div x-data="color('{{ user.avatarRelative }}', 2)" class="h-24 absolute top-0 left-0 w-full" :style="style"></div>
     @else
-      <div class="h-24 absolute top-0 left-0 w-full bg-gradient-to-br from-primary via-secondary to-accent"></div>
+      <div class="h-24 absolute top-0 left-0 w-full bg-base-200"></div>
     @end
 
-    <div class="max-w-[810px] mx-auto pt-8 relative">
+    <div class="max-w-[810px] mx-auto px-6 lg:px-0 pt-8 relative">
       <div class="avatar mb-6">
         <div class="w-32 border-4 border-base-300 rounded-base">
           @!user.avatar({ user })
@@ -29,17 +29,17 @@
         <h1 class="heading-2">{{ user.handle }}</h1>
       @endif
 
-      @!profile.socialLinks({ user, class: 'absolute top-27 right-0' })
+      @!profile.socialLinks({ user, class: 'hidden sm:block sm:absolute top-27 right-6 lg:right-0' })
     </div>
 
-    <div class="max-w-[810px] mx-auto">
+    <div class="max-w-[810px] px-6 lg:px-0 mx-auto">
       @if (user.profile.biography)
         <p class="max-w-2xl text-pretty font-medium opacity-60 sm:text-base/6">
           {{ user.profile.biography }}
         </p>
       @endif
 
-      <div class="flex flex-wrap gap-4 text-sm lg:text-base mt-3">
+      <div class="flex flex-wrap gap-4 text-sm lg:text-base mt-6">
         @if (user.profile.company)
           <p class="flex items-center gap-1.5 truncate">
             @svg('solar:buildings-bold-duotone', { class: 'w-4 h-4' })
@@ -54,6 +54,8 @@
         @endif
       </div>
 
+      @!profile.socialLinks({ user, class: 'mt-6' })
+
       @if (!user.isEnabledProfile)
         <div role="alert" class="alert alert-warning alert-soft mt-6">
           <span>
@@ -63,7 +65,7 @@
         </div>
       @endif
 
-      @!stat.user({ stats, size: 'base', offset: false, class: 'w-full bg-base-200 my-6' })
+      @!stat.user({ stats, size: 'base', offset: false, class: 'stats-vertical sm:stats-horizontal grid-cols-2 md:grid-cols-none w-full bg-base-200 mt-10 mb-6' })
 
       <main class="@container flex-1 section-b" up-main-content>
         <div class="tabs tabs-box">

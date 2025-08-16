@@ -9,7 +9,7 @@
     index: false
   }
 })
-  @layout.shell.asideLeft() 
+  @layout.shell.asideLeft({ label: 'Settings Navigation' }) 
     @slot('aside')
       @include('partials/users/settings/nav')
     @endslot
@@ -28,8 +28,8 @@
         <div class="card-body">
           <h3 class="card-title">Invoices</h3>
 
-          @table({ rows: invoices })
-            @table.column({ title: 'Date' })
+          @table({ rows: invoices, fixed: true })
+            @table.column({ title: 'Date', style: 'width: 120px' })
               @slot('cell', scope)
                 @if (scope.row.lines.data.length && scope.row.lines.data[0].period?.start)
                   {{ TimeService.fromStripe(scope.row.lines.data[0].period.start).setZone(timezone).toFormat('MMM dd, yyyy') }} 
@@ -41,7 +41,7 @@
               @endslot
             @end
 
-            @table.column({ title: 'Status' })
+            @table.column({ title: 'Status', style: 'width: 200px' })
               @slot('cell', scope)
                 @if (scope.row.status === 'paid')
                   <div class="text-success flex items-center gap-x-1.5 capitalize">
@@ -67,9 +67,13 @@
               @endslot
             @end
 
-            @!table.column({ title: 'Amount', format: (_, row) => currency.format(row.amount_due, row.currency) })
+            @!table.column({ 
+              title: 'Amount', 
+              style: 'width: 120px',
+              format: (_, row) => currency.format(row.amount_due, row.currency) 
+            })
             
-            @table.column({ title: 'Invoice' })
+            @table.column({ title: 'Invoice', style: 'width: 120px' })
               @slot('cell', scope)
                 <a href="{{ route('settings.invoice', { invoice: scope.row.number }) }}" target="_blank" up-follow="false" class="link">
                   View Invoice
@@ -86,10 +90,15 @@
         <div class="card-body">
           <h3 class="card-title">Receipts</h3>
 
-          @table({ rows: charges })
-            @!table.column({ title: 'Date', field: 'created', format: (v) => TimeService.fromStripe(v).setZone(timezone).toFormat('MMM dd, yyyy') })
+          @table({ rows: charges, fixed: true })
+            @!table.column({ 
+              title: 'Date', 
+              field: 'created', 
+              style: 'width: 120px',
+              format: (v) => TimeService.fromStripe(v).setZone(timezone).toFormat('MMM dd, yyyy') 
+            })
 
-            @table.column({ title: 'Status' })
+            @table.column({ title: 'Status', style: 'width: 200px' })
               @slot('cell', scope)
                 @if (scope.row.status === 'succeeded')
                   <div class="text-success flex items-center gap-x-1.5 lg:gap-x-3 capitalize">
@@ -104,10 +113,13 @@
                 @else
                   <div class="text-warning flex items-center gap-x-1.5 lg:gap-x-3 capitalize">
                     @svg('solar:bill-cross-outline', { class: 'size-4 opacity-80' })
-                    <span>
+                    <span class="flex flex-col md:flex-row md:items-center">
                       {{ scope.row.status }}
                       @if (scope.row.failure_message)
-                        <span class="text-base-content/60">&nbsp;&mdash;&nbsp;{{ scope.row.failure_message }}</span>
+                        <span class="text-base-content/60">
+                          <span class="hidden md:inline">&nbsp;&mdash;&nbsp;</span>
+                          {{ scope.row.failure_message }}
+                        </span>
                       @endif
                     </span>
                   </div>
@@ -115,9 +127,13 @@
               @endslot
             @end
 
-            @!table.column({ title: 'Charge', format: (_, row) => currency.format(row.amount, row.currency) })
+            @!table.column({ 
+              title: 'Charge', 
+              style: 'width: 120px',
+              format: (_, row) => currency.format(row.amount, row.currency) 
+            })
             
-            @table.column({ title: 'Receipt' })
+            @table.column({ title: 'Receipt', style: 'width: 120px' })
               @slot('cell', scope)
                 @if (scope.row.receipt_url)
                   <a href="{{ scope.row.receipt_url }}" target="_blank" class="link">View Receipt</span></a>

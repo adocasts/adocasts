@@ -1,5 +1,5 @@
-<div x-data="{ switchOn: {{ value }} }" class="flex items-center space-x-3">
-  <label @click="$refs.switchButton.click(); $refs.switchButton.focus()" :id="$id('switch')" class="label" >
+<div x-data="{ switchOn: {{ value }} }" class="flex items-center space-x-3 w-full">
+  <label @click="$refs.switchButton.click(); $refs.switchButton.focus()" :id="$id('switch')" class="label w-full">
     <input x-ref="input" type="checkbox" checked="checked" class="toggle checked:bg-primary checked:border-primary {{ $props.class ?? '' }}" name="{{ name }}" x-model="switchOn" />
     {{{ await $slots.main() }}}
   </label>

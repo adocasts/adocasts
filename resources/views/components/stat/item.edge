@@ -2,7 +2,7 @@
 
 <div class="stat {{ $props.class }}">
   @if(icon)
-    <div class="stat-figure {{ color }}">
+    <div class="stat-figure hidden lg:block {{ color }}">
       @svg(icon, {
        class: 'inline-block h-8 w-8 stroke-current'
       })

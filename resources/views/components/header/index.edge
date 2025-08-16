@@ -29,7 +29,7 @@
           </div>
 
           <div class="relative md:border-r border-base-content/10 pr-3 lg:pr-6">
-            <a class="flex items-center w-36 lg:w-42" href="{{ route('home') }}">
+            <a class="flex items-center w-30 sm:w-36 lg:w-42" href="{{ route('home') }}">
               <img class="w-full logo-dark" src="/imgs/logo-white.svg" alt="Adocasts" width="168px" height="50px" />
               <img class="w-full logo-light" src="/imgs/logo-black.svg" alt="Adocasts" width="168px" height="50px" />
             </a>
@@ -45,7 +45,7 @@
         <div class="flex items-center justify-end">
           @!frags.header.theme()
 
-          <a href="{{ route('search') }}" class="btn btn-toggle btn-primary btn-square lg:mr-3">
+          <a href="{{ route('search') }}" class="btn btn-toggle btn-primary btn-square btn-sm sm:btn-md lg:mr-3">
             @svg('solar:magnifer-outline', { class: 'size-4' })
           </a>
 

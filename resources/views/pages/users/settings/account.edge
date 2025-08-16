@@ -7,7 +7,7 @@
     index: false
   }
 })
-  @layout.shell.asideLeft() 
+  @layout.shell.asideLeft({ label: 'Settings Navigation' }) 
     @slot('aside')
       @include('partials/users/settings/nav')
     @endslot
@@ -15,8 +15,8 @@
     <h1 class="heading-2">Account</h1>
 
     @card({ accent: false, class: 'mb-6' })
-      @form({ action: form.patch('settings.username'), class: 'card-body lg:flex-row lg:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
-        <div class="w-full lg:w-1/3">
+      @form({ action: form.patch('settings.username'), class: 'card-body md:flex-row md:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
+        <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-content/10 md:mb-0 md:pb-0 md:border-b-0">
           <h3 class="card-title">Change Username</h3>
           <p class="text-base-content/60">Update your publicly displayed username</p>
         </div>
@@ -36,8 +36,8 @@
     @end
 
     @card({ accent: false, class: 'mb-6' })
-      @form({ action: form.put('settings.email'), class: 'card-body lg:flex-row lg:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
-        <div class="w-full lg:w-1/3">
+      @form({ action: form.put('settings.email'), class: 'card-body md:flex-row md:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
+        <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-content/10 md:mb-0 md:pb-0 md:border-b-0">
           <h3 class="card-title">Change Email</h3>
           <p class="text-base-content/60">Update your account's email address</p>
         </div>
@@ -61,18 +61,18 @@
     @end
 
     @card({ accent: false, class: 'mb-6' })
-      @form({ class: 'card-body lg:flex-row lg:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
+      @form({ class: 'card-body md:flex-row md:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
         @let(isGoogleUser = auth.user.googleId || auth.user.googleEmail)
         @let(isGitHubUser = auth.user.githubId || auth.user.githubEmail)
 
-        <div class="w-full lg:w-1/3">
+        <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-content/10 md:mb-0 md:pb-0 md:border-b-0">
           <h3 class="card-title">Social Authentication</h3>
           <p class="text-base-content/60">
             Manage your ability to login with a social provider in addition to your email and password 
           </p>
         </div>
 
-        <div class="flex-1 grid grid-cols-2 items-center gap-3">
+        <div class="flex-1 grid xl:grid-cols-2 items-center gap-3">
           <div class="flex flex-col items-center">
             <a {{ html.attrs({ href: '/google/redirect', 'up-follow': 'false', class: ['btn btn-outline btn-block flex-col h-auto py-3', { 'btn-primary': isGoogleUser }]}) }}>
               @svg('simple-icons:google', { class: 'size-5' })
@@ -136,8 +136,8 @@
     @end
 
     @card({ accent: false, class: 'mb-6' })
-      @form({ action: form.delete('settings.account.destroy'), class: 'card-body lg:flex-row lg:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
-        <div class="w-full lg:w-1/3">
+      @form({ action: form.delete('settings.account.destroy'), class: 'card-body md:flex-row md:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
+        <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-content/10 md:mb-0 md:pb-0 md:border-b-0">
           <h3 class="card-title">Delete Account</h3>
           <p class="text-base-content/60">Permanently delete your Adocasts account and all data associated with it</p>
         </div>

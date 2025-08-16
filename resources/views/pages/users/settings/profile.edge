@@ -9,7 +9,7 @@
     index: false
   }
 })
-  @layout.shell.asideLeft() 
+  @layout.shell.asideLeft({ label: 'Settings Navigation' }) 
     @slot('aside')
       @include('partials/users/settings/nav')
     @endslot
@@ -33,8 +33,8 @@
     @end
 
     @card({ accent: false, class: 'mb-6' })
-      @form({ action: form.put('settings.profile'), class: 'card-body lg:flex-row lg:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
-        <div class="w-full lg:w-1/3">
+      @form({ action: form.put('settings.profile'), class: 'card-body md:flex-row md:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
+        <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-content/10 md:mb-0 md:pb-0 md:border-b-0">
           <h3 class="card-title">About you</h3>
           <p class="text-base-content/60">Update your publicly displayed information on Adocasts</p>
         </div>
@@ -97,8 +97,8 @@
     @end
 
     @card({ accent: false, class: 'mb-6' })
-      @form({ action: form.put('settings.profile'), class: 'card-body lg:flex-row lg:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
-        <div class="w-full lg:w-1/3">
+      @form({ action: form.put('settings.profile'), class: 'card-body md:flex-row md:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
+        <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-content/10 md:mb-0 md:pb-0 md:border-b-0">
           <h3 class="card-title">Social links</h3>
           <p class="text-base-content/60">Share where others can find you</p>
         </div>

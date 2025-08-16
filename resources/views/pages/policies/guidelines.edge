@@ -7,7 +7,7 @@
     index: true
   }
 })
-  @layout.shell.asideLeft({ sticky: true })
+  @layout.shell.asideLeft({ sticky: true, label: 'Policy Navigation' })
     @slot('aside')
       @!policy.nav({ policy: 'guidelines' })
     @endslot

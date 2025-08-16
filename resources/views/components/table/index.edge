@@ -6,16 +6,18 @@
 
 
 <div class="overflow-x-auto">
-  <table class="table">
+  <table class="table {{ $props.fixed ? 'table-fixed' : '' }}">
     <thead>
       <tr>
         @each (column in columns)
           @if (column.headSlot)
-            <th>
+            <th {{ html.attrs({ class: column.class, style: column.style }) }}>
               {{{ await column.headSlot({ column }) }}}
             </th>
           @else
-            <th>{{ column.title }}</th>
+            <th {{ html.attrs({ class: column.class, style: column.style }) }}>
+              {{ column.title }}
+            </th>
           @endif
         @endeach
       </tr>
