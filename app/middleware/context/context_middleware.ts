@@ -5,6 +5,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import { createProgress, ProgressContext } from './_progress.js'
 import Up from './_up.js'
+import NotImplementedException from '#exceptions/not_implemented_exception'
 
 declare module '@adonisjs/core/http' {
   interface HttpContext {
@@ -56,8 +57,8 @@ export default class ContextMiddleware {
     for (const key of Object.keys(state)) {
       const data = state[key]
 
-      if (is.object(data) && data instanceof ProgressableDto) {
-        data.addToProgress(progress)
+      if (is.object(data) && Object.hasOwn(data, 'isProgressable')) {
+        this.#addToProgress(progress, data as ProgressableDto)
       } else if (data instanceof SimplePaginatorDto) {
         this.#checkArrayForProgressIds(progress, data.data)
       } else if (is.array(data)) {
@@ -68,10 +69,23 @@ export default class ContextMiddleware {
 
   #checkArrayForProgressIds(progress: ProgressContext, array: unknown[]) {
     array.forEach((item) => {
-      if (item instanceof ProgressableDto) {
-        item.addToProgress(progress)
+      if (is.object(item) && Object.hasOwn(item, 'isProgressable')) {
+        this.#addToProgress(progress, item as ProgressableDto)
       }
     })
+  }
+
+  #addToProgress(progress: ProgressContext, item: ProgressableDto) {
+    switch (item.progressType) {
+      case 'post':
+        return progress.post.add(item.id)
+      case 'collection':
+        return progress.collection.add(item.id)
+      default:
+        throw new NotImplementedException(
+          `ProgressableDto does not implement progress type: ${item.progressType}`
+        )
+    }
   }
 
   #getAutoplayNext(ctx: HttpContext) {

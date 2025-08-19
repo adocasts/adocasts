@@ -23,7 +23,7 @@
             {{ ((progression.percent ?? 0) / 100).toLocaleString([], { style: 'percent' }) }} Completed
           </div>
           <div class="opacity-60">
-            @if (!progression.percent)
+            @if (!progression.watchSeconds && !progression.percent)
               You haven't started this one yet!
             @elseif (progression.percent < 10)
               You're just getting started with this one!
