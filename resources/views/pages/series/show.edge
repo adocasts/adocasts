@@ -68,8 +68,12 @@
 
           @each (mod in series.modules)
             <details class="collapse rounded-none group" open>
-              <summary class="collapse-title !flex items-center justify-between gap-3 border-base-100 border-[3px] backdrop-blur-md mb-3 !px-6 rounded-base">
-                <div class="flex items-center gap-6">
+              <summary class="collapse-title !flex items-center justify-between gap-3 border-base-100 border-2 backdrop-blur-md mb-3 !px-6 rounded-base overflow-hidden relative">
+                <div class="absolute -left-1 -top-[10%] w-full h-[120%] font-mono text-8xl font-black pointer-events-none flex items-center justify-start gap-1 opacity-[0.025] dark:opacity-[0.075]">
+                  {{ mod.moduleNumber }}
+                </div>
+
+                <div class="flex items-center gap-6 relative z-10">
                   <h3 class="heading-4 leading-tight !mb-0 flex flex-wrap sm:flex-nowrap items-center gap-x-3">
                     <div class="text-sm sm:[font-size:inherit] text-primary proportional-nums">
                       Module {{ mod.moduleNumber }}

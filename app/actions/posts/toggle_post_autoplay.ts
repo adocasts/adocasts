@@ -8,9 +8,9 @@ export default class TogglePostAutoplay extends BaseAction<[User | Session]> {
   async asController({ view, params, auth, session }: HttpContext) {
     const lesson = await GetLesson.run(params.slug)
 
-    await this.handle(auth.user || session)
+    const autoplayNext = await this.handle(auth.user || session)
 
-    view.share({ isFragment: true })
+    view.share({ isFragment: true, autoplayNext })
 
     return view.render('components/frags/lesson/autoplay_toggle', { lesson })
   }
@@ -18,15 +18,19 @@ export default class TogglePostAutoplay extends BaseAction<[User | Session]> {
   async handle(userOrSession: User | Session) {
     if (userOrSession instanceof User) {
       const user = userOrSession
+
       user.isEnabledAutoplayNext = !user.isEnabledAutoplayNext
 
       await user.save()
 
-      return user
+      return user.isEnabledAutoplayNext
     }
 
     const session = userOrSession
-    session.put('autoplayNext', !session.get('autoplayNext'))
-    return session
+    const isAutoplayNext = !(session.get('autoplayNext', 'true') === 'true')
+
+    session.put('autoplayNext', isAutoplayNext.toString())
+
+    return isAutoplayNext
   }
 }

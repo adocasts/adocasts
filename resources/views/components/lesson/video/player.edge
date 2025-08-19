@@ -86,7 +86,7 @@
               <div 
                 x-cloak
                 id="lessonVideoNextUp" 
-                x-data="videoAutoPlayNext({{ auth.user?.isEnabledAutoplayNext ?? true }}, '{{ nextLesson.routeUrl }}')" 
+                x-data="videoAutoPlayNext({{ autoplayNext }}, '{{ nextLesson.routeUrl }}')" 
                 class="absolute top-1.5 right-1.5 z-10 p-3 bg-slate-base-900/75 text-slate-base-100 rounded-md flex flex-col transition-transform duration-300"
                 :class="[displayed ? 'translate-x-0' : 'translate-x-[200px]']"
                 @timeupdate="onTimeUpdate">

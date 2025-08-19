@@ -18,16 +18,18 @@ export default class ContextMiddleware {
     const viewRender = ctx.view.render
     const viewShare = ctx.view.share
     const theme = ctx.auth.user?.theme ?? ctx.request.cookie('adocasts-theme', 'system')
+    const autoplayNext = this.#getAutoplayNext(ctx)
 
     ctx.up = new Up(ctx)
     ctx.progress = createProgress(ctx)
     ctx.view.share({
       up: ctx.up,
       theme,
+      autoplayNext,
     })
 
     ctx.view.render = async (templatePath: string, state?: Record<string, any>) => {
-      checkForProgressIds(ctx.progress, state)
+      this.#checkForProgressIds(ctx.progress, state)
 
       await ctx.progress.commit()
       ctx.up.commit()
@@ -36,7 +38,7 @@ export default class ContextMiddleware {
     }
 
     ctx.view.share = (data: Record<string, any>) => {
-      checkForProgressIds(ctx.progress, data)
+      this.#checkForProgressIds(ctx.progress, data)
 
       return viewShare.call(ctx.view, data)
     }
@@ -47,28 +49,36 @@ export default class ContextMiddleware {
     const output = await next()
     return output
   }
-}
 
-function checkForProgressIds(progress: ProgressContext, state?: Record<string, any>) {
-  if (!state) return
+  #checkForProgressIds(progress: ProgressContext, state?: Record<string, any>) {
+    if (!state) return
 
-  for (const key of Object.keys(state)) {
-    const data = state[key]
+    for (const key of Object.keys(state)) {
+      const data = state[key]
 
-    if (is.object(data) && data instanceof ProgressableDto) {
-      data.addToProgress(progress)
-    } else if (data instanceof SimplePaginatorDto) {
-      checkArrayForProgressIds(progress, data.data)
-    } else if (is.array(data)) {
-      checkArrayForProgressIds(progress, data)
+      if (is.object(data) && data instanceof ProgressableDto) {
+        data.addToProgress(progress)
+      } else if (data instanceof SimplePaginatorDto) {
+        this.#checkArrayForProgressIds(progress, data.data)
+      } else if (is.array(data)) {
+        this.#checkArrayForProgressIds(progress, data)
+      }
     }
   }
-}
 
-function checkArrayForProgressIds(progress: ProgressContext, array: unknown[]) {
-  array.forEach((item) => {
-    if (item instanceof ProgressableDto) {
-      item.addToProgress(progress)
+  #checkArrayForProgressIds(progress: ProgressContext, array: unknown[]) {
+    array.forEach((item) => {
+      if (item instanceof ProgressableDto) {
+        item.addToProgress(progress)
+      }
+    })
+  }
+
+  #getAutoplayNext(ctx: HttpContext) {
+    if (ctx.auth.user) {
+      return ctx.auth.user.isEnabledAutoplayNext
     }
-  })
+
+    return ctx.session.get('autoplayNext', 'true') === 'true'
+  }
 }

@@ -1,4 +1,4 @@
-@let(enabled = auth.user?.isEnabledAutoplayNext ?? session.get('autoplayNext') === 'true')
+@let(enabled = autoplayNext)
 
 @form({
   action: form.patch('lessons.autoplay', { slug: lesson.slug }),

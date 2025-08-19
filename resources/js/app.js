@@ -20,6 +20,8 @@ if (typeof mediaQuery.addEventListener === 'function') {
 /**
  * Global shortcuts
  */
+const INPUT_TAGS = ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON']
+
 document.body.addEventListener('keydown', (event) => {
   const isInput = INPUT_TAGS.includes(document.activeElement.tagName)
   const isEditable = document.activeElement.hasAttribute('contenteditable')
