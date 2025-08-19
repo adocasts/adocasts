@@ -29,7 +29,7 @@
 
   <div x-show="editId !== {{ comment.id }}" class="card-body flex flex-row flex-wrap gap-6">
 
-    <div class="flex flex-col">
+    <div class="hidden sm:flex flex-col">
       @profile.link({ user: comment.author, class: 'h-full' })
         <div class="avatar">
           <div class="w-14 rounded">
@@ -39,11 +39,17 @@
       @end
     </div>
 
-    <div class="flex-1 -mb-2">
+    <div class="flex-1 max-w-full -mb-2">
       <div class="flex items-center justify-between">
-        <div class="{{ html.classNames(['flex gap-x-3 items-baseline mb-1.5', size.byline]) }}">
+        <div class="{{ html.classNames(['flex gap-x-3 items-center mb-6 sm:mb-1.5', size.byline]) }}">
           @if (comment.author)
             @profile.link({ user: comment.author, class: ['flex gap-1', 'items-center'] })
+              <div class="avatar mr-1.5 sm:hidden">
+                <div class="w-6 rounded">
+                  @!user.avatar({ user: comment.author, loading: 'lazy', alt: comment.author.handle })
+                </div>
+              </div>
+
               <span>
                 {{ comment.author.handle }}
               </span>
@@ -59,7 +65,7 @@
               @endif
             @end
           @else
-            <div class="flex gap-1 items-baseline">
+            <div class="flex gap-1 items-center">
               Anonymous
               @if (comment.name)
                 <span class="opacity-60">({{ comment.name }})</span>
@@ -67,7 +73,7 @@
             </div>
           @endif
 
-          <span class="text-primary relative top-[0.175rem]">
+          <span class="text-primary relative">
             @svg('solar:double-alt-arrow-right-broken', { class: 'w-4 h-4' })
           </span>
 

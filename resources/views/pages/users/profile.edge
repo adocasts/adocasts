@@ -54,7 +54,7 @@
         @endif
       </div>
 
-      @!profile.socialLinks({ user, class: 'mt-6' })
+      @!profile.socialLinks({ user, class: 'mt-6 sm:hidden' })
 
       @if (!user.isEnabledProfile)
         <div role="alert" class="alert alert-warning alert-soft mt-6">
@@ -65,7 +65,14 @@
         </div>
       @endif
 
-      @!stat.user({ stats, size: 'base', offset: false, class: 'stats-vertical sm:stats-horizontal grid-cols-2 md:grid-cols-none w-full bg-base-200 mt-10 mb-6' })
+      <div class="bg-base-200 mt-10 mb-6 rounded-base">
+        @!stat.user({ 
+          stats, 
+          size: 'base', 
+          offset: false, 
+          class: 'stats-vertical sm:stats-horizontal grid-cols-2 md:grid-cols-auto' 
+        })
+      </div>
 
       <main class="@container flex-1 section-b" up-main-content>
         <div class="tabs tabs-box">

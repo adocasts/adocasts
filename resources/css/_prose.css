@@ -176,11 +176,6 @@
   border-radius: theme('borderRadius.xl');
 }
 
-.prose pre,
-.prose-sm pre {
-  overflow-x: auto;
-}
-
 .prose pre > code {
   display: flex;
   flex-flow: column;
@@ -273,6 +268,15 @@ pre .filepath .lang-icon {
   &.vue {
     color: theme('colors.green.500');
   }
+}
+
+pre {
+  max-width: 100%;
+}
+
+pre > code {
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 .profile pre.shiki > code {
