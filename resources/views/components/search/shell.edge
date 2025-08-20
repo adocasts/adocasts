@@ -11,7 +11,7 @@
       {{{ await $slots.actions() }}}
     @endif
 
-    <form id="searchForm" method="GET" action="{{ route('search') }}" up-autosubmit="true" up-focus="keep" up-scroll="none" up-target="#searchForm,[search-results]">
+    <form id="searchForm" method="GET" action="{{ route('search', { feed }) }}" up-autosubmit="true" up-focus="keep" up-scroll="none" up-target="#searchForm,[search-results]">
       <div class="mb-3 md:mb-6">
         <ul x-data="{ feed: {{ js.stringify(feed) }} }" class="menu w-full gap-1 p-0">
           <li>
