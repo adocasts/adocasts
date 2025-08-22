@@ -1,11 +1,11 @@
+import Alpine from 'alpinejs'
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import Alpine from 'alpinejs'
 import { Player } from 'player.js'
-import { VidstackPlayer, VidstackPlayerLayout } from 'vidstack/global/player'
 import { TextTrack } from 'vidstack'
-import 'vidstack/player/styles/default/theme.css'
+import { VidstackPlayer, VidstackPlayerLayout } from 'vidstack/global/player'
 import 'vidstack/player/styles/default/layouts/video.css'
+import 'vidstack/player/styles/default/theme.css'
 
 let isInitialLoad = true
 let isVideoPlaying = false
@@ -419,7 +419,7 @@ class VideoPlayer {
     Alpine.store('app').videoPlaying = isVideoPlaying
 
     if (isVideoPlaying) {
-      nextUpInterval = setInterval(() => this.#onPlayerTimeUpdate(), 1000)
+      nextUpInterval = setInterval(() => this.#onPlayerTimeUpdate(), 500)
     } else {
       clearInterval(nextUpInterval)
     }

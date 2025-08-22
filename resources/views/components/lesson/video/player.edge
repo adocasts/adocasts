@@ -87,18 +87,18 @@
                 x-cloak
                 id="lessonVideoNextUp" 
                 x-data="videoAutoPlayNext({{ autoplayNext }}, '{{ nextLesson.routeUrl }}')" 
-                class="absolute top-1.5 right-1.5 z-10 p-3 bg-slate-base-900/75 text-slate-base-100 rounded-md flex flex-col transition-transform duration-300"
-                :class="[displayed ? 'translate-x-0' : 'translate-x-[200px]']"
+                x-show="displayed"
+                class="absolute top-1.5 right-1.5 z-10 px-4 py-3 bg-base-300/50 border border-base-content/10 backdrop-blur-lg rounded-base flex flex-col transition-transform duration-300"
                 @timeupdate="onTimeUpdate">
-                <h6 class="font-bold tracking-wider uppercase text-slate-base-300" style="font-size: .65rem;">Playing Next Lesson In</h6>
+                <h6 class="font-bold tracking-wider uppercase text-base-content/60 text-2xs">Playing Next Lesson In</h6>
                 <div class="text-sm uppercase tracking-wider">
                   <span x-ref="countdown" x-text="timeRemaining"></span> seconds
                 </div>
                 <div class="flex gap-3 mt-3">
-                  <button @click="onPlayNext" class="text-brand-base-50 bg-brand-base-600 hover:bg-brand-base-500 text-xs px-1.5 py-0.5 rounded-md flex-1">
+                  <button @click="onPlayNext" class="btn btn-sm btn-primary btn-outline flex-1">
                     Play Now
                   </button>
-                  <button @click="onCancel" class="text-slate-base-50 bg-slate-base-600 hover:bg-slate-base-500 text-xs px-1.5 py-0.5 rounded-md flex-1">
+                  <button @click="onCancel" class="btn btn-sm btn-outline">
                     Cancel
                   </button>
                 </div>
