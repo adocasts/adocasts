@@ -1,8 +1,24 @@
-<h1>
-  404 - Page not found
-</h1>
-<p>
-  This template is rendered by the
-  <a href="http://docs.adonisjs.com/guides/exception-handling#status-pages">status pages feature</a>
-  of the global exception handler.
-</p>
+@layout({ title: 'Not Found' })
+
+  <div class="section-y flex flex-col justify-center items-center">
+    <img class="w-24 animation-float mx-auto" src="/imgs/robot/slice4.svg" alt="robot searching">
+
+    <h1 class="heading-2">Page or Resource Not Found</h1>
+
+    <p class="-mt-2 mb-8 text-base leading-7 text-base-content/60 text-center max-w-md">
+      Well shoot, looks like we couldn't find what you were looking for!
+      If you think something should be here, please contact us!
+    </p>
+
+    <div class="flex items-center gap-4">
+      <a href="/" class="btn btn-outline btn-primary">
+        Return home
+      </a>
+
+      <a href="{{ route('contact') }}" class="btn btn-outline">
+        Contact us
+      </a>
+    </div>
+  </div>
+
+@end

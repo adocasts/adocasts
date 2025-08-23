@@ -71,6 +71,7 @@ export default defineConfig({
     () => import('#start/lucid/query_builder'),
     () => import('#start/context/index'),
     () => import('#start/session/toast'),
+    () => import('#start/hyperdx')
   ],
 
   /*

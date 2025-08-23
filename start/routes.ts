@@ -48,6 +48,8 @@ const SendEmailVerification = () => import('#actions/users/send_email_verificati
 const VerifyEmail = () => import('#actions/users/verify_email')
 const RenderUserHistory = () => import('#actions/users/render_user_history')
 import '#start/router/actions'
+import { Exception } from '@adonisjs/core/exceptions'
+import app from '@adonisjs/core/services/app'
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 import {
@@ -116,6 +118,15 @@ router.on('/attributions').redirect('/uses')
 router.on('/topics/adonisjs-5').redirectToPath('/topics/adonisjs')
 router.on('/topics/adonis-5').redirectToPath('/topics/adonisjs')
 router.on('/series/lets-learn-adonis-5').redirectToPath('/series/lets-learn-adonisjs-5')
+
+if (app.inDev) {
+  router.get('/exception/:status', (ctx) => {
+    throw new Exception('This is an example exception page.', {
+      code: 'E_EXAMPLE',
+      status: ctx.params.status || 500,
+    })
+  })
+}
 
 //* General
 router.get('/', [RenderHome]).as('home')

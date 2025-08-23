@@ -1,7 +1,14 @@
+import env from '#start/env'
+import { errors as coreErrors } from '@adonisjs/core'
 import { ExceptionHandler, HttpContext } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
 import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
-import { errors } from '@adonisjs/limiter'
+import { errors as limiterErrors } from '@adonisjs/limiter'
+import { errors as shieldErrors } from '@adonisjs/shield'
+import { errors as vineErrors } from '@vinejs/vine'
+
+import logger from '#services/logger_service'
+import * as HyperDX from '@hyperdx/node-opentelemetry'
 
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
@@ -15,7 +22,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * codes. You might want to enable them in production only, but feel
    * free to enable them in development as well.
    */
-  protected renderStatusPages = app.inProduction
+  protected renderStatusPages = true //app.inProduction
 
   /**
    * Status pages is a collection of error code range and a callback
@@ -35,7 +42,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * response to the client
    */
   async handle(error: unknown, ctx: HttpContext) {
-    if (error instanceof errors.E_TOO_MANY_REQUESTS) {
+    if (error instanceof limiterErrors.E_TOO_MANY_REQUESTS) {
       const message = error.getResponseMessage(ctx)
       const headers = error.getDefaultHeaders()
 
@@ -61,6 +68,40 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * @note You should not attempt to send a response from this method.
    */
   async report(error: unknown, ctx: HttpContext) {
+    if (env.get('HYPERDX_INTEGESTION_KEY')) {
+      HyperDX.recordException(error)
+    }
+
+    if (
+      error instanceof coreErrors.E_ROUTE_NOT_FOUND ||
+      error instanceof shieldErrors.E_BAD_CSRF_TOKEN ||
+      error instanceof vineErrors.E_VALIDATION_ERROR
+    ) {
+      return super.report(error, ctx)
+    }
+
+    const url = ctx.request.url(true)
+    const userAgent = ctx.request.header('User-Agent')
+    const alertIgnorePaths = ['/assets/', '/schedule/']
+    const alertIgnoreAgents = ['crawler', 'bot']
+    const ignorePath = alertIgnorePaths.some((path) => url.startsWith(path))
+    const ignoreAgent = alertIgnoreAgents.some((agent) => userAgent?.includes(agent))
+
+    if (!ignorePath && !ignoreAgent) {
+      await logger.error('error.report', {
+        error,
+        url: ctx.request.url(true),
+        userId: ctx.auth?.user?.id,
+        headers: {
+          'User-Agent': userAgent,
+          'X-Forwarded-For': ctx.request.header('X-Forwarded-For'),
+          'X-Real-IP': ctx.request.header('X-Real-IP'),
+          'Cf-Connecting-Ip': ctx.request.header('Cf-Connecting-Ip'),
+          'Referer': ctx.request.header('Referer'),
+        },
+      })
+    }
+
     return super.report(error, ctx)
   }
 }

@@ -1,8 +1,26 @@
-<h1>
-  {{ error.code }} - Server error
-</h1>
-<p>
-  This template is rendered by the
-  <a href="http://docs.adonisjs.com/guides/exception-handling#status-pages">status pages feature</a>
-  of the global exception handler.
-</p>
+@layout.error({ title: 'Server Error' })
+
+  <div class="py-12 flex flex-col justify-center items-center">
+    <img class="w-24 mx-auto" src="/imgs/robot/slice7.svg" alt="robot searching">
+
+    <h1 class="heading-2">
+      Internal Server Error
+    </h1>
+
+    <p class="-mt-2 mb-8 text-base leading-7 text-base-content/60 text-center max-w-md">
+      This error has been logged and will be inspected as soon as possible!
+      If you continue to have issues, please <a class="link" href="{{ route('contact') }}" up-follow="false">contact us</a>!
+    </p>
+
+    <div class="flex items-center gap-4">
+      <a href="/" class="btn btn-outline btn-primary" up-follow="false">
+        Return home
+      </a>
+
+      <a href="{{ route('contact') }}" class="btn btn-outline" up-follow="false">
+        Contact us
+      </a>
+    </div>
+  </div>
+
+@end

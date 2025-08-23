@@ -1,6 +1,7 @@
 import env from '#start/env'
 import { defineConfig, targets } from '@adonisjs/core/logger'
 import app from '@adonisjs/core/services/app'
+import * as HyperDX from '@hyperdx/node-opentelemetry'
 
 const loggerConfig = defineConfig({
   default: 'app',
@@ -15,9 +16,17 @@ const loggerConfig = defineConfig({
       name: env.get('APP_NAME'),
       level: env.get('LOG_LEVEL'),
       transport: {
+        mixin: HyperDX.getPinoMixinFunction,
         targets: targets()
           .pushIf(!app.inProduction, targets.pretty())
           .pushIf(app.inProduction, targets.file({ destination: 1 }))
+          .pushIf(
+            app.inProduction && !!env.get('HYPERDX_INTEGESTION_KEY'),
+            HyperDX.getPinoTransport('info', {
+              // Send logs info and above
+              detectResources: true,
+            })
+          )
           .toArray(),
       },
     },
