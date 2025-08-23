@@ -41,6 +41,7 @@ router.use([
   () => import('#middleware/silent_auth_middleware'),
   () => import('#middleware/session_check_middleware'),
   () => import('#middleware/context/context_middleware'),
+  () => import('#middleware/cms_session_middleware')
 ])
 
 /**
