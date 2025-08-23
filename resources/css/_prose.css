@@ -288,7 +288,7 @@ pre.shiki.github-dark,
   @apply !bg-base-100/50 px-1 pb-1 rounded-base border border-base-content/10;
 
   code {
-    @apply !bg-base-100/50 rounded-[calc(var(--radius-box)_-_.25rem)] py-3;
+    @apply !bg-base-100/50 rounded-[calc(var(--radius-box)_-_.25rem)] py-3 max-h-[600px] overflow-auto;
   }
 
   &:before {
