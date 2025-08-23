@@ -284,6 +284,7 @@ pre > code {
 }
 
 pre.shiki.github-dark,
+pre.shiki.github-light,
 .code-block pre {
   @apply !bg-base-100/50 px-1 pb-1 rounded-base border border-base-content/10;
 

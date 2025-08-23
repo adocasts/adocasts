@@ -20,7 +20,7 @@
 <div x-data="{ 
   change: (theme) => {
     up.submit('#header-theme-form', { params: { theme } })
-    document.body.setAttribute('data-theme', `adocasts-${theme}`)
+    document.documentElement.setAttribute('data-theme', `adocasts-${theme}`)
   }
 }" up-header-theme up-hungry>
   @form({ id: 'header-theme-form', action: form.patch('users.theme'), 'up-target': '[up-header-theme]' })

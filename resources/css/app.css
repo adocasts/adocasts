@@ -21,14 +21,20 @@ body {
   background-color: var(--color-base-300);
 }
 
+html {
+  height: 100%;
+}
+
 body {
   --section-spacing: theme('spacing.12') --mono: 0;
   --casl: 0.5;
   --wght: 400;
   --slnt: 0;
   --crsv: 0.5;
+
   font-variation-settings: var(--mono), var(--casl), var(--wght), var(--slnt), var(--crsv);
   overflow-x: hidden;
+  min-height: 100%;
 
   .italic {
     --casl: 1;

@@ -164,10 +164,10 @@
     </main>
 
     @if (series)
-      <aside class="drawer-side !top-16">
+      <aside class="drawer-side !top-16 z-20">
         <label for="series-details-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
 
-        <div class="w-[var(--aside-width)] border-l border-base-100 xl:fixed right-0 top-16 h-[calc(100%_-_4rem)] flex flex-col overflow-hidden bg-base-300/85 backdrop-blur-lg">
+        <div class="w-[var(--aside-width)] border-l border-base-100 xl:fixed right-0 top-16 h-[calc(100%_-_4rem)] flex flex-col overflow-hidden bg-base-300 dark:bg-base-300/85 backdrop-blur-md max-lx:shadow-sm">
           <div class="px-6 pt-6 pb-3 group">
             <h3 class="heading-5 !font-semibold !leading-tight !mb-0">
               <a href="{{ route('series.show', { slug: series.slug }) }}">

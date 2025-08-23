@@ -158,21 +158,21 @@
 @custom-variant midnight (&:where([data-theme=adocasts-midnight], [data-theme=adocasts-midnight] *));
 
 @media (prefers-color-scheme: dark) {
-  body[data-theme='adocasts-system'] {
+  html[data-theme='adocasts-system'] {
     .logo-light {
       display: none;
     }
   }
 }
 
-body[data-theme='adocasts-dark'],
-body[data-theme='adocasts-midnight'] {
+html[data-theme='adocasts-dark'],
+html[data-theme='adocasts-midnight'] {
   .logo-light {
     display: none;
   }
 }
 
-body[data-theme='adocasts-light'] {
+html[data-theme='adocasts-light'] {
   .logo-dark {
     display: none;
   }
@@ -180,7 +180,7 @@ body[data-theme='adocasts-light'] {
 
 .btn-outline,
 .badge-outline {
-  border-color: var(--color-base-100);
+  @apply border-base-content/10;
 
   &.btn-primary,
   &.btn-secondary,
@@ -216,13 +216,7 @@ body[data-theme='adocasts-light'] {
 .input,
 .select,
 .textarea {
-  background-color: transparent;
-  border-color: var(--color-base-100);
-
-  &:hover,
-  &:focus-within {
-    background-color: color-mix(in oklab, var(--color-base-100), transparent 75%);
-  }
+  @apply border-base-content/10 bg-transparent hover:border-base-content/20 focus-within:border-base-content/30;
 }
 
 .menu-active {

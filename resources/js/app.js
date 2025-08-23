@@ -4,7 +4,7 @@ import './unpoly';
 // set system color scheme preference
 const updateColorScheme = (e) => {
   const isDark = e.matches ?? window.matchMedia('(prefers-color-scheme: dark)').matches;
-  document.body.setAttribute('prefers-color-scheme', isDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('prefers-color-scheme', isDark ? 'dark' : 'light');
 };
 
 const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');

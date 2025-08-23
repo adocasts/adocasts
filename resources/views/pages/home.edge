@@ -8,161 +8,163 @@
   }
 })
 
-  <div class="relative -mt-16 pt-16">
-    <div class="absolute inset-x-0 bottom-0 top-0 bg-radial-[at_50%_-50%] from-primary/50 to-primary/0 dark:from-secondary/50 dark:to-secondary/0 z-5">
-      <div id="hero" class="absolute w-full h-full z-[999] pointer-events-none">
-        <div class="absolute w-full h-full z-50 bg-radial-[at_50%_-50%] from-primary/0 dark:from-secondary/0 to-base-300"></div>
-        <div class="absolute w-full h-full bg-gradient-to-t from-base-300 via-base-300/0 to-base-300/0"></div>
+  <div class="w-full">
+    <div class="relative -mt-16 pt-16">
+      <div class="absolute inset-x-0 bottom-0 top-0 bg-radial-[at_50%_-50%] from-primary/50 to-primary/0 dark:from-secondary/50 dark:to-secondary/0 z-5">
+        <div id="hero" class="absolute w-full h-full z-[999] pointer-events-none">
+          <div class="absolute w-full h-full z-50 bg-radial-[at_50%_-50%] from-primary/0 dark:from-secondary/0 to-base-300"></div>
+          <div class="absolute w-full h-full bg-gradient-to-t from-base-300 via-base-300/0 to-base-300/0"></div>
+        </div>
+        <div class="w-full h-full bg-gradient-to-t from-base-300 via-base-300/0 to-base-300/0"></div>
       </div>
-      <div class="w-full h-full bg-gradient-to-t from-base-300 via-base-300/0 to-base-300/0"></div>
-    </div>
 
-    @let(lessonImages = lessons.map((lesson) => lesson.thumbnail).filter(Boolean))
+      @let(lessonImages = lessons.map((lesson) => lesson.thumbnail).filter(Boolean))
 
-    <div class="hero-lesson-grid absolute top-0 left-0 max-h-full overflow-hidden">
-      <div class="mask-gradient-to-r backdrop-blur-sm absolute top-0 left-0 w-3/4 h-full z-10"></div>
-      @each (img in lessonImages)
-        @!picture({
-          ratio: 'aspect-video',
-          fit: 'object-cover',
-          class: [`img w-full z-[1]`],
-          filename: img.filename,
-          altText: img.altText,
-        })
-      @endeach
-    </div>
+      <div class="hero-lesson-grid absolute top-0 left-0 max-h-full overflow-hidden">
+        <div class="mask-gradient-to-r backdrop-blur-sm absolute top-0 left-0 w-3/4 h-full z-10"></div>
+        @each (img in lessonImages)
+          @!picture({
+            ratio: 'aspect-video',
+            fit: 'object-cover',
+            class: [`img w-full z-[1]`],
+            filename: img.filename,
+            altText: img.altText,
+          })
+        @endeach
+      </div>
 
-    <section class="container-2xl section-y mx-auto relative z-10">
-      <div class="container mx-auto h-[calc(100%-125px)] flex justify-between gap-16 relative z-20">
-        
+      <section class="container-2xl section-y mx-auto relative z-10">
+        <div class="container mx-auto h-[calc(100%-125px)] flex justify-between gap-16 relative z-20">
+          
 
-        <div class="flex flex-col justify-center">
-          <h2
-            class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl 2xl:text-9xl font-black mb-3 sm:mb-4 uppercase drop-shadow-lg">
-            <span class="inline-block bg-base-content dark:bg-secondary bg-gradient-to-b from-black/35 via-black/20 dark:from-white dark:via-white/75 to-base-content/50 bg-clip-text text-transparent">
-              Get
-            </span>
-            <span class="inline-block bg-base-content dark:bg-secondary bg-gradient-to-b from-black/35 via-black/20 dark:from-white dark:via-white/75 to-base-content/50 bg-clip-text text-transparent">
-              Ship
-            </span>
-            <span class="inline-block bg-base-content dark:bg-secondary bg-gradient-to-b from-black/35 via-black/20 dark:from-white dark:via-white/75 to-base-content/50 bg-clip-text text-transparent">
-              Done
-            </span>
-          </h2>
+          <div class="flex flex-col justify-center">
+            <h2
+              class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl 2xl:text-9xl font-black mb-3 sm:mb-4 uppercase drop-shadow-lg">
+              <span class="inline-block bg-base-content dark:bg-secondary bg-gradient-to-b from-black/35 via-black/20 dark:from-white dark:via-white/75 to-base-content/50 bg-clip-text text-transparent">
+                Get
+              </span>
+              <span class="inline-block bg-base-content dark:bg-secondary bg-gradient-to-b from-black/35 via-black/20 dark:from-white dark:via-white/75 to-base-content/50 bg-clip-text text-transparent">
+                Ship
+              </span>
+              <span class="inline-block bg-base-content dark:bg-secondary bg-gradient-to-b from-black/35 via-black/20 dark:from-white dark:via-white/75 to-base-content/50 bg-clip-text text-transparent">
+                Done
+              </span>
+            </h2>
 
-          <h1 class="md:text-lg lg:text-2xl 3xl:text-3xl mb-8 lg:mb-12 2xl:mb-16 drop-shadow-sm max-w-[42ch] text-base-content/60 dark:text-base-content">
-            Adocasts teaches you how to ship NodeJS apps in no time using AdonisJS and it's built-in batteries.
-          </h1>
+            <h1 class="md:text-lg lg:text-2xl 3xl:text-3xl mb-8 lg:mb-12 2xl:mb-16 drop-shadow-sm max-w-[42ch] text-base-content/60 dark:text-base-content">
+              Adocasts teaches you how to ship NodeJS apps in no time using AdonisJS and it's built-in batteries.
+            </h1>
 
-          <div class="flex flex-wrap items-center gap-y-1.5 gap-x-3 md:gap-x-6">
-            <a href="/series/lets-learn-adonisjs-6" class="btn btn-primary btn-outline !border-primary/50 backdrop-blur-sm md:btn-wide">
-              Ship Your First App
-              @svg('solar:map-arrow-right-bold-duotone')
-            </a>
+            <div class="flex flex-wrap items-center gap-y-1.5 gap-x-3 md:gap-x-6">
+              <a href="/series/lets-learn-adonisjs-6" class="btn btn-primary btn-outline !border-primary/50 backdrop-blur-sm md:btn-wide">
+                Ship Your First App
+                @svg('solar:map-arrow-right-bold-duotone')
+              </a>
 
-            <a href="/signup" class="btn btn-outline !border-base-content/50 backdrop-blur-sm md:btn-wide">
-              Get Started for Free
-            </a>
+              <a href="/signup" class="btn btn-outline !border-base-content/50 backdrop-blur-sm md:btn-wide">
+                Get Started for Free
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="mb-12 pb-8 pt-24 -mt-8 bg-gradient-to-b from-base-100/0 to-base-100/10 border-b border-base-content/10 relative z-10">
-      <div class="container mx-auto flex flex-col">
-        @if (stats.user?.started)
-          <h3 class="heading-3">
-            Your learning journey
-          </h3>
+      <section class="mb-12 pb-8 pt-24 -mt-8 bg-gradient-to-b from-base-100/0 to-base-100/10 border-b border-base-content/10 relative z-10">
+        <div class="container mx-auto flex flex-col">
+          @if (stats.user?.started)
+            <h3 class="heading-3">
+              Your learning journey
+            </h3>
 
-          @!stat.user({ stats: stats.user })
-        @else
-          <h3 class="heading-3">
-            Adocasts by the numbers
-          </h3>
+            @!stat.user({ stats: stats.user })
+          @else
+            <h3 class="heading-3">
+              Adocasts by the numbers
+            </h3>
 
-          @!stat.adocasts({ stats: stats.site })
-        @endif
-      </div>
+            @!stat.adocasts({ stats: stats.site })
+          @endif
+        </div>
+      </section>
+    </div>
+
+    @if (series.length)
+      <section class="section-container mx-auto relative z-[1]">
+        <h2 class="heading-2">
+          Learn one step at a time
+        </h2>
+
+        <div class="series-bento">
+          @let([firstSeries, ...otherSeries] = series)
+
+          <div class="area-1">
+            @!series.card({ series: firstSeries, showLessons: true })
+          </div>
+
+          <div class="area-2">
+            @each ((item, index) in otherSeries)
+              @!series.card({ series: item })
+            @endeach
+          </div>
+        </div>
+      </section>
+    @endif
+
+    @if (topics.length)
+      <section class="section-y relative z-[1]">
+        @let(featTopic1 = topics.find(topic => topic.name === 'AdonisJS'))
+        @let(featTopic2 = topics.find(topic => topic.name === 'EdgeJS'))
+        @let(featTopic3 = topics.find(topic => topic.name === 'Lucid'))
+        @let(featTopic4 = topics.find(topic => topic.name === 'Authentication'))
+        @let(featIds = [featTopic1.id, featTopic2.id, featTopic3.id, featTopic4.id])
+        @let(otherTopics = topics.filter(topic => !featIds.includes(topic.id)))
+
+        <div class="container mx-auto">
+          <h2 class="heading-2">
+            Dive into a topic
+          </h2>
+
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
+            @!topic.card({ topic: featTopic1, size: 'lg' })
+            @!topic.card({ topic: featTopic2, size: 'lg' })
+            @!topic.card({ topic: featTopic3, size: 'lg' })
+            @!topic.card({ topic: featTopic4, size: 'lg' })
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3">
+            @each (topic in otherTopics)
+              @!topic.card({ topic, size: 'sm' })
+            @endeach
+          </div>
+        </div>
+      </section>
+    @endif
+
+    @if (lessons.length)
+      <section class="section-y relative z-[1]">
+        <div class="container mx-auto">
+          <h2 class="heading-2">
+            Jump straight to the latest
+          </h2>
+
+          @let([featuredLesson1, featuredLesson2, ...otherLessons] = lessons)
+          <div class="w-full grid sm:grid-cols-2 gap-3 mb-3">
+            @!lesson.card({ lesson: featuredLesson1, size: 'lg' })
+            @!lesson.card({ lesson: featuredLesson2, size: 'lg' })
+          </div>
+
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+            @each (lesson in otherLessons.slice(0, 8))
+              @!lesson.card({ lesson })
+            @endeach
+          </div>
+        </div>
+      </section>
+    @endif
+
+    <section class="pt-24 mx-auto relative z-[1]">
+      @!pricing.hero({ testimonials: true })
     </section>
   </div>
-
-  @if (series.length)
-    <section class="section-container mx-auto relative z-[1]">
-      <h2 class="heading-2">
-        Learn one step at a time
-      </h2>
-
-      <div class="series-bento">
-        @let([firstSeries, ...otherSeries] = series)
-
-        <div class="area-1">
-          @!series.card({ series: firstSeries, showLessons: true })
-        </div>
-
-        <div class="area-2">
-          @each ((item, index) in otherSeries)
-            @!series.card({ series: item })
-          @endeach
-        </div>
-      </div>
-    </section>
-  @endif
-
-  @if (topics.length)
-    <section class="section-y relative z-[1]">
-      @let(featTopic1 = topics.find(topic => topic.name === 'AdonisJS'))
-      @let(featTopic2 = topics.find(topic => topic.name === 'EdgeJS'))
-      @let(featTopic3 = topics.find(topic => topic.name === 'Lucid'))
-      @let(featTopic4 = topics.find(topic => topic.name === 'Authentication'))
-      @let(featIds = [featTopic1.id, featTopic2.id, featTopic3.id, featTopic4.id])
-      @let(otherTopics = topics.filter(topic => !featIds.includes(topic.id)))
-
-      <div class="container mx-auto">
-        <h2 class="heading-2">
-          Dive into a topic
-        </h2>
-
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
-          @!topic.card({ topic: featTopic1, size: 'lg' })
-          @!topic.card({ topic: featTopic2, size: 'lg' })
-          @!topic.card({ topic: featTopic3, size: 'lg' })
-          @!topic.card({ topic: featTopic4, size: 'lg' })
-        </div>
-
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3">
-          @each (topic in otherTopics)
-            @!topic.card({ topic, size: 'sm' })
-          @endeach
-        </div>
-      </div>
-    </section>
-  @endif
-
-  @if (lessons.length)
-    <section class="section-y relative z-[1]">
-      <div class="container mx-auto">
-        <h2 class="heading-2">
-          Jump straight to the latest
-        </h2>
-
-        @let([featuredLesson1, featuredLesson2, ...otherLessons] = lessons)
-        <div class="w-full grid sm:grid-cols-2 gap-3 mb-3">
-          @!lesson.card({ lesson: featuredLesson1, size: 'lg' })
-          @!lesson.card({ lesson: featuredLesson2, size: 'lg' })
-        </div>
-
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-          @each (lesson in otherLessons.slice(0, 8))
-            @!lesson.card({ lesson })
-          @endeach
-        </div>
-      </div>
-    </section>
-  @endif
-
-  <section class="pt-24 mx-auto relative z-[1]">
-    @!pricing.hero({ testimonials: true })
-  </section>
 
 @end

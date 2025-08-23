@@ -216,8 +216,8 @@
   }
 }
 
-body[data-theme='adocasts-light'],
-body[data-theme='adocasts-system'][prefers-color-scheme='light'] {
+html[data-theme='adocasts-light'],
+html[data-theme='adocasts-system'][prefers-color-scheme='light'] {
   .radial-accent-tl,
   .hover\:radial-accent-tl,
   .group-hover\:radial-accent-tl,
