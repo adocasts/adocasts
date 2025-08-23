@@ -15,14 +15,14 @@
       </div>
     @endif
 
-    <div class="max-w-prose mx-auto flex gap-3 lg:gap-6 mt-6 lg:mt-8">
+    <div class="max-w-prose mx-auto flex gap-3 lg:gap-6 my-10 lg:my-16">
       <div class="@container flex-1">
         <h1 class="heading-2a">
           {{ blog.title }}
         </h1>
 
         @if (blog.author)
-          <div class="flex gap-3 lg:gap-3 items-center mb-6">
+          <div class="flex gap-3 lg:gap-3 items-center my-8">
             @profile.link({ user: blog.author })
               <div class="avatar">
                 <div class="w-10 rounded-full">

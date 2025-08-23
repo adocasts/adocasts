@@ -7,7 +7,7 @@
     index: true
   }
 })
-  @layout.shell.asideLeft({ sticky: true })
+  @layout.shell.asideLeft({ overflow: true })
     @slot('aside')
 
       <form method="GET" action="{{ route('blogs.index') }}" up-target="[blog-list]" up-scroll="false" up-autosubmit>
@@ -16,7 +16,7 @@
             <li>
               @!form.select.radio({
                 value: Sorts.LATEST,
-                text: 'Most recently updated',
+                text: 'Most recently published',
                 icon: 'solar:graph-new-up-outline'
               })
             </li>

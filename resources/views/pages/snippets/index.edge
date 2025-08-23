@@ -7,10 +7,10 @@
     index: true
   }
 })
-  @layout.shell.asideLeft({ sticky: true })
+  @layout.shell.asideLeft({ overflow: true })
     @slot('aside')
 
-      <form method="GET" action="{{ route('blogs.index') }}" up-target="[blog-list]" up-scroll="false" up-autosubmit>
+      <form method="GET" action="{{ route('snippets.index') }}" up-target="[snippet-list]" up-scroll="false" up-autosubmit>
         <h3 class="heading-3">
           Filter
         </h3>
@@ -51,13 +51,13 @@
     </h1>
 
     <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 sm:text-lg/8">
-      Some test or something ...
+      Code snippets that can be easily implemented via copy/paste. These don't dwell on the why or how, just implementation.
     </p>
 
-    <section class="flex-1" blog-list>
+    <section class="flex-1" snippet-list>
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 lg:gap-6">
         @each (snippet in snippets.data)
-        @!blog.card({ blog: snippet })
+          @!blog.card({ blog: snippet })
         @endeach
       </div>
 

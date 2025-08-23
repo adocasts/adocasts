@@ -46,7 +46,7 @@ export default class StoreSessionSignIn extends BaseAction {
 
     if (checkout.bail) {
       session.toast(checkout.status, checkout.message)
-      return checkout.redirect ? response.redirect(checkout.redirect) : response.redirect().back()
+      return checkout.redirect ? response.redirect(checkout.redirect) : response.redirect(redirect)
     }
 
     session.toast('success', `Welcome back, ${user.handle}!`)
@@ -83,6 +83,14 @@ export default class StoreSessionSignIn extends BaseAction {
 
   async #checkForPlan(user: User, options: Validator['options'] = {}) {
     if (!options.plan) return { bail: false, status: '', message: '' }
+
+    if (!user.isFreeTier) {
+      return {
+        bail: true,
+        status: 'info',
+        message: 'You are already a member of Adocasts Plus, so you are all set!',
+      }
+    }
 
     const { status, message, checkout } = await stripe.tryCreateCheckoutSession(user, options.plan)
 

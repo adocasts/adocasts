@@ -130,9 +130,9 @@ class ParserService {
 
   async getPreview(html: string) {
     const root = parse(html || '')
-    const [one, two, three, four, five] = root.childNodes
+    const [one, two, three] = root.childNodes
 
-    root.childNodes = [one, two, three, four, five].filter(Boolean)
+    root.childNodes = [one, two, three].filter(Boolean)
 
     return root.toString()
   }

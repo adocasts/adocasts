@@ -9,18 +9,20 @@
   }
 })
   <main class="container mx-auto">
-    <div class="p-3 lg:p-6 !pb-0">
-      <div class="aspect-video max-h-[calc(100vh_-_120px)] mx-auto bg-base-200 rounded-base"></div>
-    </div>
+    @if (snippet.hasVideo)
+      <div class="p-3 lg:p-6 !pb-0">
+        @!lesson.video({ lesson: snippet })
+      </div>
+    @endif
 
-    <div class="max-w-prose mx-auto flex gap-3 lg:gap-6 mt-6 lg:mt-8">
+    <div class="max-w-prose mx-auto flex gap-3 lg:gap-6 my-10 lg:my-16">
       <div class="@container flex-1">
         <h1 class="heading-2a">
           {{ snippet.title }}
         </h1>
 
         @if (snippet.author)
-          <div class="flex gap-3 lg:gap-3 items-center mb-6">
+          <div class="flex gap-3 lg:gap-3 items-center my-8">
             @profile.link({ user: snippet.author })
               <div class="avatar">
                 <div class="w-10 rounded-full">
@@ -70,17 +72,7 @@
           </article>
         @endif
 
-        <div class="mt-8 lg:mt-12 -mx-6" up-comments>
-          <div class="p-6 bg-base-200 rounded-base mb-6">
-            <h3 class="heading-3 !mb-0">
-              Join the Discussion
-              <span class="opacity-60 font-normal">({{ snippet.comments.length }} comments)</span>
-            </h3>
-          </div>
-
-          @!comment.form({ commentable: snippet, commentTypeId: CommentTypes.POST, class: 'mb-6' })
-          @!comment.list({ commentable: snippet, comments: snippet.comments })
-        </div>
+        @!lesson.comments({ lesson: snippet })
       </div>
 
     </div>

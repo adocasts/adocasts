@@ -18,7 +18,7 @@
   },
   style: `--aside-width: ${lesson.hasVideo ? '325px' : '0'}; --footer-less-width: var(--aside-width);`,
 })
-  <div class="drawer-end xl:drawer-open">
+  <div class="drawer drawer-end xl:drawer-open">
     <input id="series-details-drawer" type="checkbox" class="drawer-toggle">
 
     <main {{ html.attrs({ class: ['w-full', lesson.hasVideo ? 'xl:w-[calc(100%_-_var(--aside-width))]' : '' ] }) }}>
@@ -94,7 +94,7 @@
         @!lesson.video({ lesson, nextLesson })
       @endif
 
-      <div class="max-w-prose mx-auto flex gap-3 lg:gap-6 px-8 md:px-0 mt-10 lg:mt-16">
+      <div class="max-w-prose mx-auto flex gap-3 lg:gap-6 px-8 md:px-0 my-10 lg:my-16">
         <div class="@container flex-1">
           <h1 class="heading-2a">
             {{ lesson.title }}
@@ -146,8 +146,14 @@
           </p>
 
           @if (lesson.body)
-            <article id="proseBody" x-data="proseBody" class="prose">
-              {{{ await parser.highlight(lesson.body) }}}
+            <article id="proseBody" x-data="proseBody" class="prose relative">
+              @can('PostPolicy.view', lesson)
+                {{{ await parser.highlight(lesson.body) }}}
+              @else
+                {{{ await parser.getPreview(lesson.body) }}}
+
+                <div class="w-full absolute bottom-0 left-0 h-full bg-gradient-to-b from-base-300/0 via-base-300/75 to-base-300 z-10"></div>
+              @endcan
             </article>
           @endif
 
