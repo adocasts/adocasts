@@ -7,6 +7,8 @@ import { Infer } from '@vinejs/vine/types'
 import SendCommentNotification from '../notifications/send_comment_notification.js'
 import SendMentionNotification from '../notifications/send_mention_notification.js'
 import GetRouteReferrer from '#actions/general/get_route_referrer'
+import cache from '@adonisjs/cache/services/main'
+import CacheKeys from '#enums/cache_keys'
 
 type Validator = Infer<typeof commentStoreValidator>
 
@@ -21,6 +23,8 @@ export default class StoreComment extends BaseAction<[user: User, data: Validato
     const comment = await this.handle(auth.user!, data)
 
     session.toast('success', 'Thanks for your comment!')
+
+    await cache.delete({ key: CacheKeys.SITE_STATS })
 
     const { referrer } = await GetRouteReferrer.run(request)
 

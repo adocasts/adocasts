@@ -10,6 +10,7 @@ const enum CacheKeys {
   COLLECTION_ = 'COLLECTION_',
   TAXONOMY_ = 'TAXONOMY_',
   RSS_FEED = 'RSS_FEED',
+  SITE_STATS = 'SITE_STATS',
 }
 
 export default CacheKeys

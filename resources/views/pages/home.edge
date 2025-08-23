@@ -19,7 +19,7 @@
 
     @let(lessonImages = lessons.map((lesson) => lesson.thumbnail).filter(Boolean))
 
-    <div class="hero-lesson-grid absolute top-0 left-0">
+    <div class="hero-lesson-grid absolute top-0 left-0 max-h-full overflow-hidden">
       <div class="mask-gradient-to-r backdrop-blur-sm absolute top-0 left-0 w-3/4 h-full z-10"></div>
       @each (img in lessonImages)
         @!picture({
@@ -65,22 +65,12 @@
             </a>
           </div>
         </div>
-
-        {{-- <div class="flex-1 card -m-2 ring-1 ring-black/5 border-base-gradient-to-b grid grid-cols-1 max-lg:w-full max-lg:max-w-md">
-          <div class="grid grid-cols-1 rounded-base p-3 shadow-md shadow-black/5">
-            <div class="rounded-[calc(var(--radius-box)_-_.5rem)] backdrop-blur-md p-8 shadow-2xl ring-1 ring-black/5">
-              <div class="aspect-video">
-                {{-- need a video or something --}}
-              </div>
-            </div>
-          </div>
-        </div> --}}
       </div>
     </section>
 
     <section class="mb-12 pb-8 pt-24 -mt-8 bg-gradient-to-b from-base-100/0 to-base-100/10 border-b border-base-content/10 relative z-10">
       <div class="container mx-auto flex flex-col">
-        @if (stats.user && stats.started)
+        @if (stats.user?.started)
           <h3 class="heading-3">
             Your learning journey
           </h3>
@@ -133,14 +123,14 @@
           Dive into a topic
         </h2>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
           @!topic.card({ topic: featTopic1, size: 'lg' })
           @!topic.card({ topic: featTopic2, size: 'lg' })
           @!topic.card({ topic: featTopic3, size: 'lg' })
           @!topic.card({ topic: featTopic4, size: 'lg' })
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3">
           @each (topic in otherTopics)
             @!topic.card({ topic, size: 'sm' })
           @endeach

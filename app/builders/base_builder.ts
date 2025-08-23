@@ -59,6 +59,16 @@ export default class BaseBuilder<Model extends LucidModel, Row extends LucidRow>
     return this
   }
 
+  whereNull(column: string) {
+    this.query.whereNull(column)
+    return this
+  }
+
+  whereNotNull(column: string) {
+    this.query.whereNotNull(column)
+    return this
+  }
+
   limit(limit: number) {
     this.query.limit(limit)
     return this

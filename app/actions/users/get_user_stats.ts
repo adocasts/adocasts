@@ -1,4 +1,5 @@
 import BaseAction from '#actions/base_action'
+import States from '#enums/states'
 import Comment from '#models/comment'
 import Discussion from '#models/discussion'
 import Progress from '#models/progress'
@@ -9,11 +10,24 @@ export default class GetUserStats extends BaseAction<[User]> {
     const userId = user.id
 
     return {
-      started: await Progress.build().get().where({ userId }).count(),
-      completed: await Progress.build().where({ userId, isCompleted: true }).count(),
-      seconds: await Progress.build().get().where({ userId }).sum('watch_seconds'),
-      comments: await Comment.query().where({ userId }).getCount(),
-      discussions: await Discussion.query().where({ userId }).getCount(),
+      // total lessons started or completed by user
+      started: await Progress.build(user).get().for('postId').whereLesson().count(),
+
+      // total lessons completed by user
+      completed: await Progress.build(user)
+        .for('postId')
+        .whereLesson()
+        .where({ isCompleted: true })
+        .count(),
+
+      // total seconds watched by user
+      seconds: await Progress.build(user).get().for('postId').whereLesson().sum('watch_seconds'),
+
+      // total comments made by user
+      comments: await Comment.query().where({ userId, stateId: States.PUBLIC }).getCount(),
+
+      // total discussions started by user
+      discussions: await Discussion.query().where({ userId, stateId: States.PUBLIC }).getCount(),
     }
   }
 }

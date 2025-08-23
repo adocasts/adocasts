@@ -53,6 +53,7 @@ export default class RenderUserHistory extends BaseAction {
     const baseUrl = router.makeUrl(this.#routeIdentifier, { tab: 'lessons' })
     const paginator = await Progress.build(user)
       .get()
+      .for('postId')
       .posts((builder) => builder.displayLesson().paginate(page, perPage, baseUrl))
 
     return LessonListDto.fromPaginator(paginator, { start: 1, end: paginator.lastPage })

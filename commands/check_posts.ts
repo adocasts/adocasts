@@ -1,3 +1,4 @@
+import CacheKeys from '#enums/cache_keys'
 import CacheNamespaces from '#enums/cache_namespaces'
 import PaywallTypes from '#enums/paywall_types'
 import Post from '#models/post'
@@ -45,6 +46,7 @@ export default class CheckPosts extends BaseCommand {
     await cache.namespace(CacheNamespaces.POSTS).clear()
     await cache.namespace(CacheNamespaces.COLLECTIONS).clear()
     await cache.namespace(CacheNamespaces.TAXONOMIES).clear()
+    await cache.delete({ key: CacheKeys.SITE_STATS })
 
     await cache.disconnect()
 

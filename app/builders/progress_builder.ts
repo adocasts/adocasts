@@ -4,6 +4,8 @@ import PostBuilder from '#builders/post_builder'
 import Progress from '#models/progress'
 import User from '#models/user'
 import db from '@adonisjs/lucid/services/db'
+import PostTypes from '#enums/post_types'
+import States from '#enums/states'
 
 export default class ProgressBuilder extends BaseBuilder<typeof Progress, Progress> {
   constructor(protected user: User | undefined = undefined) {
@@ -64,6 +66,15 @@ export default class ProgressBuilder extends BaseBuilder<typeof Progress, Progre
       .where('userId', this.user!.id)
       .where((q) => q.where('isCompleted', true).orWhere('watchSeconds', '>', 0))
       .whereNotNull(column)
+    return this
+  }
+
+  whereLesson() {
+    this.query.whereHas('post', (query) =>
+      query
+        .whereIn('postTypeId', [PostTypes.LESSON, PostTypes.LIVESTREAM])
+        .apply((scope) => scope.published())
+    )
     return this
   }
 }
