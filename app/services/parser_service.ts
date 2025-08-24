@@ -1,20 +1,43 @@
 import env from '#start/env'
 import string from '@adonisjs/core/helpers/string'
-import app from '@adonisjs/core/services/app'
 import edge from 'edge.js'
 import { parse } from 'node-html-parser'
-import shiki from 'shiki'
+import { createHighlighter, bundledLanguages } from 'shiki'
 
-const shikiTheme = 'github-dark'
-const highlighter = await shiki.getHighlighter({
-  theme: shikiTheme,
+const highlighter = await createHighlighter({
+  themes: ['github-dark', 'github-light'],
   langs: [
-    ...shiki.BUNDLED_LANGUAGES,
-    {
-      id: 'edge',
-      scopeName: 'text.html.edge',
-      path: app.publicPath('/shiki/edge.json'),
-    },
+    'javascript',
+    'typescript',
+    'vue',
+    'html',
+    'plaintext',
+    'jsx',
+    'tsx',
+    'edge',
+    'bash',
+    'csharp',
+    'docker',
+    'go',
+    'graphql',
+    'handlebars',
+    'java',
+    'json',
+    'less',
+    'lua',
+    'markdown',
+    'nginx',
+    'php',
+    'powershell',
+    'pug',
+    'python',
+    'ruby',
+    'rust',
+    'sass',
+    'scss',
+    'sql',
+    'vim',
+    'yaml',
   ],
 })
 
@@ -39,7 +62,9 @@ class ParserService {
       case 'vbscript-html':
         return 'edge'
       default:
-        return shiki.BUNDLED_LANGUAGES.some((lang) => lang.id === language) ? language : undefined
+        return Object.keys(bundledLanguages).some((lang) => lang === language)
+          ? language
+          : undefined
     }
   }
 
@@ -92,13 +117,76 @@ class ParserService {
         identifier = 'simple-icons:vuedotjs'
         break
       case 'jsx':
-        identifier = 'ph:file-jsx-fill'
+        identifier = 'simple-icons:react'
         break
       case 'tsx':
-        identifier = 'ph:file-tsx-fill'
+        identifier = 'simple-icons:react'
         break
       case 'html':
         identifier = 'simple-icons:html5'
+        break
+      case 'bash':
+        identifier = 'simple-icons:gnubash'
+        break
+      case 'docker':
+        identifier = 'simple-icons:docker'
+        break
+      // case 'git':
+      //   identifier = 'simple-icons:git'
+      //   break
+      case 'go':
+        identifier = 'simple-icons:go'
+        break
+      case 'graphql':
+        identifier = 'simple-icons:graphql'
+        break
+      case 'handlebars':
+        identifier = 'simple-icons:handlebarsdotjs'
+        break
+      case 'json':
+        // case 'json5':
+        // case 'jsonp':
+        identifier = 'simple-icons:json'
+        break
+      case 'less':
+        identifier = 'simple-icons:less'
+        break
+      case 'lua':
+        identifier = 'simple-icons:lua'
+        break
+      case 'markdown':
+        identifier = 'simple-icons:markdown'
+        break
+      case 'nginx':
+        identifier = 'simple-icons:nginx'
+        break
+      case 'php':
+        identifier = 'simple-icons:php'
+        break
+      case 'pug':
+        identifier = 'simple-icons:pug'
+        break
+      case 'python':
+        identifier = 'simple-icons:python'
+        break
+      case 'ruby':
+        identifier = 'simple-icons:ruby'
+        break
+      case 'rust':
+        identifier = 'simple-icons:rust'
+        break
+      case 'sass':
+      case 'scss':
+        identifier = 'simple-icons:sass'
+        break
+      case 'sql':
+        identifier = 'simple-icons:postgresql'
+        break
+      case 'vim':
+        identifier = 'simple-icons:vim'
+        break
+      case 'yaml':
+        identifier = 'simple-icons:yaml'
         break
     }
 
@@ -240,31 +328,26 @@ class ParserService {
           const addLineNumbers = lines
             .map((line, i) => (line.startsWith('++') ? i + 1 : undefined))
             .filter(Boolean)
-          const codeLessChange = code.replaceAll('\r\n--', '\r\n').replaceAll('\r\n++', '\r\n')
+          console.log({ code })
+          const codeLessChange = code.replaceAll('\n--', '\n').replaceAll('\n++', '\n')
 
-          let highlighted = highlighter.codeToHtml(codeLessChange, lang, shikiTheme, {
+          let highlighted = highlighter.codeToHtml(codeLessChange, {
             lang,
-            //! line options stopped working, desparately need to update shiki anyways
-            // lineOptions: [
-            //   ...delLineNumbers.map((x) => ({ line: x!, classes: ['del'] })),
-            //   ...addLineNumbers.map((x) => ({ line: x!, classes: ['add'] })),
-            // ],
+            themes: { light: 'github-light', dark: 'github-dark' },
+            transformers: [
+              {
+                line(node, line) {
+                  if (delLineNumbers.includes(line)) {
+                    this.addClassToHast(node, 'del')
+                  }
+
+                  if (addLineNumbers.includes(line)) {
+                    this.addClassToHast(node, 'add')
+                  }
+                },
+              },
+            ],
           })
-
-          //! so lets just monkeypatch for now
-          let highlightedLines = highlighted.split('\n').map((line, index) => {
-            if (delLineNumbers.includes(index + 1)) {
-              line = line.replace('<span class="line">', '<span class="line del">')
-            }
-
-            if (addLineNumbers.includes(index + 1)) {
-              line = line.replace('<span class="line">', '<span class="line add">')
-            }
-
-            return line
-          })
-
-          highlighted = highlightedLines.join('\n')
 
           const copyCode = this.getCopyCode(code, lang)
           const copy = `<div class="code-copy">${await edge.render('components/clipboard/copy', {

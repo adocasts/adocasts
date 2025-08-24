@@ -244,19 +244,37 @@ code .line:last-of-type:before {
   @apply rounded-br-lg;
 }
 
+/* purgecss start ignore */
 pre .filepath {
-  @apply bg-base-100 rounded-md h-7 text-xs leading-none;
+  @apply bg-base-100/50 rounded-t-md h-7 text-xs leading-none border-t border-base-content/10;
   padding: 0.3rem 0.75rem 0.2rem;
   line-height: 1;
   display: flex;
   align-items: flex-end;
   gap: 0.5rem;
   position: absolute;
-  top: 0.375rem;
+  top: 0.5rem;
   left: 5rem;
 }
 
-/* purgecss start ignore */
+pre ul.filepath-list {
+  @apply text-base-content/60;
+  
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+
+  li {
+    padding: 0;
+  }
+
+  li:not(:first-of-type):before {
+    content: '/';
+    display: inline-block;
+  }
+}
+
 pre .filepath .lang-icon {
   width: 1em;
   height: 1em;
@@ -265,20 +283,20 @@ pre .filepath .lang-icon {
 
   &.ts,
   &.tsx {
-    color: theme('colors.blue.500');
+    color: theme('colors.blue.500') !important;
   }
 
   &.js,
   &.jsx {
-    color: theme('colors.yellow.500');
+    color: theme('colors.yellow.500') !important;
   }
 
   &.edge {
-    color: theme('colors.indigo.500');
+    color: theme('colors.indigo.500') !important;
   }
 
   &.vue {
-    color: theme('colors.green.500');
+    color: theme('colors.green.500') !important;
   }
 }
 
@@ -335,22 +353,6 @@ pre.shiki.github-light,
   position: absolute;
   top: 0.375rem;
   right: 1rem;
-}
-
-pre ul.filepath-list {
-  list-style: none;
-  display: flex;
-  margin: 0;
-  padding: 0;
-
-  li {
-    padding: 0;
-  }
-
-  li:not(:first-of-type):before {
-    content: '/';
-    display: inline-block;
-  }
 }
 
 .cdx-block.ce-code {
