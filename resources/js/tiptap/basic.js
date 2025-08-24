@@ -131,6 +131,7 @@ export const setupEditor = function ({
 
                 const selector = document.createElement('select')
                 selector.classList.add(
+                  'language-selector',
                   'absolute',
                   'top-1',
                   'right-1',
@@ -140,7 +141,7 @@ export const setupEditor = function ({
                   'bg-gray-900',
                   'border-gray-800',
                   'px-2',
-                  'py-1'
+                  'py-1',
                 )
                 selector.contentEditable = false
                 selector.addEventListener('change', (e) => {
@@ -159,9 +160,19 @@ export const setupEditor = function ({
                 })
                 container.append(selector)
 
+                const updateFocusClass = () => {
+                  const { from, to } = props.editor.state.selection
+                  const pos = props.getPos()
+                  const isFocused = from >= pos && to <= pos + props.node.nodeSize
+                  container.classList.toggle('is-focused', isFocused)
+                }
+
+                updateFocusClass()
+                props.editor.on('selectionUpdate', updateFocusClass)
+
                 return {
                   dom: container,
-                  contentDOM: content,
+                  contentDOM: code,
                 }
               }
             },
@@ -184,8 +195,11 @@ export const setupEditor = function ({
         onBlur: () => {
           this.isFocused = false
         },
-        onSelectionUpdate: () => {
+        onSelectionUpdate: (e) => {
           this.updatedAt = Date.now()
+          console.log('selectionUpdate', { e })
+          // const isCodeBlock = this.editor.isActive('codeBlock');
+          // document.getElementById('language-selector')!.style.display = isCodeBlock ? 'block' : 'none';
         },
       })
 

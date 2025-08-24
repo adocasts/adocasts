@@ -136,6 +136,10 @@
   display: none;
 }
 
+.tiptap .code-block:not(.is-focused) .language-selector {
+  display: none;
+}
+
 .prose pre code .line.del {
   opacity: 40%;
   transition: opacity 300ms ease;
