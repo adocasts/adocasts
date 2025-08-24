@@ -2,7 +2,7 @@ import env from '#start/env'
 import string from '@adonisjs/core/helpers/string'
 import edge from 'edge.js'
 import { parse } from 'node-html-parser'
-import { createHighlighter, bundledLanguages } from 'shiki'
+import { bundledLanguages, createHighlighter } from 'shiki'
 
 const highlighter = await createHighlighter({
   themes: ['github-dark', 'github-light'],
@@ -325,10 +325,11 @@ class ParserService {
           const delLineNumbers = lines
             .map((line, i) => (line.startsWith('--') ? i + 1 : undefined))
             .filter(Boolean)
+
           const addLineNumbers = lines
             .map((line, i) => (line.startsWith('++') ? i + 1 : undefined))
             .filter(Boolean)
-          console.log({ code })
+
           const codeLessChange = code.replaceAll('\n--', '\n').replaceAll('\n++', '\n')
 
           let highlighted = highlighter.codeToHtml(codeLessChange, {
