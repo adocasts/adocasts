@@ -199,6 +199,10 @@
     background-image: radial-gradient(40% 30px at var(--offset-x, 30%) 0%,
         color-mix(in oklab, var(--color) var(--offset-x-half, 15%), transparent),
         color-mix(in oklab, var(--color) 0%, transparent));
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 
   &:after {
@@ -213,6 +217,10 @@
     top: 0;
     right: var(--offset-x, 30%);
     z-index: 10;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 }
 

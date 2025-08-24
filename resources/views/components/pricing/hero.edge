@@ -17,7 +17,7 @@
       @!pricing.feature.line({ icon: 'solar:lock-password-unlocked-outline', text: 'Unlock all series, lessons, and assets', class: 'md:order-1' })
       @!pricing.feature.line({ icon: 'solar:clock-circle-outline', text: '2 weeks early access to new free lessons', class: 'md:order-3' })
       @!pricing.feature.line({ icon: 'solar:download-minimalistic-outline', text: 'Download lessons to watch offline anytime', class: 'md:order-5' })
-      @!pricing.feature.line({ icon: 'solar:code-outline', text: 'Access to series source code', class: 'md:order-2' })
+      @!pricing.feature.line({ icon: 'solar:notebook-linear', text: 'Save time-stamped notes (coming soon)', class: 'md:order-2' })
       @!pricing.feature.line({ icon: 'solar:help-outline', text: 'Priority lesson support', class: 'md:order-4' })
       @!pricing.feature.line({ icon: 'solar:power-outline', text: 'Renewal reminders; cancel anytime', class: 'md:order-6' })
     </ul>
@@ -62,7 +62,7 @@
   @if (testimonials)
     <div
       x-data
-      x-init="
+      {{-- x-init="
         $nextTick(() => {
           const content = $refs.content;
           const item = $refs.item;
@@ -70,7 +70,7 @@
           content.appendChild(clone);
           content.style.width = item.offsetWidth + 'px';
         });
-      "
+      " --}}
       class="relative w-full container-block py-12 sm:py-16"
     >
       {{-- TODO: need to set up testimonial system --}}

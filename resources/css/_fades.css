@@ -97,6 +97,10 @@
     left: 0;
     z-index: 10;
     transition: all 300ms ease-in-out;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 
   &:before {
@@ -133,6 +137,10 @@
     top: 0;
     z-index: 10;
     transition: all 300ms ease-in-out;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 
   &:before {

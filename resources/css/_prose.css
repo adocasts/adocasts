@@ -91,6 +91,10 @@
   bottom: 0;
   left: 0;
   transition: all 300ms ease;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }
 
 .transcript-cutoff.active {
@@ -109,6 +113,10 @@
   text-transform: uppercase;
   pointer-events: all;
   transition: all 300ms ease;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }
 
 .transcript-cutoff button:hover,
@@ -131,6 +139,10 @@
 .prose pre code .line.del {
   opacity: 40%;
   transition: opacity 300ms ease;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }
 
 .prose pre code:hover .line.del {
