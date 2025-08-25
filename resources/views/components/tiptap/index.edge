@@ -11,8 +11,8 @@
 @if (allows)
 
   <div x-data="editor({{ js.stringify(editorProps) }})">
-    <div class="bubble-menu bg-base-100 text-sm p-1 rounded-base">
-      <template x-if="typeof isInitialized === 'boolean'">
+    <div x-show="isInitialized" class="bubble-menu bg-base-100 text-sm p-1 rounded-base">
+      <template x-if="typeof isInitialized === 'boolean' && isInitialized">
         <div class="flex items-center space-x-1">
           <button type="button" @click.prevent.stop="command('h3')" class="btn btn-xs btn-ghost btn-square" :class="{ 'btn-active': isActive('h3') }">
             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><path fill="currentColor" d="M252 180a40 40 0 0 1-68.57 28a12 12 0 1 1 17.14-16.79A16 16 0 1 0 212 164a12 12 0 0 1-9.83-18.88L217 124h-25a12 12 0 0 1 0-24h48a12 12 0 0 1 9.83 18.88l-18.34 26.2A40 40 0 0 1 252 180M144 44a12 12 0 0 0-12 12v48H52V56a12 12 0 0 0-24 0v120a12 12 0 0 0 24 0v-48h80v48a12 12 0 0 0 24 0V56a12 12 0 0 0-12-12"/></svg>
@@ -43,7 +43,12 @@
         {{{ await $slots.before({ allows }) }}}
       @endif
 
-      <div tiptap-editor x-ignore class="{{ html.classNames(['prose', $props.class]) }}"></div>
+      <div tiptap-editor x-ignore class="{{ html.classNames(['prose', $props.class]) }}">
+          <div tiptap-loader class="flex items-center gap-3 p-8 pb-16 text-base-content/60">
+            @svg('svg-spinners:ring-resize', { class: 'w-5 h-5' })
+            <span>Loading editor...</span>
+          </div>
+      </div>
 
       <a href="/frags/tiptap/help" class="hover:link text-xs absolute bottom-2 left-4 opacity-60 hover:opacity-100 duration-200 flex items-center gap-1" up-layer="new" up-mode="modal" up-navigate="false" up-target="[up-modal-fragment]">
         @svg('solar:info-circle-outline', { class: 'size-3' })

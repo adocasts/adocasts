@@ -1,0 +1,40 @@
+import { createHighlighter } from 'shiki'
+
+const highlighterPromise = createHighlighter({
+  themes: ['github-dark', 'github-light'],
+  langs: [
+    'javascript',
+    'typescript',
+    'vue',
+    'html',
+    'plaintext',
+    'jsx',
+    'tsx',
+    'edge',
+    'bash',
+    'csharp',
+    'docker',
+    'go',
+    'graphql',
+    'handlebars',
+    'java',
+    'json',
+    'less',
+    'lua',
+    'markdown',
+    'nginx',
+    'php',
+    'powershell',
+    'pug',
+    'python',
+    'ruby',
+    'rust',
+    'sass',
+    'scss',
+    'sql',
+    'vim',
+    'yaml',
+  ],
+})
+
+export default highlighterPromise

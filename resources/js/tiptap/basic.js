@@ -11,6 +11,7 @@ import { Typography } from '@tiptap/extension-typography'
 import YouTube from '@tiptap/extension-youtube'
 import StarterKit from '@tiptap/starter-kit'
 import axios from 'axios'
+import highlighterPromise from '../shiki'
 import { languages } from '../syntax/languages'
 import Commands from './commands'
 import { commandList } from './commands/list'
@@ -39,7 +40,7 @@ export const setupEditor = function ({
     characterCount: 0,
 
     isActive(type, opts = {}) {
-      return this.editor.isActive(type, opts)
+      return this.editor?.isActive(type, opts)
     },
 
     chain() {
@@ -50,7 +51,9 @@ export const setupEditor = function ({
       return commandList.find((cmd) => cmd.name === name).command({ editor: this.editor })
     },
 
-    init() {
+    async init() {
+      const highlighter = await highlighterPromise
+
       // removing free account restrictions
       const tieredExtensions = [
         YouTube.configure({
@@ -117,20 +120,35 @@ export const setupEditor = function ({
               class: 'code-block',
             },
           }).extend({
+            addAttributes() {
+              return {
+                language: {
+                  default: 'ts',
+                  parseHTML: (el) => el.getAttribute('data-language') || 'ts',
+                  renderHTML: (attrs) => ({ 'data-language': attrs.language }),
+                },
+              }
+            },
             addNodeView() {
               return (props) => {
                 const container = document.createElement('div')
                 container.classList.add('code-block', 'relative')
-                container.dataset.nodeViewWrapper = ''
 
-                const content = document.createElement('pre')
+                // ✅ This is required — editable content is stored here
+                const contentDOM = document.createElement('div')
+                contentDOM.classList.add('hidden-content')
+                
+                const pre = document.createElement('pre')
                 const code = document.createElement('code')
-                code.style = 'white-space: pre-wrap;'
-                content.append(code)
-                container.append(content)
+                pre.appendChild(code)
+                contentDOM.appendChild(pre)
+                container.appendChild(contentDOM)
 
-                const selector = document.createElement('select')
-                selector.classList.add(
+                const shikiDOM = document.createElement('div')
+                container.appendChild(shikiDOM)
+
+                const select = document.createElement('select')
+                select.classList.add(
                   'language-selector',
                   'absolute',
                   'top-1',
@@ -141,25 +159,50 @@ export const setupEditor = function ({
                   'bg-gray-900',
                   'border-gray-800',
                   'px-2',
-                  'py-1',
+                  'py-1'
                 )
-                selector.contentEditable = false
-                selector.addEventListener('change', (e) => {
-                  const view = props.editor.view
-                  const language = e.target.value
-                  view.dispatch(
-                    view.state.tr.setNodeMarkup(props.getPos(), undefined, { language })
-                  )
-                })
-                languages.map((lang) => {
+                select.contentEditable = false
+
+                languages.forEach((lang) => {
                   const option = document.createElement('option')
                   option.value = lang.code
                   option.textContent = lang.name
-                  option.selected = lang.code === props.node.attrs.language
-                  selector.append(option)
+                  if (lang.code === props.node.attrs.language) {
+                    option.selected = true
+                  }
+                  select.appendChild(option)
                 })
-                container.append(selector)
 
+                select.addEventListener('change', (e) => {
+                  const newLang = e.target.value
+                  const view = props.editor.view
+                  view.dispatch(
+                    view.state.tr.setNodeMarkup(props.getPos(), undefined, {
+                      ...props.node.attrs,
+                      language: newLang,
+                    })
+                  )
+                })
+
+                container.appendChild(select)
+
+                // Highlight initial content
+                const renderHighlight = (codeText, lang) => {
+                  const html = highlighter.codeToHtml(codeText, {
+                    lang,
+                    themes: {
+                      light: 'github-light',
+                      dark: 'github-dark',
+                    },
+                  })
+
+                  shikiDOM.innerHTML = html
+                }
+
+                shikiDOM.innerHTML = props.node.textContent
+                renderHighlight(props.node.textContent, props.node.attrs.language)
+
+                // Focus detection
                 const updateFocusClass = () => {
                   const { from, to } = props.editor.state.selection
                   const pos = props.getPos()
@@ -173,6 +216,28 @@ export const setupEditor = function ({
                 return {
                   dom: container,
                   contentDOM: code,
+                  update: (updatedNode) => {
+                    if (updatedNode.type !== props.node.type) return false
+
+                    const oldCode = props.node.textContent
+                    const newCode = updatedNode.textContent
+
+                    const oldLang = props.node.attrs.language
+                    const newLang = updatedNode.attrs.language
+
+                    // Only re-render if changed
+                    if (newCode !== oldCode || newLang !== oldLang) {
+                      renderHighlight(newCode, newLang)
+                      if (select.value !== newLang) {
+                        select.value = newLang
+                      }
+                    }
+
+                    return true
+                  },
+                  destroy: () => {
+                    props.editor.off('selectionUpdate', updateFocusClass)
+                  },
                 }
               }
             },
@@ -197,13 +262,11 @@ export const setupEditor = function ({
         },
         onSelectionUpdate: (e) => {
           this.updatedAt = Date.now()
-          console.log('selectionUpdate', { e })
-          // const isCodeBlock = this.editor.isActive('codeBlock');
-          // document.getElementById('language-selector')!.style.display = isCodeBlock ? 'block' : 'none';
         },
       })
 
       this.isInitialized = true
+      this.$el.querySelector('[tiptap-loader]')?.remove()
 
       if (this.characterLimit) {
         this.characterCount = this.editor.storage.characterCount.characters()
