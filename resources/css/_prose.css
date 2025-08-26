@@ -32,6 +32,7 @@
       padding-block: calc(0.25rem * 2);
       padding-inline-start: 0.75rem;
       padding-inline-end: 0.75rem;
+      padding-bottom: 2rem;
 
       &:focus-visible {
         outline: none;
@@ -163,8 +164,17 @@
   z-index: 0;
 }
 
-.tiptap .code-block:not(.is-focused) .language-selector {
-  display: none;
+.language-selector {
+  @apply top-1.5 right-4 absolute;
+
+  .language-selector-select,
+  .language-selector-placeholder {
+    @apply rounded text-xs text-base-content/80 bg-base-content/10 border-base-content/20 px-2 py-1;
+  }
+
+  .language-selector-select {
+    display: none;
+  }
 }
 
 .prose pre code .line.del {

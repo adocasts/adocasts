@@ -1,8 +1,8 @@
 import BaseAction from '#actions/base_action'
+import { rememberMeTokensAge } from '#config/auth'
 import { themeValidator } from '#validators/theme'
 import { HttpContext } from '@adonisjs/core/http'
 import { Infer } from '@vinejs/vine/types'
-import { DateTime } from 'luxon'
 
 type Validator = Infer<typeof themeValidator>
 
@@ -13,7 +13,7 @@ export default class UpdateUserTheme extends BaseAction {
     await auth.user?.merge({ theme }).save()
 
     response.cookie('adocasts-theme', theme, {
-      maxAge: DateTime.now().plus({ years: 5 }).diffNow('seconds').seconds,
+      maxAge: rememberMeTokensAge,
     })
 
     return view.render('components/frags/header/theme', { theme })

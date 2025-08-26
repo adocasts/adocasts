@@ -1,7 +1,9 @@
 export const languages = [
-  { name: 'Select Language', code: '' },
+  { name: 'Plaintext', code: 'plaintext' },
   { name: 'TypeScript', code: 'typescript' },
-  { name: 'JavaScript', code: 'js' },
+  { name: 'TypeScript', code: 'ts', hide: true },
+  { name: 'JavaScript', code: 'javascript' },
+  { name: 'JavaScript', code: 'js', hide: true },
   {
     name: 'Edge',
     code: 'edge',

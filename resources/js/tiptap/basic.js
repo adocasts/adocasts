@@ -20,6 +20,11 @@ import { Mention } from './mentions'
 import mentionSuggestions from './mentions/suggestions'
 import UploadImage from './upload_image'
 
+const getLanguageName = (code) => {
+  const match = languages.find((lang) => lang.code === code)
+  return match?.name || code
+}
+
 export const setupEditor = function ({
   value = '',
   placeholder = 'Type / to see available commands',
@@ -123,9 +128,14 @@ export const setupEditor = function ({
             addAttributes() {
               return {
                 language: {
-                  default: 'ts',
-                  parseHTML: (el) => el.getAttribute('data-language') || 'ts',
+                  default: 'plaintext',
+                  parseHTML: (el) => el.getAttribute('data-language') || 'plaintext',
                   renderHTML: (attrs) => ({ 'data-language': attrs.language }),
+                },
+                showSelect: {
+                  default: false,
+                  parseHTML: (el) => el.getAttribute('data-show-select') === 'true',
+                  renderHTML: (attrs) => (attrs.showSelect ? { 'data-show-select': 'true' } : null),
                 },
               }
             },
@@ -134,7 +144,6 @@ export const setupEditor = function ({
                 const container = document.createElement('div')
                 container.classList.add('code-block', 'relative')
 
-                // ✅ This is required — editable content is stored here
                 const contentDOM = document.createElement('div')
                 contentDOM.classList.add('hidden-content')
                 
@@ -147,21 +156,16 @@ export const setupEditor = function ({
                 const shikiDOM = document.createElement('div')
                 container.appendChild(shikiDOM)
 
+                const selectParent = document.createElement('div')
+                const selectPlaceholder = document.createElement('div')
                 const select = document.createElement('select')
-                select.classList.add(
-                  'language-selector',
-                  'absolute',
-                  'top-1',
-                  'right-1',
-                  'rounded',
-                  'text-xs',
-                  'text-gray-200',
-                  'bg-gray-900',
-                  'border-gray-800',
-                  'px-2',
-                  'py-1'
-                )
+                selectParent.classList.add('language-selector', 'absolute', 'top-1', 'right-1')
+
+                selectPlaceholder.classList.add('language-selector-placeholder')
+                select.classList.add('language-selector-select')
+                
                 select.contentEditable = false
+                selectPlaceholder.textContent = getLanguageName(props.node.attrs.language)
 
                 languages.forEach((lang) => {
                   const option = document.createElement('option')
@@ -170,21 +174,38 @@ export const setupEditor = function ({
                   if (lang.code === props.node.attrs.language) {
                     option.selected = true
                   }
+                  if (lang.hide) {
+                    option.style.display = 'none';
+                  }
                   select.appendChild(option)
+                })
+
+                const setView = (state) => {
+                  props.editor.view.dispatch(
+                    props.editor.view.state.tr.setNodeMarkup(props.getPos(), undefined, {
+                      ...props.node.attrs,
+                      ...state
+                    })
+                  )
+                }
+
+                selectPlaceholder.addEventListener('click', () => {
+                  setView({ showSelect: true })
                 })
 
                 select.addEventListener('change', (e) => {
                   const newLang = e.target.value
-                  const view = props.editor.view
-                  view.dispatch(
-                    view.state.tr.setNodeMarkup(props.getPos(), undefined, {
-                      ...props.node.attrs,
-                      language: newLang,
-                    })
-                  )
+                  selectPlaceholder.textContent = newLang
+                  setView({ language: newLang, showSelect: false })
                 })
 
-                container.appendChild(select)
+                select.addEventListener('blur', (e) => {
+                  setView({ showSelect: false })
+                })
+
+                selectParent.appendChild(selectPlaceholder)
+                selectParent.appendChild(select)
+                container.appendChild(selectParent)
 
                 // Highlight initial content
                 const renderHighlight = (codeText, lang) => {
@@ -202,17 +223,6 @@ export const setupEditor = function ({
                 shikiDOM.innerHTML = props.node.textContent
                 renderHighlight(props.node.textContent, props.node.attrs.language)
 
-                // Focus detection
-                const updateFocusClass = () => {
-                  const { from, to } = props.editor.state.selection
-                  const pos = props.getPos()
-                  const isFocused = from >= pos && to <= pos + props.node.nodeSize
-                  container.classList.toggle('is-focused', isFocused)
-                }
-
-                updateFocusClass()
-                props.editor.on('selectionUpdate', updateFocusClass)
-
                 return {
                   dom: container,
                   contentDOM: code,
@@ -225,18 +235,28 @@ export const setupEditor = function ({
                     const oldLang = props.node.attrs.language
                     const newLang = updatedNode.attrs.language
 
-                    // Only re-render if changed
                     if (newCode !== oldCode || newLang !== oldLang) {
                       renderHighlight(newCode, newLang)
                       if (select.value !== newLang) {
                         select.value = newLang
+                        selectPlaceholder.textContent = getLanguageName(newLang)
+                      }
+                    }
+
+                    const oldShowSelect = props.node.attrs.showSelect
+                    const newShowSelect = updatedNode.attrs.showSelect
+
+                    if (oldShowSelect !== newShowSelect) {
+                      if (newShowSelect) {
+                        selectPlaceholder.style.display = 'none'
+                        select.style.display = 'block'
+                      } else {
+                        selectPlaceholder.style.display = 'block'
+                        select.style.display = 'none'
                       }
                     }
 
                     return true
-                  },
-                  destroy: () => {
-                    props.editor.off('selectionUpdate', updateFocusClass)
                   },
                 }
               }
