@@ -1,5 +1,5 @@
 @let(accent = $props.accent ?? 'hover:radial-accent-t')
-@let(classes = html.classNames(['card border border-base-content/10 duration-300 relative group overflow-hidden', accent, $props.class]))
+@let(classes = html.classNames(['card border border-base-100 duration-300 relative group overflow-hidden', accent, $props.class]))
 
 <div {{ 
   $props.except(['accent', 'class', 'border']).merge({ 

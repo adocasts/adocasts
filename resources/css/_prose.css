@@ -287,7 +287,7 @@ code .line:last-of-type:before {
 
 /* purgecss start ignore */
 pre .filepath {
-  @apply bg-base-100/50 rounded-t-md h-7 text-xs leading-none border-t border-base-content/10;
+  @apply bg-base-100/50 rounded-t-md h-7 text-xs leading-none border-t border-base-100;
   padding: 0.3rem 0.75rem 0.2rem;
   line-height: 1;
   display: flex;
@@ -356,10 +356,10 @@ pre > code {
 
 pre.shiki.github-dark,
 pre.shiki.github-light {
-  @apply !bg-base-100/50 px-1 pb-1 rounded-base border border-base-content/10;
+  @apply !bg-base-100/50 px-0 pb-0 rounded-base border border-base-100;
 
   code {
-    @apply !bg-base-100/50 rounded-[calc(var(--radius-box)_-_.25rem)] py-3 max-h-[600px] overflow-auto;
+    @apply !bg-base-300 py-3 rounded-[calc(var(--radius-box)_-_.25rem)] border-t border-base-content/5 max-h-[600px] overflow-auto;
   }
 
   &:before {

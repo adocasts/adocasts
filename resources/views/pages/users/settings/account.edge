@@ -16,7 +16,7 @@
 
     @card({ accent: false, class: 'mb-6' })
       @form({ action: form.patch('settings.username'), class: 'card-body md:flex-row md:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
-        <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-content/10 md:mb-0 md:pb-0 md:border-b-0">
+        <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-100 md:mb-0 md:pb-0 md:border-b-0">
           <h3 class="card-title">Change Username</h3>
           <p class="text-base-content/60">Update your publicly displayed username</p>
         </div>
@@ -37,7 +37,7 @@
 
     @card({ accent: false, class: 'mb-6' })
       @form({ action: form.put('settings.email'), class: 'card-body md:flex-row md:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
-        <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-content/10 md:mb-0 md:pb-0 md:border-b-0">
+        <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-100 md:mb-0 md:pb-0 md:border-b-0">
           <h3 class="card-title">Change Email</h3>
           <p class="text-base-content/60">Update your account's email address</p>
         </div>
@@ -65,7 +65,7 @@
         @let(isGoogleUser = auth.user.googleId || auth.user.googleEmail)
         @let(isGitHubUser = auth.user.githubId || auth.user.githubEmail)
 
-        <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-content/10 md:mb-0 md:pb-0 md:border-b-0">
+        <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-100 md:mb-0 md:pb-0 md:border-b-0">
           <h3 class="card-title">Social Authentication</h3>
           <p class="text-base-content/60">
             Manage your ability to login with a social provider in addition to your email and password 
@@ -137,7 +137,7 @@
 
     @card({ accent: false, class: 'mb-6' })
       @form({ action: form.delete('settings.account.destroy'), class: 'card-body md:flex-row md:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
-        <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-content/10 md:mb-0 md:pb-0 md:border-b-0">
+        <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-100 md:mb-0 md:pb-0 md:border-b-0">
           <h3 class="card-title">Delete Account</h3>
           <p class="text-base-content/60">Permanently delete your Adocasts account and all data associated with it</p>
         </div>

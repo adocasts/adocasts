@@ -8,7 +8,7 @@
       id="slot-header"
       x-data="header"
       up-fixed="top"
-      :class="['w-full h-16 border border-base-content/10 duration-300',
+      :class="['w-full h-16 border border-base-100 duration-300',
         isWindowScrolled || {{ forceBackdrop }}
           ? 'bg-base-200/75 midnight:bg-base-300/75 backdrop-blur-md shadow-sm'
           : 'bg-base-300/10 backdrop-blur-xs shadow-none']"
@@ -22,13 +22,13 @@
         'px-6': !isContainer,
       }">
         <div class="h-full flex items-center gap-3 lg:gap-6">
-          <div class="flex-none md:hidden border-r border-base-content/10 pr-3 lg:pr-6">
+          <div class="flex-none md:hidden border-r border-base-100 pr-3 lg:pr-6">
             <label for="header-drawer" aria-label="open sidebar" class="btn btn-square btn-ghost">
               @svg('solar:hamburger-menu-linear', { class: 'inline-block size-8 stroke-current' })
             </label>
           </div>
 
-          <div class="relative md:border-r border-base-content/10 pr-3 lg:pr-6">
+          <div class="relative md:border-r border-base-100 pr-3 lg:pr-6">
             <a class="flex items-center w-30 sm:w-36 lg:w-42" href="{{ route('home') }}">
               <img class="w-full logo-dark" src="/imgs/logo-white.svg" alt="Adocasts" width="168px" height="50px" />
               <img class="w-full logo-light" src="/imgs/logo-black.svg" alt="Adocasts" width="168px" height="50px" />
@@ -59,13 +59,13 @@
 
     <div class="bg-base-300 dark:bg-base-300/85 backdrop-blur-md shadow-sm min-h-full w-80 flex flex-col justify-between">
       <div class="h-16 flex items-center gap-3 lg:gap-6 {{ container }}">
-        <div class="flex-none md:hidden border-r border-base-content/10 pr-3 lg:pr-6">
+        <div class="flex-none md:hidden border-r border-base-100 pr-3 lg:pr-6">
           <label for="header-drawer" aria-label="open sidebar" class="btn btn-square btn-ghost">
             @svg('solar:close-square-line-duotone', { class: 'inline-block size-10 stroke-current' })
           </label>
         </div>
 
-        <div class="relative md:border-r border-base-content/10 pr-3 lg:pr-6">
+        <div class="relative md:border-r border-base-100 pr-3 lg:pr-6">
           <a class="flex items-center w-36 lg:w-42" href="{{ route('home') }}">
             <img class="w-full logo-dark" src="/imgs/logo-white.svg" alt="Adocasts" width="168px" height="50px" />
             <img class="w-full logo-light" src="/imgs/logo-black.svg" alt="Adocasts" width="168px" height="50px" />

@@ -44,7 +44,7 @@
           <div
             {{ html.attrs({
               role: 'progressbar',
-              class: ['radial-progress', progression.percent ? 'text-primary' : 'text-primary/0'],
+              class: ['radial-progress bg-base-100/10', progression.percent ? 'text-primary' : 'text-primary/0'],
               style: `--value: ${progression.percent}; --size: 1rem; --thickness: .175rem;`,
               'aria-valuenow': progression.percent,
             }) }}

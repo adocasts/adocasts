@@ -5,15 +5,15 @@
     target: { 'up-discussion-like': `${series.id}:any` },
   })
 
-    <button {{ html.attrs({ type: 'submit', class: ['btn btn-outline', { 'btn-success': series.meta.isInWatchlist }] }) }}>
+    <button {{ html.attrs({ type: 'submit', class: ['btn btn-outline', { 'btn-success bg-success/10 hover:bg-success': series.meta.isInWatchlist }] }) }}>
       @if (series.meta.isInWatchlist)
-        @svg('solar:bookmark-bold', { class: `size-4 mr-1 opacity-80` })
-        <span class="hidden @lg:inline">
+        @svg('solar:bookmark-bold', { class: `size-4 opacity-80` })
+        <span class="hidden @lg:inline ml-1">
           In Your Watchist
         </span>
       @else
-        @svg('solar:bookmark-outline', { class: `size-4 mr-1 text-base-content/80 group-hover/tog:text-base-content duration-200` })
-        <span class="hidden @lg:inline">
+        @svg('solar:bookmark-outline', { class: `size-4 text-base-content/80 group-hover/tog:text-base-content duration-200` })
+        <span class="hidden @lg:inline ml-1">
           Add to Watchist
         </span>
       @endif

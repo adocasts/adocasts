@@ -57,7 +57,7 @@
       </div>
     </div>
 
-    <div class="flex flex-col gap-3 px-6 pt-3 pb-6 border-b border-base-100">
+    <div {{ html.attrs({ class: ['flex flex-col gap-3 px-6 pt-3 pb-6 border-base-100', { 'border-b': !nextUp }] }) }}>
       @if (series.difficultyId)
         @difficulty.color()
           @slot('main', scope)
@@ -99,15 +99,14 @@
     </div>
 
     @if (nextUp)
-      <div class="-m-px">
-        @lesson.card({ lesson: nextUp, size: $props.size ?? 'wide', showImage: $props.showImage, class: 'rounded-t-none', description })
-          @slot('badge')
-            <div class="badge badge-outline badge-xs @xl:badge-sm badge-secondary">
-              Next On Deck
-            </div>
-          @endslot
-        @end
-      </div>
+      <div class="w-[calc(100%_-_3rem)] mx-6 border-t border-base-100"></div>
+      @lesson.card({ lesson: nextUp, size: $props.size ?? 'wide', showImage: $props.showImage, class: 'border-none rounded-t-none', description })
+        @slot('badge')
+          <div class="badge badge-outline badge-xs @xl:badge-sm badge-secondary">
+            Next On Deck
+          </div>
+        @endslot
+      @end
     @endif
   </div>
 

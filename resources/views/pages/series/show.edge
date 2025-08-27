@@ -68,7 +68,7 @@
 
           @each (mod in series.modules)
             <details class="collapse rounded-none group" open>
-              <summary class="collapse-title !flex items-center justify-between gap-3 border-base-100 border-2 backdrop-blur-md mb-3 !px-6 rounded-base overflow-hidden relative">
+              <summary class="collapse-title !flex items-center justify-between gap-3 bg-base-200/50 border-base-100 border backdrop-blur-md mb-3 !px-6 rounded-base overflow-hidden relative">
                 <div class="absolute -left-1 -top-[10%] w-full h-[120%] font-mono text-8xl font-black pointer-events-none flex items-center justify-start gap-1 opacity-[0.025] dark:opacity-[0.075]">
                   {{ mod.moduleNumber }}
                 </div>
@@ -108,7 +108,7 @@
         </div>
 
         @if (series.statusId === Status.IN_PROGRESS)
-          <div class="border-[3px] border-base-100 py-4 px-4 sm:px-12 rounded-base flex sm:items-center gap-6">
+          <div class="border border-base-100 border-dashed bg-base-200/50 py-4 px-4 sm:px-12 rounded-base flex sm:items-center gap-6">
             <div class="pt-3 sm:pt-0">
               <img class="w-32" src="/imgs/robot/slice6.svg" alt="excited robot" />
             </div>
@@ -144,7 +144,11 @@
           <div class="flex flex-1 items-center gap-3">
             <a href="#" class="btn btn-outline btn-primary flex-1">
               @svg('solar:play-outline', { class: 'size-4 mr-1 opacity-80' })
-              Start Series
+              @if (progression?.percent)
+                Continue Series
+              @else
+                Start Series
+              @endif
             </a>
 
             @!frags.series.watchlistToggle({

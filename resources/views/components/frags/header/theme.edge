@@ -30,7 +30,7 @@
       <div tabindex="0" role="button" class="btn btn-toggle btn-primary btn-sm sm:btn-md btn-square">
         @svg(active.icon, { class: 'size-4' })
       </div>
-      <ul tabindex="0" class="dropdown-content menu border border-base-content/10 bg-base-300/95 backdrop-blur-lg rounded-box z-50 w-38 p-2 shadow-sm">
+      <ul tabindex="0" class="dropdown-content menu border border-base-100 bg-base-300/95 backdrop-blur-lg rounded-box z-50 w-38 p-2 shadow-sm">
         @each (option in options)
           <li>
             <button type="button" class="w-full" @click="change('{{ option.value }}')">

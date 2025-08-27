@@ -14,7 +14,7 @@
   --color-white: white;
   --color-black: black;
 
-  --color-base-100: oklch(0.26 0.068 287.4);
+  --color-base-100: oklch(0.276 0.068 287.4);
   --color-base-200: oklch(0.23 0.056 287.5);
   --color-base-300: oklch(16.8% 0.055 287.6);
   --color-base-content: oklch(83% 0.039 288.4);
@@ -111,8 +111,8 @@
   --color-black: white;
 
   --color-base-300: oklch(99% 0.005 287.6);
-  --color-base-200: oklch(0.9794 0.0074 287.6);
-  --color-base-100: oklch(0.95 0.0197 287.6);
+  --color-base-200: oklch(0.9694 0.0074 287.6);
+  --color-base-100: oklch(0.9273 0.0197 287.6);
   --color-base-content: oklch(18% 0.03 288.4);
 
   --color-primary: oklch(0.6059 0.1554 276.5);
@@ -196,7 +196,7 @@ html[data-theme='adocasts-light'] {
 
 .btn-outline,
 .badge-outline {
-  @apply border-base-content/10;
+  @apply border-base-100;
 
   &.btn-primary,
   &.btn-secondary,
@@ -232,7 +232,7 @@ html[data-theme='adocasts-light'] {
 .input,
 .select,
 .textarea {
-  @apply border-base-content/10 bg-transparent hover:border-base-content/20 focus-within:border-base-content/30;
+  @apply border-base-100 bg-transparent hover:border-base-content/20 focus-within:border-base-content/30;
 }
 
 .menu-active {
@@ -254,7 +254,7 @@ html[data-theme='adocasts-light'] {
 }
 
 .btn-toggle {
-  @apply btn-ghost border border-transparent hover:border-success/50 hover:text-success;
+  @apply btn-ghost border border-transparent hover:bg-success/10 hover:border-success/50 hover:text-success;
 
   &.btn-primary,
   &.btn-secondary,
