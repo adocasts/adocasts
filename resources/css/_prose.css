@@ -16,7 +16,7 @@
 
 .prose {
   & :where(code):not(pre > code) {
-    @apply bg-base-content/5 border-base-content/8;
+    @apply bg-base-content/5 border-base-100;
   }
 
   &.textarea {
@@ -169,7 +169,7 @@
 
   .language-selector-select,
   .language-selector-placeholder {
-    @apply rounded text-xs text-base-content/80 bg-base-content/10 border-base-content/20 px-2 py-1;
+    @apply rounded text-xs text-base-content/80 bg-base-content/10 border-base-100 px-2 py-1;
   }
 
   .language-selector-select {

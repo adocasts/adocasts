@@ -2,30 +2,36 @@
 
 <div class="@container card ring-1 ring-black/5 max-lg:mx-auto grid grid-cols-1 max-lg:w-full group/plan {{ accent }} {{ $props.class ?? '' }}">
   <div class="grid grid-cols-1 rounded-base p-3 shadow-md shadow-black/5">
-    <div class="rounded-[calc(var(--radius-box)_-_.5rem)] backdrop-blur-md p-4 @md:p-8 shadow-2xl ring-1 ring-black/5 hover:radial-accent-t">
-      <h2 class="text-sm font-semibold text-primary">{{ name }} <span class="sr-only">plan</span></h2>
-      <p class="mt-1.5 text-pretty text-sm/6 opacity-60 max-w-md">{{ description }}</p>
-      <div class="mt-6 md:mt-3 flex items-center gap-4">
-        <div class="text-5xl font-semibold bg-gradient-to-b bg-primary from-white via-base-content to-base-content/50 bg-clip-text text-transparent">
-          {{ plan.displayPrice }}
-        </div>
-        <div class="text-sm opacity-60">
-          <p>USD</p>
-          <p>per {{ name === 'Forever' ? 'lifetime' : name.toLowerCase() }}</p>
-        </div>
+    <div class="rounded-[calc(var(--radius-box)_-_.5rem)] backdrop-blur-md p-4 @md:p-8 shadow-2xl ring-1 ring-black/5 hover:radial-accent-t flex flex-col justify-between">
+      <div>
+        <h2 class="text-sm font-semibold text-primary">{{ name }} <span class="sr-only">plan</span></h2>
+        <p class="mt-1.5 text-pretty text-sm/6 opacity-60 max-w-md">{{ description }}</p>
       </div>
-      <div class="mt-8">
-        @if (auth.user)
-          @form({ action: form.post('stripe.checkout', { slug: plan.slug }), 'up-submit': 'false' })
-            <button type="submit" class="btn btn-outline btn-primary bg-primary/10 hover:bg-primary group-hover/plan:!border-primary/60 duration-300">
+      
+      <div>
+        <div class="mt-6 md:mt-3 flex items-center gap-4">
+          <div class="text-5xl font-semibold bg-gradient-to-b bg-primary from-white via-base-content to-base-content/50 bg-clip-text text-transparent">
+            {{ plan.displayPrice }}
+          </div>
+          <div class="text-sm opacity-60">
+            <p>USD</p>
+            <p>per {{ name === 'Forever' ? 'lifetime' : name.toLowerCase() }}</p>
+          </div>
+        </div>
+
+        <div class="mt-8">
+          @if (auth.user)
+            @form({ action: form.post('stripe.checkout', { slug: plan.slug }), 'up-submit': 'false' })
+              <button type="submit" class="btn btn-outline btn-primary bg-primary/10 hover:bg-primary group-hover/plan:!border-primary/60 duration-300">
+                {{ cta }}
+              </button>
+            @end
+          @else
+            <a href="{{ route('auth.signup', {}, { qs: { plan: plan.slug } }) }}" up-auth-modal class="btn btn-outline btn-primary bg-primary/10 hover:bg-primary group-hover/plan:!border-primary/60 duration-300">
               {{ cta }}
-            </button>
-          @end
-        @else
-          <a href="{{ route('auth.signup', {}, { qs: { plan: plan.slug } }) }}" up-auth-modal class="btn btn-outline btn-primary bg-primary/10 hover:bg-primary group-hover/plan:!border-primary/60 duration-300">
-            {{ cta }}
-          </a>
-        @endif
+            </a>
+          @endif
+        </div>
       </div>
     </div>
   </div>

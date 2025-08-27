@@ -92,7 +92,7 @@ body {
 
 .radial-progress {
   &:before {
-    --color: color-mix(in oklab, var(--color-base-300), transparent 50%);
+    --color: var(--color-base-100);
     background: radial-gradient(farthest-side, currentColor 98%, #0000) top/var(--thickness) var(--thickness) no-repeat, conic-gradient(currentColor var(--radialprogress), var(--color, #0000) 0);
   }
 }
