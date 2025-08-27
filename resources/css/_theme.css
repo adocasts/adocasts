@@ -296,3 +296,18 @@ html[data-theme='adocasts-light'] {
     color: var(--btn-color);
   }
 }
+
+.btn {
+  &:is(:disabled, [disabled], .btn-disabled) {
+    &:not(.btn-link, .btn-ghost) {
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-base-content) 2.5%, transparent);
+      }
+    }
+  }
+}
+
+.toggle,
+.toggle:before {
+  border-radius: 999px;
+}

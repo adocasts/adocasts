@@ -17,9 +17,9 @@ export default class RenderTopicShowDiscussions extends BaseAction {
     const topic = await GetTopic.run(params.slug)
     const discussions = await this.#getDiscussions(params.slug, data)
 
-    const series = await GetSeriesPaginated.run({ topic: topic.slug, perPage: 1 })
-    const lessons = await GetLessonsPaginated.run({ topic: topic.slug, perPage: 1 })
-    const snippets = await GetSnippetsPaginated.run({ topic: topic.slug, perPage: 1 })
+    const series = await GetSeriesPaginated.run({ topics: [topic.slug], perPage: 1 })
+    const lessons = await GetLessonsPaginated.run({ topics: [topic.slug], perPage: 1 })
+    const snippets = await GetSnippetsPaginated.run({ topics: [topic.slug], perPage: 1 })
 
     return view.render('pages/topics/discussions', {
       topic,
@@ -31,8 +31,12 @@ export default class RenderTopicShowDiscussions extends BaseAction {
   }
 
   #getDiscussions(topic: string, { page, perPage }: Validator) {
-    return GetDiscussionsPaginated.run({ topic, page, perPage }, 'topics.show.discussions', {
-      slug: topic,
-    })
+    return GetDiscussionsPaginated.run(
+      { topics: [topic], page, perPage },
+      'topics.show.discussions',
+      {
+        slug: topic,
+      }
+    )
   }
 }

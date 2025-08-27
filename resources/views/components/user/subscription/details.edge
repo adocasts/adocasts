@@ -56,17 +56,17 @@
   @endif
 
   <div class="flex items-center gap-3">
-    <button type="submit" form="foreverForm" class="mt-6 btn btn-block btn-soft">
+    <button type="submit" form="foreverForm" class="mt-6 btn btn-outline btn-primary">
       Upgrade to our forever plan
     </button>
 
-    <button type="submit" form="stripePortalForm" class="mt-6 btn btn-block btn-ghost">
+    <button type="submit" form="stripePortalForm" class="mt-6 btn btn-outline">
       Upgrade or manage your subscription
     </button>
   </div>
 
-  @!form({ id: 'foreverForm', action: form.post('stripe.checkout', { slug: 'forever' }) })
-  @!form({ id: 'stripePortalForm', action: form.post('stripe.portal') })
+  @!form({ id: 'foreverForm', action: form.post('stripe.checkout', { slug: 'forever' }), 'up-submit': 'false' })
+  @!form({ id: 'stripePortalForm', action: form.post('stripe.portal'), 'up-submit': 'false' })
 @elseif (auth.user.planId === Plans.PLUS_MONTHLY)
   <div class="mt-3">
     <img class="logo-dark h-6 relative" src="/imgs/adocasts-plus-white-40.png" alt="Adocasts Plus" />
@@ -108,17 +108,17 @@
   @endif
 
   <div class="flex items-center gap-3">
-    <button type="submit" form="foreverForm" class="mt-6 btn btn-block btn-soft">
+    <button type="submit" form="foreverForm" class="mt-6 btn btn-outline btn-primary">
       Upgrade to our forever plan
     </button>
 
-    <button type="submit" form="stripePortalForm" class="mt-6 btn btn-block btn-ghost">
+    <button type="submit" form="stripePortalForm" class="mt-6 btn btn-outline">
       Upgrade or manage your subscription
     </button>
   </div>
   
-  @!form({ id: 'foreverForm', action: form.post('stripe.checkout', { slug: forever.slug }) })
-  @!form({ id: 'stripePortalForm', action: form.post('stripe.portal') })
+  @!form({ id: 'foreverForm', action: form.post('stripe.checkout', { slug: 'forever' }), 'up-submit': 'false' })
+  @!form({ id: 'stripePortalForm', action: form.post('stripe.portal'), 'up-submit': 'false' })
 @else
   <strong>Free Plan</strong>
   <p class="text-sm text-base-content/60">

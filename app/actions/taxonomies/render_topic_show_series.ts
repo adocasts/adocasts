@@ -17,14 +17,16 @@ export default class RenderTopicShowSeries extends BaseAction {
     const topic = await GetTopic.run(params.slug)
     const series = await this.#getSeries(params.slug, data)
 
-    const discussions = await GetDiscussionsPaginated.run({ topic: topic.slug, perPage: 1 })
-    const lessons = await GetLessonsPaginated.run({ topic: topic.slug, perPage: 1 })
-    const snippets = await GetSnippetsPaginated.run({ topic: topic.slug, perPage: 1 })
+    const discussions = await GetDiscussionsPaginated.run({ topics: [topic.slug], perPage: 1 })
+    const lessons = await GetLessonsPaginated.run({ topics: [topic.slug], perPage: 1 })
+    const snippets = await GetSnippetsPaginated.run({ topics: [topic.slug], perPage: 1 })
 
     return view.render('pages/topics/series', { topic, series, discussions, lessons, snippets })
   }
 
   #getSeries(topic: string, { page, perPage }: Validator) {
-    return GetSeriesPaginated.run({ topic, page, perPage }, 'topics.show.series', { slug: topic })
+    return GetSeriesPaginated.run({ topics: [topic], page, perPage }, 'topics.show.series', {
+      slug: topic,
+    })
   }
 }

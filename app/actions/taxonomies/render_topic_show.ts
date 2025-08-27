@@ -9,10 +9,10 @@ import GetTopic from './get_topic.js'
 export default class RenderTopicShow extends BaseAction {
   async asController({ view, params }: HttpContext) {
     const topic = await GetTopic.run(params.slug)
-    const series = await GetSeriesPaginated.run({ topic: topic.slug, perPage: 9 })
-    const discussions = await GetDiscussionsPaginated.run({ topic: topic.slug, perPage: 6 })
-    const lessons = await GetLessonsPaginated.run({ topic: topic.slug, perPage: 9 })
-    const snippets = await GetSnippetsPaginated.run({ topic: topic.slug, perPage: 6 })
+    const series = await GetSeriesPaginated.run({ topics: [topic.slug], perPage: 9 })
+    const discussions = await GetDiscussionsPaginated.run({ topics: [topic.slug], perPage: 6 })
+    const lessons = await GetLessonsPaginated.run({ topics: [topic.slug], perPage: 9 })
+    const snippets = await GetSnippetsPaginated.run({ topics: [topic.slug], perPage: 6 })
 
     return view.render('pages/topics/show', {
       topic,

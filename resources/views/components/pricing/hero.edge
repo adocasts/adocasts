@@ -33,7 +33,7 @@
   <div {{ html.attrs({ class: ['relative', containerCards] }) }}>
     <div class="grid grid-cols-1 gap-3 xl:gap-10 md:grid-cols-2 lg:grid-cols-3">
       @!pricing.card({
-        name: 'Monthly',
+        name: 'month',
         accent: cardAccent,
         plan: await PlanService.get(Plans.PLUS_MONTHLY),
         description: 'Just getting started? Try Adocasts Plus on a month-by-month basis and unlock everything instantly with no strings attached.',
@@ -41,7 +41,7 @@
       })
 
       @!pricing.card({
-        name: 'Annual',
+        name: 'year',
         accent: cardAccent,
         plan: await PlanService.get(Plans.PLUS_ANNUAL),
         description: 'Ready to level up your Node game? Go annual and save big while accessing all premium content, all year long.',
@@ -49,7 +49,7 @@
       })
 
       @!pricing.card({
-        name: 'Forever',
+        name: 'lifetime',
         accent: cardAccent,
         plan: await PlanService.get(Plans.FOREVER),
         description: 'All-in forever? One-time payment, lifetime access. Everything we make, now and in the future, is yours.',

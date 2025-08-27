@@ -1,10 +1,15 @@
 @let(accent = $props.accent ?? 'border-base-gradient-to-b')
+@let(nameTitle = new Map([
+  ['month', 'Monthly'],
+  ['year', 'Annual'],
+  ['lifetime', 'Forever']
+]))
 
 <div class="@container card ring-1 ring-black/5 max-lg:mx-auto grid grid-cols-1 max-lg:w-full group/plan {{ accent }} {{ $props.class ?? '' }}">
   <div class="grid grid-cols-1 rounded-base p-3 shadow-md shadow-black/5">
     <div class="rounded-[calc(var(--radius-box)_-_.5rem)] backdrop-blur-md p-4 @md:p-8 shadow-2xl ring-1 ring-black/5 hover:radial-accent-t flex flex-col justify-between">
       <div>
-        <h2 class="text-sm font-semibold text-primary">{{ name }} <span class="sr-only">plan</span></h2>
+        <h2 class="text-sm font-semibold text-primary">{{ nameTitle.get(name) }} <span class="sr-only">plan</span></h2>
         <p class="mt-1.5 text-pretty text-sm/6 opacity-60 max-w-md">{{ description }}</p>
       </div>
       
@@ -15,7 +20,7 @@
           </div>
           <div class="text-sm opacity-60">
             <p>USD</p>
-            <p>per {{ name === 'Forever' ? 'lifetime' : name.toLowerCase() }}</p>
+            <p>per {{ name }}</p>
           </div>
         </div>
 

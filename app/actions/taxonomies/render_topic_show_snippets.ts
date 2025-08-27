@@ -17,15 +17,15 @@ export default class RenderTopicShowSnippets extends BaseAction {
     const topic = await GetTopic.run(params.slug)
     const snippets = await this.#getSnippets(params.slug, data)
 
-    const series = await GetSeriesPaginated.run({ topic: topic.slug, perPage: 1 })
-    const discussions = await GetDiscussionsPaginated.run({ topic: topic.slug, perPage: 1 })
-    const lessons = await GetLessonsPaginated.run({ topic: topic.slug, perPage: 1 })
+    const series = await GetSeriesPaginated.run({ topics: [topic.slug], perPage: 1 })
+    const discussions = await GetDiscussionsPaginated.run({ topics: [topic.slug], perPage: 1 })
+    const lessons = await GetLessonsPaginated.run({ topics: [topic.slug], perPage: 1 })
 
     return view.render('pages/topics/snippets', { topic, series, discussions, lessons, snippets })
   }
 
   #getSnippets(topic: string, { page, perPage }: Validator) {
-    return GetSnippetsPaginated.run({ topic, page, perPage }, 'topics.show.snippets', {
+    return GetSnippetsPaginated.run({ topics: [topic], page, perPage }, 'topics.show.snippets', {
       slug: topic,
     })
   }

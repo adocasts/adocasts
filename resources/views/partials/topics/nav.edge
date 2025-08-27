@@ -2,12 +2,12 @@
   <ul class="menu !p-0 w-full">
     <li class="menu-title">{{ topic.name }} Content</li>
 
-    @if (topic.children?.length)
+    {{-- @if (topic.children?.length)
       @topic.nav.item({ identifier: 'topics.show', topic })
         <span>Sub-Topics</span>
         <div class="badge badge-outline badge-sm">{{ topic.children.length }}</div>
       @end
-    @endif
+    @endif --}}
 
     @if (series.meta?.total)
       @topic.nav.item({ identifier: 'topics.show.series', topic })
