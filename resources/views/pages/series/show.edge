@@ -67,7 +67,7 @@
           @endif
 
           @each (mod in series.modules)
-            <details class="collapse rounded-none group" open>
+            <details class="collapse overflow-visible rounded-none group/mod" open>
               <summary class="collapse-title !flex items-center justify-between gap-3 bg-base-200/50 border-base-100 border backdrop-blur-md mb-3 !px-6 rounded-base overflow-hidden relative">
                 <div class="absolute -left-1 -top-[10%] w-full h-[120%] font-mono text-8xl font-black pointer-events-none flex items-center justify-start gap-1 opacity-[0.025] dark:opacity-[0.075]">
                   {{ mod.moduleNumber }}
@@ -89,12 +89,12 @@
                   </h3>
                 </div>
 
-                <div class="opacity-0 group-hover:opacity-100 duration-200">
+                <div class="opacity-0 group-hover/mod:opacity-100 duration-200">
                   @svg('solar:alt-arrow-down-linear', { class: 'w-6 h-6 rotate-0 open:rotate-180 duration-200' })
                 </div>
               </summary>
 
-              <div class="collapse-content !p-0">
+              <div class="collapse-content !p-0 mb-3">
                 @each (post in mod.lessons)
                   @!post.cardSeries({ post, mod })
                 @endeach

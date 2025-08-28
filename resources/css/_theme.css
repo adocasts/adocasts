@@ -110,7 +110,7 @@
   --color-white: black;
   --color-black: white;
 
-  --color-base-300: oklch(99% 0.005 287.6);
+  --color-base-300: oklch(0.9911 0.0048 298.06);
   --color-base-200: oklch(0.9694 0.0074 287.6);
   --color-base-100: oklch(0.9273 0.0197 287.6);
   --color-base-content: oklch(18% 0.03 288.4);
@@ -141,7 +141,7 @@
 
   --radius-selector: 0.25rem;
   --radius-field: 0.5rem;
-  --radius-box: 1rem;
+  --radius-box: .5rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
@@ -237,7 +237,8 @@ html[data-theme='adocasts-light'] {
 
 .menu {
   li a,
-  li label {
+  li label,
+  li button {
     border: 1px solid transparent;
     margin-bottom: .125rem;
 

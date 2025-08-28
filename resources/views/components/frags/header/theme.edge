@@ -33,7 +33,7 @@
       <ul tabindex="0" class="dropdown-content menu border border-base-100 bg-base-300/95 backdrop-blur-lg rounded-box z-50 w-38 p-2 shadow-sm">
         @each (option in options)
           <li>
-            <button type="button" class="w-full" @click="change('{{ option.value }}')">
+            <button {{ html.attrs({ type: 'button', class: ['w-full', { 'menu-active': option.value === theme }] }) }} @click="change('{{ option.value }}')">
               @svg(option.icon, { class: 'size-4' })
               {{ option.name }}
             </button>
