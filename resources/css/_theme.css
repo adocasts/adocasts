@@ -103,7 +103,7 @@
 
 @plugin "daisyui/theme" {
   name: 'adocasts-light';
-  default: false;
+  default: true;
   prefersdark: false;
   color-scheme: 'light';
 
@@ -156,6 +156,14 @@
 );
 
 @custom-variant midnight (&:where([data-theme=adocasts-midnight], [data-theme=adocasts-midnight] *));
+
+@media (prefers-color-scheme: light) {
+  html[data-theme='adocasts-system'] {
+    .logo-dark {
+      display: none;
+    }
+  }
+}
 
 @media (prefers-color-scheme: dark) {
   html[data-theme='adocasts-system'] {
