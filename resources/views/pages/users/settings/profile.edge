@@ -17,12 +17,12 @@
     <h1 class="heading-2">Profile</h1>
 
     @card({ accent: false, class: 'mb-6' })
-      @form({ action: form.put('settings.preferences'), class: 'card-body lg:flex-row lg:gap-6 xl: gap-10', 'up-scroll': 'preserve', 'up-autosubmit': true })
+      @form({ action: form.patch('settings.preferences.patch', { preference: 'isEnabledProfile' }), class: 'card-body lg:flex-row lg:gap-6 xl: gap-10', 'up-scroll': 'preserve', 'up-autosubmit': true })
         <div class="flex-1">
-          @form.switch({ name: 'isEnabledProfile', value: auth.user.isEnabledProfile })
+          @form.switch({ name: 'value', value: auth.user.isEnabledProfile })
             <div class="flex flex-col ml-3">
               <strong class="text-base-content">Public profile</strong>
-              <p class="text-base-content/60 text-xs">
+              <p class="text-base-content/60 text-xs" x-cloak>
                 <span x-show="switchOn">Your profile is publically viewable by anyone</span>
                 <span x-show="!switchOn">Your profile is private and only you will be able to view it</span>
               </p>

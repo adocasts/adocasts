@@ -57,7 +57,7 @@
       @!profile.socialLinks({ user, class: 'mt-6 sm:hidden' })
 
       @if (!user.isEnabledProfile)
-        <div role="alert" class="alert alert-warning alert-soft mt-6">
+        <div role="alert" class="alert alert-warning alert-outline mt-6">
           <span>
             Your profile is private and can only be seen by you.
             You can change this anytime within your <a href="{{ route('settings', { section: 'profile' }) }}" class="link">profile settings</a>.

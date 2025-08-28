@@ -15,7 +15,7 @@
 
 @let(size = sizes.get($props.size ?? 'md'))
 
-@card({ id: `feed_${discussion.id}`, accent: '', border: false, class: 'border-transparent border-b-base-100 rounded-none' })
+@card({ id: `feed_${discussion.id}`, accent: '', border: false, class: 'border-transparent [&:not(:last-child)]:border-b-base-100 rounded-none' })
   <div class="card-body px-0 flex flex-row flex-wrap gap-6">
     <div class="hidden sm:flex flex-col">
       @profile.link({ user: discussion.author, class: 'h-full' })

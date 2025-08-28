@@ -8,3 +8,20 @@ export const preferencesValidator = vine.compile(
     isEnabledMentions: vine.accepted().optional(),
   })
 )
+
+export const preferencePatchValidator = vine.compile(
+  vine.object({
+    value: vine.accepted().optional(),
+
+    params: vine.object({
+      preference: vine
+        .enum([
+          'isEnabledProfile',
+          'isEnabledMiniPlayer',
+          'isEnabledAutoplayNext',
+          'isEnabledMentions',
+        ])
+        .optional(),
+    }),
+  })
+)

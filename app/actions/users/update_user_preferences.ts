@@ -5,7 +5,7 @@ import { HttpContext } from '@adonisjs/core/http'
 import { Infer } from '@vinejs/vine/types'
 
 type Validator = Infer<typeof preferencesValidator>
-type PreferenceKeys = keyof Pick<
+export type PreferenceKeys = keyof Pick<
   User,
   'isEnabledAutoplayNext' | 'isEnabledMentions' | 'isEnabledMiniPlayer' | 'isEnabledProfile'
 >

@@ -61,6 +61,7 @@ import {
   throttleSignUp,
   throttleVerifyEmail,
 } from './limiter.js'
+const PatchUserPreferences = () => import('#actions/users/patch_user_preferences')
 const RenderOgImage = () => import('#actions/general/render_og_image')
 const RenderSearch = () => import('#actions/general/render_search')
 const RenderPricing = () => import('#actions/general/render_pricing')
@@ -248,6 +249,7 @@ router.put('/settings/email', [UpdateEmail]).as('settings.email').use(middleware
 router.get('/settings/revert/:id/:oldEmail/:newEmail', [RevertEmail]).as('settings.revert.email')
 router.put('/settings/profile', [UpdateUserProfile]).as('settings.profile').use(middleware.auth())
 router.put('/settings/preferences', [UpdateUserPreferences]).as('settings.preferences').use(middleware.auth())
+router.patch('/settings/preferences/:preference', [PatchUserPreferences]).as('settings.preferences.patch').use(middleware.auth())
 router.put('/settings/notifications', [UpdateUserNotifications]).as('settings.notifications').use(middleware.auth())
 router.delete('/settings/session/:id?', [ForceSignOut]).as('settings.session.destroy').use(middleware.auth())
 router.delete('/settings/account', [DestroyAccount]).as('settings.account.destroy').use(middleware.auth())

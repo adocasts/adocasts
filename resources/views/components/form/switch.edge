@@ -1,6 +1,16 @@
 <div x-data="{ switchOn: {{ value }} }" class="flex items-center space-x-3 w-full">
-  <label @click="$refs.switchButton.click(); $refs.switchButton.focus()" :id="$id('switch')" class="label w-full">
-    <input x-ref="input" type="checkbox" checked="checked" class="toggle checked:bg-primary checked:border-primary {{ $props.class ?? '' }}" name="{{ name }}" x-model="switchOn" />
+  <label class="label w-full">
+    <input 
+      {{
+        html.attrs({
+          type: 'checkbox',
+          name: name,
+          class: ['toggle checked:bg-primary checked:border-primary checked:text-primary-content', $props.class],
+          'x-model': 'switchOn',
+          'checked': !!value
+        })
+      }}
+    />
     {{{ await $slots.main() }}}
   </label>
 </div>

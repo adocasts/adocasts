@@ -31,7 +31,7 @@
       <input type="hidden" name="options.forward" value="{{ forward ?? '' }}">
 
       @error('E_INVALID_CREDENTIALS')
-        <div class="alert alert-error alert-soft mb-3">
+        <div class="alert alert-error alert-outline mb-3">
           @svg('solar:user-cross-bold-duotone', { class: 'w-5 h-5' })
           {{ $message }}
         </div>
