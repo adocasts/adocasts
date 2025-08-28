@@ -6,24 +6,26 @@
 })
   @discussion.shell({ topics, filters })
 
-    @each (discussion in discussions.data)
-      @!discussion.card({ discussion })
-    @endeach
+    <div class="flex flex-col -mt-6">
+      @each (discussion in discussions.data)
+        @!discussion.card({ discussion })
+      @endeach
 
-    @if (!discussions.data.length)
-      <div class="border border-dashed border-base-content/30 rounded-base px-4 py-12 flex flex-col items-center">
-        <img class="w-36" src="/imgs/robot/slice4.svg" alt="robot searching">
-        <p class="uppercase tracking-wide text-base-content">
-          No matches found
-        </p>
-        <p class="text-base-content/60">
-          Please try again with a broader search
-        </p>
+      @if (!discussions.data.length)
+        <div class="border border-dashed border-base-content/30 rounded-base px-4 py-12 flex flex-col items-center">
+          <img class="w-36" src="/imgs/robot/slice4.svg" alt="robot searching">
+          <p class="uppercase tracking-wide text-base-content">
+            No matches found
+          </p>
+          <p class="text-base-content/60">
+            Please try again with a broader search
+          </p>
+        </div>
+      @endif
+
+      <div>
+        @!pagination({ meta: discussions.meta })
       </div>
-    @endif
-
-    <div class="-mt-3">
-      @!pagination({ meta: discussions.meta })
     </div>
 
   @end

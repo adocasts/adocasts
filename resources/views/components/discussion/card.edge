@@ -15,8 +15,8 @@
 
 @let(size = sizes.get($props.size ?? 'md'))
 
-@card({ id: `feed_${discussion.id}`, accent: show ? '' : null })
-  <div class="card-body flex flex-row flex-wrap gap-6">
+@card({ id: `feed_${discussion.id}`, accent: '', border: false, class: 'border-transparent border-b-base-100 rounded-none' })
+  <div class="card-body px-0 flex flex-row flex-wrap gap-6">
     <div class="hidden sm:flex flex-col">
       @profile.link({ user: discussion.author, class: 'h-full' })
         <div class="avatar">
@@ -35,7 +35,7 @@
 
     <div class="flex-1 max-w-full">
       @if (!show)
-        <h2 class="card-title font-bold text-base-title {{ size.title }}">
+        <h2 class="card-title font-bold text-base-title group-hover:text-primary duration-200 {{ size.title }}">
           <a href="{{ route('discussions.show', { slug: discussion.slug }) }}" class="link-grow">
             {{ discussion.title }}
           </a>
