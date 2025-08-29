@@ -119,6 +119,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare isEnabledMentions: boolean
 
   @column()
+  declare isEnabledTranscript: boolean
+
+  @column()
   declare emailVerified: string | null
 
   @column.dateTime()

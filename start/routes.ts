@@ -61,6 +61,7 @@ import {
   throttleSignUp,
   throttleVerifyEmail,
 } from './limiter.js'
+const TogglePostTranscript = () => import('#actions/posts/toggle_post_transcript')
 const PatchUserPreferences = () => import('#actions/users/patch_user_preferences')
 const RenderOgImage = () => import('#actions/general/render_og_image')
 const RenderSearch = () => import('#actions/general/render_search')
@@ -211,6 +212,7 @@ router.get('/topics/:slug/snippets', [RenderTopicShowSnippets]).as('topics.show.
 router.get('/lessons', [RenderLessonsIndex]).as('lessons.index')
 router.patch('/lessons/:slug/watchlist', [TogglePostWatchlist]).as('lessons.watchlist').use(middleware.auth())
 router.patch('/lessons/:slug/autoplay', [TogglePostAutoplay]).as('lessons.autoplay')
+router.patch('/lessons/:slug/transcript', [TogglePostTranscript]).as('lessons.transcript')
 router.get('/lessons/:slug', [RenderLessonShow]).as('lessons.show').use(middleware.postTypeCheck())
 router.get('/streams/:slug', [RenderLessonShow]).as('streams.show').use(middleware.postTypeCheck())
 

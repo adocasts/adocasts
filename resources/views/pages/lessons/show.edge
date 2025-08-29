@@ -49,6 +49,12 @@
                 @!frags.lesson.autoplayToggle({ lesson })
               @endif
 
+              @can('PostPolicy.view', lesson)
+                @if (transcript)
+                  @!frags.lesson.transcriptToggle({ lesson })
+                @endif
+              @endcan
+
               @!frags.lesson.bookmarkToggle({ lesson })
 
               @if (lesson.repositoryUrl)
@@ -93,6 +99,18 @@
       @if (lesson.hasVideo || await bouncer.cannot('PostPolicy.view', lesson))
         @!lesson.video({ lesson, nextLesson })
       @endif
+
+      @can('PostPolicy.view', lesson)
+        @if (transcript)
+          <div class="border-b border-base-100 xl:hidden">
+            @!lesson.transcript({ 
+              transcript, 
+              id: 'transcriptMain',
+              class: 'flex flex-col max-w-prose mx-auto h-[min(275px,30vh)] pt-6 pb-6',
+            })
+          </div>
+        @endif
+      @endcan
 
       <div class="max-w-prose mx-auto flex gap-3 lg:gap-6 px-8 md:px-0 my-10 lg:my-16">
         <div class="@container flex-1">
@@ -168,6 +186,16 @@
         <label for="series-details-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
 
         <div class="w-[var(--aside-width)] border-l border-base-100 xl:fixed right-0 top-16 h-[calc(100%_-_4rem)] flex flex-col overflow-hidden bg-base-300 dark:bg-base-300/85 backdrop-blur-md max-lx:shadow-sm">
+          @can('PostPolicy.view', lesson)
+            @if (transcript)
+              @!lesson.transcript({ 
+                transcript, 
+                id: 'transcriptAside',
+                class: 'hidden xl:flex flex-col border-b border-base-100 h-[min(400px,40vh)] px-2 pt-6 pb-6',
+              })
+            @endif
+          @endcan
+
           <div class="px-6 pt-6 pb-3 group">
             <h3 class="heading-5 !font-semibold !leading-tight !mb-0">
               <a href="{{ route('series.show', { slug: series.slug }) }}">

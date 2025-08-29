@@ -17,8 +17,6 @@ export default class GetLesson extends BaseAction<[string]> {
 
     lesson.meta.isInWatchlist = isInWatchlist
 
-    // TODO: cache
-
     return lesson
   }
 

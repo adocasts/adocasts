@@ -20,6 +20,7 @@ Alpine.store('app', {
   videoHeight: 0,
   videoTimestamp: 0,
   videoPlaying: false,
+  showTranscript: document.body.dataset.showTranscript === 'true',
 })
 
 Alpine.plugin(intersect)

@@ -33,6 +33,8 @@ export default class PatchUserPreferences extends BaseAction<
     switch (preference) {
       case 'isEnabledAutoplayNext':
         return 'Your autoplay next preference has been updated'
+      case 'isEnabledTranscript':
+        return 'Your transcript preference has been updated'
       case 'isEnabledMentions':
         return 'Your mentions preference has been updated'
       case 'isEnabledMiniPlayer':

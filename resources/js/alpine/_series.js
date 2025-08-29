@@ -20,10 +20,10 @@ Alpine.data('seriesCard', () => ({
 
   getScrollState(target) {
     const { scrollTop, scrollHeight, clientHeight } = target
-
+    
     if (scrollTop === 0) {
       return 'top'
-    } else if (scrollTop + clientHeight >= scrollHeight) {
+    } else if (Math.ceil(scrollTop + clientHeight) >= scrollHeight) {
       return 'bottom'
     } else {
       return 'middle'

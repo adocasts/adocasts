@@ -19,14 +19,14 @@ export default class ContextMiddleware {
     const viewRender = ctx.view.render
     const viewShare = ctx.view.share
     const theme = ctx.auth.user?.theme ?? ctx.request.cookie('adocasts-theme', 'system')
-    const autoplayNext = this.#getAutoplayNext(ctx)
 
     ctx.up = new Up(ctx)
     ctx.progress = createProgress(ctx)
     ctx.view.share({
       up: ctx.up,
       theme,
-      autoplayNext,
+      autoplayNext: this.#getAutoplayNext(ctx),
+      showTranscript: this.#getShowTranscript(ctx),
     })
 
     ctx.view.render = async (templatePath: string, state?: Record<string, any>) => {
@@ -94,5 +94,13 @@ export default class ContextMiddleware {
     }
 
     return ctx.session.get('autoplayNext', 'true') === 'true'
+  }
+
+  #getShowTranscript(ctx: HttpContext) {
+    if (ctx.auth.user) {
+      return ctx.auth.user.isEnabledTranscript
+    }
+
+    return ctx.session.get('showTranscript', 'false') === 'true'
   }
 }

@@ -5,6 +5,7 @@ export const preferencesValidator = vine.compile(
     isEnabledProfile: vine.accepted().optional(),
     isEnabledMiniPlayer: vine.accepted().optional(),
     isEnabledAutoplayNext: vine.accepted().optional(),
+    isEnabledTranscript: vine.accepted().optional(),
     isEnabledMentions: vine.accepted().optional(),
   })
 )
@@ -19,6 +20,7 @@ export const preferencePatchValidator = vine.compile(
           'isEnabledProfile',
           'isEnabledMiniPlayer',
           'isEnabledAutoplayNext',
+          'isEnabledTranscript',
           'isEnabledMentions',
         ])
         .optional(),

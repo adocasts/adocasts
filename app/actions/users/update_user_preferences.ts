@@ -7,7 +7,11 @@ import { Infer } from '@vinejs/vine/types'
 type Validator = Infer<typeof preferencesValidator>
 export type PreferenceKeys = keyof Pick<
   User,
-  'isEnabledAutoplayNext' | 'isEnabledMentions' | 'isEnabledMiniPlayer' | 'isEnabledProfile'
+  | 'isEnabledAutoplayNext'
+  | 'isEnabledMentions'
+  | 'isEnabledMiniPlayer'
+  | 'isEnabledProfile'
+  | 'isEnabledTranscript'
 >
 
 export default class UpdateUserPreferences extends BaseAction<
@@ -20,6 +24,7 @@ export default class UpdateUserPreferences extends BaseAction<
 
     await this.handle(user, {
       isEnabledAutoplayNext: !!data.isEnabledAutoplayNext,
+      isEnabledTranscript: !!data.isEnabledTranscript,
       isEnabledMentions: !!data.isEnabledMentions,
       isEnabledMiniPlayer: !!data.isEnabledMiniPlayer,
       isEnabledProfile: !!data.isEnabledProfile,

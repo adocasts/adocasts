@@ -150,3 +150,55 @@ Alpine.data('countdown', ({ dateTime }) => {
     },
   }
 })
+
+Alpine.data('transcript', ({ transcript = [] } = {}) => {
+  return {
+    transcript,
+    active: null,
+    
+    setActive(value = this.$store.app.videoTimestamp) {
+      const cue = this.transcript.cues.find(cue => {
+        const cueStart = Math.ceil(cue.start)
+        const cueEnd = Math.ceil(cue.end)
+        return value >= cueStart && value < cueEnd
+      })
+      
+      if (!cue) return
+      
+      const items = document.querySelectorAll(`[data-timestamp-cue="${cue.identifier}"]`)
+      
+      if (items.length) {
+        this.active = cue
+
+        items.forEach((item) => {
+          this.scrollIntoView(item)
+        })
+      }
+    },
+
+    /**
+     * using a custom scrollIntoView method to ensure the window won't be scrolled at all
+     * @param {HTMLElement} item 
+     * @returns 
+     */
+    scrollIntoView(item) {
+      const align = item.dataset.scrollAlign
+      const scroller = item.closest('ol')
+
+      if (!scroller) return
+
+      let top = item.offsetTop
+
+      if (align === 'center') {
+        const scrollerHeight = scroller.clientHeight
+        const itemHeight = item.clientHeight
+        top = item.offsetTop - (scrollerHeight / 2) + (itemHeight / 2)
+      }
+
+      scroller.scroll({
+        behavior: 'auto',
+        top
+      })
+    }
+  }
+})

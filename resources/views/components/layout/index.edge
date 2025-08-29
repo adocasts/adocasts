@@ -30,7 +30,7 @@
       <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
     @endif
   </head>
-  <body class="max-w-[120rem] mx-auto flex flex-col" {{ html.attrs({ style: $props.style }) }}>
+  <body class="max-w-[120rem] mx-auto flex flex-col" {{ html.attrs({ style: $props.style }) }} data-show-transcript="{{ showTranscript }}">
     <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>
     <div id="portal"></div>
 
