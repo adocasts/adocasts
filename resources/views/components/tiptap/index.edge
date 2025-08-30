@@ -66,24 +66,26 @@
 @else
 
   <div class="{{ html.classNames(['flex-1 relative', $props.wrapClass]) }}">
-    @if ($slots.before)
-      {{{ await $slots.before({ allows }) }}}
-    @endif
-
-    <div class="{{ html.classNames(['prose', $props.class]) }}">
+    <div class="{{ html.classNames(['auth-cta prose', $props.class]) }}">
       <div class="tiptap ProseMirror hover:bg-base-100 duration-200">
-        <div class="font-semibold text-lg">
-          <a href="{{ route('auth.signup') }}" class="link-grow no-underline" up-auth-modal>
-            Share your thoughts!
-          </a>
+        <div class="flex items-center gap-3">
+          <div class="avatar">
+            <div class="w-14 aspect-square">
+              <img src="/imgs/robot/slice2.svg" class="!my-0 w-full object-cover object-top-right" />
+            </div>
+          </div>
+          
+          <div>
+            <div class="font-semibold text-lg">
+              <a href="{{ route('auth.signup') }}" class="link-grow no-underline" up-auth-modal>
+                Share your thoughts!
+              </a>
+            </div>
+            <div>Create a free account to join in on the discussion</div>
+          </div>
         </div>
-        <div>Create a free account to join in on the discussion</div>
       </div>
     </div>
-
-    @if ($slots.after)
-      {{{ await $slots.after({ allows }) }}}
-    @endif
   </div>
 
 @endif

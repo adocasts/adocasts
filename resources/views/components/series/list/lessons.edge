@@ -21,15 +21,15 @@
         }">
         <div>
           <div class="w-7 h-7 text-[.6rem] rounded duration-200 flex items-center justify-center" :class="{
-            'bg-success/10 group-hover/modles:bg-success text-success group-hover/modles:text-success-content': isCompleted,
-            'bg-primary/25 group-hover/modles:bg-primary group-hover/modles:text-primary-content': !isCompleted && id === {{ lesson.id }},
-            'bg-base-100 group-hover/modles:bg-primary group-hover/modles:text-primary-content': !isCompleted && id !== {{ lesson.id }}
+            'border border-success/30 group-hover/modles:border-success group-hover/modles:bg-success text-success group-hover/modles:text-success-content': isCompleted,
+            'border border-primary/25 group-hover/modles:border-primary group-hover/modles:bg-primary group-hover/modles:text-primary-content': !isCompleted && id === {{ lesson.id }},
+            'border border-base-100 group-hover/modles:border-primary group-hover/modles:bg-primary group-hover/modles:text-primary-content': !isCompleted && id !== {{ lesson.id }}
           }">
             @cannot('PostPolicy.view', item)
               @let(icon = item.paywallTypeId === PaywallTypes.DELAYED_RELEASE ? 'solar:clock-circle-outline' :
               'solar:lock-keyhole-minimalistic-outline')
               
-              <div class="text-base-content/40">
+              <div class="opacity-40 group-hover/modles:opacity-100 duration-200">
                 @svg(icon, { class: 'size-4' })
               </div>
             @else

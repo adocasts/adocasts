@@ -28,7 +28,7 @@
   @authorization.provider({ ability, resource: replyingTo })
     @tiptap({ value: body, wrapClass: 'comment-form comment-wrap', class: 'prose-comment' })
       @slot('before')
-        <div class="comment-avatar">
+        <div class="has-[[up-auth-modal]]:hidden comment-avatar">
           <div class="avatar">
             <div class="w-6 rounded">
               @!user.avatar({ user: auth.user, loading: 'lazy', alt: auth.user?.handle })
