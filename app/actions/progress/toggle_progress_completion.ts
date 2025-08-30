@@ -7,7 +7,7 @@ import GetOrCreateProgress from './get_or_create_progress.js'
 
 type Validator = Infer<typeof progressValidator>
 
-export default class ToggleProgressCompletion extends BaseAction<[number, Validator]> {
+export default class ToggleProgressCompletion extends BaseAction {
   validator = progressValidator
 
   async asController({ view, auth }: HttpContext, data: Validator) {

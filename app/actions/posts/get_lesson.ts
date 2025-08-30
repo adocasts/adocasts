@@ -6,7 +6,7 @@ import Watchlist from '#models/watchlist'
 import cache from '@adonisjs/cache/services/main'
 import LessonShowDto from '../../dtos/lesson_show.js'
 
-export default class GetLesson extends BaseAction<[string]> {
+export default class GetLesson extends BaseAction {
   async handle(slug: string, userId?: number, options?: DisplayOptions) {
     const lesson = await cache.namespace(CacheNamespaces.POSTS).getOrSet({
       key: `GET_LESSON_${slug}_${JSON.stringify(options ?? {})}`,

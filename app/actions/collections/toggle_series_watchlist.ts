@@ -4,10 +4,10 @@ import { watchlistCollectionValidator } from '#validators/watchlist'
 import { HttpContext } from '@adonisjs/core/http'
 import GetSeries from './get_series.js'
 
-export default class ToggleSeriesWatchlist extends BaseAction<[User, number]> {
+export default class ToggleSeriesWatchlist extends BaseAction {
   validator = watchlistCollectionValidator
 
-  async asController({ view, auth, params, up }: HttpContext) {
+  async asController({ view, auth, params }: HttpContext) {
     const series = await GetSeries.run(params.slug)
     const result = await this.handle(auth.user!, series.id)
 

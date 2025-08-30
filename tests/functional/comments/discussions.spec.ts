@@ -1,4 +1,3 @@
-import HttpStatus from '#enums/http_statuses'
 import { DiscussionFactory } from '#factories/discussion_factory'
 import { UserFactory } from '#factories/user_factory'
 import Comment from '#models/comment'

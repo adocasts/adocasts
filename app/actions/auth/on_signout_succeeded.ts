@@ -15,7 +15,7 @@ interface Event {
 
 type Arguments = [ctx: { request: Request; response: Response; session: Session }, user: User]
 
-export default class OnSignOutSucceeded extends BaseAction<Arguments> {
+export default class OnSignOutSucceeded extends BaseAction {
   async asListener({ ctx, user }: Event) {
     if (!user) return
     await this.handle(ctx, user)

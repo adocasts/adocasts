@@ -3,7 +3,7 @@ import User from '#models/user'
 import { DateTime } from 'luxon'
 import ms from 'ms'
 
-export default class DestroyExpiredSessions extends BaseAction<[User]> {
+export default class DestroyExpiredSessions extends BaseAction {
   async handle(user: User) {
     const expiry = DateTime.now().minus({ milliseconds: ms('2h') })
     const rememberExpiry = DateTime.now().minus({ years: 5 }) // rememberMeToken = 5yr duration

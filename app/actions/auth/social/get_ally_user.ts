@@ -11,7 +11,7 @@ import db from '@adonisjs/lucid/services/db'
 type Driver = GithubDriver | GoogleDriver
 type Provider = keyof SocialProviders
 
-export default class GetAllyUser extends BaseAction<[Driver, Provider, User | undefined]> {
+export default class GetAllyUser extends BaseAction {
   async handle(social: Driver, provider: Provider, authUser?: User) {
     const validity = this.#validate(social)
 

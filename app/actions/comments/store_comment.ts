@@ -1,18 +1,18 @@
 import BaseAction from '#actions/base_action'
+import GetRouteReferrer from '#actions/general/get_route_referrer'
+import CacheKeys from '#enums/cache_keys'
 import User from '#models/user'
 import { commentStoreValidator } from '#validators/comment'
+import cache from '@adonisjs/cache/services/main'
 import { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import { Infer } from '@vinejs/vine/types'
 import SendCommentNotification from '../notifications/send_comment_notification.js'
 import SendMentionNotification from '../notifications/send_mention_notification.js'
-import GetRouteReferrer from '#actions/general/get_route_referrer'
-import cache from '@adonisjs/cache/services/main'
-import CacheKeys from '#enums/cache_keys'
 
 type Validator = Infer<typeof commentStoreValidator>
 
-export default class StoreComment extends BaseAction<[user: User, data: Validator]> {
+export default class StoreComment extends BaseAction {
   validator = commentStoreValidator
 
   async authorize({ bouncer }: HttpContext) {

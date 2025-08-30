@@ -38,7 +38,7 @@ test.group('Posts view', (group) => {
     const response = await client.get(route('lessons.show', { slug: post.slug }))
 
     response.assertOk()
-    response.assertTextIncludes('This lesson is coming soon')
+    response.assertTextIncludes('| Coming Soon |')
   })
 
   test('should be able to view a future dated lesson as admin', async ({ client, route }) => {
@@ -101,7 +101,7 @@ test.group('Posts view', (group) => {
     const response = await client.get(route('lessons.show', { slug: post.slug }))
 
     response.assertOk()
-    response.assertTextIncludes('This lesson is coming soon')
+    response.assertTextIncludes('| Coming Soon |')
   })
 
   test('should not be able to view a private lesson', async ({ client, route }) => {

@@ -8,9 +8,8 @@ export default class extends BaseSeeder {
       return
     }
 
-    // Write your database queries inside the run method
-    // await DiscussionFactory.with('user', 1, (builder) => builder.with('profile'))
-    //   .with('comments', 4, (comment) => comment.with('user', 1, (user) => user.with('profile')))
-    //   .createMany(100)
+    await DiscussionFactory.with('user', 1, (builder) => builder.with('profile'))
+      .with('comments', 4, (comment) => comment.with('user', 1, (user) => user.with('profile')))
+      .createMany(100)
   }
 }

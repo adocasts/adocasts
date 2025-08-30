@@ -8,7 +8,7 @@ import { Infer } from '@vinejs/vine/types'
 
 type Filters = Infer<typeof postSearchValidator> | undefined
 
-export default class GetBlogsPaginated extends BaseAction<[Filters, string | undefined]> {
+export default class GetBlogsPaginated extends BaseAction {
   async handle(
     { page = 1, perPage = 20, pattern, topics, sort }: Filters = {},
     routeIdentifier?: string

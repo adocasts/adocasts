@@ -8,7 +8,7 @@ import { Infer } from '@vinejs/vine/types'
 
 type Filters = Infer<typeof postSearchValidator> | undefined
 
-export default class GetSnippetsPaginated extends BaseAction<[Filters, string | undefined]> {
+export default class GetSnippetsPaginated extends BaseAction {
   async handle(
     { page = 1, perPage = 20, ...filters }: Filters = {},
     routeIdentifier: string = '',
@@ -18,7 +18,7 @@ export default class GetSnippetsPaginated extends BaseAction<[Filters, string | 
       .displaySnippet()
       .search(filters.pattern)
       .withTaxonomies((q) => q.selectDto(TopicDto))
-      .whereHasTaxonomy(filters.topic)
+      .whereHasTaxonomy(filters.topics)
       .orderBySort(filters.sort)
       .paginate(page, perPage)
 

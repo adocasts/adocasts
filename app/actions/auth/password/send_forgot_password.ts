@@ -10,7 +10,7 @@ import { Infer } from '@vinejs/vine/types'
 
 type Validator = Infer<typeof emailValidator>
 
-export default class SendForgotPassword extends BaseAction<[Validator, string]> {
+export default class SendForgotPassword extends BaseAction {
   validator = emailValidator
 
   async asController({ request, response, session }: HttpContext, data: Validator) {

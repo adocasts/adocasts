@@ -6,7 +6,7 @@ import DiscussionVote from '#models/discussion_vote'
 import User from '#models/user'
 import { DateTime } from 'luxon'
 
-export default class GetUserActivity extends BaseAction<[User]> {
+export default class GetUserActivity extends BaseAction {
   start = DateTime.now().startOf('day').minus({ months: 12 })
 
   get startSql() {

@@ -8,9 +8,7 @@ import { PreferenceKeys } from './update_user_preferences.js'
 type Validator = Infer<typeof preferencePatchValidator>
 type HandleData = Partial<Record<PreferenceKeys, boolean>>
 
-export default class PatchUserPreferences extends BaseAction<
-  [User, Partial<Record<PreferenceKeys, boolean>>]
-> {
+export default class PatchUserPreferences extends BaseAction {
   validator = preferencePatchValidator
 
   async asController({ response, session, auth }: HttpContext, data: Validator) {

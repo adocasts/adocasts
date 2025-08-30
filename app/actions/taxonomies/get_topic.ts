@@ -2,7 +2,7 @@ import BaseAction from '#actions/base_action'
 import NotFoundException from '#exceptions/not_found_exception'
 import GetTopicList from './get_topic_list.js'
 
-export default class GetTopic extends BaseAction<[string]> {
+export default class GetTopic extends BaseAction {
   async handle(slug: string) {
     const topics = await GetTopicList.run()
     const topic = topics.find((row) => row.slug === slug)

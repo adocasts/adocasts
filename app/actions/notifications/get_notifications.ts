@@ -6,7 +6,7 @@ export interface NotificationInterface {
   read: Notification[]
 }
 
-export default class GetNotifications extends BaseAction<[number | undefined]> {
+export default class GetNotifications extends BaseAction {
   async handle(userId: number | undefined) {
     const result: NotificationInterface = { unread: [], read: [] }
 

@@ -1,11 +1,10 @@
-import CollectionBuilder from '#builders/collection_builder'
 import BaseBuilder from '#builders/base_builder'
+import CollectionBuilder from '#builders/collection_builder'
 import PostBuilder from '#builders/post_builder'
+import PostTypes from '#enums/post_types'
 import Progress from '#models/progress'
 import User from '#models/user'
 import db from '@adonisjs/lucid/services/db'
-import PostTypes from '#enums/post_types'
-import States from '#enums/states'
 
 export default class ProgressBuilder extends BaseBuilder<typeof Progress, Progress> {
   constructor(protected user: User | undefined = undefined) {

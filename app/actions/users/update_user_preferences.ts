@@ -14,9 +14,7 @@ export type PreferenceKeys = keyof Pick<
   | 'isEnabledTranscript'
 >
 
-export default class UpdateUserPreferences extends BaseAction<
-  [User, Partial<Record<PreferenceKeys, boolean>>]
-> {
+export default class UpdateUserPreferences extends BaseAction {
   validator = preferencesValidator
 
   async asController({ response, session, auth }: HttpContext, data: Validator) {

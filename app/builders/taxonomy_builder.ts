@@ -84,7 +84,7 @@ export default class TaxonomyBuilder extends BaseBuilder<typeof Taxonomy, Taxono
   ) {
     this.query.preload('posts', (query) =>
       query
-        .apply((scope) => scope.forDisplay())
+        .apply((scope) => scope.forLessonDisplay())
         .apply((scope) => scope.published())
         .whereHas('assets', (assets) => assets.where('assetTypeId', AssetTypes.THUMBNAIL))
         .orderBy(orderBy, direction)

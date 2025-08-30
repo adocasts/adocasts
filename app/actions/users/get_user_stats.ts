@@ -5,7 +5,7 @@ import Discussion from '#models/discussion'
 import Progress from '#models/progress'
 import User from '#models/user'
 
-export default class GetUserStats extends BaseAction<[User]> {
+export default class GetUserStats extends BaseAction {
   async handle(user: User) {
     const userId = user.id
 

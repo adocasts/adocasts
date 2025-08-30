@@ -8,7 +8,7 @@ import GetOrCreateProgress from './get_or_create_progress.js'
 
 type Validator = Infer<typeof progressValidator>
 
-export default class StoreProgress extends BaseAction<[number, Validator]> {
+export default class StoreProgress extends BaseAction {
   validator = progressValidator
 
   async asController({ response, auth }: HttpContext, data: Validator) {

@@ -3,7 +3,7 @@ import User from '#models/user'
 import { HttpContext } from '@adonisjs/http-server'
 import { DateTime } from 'luxon'
 
-export default class VerifyEmail extends BaseAction<[string]> {
+export default class VerifyEmail extends BaseAction {
   async asController({ request, response, session, params, auth }: HttpContext) {
     if (!request.hasValidSignature('email_verification')) {
       session.toast(

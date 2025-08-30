@@ -4,7 +4,7 @@ import { SocialProviders } from '@adonisjs/ally/types'
 import router from '@adonisjs/core/services/router'
 import { HttpContext } from '@adonisjs/http-server'
 
-export default class HandleAllyUnlink extends BaseAction<[User, keyof SocialProviders]> {
+export default class HandleAllyUnlink extends BaseAction {
   async asController({ response, auth, params, session }: HttpContext) {
     const user = auth.user!
 

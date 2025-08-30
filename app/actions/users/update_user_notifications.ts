@@ -7,7 +7,7 @@ import { Infer } from '@vinejs/vine/types'
 
 type Validator = Infer<typeof emailNotificationValidator>
 
-export default class UpdateUserNotifications extends BaseAction<[User, Validator]> {
+export default class UpdateUserNotifications extends BaseAction {
   validator = emailNotificationValidator
 
   async asController({ response, session, auth }: HttpContext, data: Validator) {

@@ -7,9 +7,7 @@ interface Paginated {
   perPage: number
 }
 
-export default class GetPaginatedSessions extends BaseAction<
-  [User, string, Paginated | undefined]
-> {
+export default class GetPaginatedSessions extends BaseAction {
   async handle(
     user: User,
     token?: string,

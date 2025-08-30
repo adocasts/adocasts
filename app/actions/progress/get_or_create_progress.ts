@@ -5,7 +5,7 @@ import { Infer } from '@vinejs/vine/types'
 
 type Validator = Infer<typeof progressValidator>
 
-export default class GetOrCreateProgress extends BaseAction<[number, Validator]> {
+export default class GetOrCreateProgress extends BaseAction {
   async handle(userId: number, data: Validator) {
     const query: Partial<Progress> = { userId }
 

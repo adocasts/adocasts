@@ -7,7 +7,7 @@ import DiscussionListDto from '../../dtos/discussion_list.js'
 
 type Filters = Infer<typeof discussionSearchValidator> | undefined
 
-export default class GetDiscussionsPaginated extends BaseAction<[Filters, string | undefined]> {
+export default class GetDiscussionsPaginated extends BaseAction {
   public async handle(
     { page = 1, perPage = 20, ...filters }: Filters = {},
     routeIdentifier: string = '',

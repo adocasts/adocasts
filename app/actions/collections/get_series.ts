@@ -8,7 +8,7 @@ import cache from '@adonisjs/cache/services/main'
 import SeriesLessonDto from '../../dtos/series_lesson.js'
 import TopicDto from '../../dtos/topic.js'
 
-export default class GetSeries extends BaseAction<[number | string, number | undefined]> {
+export default class GetSeries extends BaseAction {
   async handle(slug: string, userId?: number) {
     const series = await cache.namespace(CacheNamespaces.COLLECTIONS).getOrSet({
       key: `GET_SERIES_${slug}`,

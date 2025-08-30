@@ -11,7 +11,7 @@ import { Infer } from '@vinejs/vine/types'
 
 type Validator = Infer<typeof passwordResetValidator>
 
-export default class ResetPassword extends BaseAction<[Validator]> {
+export default class ResetPassword extends BaseAction {
   async asController({ request, response, session, auth }: HttpContext) {
     try {
       const data = await request.validateUsing(passwordResetValidator)

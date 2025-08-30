@@ -1,12 +1,12 @@
-import CommentVote from '#models/comment_vote'
+import BaseAction from '#actions/base_action'
 import NotImplementedException from '#exceptions/not_implemented_exception'
+import CommentVote from '#models/comment_vote'
 import DiscussionVote from '#models/discussion_vote'
 import RequestVote from '#models/request_vote'
-import BaseAction from '#actions/base_action'
 
 type Types = 'discussion' | 'comment' | 'request'
 
-export default class ToggleVote extends BaseAction<[Types, number, number]> {
+export default class ToggleVote extends BaseAction {
   async handle(type: Types, recordId: number, userId: number) {
     const { model, property } = await this.#getModel(type)
     const vote = await model.findBy({ id: recordId, userId })

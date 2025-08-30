@@ -7,7 +7,7 @@ import LessonListDto from '../../dtos/lesson_list.js'
 
 type Filters = Infer<typeof postSearchValidator> | undefined
 
-export default class GetLessonsPaginated extends BaseAction<[Filters, string | undefined]> {
+export default class GetLessonsPaginated extends BaseAction {
   async handle(
     { page = 1, perPage = 20, ...filters }: Filters = {},
     routeIdentifier: string = '',

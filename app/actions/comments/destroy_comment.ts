@@ -1,12 +1,12 @@
-import Comment from '#models/comment'
 import BaseAction from '#actions/base_action'
 import States from '#enums/states'
-import DestroyNotification from '../notifications/destroy_notification.js'
+import Comment from '#models/comment'
 import { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import { TransactionClientContract } from '@adonisjs/lucid/types/database'
+import DestroyNotification from '../notifications/destroy_notification.js'
 
-export default class DestroyComment extends BaseAction<[Comment]> {
+export default class DestroyComment extends BaseAction {
   async asController({ response, params, bouncer, session }: HttpContext) {
     const comment = await Comment.findOrFail(params.id)
 

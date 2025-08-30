@@ -40,6 +40,6 @@ export default class RenderLessonShow extends BaseAction {
 
   async #cannotView(bouncer: HttpContext['bouncer'], lesson: LessonShowDto) {
     const isPublished = TimeService.getIsPublished(lesson)
-    return !isPublished || (await bouncer.with(PostPolicy).authorize('view', lesson))
+    return !isPublished && (await bouncer.with(PostPolicy).denies('viewFutureDated'))
   }
 }

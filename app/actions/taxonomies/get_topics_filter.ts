@@ -4,7 +4,7 @@ import NotImplementedException from '#exceptions/not_implemented_exception'
 import Taxonomy from '#models/taxonomy'
 import TopicDto from '../../dtos/topic.js'
 
-export default class GetTopicsFilter extends BaseAction<['collections' | 'posts' | 'discussions']> {
+export default class GetTopicsFilter extends BaseAction {
   async handle(type: 'collections' | 'posts' | 'lessons' | 'blogs' | 'snippets' | 'discussions') {
     switch (type) {
       case 'collections':

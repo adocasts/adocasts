@@ -1,7 +1,7 @@
 import BaseAction from '#actions/base_action'
 import GetNotifications from './get_notifications.js'
 
-export default class GetUnreadNotificationCount extends BaseAction<[number | undefined]> {
+export default class GetUnreadNotificationCount extends BaseAction {
   async handle(userId: number | undefined) {
     if (!userId) return 0
 

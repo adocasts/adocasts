@@ -1,10 +1,10 @@
-import CommentDto from '../../dtos/comment.js'
-import Comment from '#models/comment'
 import BaseAction from '#actions/base_action'
+import Comment from '#models/comment'
 import User from '#models/user'
 import { HttpContext } from '@adonisjs/http-server'
+import CommentDto from '../../dtos/comment.js'
 
-export default class ToggleCommentVote extends BaseAction<[User, number]> {
+export default class ToggleCommentVote extends BaseAction {
   async asController({ view, params, auth, bouncer }: HttpContext) {
     const comment = await Comment.findOrFail(params.id)
 

@@ -2,7 +2,7 @@ import BaseAction from '#actions/base_action'
 import { ImageOptions } from '#services/asset_service'
 import assetStorage from '#services/asset_storage_service'
 
-export default class GetAsset extends BaseAction<[ImageOptions]> {
+export default class GetAsset extends BaseAction {
   async handle(options: ImageOptions) {
     if (options.shouldSkip) {
       return assetStorage.get(options.path)

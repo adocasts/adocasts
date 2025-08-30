@@ -28,7 +28,7 @@ export interface DbOptions {
   topic?: string
 }
 
-export default class GetSeriesList extends BaseAction<[CacheOptions]> {
+export default class GetSeriesList extends BaseAction {
   async handle({ topics, difficulties, limit, sort }: CacheOptions = {}) {
     let series = await cache.namespace(CacheNamespaces.COLLECTIONS).getOrSet({
       key: `GET_SERIES_LIST`,

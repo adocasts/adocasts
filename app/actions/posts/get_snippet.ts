@@ -5,7 +5,7 @@ import Watchlist from '#models/watchlist'
 import cache from '@adonisjs/cache/services/main'
 import LessonShowDto from '../../dtos/lesson_show.js'
 
-export default class GetSnippet extends BaseAction<[string]> {
+export default class GetSnippet extends BaseAction {
   async handle(slug: string, userId?: number) {
     const snippet = await cache.namespace(CacheNamespaces.POSTS).getOrSet({
       key: `GET_SNIPPET_${slug}`,

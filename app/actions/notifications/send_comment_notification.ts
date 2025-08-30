@@ -1,14 +1,12 @@
-import CommentTypes from '#enums/comment_types'
-import Comment from '#models/comment'
 import BaseAction from '#actions/base_action'
-import logger from '#services/logger_service'
+import CommentTypes from '#enums/comment_types'
+import NotificationTypes from '#enums/notification_types'
+import Comment from '#models/comment'
 import Discussion from '#models/discussion'
 import LessonRequest from '#models/lesson_request'
-import NotificationTypes from '#enums/notification_types'
-import Notification from '#models/notification'
 import Post from '#models/post'
 import User from '#models/user'
-import string from '@adonisjs/core/helpers/string'
+import logger from '#services/logger_service'
 import { TransactionClientContract } from '@adonisjs/lucid/types/database'
 import SendNotification from './send_notification.js'
 
@@ -20,9 +18,7 @@ interface CommentNotificationInterface {
   trx?: TransactionClientContract
 }
 
-export default class SendCommentNotification extends BaseAction<
-  [Comment, User, TransactionClientContract | undefined]
-> {
+export default class SendCommentNotification extends BaseAction {
   async handle(comment: Comment, user: User, trx?: TransactionClientContract) {
     return this.#manage(comment, async () => {
       if (comment.replyTo) {

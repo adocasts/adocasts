@@ -3,7 +3,7 @@ import logger from '#services/logger_service'
 import app from '@adonisjs/core/services/app'
 import { IP2Location } from 'ip2location-nodejs'
 
-export default class GetIpLocation extends BaseAction<[string | undefined]> {
+export default class GetIpLocation extends BaseAction {
   async handle(ip: string | undefined) {
     const fallback = { city: undefined, countryLong: undefined, countryShort: undefined }
     if (app.inTest || !ip) return fallback

@@ -8,7 +8,7 @@ import { Infer } from '@vinejs/vine/types'
 import GetNewMentions from '../notifications/get_new_mentions.js'
 import SendMentionNotification from '../notifications/send_mention_notification.js'
 
-export default class UpdateComment extends BaseAction<[User, Comment, string]> {
+export default class UpdateComment extends BaseAction {
   validator = commentUpdateValidator
 
   async asController(

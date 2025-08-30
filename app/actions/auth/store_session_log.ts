@@ -14,7 +14,7 @@ type Arguments = [
   isRememberSession: boolean | undefined,
 ]
 
-export default class StoreSessionLog extends BaseAction<Arguments> {
+export default class StoreSessionLog extends BaseAction {
   async handle(...args: Arguments) {
     const [user, ipAddress, userAgent, sessionId, isRememberSession] = args
 

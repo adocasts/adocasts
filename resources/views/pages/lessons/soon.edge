@@ -10,175 +10,122 @@
   },
   style: `--aside-width: ${lesson.hasVideo ? '325px' : '0'}; --footer-less-width: var(--aside-width);`,
 })
-  <main {{ html.attrs({ class: ['w-full', lesson.hasVideo ? 'lg:w-[calc(100%_-_var(--aside-width))]' : 'container mx-auto' ] }) }}>
-    <div class="p-3 lg:p-6 !pb-0">
-      <div class="w-full bg-base-100/25 flex items-center justify-between gap-0.5 rounded-t-[var(--radius-box)] px-3 py-1.5">
-        <div class="flex items-center">
-          <a href="/" class="btn btn-ghost btn-square opacity-60 hover:opacity-100 duration-200">
-            <img class="w-6 h-6" src="/imgs/logo-icon.svg" alt="Adocasts" />
-          </a>
+  <div class="drawer drawer-end xl:drawer-open">
+    <input id="series-details-drawer" type="checkbox" class="drawer-toggle">
 
-          <div class="h-5 w-px bg-base-100 mx-3"></div>
-
-          @if (series)
-            <a href="{{ route('series.show', { slug: series.slug }) }}" class="btn btn-ghost btn-primary">
-              @svg('solar:double-alt-arrow-left-outline', { class: 'w-4 h-4' })
-              Series Details
-            </a>
-          @else
-            <a href="{{ route('lessons.index') }}" class="btn btn-ghost btn-primary" up-back>
-              @svg('solar:double-alt-arrow-left-outline', { class: 'w-4 h-4' })
-              Go Back
-            </a>
-          @endif
-        </div>
-
-        <div class="flex justify-end items-center">
-          <div class="flex items-center justify-end">
-            @!frags.lesson.bookmarkToggle({ lesson })
+    <main {{ html.attrs({ class: ['w-full', lesson.hasVideo ? 'xl:w-[calc(100%_-_var(--aside-width))]' : '' ] }) }}>
+      <div class="p-3 lg:p-6 !pb-0">
+        <div class="w-full bg-base-100/25 flex items-center justify-between gap-0.5 rounded-t-[var(--radius-box)] px-3 py-1.5">
+          <div class="flex items-center">
+            @if (series)
+              <a href="{{ route('series.show', { slug: series.slug }) }}" class="btn btn-ghost btn-primary">
+                @svg('solar:double-alt-arrow-left-outline', { class: 'w-4 h-4' })
+                <span class="hidden sm:inline truncate">
+                  {{ series.name }}
+                </span>
+              </a>
+            @else
+              <a href="{{ route('lessons.index') }}" class="btn btn-ghost btn-primary" up-back>
+                @svg('solar:double-alt-arrow-left-outline', { class: 'w-4 h-4' })
+                Go Back
+              </a>
+            @endif
           </div>
 
-          @if (series)
-            <div class="h-5 w-px bg-base-100 mx-3"></div>
-
-            @let(nextLesson = GetSeries.nextLesson(series, lesson.id))
-            @let(prevLesson = GetSeries.prevLesson(series, lesson.id))
+          <div class="flex justify-end items-center">
             <div class="flex items-center justify-end">
-              @tooltip({ text: 'Previous Lesson', class: 'tooltip-bottom' })
-                <a {{ html.attrs({ href: prevLesson?.routeUrl, class: 'btn btn-ghost btn-primary btn-square', disabled: !prevLesson }) }}>
-                  @svg('solar:arrow-left-outline', { class: 'w-5 h-5' })
-                </a>
-              @end
-              @tooltip({ text: 'Next Lesson', class: 'tooltip-bottom' })
-                <a {{ html.attrs({ href: nextLesson?.routeUrl, class: 'btn btn-ghost btn-primary btn-square', disabled: !nextLesson }) }}>
-                  @svg('solar:arrow-right-outline', { class: 'w-5 h-5' })
-                </a>
-              @end
+              @!frags.lesson.bookmarkToggle({ lesson })
             </div>
-          @endif
 
-          <div class="h-5 w-px bg-base-100 ml-3 mr-6"></div>
+            @if (series)
+              <div class="h-5 w-px bg-base-100 mx-3 xl:hidden"></div>
 
-          @!frags.header.auth()
-        </div>
-      </div>
-
-      <div class="no-access relative aspect-video bg-base-100 rounded-base p-12 flex items-center justify-center w-full h-full">
-        <div class="relative z-10">
-          <h3 class="font-black uppercase text-xl lg:text-3xl tracking-wider">
-            This lesson is coming soon
-          </h3>
-          <p class="lg:text-lg max-w-lg mt-3 mb-10">
-            Please check back {{ TimeService.timeago(lesson.publishAt) }}
-          </p>
-          @!countdown({ dateTime: lesson.publishAt })
-        </div>
-      </div>
-    </div>
-
-    <div class="max-w-prose mx-auto flex gap-3 lg:gap-6 mt-6 lg:mt-8 mb-12">
-      <div class="@container flex-1">
-        <h1 class="heading-2a">
-          {{ lesson.title }}
-        </h1>
-
-        @if (lesson.author)
-          <div class="flex gap-3 lg:gap-3 items-center mb-6">
-            @profile.link({ user: lesson.author })
-              <div class="avatar">
-                <div class="w-10 rounded-full">
-                  @!user.avatar({ user: lesson.author, loading: 'lazy', alt: lesson.author.handle })
-                </div>
+              <div class="drawer-content xl:hidden">
+                <label for="series-details-drawer" aria-label="open sidebar" class="btn btn-ghost btn-primary btn-square">
+                  @svg('solar:list-outline', { class: 'size-5 opacity-80' })
+                </label>
               </div>
             @end
+          </div>
+        </div>
 
-            <div class="flex flex-col">
-              <h5 class="text-xs opacity-60">Prepared by</h5>
-              <div class="flex gap-x-3 items-baseline">
-                @profile.link({ user: lesson.author })
-                  <span>
-                    {{ lesson.author.handle }}
+        <div class="no-access relative aspect-video bg-base-100 rounded-base p-12 flex items-center justify-center w-full h-full">
+          <div class="relative z-10">
+            <h3 class="font-black uppercase text-xl lg:text-3xl tracking-wider">
+              This lesson is coming soon
+            </h3>
+            <p class="lg:text-lg max-w-lg mt-3 mb-10">
+              Please check back {{ TimeService.timeago(lesson.publishAt) }}
+            </p>
+            @!countdown({ dateTime: lesson.publishAt })
+          </div>
+        </div>
+      </div>
+
+      <div class="max-w-prose mx-auto flex gap-3 lg:gap-6 mt-6 lg:mt-8 mb-12">
+        <div class="@container flex-1">
+          <h1 class="heading-2a">
+            {{ lesson.title }}
+          </h1>
+
+          @if (lesson.author)
+            <div class="flex gap-3 lg:gap-3 items-center mb-6">
+              @profile.link({ user: lesson.author })
+                <div class="avatar">
+                  <div class="w-10 rounded-full">
+                    @!user.avatar({ user: lesson.author, loading: 'lazy', alt: lesson.author.handle })
+                  </div>
+                </div>
+              @end
+
+              <div class="flex flex-col">
+                <h5 class="text-xs opacity-60">Prepared by</h5>
+                <div class="flex gap-x-3 items-baseline">
+                  @profile.link({ user: lesson.author })
+                    <span>
+                      {{ lesson.author.handle }}
+                    </span>
+                  @end
+
+                  <span class="text-primary relative top-[0.25rem]">
+                    @svg('solar:double-alt-arrow-right-broken', { class: 'w-4 h-4' })
                   </span>
-                @end
 
-                <span class="text-primary relative top-[0.25rem]">
-                  @svg('solar:double-alt-arrow-right-broken', { class: 'w-4 h-4' })
-                </span>
-
-                <span class="flex-none opacity-60 text-sm">
-                  <time datetime="{{ lesson.createdAt }}">{{ TimeService.timeago(lesson.publishAt) }}</time>
-                </span>
+                  <span class="flex-none opacity-60 text-sm">
+                    <time datetime="{{ lesson.createdAt }}">{{ TimeService.timeago(lesson.publishAt) }}</time>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        @endif
-
-        <div class="flex items-center text-sm uppercase gap-2 -ml-7">
-          @svg('solar:double-alt-arrow-right-broken', { class: 'w-5 h-5 text-primary' })
-          Coming soon
-        </div>
-        <p class="text-pretty font-medium opacity-60 sm:text-lg mb-6">
-          @if (lesson.description.startsWith('In this lesson,'))
-            @let([char, ...desc] = lesson.description.replace('In this lesson,', '').trim())
-
-            {{ [char?.toUpperCase(), ...desc].join('') }}
-          @else
-            {{ lesson.description }}
           @endif
-        </p>
-      </div>
 
-    </div>
-  </main>
-
-  @if (series)
-    <aside class="w-[var(--aside-width)] border-l border-base-100 fixed right-0 top-0 h-full flex flex-col overflow-hidden">
-      <div class="px-6 pt-6 pb-3 group">
-        <h3 class="heading-5 !font-semibold !leading-tight !mb-0">
-          <a href="{{ route('series.show', { slug: series.slug }) }}">
-            {{ series.name }}
-          </a>
-        </h3>
-
-        <div class="flex items-center gap-3 mt-1">
-          <div class="flex items-center gap-1 text-xs">
-            @svg('solar:video-library-bold-duotone', { class: '-mt-px opacity-80 group-hover:opacity-100 duration-200' })
-            <span class="opacity-60 group-hover:opacity-100 duration-200">
-              {{ series.meta.posts_count }} Lessons
-            </span>
+          <div class="flex items-center text-sm uppercase gap-2 -ml-7">
+            @svg('solar:double-alt-arrow-right-broken', { class: 'w-5 h-5 text-primary' })
+            Coming soon
           </div>
+          <p class="text-pretty font-medium opacity-60 sm:text-lg mb-6">
+            @if (lesson.description.startsWith('In this lesson,'))
+              @let([char, ...desc] = lesson.description.replace('In this lesson,', '').trim())
 
-          <div class="flex items-center gap-1 text-xs group">
-            @svg('solar:clock-circle-bold-duotone', { class: 'opacity-80 group-hover:opacity-100 duration-200' })
-            <span class="opacity-60 group-hover:opacity-100 duration-200">
-              {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
-            </span>
+              {{ [char?.toUpperCase(), ...desc].join('') }}
+            @else
+              {{ lesson.description }}
+            @endif
+          </p>
+        </div>
+
+      </div>
+    </main>
+
+    @if (series)
+      <aside class="drawer-side !top-16 z-20">
+          <label for="series-details-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+
+          <div class="w-[var(--aside-width)] border-l border-base-100 xl:fixed right-0 top-16 h-[calc(100%_-_4rem)] flex flex-col overflow-hidden bg-base-300 dark:bg-base-300/85 backdrop-blur-md max-lx:shadow-sm">
+            @!lesson.seriesLessonList({ lesson, series })
           </div>
-        </div>
-      </div>
-      <div x-data="seriesCard" class="flex-1 faded-scroll-y to-base-300" :style="overflowStyle">
-        <div class="h-full overflow-y-auto p-3" @scroll="handleScroll">
-          @each (module in series.modules)
-            <details class="collapse rounded-none group" open>
-              <summary class="collapse-title !p-0 min-h-0 mb-3">
-                <div class="flex items-center gap-4 border-2 border-base-100 p-3 pl-2 rounded-md">
-                  @svg('solar:double-alt-arrow-right-broken', { class: 'w-5 h-5 text-primary' })
-                  <h5 class="font-semibold text-sm">
-                    {{ module.name }}
-                  </h5>
-                </div>
-              </summary>
-
-              <div class="collapse-content !p-0">
-                @!series.list.lessons({ module, lesson })
-              </div>
-            </details>
-          @endeach
-
-          @!series.list.lessons({ lessons: series.lessons, lesson })
-        </div>
-      </div>
-    </aside>
-  @endif
+      </aside>
+    @endif
+  </div>
 
 @end

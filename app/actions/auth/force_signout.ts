@@ -3,9 +3,7 @@ import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
 import { DateTime } from 'luxon'
 
-export default class ForceSignOut extends BaseAction<
-  [User, string | undefined, number | undefined]
-> {
+export default class ForceSignOut extends BaseAction {
   async asController({ request, response, session, params, auth }: HttpContext) {
     await this.handle(auth.user!, request.sessionToken, params.id)
 

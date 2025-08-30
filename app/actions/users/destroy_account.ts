@@ -8,7 +8,7 @@ import { confirmUsernameValidator } from '#validators/user_setting'
 import { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 
-export default class DestroyAccount extends BaseAction<[User]> {
+export default class DestroyAccount extends BaseAction {
   validator = confirmUsernameValidator
 
   async asController({ response, auth, session }: HttpContext) {

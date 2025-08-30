@@ -9,7 +9,7 @@ export interface RouteReferrerInterface {
   route: MatchedRoute | null
 }
 
-export default class GetRouteReferrer extends BaseAction<[Request | string]> {
+export default class GetRouteReferrer extends BaseAction {
   handle(requestOrReferrer: Request | string | undefined): RouteReferrerInterface {
     const result: RouteReferrerInterface = { referrer: null, route: null }
 

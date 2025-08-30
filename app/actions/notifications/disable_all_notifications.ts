@@ -2,7 +2,7 @@ import BaseAction from '#actions/base_action'
 import Profile from '#models/profile'
 import { HttpContext } from '@adonisjs/core/http'
 
-export default class DisableAllNotifications extends BaseAction<[userId: number]> {
+export default class DisableAllNotifications extends BaseAction {
   async asController({ request, response, params, auth, session }: HttpContext) {
     if (!request.hasValidSignature() || (auth.user && params.userId !== auth.user.id.toString())) {
       session.toast('error', 'Link signature is expired or invalid')

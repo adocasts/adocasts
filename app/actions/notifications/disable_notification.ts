@@ -2,7 +2,7 @@ import BaseAction from '#actions/base_action'
 import Profile from '#models/profile'
 import { HttpContext } from '@adonisjs/core/http'
 
-export default class DisableNotification extends BaseAction<[userId: number, fieldName: string]> {
+export default class DisableNotification extends BaseAction {
   #fields = [
     {
       field: 'emailOnComment',

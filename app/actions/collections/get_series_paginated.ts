@@ -9,7 +9,7 @@ import { Infer } from '@vinejs/vine/types'
 
 type Filters = Infer<typeof seriesPaginatorValidator>
 
-export default class GetSeriesPaginated extends BaseAction<[Filters, string | undefined]> {
+export default class GetSeriesPaginated extends BaseAction {
   async handle(
     { page = 1, perPage = 20, ...filters }: Filters = {},
     routeIdentifier: string = '',

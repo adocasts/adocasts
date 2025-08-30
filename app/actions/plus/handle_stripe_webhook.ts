@@ -6,7 +6,7 @@ import { HttpContext } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
 import Stripe from 'stripe'
 
-export default class HandleStripeWebhook extends BaseAction<[Stripe.Event]> {
+export default class HandleStripeWebhook extends BaseAction {
   async asController({ request, response }: HttpContext) {
     const isProd = app.inProduction
     let event: Stripe.Event

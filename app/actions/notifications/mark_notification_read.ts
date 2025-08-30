@@ -2,7 +2,7 @@ import BaseAction from '#actions/base_action'
 import Notification from '#models/notification'
 import { DateTime } from 'luxon'
 
-export default class MarkNotificationRead extends BaseAction<[Notification[] | Notification]> {
+export default class MarkNotificationRead extends BaseAction {
   async handle(notifications: Notification[] | Notification) {
     if (!Array.isArray(notifications)) {
       notifications = [notifications]

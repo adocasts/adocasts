@@ -1,8 +1,8 @@
-import Comment from '#models/comment'
 import BaseAction from '#actions/base_action'
+import NotificationTypes from '#enums/notification_types'
+import Comment from '#models/comment'
 import Discussion from '#models/discussion'
 import LessonRequest from '#models/lesson_request'
-import NotificationTypes from '#enums/notification_types'
 import Notification from '#models/notification'
 import stringHelpers from '@adonisjs/core/helpers/string'
 import { TransactionClientContract } from '@adonisjs/lucid/types/database'
@@ -19,9 +19,7 @@ export interface SendNotificationInterface<T extends LucidModel> {
   trx?: TransactionClientContract
 }
 
-export default class SendNotification<T extends LucidModel> extends BaseAction<
-  [SendNotificationInterface<T>]
-> {
+export default class SendNotification<T extends LucidModel> extends BaseAction {
   async handle(data: SendNotificationInterface<T>) {
     if (this.#getIsSelf(data)) return []
 

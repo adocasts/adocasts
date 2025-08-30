@@ -1,16 +1,16 @@
-import Comment from '#models/comment'
 import BaseAction from '#actions/base_action'
-import logger from '#services/logger_service'
+import NotificationTypes from '#enums/notification_types'
+import NotImplementedException from '#exceptions/not_implemented_exception'
+import Comment from '#models/comment'
 import Discussion from '#models/discussion'
 import LessonRequest from '#models/lesson_request'
 import User from '#models/user'
-import { TransactionClientContract } from '@adonisjs/lucid/types/database'
-import SendNotification from './send_notification.js'
-import router from '@adonisjs/core/services/router'
-import NotImplementedException from '#exceptions/not_implemented_exception'
-import NotificationTypes from '#enums/notification_types'
-import GetMentions from './get_mentions.js'
+import logger from '#services/logger_service'
 import { InvalidArgumentsException } from '@adonisjs/core/exceptions'
+import router from '@adonisjs/core/services/router'
+import { TransactionClientContract } from '@adonisjs/lucid/types/database'
+import GetMentions from './get_mentions.js'
+import SendNotification from './send_notification.js'
 
 type Record = Comment | Discussion | LessonRequest
 
@@ -30,9 +30,7 @@ interface MentionNotificationInterface {
   trx?: TransactionClientContract
 }
 
-export default class SendMentionNotification extends BaseAction<
-  [SendMentionNotificationInterface]
-> {
+export default class SendMentionNotification extends BaseAction {
   async handle({ record, user, mentions, skipUserIds, trx }: SendMentionNotificationInterface) {
     return this.#manage(record, async () => {
       const userIds: number[] = []

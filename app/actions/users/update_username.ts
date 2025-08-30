@@ -3,7 +3,7 @@ import User from '#models/user'
 import { updateUsernameValidator } from '#validators/user_setting'
 import { HttpContext } from '@adonisjs/core/http'
 
-export default class UpdateUsername extends BaseAction<[User, string]> {
+export default class UpdateUsername extends BaseAction {
   async asController({ request, response, session, auth }: HttpContext) {
     const user = auth.use('web').user!
     const username = request.input('username')

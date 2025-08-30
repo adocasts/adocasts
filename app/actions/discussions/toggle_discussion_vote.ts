@@ -1,13 +1,13 @@
 import BaseAction from '#actions/base_action'
-import { discussionVoteValidator } from '#validators/discussion'
 import User from '#models/user'
+import { discussionVoteValidator } from '#validators/discussion'
 import { HttpContext } from '@adonisjs/http-server'
 import GetDiscussion from './get_discussion.js'
 
-export default class ToggleDiscussionVote extends BaseAction<[User, number]> {
+export default class ToggleDiscussionVote extends BaseAction {
   validator = discussionVoteValidator
 
-  async asController({ view, params, auth, bouncer, up }: HttpContext) {
+  async asController({ view, params, auth, bouncer }: HttpContext) {
     await bouncer.with('DiscussionPolicy').authorize('vote')
 
     await this.handle(auth.user!, params.id)

@@ -2,7 +2,7 @@ import BaseAction from '#actions/base_action'
 import Discussion from '#models/discussion'
 import { HttpContext } from '@adonisjs/http-server'
 
-export default class DestroyDiscussion extends BaseAction<[Discussion]> {
+export default class DestroyDiscussion extends BaseAction {
   async authorize({ bouncer, params }: HttpContext) {
     const discussion = await Discussion.findByOrFail('slug', params.slug)
 

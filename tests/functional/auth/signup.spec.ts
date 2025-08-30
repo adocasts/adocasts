@@ -2,9 +2,7 @@ import HttpStatus from '#enums/http_statuses'
 import { UserFactory } from '#factories/user_factory'
 import User from '#models/user'
 import db from '@adonisjs/lucid/services/db'
-import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
-import { sessionLogCookieName } from '#config/auth'
 
 test.group('Auth signup', (group) => {
   group.each.setup(async () => {

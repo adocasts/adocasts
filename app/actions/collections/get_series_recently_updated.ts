@@ -8,7 +8,7 @@ interface CacheOptions {
   limit?: number
 }
 
-export default class GetSeriesRecentlyUpdated extends BaseAction<[CacheOptions]> {
+export default class GetSeriesRecentlyUpdated extends BaseAction {
   async handle(options?: CacheOptions) {
     return cache.namespace(CacheNamespaces.COLLECTIONS).getOrSet({
       key: `GET_SERIES_RECENTLY_UPDATED_${JSON.stringify(options)}`,

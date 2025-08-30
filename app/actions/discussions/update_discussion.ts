@@ -10,7 +10,7 @@ import { Infer } from '@vinejs/vine/types'
 
 type Validator = Infer<typeof discussionValidator>
 
-export default class UpdateDiscussion extends BaseAction<[User, Discussion, Validator]> {
+export default class UpdateDiscussion extends BaseAction {
   validator = discussionValidator
 
   async authorize({ bouncer, params }: HttpContext) {

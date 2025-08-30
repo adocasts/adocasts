@@ -1,7 +1,7 @@
-import { Request } from '@adonisjs/core/http'
 import BaseAction from '#actions/base_action'
+import { Request } from '@adonisjs/core/http'
 
-export default class GetIpAddress extends BaseAction<[Request]> {
+export default class GetIpAddress extends BaseAction {
   handle(request: Request) {
     const cfConnectingIp = request.header('Cf-Connecting-Ip')
 

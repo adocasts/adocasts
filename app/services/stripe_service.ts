@@ -26,12 +26,12 @@ class StripeService {
     host: 'localhost',
     protocol: 'http',
     port: 12111,
-    apiVersion: '2025-03-31.basil',
+    apiVersion: '2025-07-30.basil',
   }
 
   // use the real deal otherwise
   private realConfig: Stripe.StripeConfig = {
-    apiVersion: '2025-03-31.basil',
+    apiVersion: '2025-07-30.basil',
   }
 
   constructor() {

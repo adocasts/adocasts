@@ -4,7 +4,7 @@ import { HttpContext } from '@adonisjs/core/http'
 import { Session } from '@adonisjs/session'
 import GetLesson from './get_lesson.js'
 
-export default class TogglePostTranscript extends BaseAction<[User | Session]> {
+export default class TogglePostTranscript extends BaseAction {
   async asController({ view, params, auth, session }: HttpContext) {
     const lesson = await GetLesson.run(params.slug)
 

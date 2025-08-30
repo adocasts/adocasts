@@ -5,7 +5,7 @@ import Watchlist from '#models/watchlist'
 import cache from '@adonisjs/cache/services/main'
 import LessonShowDto from '../../dtos/lesson_show.js'
 
-export default class GetBlog extends BaseAction<[string]> {
+export default class GetBlog extends BaseAction {
   async handle(slug: string, userId?: number) {
     const blog = await cache.namespace(CacheNamespaces.POSTS).getOrSet({
       key: `GET_BLOG_${slug}`,

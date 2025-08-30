@@ -8,7 +8,7 @@ import { Infer } from '@vinejs/vine/types'
 
 type Validator = Infer<typeof searchValidator>
 
-export default class RenderSearch extends BaseAction<[feed: string, filters: Validator]> {
+export default class RenderSearch extends BaseAction {
   validator = searchValidator
 
   async asController({ view, params }: HttpContext, filters: Validator) {

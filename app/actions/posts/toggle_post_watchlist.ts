@@ -4,7 +4,7 @@ import { watchlistPostValidator } from '#validators/watchlist'
 import { HttpContext } from '@adonisjs/core/http'
 import GetLesson from './get_lesson.js'
 
-export default class TogglePostWatchlist extends BaseAction<[User, number]> {
+export default class TogglePostWatchlist extends BaseAction {
   validator = watchlistPostValidator
 
   async asController({ view, auth, params }: HttpContext) {

@@ -5,7 +5,7 @@ import { Session } from '@adonisjs/session'
 
 type HttpContextPartial = { session: Session; request: Request }
 
-export default class GetSessionLogToken extends BaseAction<[ctx: HttpContextPartial]> {
+export default class GetSessionLogToken extends BaseAction {
   async handle({ request, session }: HttpContextPartial) {
     return request.encryptedCookie(sessionLogCookieName, session.get(sessionLogCookieName))
   }

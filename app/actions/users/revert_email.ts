@@ -5,7 +5,7 @@ import emitter from '@adonisjs/core/services/emitter'
 import router from '@adonisjs/core/services/router'
 import db from '@adonisjs/lucid/services/db'
 
-export default class RevertEmail extends BaseAction<[number, string, string]> {
+export default class RevertEmail extends BaseAction {
   async asController({ request, response, params, session }: HttpContext) {
     const isValid = request.hasValidSignature()
     const { id, oldEmail, newEmail } = params

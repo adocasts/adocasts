@@ -18,7 +18,7 @@ interface Event {
 
 type Arguments = [ctx: HttpContext, user: User]
 
-export default class OnAuthenticationSucceeded extends BaseAction<Arguments> {
+export default class OnAuthenticationSucceeded extends BaseAction {
   async asListener({ ctx, user }: Event) {
     await this.handle(ctx, user)
   }

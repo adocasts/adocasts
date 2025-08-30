@@ -5,7 +5,7 @@ import { HttpContext } from '@adonisjs/http-server'
 import { Infer } from '@vinejs/vine/types'
 import { DateTime } from 'luxon'
 
-export default class ToggleDiscussionSolvedAt extends BaseAction<[Discussion, number]> {
+export default class ToggleDiscussionSolvedAt extends BaseAction {
   validator = discussionSolvedValidator
 
   async authorize({ bouncer, params }: HttpContext) {

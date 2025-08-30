@@ -5,7 +5,7 @@ import logger from '#services/logger_service'
 import cache from '@adonisjs/cache/services/main'
 import axios from 'axios'
 
-export default class GetTranscript extends BaseAction<[LessonShowDto]> {
+export default class GetTranscript extends BaseAction {
   async handle(post: LessonShowDto) {
     if (!post.transcriptUrl) return ''
 

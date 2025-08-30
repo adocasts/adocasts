@@ -8,7 +8,7 @@ type Options = {
   limit?: number
 }
 
-export default class GetLessonsLatest extends BaseAction<[Options]> {
+export default class GetLessonsLatest extends BaseAction {
   async handle(options?: Options) {
     return cache.namespace(CacheNamespaces.POSTS).getOrSet({
       key: `GET_LESSONS_LATEST_${JSON.stringify(options)}`,

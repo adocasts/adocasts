@@ -10,7 +10,7 @@ import { Infer } from '@vinejs/vine/types'
 
 type Validator = Infer<typeof updateEmailValidator>
 
-export default class UpdateEmail extends BaseAction<[User, Validator]> {
+export default class UpdateEmail extends BaseAction {
   async asController({ request, response, session, auth }: HttpContext) {
     const email = request.input('email')
     const user = auth.use('web').user!

@@ -24,7 +24,7 @@ type Arguments = [
   isSkipNewDevice?: boolean,
 ]
 
-export default class OnSignInSucceeded extends BaseAction<Arguments> {
+export default class OnSignInSucceeded extends BaseAction {
   async asListener({ ctx, user, rememberMeToken }: Event) {
     await this.handle(ctx, user, !!rememberMeToken)
   }
