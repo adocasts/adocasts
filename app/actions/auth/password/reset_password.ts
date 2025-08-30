@@ -20,13 +20,11 @@ export default class ResetPassword extends BaseAction {
         throw new NotAllowedException('The request structure is invalid.')
       }
 
-      const user = await this.handle(data)
+      await this.handle(data)
 
-      await auth.use('web').login(user)
+      session.toast('success', 'Your password has been successfully reset, please sign in')
 
-      session.toast('success', 'Your password has been successfully reset')
-
-      return response.redirect('/')
+      return response.redirect().toRoute('auth.signin')
     } catch (error) {
       const { email } = request.only(['email'])
       logger.error('PasswordResetController.resetPasswordStore', { email, error })
