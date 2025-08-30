@@ -14,7 +14,7 @@
       {{ discussion.title }}
     </h1>
 
-    <div class="flex justify-between items-center gap-3">
+    <div class="flex flex-wrap md:flex-nowrap justify-between items-center gap-3">
       <div class="flex items-center gap-3">
         <a href="{{ route('discussions.index') }}" class="btn btn-outline btn-sm" up-back>
           @svg('solar:double-alt-arrow-left-outline', { class: 'w-4 h-4' })
@@ -42,7 +42,7 @@
         @endcan
       </div>
 
-      <div x-data class="flex items-center gap-3">
+      <div x-data class="flex justify-between sm:justify-end items-center gap-3 flex-1">
         <div class="flex items-center gap-3">
           @tooltip({ text: `${viewCount.toLocaleString()} ${string.pluralize('Views', viewCount)}`, position: 'bottom' })
             <div class="flex items-center gap-1.5 px-1 text-sm opacity-60">
@@ -59,7 +59,7 @@
           @end
         </div>
 
-        <div class="w-px h-4 bg-base-100 mr-3 ml-1.5"></div>
+        <div class="w-px h-4 bg-base-100 mr-3 ml-1.5 hidden sm:block"></div>
 
         {{--@if (auth.user)
           <button type="button" class="btn btn-outline btn-sm">
@@ -105,7 +105,7 @@
             @can('DiscussionPolicy.update', discussion)
               @form({ action: form.patch('discussions.solved', { slug: discussion.slug }), 'up-scroll': 'preserve' })
                 <input type="hidden" name="commentId" value="{{ scope.comment.id }}">
-                <button type="submit" class="btn btn-outline btn-warning btn-sm">
+                <button type="submit" class="btn btn-outline btn-warning btn-sm text-nowrap">
                   Mark as Unsolved
                 </button>
               @end

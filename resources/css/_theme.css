@@ -157,6 +157,8 @@
 
 @custom-variant midnight (&:where([data-theme=adocasts-midnight], [data-theme=adocasts-midnight] *));
 
+@custom-variant no-hover (@media (hover: none) and (pointer: coarse));
+
 @media (prefers-color-scheme: light) {
   html[data-theme='adocasts-system'] {
     .logo-dark {

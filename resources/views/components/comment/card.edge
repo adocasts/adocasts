@@ -16,7 +16,7 @@
 @card({
   id: `comment${comment.id}`,
   accent: '',
-  class: ['mb-6 group overflow-visible', { 'card-border border-success': solved }],
+  class: ['mb-6 group overflow-hidden', { 'card-border border-success': solved }],
   ':class': "{ 'outline outline-primary': window.location.hash === `#${$el.id}` }",
   'x-init': 'typeof up !== undefined && window.location.hash === `#${$el.id}` && up?.reveal($el, { top: true, behavior: \'smooth\' })'
 })
@@ -83,7 +83,7 @@
         </div>
 
         @if (solved)
-          <div>
+          <div class="absolute top-0 right-0 md:static">
             <div class="badge badge-outline badge-success">Answer</div>
           </div>
         @endif
@@ -97,14 +97,14 @@
 
       <div class="w-full mt-6">
         <div class="w-full flex items-end gap-4 justify-between text-sm">
-          <div class="flex items-center gap-2">
+          <div class="flex flex-wrap items-center gap-2">
             @!frags.comment.vote({ comment })
 
             @if ($slots.actions)
               {{{ await $slots.actions({ comment }) }}}
             @endif
 
-            <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100">
+            <div class="flex items-center gap-2 opacity-0 no-hover:opacity-100 group-hover:opacity-100">
               @can('CommentPolicy.reply', comment)
                 <button class="btn btn-outline btn-sm" @click="create({{ comment.id }})">
                   Reply

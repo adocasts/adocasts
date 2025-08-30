@@ -460,7 +460,7 @@ pre.shiki.github-light {
   }
 
   &:has(.comment-avatar) .ProseMirror {
-    @apply pl-26;
+    @apply md:pl-26;
   }
 
   &:has(.comment-actions) .ProseMirror {
@@ -480,7 +480,7 @@ pre.shiki.github-light {
   }
 
   .comment-info {
-    @apply top-6 left-26 z-10 absolute;
+    @apply top-6 left-14 md:left-26 z-10 absolute;
   }
 
   .comment-actions {
