@@ -30,7 +30,7 @@ export default class StoreSessionSignUp extends BaseAction {
     await user.related('profile').create({})
     await auth.use('web').login(user, options?.remember)
 
-    await OnSignInSucceeded.run({ request, response, session }, user, options?.remember)
+    await OnSignInSucceeded.run({ request, response, session }, user, options?.remember, true)
 
     const redirect = await this.#getRedirectLocation(options)
     const checkout = await this.#checkForPlan(user, options)

@@ -13,9 +13,9 @@ type Validator = Infer<typeof passwordResetValidator>
 
 export default class ResetPassword extends BaseAction {
   async asController({ request, response, session, auth }: HttpContext) {
-    try {
-      const data = await request.validateUsing(passwordResetValidator)
+    const data = await request.validateUsing(passwordResetValidator)
 
+    try {
       if (!(await hash.verify(data.token, data.email))) {
         throw new NotAllowedException('The request structure is invalid.')
       }
