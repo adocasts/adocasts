@@ -19,6 +19,10 @@
     @apply bg-base-content/5 border-base-100;
   }
 
+  & :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    @apply decoration-base-content/25 hover:decoration-base-content duration-200;
+  }
+
   &.textarea {
     width: 100%;
     max-width: 100%;

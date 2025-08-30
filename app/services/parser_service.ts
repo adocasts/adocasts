@@ -1,7 +1,7 @@
 import env from '#start/env'
 import string from '@adonisjs/core/helpers/string'
 import edge from 'edge.js'
-import { parse } from 'node-html-parser'
+import { HTMLElement, parse } from 'node-html-parser'
 import { bundledLanguages, createHighlighter } from 'shiki'
 
 const highlighter = await createHighlighter({
@@ -380,7 +380,44 @@ class ParserService {
       await Promise.all(promises)
     }
 
+    this.addUtmTags(root)
+
     return root.toString()
+  }
+
+  addUtmTags(root: HTMLElement) {
+    const links = root.querySelectorAll('a')
+    const utms = {
+      utm_source: 'adocasts.com',
+    }
+
+    const utmQueryString = new URLSearchParams(utms).toString()
+
+    links.forEach((link) => {
+      try {
+        const href = link.getAttribute('href')
+
+        if (!href) {
+          return
+        }
+
+        if (href.startsWith('http://') || href.startsWith('https://')) {
+          const url = new URL(href)
+
+          if (url.search) {
+            url.search += '&' + utmQueryString
+          } else {
+            url.search = utmQueryString
+          }
+
+          link.setAttribute('href', url.toString())
+        }
+      } catch (_error) {
+        return
+      }
+    })
+
+    return root
   }
 }
 
