@@ -222,7 +222,8 @@
 
 .prose .line {
   display: block;
-  line-height: 2;
+  line-height: 1.75;
+  font-size: .8rem;
 }
 
 .prose img {
@@ -459,9 +460,9 @@ pre.shiki.github-light {
     @apply pt-14;
   }
 
-  &:has(.comment-avatar) .ProseMirror {
+  /* &:has(.comment-avatar) .ProseMirror {
     @apply md:pl-26;
-  }
+  } */
 
   &:has(.comment-actions) .ProseMirror {
     @apply pb-26;
@@ -472,18 +473,22 @@ pre.shiki.github-light {
   }
 
   .ProseMirror {
-    @apply p-6;
+    @apply px-4 md:px-6 py-6;
   }
 
   .comment-avatar {
-    @apply top-6 left-6 z-10 absolute;
+    @apply top-4 left-4 md:left-6 z-10 absolute;
   }
 
   .comment-info {
-    @apply top-6 left-14 md:left-26 z-10 absolute;
+    @apply top-4 left-14 z-10 absolute;
   }
 
   .comment-actions {
-    @apply right-6 bottom-6 z-10 absolute;
+    @apply right-4 bottom-4 z-10 absolute;
+  }
+
+  .tiptap-help {
+    @apply bottom-4 left-4 md:left-6;
   }
 }

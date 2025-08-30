@@ -204,6 +204,12 @@ html[data-theme='adocasts-light'] {
   }
 }
 
+.btn-inner-xs .btn {
+  @apply !btn-xs;
+
+  column-gap: calc(var(--spacing) * 1.5);
+}
+
 .btn-outline,
 .badge-outline {
   @apply border-base-100;

@@ -8,7 +8,7 @@
     index: user.isEnabledProfile
   }
 })
-  <div class="relative">
+  <div class="w-full relative">
     @if (user.avatarRelative)
       <div x-data="color('{{ user.avatarRelative }}', 2)" class="h-24 absolute top-0 left-0 w-full" :style="style"></div>
     @else
@@ -39,22 +39,24 @@
         </p>
       @endif
 
-      <div class="flex flex-wrap gap-4 text-sm lg:text-base mt-6">
-        @if (user.profile.company)
-          <p class="flex items-center gap-1.5 truncate">
-            @svg('solar:buildings-bold-duotone', { class: 'w-4 h-4' })
-            {{ user.profile.company }}
-          </p>
-        @endif
-        @if (user.profile.location)
-          <p class="flex items-center gap-1.5 truncate">
-            @svg('solar:earth-bold-duotone', { class: 'w-4 h-4' })
-            {{ user.profile.location }}
-          </p>
-        @endif
-      </div>
+      @if (user.profile.company || user.profile.location)
+        <div class="flex flex-wrap gap-4 text-sm lg:text-base mt-6">
+          @if (user.profile.company)
+            <p class="flex items-center gap-1.5 truncate">
+              @svg('solar:buildings-bold-duotone', { class: 'w-4 h-4' })
+              {{ user.profile.company }}
+            </p>
+          @endif
+          @if (user.profile.location)
+            <p class="flex items-center gap-1.5 truncate">
+              @svg('solar:earth-bold-duotone', { class: 'w-4 h-4' })
+              {{ user.profile.location }}
+            </p>
+          @endif
+        </div>
+      @endif
 
-      @!profile.socialLinks({ user, class: 'mt-6 sm:hidden' })
+      @!profile.socialLinks({ user, class: 'has-[a]:mt-6 sm:hidden' })
 
       @if (!user.isEnabledProfile)
         <div role="alert" class="alert alert-warning alert-outline mt-6">
@@ -65,7 +67,7 @@
         </div>
       @endif
 
-      <div class="bg-base-200 mt-10 mb-6 rounded-base">
+      <div class="border border-base-100 mt-6 md:mt-10 mb-6 rounded-base">
         @!stat.user({ 
           stats, 
           size: 'base', 
@@ -75,21 +77,21 @@
       </div>
 
       <main class="@container flex-1 section-b" up-main-content>
-        <div class="tabs tabs-box">
+        <div class="tabs tabs-box mb-6 border border-base-100 bg-transparent">
           <a
-            class="tab {{ html.classNames([{ 'tab-active': tab === 'activity' }]) }}"
+            class="tab {{ html.classNames([{ 'bg-primary/10 !border !border-primary/50 !text-primary': tab === 'activity' }]) }}"
             href="{{ route('users.profile', { handle: user.handle }) }}"
             up-scroll="preserve">
-            @svg('solar:pulse-bold-duotone', { class: 'w-4 h-4 mr-2', })
+            @svg('solar:pulse-linear', { class: 'w-4 h-4 mr-2', })
             Activity
           </a>
 
           <a
             role="tab"
-            class="tab {{ html.classNames([{ 'tab-active': tab === 'discussions' }]) }}"
+            class="tab {{ html.classNames([{ 'bg-primary/10 !border !border-primary/50 !text-primary': tab === 'discussions' }]) }}"
             href="{{ route('users.profile', { handle: user.handle, tab: 'discussions' })}}"
             up-scroll="preserve">
-            @svg('solar:chat-line-bold-duotone', { class: 'w-4 h-4 mr-2' })
+            @svg('solar:chat-line-outline', { class: 'w-4 h-4 mr-2' })
             Discussions
           </a>
         </div>

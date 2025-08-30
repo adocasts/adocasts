@@ -1,4 +1,4 @@
-<div class="mt-8 lg:mt-12 -mx-6" up-comments>
+<div class="mt-8 lg:mt-12" up-comments>
   <div class="border-t border-base-100 pt-6 mb-6">
     <h3 class="heading-3 !mb-0">
       Join the Discussion
@@ -7,7 +7,10 @@
   </div>
 
   @!comment.form({ commentable: lesson, commentTypeId: CommentTypes.POST, class: 'mb-6' })
-  @!comment.list({ commentable: lesson, comments: lesson.comments })
+  
+  <div class="-mx-6">
+    @!comment.list({ commentable: lesson, comments: lesson.comments })
+  </div>
 
   @if (!lesson.comments.length) 
     <div class="border border-dashed border-base-content/30 rounded-base px-4 py-12 flex flex-col items-center">

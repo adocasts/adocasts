@@ -3,57 +3,61 @@
 @let(levelIndex = $props.levelIndex ?? 0)
 @let(level = comments.filter((comment) => comment.replyTo == parent?.id))
 
-<ol {{
-  html.attrs({
-    'x-data': levelIndex === 0 ? 'comments' : null,
-    class: ['list-none', { 'ml-3 lg:ml-6 relative': levelIndex === 1 }]
-  })
-}}>
-  @if (levelIndex === 1 && level.length)
-    <div class="absolute -left-3 lg:-left-6 -top-10 rotate-180 w-px h-[calc(100%_+_2.5rem)] bg-gradient-to-t from-base-100 to-base-300/0"></div>
-  @endif
+@if (level.length)
+  <ol {{
+    html.attrs({
+      'x-data': levelIndex === 0 ? 'comments' : null,
+      class: ['list-none', { 
+        'pl-3 lg:pl-6 ml-0 relative': levelIndex === 1,
+      }]
+    })
+  }}>
+    @if (levelIndex === 1 && level.length)
+      <div class="absolute left-3 lg:left-6 top-0 rotate-180 w-px h-full bg-base-100"></div>
+    @endif
 
-  @if ($slots.before)
-    {{{ await $slots.before({ level }) }}}
-  @endif
+    @if ($slots.before)
+      {{{ await $slots.before({ level }) }}}
+    @endif
 
-  @each (comment in _.orderBy(level, (item) => item.userVotes.length, ['desc']))
-    <li class="relative">
-      @comment.card({ comment, parent, commentable, levelIndex, solved: commentable.solvedCommentId === comment.id })
-        @slot('actions', scope)
-          @if ($slots.actions)
-            {{{ await $slots.actions(scope) }}}
-          @endif
-        @endslot
-      @end
+    @each (comment in _.orderBy(level, (item) => item.userVotes.length, ['desc']))
+      <li {{ html.attrs({ class: ['relative', { 'border-y first:border-t-0 last:border-b-0 border-base-100 -mt-px': levelIndex === 0 }] }) }}>
+        @comment.card({ comment, parent, commentable, levelIndex, solved: commentable.solvedCommentId === comment.id })
+          @slot('actions', scope)
+            @if ($slots.actions)
+              {{{ await $slots.actions(scope) }}}
+            @endif
+          @endslot
+        @end
 
-      @comment.list({ commentable, comments, parent: comment, levelIndex: levelIndex + 1 })
-        @slot('before')
-          @can('CommentPolicy.reply', comment)
-            <template x-if="createId === {{ comment.id }}">
-              <li class="mb-6">
-                @!comment.form({
-                  commentTypeId: CommentTypes.POST,
-                  rootParentId: comment.rootParentId,
-                  replyingTo: comment,
-                  commentable,
-                  levelIndex,
-                })
-              </li>
-            </template>
-          @endcan
-        @endslot
+        @comment.list({ commentable, comments, parent: comment, levelIndex: levelIndex + 1 })
+          @slot('before')
+            @can('CommentPolicy.reply', comment)
+              <template x-if="createId === {{ comment.id }}">
+                <li class="mb-6">
+                  @!comment.form({
+                    commentTypeId: CommentTypes.POST,
+                    rootParentId: comment.rootParentId,
+                    replyingTo: comment,
+                    commentable,
+                    levelIndex,
+                  })
+                </li>
+              </template>
+            @endcan
+          @endslot
 
-        @slot('actions', scope)
-          @if ($slots.actions)
-            {{{ await $slots.actions(scope) }}}
-          @endif
-        @endslot
-      @end
-    </li>
-  @endeach
+          @slot('actions', scope)
+            @if ($slots.actions)
+              {{{ await $slots.actions(scope) }}}
+            @endif
+          @endslot
+        @end
+      </li>
+    @endeach
 
-  @if ($slots.after)
-    {{{ await $slots.after({ level }) }}}
-  @endif
-</ol>
+    @if ($slots.after)
+      {{{ await $slots.after({ level }) }}}
+    @endif
+  </ol>
+@endif
