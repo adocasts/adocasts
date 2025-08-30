@@ -1,13 +1,11 @@
 import ForbiddenException from '#exceptions/forbidden_exception'
 import NotImplementedException from '#exceptions/not_implemented_exception'
-import { inject } from '@adonisjs/core'
 import { InvalidArgumentsException } from '@adonisjs/core/exceptions'
 import { HttpContext } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
 import { RequestValidationOptions } from '@adonisjs/core/types/http'
 import { VineValidator } from '@vinejs/vine'
 
-// The StaticAction interface now uses a single generic type for the class
 interface StaticAction<T extends BaseAction> {
   new (...args: any[]): T
 }
@@ -21,32 +19,24 @@ export interface BaseActionable {
   validatorOptions?: RequestValidationOptions<any>
 }
 
-@inject()
 export default abstract class BaseAction implements BaseActionable {
   asController?(ctx: HttpContext, ...args: any[]): Promise<any>
   asListener?(...args: any[]): Promise<any>
   authorize?(ctx: HttpContext): Promise<any> | any
-  // The 'asController', 'asListener', 'authorize', and 'handle' properties
-  // can be removed here to avoid redundancy and let the child class define them.
 
-  // The 'run' method is now a static method that directly infers the `handle`
-  // method's argument and return types from the class instance.
   static async run<T extends { handle: (...args: any[]) => any }>(
     this: new (...args: any[]) => T,
     ...args: Parameters<T['handle']>
   ): Promise<ReturnType<T['handle']>> {
-    const action = new this()
+    const action = await app.container.make(this)
 
     if (typeof action.handle !== 'function') {
       throw new NotImplementedException(`${this.name} does not implement 'handle'`)
     }
 
-    // Type-safe call to the handle method
     return action.handle(...args)
   }
 
-  // Other methods like `handleController` remain the same or are slightly modified
-  // to remove the explicit `HandleArgs` generic.
   static async handleController<T extends BaseAction>(this: StaticAction<T>, ...args: any[]) {
     const action = await app.container.make(this)
 
