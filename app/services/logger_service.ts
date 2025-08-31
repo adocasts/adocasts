@@ -44,7 +44,7 @@ class LoggerService {
 
   async log(method: 'info' | 'warn' | 'error' | 'debug' | 'silly', payload: LogPayload) {
     if (app.inTest || !this.enabled) return
-    return this.logger[method](payload)
+    // return this.logger[method](payload)
   }
 
   private build(title: string, message?: string | object | Array<any>) {
