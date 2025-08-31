@@ -99,7 +99,11 @@
     <div up-comments>
       @!comment.form({ commentable: discussion, commentTypeId: CommentTypes.DISCUSSION, class: 'mb-6' })
 
-      @comment.list({ commentable: discussion, comments: discussion.comments })
+      @comment.list({ 
+        commentTypeId: CommentTypes.DISCUSSION,
+        commentable: discussion, 
+        comments: discussion.comments 
+      })
         @slot('actions', scope)
           @if (scope.comment.id === discussion.solvedCommentId)
             @can('DiscussionPolicy.update', discussion)

@@ -29,7 +29,7 @@ export default class StoreComment extends BaseAction {
     const { referrer } = await GetRouteReferrer.run(request)
 
     return referrer
-      ? response.redirect(`${referrer}#comment${comment.id}`)
+      ? response.redirect(`${referrer}?hash=comment${comment.id}#comment${comment.id}`)
       : response.redirect().back()
   }
 
