@@ -59,7 +59,7 @@
     "tailwindcss-animated": "^2.0.0",
     "ts-node-maintained": "^10.9.6",
     "typescript": "~5.8",
-    "vite": "^6.3.3"
+    "vite": "^6.3.5"
   },
   "dependencies": {
     "@adocasts.com/actions": "^1.0.5",
