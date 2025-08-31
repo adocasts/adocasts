@@ -1,6 +1,10 @@
 @let(unreadCount = await GetUnreadNotificationCount.run(auth.user?.id))
 
-<div up-id="header-auth" class="flex items-center justify-end gap-3 ml-3" up-header-auth up-hungry>
+<div 
+  up-id="header-auth" 
+  class="flex items-center justify-end gap-3 {{ auth.user ? 'ml-3' : 'md:ml-3' }}" 
+  up-header-auth 
+  up-hungry>
   @if (auth.user)
     <a href="{{ route('users.menu') }}" class="avatar relative" up-layer="new" up-mode="drawer" up-position="right" up-size="large" up-history="false">
       @if (unreadCount)
