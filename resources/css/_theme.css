@@ -9,7 +9,7 @@
   name: 'adocasts-dark';
   default: false;
   prefersdark: true;
-  color-scheme: 'dark';
+  color-scheme: dark;
 
   --color-white: white;
   --color-black: black;
@@ -57,7 +57,7 @@
   name: 'adocasts-midnight';
   default: false;
   prefersdark: false;
-  color-scheme: 'midnight';
+  color-scheme: dark;
 
   --color-white: white;
   --color-black: black;
@@ -105,7 +105,7 @@
   name: 'adocasts-light';
   default: true;
   prefersdark: false;
-  color-scheme: 'light';
+  color-scheme: light;
 
   --color-white: black;
   --color-black: white;
