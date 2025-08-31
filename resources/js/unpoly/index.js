@@ -45,7 +45,11 @@ up.on('up:fragment:loaded', function (event) {
 
   // custom match to update any matching target with fragment
   if (target?.includes(':any') && event.response.text) {
+    console.log('here', target)
     event.preventDefault()
+    console.log({
+      matches: event.target.querySelectorAll(target),
+    })
     event.target.querySelectorAll(target).forEach((element) => {
       up.render({ target: element, fragment: event.response.text })
     })

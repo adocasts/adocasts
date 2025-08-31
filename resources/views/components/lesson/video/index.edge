@@ -1,4 +1,4 @@
-<div class="bg-base-100/10">
+<div class="bg-base-100/10 {{ $props.class ?? '' }}">
   
     @cannot('PostPolicy.view', lesson)
       <div class="py-24 relative overflow-hidden border-b border-base-100">

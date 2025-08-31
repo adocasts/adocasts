@@ -1,0 +1,27 @@
+@let(rerender = $props.rerender ?? false)
+
+<div {{ $props.except(['lesson', 'series', 'transcript']).toAttrs() }}>
+  @!frags.lesson.completedToggle({ lesson, series, rerender })
+  
+  @if (lesson.hasVideo)
+    @!frags.lesson.autoplayToggle({ lesson })
+  @endif
+
+  @can('PostPolicy.view', lesson)
+    @if (transcript)
+      @!frags.lesson.transcriptToggle({ lesson })
+    @endif
+  @endcan
+
+  @!frags.lesson.bookmarkToggle({ lesson })
+
+  @if (lesson.repositoryUrl)
+    @tooltip({ text: 'View Lesson Repository', class: 'tooltip-bottom' })
+      <a href="{{ lesson.repositoryUrl }}" class="group/tog btn btn-toggle btn-primary btn-square" up-follow="false" target="_blank">
+        @svg('solar:code-outline', { class: 'w-5 h-5 text-base-content/60 group-hover/tog:text-base-content duration-200' })
+      </a>
+    @end
+  @endif
+
+  @!frags.lesson.downloadVideo({ lesson })
+</div>
