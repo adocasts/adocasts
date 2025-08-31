@@ -4,8 +4,17 @@ import NotImplementedException from '#exceptions/not_implemented_exception'
 import Taxonomy from '#models/taxonomy'
 import TopicDto from '../../dtos/topic.js'
 
+type TopicTypes =
+  | 'collections'
+  | 'posts'
+  | 'lessons'
+  | 'blogs'
+  | 'snippets'
+  | 'discussions'
+  | 'discussions_form'
+
 export default class GetTopicsFilter extends BaseAction {
-  async handle(type: 'collections' | 'posts' | 'lessons' | 'blogs' | 'snippets' | 'discussions') {
+  async handle(type: TopicTypes) {
     switch (type) {
       case 'collections':
         return this.#get('collections_count')
@@ -18,17 +27,19 @@ export default class GetTopicsFilter extends BaseAction {
       case 'snippets':
         return this.#get('snippets_count')
       case 'discussions':
-        return this.#forDiscussions()
+        return this.#forDiscussions('list')
+      case 'discussions_form':
+        return this.#forDiscussions('form')
       default:
         throw new NotImplementedException(`${this.constructor.name} does not implement ${type}`)
     }
   }
 
-  async #forDiscussions() {
+  async #forDiscussions(purpose: 'form' | 'list') {
     const topics = await Taxonomy.build()
       .orderBy('name')
+      .if(purpose === 'list', (query) => query.whereHasDiscussion())
       .withDiscussionCount()
-      .whereHasDiscussion()
       .dto(TopicDto)
 
     return topics.toSorted((a, b) => b.meta.discussions_count - a.meta.discussions_count)

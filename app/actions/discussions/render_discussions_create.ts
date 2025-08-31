@@ -9,7 +9,8 @@ export default class RenderDiscussionsCreate extends BaseAction {
 
   async asController({ view }: HttpContext) {
     const topics = await GetTopicsFilter.run('discussions')
+    const topicOptions = await GetTopicsFilter.run('discussions_form')
 
-    return view.render('pages/discussions/form', { topics })
+    return view.render('pages/discussions/form', { topics, topicOptions })
   }
 }

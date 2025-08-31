@@ -145,8 +145,8 @@
   @apply absolute my-0 text-transparent caret-base-content;
 
   background-color: transparent;
-  top: 2.225rem;
-  left: 2.325rem;
+  top: 2.27rem;
+  left: 2.05rem;
   line-height: 2;
   margin-top: 0;
   margin-bottom: 0;
@@ -224,8 +224,12 @@
   z-index: 20;
 }
 
-.prose .line {
+.pose .line {
   display: block;
+}
+
+.prose .line,
+.hidden-content pre code {
   line-height: 1.75;
   font-size: .8rem;
 }
