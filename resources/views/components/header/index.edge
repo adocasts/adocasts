@@ -8,7 +8,8 @@
       id="slot-header"
       x-data="header"
       up-fixed="top"
-      :class="['w-full h-16 border border-base-100 duration-300',
+      class="w-full h-16 border border-base-100 duration-300"
+      :class="[
         isWindowScrolled || {{ forceBackdrop }}
           ? 'bg-base-200/75 midnight:bg-base-300/75 backdrop-blur-md shadow-sm'
           : 'bg-base-300/10 backdrop-blur-xs shadow-none']"
@@ -16,10 +17,8 @@
       @location="onLocationChange"
       {{ html.attrs({ 'x-cloak': request.url().includes('/lessons/') }) }}
     >
-      <div :class="{
-        'mx-auto flex justify-between items-center h-full': true,
-        '{{ container }}': isContainer,
-        'px-6': !isContainer,
+      <div class="mx-auto flex justify-between items-center h-full px-0 container" :class="{
+        '!px-6 !max-w-none': !isContainer,
       }">
         <div class="h-full flex items-center gap-3 lg:gap-6">
           <div class="flex-none md:hidden border-r border-base-100 pr-3 lg:pr-6">
