@@ -1,4 +1,5 @@
 @let(progression = auth.user && progress.collection.get(series.id))
+@let(nextUp = GetSeries.nextUserLesson(series, progress))
 
 @layout({
   title: `${series.name} | Adocasts Series`,
@@ -24,7 +25,7 @@
         @endif
 
         <div class="flex flex-1 items-center gap-3 mt-10">
-          <a href="#" class="btn btn-outline btn-primary flex-1 sm:btn-wide">
+          <a href="{{ nextUp.routeUrl }}" class="btn btn-outline btn-primary flex-1 sm:btn-wide">
             @svg('solar:play-outline', { class: 'size-4 mr-1 opacity-80' })
             @if (progression?.percent)
               Continue Series
@@ -142,7 +143,7 @@
 
         <div class="flex items-center justify-between gap-3 mt-6">
           <div class="flex flex-1 items-center gap-3">
-            <a href="#" class="btn btn-outline btn-primary flex-1">
+            <a href="{{ nextUp.routeUrl }}" class="btn btn-outline btn-primary flex-1">
               @svg('solar:play-outline', { class: 'size-4 mr-1 opacity-80' })
               @if (progression?.percent)
                 Continue Series
