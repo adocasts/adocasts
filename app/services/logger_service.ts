@@ -42,7 +42,7 @@ class LoggerService {
     return this.log('silly', this.build(title, message))
   }
 
-  async log(method: 'info' | 'warn' | 'error' | 'debug' | 'silly', payload: LogPayload) {
+  async log(_method: 'info' | 'warn' | 'error' | 'debug' | 'silly', _payload: LogPayload) {
     if (app.inTest || !this.enabled) return
     // return this.logger[method](payload)
   }
