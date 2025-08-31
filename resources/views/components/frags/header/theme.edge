@@ -21,6 +21,7 @@
   change: (theme) => {
     up.submit('#header-theme-form', { params: { theme } })
     document.documentElement.setAttribute('data-theme', `adocasts-${theme}`)
+    window?.updateColorScheme()
   }
 }" up-header-theme up-hungry>
   @form({ id: 'header-theme-form', action: form.patch('users.theme'), 'up-target': '[up-header-theme]' })

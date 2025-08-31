@@ -20,15 +20,19 @@
 
     <script>
       // set system color scheme preference
-      const updateColorScheme = (e) => {
+      window.updateColorScheme = (e = window.matchMedia('(prefers-color-scheme: dark)')) => {
         const isDark = e.matches ?? window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
         document.documentElement.setAttribute('prefers-color-scheme', isDark ? 'dark' : 'light');
-        document.documentElement.dataset.theme = isDark ? 'adocasts-dark' : 'adocasts-light'
+        
+        if (document.documentElement.dataset.theme === 'adocasts-system') {
+          document.documentElement.dataset.theme = isDark ? 'adocasts-dark' : 'adocasts-light'
+        }
       };
 
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      updateColorScheme()
 
-      updateColorScheme(mediaQuery);
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
 
       if (typeof mediaQuery.addEventListener === 'function') {
         mediaQuery.addEventListener('change', updateColorScheme);
