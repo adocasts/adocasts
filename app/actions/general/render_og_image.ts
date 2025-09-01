@@ -7,7 +7,7 @@ import puppeteer from 'puppeteer'
 
 export default class RenderOgImage extends BaseAction {
   async asController({ response, view, params }: HttpContext) {
-    let browser: puppeteer.Browser = null
+    let browser: puppeteer.Browser | null = null
 
     try {
       const type = params.entity
