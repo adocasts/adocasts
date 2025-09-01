@@ -7,32 +7,40 @@ import puppeteer from 'puppeteer'
 
 export default class RenderOgImage extends BaseAction {
   async asController({ response, view, params }: HttpContext) {
-    const type = params.entity
-    const slug = params.slug
-    const entity = await this.#getEntity(type, slug)
+    let browser: puppeteer.Browser = null
 
-    // 1. Render an Edge view to HTML
-    // Create a dedicated Edge template for your OG image
-    const htmlContent = await view.render('pages/og', { entity, type })
-    // return htmlContent
-    // 2. Launch Puppeteer and generate the image
-    const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox'], // Important for production environments
-    })
+    try {
+      const type = params.entity
+      const slug = params.slug
+      const entity = await this.#getEntity(type, slug)
 
-    const page = await browser.newPage()
+      // 1. Render an Edge view to HTML
+      // Create a dedicated Edge template for your OG image
+      const htmlContent = await view.render('pages/og', { entity, type })
 
-    await page.setViewport({ width: 1200, height: 630 }) // Standard OG image size
-    await page.goto('data:text/html;charset=UTF-8,' + encodeURIComponent(htmlContent), {
-      waitUntil: 'networkidle0',
-    })
+      // 2. Launch Puppeteer and generate the image
+      browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-dev-shm-usage'], // Important for production environments
+      })
 
-    const screenshotBuffer = await page.screenshot({ type: 'png' }) // or 'jpeg'
+      const page = await browser.newPage()
 
-    await browser.close()
+      await page.setViewport({ width: 1200, height: 630 }) // Standard OG image size
+      await page.goto('data:text/html;charset=UTF-8,' + encodeURIComponent(htmlContent), {
+        waitUntil: 'networkidle0',
+      })
 
-    response.header('Content-Type', 'image/png')
-    response.send(screenshotBuffer)
+      const screenshotBuffer = await page.screenshot({ type: 'png' }) // or 'jpeg'
+
+      await page.close()
+      await browser.close()
+
+      response.header('Content-Type', 'image/png')
+      response.send(screenshotBuffer)
+    } catch (error) {
+      await browser?.close()
+      throw error
+    }
   }
 
   async #getEntity(entity: string, slug: string) {
