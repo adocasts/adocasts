@@ -124,3 +124,15 @@ export const throttleVerifyEmail = limiter.define('verifyEmail', (ctx) => {
       )
     )
 })
+
+export const throttleOgImages = limiter.define('ogImages', () => {
+  return limiter
+    .allowRequests(3)
+    .every('30 seconds')
+    .usingKey(`og_images`) // need to limit the number of simultaneous og image requests
+    .limitExceeded((error) =>
+      error.setMessage(
+        'Too many og image requests are being made at one time. Please wait before requesting another.'
+      )
+    )
+})

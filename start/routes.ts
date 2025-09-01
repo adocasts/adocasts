@@ -58,6 +58,7 @@ import {
   throttleDiscussions,
   throttleDiscussionsBurst,
   throttleImageUpload,
+  throttleOgImages,
   throttleSignUp,
   throttleVerifyEmail,
 } from './limiter.js'
@@ -135,7 +136,7 @@ router.get('/', [RenderHome]).as('home')
 router.get('/schedule/:year?/:month?', [RenderSchedule]).as('schedules.index').where('year', router.matchers.number()).where('month', router.matchers.number())
 router.get('/pricing', [RenderPricing]).as('pricing')
 router.get('/search/:feed?', [RenderSearch]).as('search')
-router.get('/og-image/:entity?/:slug?', [RenderOgImage]).as('og.img')
+router.get('/og-image/:entity?/:slug?', [RenderOgImage]).as('og.img').use(throttleOgImages)
 router.post('/contact', [SendContactEmail]).as('contact.send').use(middleware.turnstile())
 router.on('/contact').render('pages/contact').as('contact')
 router.on('/terms').render('pages/policies/terms').as('terms')
