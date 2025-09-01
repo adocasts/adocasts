@@ -21,8 +21,8 @@ export default class RenderSchedule extends BaseAction {
   async asController({ view, params, timezone }: HttpContext) {
     let { year, month } = params
 
-    if (year && !this.years.includes(year)) year = DateTime.now().year
-    if (month && !this.months.includes(month)) month = DateTime.now().month
+    if (!year || !this.years.includes(year)) year = DateTime.now().year
+    if (!month || !this.months.includes(month)) month = DateTime.now().month
 
     const calendar = CalendarService.getMonth(year, month, timezone)
     const posts = await this.#getPosts(year, month)
