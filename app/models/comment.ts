@@ -1,12 +1,12 @@
 import CommentTypes from '#enums/comment_types'
-import { commentStoreValidator } from '#validators/comment'
 import { default as State, default as States } from '#enums/states'
-import SanitizeService from '#services/sanitize_service'
-import TimeService from '#services/time_service'
 import Discussion from '#models/discussion'
 import LessonRequest from '#models/lesson_request'
 import Post from '#models/post'
 import User from '#models/user'
+import SanitizeService from '#services/sanitize_service'
+import TimeService from '#services/time_service'
+import { commentStoreValidator } from '#validators/comment'
 import {
   BaseModel,
   beforeCreate,
@@ -90,6 +90,11 @@ export default class Comment extends BaseModel {
 
   @belongsTo(() => Comment, { foreignKey: 'replyTo' })
   declare parent: BelongsTo<typeof Comment>
+
+  @hasMany(() => Discussion, {
+    foreignKey: 'solvedCommentId',
+  })
+  declare discussionSolves: HasMany<typeof Discussion>
 
   @manyToMany(() => User, {
     pivotTable: 'comment_votes',

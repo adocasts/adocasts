@@ -118,7 +118,7 @@ export default class DiscussionBuilder extends BaseBuilder<typeof Discussion, Di
       query
         .preload('user', (user) => user.selectDto(AuthorDto))
         .preload('userVotes', (votes) => votes.select('comment_votes.id', 'comment_votes.user_id'))
-        .where('stateId', States.PUBLIC)
+        .whereIn('stateId', [States.PUBLIC, States.ARCHIVED])
         .withCount('userVotes', (votes) => votes.as('voteCount'))
         .orderBy([
           { column: 'voteCount', order: 'desc' },

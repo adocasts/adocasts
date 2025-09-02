@@ -34,8 +34,16 @@ export default class DestroyComment extends BaseAction {
       return comment.archive()
     }
 
+    // detach any solved discussions
+    await comment.related('discussionSolves').query().update({
+      solvedCommentId: null,
+    })
+
+    // delete comment
     await comment.related('userVotes').query().delete()
     await comment.delete()
+
+    // clean up
     await DestroyNotification.run(Comment.table, comment.id, trx)
     await this.#cleanDanglingParent(comment, trx)
   }
@@ -55,11 +63,7 @@ export default class DestroyComment extends BaseAction {
   }
 
   async #getChildCount(comment: Comment) {
-    const count = await comment
-      .related('responses')
-      .query()
-      .whereNot('stateId', States.ARCHIVED)
-      .getCount()
+    const count = await comment.related('responses').query().getCount()
 
     return Number(count)
   }
