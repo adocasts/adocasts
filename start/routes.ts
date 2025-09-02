@@ -62,6 +62,7 @@ import {
   throttleSignUp,
   throttleVerifyEmail,
 } from './limiter.js'
+const GetSeriesLessonAtNumber = () => import('#actions/collections/get_series_lesson_at_number')
 const TogglePostTranscript = () => import('#actions/posts/toggle_post_transcript')
 const PatchUserPreferences = () => import('#actions/users/patch_user_preferences')
 const RenderOgImage = () => import('#actions/general/render_og_image')
@@ -198,6 +199,7 @@ router.get('/users/:userId/notifications/off', [DisableAllNotifications]).as('us
 router.get('/series', [RenderSeriesIndex]).as('series.index')
 router.get('/series/:slug', [RenderSeriesShow]).as('series.show')
 router.patch('/series/:slug/watchlist', [ToggleSeriesWatchlist]).as('series.watchlist')
+router.get('/series/:series/lesson/:number', [GetSeriesLessonAtNumber]).as('series.lesson').where('number', router.matchers.number())
 router.get('/series/:series/lessons/:slug', [RenderLessonShow]).as('series.lessons.show').use(middleware.postTypeCheck())
 router.get('/series/:series/streams/:slug', [RenderLessonShow]).as('series.streams.show').use(middleware.postTypeCheck())
 
