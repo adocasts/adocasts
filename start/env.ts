@@ -131,8 +131,8 @@ export default await Env.create(new URL('../', import.meta.url), {
   R2_SIGNING_KEY: Env.schema.string(),
   VIDEO_DOMAIN: Env.schema.string(),
   ASSET_DOMAIN: Env.schema.string.optional(),
-  R2_KEY: Env.schema.string.optional(),
-  R2_SECRET: Env.schema.string.optional(),
-  R2_BUCKET: Env.schema.string.optional(),
-  R2_ENDPOINT: Env.schema.string.optional(),
+  R2_KEY: Env.schema.string(),
+  R2_SECRET: Env.schema.string(),
+  R2_BUCKET: Env.schema.string(),
+  R2_ENDPOINT: Env.schema.string(),
 })
