@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="adocasts-{{ theme ?? 'light' }}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -49,8 +49,15 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('dumper')
   </head>
-  <body data-theme="adocasts-{{ theme }}" class="max-w-[120rem] mx-auto" {{ html.attrs({ style: $props.style }) }}>
+  <body class="max-w-[120rem] mx-auto" {{ html.attrs({ style: $props.style }) }}>
     <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>
+
+    @if ($slots.header)
+      {{{ await $slots.header() }}}
+    @else
+      @!header()
+    @endif
+
     <div id="portal"></div>
 
     <div up-main x-data x-init="window.isAuthenticated = {{ !!auth?.user }}">

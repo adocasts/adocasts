@@ -1,4 +1,4 @@
-@layout({ title: 'Not Found' })
+@layout.error({ title: 'Not Found' })
 
   <div class="section-y flex flex-col justify-center items-center">
     <img class="w-24 animation-float mx-auto" src="/imgs/robot/slice4.svg" alt="robot searching">
@@ -11,11 +11,11 @@
     </p>
 
     <div class="flex items-center gap-4">
-      <a href="/" class="btn btn-outline btn-primary">
+      <a href="/" class="btn btn-outline btn-primary" up-follow="false">
         Return home
       </a>
 
-      <a href="{{ route('contact') }}" class="btn btn-outline">
+      <a href="{{ route('contact') }}" class="btn btn-outline" up-follow="false">
         Contact us
       </a>
     </div>

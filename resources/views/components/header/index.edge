@@ -60,7 +60,7 @@
       <div class="h-16 flex items-center gap-3 lg:gap-6 {{ container }}">
         <div class="flex-none md:hidden border-r border-base-100 pr-3 lg:pr-6">
           <label for="header-drawer" aria-label="open sidebar" class="btn btn-square btn-ghost">
-            @svg('solar:close-square-line-duotone', { class: 'inline-block size-10 stroke-current' })
+            @svg('solar:close-circle-linear', { class: 'inline-block size-8 opacity-80 stroke-current' })
           </label>
         </div>
 
@@ -72,11 +72,11 @@
         </div>
       </div>
 
-      <ul class="w-full menu p-6">
-        @!header.nav()
+      <ul x-data class="w-full menu p-6" up-id="headerMobileNav" up-hungry>
+        @!header.nav({ '@click': `document.getElementById('header-drawer').checked = false` })
       </ul>
 
-      @if (!auth.user)
+      @if (auth && !auth.user)
         <div class="flex flex-col gap-3 p-6">
           <a href="{{ route('auth.signin') }}" class="btn btn-block btn-outline btn-ghost-soft" up-auth-modal>
             Sign In

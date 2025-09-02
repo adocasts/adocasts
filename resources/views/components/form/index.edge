@@ -34,12 +34,14 @@
     <input type="hidden" name="fragment" value="{{ fragment }}" />
   @endif
 
-  @error('form')
-    <div class="alert alert-error alert-outline mb-3">
-      @svg('solar:close-square-line-duotone', { class: 'w-5 h-5' })
-      {{ $message }}
-    </div>
-  @end
+  @if (flashMessages)
+    @error('form')
+      <div class="alert alert-error alert-outline mb-3">
+        @svg('solar:close-square-line-duotone', { class: 'w-5 h-5' })
+        {{ $message }}
+      </div>
+    @end
+  @endif
 
   {{{ await $slots.main() }}}
 </form>

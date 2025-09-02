@@ -15,7 +15,7 @@
   value: 'system',
   icon: 'solar:settings-outline'
 }])
-@let(active = options.find(o => o.value === theme))
+@let(active = options.find(o => o.value === theme) ?? options.at(0))
 
 <div x-data="{ 
   change: (theme) => {
