@@ -1,4 +1,5 @@
 import env from '#start/env'
+import app from '@adonisjs/core/services/app'
 import { defineConfig, services } from '@adonisjs/drive'
 import { Storage } from '@google-cloud/storage'
 
@@ -25,6 +26,12 @@ const driveConfig = defineConfig({
         keyFilename: env.get('GCS_KEY'),
       }),
       bucket: env.get('GCS_BUCKET'),
+      visibility: 'public',
+    }),
+    fs: services.fs({
+      location: app.makePath('storage'),
+      serveFiles: true,
+      routeBasePath: '/uploads',
       visibility: 'public',
     }),
   },

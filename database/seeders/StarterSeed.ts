@@ -1,14 +1,14 @@
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-import db from '@adonisjs/lucid/services/db'
 import Roles from '#enums/roles'
-import Role from '#models/role'
-import User from '#models/user'
-import app from '@adonisjs/core/services/app'
 import { CollectionFactory } from '#factories/collection_factory'
 import { TaxonomyFactory } from '#factories/taxonomy_factory'
 import { UserFactory } from '#factories/user_factory'
-import { TransactionClientContract } from '@adonisjs/lucid/types/database'
+import Role from '#models/role'
+import User from '#models/user'
 import { ListService } from '#services/list_service'
+import app from '@adonisjs/core/services/app'
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import db from '@adonisjs/lucid/services/db'
+import { TransactionClientContract } from '@adonisjs/lucid/types/database'
 
 export default class StarterSeedSeeder extends BaseSeeder {
   async run() {
@@ -18,7 +18,7 @@ export default class StarterSeedSeeder extends BaseSeeder {
       await this.seedRoles(trx)
 
       if (!app.inTest && !app.inProduction) {
-        // await this.seedUsersAndContent(trx)
+        await this.seedUsersAndContent(trx)
       }
 
       await trx.commit()

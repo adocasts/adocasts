@@ -15,17 +15,18 @@ Get even more by joining [Adocasts Plus](https://adocasts.com/pricing)
 ___
 
 ### Before We Start
-Some portions of the Adocasts site rely on production data or external APIs & SDKs for information. The site will still function fine for you locally, but these sections may not render unless you set up an account specifically for them.
-* **Trending Lessons:** Relies on our Plausible API connection.
-* **Billing & Plans:** Relies on our Stripe connection. You can create your own Stripe account with test data to get this working.
-* **Content Schedule:** Relies on our Notion API connection.
-* **Social Authentication:** Relies on Google and GitHub services.
+Some portions of the Adocasts site rely on external APIs & SDKs for information. 
+The site will still function fine for you locally, 
+but these sections may not render unless you set up an account specifically for them.
+* **Billing & Plans** &mdash; Relies on our Stripe connection. You can create your own Stripe account with test data if you need to get this working.
+* **Content Schedule** &mdash; Relies on our PlotMyCourse API connection
+* **Social Authentication** &mdash; Relies on Google and GitHub services.
 
 ### Prerequisites
 * **PostgreSQL** &mdash; We use PostgreSQL as our database driver so you'll either want it installed on your machine or a service that provides it.
-* **SMTP Provider** &mdash; Locally, we like to use MailTrap
-* **Redis Server** &mdash; We now require a Redis connection via [Bentocache](https://bentocache.dev/docs/introduction)
-* **Node v20.6+** &mdash; Recommended
+* **SMTP Provider** &mdash; Locally, we like to use [MailTrap](https://mailtrap.io/)
+* **Redis Server** &mdash; We now require a Redis connection via [@adonisjs/cache](https://docs.adonisjs.com/guides/digging-deeper/cache)
+* **Node v22+** &mdash; Required
 
 ### Installation
 1. Clone the repository
@@ -40,9 +41,8 @@ npm i
 4. Fill out the `.env` variables
 
 ### Data
-We provide a `StarterSeed` that will populate your database with faker data to populate pages on the Adocasts site.
-
-I haven't tested this yet since our migration from AdonisJS 5 to 6. If you run into any problems, feel free to open an issue.
+We provide a `StarterSeed` that will populate your database with faker data to populate pages on the Adocasts site. 
+If you run into any problems, feel free to open an issue.
 
 1. Migrate your database
 ```sh
@@ -50,13 +50,13 @@ node ace migration:run
 ```
 2. _(Optional)_ If you'd like to start fresh (without faker data), open our `StarterSeed` at `database/seeders/StarterSeed.ts` and comment out the `seedUsersAndContent()` call within the run method.
 ```ts
-public async run() {
-  const trx = await Database.transaction()
-  
+async run() {
+  const trx = await db.transaction()
+
   try {
     await this.seedRoles(trx)
 
-    if (!Application.inTest) {
+    if (!app.inTest && !app.inProduction) {
       // await this.seedUsersAndContent(trx)
     }
 

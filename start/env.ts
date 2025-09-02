@@ -16,8 +16,6 @@ export default await Env.create(new URL('../', import.meta.url), {
   PORT: Env.schema.number(),
   APP_KEY: Env.schema.string(),
   APP_BRAND: Env.schema.string(),
-  APP_LOGO: Env.schema.string(),
-  APP_LOGO_INV: Env.schema.string(),
   APP_CONTACT_EMAIL: Env.schema.string(),
   APP_DOMAIN: Env.schema.string(),
   APP_HOSTNAME: Env.schema.string(),
@@ -85,7 +83,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   | Variables for configuring the drive package
   |----------------------------------------------------------
   */
-  DRIVE_DISK: Env.schema.enum(['r2', 'gcs'] as const),
+  DRIVE_DISK: Env.schema.enum(['r2', 'gcs', 'fs'] as const),
   GCS_KEY: Env.schema.string(),
   GCS_BUCKET: Env.schema.string(),
 
@@ -133,8 +131,8 @@ export default await Env.create(new URL('../', import.meta.url), {
   R2_SIGNING_KEY: Env.schema.string(),
   VIDEO_DOMAIN: Env.schema.string(),
   ASSET_DOMAIN: Env.schema.string.optional(),
-  R2_KEY: Env.schema.string(),
-  R2_SECRET: Env.schema.string(),
-  R2_BUCKET: Env.schema.string(),
-  R2_ENDPOINT: Env.schema.string(),
+  R2_KEY: Env.schema.string.optional(),
+  R2_SECRET: Env.schema.string.optional(),
+  R2_BUCKET: Env.schema.string.optional(),
+  R2_ENDPOINT: Env.schema.string.optional(),
 })
