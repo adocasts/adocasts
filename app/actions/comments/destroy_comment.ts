@@ -49,6 +49,8 @@ export default class DestroyComment extends BaseAction {
       return
     }
 
+    parent.useTransaction(trx)
+
     return this.#deleteOrArchive(parent, trx)
   }
 
