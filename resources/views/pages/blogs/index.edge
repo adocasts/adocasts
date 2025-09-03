@@ -17,14 +17,16 @@
               @!form.select.radio({
                 value: Sorts.LATEST,
                 text: 'Most recently published',
-                icon: 'solar:graph-new-up-outline'
+                icon: 'solar:graph-new-up-outline',
+                '@click': `document.getElementById('my-aside-drawer').checked = false`
               })
             </li>
             <li>
               @!form.select.radio({
                 value: Sorts.ALPHA,
                 text: 'Alphabetical',
-                icon: 'solar:sort-by-alphabet-outline'
+                icon: 'solar:sort-by-alphabet-outline',
+                '@click': `document.getElementById('my-aside-drawer').checked = false`
               })
             </li>
           </ul>

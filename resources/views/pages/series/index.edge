@@ -17,28 +17,32 @@
               @!form.select.radio({
                 value: Sorts.LATEST,
                 text: 'Most recently updated',
-                icon: 'solar:graph-new-up-outline'
+                icon: 'solar:graph-new-up-outline',
+                '@click': `document.getElementById('my-aside-drawer').checked = false`
               })
             </li>
             <li>
               @!form.select.radio({
                 value: Sorts.ALPHA,
                 text: 'Alphabetical',
-                icon: 'solar:sort-by-alphabet-outline'
+                icon: 'solar:sort-by-alphabet-outline',
+                '@click': `document.getElementById('my-aside-drawer').checked = false`
               })
             </li>
             <li>
               @!form.select.radio({
                 value: Sorts.LONGEST,
                 text: 'Longest duration',
-                icon: 'solar:list-arrow-up-minimalistic-outline'
+                icon: 'solar:list-arrow-up-minimalistic-outline',
+                '@click': `document.getElementById('my-aside-drawer').checked = false`
               })
             </li>
             <li>
               @!form.select.radio({
                 value: Sorts.SHORTEST,
                 text: 'Shortest duration',
-                icon: 'solar:list-arrow-down-minimalistic-outline'
+                icon: 'solar:list-arrow-down-minimalistic-outline',
+                '@click': `document.getElementById('my-aside-drawer').checked = false`
               })
             </li>
           </ul>

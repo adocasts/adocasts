@@ -42,7 +42,8 @@
               name: 'feed',
               value: 'none',
               text: 'All discussions',
-              icon: 'solar:chat-round-call-outline'
+              icon: 'solar:chat-round-call-outline',
+              '@click': `document.getElementById('my-aside-drawer').checked = false`
             })
           </li>
           <li>
@@ -50,7 +51,8 @@
               name: 'feed',
               value: 'noreplies',
               text: 'No replies',
-              icon: 'solar:chat-round-unread-outline'
+              icon: 'solar:chat-round-unread-outline',
+              '@click': `document.getElementById('my-aside-drawer').checked = false`
             })
           </li>
           <li>
@@ -58,7 +60,8 @@
               name: 'feed',
               value: 'unsolved',
               text: 'Unsolved',
-              icon: 'solar:chat-round-dots-outline'
+              icon: 'solar:chat-round-dots-outline',
+              '@click': `document.getElementById('my-aside-drawer').checked = false`
             })
           </li>
           <li>
@@ -66,7 +69,8 @@
               name: 'feed',
               value: 'solved',
               text: 'Solved',
-              icon: 'solar:chat-round-check-outline'
+              icon: 'solar:chat-round-check-outline',
+              '@click': `document.getElementById('my-aside-drawer').checked = false`
             })
           </li>
         </ul>
