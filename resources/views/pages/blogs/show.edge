@@ -17,54 +17,64 @@
 
     <div class="max-w-prose mx-auto flex gap-3 lg:gap-6 my-10 lg:my-16">
       <div class="@container flex-1">
-        <h1 class="heading-2a">
+        <h1 class="heading-2">
           {{ blog.title }}
         </h1>
 
-        @if (blog.author)
-          <div class="flex gap-3 lg:gap-3 items-center my-8">
-            @profile.link({ user: blog.author })
-              <div class="avatar">
-                <div class="w-10 rounded-full">
-                  @!user.avatar({ user: blog.author, loading: 'lazy', alt: blog.author.handle })
-                </div>
-              </div>
-            @end
-
-            <div class="flex flex-col">
-              <h5 class="text-xs opacity-60">Published by</h5>
-              <div class="flex gap-x-3 items-baseline">
-                @profile.link({ user: blog.author })
-                  <span>
-                    {{ blog.author.handle }}
-                  </span>
-                @end
-
-                <span class="text-primary relative top-[0.25rem]">
-                  @svg('solar:double-alt-arrow-right-broken', { class: 'w-4 h-4' })
-                </span>
-
-                <span class="flex-none opacity-60 text-sm">
-                  <time datetime="{{ blog.createdAt }}">{{ TimeService.timeago(blog.publishAt) }}</time>
-                </span>
-              </div>
-            </div>
-          </div>
-        @endif
-
-        <div class="flex items-center text-sm uppercase gap-2 -ml-7">
-          @svg('solar:double-alt-arrow-right-broken', { class: 'w-5 h-5 text-primary' })
-          In This blog
+        <div class="flex items-center text-sm uppercase gap-2 mb-1 mt-8">
+          {{-- @svg('solar:double-alt-arrow-right-broken', { class: 'w-5 h-5 text-primary' }) --}}
+          In This Blog
         </div>
-        <p class="text-pretty font-medium opacity-60 sm:text-lg mb-6">
+        <p class="text-pretty font-medium opacity-60 sm:text-lg mb-8">
           @if (blog.description.startsWith('In this blog,'))
-            @let([char, ...desc] = blog.description.replace('In this blog,', '').trim())
+            @let([char, ...desc] = lesson.description.replace('In this blog,', '').trim())
 
             {{ [char?.toUpperCase(), ...desc].join('') }}
           @else
             {{ blog.description }}
           @endif
         </p>
+
+        @if (blog.author)
+          <div {{ html.attrs({ class: ['flex gap-3 lg:gap-3 items-center', { 'border-b border-base-100 pb-8 mb-8': blog.body }] }) }}">
+            @profile.link({ user: blog.author, class: 'hidden sm:block' })
+              <div class="avatar">
+                <div class="w-12 rounded-full">
+                  @!user.avatar({ user: blog.author, loading: 'lazy', alt: blog.author.handle })
+                </div>
+              </div>
+            @end
+
+            <dl class="flex lg:ml-3">
+              <div class="flex flex-col">
+                <dt class="text-xs opacity-60">Created by</dt>
+                <dd>
+                  @profile.link({ user: blog.author })
+                    <span>
+                      {{ blog.author.handle }}
+                    </span>
+                  @end
+                </dd>
+              </div>
+
+              <div class="flex flex-col pl-3 ml-3 lg:pl-6 lg:ml-6">
+                <dt class="text-xs opacity-60">Published</dt>
+                <dd>
+                  <time datetime="{{ blog.createdAt }}">{{ TimeService.timeago(blog.publishAt) }}</time>
+                </dd>
+              </div>
+
+              @if (blog.updatedContentAt)
+                <div class="flex flex-col pl-3 ml-3 lg:pl-6 lg:ml-6">
+                  <dt class="text-xs opacity-60">Last updated</dt>
+                  <dd>
+                    <time datetime="{{ blog.updatedContentAt }}">{{ TimeService.timeago(blog.updatedContentAt) }}</time>
+                  </dd>
+                </div>
+              @endif
+            </dl>
+          </div>
+        @endif
 
         @if (blog.body)
           <article id="proseBody" x-data="proseBody" class="prose">

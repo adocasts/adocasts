@@ -22,7 +22,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * codes. You might want to enable them in production only, but feel
    * free to enable them in development as well.
    */
-  protected renderStatusPages = app.inProduction
+  protected renderStatusPages = true //app.inProduction
 
   /**
    * Status pages is a collection of error code range and a callback

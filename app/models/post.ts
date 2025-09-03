@@ -155,6 +155,9 @@ export default class Post extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 
+  @column.dateTime()
+  declare updatedContentAt: DateTime | null
+
   @manyToMany(() => Asset, {
     pivotTable: 'asset_posts',
     pivotColumns: ['sort_order'],

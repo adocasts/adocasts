@@ -128,7 +128,7 @@
             @!lesson.transcript({ 
               transcript, 
               id: 'transcriptMain',
-              class: 'flex flex-col max-w-prose mx-auto h-[min(275px,30vh)] pt-6 pb-6',
+              class: 'flex flex-col max-w-prose mx-auto h-[min(275px,30vh)] pt-6 pb-6 px-6 md:px-0',
             })
           </div>
         @endif
@@ -136,46 +136,15 @@
 
       <div class="max-w-prose mx-auto flex gap-3 lg:gap-6 px-8 md:px-0 my-10 lg:my-16">
         <div class="@container flex-1">
-          <h1 class="heading-2a">
+          <h1 class="heading-2">
             {{ lesson.title }}
           </h1>
 
-          @if (lesson.author)
-            <div class="flex gap-3 lg:gap-3 items-center my-8">
-              @profile.link({ user: lesson.author })
-                <div class="avatar">
-                  <div class="w-10 rounded-full">
-                    @!user.avatar({ user: lesson.author, loading: 'lazy', alt: lesson.author.handle })
-                  </div>
-                </div>
-              @end
-
-              <div class="flex flex-col">
-                <h5 class="text-xs opacity-60">Published by</h5>
-                <div class="flex gap-x-3 items-baseline">
-                  @profile.link({ user: lesson.author })
-                    <span>
-                      {{ lesson.author.handle }}
-                    </span>
-                  @end
-
-                  <span class="text-primary relative top-[0.25rem]">
-                    @svg('solar:double-alt-arrow-right-broken', { class: 'w-4 h-4' })
-                  </span>
-
-                  <span class="flex-none opacity-60 text-sm">
-                    <time datetime="{{ lesson.createdAt }}">{{ TimeService.timeago(lesson.publishAt) }}</time>
-                  </span>
-                </div>
-              </div>
-            </div>
-          @endif
-
-          <div class="flex items-center text-sm uppercase gap-2 -ml-7">
-            @svg('solar:double-alt-arrow-right-broken', { class: 'w-5 h-5 text-primary' })
+          <div class="flex items-center text-sm uppercase gap-2 mb-1 mt-8">
+            {{-- @svg('solar:double-alt-arrow-right-broken', { class: 'w-5 h-5 text-primary' }) --}}
             In This Lesson
           </div>
-          <p class="text-pretty font-medium opacity-60 sm:text-lg mb-12">
+          <p class="text-pretty font-medium opacity-60 sm:text-lg mb-8">
             @if (lesson.description.startsWith('In this lesson,'))
               @let([char, ...desc] = lesson.description.replace('In this lesson,', '').trim())
 
@@ -184,6 +153,47 @@
               {{ lesson.description }}
             @endif
           </p>
+
+          @if (lesson.author)
+            <div {{ html.attrs({ class: ['flex gap-3 lg:gap-3 items-center', { 'border-b border-base-100 pb-8 mb-8': lesson.body }] }) }}">
+              @profile.link({ user: lesson.author, class: 'hidden sm:block' })
+                <div class="avatar">
+                  <div class="w-12 rounded-full">
+                    @!user.avatar({ user: lesson.author, loading: 'lazy', alt: lesson.author.handle })
+                  </div>
+                </div>
+              @end
+
+              <dl class="flex lg:ml-3">
+                <div class="flex flex-col">
+                  <dt class="text-xs opacity-60">Created by</dt>
+                  <dd>
+                    @profile.link({ user: lesson.author })
+                      <span>
+                        {{ lesson.author.handle }}
+                      </span>
+                    @end
+                  </dd>
+                </div>
+
+                <div class="flex flex-col pl-3 ml-3 lg:pl-6 lg:ml-6">
+                  <dt class="text-xs opacity-60">Published</dt>
+                  <dd>
+                    <time datetime="{{ lesson.createdAt }}">{{ TimeService.timeago(lesson.publishAt) }}</time>
+                  </dd>
+                </div>
+
+                @if (lesson.updatedContentAt)
+                  <div class="flex flex-col pl-3 ml-3 lg:pl-6 lg:ml-6">
+                    <dt class="text-xs opacity-60">Last updated</dt>
+                    <dd>
+                      <time datetime="{{ lesson.updatedContentAt }}">{{ TimeService.timeago(lesson.updatedContentAt) }}</time>
+                    </dd>
+                  </div>
+                @endif
+              </dl>
+            </div>
+          @endif
 
           @if (lesson.body)
             <article id="proseBody" x-data="proseBody" class="prose relative">
