@@ -222,6 +222,7 @@ router.patch('/lessons/:slug/autoplay', [TogglePostAutoplay]).as('lessons.autopl
 router.patch('/lessons/:slug/transcript', [TogglePostTranscript]).as('lessons.transcript')
 router.get('/lessons/:slug', [RenderLessonShow]).as('lessons.show').use(middleware.postTypeCheck())
 router.get('/streams/:slug', [RenderLessonShow]).as('streams.show').use(middleware.postTypeCheck())
+router.get('/posts/:slug', [RenderLessonShow]).as('posts.show').use(middleware.postTypeCheck())
 
 //* Blogs
 router.get('/blog', [RenderBlogsIndex]).as('blogs.index')
