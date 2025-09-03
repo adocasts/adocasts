@@ -28,7 +28,7 @@ export default class HandleAllyCallback extends BaseAction {
 
     if (wasAuthenticated) {
       session.toast('success', `Your ${params.provider} account has been successfully linked`)
-      return response.redirect().toRoute('users.settings.index')
+      return response.redirect().toRoute('settings', { section: 'account' })
     }
 
     if (session.has('plan')) {
