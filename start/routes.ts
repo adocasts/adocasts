@@ -117,11 +117,15 @@ router.where('id', router.matchers.number())
 router.where('slug', router.matchers.slug())
 
 //* Redirects
+router.on('/feed').redirectToPath('/forum')
 router.on('/credits').redirectToPath('/uses')
 router.on('/attributions').redirect('/uses')
 router.on('/topics/adonisjs-5').redirectToPath('/topics/adonisjs')
 router.on('/topics/adonis-5').redirectToPath('/topics/adonisjs')
 router.on('/series/lets-learn-adonis-5').redirectToPath('/series/lets-learn-adonisjs-5')
+router.get('/feed/:slug', (ctx) => {
+  return ctx.response.redirect().toRoute('discussions.show', ctx.params)
+})
 
 if (app.inDev) {
   router.get('/exception/:status', (ctx) => {
