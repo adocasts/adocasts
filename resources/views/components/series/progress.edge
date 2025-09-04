@@ -88,7 +88,7 @@
 
       <div class="flex items-center gap-3">
         @svg('solar:clock-circle-outline', { class: 'size-6 text-base-content/60' })
-        <div class="flex-col hidden md:flex leading-tight">
+        <div class="flex-col flex leading-tight">
           <span class="text-2xs @md:text-xs font-semibold opacity-60">Time Watched</span>
           <span class="text-sm">
             <span class="font-bold">{{ TimeService.secondsToTimestring(progression.watchSeconds) }}</span>
@@ -100,7 +100,13 @@
 
     @if (nextUp)
       <div class="w-[calc(100%_-_3rem)] mx-6 border-t border-base-100"></div>
-      @lesson.card({ lesson: nextUp, size: $props.size ?? 'wide', showImage: $props.showImage, class: 'border-none rounded-t-none', description })
+      @lesson.card({ 
+        lesson: nextUp, 
+        size: $props.size ?? 'wide', 
+        showImage: $props.showImage, 
+        class: 'border-none rounded-t-none', 
+        description 
+      })
         @slot('badge')
           <div class="badge badge-outline badge-xs @xl:badge-sm badge-secondary">
             Next On Deck

@@ -72,7 +72,7 @@
 @else
 
   @card({ class: $props.class })
-    @if (showImage)
+    @if (showImage && lesson.thumbnail)
       <div class="p-[var(--card-p,1.5rem)] pb-0">
         @!post.picture({ item: lesson, class: 'h-full', lazy: lazyItem, preview: true })
       </div>
