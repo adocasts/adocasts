@@ -149,7 +149,7 @@
 
       <div class="flex items-center gap-3">
         @svg('solar:clock-circle-outline', { class: 'size-6 text-base-content/60' })
-        <div class="flex-col hidden md:flex leading-tight">
+        <div class="flex-col flex leading-tight">
           <span class="text-2xs @md:text-xs font-semibold opacity-60">Viewing Time</span>
           <span class="text-sm">
             {{ TimeService.secondsToTimestring(series.meta.video_seconds_sum) }}
