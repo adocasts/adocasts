@@ -54,21 +54,27 @@
               Adocasts teaches you how to ship NodeJS apps in no time using AdonisJS and it's many built-in batteries.
             </h1>
 
-            <div class="flex flex-wrap items-center gap-y-1.5 gap-x-3 md:gap-x-6">
-              <a href="/series/lets-learn-adonisjs-6" class="btn btn-primary btn-outline !border-primary/50 backdrop-blur-sm md:btn-wide">
+            <div class="flex flex-wrap items-center gap-y-1.5 gap-x-3 md:gap-x-6 mt-6">
+              <a href="/series/lets-learn-adonisjs-6" class="btn max-[400px]:btn-block btn-primary btn-outline !border-primary/50 backdrop-blur-sm md:btn-wide">
                 New to AdonisJS?
                 @svg('solar:map-arrow-right-bold-duotone')
               </a>
 
-              <a href="/signup" class="btn btn-outline !border-base-content/50 backdrop-blur-sm md:btn-wide">
-                Get Started for Free
-              </a>
+              @if (!auth.user)
+                <a href="/signup" class="btn max-[400px]:btn-block btn-outline !border-base-content/50 backdrop-blur-sm md:btn-wide" up-auth-modal>
+                  Get Started for Free
+                </a>
+              @else
+                <a href="{{ route('users.history', { tab: 'series' }) }}" class="btn max-[400px]:btn-block btn-outline !border-base-content/50 backdrop-blur-sm md:btn-wide">
+                  View your progress
+                </a>
+              @endif
             </div>
           </div>
         </div>
       </section>
 
-      <section class="mb-12 pb-8 pt-24 -mt-8 border-b border-base-100 relative z-20">
+      <section class="mb-12 pb-8 mt-12 md:pt-12 lg:pt-20 border-b border-base-100 relative z-20">
         <div class="container mx-auto flex flex-col">
           @if (stats.user?.started)
             <h3 class="heading-3">
