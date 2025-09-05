@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    @form({ action: form.post('contact.send'), class: 'w-full', 'up-disable': 'true' })
+    @form({ action: form.post('contact.send'), class: 'w-full', 'up-disable': 'true', turnstile: true })
       @form.field({ label: 'Name', name: 'name' })
         @!form.input({ required: true, class: 'w-full', placeholder: 'Your name' })
       @end
