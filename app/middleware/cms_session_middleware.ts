@@ -29,8 +29,8 @@ export default class CmsSessionMiddleware {
 
     // sync the session to the CMS for users who can access
     if (ctx.auth.isAuthenticated) {
-      ctx.response.clearCookie(sessionCookieName)
-      ctx.response.clearCookie(ctx.session.sessionId)
+      // ctx.response.clearCookie(sessionCookieName)
+      // ctx.response.clearCookie(ctx.session.sessionId)
 
       ctx.response.cookie(sessionCookieName, ctx.session.sessionId, {
         ...sessionCookie,
