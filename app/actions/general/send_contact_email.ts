@@ -3,6 +3,7 @@ import { contactValidator } from '#validators/contact'
 import { HttpContext } from '@adonisjs/core/http'
 import mail from '@adonisjs/mail/services/main'
 import { Infer } from '@vinejs/vine/types'
+import { setTimeout } from 'node:timers/promises'
 import GetIpAddress from './get_ip_address.js'
 
 type Validator = Infer<typeof contactValidator>
@@ -46,8 +47,10 @@ export default class SendContactEmail extends BaseAction {
         `)
     })
 
-    session.toast(
-      'success',
+    await setTimeout(2_500)
+
+    session.flash(
+      'sent',
       'Your message has been successfully sent. Please allow up to 48 hours for a response. A copy has been sent to your email as well'
     )
 
