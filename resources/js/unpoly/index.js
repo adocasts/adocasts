@@ -6,7 +6,7 @@ window.up = up
 
 const upPricing = document.querySelector('[up-pricing]')
 
-up.log.enable()
+// up.log.enable()
 up.network.config.autoCache = () => false
 
 // link configuration
