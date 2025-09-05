@@ -58,6 +58,12 @@ export default class HttpExceptionHandler extends ExceptionHandler {
       return ctx.response.status(error.status).send(message)
     }
 
+    if (error instanceof shieldErrors.E_BAD_CSRF_TOKEN) {
+      ctx.session.flashExcept(['password'])
+      ctx.session.toast('error', 'Your session was expired or invalid. Please try again.')
+      return ctx.response.redirect().back()
+    }
+
     return super.handle(error, ctx)
   }
 
