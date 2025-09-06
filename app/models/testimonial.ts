@@ -1,14 +1,14 @@
-import { DateTime } from 'luxon'
 import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
-import User from './user.js'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import { DateTime } from 'luxon'
+import User from './user.js'
 
 export default class Testimonial extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
   @column()
-  declare userId: number
+  declare userId: number | null
 
   @column()
   declare body: string
