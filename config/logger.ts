@@ -22,7 +22,7 @@ const loggerConfig = defineConfig({
           .pushIf(app.inProduction, targets.file({ destination: 1 }))
           .pushIf(
             app.inProduction && !!env.get('HYPERDX_INTEGESTION_KEY'),
-            HyperDX.getPinoTransport('info', {
+            HyperDX.getPinoTransport('error', {
               // Send logs info and above
               detectResources: true,
             })
