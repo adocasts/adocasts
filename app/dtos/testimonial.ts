@@ -8,7 +8,7 @@ export default class TestimonialDto extends BaseModelDto {
   }
 
   declare id: number
-  declare userId: number
+  declare userId: number | null
   declare body: string
   declare createdAt: string
   declare approvedAt?: string | null
