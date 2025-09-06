@@ -1,10 +1,8 @@
 import { MultipartFile } from '@adonisjs/core/bodyparser'
 import app from '@adonisjs/core/services/app'
 import drive from '@adonisjs/drive/services/main'
-import fs from 'node:fs'
 import sharp, { AvailableFormatInfo, FormatEnum } from 'sharp'
 import { ImageOptions } from './asset_service.js'
-import logger from './logger_service.js'
 
 class AssetStorageService {
   async exists(filename: string) {
@@ -21,25 +19,7 @@ class AssetStorageService {
   }
 
   async storeFromTmp(location: string, filename: string, file: MultipartFile) {
-    await file.moveToDisk(filename)
-    return new Promise<void>((resolve, reject) => {
-      try {
-        fs.readFile(file.tmpPath!, async (error, data) => {
-          if (error) {
-            reject(error)
-          }
-
-          await drive.use().put(location + filename, data)
-
-          file.markAsMoved('/img/' + filename, location)
-
-          resolve()
-        })
-      } catch (error) {
-        console.log({ error })
-        logger.error('StorageService.storeFromTmp', error)
-      }
-    })
+    await file.moveToDisk(location + filename)
   }
 
   async destroy(filename: string) {
