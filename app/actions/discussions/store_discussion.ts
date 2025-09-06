@@ -1,6 +1,7 @@
 import BaseAction from '#actions/base_action'
 import SendMentionNotification from '#actions/notifications/send_mention_notification'
 import User from '#models/user'
+import logger from '#services/logger_service'
 import { discussionValidator } from '#validators/discussion'
 import { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
@@ -17,6 +18,8 @@ export default class StoreDiscussion extends BaseAction {
 
   async asController({ response, auth }: HttpContext, data: Validator) {
     const discussion = await this.handle(auth.user!, data)
+
+    await logger.info('New discussion created', { title: discussion.title })
 
     return response.redirect().toRoute('discussions.show', { slug: discussion.slug })
   }

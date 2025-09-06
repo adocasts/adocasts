@@ -7,6 +7,25 @@
 |
 */
 
+import '#start/router/actions'
+import { Exception } from '@adonisjs/core/exceptions'
+import app from '@adonisjs/core/services/app'
+import router from '@adonisjs/core/services/router'
+import { middleware } from './kernel.js'
+import {
+  throttleComments,
+  throttleCommentsBurst,
+  throttleDiscussions,
+  throttleDiscussionsBurst,
+  throttleImageUpload,
+  throttleOgImages,
+  throttleSignUp,
+  throttleTestimonials,
+  throttleVerifyEmail,
+} from './limiter.js'
+const UpdateTestimonial = () => import('#actions/testimonials/update_testimonial')
+const RenderUserTestimonials = () => import('#actions/testimonials/render_user_testimonials')
+const DestroyTestimonial = () => import('#actions/testimonials/destroy_testimonial')
 const RenderHome = () => import('../app/actions/general/render_home.js')
 const RenderSeriesIndex = () => import('../app/actions/collections/render_series_index.js')
 const RenderSeriesShow = () => import('../app/actions/collections/render_series_show.js')
@@ -47,21 +66,8 @@ const RenderSitemap = () => import('#actions/syndication/render_sitemap')
 const SendEmailVerification = () => import('#actions/users/send_email_verification')
 const VerifyEmail = () => import('#actions/users/verify_email')
 const RenderUserHistory = () => import('#actions/users/render_user_history')
-import '#start/router/actions'
-import { Exception } from '@adonisjs/core/exceptions'
-import app from '@adonisjs/core/services/app'
-import router from '@adonisjs/core/services/router'
-import { middleware } from './kernel.js'
-import {
-  throttleComments,
-  throttleCommentsBurst,
-  throttleDiscussions,
-  throttleDiscussionsBurst,
-  throttleImageUpload,
-  throttleOgImages,
-  throttleSignUp,
-  throttleVerifyEmail,
-} from './limiter.js'
+const RenderTestimonialForm = () => import('#actions/testimonials/render_testimonial_form')
+const StoreTestimonial = () => import('#actions/testimonials/store_testimonial')
 const GetSeriesLessonAtNumber = () => import('#actions/collections/get_series_lesson_at_number')
 const TogglePostTranscript = () => import('#actions/posts/toggle_post_transcript')
 const PatchUserPreferences = () => import('#actions/users/patch_user_preferences')
@@ -235,20 +241,28 @@ router.get('/snippets/:slug', [RenderSnippetsShow]).as('snippets.show').use(midd
 
 //* Discussions
 router.get('/forum', [RenderDiscussionsIndex]).as('discussions.index')
-router.get('/forum/create', [RenderDiscussionsCreate]).as('discussions.create')
+router.get('/forum/create', [RenderDiscussionsCreate]).as('discussions.create').use(middleware.auth())
 router.post('/forum', [StoreDiscussion]).as('discussions.store').use([throttleDiscussions, throttleDiscussionsBurst])
 router.get('/forum/:slug', [RenderDiscussionsShow]).as('discussions.show')
-router.get('/forum/:slug/edit', [RenderDiscussionsEdit]).as('discussions.edit')
-router.put('/forum/:slug', [UpdateDiscussion]).as('discussions.update')
-router.patch('/forum/:id/vote', [ToggleDiscussionVote]).as('discussions.vote')
-router.patch('/forum/:slug/solved', [ToggleDiscussionSolvedAt]).as('discussions.solved')
-router.delete('/forum/:slug', [DestroyDiscussion]).as('discussions.destroy')
+router.get('/forum/:slug/edit', [RenderDiscussionsEdit]).as('discussions.edit').use(middleware.auth())
+router.put('/forum/:slug', [UpdateDiscussion]).as('discussions.update').use(middleware.auth())
+router.patch('/forum/:id/vote', [ToggleDiscussionVote]).as('discussions.vote').use(middleware.auth())
+router.patch('/forum/:slug/solved', [ToggleDiscussionSolvedAt]).as('discussions.solved').use(middleware.auth())
+router.delete('/forum/:slug', [DestroyDiscussion]).as('discussions.destroy').use(middleware.auth())
 
 //* Comments
-router.post('/comments', [StoreComment]).as('comments.store').use([throttleComments, throttleCommentsBurst])
-router.put('/comments/:id', [UpdateComment]).as('comments.update')
-router.patch('/comments/:id/vote', [ToggleCommentVote]).as('comments.vote')
-router.delete('/comments/:id', [DestroyComment]).as('comments.destroy')
+router.post('/comments', [StoreComment]).as('comments.store').use([throttleComments, throttleCommentsBurst, middleware.auth()])
+router.put('/comments/:id', [UpdateComment]).as('comments.update').use(middleware.auth())
+router.patch('/comments/:id/vote', [ToggleCommentVote]).as('comments.vote').use(middleware.auth())
+router.delete('/comments/:id', [DestroyComment]).as('comments.destroy').use(middleware.auth())
+
+//* Testimonials
+router.get('/testimonials/user', [RenderUserTestimonials]).as('testimonials.user').use(middleware.auth())
+router.get('/testimonials/share', [RenderTestimonialForm]).as('testimonials.form').use(middleware.auth())
+router.get('/testimonials/:id/edit', [RenderTestimonialForm]).as('testimonials.edit').use(middleware.auth())
+router.post('/testimonials', [StoreTestimonial]).as('testimonials.store').use([throttleTestimonials, middleware.auth()])
+router.put('/testimonials/:id', [UpdateTestimonial]).as('testimonials.update').use(middleware.auth())
+router.delete('/testimonials/:id', [DestroyTestimonial]).as('testimonials.destroy').use(middleware.auth())
 
 //* Settings
 router.get('/settings/:section?', [RenderUserSettings]).as('settings').use(middleware.auth())

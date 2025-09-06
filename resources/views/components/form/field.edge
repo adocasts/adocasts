@@ -1,11 +1,15 @@
-@let(value = $props.value ?? '')
+@let(value = old(name) || ($props.value ?? ''))
 @let(required = $props.required ?? false)
 @let(data = { name, value, maxlength, minlength, required })
 @assign(el = el || 'label')
 
+@if (!model && (maxlength || minlength))
+  @assign(model = 'value')
+@endif
+
 @inject({ ...data, model })
 
-<{{ el }} class="flex flex-col mb-3 lg:mb-6 relative {{ $props.class }}">
+<{{ el }} class="flex flex-col mb-3 lg:mb-6 relative {{ $props.class }}" x-data="{{ js.stringify(data) }}">
   @if (label)
     <span class="block text-sm font-semibold leading-6">
       {{ label }}
@@ -21,7 +25,7 @@
 
   {{{ await $slots.main() }}}
 
-  <div x-data="{{ js.stringify(data) }}">
+  <div>
     @if(flashMessages.has(`errors.${name}`))
       @let(message = flashMessages.get(`errors.${name}`))
       <span class="text-xs text-error">{{ Array.isArray(message) ? message.join(', ') : message }}</span>
@@ -30,7 +34,7 @@
         {{ hint }}
       </div>
     @elseif(maxlength)
-      <div :class="[`text-xs text-right pt-1 absolute right-0 ${value.length >= maxlength ? 'text-error' : 'opacity-60'}`]" style="bottom: -1rem">
+      <div x-cloak :class="[`text-xs text-right pt-1 absolute right-0 ${value.length >= maxlength ? 'text-error' : 'opacity-60'}`]" style="bottom: -1rem">
         <span x-text="value.length"></span> of <span x-text="maxlength"></span>
       </div>
     @elseif(minlength)

@@ -16,6 +16,19 @@ export const throttle = limiter.define('global', () => {
   return limiter.allowRequests(10).every('1 minute')
 })
 
+export const throttleTestimonials = limiter.define('testimonials', (ctx) => {
+  return limiter
+    .allowRequests(3)
+    .every('1 minute')
+    .blockFor('15 minutes')
+    .usingKey(`testimonials_${ctx.auth.user!.id}`)
+    .limitExceeded((error) =>
+      error.setMessage(
+        "You're sharing testimonials too quickly. Please wait a bit before posting again"
+      )
+    )
+})
+
 export const throttleComments = limiter.define('comments', (ctx) => {
   return limiter
     .allowRequests(3)
@@ -40,7 +53,7 @@ export const throttleCommentsBurst = limiter.define('commentsBurst', (ctx) => {
 
 export const throttleDiscussions = limiter.define('discussions', (ctx) => {
   return limiter
-    .allowRequests(2)
+    .allowRequests(3)
     .every('10 minutes')
     .blockFor('30 minutes')
     .usingKey(`discussions_${ctx.auth.user!.id}`)

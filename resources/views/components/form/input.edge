@@ -9,20 +9,22 @@
 @let(name = $$props?.name)
 @let(internalValue = old(name) || ($$props.value ?? ''))
 
-<span class="{{ html.classNames(classes) }}">
+<span 
+  class="{{ html.classNames(classes) }}" 
+  x-data="{{ js.stringify({ name, internalValue }) }}"
+  {{ 
+    html.attrs({
+      'x-modelable': $$props?.model && 'internalValue',
+      'x-model': $$props?.model
+    }) 
+  }}
+>
   @if ($slots.prefix)
     {{{ await $slots.prefix() }}}
   @endif
 
   <input 
-    x-data="{{ js.stringify({ name, internalValue }) }}"
-
-    @if ($$props?.model)
-      x-modelable="internalValue"
-      x-model="{{ $$props?.model }}"
-    @else
-      x-model="internalValue"
-    @endif
+    x-model="internalValue"
 
     @if (name)
       name="{{ name }}"

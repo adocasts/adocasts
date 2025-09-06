@@ -1,0 +1,132 @@
+@let(profile = await auth.user.related('profile').query().firstOrFail())
+
+@layout({
+  title: "Manage Alerts | Adocasts Notification Settings",
+  meta: {
+    url: route('settings', { section: 'notifications' }),
+    desc: `Customize your Adocasts notification preferences. Choose how you receive updates on new AdonisJS and NodeJS content, announcements, and account activities.`,
+    asset: null,
+    index: false
+  }
+})
+  @layout.shell.asideLeft({ label: 'Settings Navigation' }) 
+    @slot('aside')
+      @include('partials/users/settings/nav')
+    @endslot
+
+    <div class="flex flex-wrap justify-between items-center mb-8">
+      <h1 class="heading-2">Your Testimonials</h1>
+      <div>
+        <a href="{{ route('testimonials.form') }}" up-layer="new" up-mode="modal" class="btn btn-outline btn-primary">
+          Share a new testimonial
+        </a>
+      </div>
+    </div>
+
+    @if (!testimonials.data.length)
+      <div class="border border-dashed border-base-content/30 rounded-base px-4 py-12 flex flex-col items-center">
+        <img class="w-36" src="/imgs/robot/slice5.svg" alt="robot comment bubble">
+        <p class="uppercase tracking-wide text-base-content/60">
+          You haven't left any testimonials yet
+        </p>
+
+        <a href="{{ route('testimonials.form') }}" up-layer="new" up-mode="modal" class="btn btn-outline btn-primary mt-3">
+          Share your story
+        </a>
+      </div>
+    @endif
+
+    @each ((row, i) in testimonials.data)
+      @if (i === 0 && testimonials.meta.currentPage === 1 && !row.staleAt)
+
+        <section class="pb-12 border-b border-base-100">
+          <figure class="max-w-2xl">
+            <div class="flex flex-wrap gap-x-3 lg:gap-x-6 items-center mb-3">
+              <div class="text-base-content/60">
+                Shared
+                <time datetime="{{ row.createdAt }}">{{ TimeService.timeago(row.createdAt) }}</time>
+              </div>
+
+              @if (row.approvedAt)
+                <div class="text-success">
+                  Approved
+                </div>
+              @elseif (!row.rejectedAt)
+                <div class="text-info">
+                  Pending
+                </div>
+              @endif
+
+              <a href="{{ route('testimonials.edit', { id: row.id }) }}" class="link link-hover" up-layer="new" up-mode="modal">
+                Edit
+              </a>
+
+              @form({ action: form.delete('testimonials.destroy', { id: row.id }), 'up-scroll': 'preserve', 'up-confirm': "Your testimonial will be deleted, are you sure you'd like to continue?" })
+                <button type="submit" class="link link-error link-hover">
+                  Delete
+                </button>
+              @end
+            </div>
+            <blockquote class="text-xl/8 font-semibold tracking-tight sm:text-2xl/9">
+              <p>“{{ row.body }}”</p>
+            </blockquote>
+            <figcaption class="mt-6 flex items-center gap-x-6">
+              <div class="avatar">
+                <div class="size-12 rounded">
+                  @!user.avatar({ user: row.author, loading: 'lazy', alt: row.author?.handle ?? 'Anonymous user' })
+                </div>
+              </div>
+              <div>
+                @if (row.author.name)
+                  <div class="font-semibold">
+                    {{ row.author.name }}
+                  </div>
+                  <div class="text-base-content/60">
+                    {{ row.author.handle }}
+                  </div>
+                @else
+                  <div class="font-semibold">
+                    {{ row.author.handle }}
+                  </div>
+                @endif
+              </div>
+            </figcaption>
+          </figure>
+        </section>
+
+      @else
+        
+        @if (i === 1 && testimonials.meta.currentPage === 1)
+          <div class="mb-6">
+            <h5 class="heading-4 !mb-0 pt-6">Your past testimonials</h5>
+            <p class="text-sm text-base-content/60">
+              Only your latest testimonial (shown above) will be considered for display on the site
+            </p>
+          </div>
+        @endif
+        <section class="mb-6 pb-6 border-b border-base-100">
+          <figure class="max-w-2xl">
+            <blockquote class="tracking-tight text-base-content/60">
+              <p>“{{ row.body }}”</p>
+            </blockquote>
+            <div class="flex flex-wrap gap-x-3 items-center pt-3 text-sm">
+              <div class="text-base-content/60">
+                Shared
+                <time datetime="{{ row.createdAt }}">{{ TimeService.timeago(row.createdAt) }}</time>
+              </div>
+
+              @form({ action: form.delete('testimonials.destroy', { id: row.id }), 'up-scroll': 'preserve', 'up-confirm': "Your testimonial will be deleted, are you sure you'd like to continue?" })
+                <button type="submit" class="link link-error link-hover">
+                  Delete
+                </button>
+              @end
+            </div>
+          </figure>
+        </section>
+
+      @endif
+    @endeach
+
+    @!pagination({ meta: testimonials.meta })
+  @end
+@end

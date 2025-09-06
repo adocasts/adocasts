@@ -39,6 +39,7 @@ import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
 import { compose } from '@adonisjs/core/helpers'
 import hash from '@adonisjs/core/services/hash'
 import Role from './role.js'
+import Testimonial from './testimonial.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('argon'), {
   uids: ['email', 'username'],
@@ -306,6 +307,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @hasMany(() => Invoice)
   declare invoices: HasMany<typeof Invoice>
+
+  @hasMany(() => Testimonial)
+  declare testimonials: HasMany<typeof Testimonial>
 
   async verifyPasswordForAuth(plainTextPassword: string) {
     return hash.use('argon').verify(this.password, plainTextPassword)

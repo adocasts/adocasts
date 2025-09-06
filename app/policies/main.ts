@@ -19,4 +19,5 @@ export const policies = {
   PostPolicy: () => import('#policies/post_policy'),
   LessonRequestPolicy: () => import('#policies/lesson_request_policy'),
   DiscussionPolicy: () => import('#policies/discussion_policy'),
+  TestimonialPolicy: () => import('#policies/testimonial_policy'),
 }

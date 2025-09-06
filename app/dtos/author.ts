@@ -10,6 +10,7 @@ export default class AuthorDto extends BaseModelDto {
 
   declare id: number
   declare planId: number
+  declare name: string | null
   declare username: string
   declare handle: string
   declare avatar?: string
@@ -28,5 +29,9 @@ export default class AuthorDto extends BaseModelDto {
     this.avatar = user.avatar
     this.isEnabledProfile = user.isEnabledProfile
     this.isFreeTier = user.isFreeTier
+
+    if (user.profile) {
+      this.name = user.profile.name
+    }
   }
 }

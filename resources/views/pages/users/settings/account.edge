@@ -22,7 +22,7 @@
         </div>
 
         <div class="flex-1">
-          @form.field({ label: 'Username', help: 'Minimum of 3 characters using letters, numbers, _, or -', name: 'username' })
+          @form.field({ label: 'Username', help: 'Minimum of 3 characters using letters, numbers, _, or -', name: 'username', minlength: 3 })
             @!form.input({ type: 'text', autocomplete: 'username', placeholder: auth.user.username, class: 'w-full' })
           @end
 

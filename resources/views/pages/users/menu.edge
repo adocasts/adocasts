@@ -8,8 +8,8 @@
   }
 })
 
-  <div class="max-w-[100vw] flex gap-x-3 md:gap-x-6 p-3 md:p-6" x-data x-init="up.reload('[up-header-auth]', { url: '{{ route('frag', ['header', 'auth']) }}', layer: 'root', background: true })">
-    <nav class="flex flex-col sticky top-6 -mx-2 group">
+  <div class="max-w-[100vw] flex gap-x-3 md:gap-x-6 p-3 md:p-6 !pl-0" x-data x-init="up.reload('[up-header-auth]', { url: '{{ route('frag', ['header', 'auth']) }}', layer: 'root', background: true })">
+    <nav class="flex flex-col sticky top-6 group">
       <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mb-2">Content</p>
       @!menu.link({ text: 'Watchlist', href: route('users.watchlist'), 'up-follow': true, 'up-layer': 'root' })
       @!menu.link({ text: 'Bookmarks', href: route('users.bookmarks'), 'up-follow': true, 'up-layer': 'root' })
@@ -30,6 +30,11 @@
       @if (env('STRIPE_ENABLED'))
         @!menu.link({ text: 'Billing', href: route('settings', { section: 'billing' }), 'up-layer': 'root' })
       @endif
+
+      <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8 mb-2">Testimonials</p>
+      
+      @!menu.link({ text: 'Manage', href: route('testimonials.user'), 'up-layer': 'root' })
+      @!menu.link({ text: 'Share', href: route('testimonials.form'), 'up-layer': 'swap', 'up-mode': 'modal' })
 
       @if (auth.user?.isAdmin || auth.user?.isContributor)
         <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8 mb-2">CMS</p>

@@ -29,4 +29,12 @@
       Billing
     </a>
   </li>
+  <li class="pt-3 mt-2 border-t border-base-100">
+    @let(testimonialPath = route('testimonials.user'))
+    <a {{ html.attrs({ href: testimonialPath, class: [{ 'menu-active' : request.url().startsWith(testimonialPath) }]})
+      }}>
+      @svg('solar:user-speak-outline', { class: 'size-5 text-base-content/80' })
+      Testimonials
+    </a>
+  </li>
 </ul>

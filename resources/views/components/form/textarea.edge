@@ -9,19 +9,21 @@
 @let(name = $$props?.name)
 @let(internalValue = flashMessages.get(name) || ($$props.value ?? ''))
 
-<textarea 
-  x-data="{{ js.stringify({ name, internalValue }) }}"
-
-  @if ($$props?.model)
-    x-modelable="internalValue"
-    x-model="{{ $$props?.model }}"
-  @else
+<div x-data="{{ js.stringify({ name, internalValue }) }}" 
+  {{ 
+    html.attrs({
+      'x-modelable': $$props?.model && 'internalValue',
+      'x-model': $$props?.model
+    }) 
+  }}
+>
+  <textarea 
     x-model="internalValue"
-  @endif
 
-  @if (name)
-    name="{{ name }}"
-  @endif
+    @if (name)
+      name="{{ name }}"
+    @endif
 
-  {{ $props.except(['value', 'name', 'model', 'upSubmit']).merge({ ...$context, class: classes }).toAttrs() }} 
-></textarea>
+    {{ $props.except(['value', 'name', 'model', 'upSubmit']).merge({ ...$context, class: classes }).toAttrs() }} 
+  ></textarea>
+</div>
