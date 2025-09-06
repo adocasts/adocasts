@@ -1,4 +1,3 @@
-import env from '#start/env'
 import { errors as coreErrors } from '@adonisjs/core'
 import { ExceptionHandler, HttpContext } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
@@ -8,7 +7,6 @@ import { errors as shieldErrors } from '@adonisjs/shield'
 import { errors as vineErrors } from '@vinejs/vine'
 
 import logger from '#services/logger_service'
-import * as HyperDX from '@hyperdx/node-opentelemetry'
 
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
@@ -74,9 +72,9 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * @note You should not attempt to send a response from this method.
    */
   async report(error: unknown, ctx: HttpContext) {
-    if (env.get('HYPERDX_INTEGESTION_KEY')) {
-      HyperDX.recordException(error)
-    }
+    // if (env.get('HYPERDX_INTEGESTION_KEY')) {
+    //   HyperDX.recordException(error)
+    // }
 
     if (
       error instanceof coreErrors.E_ROUTE_NOT_FOUND ||
