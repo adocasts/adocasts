@@ -9,7 +9,6 @@ export default class ShowAsset extends BaseAction {
     const query = request.only(Object.values(AssetOptions))
     const path = AssetService.getParamFilename(params)
     const options = AssetService.getImageOptions(query, path)
-
     const image = await GetAsset.run(options)
 
     response.append('Content-Type', `image/${options.format}`)

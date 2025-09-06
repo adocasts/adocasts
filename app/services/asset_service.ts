@@ -20,15 +20,21 @@ export class ImageOptions {
 
 export default class AssetService {
   static getParamFilename(params: Array<string> | Record<string, any>): string {
+    let filename = ''
+
     if (Array.isArray(params)) {
-      return params.join('/')
+      filename = params.join('/')
+    } else if (params['*']) {
+      filename = params['*'].join('/')
+    } else {
+      filename = Object.values(params).join('/')
     }
 
-    if (params['*']) {
-      return params['*'].join('/')
+    if (filename.includes('.png%3F') || filename.includes('.jpg%3F')) {
+      return filename.split('%3F')[0]
     }
 
-    return Object.values(params).join('/')
+    return filename
   }
 
   static getFilenameExtension(filename: string, defaultValue: string = 'jpg') {
