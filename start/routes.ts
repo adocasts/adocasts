@@ -23,6 +23,7 @@ import {
   throttleTestimonials,
   throttleVerifyEmail,
 } from './limiter.js'
+const GetUserMentionAutocomplete = () => import('#actions/users/get_user_mention_autocomplete')
 const UpdateTestimonial = () => import('#actions/testimonials/update_testimonial')
 const RenderUserTestimonials = () => import('#actions/testimonials/render_user_testimonials')
 const DestroyTestimonial = () => import('#actions/testimonials/destroy_testimonial')
@@ -204,6 +205,7 @@ router.get('/:handle/:tab?', [RenderUserProfile]).as('users.profile').where('han
 router.patch('/users/theme', [UpdateUserTheme]).as('users.theme')
 router.get('/users/:userId/notifications/:field/off', [DisableNotification]).as('users.notifications.disable.field')
 router.get('/users/:userId/notifications/off', [DisableAllNotifications]).as('users.notifications.disable')
+router.post('/api/mentions/list', [GetUserMentionAutocomplete]).as('api.mentions.list').use(middleware.auth())
 
 //* Series
 router.get('/series', [RenderSeriesIndex]).as('series.index')

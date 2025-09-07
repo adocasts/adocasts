@@ -71,9 +71,9 @@ export default {
         }
 
         const component = `
-          <div class="items flex flex-col bg-slate-200/90 backdrop-blur-lg border border-slate-300/50 shadow-xl rounded-md p-2">
+          <div class="items flex flex-col bg-base-100/90 backdrop-blur-lg border border-base-100 shadow-lg rounded-md p-2">
             <template x-for="(item, index) in state.tiptapCommand.items" :key="index">
-              <button class="item flex items-center gap-1.5 w-full pl-1 py-1 pr-12 rounded-lg text-left" :class="{ 'bg-slate-300': state.tiptapCommand.selectedIndex === index }" @click="state.tiptapCommand.onClick(index)" class="block py-1">
+              <button class="item flex items-center border border-transparent gap-1.5 w-full pl-2 py-1 pr-12 rounded-sm text-left" :class="{ 'bg-primary/10 border-primary text-primary': state.tiptapCommand.selectedIndex === index }" @click="state.tiptapCommand.onClick(index)" class="block py-1">
                 <div class="title" class="text-left" x-text="item"></div>
               </button>
             </template>
