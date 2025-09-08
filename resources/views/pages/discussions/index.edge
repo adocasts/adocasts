@@ -5,28 +5,48 @@
   }
 })
   @discussion.shell({ topics, filters })
+    @slot('main', scope)
 
-    <div class="flex flex-col -mt-6">
-      @each (discussion in discussions.data)
-        @!discussion.card({ discussion })
-      @endeach
+      <div class="flex flex-col lg:-mt-6">
+        <div class="flex flex-wrap justify-between lg:hidden gap-x-3 gap-y-6 mb-6">
+          <h1 class="heading-2 !mb-0">
+            {{ scope.feedTitles.get(scope.feed) }}
+          </h1>
 
-      @if (!discussions.data.length)
-        <div class="border border-dashed border-base-content/30 rounded-base px-4 py-12 flex flex-col items-center">
-          <img class="w-36" src="/imgs/robot/slice4.svg" alt="robot searching">
-          <p class="uppercase tracking-wide text-base-content">
-            No matches found
-          </p>
-          <p class="text-base-content/60">
-            Please try again with a broader search
-          </p>
+          @if (auth.user)
+            <a href="{{ route('discussions.create') }}" class="btn btn-outline btn-primary max-sm:btn-block">
+              @svg('solar:chat-round-line-outline', { class: 'size-5' })
+              New Discussion
+            </a>
+          @else
+            <a href="{{ route('auth.signup') }}" class="btn btn-outline btn-primary max-sm:btn-block" up-auth-modal>
+              @svg('solar:chat-round-line-outline', { class: 'size-5' })
+              New Discussion
+            </a>
+          @endif
         </div>
-      @endif
 
-      <div>
-        @!pagination({ meta: discussions.meta })
+        @each (discussion in discussions.data)
+          @!discussion.card({ discussion })
+        @endeach
+
+        @if (!discussions.data.length)
+          <div class="border border-dashed border-base-content/30 rounded-base px-4 py-12 flex flex-col items-center">
+            <img class="w-36" src="/imgs/robot/slice4.svg" alt="robot searching">
+            <p class="uppercase tracking-wide text-base-content">
+              No matches found
+            </p>
+            <p class="text-base-content/60">
+              Please try again with a broader search
+            </p>
+          </div>
+        @endif
+
+        <div>
+          @!pagination({ meta: discussions.meta })
+        </div>
       </div>
-    </div>
 
+    @endslot
   @end
 @end
