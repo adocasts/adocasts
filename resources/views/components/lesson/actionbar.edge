@@ -1,7 +1,9 @@
 @let(rerender = $props.rerender ?? false)
 
 <div {{ $props.except(['lesson', 'series', 'transcript']).toAttrs() }}>
-  @!frags.lesson.completedToggle({ lesson, series, rerender })
+  @if (auth.user)
+    @!frags.lesson.completedToggle({ lesson, series, rerender })
+  @endif
   
   @if (lesson.hasVideo)
     @!frags.lesson.autoplayToggle({ lesson })
