@@ -8,8 +8,6 @@ export default class extends BaseSchema {
   }
 
   async down() {
-    this.schema.alterTable(this.tableName, (table) => {
-      this.raw('DROP INDEX idx_discussions_created_at')
-    })
+    this.raw('DROP INDEX idx_discussions_created_at')
   }
 }
