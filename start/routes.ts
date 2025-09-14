@@ -197,7 +197,7 @@ router.get('/reset-password/:email', [RenderResetPassword]).as('auth.password.re
 router.post('/reset-password', [ResetPassword]).as('auth.password.reset.store')
 
 //* Users
-router.get('/users/menu', [RenderUserMenu]).as('users.menu')
+router.get('/users/menu', [RenderUserMenu]).as('users.menu').use(middleware.auth())
 router.get('/users/watchlist', [RenderUserWatchlist]).as('users.watchlist').use(middleware.auth())
 router.get('/users/bookmarks', [RenderUserBookmarks]).as('users.bookmarks').use(middleware.auth())
 router.get('/users/history/:tab?', [RenderUserHistory]).as('users.history').use(middleware.auth())
