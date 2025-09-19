@@ -5,7 +5,7 @@
   <button type="submit" form="plusMonthlyForm" class="btn btn-outline btn-primary btn-block">
     {{ cta ?? 'Get Started Today' }}
   </button>
-  @!form({ id: 'plusMonthlyForm', action: route('stripe.checkout', { slug: plusMonthly.slug }) })
+  @!form({ id: 'plusMonthlyForm', action: route('stripe.checkout', { slug: plusMonthly.slug }), 'up-submit': 'false' })
 @else
   <div class="border border-base-100 shadow-sm px-4 py-2 rounded-base text-sm font-medium">
     Coming Soon
