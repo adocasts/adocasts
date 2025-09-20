@@ -165,13 +165,13 @@
 
           @let([featuredLesson1, featuredLesson2, ...otherLessons] = lessons)
           <div class="w-full grid sm:grid-cols-2 gap-3 mb-3">
-            @!lesson.card({ lesson: featuredLesson1, size: 'lg' })
-            @!lesson.card({ lesson: featuredLesson2, size: 'lg' })
+            @!lesson.card({ lesson: featuredLesson1, size: 'lg', lazyItem: true })
+            @!lesson.card({ lesson: featuredLesson2, size: 'lg', lazyItem: true })
           </div>
 
           <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
             @each (lesson in otherLessons.slice(0, 8))
-              @!lesson.card({ lesson })
+              @!lesson.card({ lesson, lazyItem: true })
             @endeach
           </div>
         </div>

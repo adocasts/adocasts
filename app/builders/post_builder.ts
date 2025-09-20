@@ -219,6 +219,9 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
       case Sorts.LATEST:
         this.orderPublished()
         break
+      case Sorts.LATEST_UPDATED:
+        this.query.orderByRaw('COALESCE(updated_content_at, publish_at) DESC, created_at DESC')
+        break
       case Sorts.LONGEST:
         this.orderBy('videoSeconds', 'desc')
         break

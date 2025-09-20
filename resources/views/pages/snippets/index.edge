@@ -10,7 +10,7 @@
   @layout.shell.asideLeft({ overflow: true })
     @slot('aside')
 
-      <form method="GET" action="{{ route('snippets.index') }}" up-target="[snippet-list]" up-scroll="false" up-autosubmit>
+      <form method="GET" action="{{ route('snippets.index') }}" up-target="[snippet-list]" up-scroll="false" up-history="true" up-autosubmit>
         <h3 class="heading-3">
           Filter
         </h3>
@@ -45,14 +45,17 @@
           </div>
         </div> --}}
 
-        <div class="mb-3 md:mb-6">
-          <div class="font-semibold opacity-60 text-sm mb-3">Filter by topic</div>
-          @form.filter({ name: 'topic', checked: filters?.topic })
-            @each (topic in topics)
-              @!form.filter.option({ value: topic.slug, label: topic.name })
-            @endeach
-          @end
-        </div>
+        @collapse.filter({ title: 'Topic', class: 'collapse-arrow !px-0', open: true })
+          @each (topic in topics)
+            @!form.checkbox({
+              name: 'topics[]',
+              label: topic.name,
+              count: topic.meta.blogs_count,
+              value: topic.slug, fade: true,
+              checked: filters.topics?.includes(topic.slug) ? 'checked' : null
+            })
+          @endeach
+        @end
       </form>
 
     @endslot

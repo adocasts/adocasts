@@ -72,7 +72,7 @@
             </div>
             <main class="flex-1 grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-3 gap-3">
               @each (item in lessons.data)
-                @!lesson.card({ lesson: item, size: 'sm' })
+                @!lesson.card({ lesson: item, size: 'sm', lazyItem: true })
               @endeach
             </main>
           </section>

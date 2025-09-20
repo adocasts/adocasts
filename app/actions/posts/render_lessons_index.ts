@@ -12,6 +12,6 @@ export default class RenderLessonsIndex extends BaseAction {
     const lessons = await GetLessonsPaginated.run(filters, 'lessons.index')
     const topics = await GetTopicsFilter.run('lessons')
 
-    return view.render('pages/lessons/index', { lessons, topics })
+    return view.render('pages/lessons/index', { lessons, topics, filters })
   }
 }
