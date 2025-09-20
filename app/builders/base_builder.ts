@@ -2,7 +2,7 @@ import BaseModelDto, { StaticModelDto } from '#dtos/base_model_dto'
 import is from '@adonisjs/core/helpers/is'
 import stringHelpers from '@adonisjs/core/helpers/string'
 import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
-import { StrictValues } from '@adonisjs/lucid/types/querybuilder'
+import { RawQueryBindings, StrictValues } from '@adonisjs/lucid/types/querybuilder'
 
 export default class BaseBuilder<Model extends LucidModel, Row extends LucidRow> {
   qthen:
@@ -100,6 +100,15 @@ export default class BaseBuilder<Model extends LucidModel, Row extends LucidRow>
 
   orderBy(column: string, direction: 'asc' | 'desc' = 'asc') {
     this.query.orderBy(column, direction)
+    return this
+  }
+
+  orderByRaw(sql: string, bindings?: RawQueryBindings) {
+    this.query.if(
+      bindings,
+      (query) => query.orderByRaw(sql, bindings!),
+      (query) => query.orderByRaw(sql)
+    )
     return this
   }
 
