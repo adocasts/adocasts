@@ -12,7 +12,7 @@
 
   <div x-data="editor({{ js.stringify(editorProps) }})">
     <div x-show="isInitialized" class="bubble-menu bg-base-100 text-sm p-1 rounded-base">
-      <template x-if="typeof isInitialized === 'boolean' && isInitialized">
+      <template x-if="editor">
         <div class="flex items-center space-x-1">
           <button type="button" @click.prevent.stop="command('h3')" class="btn btn-xs btn-ghost btn-square" :class="{ 'btn-active': isActive('h3') }">
             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><path fill="currentColor" d="M252 180a40 40 0 0 1-68.57 28a12 12 0 1 1 17.14-16.79A16 16 0 1 0 212 164a12 12 0 0 1-9.83-18.88L217 124h-25a12 12 0 0 1 0-24h48a12 12 0 0 1 9.83 18.88l-18.34 26.2A40 40 0 0 1 252 180M144 44a12 12 0 0 0-12 12v48H52V56a12 12 0 0 0-24 0v120a12 12 0 0 0 24 0v-48h80v48a12 12 0 0 0 24 0V56a12 12 0 0 0-12-12"/></svg>
@@ -54,7 +54,7 @@
         @svg('solar:info-circle-outline', { class: 'size-3' })
         Help
       </a>
-      
+
       @if ($slots.after)
         {{{ await $slots.after({ allows }) }}}
       @endif
@@ -74,7 +74,7 @@
               <img src="/imgs/robot/slice2.svg" class="!my-0 w-full object-cover object-top-right" />
             </div>
           </div>
-          
+
           <div>
             <div class="font-semibold text-lg">
               <a href="{{ route('auth.signup') }}" class="link-grow no-underline" up-auth-modal>
