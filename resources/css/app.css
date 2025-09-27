@@ -9,6 +9,7 @@
 @import "./_prose.css";
 @import "./_stats.css";
 @import "./_unpoly.css";
+@import "./_player.css";
 @import "./_utils.css";
 @plugin "@tailwindcss/typography";
 
@@ -147,8 +148,8 @@ a.link-grow {
 }
 
 .btn:has(svg),
-.menu > li > label:has(svg),
-.menu > li > a:has(svg) {
+.menu>li>label:has(svg),
+.menu>li>a:has(svg) {
   @apply gap-x-3;
 }
 
@@ -265,7 +266,7 @@ a.link-grow {
     .card {
       --width: 100%;
       width: var(--width);
-      
+
       @variant md {
         --width: 45%;
         width: calc(var(--width) - (var(--gap) / 2));
@@ -357,7 +358,7 @@ a.link-grow {
     }
   }
 
-  @media screen and (width >= 610px) and (width < 810px) {
+  @media screen and (width >=610px) and (width < 810px) {
     --columns: 4;
 
     .img:nth-child(1),
@@ -368,7 +369,7 @@ a.link-grow {
     }
   }
 
-  @media screen and (width >= 810px) and (width < 1400px) {
+  @media screen and (width >=810px) and (width < 1400px) {
     --columns: 5;
 
     .img:nth-child(2),
@@ -378,8 +379,8 @@ a.link-grow {
       grid-row: span 2/span 2;
     }
   }
-  
-  @media screen and (width >= 1400px) {
+
+  @media screen and (width >=1400px) {
     --columns: 6;
 
     .img:nth-child(3),
