@@ -12,6 +12,6 @@ export default class RenderBlogsIndex extends BaseAction {
     const blogs = await GetBlogsPaginated.run(filters, 'blogs.index')
     const topics = await GetTopicsFilter.run('blogs')
 
-    return view.render('pages/blogs/index', { blogs, topics })
+    return view.render('pages/blogs/index', { blogs, topics, filters })
   }
 }

@@ -156,4 +156,9 @@ export default class DiscussionBuilder extends BaseBuilder<typeof Discussion, Di
     this.query.withCount('impressions')
     return this
   }
+
+  orderLatestUpdated() {
+    this.query.apply((scope) => scope.orderByCommentLatestPublished())
+    return this
+  }
 }

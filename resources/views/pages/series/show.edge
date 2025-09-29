@@ -25,14 +25,16 @@
         @endif
 
         <div class="flex flex-1 items-center gap-3 mt-10">
-          <a href="{{ nextUp.routeUrl }}" class="btn btn-outline btn-primary flex-1 sm:btn-wide">
-            @svg('solar:play-outline', { class: 'size-4 mr-1 opacity-80' })
-            @if (progression?.percent)
-              Continue Series
-            @else
-              Start Series
-            @endif
-          </a>
+          @if (nextUp)
+            <a href="{{ nextUp.routeUrl }}" class="btn btn-outline btn-primary flex-1 sm:btn-wide">
+              @svg('solar:play-outline', { class: 'size-4 mr-1 opacity-80' })
+              @if (progression?.percent)
+                Continue Series
+              @else
+                Start Series
+              @endif
+            </a>
+          @endif
 
           @!frags.series.watchlistToggle({
             id: 'series-watchlist-head',
@@ -106,6 +108,12 @@
           @each (post in series.lessons)
             @!post.cardSeries({ post })
           @endeach
+
+          @if (!series.lessons?.length && !series.modules?.some(m => m.lessons?.length))
+            <div class="border border-dashed border-base-100 rounded-base p-6 text-base-content/60 mb-6">
+              Nothing here yet, check back soon!
+            </div>
+          @endif
         </div>
 
         @if (series.statusId === Status.IN_PROGRESS)
@@ -143,14 +151,16 @@
 
         <div class="flex items-center justify-between gap-3 mt-6">
           <div class="flex flex-1 items-center gap-3">
-            <a href="{{ nextUp.routeUrl }}" class="btn btn-outline btn-primary flex-1">
-              @svg('solar:play-outline', { class: 'size-4 mr-1 opacity-80' })
-              @if (progression?.percent)
-                Continue Series
-              @else
-                Start Series
-              @endif
-            </a>
+            @if (nextUp)
+              <a href="{{ nextUp.routeUrl }}" class="btn btn-outline btn-primary flex-1">
+                @svg('solar:play-outline', { class: 'size-4 mr-1 opacity-80' })
+                @if (progression?.percent)
+                  Continue Series
+                @else
+                  Start Series
+                @endif
+              </a>
+            @endif
 
             @!frags.series.watchlistToggle({
               id: 'series-watchlist-aside',

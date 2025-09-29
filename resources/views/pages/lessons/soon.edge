@@ -5,7 +5,7 @@
     canonical: lesson.routeUrl,
     series: series,
     desc: string.excerpt(lesson.meta_description ?? lesson.description, 180),
-    asset: lesson.asset,
+    asset: lesson.thumbnail,
     index: await bouncer.can('PostPolicy.index', lesson)
   },
   style: `--aside-width: ${lesson.hasVideo ? '325px' : '0'}; --footer-less-width: var(--aside-width);`,

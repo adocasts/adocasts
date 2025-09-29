@@ -4,7 +4,7 @@
     url: blog.routeUrl,
     canonical: blog.routeUrl,
     desc: string.excerpt(blog.meta_description ?? blog.description, 180),
-    asset: blog.asset,
+    asset: blog.thumbnail,
     index: await bouncer.can('PostPolicy.index', blog)
   }
 })

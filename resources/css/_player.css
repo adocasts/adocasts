@@ -1,0 +1,7 @@
+#lessonVideoEmbed {
+
+  /* fixes issue where captions hide behind controls */
+  &:has(.vds-controls[data-visible]) .vds-captions [data-part="cue-display"] {
+    padding-bottom: 56px;
+  }
+}

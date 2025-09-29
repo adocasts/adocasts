@@ -10,7 +10,7 @@
   @layout.shell.asideLeft({ overflow: true })
     @slot('aside')
 
-      <form method="GET" action="{{ route('blogs.index') }}" up-target="[blog-list]" up-scroll="false" up-autosubmit>
+      <form method="GET" action="{{ route('blogs.index') }}" up-target="[blog-list]" up-scroll="false" up-history="true" up-autosubmit>
         <div class="mb-3 md:mb-6">
           <ul x-data="{ sort: {{ js.stringify(filters?.sort ?? Sorts.LATEST) }} }" class="menu w-full gap-1 p-0">
             <li>
@@ -43,7 +43,13 @@
 
         @collapse.filter({ title: 'Topic', class: 'collapse-arrow !px-0', open: true })
           @each (topic in topics)
-            @!form.checkbox({ name: 'topics[]', label: topic.name, count: topic.meta.blogs_count, value: topic.slug, fade: true })
+            @!form.checkbox({
+              name: 'topics[]',
+              label: topic.name,
+              count: topic.meta.blogs_count,
+              value: topic.slug, fade: true,
+              checked: filters.topics?.includes(topic.slug) ? 'checked' : null
+            })
           @endeach
         @end
       </form>
@@ -55,7 +61,7 @@
     </h1>
 
     <p class="mb-12 max-w-2xl text-pretty font-medium opacity-60 sm:text-lg/8">
-      This blog features news and discussions about coding and content creation. 
+      This blog features news and discussions about coding and content creation.
       I cover AdonisJS, NodeJS, JavaScript, TypeScript, CSS, and various other development subjects.
     </p>
 

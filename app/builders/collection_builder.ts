@@ -57,7 +57,7 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
         // where has posts
         .whereHas('postsFlattened', (posts) => posts.apply((scope) => scope.published()))
         // or where status is coming soon
-        .orWhere('statusId', Status.COMING_SOON)
+        .orWhereIn('statusId', [Status.COMING_SOON, Status.IN_PROGRESS])
     })
     return this
   }

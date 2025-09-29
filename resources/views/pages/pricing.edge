@@ -231,7 +231,7 @@
         @faq.item({ title: 'What if I need help or support?' })
           <p class="text-base/7 text-base-content/60 mb-3">
             Have a question about a specific lesson? Leave a comment with your question on that lesson's page.
-            For general help, feel free to <a class="link" href="{{ route('discussions.create') }}">start a chat in our forum</a>.
+            For general help, feel free to <a class="link" href="{{ auth.user ? route('discussions.create') : route('discussions.index') }}">start a chat in our forum</a>.
             Need help with your account, subscription, or something personal? Reach out through our <a class="link" href="/contact">contact page</a> and we’ll get back to you as soon as we can.
           </p>
           <p class="text-base/7 text-base-content/60">

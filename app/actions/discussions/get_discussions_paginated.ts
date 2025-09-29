@@ -23,7 +23,7 @@ export default class GetDiscussionsPaginated extends BaseAction {
       .withAuthor()
       .withTaxonomy()
       .withVotes()
-      .orderBy('createdAt', 'desc')
+      .orderLatestUpdated()
       .paginate(page, perPage)
 
     if (routeIdentifier) {

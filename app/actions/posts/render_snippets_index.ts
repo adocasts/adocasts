@@ -12,6 +12,6 @@ export default class RenderSnippetsIndex extends BaseAction {
     const snippets = await GetSnippetsPaginated.run(filters, 'snippets.index')
     const topics = await GetTopicsFilter.run('snippets')
 
-    return view.render('pages/snippets/index', { snippets, topics })
+    return view.render('pages/snippets/index', { snippets, topics, filters })
   }
 }

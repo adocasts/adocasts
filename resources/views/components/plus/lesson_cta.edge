@@ -18,9 +18,9 @@
 @let(cta = plusMonthly.hasActiveSale ? `, on sale now for ${plusMonthly.displaySalePrice}/mo` : ` for ${plusMonthly.displayPrice}/mo`)
 
 @if (isDelayedRelease)
-  <div class="relative z-10">
+  <div class="relative px-6 z-10">
     @if (countdown)
-      @!countdown({ dateTime: DateTime.fromISO(lesson.publishAtISO).plus({ days: 14 }).toISO() })
+      @!countdown({ dateTime: DateTime.fromISO(lesson.publishAt).plus({ days: 14 }).toISO() })
     @endif
     <h3 class="{{ classes.heading }}">
       Adocasts Plus Timed Exclusive
