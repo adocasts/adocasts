@@ -12,6 +12,7 @@ import {
 import type { BelongsTo, HasMany, HasOne, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { DateTime } from 'luxon'
 // import { slugify } from '@ioc:Adonis/Addons/LucidSlugify' // TODO
+import LessonPanels from '#enums/lesson_panels'
 import Plans from '#enums/plans'
 import Roles from '#enums/roles'
 import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
@@ -120,7 +121,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare isEnabledMentions: boolean
 
   @column()
-  declare isEnabledTranscript: boolean
+  declare defaultLessonPanel: LessonPanels
 
   @column()
   declare emailVerified: string | null

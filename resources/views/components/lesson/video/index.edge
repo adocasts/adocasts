@@ -1,5 +1,5 @@
 <div class="bg-base-100/10 {{ $props.class ?? '' }}">
-  
+
     @cannot('PostPolicy.view', lesson)
       <div class="py-24 relative overflow-hidden border-b border-base-100">
         <div class="absolute inset-x-0 bottom-0 top-0 bg-radial-[at_50%_-50%] from-primary/35 to-primary/0 dark:from-secondary/50 dark:to-secondary/0 z-1">
@@ -23,7 +23,7 @@
       </div>
     @else
       <div class="aspect-video bg-base-200/50 max-w-[150vh] mx-auto">
-        @!lesson.video.player({ lesson, nextLesson })
+        {{-- @!lesson.video.player({ lesson, nextLesson }) --}}
       </div>
     @end
 </div>

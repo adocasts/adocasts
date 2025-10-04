@@ -4,16 +4,10 @@
   @if (auth.user)
     @!frags.lesson.completedToggle({ lesson, series, rerender })
   @endif
-  
+
   @if (lesson.hasVideo)
     @!frags.lesson.autoplayToggle({ lesson })
   @endif
-
-  @can('PostPolicy.view', lesson)
-    @if (transcript)
-      @!frags.lesson.transcriptToggle({ lesson })
-    @endif
-  @endcan
 
   @!frags.lesson.bookmarkToggle({ lesson })
 

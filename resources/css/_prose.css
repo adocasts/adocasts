@@ -5,7 +5,7 @@
   top: -4px;
 }
 
-.prose .timestamp + p {
+.prose .timestamp+p {
   margin-bottom: 0.4em;
 }
 
@@ -64,8 +64,8 @@
   }
 }
 
-.prose.post-type-5 .timestamp + p:not(.timestamp),
-.prose .timestamp.transcript + p:not(.timestamp) {
+.prose.post-type-5 .timestamp+p:not(.timestamp),
+.prose .timestamp.transcript+p:not(.timestamp) {
   margin-top: -1.75rem;
   padding-left: 55px;
 }
@@ -78,7 +78,7 @@
 }
 
 .prose p.transcript.cutoff.active,
-.prose p.transcript.cutoff.active + p:not(.timestamp) {
+.prose p.transcript.cutoff.active+p:not(.timestamp) {
   display: none;
 }
 
@@ -137,7 +137,7 @@
   content: '👆 Hide Transcript';
 }
 
-.transcript-cutoff.active + .transcript-cutoff button {
+.transcript-cutoff.active+.transcript-cutoff button {
   display: none;
 }
 
@@ -218,8 +218,8 @@
   @apply bg-success/50;
 }
 
-.prose .line.del > span,
-.prose .line.add > span {
+.prose .line.del>span,
+.prose .line.add>span {
   position: relative;
   z-index: 20;
 }
@@ -238,7 +238,7 @@
   border-radius: theme('borderRadius.xl');
 }
 
-.prose pre > code {
+.prose pre>code {
   display: flex;
   flex-flow: column;
 }
@@ -309,7 +309,7 @@ pre .filepath {
 
 pre ul.filepath-list {
   @apply text-base-content/60;
-  
+
   list-style: none;
   display: flex;
   margin: 0;
@@ -354,12 +354,12 @@ pre {
   max-width: 100%;
 }
 
-pre > code {
+pre>code {
   max-width: 100%;
   overflow-x: auto;
 }
 
-.profile pre.shiki > code {
+.profile pre.shiki>code {
   @apply !px-0 !pb-0;
 }
 
@@ -455,11 +455,11 @@ pre.shiki.github-light {
   pointer-events: none;
 }
 
-.ProseMirror > :first-child {
+.ProseMirror> :first-child {
   margin-top: 0;
 }
 
-.ProseMirror > :last-child {
+.ProseMirror> :last-child {
   margin-bottom: 0;
 }
 
@@ -489,7 +489,11 @@ pre.shiki.github-light {
   }
 
   .comment-info {
-    @apply top-4 left-14 z-10 absolute;
+    @apply top-4 left-6 z-10 absolute;
+  }
+
+  &:has(.comment-avatar) .comment-info {
+    @apply left-14;
   }
 
   .comment-actions {

@@ -2,6 +2,7 @@ import GetSeries from '#actions/collections/get_series'
 import GetUnreadNotificationCount from '#actions/notifications/get_unread_notification_count'
 import CommentTypes, { CommentTypeIdColumn } from '#enums/comment_types'
 import Difficulties from '#enums/difficulties'
+import LessonPanels from '#enums/lesson_panels'
 import PaywallTypes from '#enums/paywall_types'
 import Plans from '#enums/plans'
 import Sorts from '#enums/sorts'
@@ -50,6 +51,7 @@ edge.global('CommentTypes', CommentTypes)
 edge.global('CommentTypeIdColumn', CommentTypeIdColumn)
 edge.global('StripeSubscriptionStatuses', StripeSubscriptionStatuses)
 edge.global('VideoTypes', VideoTypes)
+edge.global('LessonPanels', LessonPanels)
 
 // utilities
 edge.global('_', _)
