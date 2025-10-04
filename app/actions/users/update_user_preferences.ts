@@ -11,7 +11,7 @@ export type PreferenceKeys = keyof Pick<
   | 'isEnabledMentions'
   | 'isEnabledMiniPlayer'
   | 'isEnabledProfile'
-  | 'isEnabledTranscript'
+  | 'defaultLessonPanel'
 >
 
 export default class UpdateUserPreferences extends BaseAction {
@@ -22,10 +22,10 @@ export default class UpdateUserPreferences extends BaseAction {
 
     await this.handle(user, {
       isEnabledAutoplayNext: !!data.isEnabledAutoplayNext,
-      isEnabledTranscript: !!data.isEnabledTranscript,
       isEnabledMentions: !!data.isEnabledMentions,
       isEnabledMiniPlayer: !!data.isEnabledMiniPlayer,
       isEnabledProfile: !!data.isEnabledProfile,
+      defaultLessonPanel: data.defaultLessonPanel || user.defaultLessonPanel,
     })
 
     session.toast('success', 'Your preferences have been updated!')
@@ -33,7 +33,7 @@ export default class UpdateUserPreferences extends BaseAction {
     return response.redirect().back()
   }
 
-  async handle(user: User, data: Partial<Record<PreferenceKeys, boolean>>) {
+  async handle(user: User, data: Partial<Pick<User, PreferenceKeys>>) {
     await user.merge(data).save()
   }
 }

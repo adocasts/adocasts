@@ -23,6 +23,7 @@ import {
   throttleTestimonials,
   throttleVerifyEmail,
 } from './limiter.js'
+const SetDefaultPostPanel = () => import('#actions/posts/set_default_post_panel')
 const GetUserMentionAutocomplete = () => import('#actions/users/get_user_mention_autocomplete')
 const UpdateTestimonial = () => import('#actions/testimonials/update_testimonial')
 const RenderUserTestimonials = () => import('#actions/testimonials/render_user_testimonials')
@@ -225,9 +226,9 @@ router.get('/topics/:slug/snippets', [RenderTopicShowSnippets]).as('topics.show.
 
 //* Lessons
 router.get('/lessons', [RenderLessonsIndex]).as('lessons.index')
+router.patch('/lessons/set-default-panel', [SetDefaultPostPanel]).as('lessons.setDefaultPanel')
 router.patch('/lessons/:slug/watchlist', [TogglePostWatchlist]).as('lessons.watchlist').use(middleware.auth())
 router.patch('/lessons/:slug/autoplay', [TogglePostAutoplay]).as('lessons.autoplay')
-router.patch('/lessons/:slug/transcript', [TogglePostTranscript]).as('lessons.transcript')
 router.get('/lessons/:slug', [RenderLessonShow]).as('lessons.show').use(middleware.postTypeCheck())
 router.get('/streams/:slug', [RenderLessonShow]).as('streams.show').use(middleware.postTypeCheck())
 router.get('/posts/:slug', [RenderLessonShow]).as('posts.show').use(middleware.postTypeCheck())

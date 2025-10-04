@@ -218,26 +218,28 @@
         <label for="series-details-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
 
         <div x-data="{ tab: {{ auth.user?.defaultLessonPanel ?? LessonPanels.SERIES }} }" class="w-[var(--aside-width)] border-l border-base-100 xl:fixed right-0 top-16 h-[calc(100%_-_4rem)] flex flex-col bg-base-300 dark:bg-base-300/85 backdrop-blur-md max-lx:shadow-sm">
-          <div class="dock dock-sm bg-transparent border-b border-base-100 static">
-            <button :class="{ 'dock-active': tab === {{ LessonPanels.SERIES }} }" @click="tab = {{ LessonPanels.SERIES }}">
-              @svg('solar:playlist-outline', { class: 'size-[1.2em]' })
-              <span class="dock-label">Series</span>
-            </button>
+          @form({ method: 'POST', action: form.patch('lessons.setDefaultPanel') })
+            <div class="dock dock-sm bg-transparent border-b border-base-100 static">
+              <button type="submit" name="panel" value="{{ LessonPanels.SERIES }}" :class="{ 'dock-active': tab === {{ LessonPanels.SERIES }} }" @click="tab = {{ LessonPanels.SERIES }}">
+                @svg('solar:playlist-outline', { class: 'size-[1.2em]' })
+                <span class="dock-label">Series</span>
+              </button>
 
-            <button :class="{ 'dock-active': tab === {{ LessonPanels.TRANSCRIPT }} }" @click="tab = {{ LessonPanels.TRANSCRIPT }}">
-              @svg('solar:clipboard-list-outline', { class: 'size-[1.2em]' })
-              <span class="dock-label">Transcript</span>
-            </button>
+              <button type="submit" name="panel" value="{{ LessonPanels.TRANSCRIPT }}" :class="{ 'dock-active': tab === {{ LessonPanels.TRANSCRIPT }} }" @click="tab = {{ LessonPanels.TRANSCRIPT }}">
+                @svg('solar:clipboard-list-outline', { class: 'size-[1.2em]' })
+                <span class="dock-label">Transcript</span>
+              </button>
 
-            <button :class="{ 'dock-active': tab === {{ LessonPanels.NOTES }} }" @click="tab = {{ LessonPanels.NOTES }}">
-              @svg('solar:notebook-outline', { class: 'size-[1.2em]' })
-              <span class="dock-label">Notes</span>
-            </button>
-          </div>
+              <button type="submit" name="panel" value="{{ LessonPanels.NOTES }}" :class="{ 'dock-active': tab === {{ LessonPanels.NOTES }} }" @click="tab = {{ LessonPanels.NOTES }}">
+                @svg('solar:notebook-outline', { class: 'size-[1.2em]' })
+                <span class="dock-label">Notes</span>
+              </button>
+            </div>
+          @end
 
           @can('PostPolicy.view', lesson)
             @if (transcript)
-              <div x-show="tab === {{ LessonPanels.TRANSCRIPT }}" class="flex-1">
+              <div x-show="tab === {{ LessonPanels.TRANSCRIPT }}" class="flex-1" x-cloak>
                 @!lesson.transcript({
                   transcript,
                   id: 'transcriptAside',
@@ -251,7 +253,7 @@
             @!lesson.seriesLessonList({ lesson, series })
           </div>
 
-          <div x-show="tab === {{ LessonPanels.NOTES }}" class="flex-1 px-2 pt-6 flex flex-col">
+          <div x-show="tab === {{ LessonPanels.NOTES }}" class="flex-1 px-2 pt-6 flex flex-col" x-cloak>
             <h3 class="heading-5 !font-semibold !leading-tight mb-3 px-2">
               Lesson Notes
             </h3>

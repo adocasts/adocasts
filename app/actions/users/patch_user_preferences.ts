@@ -6,7 +6,8 @@ import { Infer } from '@vinejs/vine/types'
 import { PreferenceKeys } from './update_user_preferences.js'
 
 type Validator = Infer<typeof preferencePatchValidator>
-type HandleData = Partial<Record<PreferenceKeys, boolean>>
+type PatchPreferenceKeys = Exclude<PreferenceKeys, 'defaultLessonPanel'>
+type HandleData = Partial<Record<PatchPreferenceKeys, boolean>>
 
 export default class PatchUserPreferences extends BaseAction {
   validator = preferencePatchValidator
@@ -31,8 +32,6 @@ export default class PatchUserPreferences extends BaseAction {
     switch (preference) {
       case 'isEnabledAutoplayNext':
         return 'Your autoplay next preference has been updated'
-      case 'isEnabledTranscript':
-        return 'Your transcript preference has been updated'
       case 'isEnabledMentions':
         return 'Your mentions preference has been updated'
       case 'isEnabledMiniPlayer':
