@@ -217,9 +217,9 @@
       <aside class="drawer-side !top-16 z-20">
         <label for="series-details-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
 
-        <div x-data="{ tab: {{ auth.user?.defaultLessonPanel ?? LessonPanels.SERIES }} }" class="w-[var(--aside-width)] border-l border-base-100 xl:fixed right-0 top-16 h-[calc(100%_-_4rem)] flex flex-col bg-base-300 dark:bg-base-300/85 backdrop-blur-md max-lx:shadow-sm">
+        <div x-data="{ tab: {{ defaultLessonPanel }} }" class="w-[var(--aside-width)] border-l border-base-100 xl:fixed right-0 top-16 h-[calc(100%_-_4rem)] flex flex-col bg-base-300 dark:bg-base-300/85 backdrop-blur-md max-lx:shadow-sm">
           @form({ method: 'POST', action: form.patch('lessons.setDefaultPanel') })
-            <div class="dock dock-sm bg-transparent border-b border-base-100 static">
+            <div class="dock dock-sm bg-transparent border-t-0 border-l-0 border-r-0 border-b border-base-100 static">
               <button type="submit" name="panel" value="{{ LessonPanels.SERIES }}" :class="{ 'dock-active': tab === {{ LessonPanels.SERIES }} }" @click="tab = {{ LessonPanels.SERIES }}">
                 @svg('solar:playlist-outline', { class: 'size-[1.2em]' })
                 <span class="dock-label">Series</span>
@@ -254,54 +254,7 @@
           </div>
 
           <div x-show="tab === {{ LessonPanels.NOTES }}" class="flex-1 px-2 pt-6 flex flex-col" x-cloak>
-            <h3 class="heading-5 !font-semibold !leading-tight mb-3 px-2">
-              Lesson Notes
-            </h3>
-
-            <div class="flex-1">
-              <div class="border border-dashed border-base-100 rounded-base p-6 text-base-content/40">
-                You haven't taken any notes for this lesson
-              </div>
-            </div>
-
-            <div class="pb-2">
-              @form({ method: 'POST', action: '#', loadable: true })
-                <input type="hidden" name="seconds" :value="$store.videoTimestamp" />
-
-                @tiptap({ value: '', wrapClass: 'comment-form comment-wrap', class: 'prose-comment' })
-                  @slot('before')
-                    <div class="comment-info flex w-[calc(100%_-_3rem)] items-center justify-between gap-6">
-                      <span>
-                        Take Note
-                      </span>
-
-                      <label class="label">
-                        <input type="checkbox" class="checkbox checkbox-sm" name="atTimestamp" />
-                        At <span x-text="$store.videoTimestamp ?? 'timestamp'"></span>
-                      </label>
-                    </div>
-                  @endslot
-
-                  @slot('after', props)
-                    @if (props.allows)
-                      <div class="comment-actions flex justify-end gap-3">
-                        <button type="submit" class="btn btn-sm btn-outline btn-primary" :disabled="sending">
-                          <span x-show="sending" x-cloak>
-                            @svg('svg-spinners:blocks-shuffle-3', { class: 'w-5 h-5 -ml-1 -my-1' })
-                            Saving ...
-                          </span>
-                          <span x-show="!sending" class="flex gap-3 items-center">
-                            @let(icon = replyingTo ? 'solar:chat-square-arrow-outline' : 'solar:chat-round-line-outline')
-                            @svg(icon, { class: 'w-5 h-5 -ml-1 -my-1' })
-                            Save Note
-                          </span>
-                        </button>
-                      </div>
-                    @endif
-                  @endslot
-                @end
-              @end
-            </div>
+            @!lesson.notes({ lesson })
           </div>
         </div>
       </aside>

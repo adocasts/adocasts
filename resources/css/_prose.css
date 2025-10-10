@@ -504,3 +504,23 @@ pre.shiki.github-light {
     @apply bottom-4 left-4 md:left-6;
   }
 }
+
+.note-wrap {
+  .note-info {
+    @apply w-[calc(100%_-_.5rem)] px-4 py-4 z-10 absolute top-px left-0 bg-base-300/25 backdrop-blur-sm;
+  }
+
+  .prose-note {
+    @apply border-t pb-4 border-base-100 -mx-2;
+
+    width: 100%;
+    max-width: 100%;
+
+    .ProseMirror {
+      @apply p-6 pt-14 min-h-42;
+
+      max-height: 45vh;
+      overflow-y: auto;
+    }
+  }
+}
