@@ -7,12 +7,14 @@ import LessonShowDto from '../../dtos/lesson_show.js'
 import GetSeries from '../collections/get_series.js'
 import GetLesson from './get_lesson.js'
 import GetTranscript from './get_transcript.js'
+import GetPostNotes from '#actions/notes/get_post_notes'
 
 export default class RenderLessonShow extends BaseAction {
   async asController({ view, params, auth, bouncer }: HttpContext) {
     const lesson = await GetLesson.run(params.slug, auth.user?.id, { skipPublishCheck: true })
     const series = await this.#getLessonSeries(lesson, params)
     const transcript = await GetTranscript.run(lesson)
+    const notes = await GetPostNotes.run(auth.user?.id, lesson.id)
 
     if (await bouncer.with(PostPolicy).denies('state', lesson)) {
       throw new NotFoundException('This post is not currently available to the public')
@@ -22,7 +24,7 @@ export default class RenderLessonShow extends BaseAction {
       return view.render('pages/lessons/soon', { lesson, series })
     }
 
-    return view.render('pages/lessons/show', { lesson, series, transcript })
+    return view.render('pages/lessons/show', { lesson, series, transcript, notes })
   }
 
   async #getLessonSeries(lesson: LessonShowDto, params: Record<string, any>) {

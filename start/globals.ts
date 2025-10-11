@@ -30,6 +30,7 @@ import { image as gravatar } from 'gravatar-gen'
 import _ from 'lodash'
 import { DateTime } from 'luxon'
 import env from './env.js'
+import Note from '#models/note'
 
 addCollection(solarIcons)
 addCollection(simpleIcons)
@@ -52,6 +53,9 @@ edge.global('CommentTypeIdColumn', CommentTypeIdColumn)
 edge.global('StripeSubscriptionStatuses', StripeSubscriptionStatuses)
 edge.global('VideoTypes', VideoTypes)
 edge.global('LessonPanels', LessonPanels)
+
+// models
+edge.global('Note', Note)
 
 // utilities
 edge.global('_', _)

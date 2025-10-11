@@ -23,6 +23,7 @@ import {
   throttleTestimonials,
   throttleVerifyEmail,
 } from './limiter.js'
+const StoreNote = () => import('#actions/notes/store_note')
 const SetDefaultPostPanel = () => import('#actions/posts/set_default_post_panel')
 const GetUserMentionAutocomplete = () => import('#actions/users/get_user_mention_autocomplete')
 const UpdateTestimonial = () => import('#actions/testimonials/update_testimonial')
@@ -71,7 +72,6 @@ const RenderUserHistory = () => import('#actions/users/render_user_history')
 const RenderTestimonialForm = () => import('#actions/testimonials/render_testimonial_form')
 const StoreTestimonial = () => import('#actions/testimonials/store_testimonial')
 const GetSeriesLessonAtNumber = () => import('#actions/collections/get_series_lesson_at_number')
-const TogglePostTranscript = () => import('#actions/posts/toggle_post_transcript')
 const PatchUserPreferences = () => import('#actions/users/patch_user_preferences')
 const RenderOgImage = () => import('#actions/general/render_og_image')
 const RenderSearch = () => import('#actions/general/render_search')
@@ -258,6 +258,9 @@ router.post('/comments', [StoreComment]).as('comments.store').use([throttleComme
 router.put('/comments/:id', [UpdateComment]).as('comments.update').use(middleware.auth())
 router.patch('/comments/:id/vote', [ToggleCommentVote]).as('comments.vote').use(middleware.auth())
 router.delete('/comments/:id', [DestroyComment]).as('comments.destroy').use(middleware.auth())
+
+//* Notes
+router.post('/notes', [StoreNote]).as('notes.store').use([middleware.auth()])
 
 //* Testimonials
 router.get('/testimonials/user', [RenderUserTestimonials]).as('testimonials.user').use(middleware.auth())

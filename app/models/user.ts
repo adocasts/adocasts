@@ -41,6 +41,7 @@ import { compose } from '@adonisjs/core/helpers'
 import hash from '@adonisjs/core/services/hash'
 import Role from './role.js'
 import Testimonial from './testimonial.js'
+import Note from './note.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('argon'), {
   uids: ['email', 'username'],
@@ -249,6 +250,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @hasMany(() => SessionLog)
   declare sessions: HasMany<typeof SessionLog>
+
+  @hasMany(() => Note)
+  declare notes: HasMany<typeof Note>
 
   @manyToMany(() => Post, {
     pivotTable: 'author_posts',

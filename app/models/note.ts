@@ -5,6 +5,8 @@ import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import Post from './post.js'
 
 export default class Note extends BaseModel {
+  static freeLimit = 5
+
   @column({ isPrimary: true })
   declare id: number
 
