@@ -253,7 +253,7 @@
             @!lesson.seriesLessonList({ lesson, series })
           </div>
 
-          <div x-show="tab === {{ LessonPanels.NOTES }}" class="flex-1 flex" x-cloak>
+          <div x-show="tab === {{ LessonPanels.NOTES }}" class="flex-1 h-full" x-cloak>
             @!lesson.notes({ lessonId: lesson.id, notes })
           </div>
         </div>
