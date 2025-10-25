@@ -234,4 +234,12 @@
     @endif
   </div>
 
+  @if (auth.user?.isAdmin)
+    <div class="fab fixed bottom-3 left-3">
+      <a href="https://cms.adocasts.com/posts/{{ lesson.id }}/edit" class="btn btn-circle btn-primary btn-soft" target="_blank">
+        @svg('solar:clapperboard-edit-linear')
+      </a>
+    </div>
+  @endif
+
 @end

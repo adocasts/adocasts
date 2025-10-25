@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-theme="adocasts-{{ theme ?? 'light' }}">
+<html data-theme="adocasts-{{ theme ?? 'light' }}" lang="en-US">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,12 +10,6 @@
 
     @if (meta)
       @!meta.tags({ ...meta, title })
-    @endif
-
-    @if (!$slots.meta && !meta?.title)
-      <title>
-        {{ env('APP_BRAND') }}
-      </title>
     @endif
 
     <script>
