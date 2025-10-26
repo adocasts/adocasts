@@ -26,6 +26,7 @@ import {
 const RenderNoteEdit = () => import('#actions/notes/render_note_edit')
 const StoreNote = () => import('#actions/notes/store_note')
 const SetDefaultPostPanel = () => import('#actions/posts/set_default_post_panel')
+const RenderStreamsIndex = () => import('#actions/posts/render_streams_index')
 const GetUserMentionAutocomplete = () => import('#actions/users/get_user_mention_autocomplete')
 const UpdateTestimonial = () => import('#actions/testimonials/update_testimonial')
 const RenderUserTestimonials = () => import('#actions/testimonials/render_user_testimonials')
@@ -129,6 +130,7 @@ router.where('slug', router.matchers.slug())
 router.on('/feed').redirectToPath('/forum')
 router.on('/credits').redirectToPath('/uses')
 router.on('/attributions').redirect('/uses')
+router.on('/cookie').redirectToPath('/cookies')
 router.on('/topics/adonisjs-5').redirectToPath('/topics/adonisjs')
 router.on('/topics/adonis-5').redirectToPath('/topics/adonisjs')
 router.on('/series/lets-learn-adonis-5').redirectToPath('/series/lets-learn-adonisjs-5')
@@ -233,6 +235,9 @@ router.patch('/lessons/:slug/autoplay', [TogglePostAutoplay]).as('lessons.autopl
 router.get('/lessons/:slug', [RenderLessonShow]).as('lessons.show').use(middleware.postTypeCheck())
 router.get('/streams/:slug', [RenderLessonShow]).as('streams.show').use(middleware.postTypeCheck())
 router.get('/posts/:slug', [RenderLessonShow]).as('posts.show').use(middleware.postTypeCheck())
+
+//* Livestreams
+router.get('/streams', [RenderStreamsIndex]).as('streams.index')
 
 //* Blogs
 router.get('/blog', [RenderBlogsIndex]).as('blogs.index')

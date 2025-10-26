@@ -8,6 +8,7 @@ type TopicTypes =
   | 'collections'
   | 'posts'
   | 'lessons'
+  | 'streams'
   | 'blogs'
   | 'snippets'
   | 'discussions'
@@ -22,6 +23,8 @@ export default class GetTopicsFilter extends BaseAction {
         return this.#get('posts_count')
       case 'lessons':
         return this.#get('lessons_count')
+      case 'streams':
+        return this.#get('streams_count')
       case 'blogs':
         return this.#get('blogs_count')
       case 'snippets':

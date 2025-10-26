@@ -37,6 +37,13 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
     return this
   }
 
+  displayStream(options?: DisplayOptions) {
+    this.whereStream()
+    this.if(!options?.skipPublishCheck, (builder) => builder.published())
+    this.orderPublished().query.apply((scope) => scope.forLessonDisplay())
+    return this
+  }
+
   displayBlog(options?: DisplayOptions) {
     this.whereBlog()
     this.if(!options?.skipPublishCheck, (builder) => builder.published())
@@ -83,6 +90,11 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
 
   whereLesson() {
     this.query.whereIn('postTypeId', [PostTypes.LESSON, PostTypes.LIVESTREAM])
+    return this
+  }
+
+  whereStream() {
+    this.query.where('postTypeId', PostTypes.LIVESTREAM)
     return this
   }
 

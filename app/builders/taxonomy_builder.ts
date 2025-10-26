@@ -17,6 +17,7 @@ export default class TaxonomyBuilder extends BaseBuilder<typeof Taxonomy, Taxono
     this.public()
       .withPostCount()
       .withLessonCount()
+      .withStreamCount()
       .withBlogCount()
       .withSnippetCount()
       .withCollectionCount()
@@ -49,6 +50,13 @@ export default class TaxonomyBuilder extends BaseBuilder<typeof Taxonomy, Taxono
   withLessonCount() {
     this.query.withCount('posts', (q) =>
       q.whereIn('postTypeId', [PostTypes.LESSON, PostTypes.LIVESTREAM]).as('lessons_count')
+    )
+    return this
+  }
+
+  withStreamCount() {
+    this.query.withCount('posts', (q) =>
+      q.where('postTypeId', PostTypes.LIVESTREAM).as('streams_count')
     )
     return this
   }
