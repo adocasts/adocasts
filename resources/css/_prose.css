@@ -508,8 +508,6 @@ pre.shiki.github-light {
 .note-wrap {
   @apply w-[calc(100%_+_1rem)] border-t border-base-100 -mx-2 px-2;
 
-  margin-bottom: 3.75rem;
-
   .note-info {
     @apply w-[calc(100%_-_1rem)] px-4 py-4 z-10 absolute top-px left-2 bg-base-300/25 backdrop-blur-sm;
   }

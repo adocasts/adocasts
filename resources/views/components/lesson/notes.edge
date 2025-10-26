@@ -3,30 +3,48 @@
     <ul class="flex-1 list-none overflow-auto">
       @if (notes?.length)
         @each (note in notes)
-          <li class="not-last:border-b border-base-100">
+          <li class="not-last:border-b border-base-100 group">
             <div class="flex flex-col text-left items-start w-full px-2 py-3 my-1 rounded-md transition duration-200 group hover:bg-base-200/50">
+              <div class="w-full flex justify-between items-center gap-3">
+                <div class="text-xs font-bold uppercase text-base-content/40">
+                  {{ TimeService.dtmHumanShort(note.createdAt) }}
+                </div>
+
+                <div class="flex gap-2 justify-end opacity-0 group-hover:opacity-100 duration-200">
+                  @can('NotePolicy.update', note)
+                    <a href="{{ route('notes.edit', { id: note.id }) }}" class="text-info text-xs flex items-center gap-1" up-layer="new" up-mode="modal">
+                      @svg('solar:pen-new-round-linear')
+                      Edit
+                    </a>
+                  @endcan
+                  
+                  @can('NotePolicy.destroy', note)
+                    <button class="text-error text-xs flex items-center gap-1">
+                      @svg('solar:trash-bin-minimalistic-linear')
+                      Delete
+                    </button>
+                  @endcan
+                </div>
+              </div>
               @if (note.timestampSeconds)
                 <button type="button" x-data @click="window.embed.startAtTime({{ note.timestampSeconds }})"
-                  class="w-full text-xs group-hover:text-primary flex items-center justify-between gap-1.5 uppercase tracking-wide mb-1">
+                  class="w-full text-xs group-hover:text-primary flex items-center uppercase tracking-wide mt-1">
                   <div class="font-bold">{{ TimeService.secondsToTime(note.timestampSeconds) }}</div>
-                
-                  <div
-                    class="items-center gap-1.5 flex opacity-0 group-hover:opacity-100 duration-300 bg-base-100 rounded-full px-2 text-2xs"
-                    x-cloak>
+                  <span class="border-l border-base-content/20 ml-2 pl-2 flex items-center gap-2 opacity-0 group-hover:opacity-100 duration-200">
                     @svg('solar:play-outline')
-                    <span>Play From Here</span>
-                  </div>
+                    Play From Here
+                  </span>
                 </button>
-                @endif
+              @endif
                 
-                <div class="prose prose-xs">
-                  {{{ await parser.highlight(note.body) }}}
-                </div>
+              <div class="prose prose-xs">
+                {{{ await parser.highlight(note.body) }}}
+              </div>
             </div>
           </li>
         @endeach
       @else
-        <li class="border border-dashed border-base-100 rounded-base p-6 text-base-content/40">
+        <li class="border border-dashed border-base-100 rounded-base p-6 text-base-content/40 mt-2">
           You haven't taken any notes for this lesson
         </li>
       @endif
@@ -36,7 +54,7 @@
       @can('NotePolicy.store')
         @form({ method: 'POST', action: form.post('notes.store'), loadable: true, 'up-target': '#lessonNotes' })
           <input type="hidden" name="postId" value="{{ lessonId }}" />
-          <input type="hidden" name="seconds" :value="$store.videoTimestamp" />
+          <input type="hidden" name="timestampSeconds" :value="$store.app.videoTimestamp" />
           
           @tiptap({ value: '', wrapClass: 'note-wrap', class: 'prose-note', name: 'body' })
             @slot('before')
@@ -47,7 +65,7 @@
                 
                 <label class="label">
                   <input type="checkbox" class="checkbox checkbox-sm" name="atTimestamp" checked="checked" />
-                  At <span x-text="$store.videoTimestamp ?? 'timestamp'"></span>
+                  At <span x-text="$store.app.videoTimestamp ? $store.app.secondsToTime($store.app.videoTimestamp) : 'timestamp'"></span>
                 </label>
               </div>
             @endslot
@@ -72,9 +90,9 @@
           @end
         @end
       @else
-        <div class="flex-1 pb-15">
+        <div class="flex-1 h-[240px]">
           <div class="border border-dashed border-base-100 rounded-base p-6 text-base-content/60 mb-3">
-            <h6 class="mb-1 font-bold text-base-content/80">Note limit reached ({{ Note.freeLimit }} of {{ Note.freeLimit }})</h6>
+            <h6 class="mb-1 font-bold text-base-content/80">Total note limit reached ({{ Note.freeLimit }} of {{ Note.freeLimit }})</h6>
             Your learning is on fire! To keep all those great ideas coming, join <a href="/pricing">Adocasts Plus</a> to
             store unlimited notes across all our lessons. Never lose a thought again!
           </div>
@@ -83,6 +101,10 @@
           @let(cta = plusMonthly.hasActiveSale ? `On Sale Now for ${plusMonthly.displaySalePrice}/mo` : `Join for ${plusMonthly.displayPrice}/mo`)
           
           @!plus.monthlyForm({ cta, plusMonthly })
+
+          <a href="#" class="btn btn-outline btn-block mt-2">
+            Manage Notes
+          </a>
         </div>
       @end
     </div> 

@@ -19,7 +19,7 @@ export default class NotePolicy extends BasePolicy {
     return Number(count) <= Note.freeLimit
   }
 
-  async updae(user: User, note: Note): Promise<AuthorizerResponse> {
+  async update(user: User, note: Note): Promise<AuthorizerResponse> {
     return user.id === note.userId
   }
 

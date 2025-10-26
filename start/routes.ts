@@ -23,6 +23,7 @@ import {
   throttleTestimonials,
   throttleVerifyEmail,
 } from './limiter.js'
+const RenderNoteEdit = () => import('#actions/notes/render_note_edit')
 const StoreNote = () => import('#actions/notes/store_note')
 const SetDefaultPostPanel = () => import('#actions/posts/set_default_post_panel')
 const GetUserMentionAutocomplete = () => import('#actions/users/get_user_mention_autocomplete')
@@ -261,6 +262,7 @@ router.delete('/comments/:id', [DestroyComment]).as('comments.destroy').use(midd
 
 //* Notes
 router.post('/notes', [StoreNote]).as('notes.store').use([middleware.auth()])
+router.get('/notes/:id/edit', [RenderNoteEdit]).as('notes.edit').use(middleware.auth())
 
 //* Testimonials
 router.get('/testimonials/user', [RenderUserTestimonials]).as('testimonials.user').use(middleware.auth())
