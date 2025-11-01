@@ -543,7 +543,7 @@ pre.shiki.github-light {
   .prose-note {
     width: 100%;
     max-width: 100%;
-    /*max-height: max(60vh, 224px);*/
+    max-height: max(60vh, 224px);
     overflow: auto;
 
     .ProseMirror {
