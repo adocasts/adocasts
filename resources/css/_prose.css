@@ -505,23 +505,28 @@ pre.shiki.github-light {
   }
 }
 
-.drawer-side .note-wrap {
-  @apply w-[calc(100%_+_1rem)] h-68 border-t border-base-100 -mx-2 px-2;
-
-  .tiptap-help {
-    @apply left-6;
-    bottom: 3.75rem;
+.lesson-notes {
+  .lesson-notes-list {
+    height: calc(100% - 19.5rem);
   }
 
-  .note-actions {
-    @apply mr-2;
+  .lesson-notes-form {
+    height: 50rem;
+  }
+}
+
+.drawer-side .note-wrap {
+  @apply w-full;
+
+  .tiptap-help {
+    @apply left-2 -bottom-6;
   }
 
   .prose-note {
-    @apply pb-4;
+    @apply h-44;
 
     .ProseMirror {
-      @apply h-42 p-4;
+      @apply h-44;
     }
   }
 }

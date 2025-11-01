@@ -1,95 +1,89 @@
-<div id="lessonNotes" class="px-2 flex-1 flex flex-col h-full">
+<div id="lessonNotes" class="px-2 w-full h-full lesson-notes">
   @can('NotePolicy.view')
-    <ul class="flex-1 list-none overflow-auto">
-    @if (notes?.length)
-      @each (note in notes)
-        <li class="not-last:border-b border-base-100 group">
-          <div class="flex flex-col text-left items-start w-full px-2 py-3 my-1 rounded-md transition duration-200 group hover:bg-base-200/50">
-            <div class="w-full flex justify-between items-center gap-3">
-              <div class="text-xs font-bold uppercase text-base-content/40">
-                {{ TimeService.dtmHumanShort(note.createdAt) }}
+    <ul class="lesson-notes-list list-none overflow-auto flex-1">
+      @if (notes?.length)
+        @each (note in notes)
+          <li class="not-last:border-b border-base-100 group">
+            <div class="flex flex-col text-left items-start w-full px-2 py-3 my-1 rounded-md transition duration-200 group hover:bg-base-200/50">
+              <div class="w-full flex justify-between items-center gap-3">
+                <div class="text-xs font-bold uppercase text-base-content/40">
+                  {{ TimeService.dtmHumanShort(note.createdAt) }}
+                </div>
+
+                <div class="flex gap-2 justify-end opacity-0 group-hover:opacity-100 duration-200">
+                  @can('NotePolicy.update', note)
+                    <a href="{{ route('notes.edit', { id: note.id }) }}" class="text-info text-xs flex items-center gap-1" up-layer="new" up-mode="modal">
+                      @svg('solar:pen-new-round-linear')
+                      Edit
+                    </a>
+                  @endcan
+
+                  @can('NotePolicy.destroy', note)
+                    @form({ method: 'POST', action: form.delete('notes.destroy', { id: note.id }), 'up-confirm': `Are you sure you want to delete this note?` })
+                      <button type="submit" class="text-error text-xs flex items-center gap-1">
+                        @svg('solar:trash-bin-minimalistic-linear')
+                        Delete
+                      </button>
+                    @end
+                  @endcan
+                </div>
               </div>
+              @if (note.timestampSeconds)
+                <button type="button" x-data @click="window.embed.startAtTime({{ note.timestampSeconds }})"
+                  class="w-full text-xs group-hover:text-primary flex items-center uppercase tracking-wide mt-1">
+                  <div class="font-bold">{{ TimeService.secondsToTime(note.timestampSeconds) }}</div>
+                  <span class="border-l border-base-content/20 ml-2 pl-2 flex items-center gap-2 opacity-0 group-hover:opacity-100 duration-200">
+                    @svg('solar:play-outline')
+                    Play From Here
+                  </span>
+                </button>
+              @endif
 
-              <div class="flex gap-2 justify-end opacity-0 group-hover:opacity-100 duration-200">
-                @can('NotePolicy.update', note)
-                  <a href="{{ route('notes.edit', { id: note.id }) }}" class="text-info text-xs flex items-center gap-1" up-layer="new" up-mode="modal">
-                    @svg('solar:pen-new-round-linear')
-                    Edit
-                  </a>
-                @endcan
-
-                @can('NotePolicy.destroy', note)
-                  @form({ method: 'POST', action: form.delete('notes.destroy', { id: note.id }), 'up-confirm': `Are you sure you want to delete this note?` })
-                    <button type="submit" class="text-error text-xs flex items-center gap-1">
-                      @svg('solar:trash-bin-minimalistic-linear')
-                      Delete
-                    </button>
-                  @end
-                @endcan
+              <div class="prose prose-sm w-full">
+                {{{ await parser.highlight(note.body) }}}
               </div>
             </div>
-            @if (note.timestampSeconds)
-              <button type="button" x-data @click="window.embed.startAtTime({{ note.timestampSeconds }})"
-                class="w-full text-xs group-hover:text-primary flex items-center uppercase tracking-wide mt-1">
-                <div class="font-bold">{{ TimeService.secondsToTime(note.timestampSeconds) }}</div>
-                <span class="border-l border-base-content/20 ml-2 pl-2 flex items-center gap-2 opacity-0 group-hover:opacity-100 duration-200">
-                  @svg('solar:play-outline')
-                  Play From Here
-                </span>
-              </button>
-            @endif
-
-            <div class="prose prose-sm w-full">
-              {{{ await parser.highlight(note.body) }}}
-            </div>
-          </div>
+          </li>
+        @endeach
+      @else
+        <li class="border border-dashed border-base-100 rounded-base p-6 text-base-content/40 mt-2">
+          You haven't taken any notes for this lesson
         </li>
-      @endeach
-    @else
-      <li class="border border-dashed border-base-100 rounded-base p-6 text-base-content/40 mt-2">
-        You haven't taken any notes for this lesson
-      </li>
-    @endif
+      @endif
     </ul>
 
-    <div class="pb-2">
+    <div class="lesson-notes-form border-t border-base-100 pt-2 -mx-2 px-4 pb-4">
       @can('NotePolicy.store')
         @form({ method: 'POST', action: form.post('notes.store'), loadable: true, 'up-target': '#lessonNotes' })
           <input type="hidden" name="postId" value="{{ lessonId }}" />
           <input type="hidden" name="timestampSeconds" :value="$store.app.videoTimestamp" />
 
-          @tiptap({ value: '', wrapClass: 'note-wrap', class: 'prose-sm prose-note', name: 'body' })
-            @slot('before')
-              <div class="note-info flex w-[calc(100%_-_3rem)] items-center justify-between gap-6">
-                <span>
-                  Add a Note
-                </span>
+          <div class="note-info flex w-full items-center justify-between gap-6 mb-2">
+            <span>
+              Add a Note
+            </span>
 
-                <label class="label">
-                  <input type="checkbox" class="checkbox checkbox-sm" name="atTimestamp" checked="checked" />
-                  At <span x-text="$store.app.videoTimestamp ? $store.app.secondsToTime($store.app.videoTimestamp) : 'timestamp'"></span>
-                </label>
-              </div>
-            @endslot
+            <label class="label text-sm">
+              <input type="checkbox" class="checkbox checkbox-xs" name="atTimestamp" checked="checked" />
+              At <span x-text="$store.app.videoTimestamp ? $store.app.secondsToTime($store.app.videoTimestamp) : 'timestamp'"></span>
+            </label>
+          </div>
 
-            @slot('after', props)
-              @if (props.allows)
-                <div class="note-actions flex justify-end gap-3">
-                  <button type="submit" class="btn btn-sm btn-outline btn-primary" :disabled="sending">
-                    <span x-show="sending" x-cloak class="flex items-center gap-2">
-                      @svg('svg-spinners:blocks-shuffle-3', { class: 'w-4 h-4 -ml-1 -my-1' })
-                      Saving ...
-                    </span>
-                    <span x-show="!sending" class="flex gap-3 items-center">
-                      @let(icon = replyingTo ? 'solar:chat-square-arrow-outline' : 'solar:chat-round-line-outline')
-                      @svg(icon, { class: 'w-4 h-4 -ml-1 -my-1' })
-                      Save Note
-                    </span>
-                  </button>
-                </div>
-              @endif
-            @endslot
-          @end
+          @!tiptap({ value: '', wrapClass: 'note-wrap', class: 'prose-sm prose-note', name: 'body' })
+
+          <div class="note-actions flex justify-end gap-3">
+            <button type="submit" class="btn btn-sm btn-outline btn-primary" :disabled="sending">
+              <span x-show="sending" x-cloak class="flex items-center gap-2">
+                @svg('svg-spinners:blocks-shuffle-3', { class: 'w-4 h-4 -ml-1 -my-1' })
+                Saving ...
+              </span>
+              <span x-show="!sending" class="flex gap-3 items-center">
+                @let(icon = replyingTo ? 'solar:chat-square-arrow-outline' : 'solar:chat-round-line-outline')
+                @svg(icon, { class: 'w-4 h-4 -ml-1 -my-1' })
+                Save Note
+              </span>
+            </button>
+          </div>
         @end
       @else
         <div class="flex-1 h-[240px]">
