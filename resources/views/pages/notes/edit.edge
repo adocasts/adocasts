@@ -1,9 +1,17 @@
 @layout()
 
   <div class="card border border-base-100 duration-300 relative group overflow-hidden max-w-md min-w-[290px] md:min-w-[500px] w-full mx-auto p-6">
-    <h1 class="heading-2a !mb-0">
-      Edit Your Note
-    </h1>
+    <div class="border-b border-base-100 pb-3 mb-3">
+      <h1 class="heading-2a !mb-0">
+        Edit Your Note
+      </h1>
+
+      @if (note.post)
+        <p class="text-base-content/60 truncate">
+          {{ note.post.title }}
+        </p>
+      @endif
+    </div>
 
     @can('NotePolicy.update', note)
       @form({ method: 'POST', action: form.put('notes.update', { id: note.id }), loadable: true, 'up-target': '#lessonNotes', 'up-layer': 'root' })
@@ -20,7 +28,7 @@
         @else
           <input type="checkbox" class="sr-only" name="atTimestamp" />
         @endif
-        
+
         @tiptap({ value: note.body, wrapClass: 'note-wrap', class: 'prose-note mt-4', name: 'body' })
           @slot('after', props)
             @if (props.allows)

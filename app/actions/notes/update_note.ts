@@ -29,7 +29,7 @@ export default class UpdateNote extends BaseAction {
 
   async handle(user: User, id: number, { atTimestamp, ...data }: Validator) {
     if (!atTimestamp) {
-      delete data.timestampSeconds
+      data.timestampSeconds = null
     }
 
     const note = await user.related('notes').query().where({ id }).firstOrFail()
