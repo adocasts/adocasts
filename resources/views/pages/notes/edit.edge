@@ -32,7 +32,7 @@
         @tiptap({ value: note.body, wrapClass: 'note-wrap', class: 'prose-note mt-4', name: 'body' })
           @slot('after', props)
             @if (props.allows)
-              <div class="note-actions flex justify-end gap-3">
+              <div class="note-actions flex justify-end gap-3 pt-3">
                 <button type="submit" class="btn btn-sm btn-outline btn-primary" :disabled="sending">
                   <span x-show="sending" x-cloak class="flex items-center gap-2">
                     @svg('svg-spinners:blocks-shuffle-3', { class: 'w-4 h-4 -ml-1 -my-1' })

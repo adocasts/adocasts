@@ -5,7 +5,7 @@
   top: -4px;
 }
 
-.prose .timestamp+p {
+.prose .timestamp + p {
   margin-bottom: 0.4em;
 }
 
@@ -19,7 +19,7 @@
     @apply bg-base-content/5 border-base-100;
   }
 
-  & :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  & :where(a):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
     @apply decoration-base-content/25 hover:decoration-base-content duration-200;
   }
 
@@ -64,8 +64,8 @@
   }
 }
 
-.prose.post-type-5 .timestamp+p:not(.timestamp),
-.prose .timestamp.transcript+p:not(.timestamp) {
+.prose.post-type-5 .timestamp + p:not(.timestamp),
+.prose .timestamp.transcript + p:not(.timestamp) {
   margin-top: -1.75rem;
   padding-left: 55px;
 }
@@ -78,7 +78,7 @@
 }
 
 .prose p.transcript.cutoff.active,
-.prose p.transcript.cutoff.active+p:not(.timestamp) {
+.prose p.transcript.cutoff.active + p:not(.timestamp) {
   display: none;
 }
 
@@ -137,7 +137,7 @@
   content: '👆 Hide Transcript';
 }
 
-.transcript-cutoff.active+.transcript-cutoff button {
+.transcript-cutoff.active + .transcript-cutoff button {
   display: none;
 }
 
@@ -218,8 +218,8 @@
   @apply bg-success/50;
 }
 
-.prose .line.del>span,
-.prose .line.add>span {
+.prose .line.del > span,
+.prose .line.add > span {
   position: relative;
   z-index: 20;
 }
@@ -231,14 +231,14 @@
 .prose .line,
 .hidden-content pre code {
   line-height: 1.75;
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 
 .prose img {
   border-radius: theme('borderRadius.xl');
 }
 
-.prose pre>code {
+.prose pre > code {
   display: flex;
   flex-flow: column;
 }
@@ -354,12 +354,12 @@ pre {
   max-width: 100%;
 }
 
-pre>code {
+pre > code {
   max-width: 100%;
   overflow-x: auto;
 }
 
-.profile pre.shiki>code {
+.profile pre.shiki > code {
   @apply !px-0 !pb-0;
 }
 
@@ -455,11 +455,11 @@ pre.shiki.github-light {
   pointer-events: none;
 }
 
-.ProseMirror> :first-child {
+.ProseMirror > :first-child {
   margin-top: 0;
 }
 
-.ProseMirror> :last-child {
+.ProseMirror > :last-child {
   margin-bottom: 0;
 }
 
@@ -506,10 +506,11 @@ pre.shiki.github-light {
 }
 
 .drawer-side .note-wrap {
-  @apply w-[calc(100%_+_1rem)] border-t border-base-100 -mx-2 px-2;
+  @apply w-[calc(100%_+_1rem)] h-68 border-t border-base-100 -mx-2 px-2;
 
   .tiptap-help {
     @apply left-6;
+    bottom: 3.75rem;
   }
 
   .note-actions {
@@ -520,7 +521,7 @@ pre.shiki.github-light {
     @apply pb-4;
 
     .ProseMirror {
-      @apply p-4;
+      @apply h-42 p-4;
     }
   }
 }
@@ -537,8 +538,8 @@ pre.shiki.github-light {
   .prose-note {
     width: 100%;
     max-width: 100%;
-    max-height: max(60vh, 224px);
-    overflow: auto;    
+    /*max-height: max(60vh, 224px);*/
+    overflow: auto;
 
     .ProseMirror {
       @apply min-h-42;
