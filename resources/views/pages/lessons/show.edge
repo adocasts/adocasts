@@ -231,7 +231,7 @@
 
         <div x-data="{ tab: {{ defaultLessonPanel }} }" class="w-[var(--aside-width)] border-l border-base-100 xl:fixed right-0 top-16 h-[calc(100%_-_4rem)] flex flex-col bg-base-300 dark:bg-base-300/85 backdrop-blur-md max-lx:shadow-sm">
           @form({ method: 'POST', action: form.patch('lessons.setDefaultPanel') })
-            <div class="dock dock-xs dock-lesson-details bg-transparent border-t-0 border-l-0 border-r-0 border-b border-base-100 static">
+            <div class="dock dock-xs dock-lesson-details h-[48px] bg-transparent border-t-0 border-l-0 border-r-0 border-b border-base-100 static">
               <button type="submit" name="panel" value="{{ LessonPanels.SERIES }}" :class="{ 'dock-active': tab === {{ LessonPanels.SERIES }} }" @click="tab = {{ LessonPanels.SERIES }}">
                 @svg('solar:playlist-outline', { class: 'size-[1.2em]' })
                 <span class="dock-label">Series</span>
