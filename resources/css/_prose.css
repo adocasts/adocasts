@@ -505,12 +505,8 @@ pre.shiki.github-light {
   }
 }
 
-.note-wrap {
+.drawer-side .note-wrap {
   @apply w-[calc(100%_+_1rem)] border-t border-base-100 -mx-2 px-2;
-
-  .note-info {
-    @apply w-[calc(100%_-_1rem)] px-4 py-4 z-10 absolute top-px left-2 bg-base-300/25 backdrop-blur-sm;
-  }
 
   .tiptap-help {
     @apply left-6;
@@ -523,17 +519,37 @@ pre.shiki.github-light {
   .prose-note {
     @apply pb-4;
 
+    .ProseMirror {
+      @apply p-4;
+    }
+  }
+}
+
+.note-wrap {
+  .note-info {
+    @apply w-[calc(100%_-_1rem)] px-4 py-4 z-10 absolute top-px left-2 bg-base-300/25 backdrop-blur-sm;
+  }
+
+  .tiptap-help {
+    @apply left-0;
+  }
+
+  .prose-note {
     width: 100%;
     max-width: 100%;
     max-height: max(60vh, 224px);
-    overflow: auto;
+    overflow: auto;    
 
     .ProseMirror {
-      @apply p-4 pt-14 min-h-42;
+      @apply min-h-42;
 
       &.ProseMirror-focused {
         outline: none;
       }
     }
+  }
+
+  &:has(.note-info) .prose-note .ProseMirror {
+    @apply pt-14;
   }
 }

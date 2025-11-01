@@ -1,19 +1,23 @@
 import BaseAction from '#actions/base_action'
 import User from '#models/user'
-import { noteValidator } from '#validators/note'
+import { noteStoreValidator } from '#validators/note'
 import { HttpContext } from '@adonisjs/core/http'
 import { Infer } from '@vinejs/vine/types'
 import GetPostNotes from './get_post_notes.js'
 
-type Validator = Infer<typeof noteValidator>
+type Validator = Infer<typeof noteStoreValidator>
 
 export default class StoreNote extends BaseAction {
-  validator = noteValidator
+  validator = noteStoreValidator
 
-  async asController({ view, session, auth }: HttpContext, data: Validator) {
+  async asController({ view, response, session, auth, up }: HttpContext, data: Validator) {
     await this.handle(auth.user!, data)
 
     session.toast('success', 'Your note has been saved')
+
+    if (up.isPage) {
+      return response.redirect().back()
+    }
 
     const notes = await GetPostNotes.run(auth.user?.id, data.postId)
 
@@ -25,7 +29,7 @@ export default class StoreNote extends BaseAction {
 
   async handle(user: User, { atTimestamp, ...data }: Validator) {
     if (!atTimestamp) {
-      delete data.seconds
+      delete data.timestampSeconds
     }
 
     return user.related('notes').create(data)

@@ -1,47 +1,52 @@
 @layout()
 
-  @can('NotePolicy.update', note)
-    @form({ method: 'POST', action: form.post('notes.store'), loadable: true, 'up-target': '#lessonNotes' })
-      <input type="hidden" name="timestampSeconds" :value="$store.app.videoTimestamp" />
-      
-      @tiptap({ value: note.body, wrapClass: 'note-wrap', class: 'prose-note', name: 'body' })
-        @slot('before')
-          <div class="note-info flex w-[calc(100%_-_3rem)] items-center justify-between gap-6">
-            <span>
-              Editing Note
-            </span>
-            
+  <div class="card border border-base-100 duration-300 relative group overflow-hidden max-w-md min-w-[290px] md:min-w-[500px] w-full mx-auto p-6">
+    <h1 class="heading-2a !mb-0">
+      Edit Your Note
+    </h1>
+
+    @can('NotePolicy.update', note)
+      @form({ method: 'POST', action: form.put('notes.update', { id: note.id }), loadable: true, 'up-target': '#lessonNotes', 'up-layer': 'root' })
+        <input type="hidden" name="timestampSeconds" value="{{ note.timestampSeconds ?? '' }}" />
+        <input type="hidden" name="postId" value="{{ note.postId }}" />
+
+        @if (note.timestampSeconds)
+          <div class="note-info flex w-[calc(100%_-_3rem)] items-center justify-between gap-6 mt-4">
             <label class="label">
               <input type="checkbox" class="checkbox checkbox-sm" name="atTimestamp" checked="checked" />
-              At <span x-text="$store.app.videoTimestamp ? $store.app.secondsToTime($store.app.videoTimestamp) : 'timestamp'"></span>
+              At {{ TimeService.secondsToTime(note.timestampSeconds) }}
             </label>
           </div>
-        @endslot
+        @else
+          <input type="checkbox" class="sr-only" name="atTimestamp" />
+        @endif
         
-        @slot('after', props)
-          @if (props.allows)
-            <div class="note-actions flex justify-end gap-3">
-              <button type="submit" class="btn btn-sm btn-outline btn-primary" :disabled="sending">
-                <span x-show="sending" x-cloak class="flex items-center gap-2">
-                  @svg('svg-spinners:blocks-shuffle-3', { class: 'w-4 h-4 -ml-1 -my-1' })
-                  Updating ...
-                </span>
-                <span x-show="!sending" class="flex gap-3 items-center">
-                  @let(icon = replyingTo ? 'solar:chat-square-arrow-outline' : 'solar:chat-round-line-outline')
-                  @svg(icon, { class: 'w-4 h-4 -ml-1 -my-1' })
-                  Update Note
-                </span>
-              </button>
-            </div>
-          @endif
-        @endslot
+        @tiptap({ value: note.body, wrapClass: 'note-wrap', class: 'prose-note mt-4', name: 'body' })
+          @slot('after', props)
+            @if (props.allows)
+              <div class="note-actions flex justify-end gap-3">
+                <button type="submit" class="btn btn-sm btn-outline btn-primary" :disabled="sending">
+                  <span x-show="sending" x-cloak class="flex items-center gap-2">
+                    @svg('svg-spinners:blocks-shuffle-3', { class: 'w-4 h-4 -ml-1 -my-1' })
+                    Updating ...
+                  </span>
+                  <span x-show="!sending" class="flex gap-3 items-center">
+                    @let(icon = replyingTo ? 'solar:chat-square-arrow-outline' : 'solar:chat-round-line-outline')
+                    @svg(icon, { class: 'w-4 h-4 -ml-1 -my-1' })
+                    Update Note
+                  </span>
+                </button>
+              </div>
+            @endif
+          @endslot
+        @end
       @end
-    @end
-  @else
-    <div class="alert alert-error alert-outline">
-      <h5 class="font-bold">Permission Denied</h5>
-      <p>You do not have permission to edit this note.</p>
-    </div>
-  @endcan
+    @else
+      <div class="alert alert-error alert-outline">
+        <h5 class="font-bold">Permission Denied</h5>
+        <p>You do not have permission to edit this note.</p>
+      </div>
+    @endcan
+  </div>
 
 @end
