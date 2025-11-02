@@ -39,9 +39,9 @@ import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
 import { compose } from '@adonisjs/core/helpers'
 import hash from '@adonisjs/core/services/hash'
+import Note from './note.js'
 import Role from './role.js'
 import Testimonial from './testimonial.js'
-import Note from './note.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('argon'), {
   uids: ['email', 'username'],
@@ -105,6 +105,15 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @column()
   declare googleEmail: string
+
+  @column()
+  declare githubTeamInviteUsername: string | null
+
+  @column()
+  declare githubTeamInviteUserId: string | null
+
+  @column()
+  declare githubTeamInviteStatus: string
 
   @column()
   theme: string = Themes.SYSTEM

@@ -86,6 +86,7 @@
     "@iconify-json/simple-icons": "^1.2.48",
     "@iconify-json/solar": "^1.2.4",
     "@iconify-json/svg-spinners": "^1.2.4",
+    "@octokit/core": "^7.0.6",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.12",
     "@tiptap/core": "^2.11.9",

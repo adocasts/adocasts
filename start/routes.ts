@@ -7,6 +7,7 @@
 |
 */
 
+const SendGitHubTeamInvite = () => import('#actions/users/send_github_team_invite')
 import '#start/router/actions'
 import { Exception } from '@adonisjs/core/exceptions'
 import app from '@adonisjs/core/services/app'
@@ -23,6 +24,7 @@ import {
   throttleTestimonials,
   throttleVerifyEmail,
 } from './limiter.js'
+const RemoveUserFromGitHubTeam = () => import('#actions/users/remove_user_from_github_team')
 const DestroyNote = () => import('#actions/notes/destroy_note')
 const UpdateNote = () => import('#actions/notes/update_note')
 const RenderNoteEdit = () => import('#actions/notes/render_note_edit')
@@ -285,6 +287,8 @@ router.delete('/testimonials/:id', [DestroyTestimonial]).as('testimonials.destro
 router.get('/settings/:section?', [RenderUserSettings]).as('settings').use(middleware.auth())
 router.get('/settings/invoices/:invoice', [RenderUserInvoice]).as('settings.invoice').use(middleware.auth())
 router.patch('/settings/invoices/billto', [UpdateUserBillTo]).as('settings.invoice.billto').use(middleware.auth())
+router.post('/settings/github/invite', [SendGitHubTeamInvite]).as('settings.github.invite').use(middleware.auth())
+router.delete('/settings/github/leave', [RemoveUserFromGitHubTeam]).as('settings.github.leave').use(middleware.auth())
 router.patch('/settings/username', [UpdateUsername]).as('settings.username').use(middleware.auth())
 router.put('/settings/email', [UpdateEmail]).as('settings.email').use(middleware.auth())
 router.get('/settings/revert/:id/:oldEmail/:newEmail', [RevertEmail]).as('settings.revert.email')
