@@ -115,6 +115,7 @@ export default class DestroyAccount extends BaseAction {
     await user.related('discussionVotes').query().update({ userId: null })
 
     for (const discussion of discussions) {
+      await discussion.related('views').query().delete()
       await discussion.related('comments').query().delete()
       await discussion.related('votes').query().delete()
       await discussion.delete()

@@ -142,6 +142,8 @@
           <p class="text-base-content/60">Permanently delete your Adocasts account and all data associated with it</p>
         </div>
 
+        <input type="hidden" name="user_username" value="{{ auth.user.username }}" />
+
         <div class="flex-1">
           @form.field({ label: 'Username', help: `Please enter your username "${auth.user.username}" to confirm account deletion`, name: 'username' })
             @!form.input({ type: 'text', placeholder: auth.user.username, class: 'w-full' })

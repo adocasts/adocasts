@@ -6,6 +6,7 @@ const allyConfig = defineConfig({
     clientId: env.get('GITHUB_CLIENT_ID'),
     clientSecret: env.get('GITHUB_CLIENT_SECRET'),
     callbackUrl: env.get('APP_DOMAIN') + '/github/callback',
+    scopes: ['read:user', 'user:email'],
   }),
   google: services.google({
     clientId: env.get('GOOGLE_CLIENT_ID'),
