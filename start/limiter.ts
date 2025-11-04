@@ -149,3 +149,16 @@ export const throttleOgImages = limiter.define('ogImages', () => {
       )
     )
 })
+
+export const throttleGitHubTeamInvite = limiter.define('verifyEmail', (ctx) => {
+  return limiter
+    .allowRequests(3)
+    .every('1 hour')
+    .blockFor('1 hour')
+    .usingKey(`github_team_invite_${ctx.auth.user!.id}`)
+    .limitExceeded((error) =>
+      error.setMessage(
+        "You've reached the limit for sending GitHub Team invites. Please try again later."
+      )
+    )
+})

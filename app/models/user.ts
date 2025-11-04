@@ -210,6 +210,11 @@ export default class User extends compose(BaseModel, AuthFinder) {
   }
 
   @computed()
+  get isGitHubTeamMember() {
+    return ['pending', 'active'].includes(this.githubTeamInviteStatus)
+  }
+
+  @computed()
   get isEmailVerified() {
     // has gone through verification flow
     if (this.emailVerified === this.email && this.emailVerifiedAt) return true

@@ -16,6 +16,7 @@ export class SeriesShowDto extends ProgressableDto {
   declare id: number
   declare statusId: number
   declare difficultyId: number | null
+  declare paywallTypeId: number | null
   declare name: string
   declare slug: string
   declare description: string
@@ -46,6 +47,7 @@ export class SeriesShowDto extends ProgressableDto {
 
     this.id = series.id
     this.difficultyId = series.difficultyId
+    this.paywallTypeId = series.paywallTypeId
     this.statusId = series.statusId
     this.name = series.name
     this.slug = series.slug

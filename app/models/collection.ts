@@ -1,16 +1,17 @@
-import Asset from '#models/asset'
 import CollectionBuilder from '#builders/collection_builder'
 import CollectionTypes from '#enums/collection_types'
+import HistoryTypes from '#enums/history_types'
+import PaywallTypes from '#enums/paywall_types'
 import { default as State, default as States } from '#enums/states'
 import Status from '#enums/status'
-import SlugService from '#services/slug_service'
-import HistoryTypes from '#enums/history_types'
+import Asset from '#models/asset'
 import History from '#models/history'
 import Post from '#models/post'
 import Progress from '#models/progress'
 import Taxonomy from '#models/taxonomy'
 import User from '#models/user'
 import Watchlist from '#models/watchlist'
+import SlugService from '#services/slug_service'
 import {
   BaseModel,
   beforeSave,
@@ -43,6 +44,9 @@ export default class Collection extends BaseModel {
 
   @column()
   declare collectionTypeId: CollectionTypes
+
+  @column()
+  declare paywallTypeId: PaywallTypes | null
 
   @column()
   declare statusId: Status

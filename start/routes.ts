@@ -18,6 +18,7 @@ import {
   throttleCommentsBurst,
   throttleDiscussions,
   throttleDiscussionsBurst,
+  throttleGitHubTeamInvite,
   throttleImageUpload,
   throttleOgImages,
   throttleSignUp,
@@ -287,7 +288,7 @@ router.delete('/testimonials/:id', [DestroyTestimonial]).as('testimonials.destro
 router.get('/settings/:section?', [RenderUserSettings]).as('settings').use(middleware.auth())
 router.get('/settings/invoices/:invoice', [RenderUserInvoice]).as('settings.invoice').use(middleware.auth())
 router.patch('/settings/invoices/billto', [UpdateUserBillTo]).as('settings.invoice.billto').use(middleware.auth())
-router.post('/settings/github/invite', [SendGitHubTeamInvite]).as('settings.github.invite').use(middleware.auth())
+router.post('/settings/github/invite', [SendGitHubTeamInvite]).as('settings.github.invite').use([middleware.auth(), throttleGitHubTeamInvite])
 router.delete('/settings/github/leave', [RemoveUserFromGitHubTeam]).as('settings.github.leave').use(middleware.auth())
 router.patch('/settings/username', [UpdateUsername]).as('settings.username').use(middleware.auth())
 router.put('/settings/email', [UpdateEmail]).as('settings.email').use(middleware.auth())

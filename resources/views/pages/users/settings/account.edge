@@ -108,7 +108,7 @@
       @end
     @end
 
-    @card({ accent: false, class: 'mb-6' })
+    @card({ id: 'repoAccess', accent: false, class: 'mb-6' })
       @let(isTeamMember = auth.user.githubTeamInviteStatus === 'pending' || auth.user.githubTeamInviteStatus === 'active')
       @let(action = isTeamMember ? form.delete('settings.github.leave') : form.post('settings.github.invite'))
 

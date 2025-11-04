@@ -1,0 +1,38 @@
+@can('CollectionPolicy.viewRepository', series)
+  @if (auth.user?.isGitHubTeamMember || (!series.paywallTypeId || series.paywallTypeId === PaywallTypes.NONE))
+    <a href="{{ series.repositoryUrl }}" target="_blank" class="btn btn-outline btn-square">
+      @svg('simple-icons:github', { class: 'size-4' })
+    </a>
+  @else
+    <span class="tooltip tooltip-left">
+      <div class="tooltip-content">
+        <div class="text-xs">
+          Join the Adocasts Plus GitHub Team to gain access to private code repositories
+        </div>
+      </div>
+
+      <a href="{{ route('settings', { section: 'account' }) }}#repoAccess" target="_blank" class="btn btn-outline btn-square relative">
+        @svg('simple-icons:github', { class: 'size-4' })
+
+        <div class="absolute -top-2 -right-2">
+          @svg('solar:info-circle-bold', { class: 'size-4 text-info' })
+        </div>
+      </a>
+    </span>
+  @endif
+@elseif (series.repositoryUrl)
+  <span class="tooltip tooltip-left">
+    <div class="tooltip-content">
+      <div class="text-xs">
+        Join Adocasts Plus to gain access to private code repositories
+      </div>
+    </div>
+    <button disabled class="btn btn-outline btn-square opacity-50 cursor-not-allowed relative">
+      @svg('simple-icons:github', { class: 'size-4' })
+
+      <div class="absolute -top-2 -right-2 bg-base-100 p-1 flex items-center justify-center rounded-full">
+        @svg('solar:lock-linear', { class: 'size-2 text-error' })
+      </div>
+    </button>
+  </span>
+@endcan

@@ -371,7 +371,7 @@ class StripeService {
 
     await user.save()
 
-    if (!this.inTest && user.githubId) {
+    if (!this.inTest && user.githubId && !user.githubTeamInviteStatus) {
       await SendGitHubTeamInvite.run(user)
     }
 
