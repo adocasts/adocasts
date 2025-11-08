@@ -2,6 +2,7 @@ import CollectionBuilder from '#builders/collection_builder'
 import CollectionTypes from '#enums/collection_types'
 import HistoryTypes from '#enums/history_types'
 import PaywallTypes from '#enums/paywall_types'
+import RepositoryAccessLevels from '#enums/repository_access_levels'
 import { default as State, default as States } from '#enums/states'
 import Status from '#enums/status'
 import Asset from '#models/asset'
@@ -84,6 +85,9 @@ export default class Collection extends BaseModel {
 
   @column()
   declare repositoryUrl: string
+
+  @column()
+  declare repositoryAccessLevel: RepositoryAccessLevels
 
   @column()
   declare isFeatured: boolean

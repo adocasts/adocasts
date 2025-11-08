@@ -14,34 +14,35 @@ import {
 import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { DateTime } from 'luxon'
 // import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
-import AssetDto from '../dtos/asset.js'
-import AssetTypes from '#enums/asset_types'
-import LessonSeriesDto from '#dtos/lesson_series'
-import CollectionTypes from '#enums/collection_types'
-import Collection from '#models/collection'
-import { default as State, default as States } from '#enums/states'
-import ReadService from '#services/read_service'
-import SlugService from '#services/slug_service'
-import TimeService from '#services/time_service'
-import HistoryTypes from '#enums/history_types'
-import History from '#models/history'
-import PaywallTypes from '#enums/paywall_types'
 import PostBuilder from '#builders/post_builder'
-import CaptionDto from '../dtos/caption.js'
-import ChapterDto from '../dtos/chapter.js'
+import LessonSeriesDto from '#dtos/lesson_series'
+import AssetTypes from '#enums/asset_types'
 import BodyTypes from '#enums/body_types'
+import CollectionTypes from '#enums/collection_types'
+import HistoryTypes from '#enums/history_types'
+import PaywallTypes from '#enums/paywall_types'
 import { default as PostType, default as PostTypes } from '#enums/post_types'
+import RepositoryAccessLevels from '#enums/repository_access_levels'
+import { default as State, default as States } from '#enums/states'
 import VideoTypes from '#enums/video_types'
+import Collection from '#models/collection'
+import History from '#models/history'
 import PostCaption from '#models/post_caption'
 import PostChapter from '#models/post_chapter'
 import Progress from '#models/progress'
-import env from '#start/env'
-import TopicDto from '../dtos/topic.js'
 import Taxonomy from '#models/taxonomy'
-import AuthorDto from '../dtos/author.js'
 import Watchlist from '#models/watchlist'
+import ReadService from '#services/read_service'
+import SlugService from '#services/slug_service'
+import TimeService from '#services/time_service'
+import env from '#start/env'
 import router from '@adonisjs/core/services/router'
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
+import AssetDto from '../dtos/asset.js'
+import AuthorDto from '../dtos/author.js'
+import CaptionDto from '../dtos/caption.js'
+import ChapterDto from '../dtos/chapter.js'
+import TopicDto from '../dtos/topic.js'
 
 export default class Post extends BaseModel {
   static build = () => PostBuilder.new()
@@ -136,6 +137,9 @@ export default class Post extends BaseModel {
 
   @column()
   declare repositoryUrl: string
+
+  @column()
+  declare repositoryAccessLevel: RepositoryAccessLevels
 
   @column()
   declare isWatchlistSent: boolean

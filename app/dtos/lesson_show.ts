@@ -1,12 +1,12 @@
-import AssetDto from './asset.js'
 import LessonSeriesDto from '#dtos/lesson_series'
-import CommentDto from './comment.js'
 import ProgressableDto from '#dtos/progressable_dto'
-import Post from '#models/post'
 import ProgressTypes from '#enums/progress_types'
+import Post from '#models/post'
+import AssetDto from './asset.js'
 import AuthorDto from './author.js'
 import CaptionDto from './caption.js'
 import ChapterDto from './chapter.js'
+import CommentDto from './comment.js'
 
 export default class LessonShowDto extends ProgressableDto {
   static model() {
@@ -35,6 +35,7 @@ export default class LessonShowDto extends ProgressableDto {
   declare updatedContentAt?: string | null
   declare routeUrl: string
   declare repositoryUrl: string | null
+  declare repositoryAccessLevel: number
   declare body: string | null
   declare livestreamUrl: string | null
   declare isLive: boolean
@@ -75,6 +76,7 @@ export default class LessonShowDto extends ProgressableDto {
     this.updatedContentAt = post.updatedContentAt?.toISO()
     this.routeUrl = post.routeUrl
     this.repositoryUrl = post.repositoryUrl
+    this.repositoryAccessLevel = post.repositoryAccessLevel
     this.body = post.body
     this.livestreamUrl = post.livestreamUrl
     this.isLive = !!post.isLive

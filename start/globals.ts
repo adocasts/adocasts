@@ -5,10 +5,12 @@ import Difficulties from '#enums/difficulties'
 import LessonPanels from '#enums/lesson_panels'
 import PaywallTypes from '#enums/paywall_types'
 import Plans from '#enums/plans'
+import RepositoryAccessLevels from '#enums/repository_access_levels'
 import Sorts from '#enums/sorts'
 import Status from '#enums/status'
 import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
 import VideoTypes from '#enums/video_types'
+import Note from '#models/note'
 import CurrencyService from '#services/currency_service'
 import FormService from '#services/form_service'
 import HlsService from '#services/hls_service'
@@ -30,7 +32,6 @@ import { image as gravatar } from 'gravatar-gen'
 import _ from 'lodash'
 import { DateTime } from 'luxon'
 import env from './env.js'
-import Note from '#models/note'
 
 addCollection(solarIcons)
 addCollection(simpleIcons)
@@ -47,6 +48,7 @@ edge.global('Sorts', Sorts)
 edge.global('Status', Status)
 edge.global('Plans', Plans)
 edge.global('PaywallTypes', PaywallTypes)
+edge.global('RepositoryAccessLevels', RepositoryAccessLevels)
 edge.global('Difficulties', Difficulties)
 edge.global('CommentTypes', CommentTypes)
 edge.global('CommentTypeIdColumn', CommentTypeIdColumn)

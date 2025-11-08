@@ -5,10 +5,10 @@
   @tooltip({ text: enabled ? 'Lesson Completed' : 'Lesson Incomplete', class: 'tooltip-bottom' })
     <button {{ html.attrs({ type: 'submit', form: 'lessonCompletedForm', class: ['group/tog btn btn-toggle btn-square', { 'active': enabled }] }) }}>
       @if (enabled)
-        @svg('solar:check-read-outline', { class: 'w-6 h-6 text-success' })
+        @svg('solar:check-read-outline', { class: 'w-6 h-6' })
         <span class="sr-only">Lesson Completed</span>
       @else
-        @svg('solar:check-read-broken', { class: 'w-6 h-6 text-base-content/60 group-hover/tog:text-base-content duration-200' })
+        @svg('solar:check-read-broken', { class: 'w-6 h-6' })
         <span class="sr-only">Lesson Incomplete</span>
       @endif
     </button>
