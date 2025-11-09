@@ -11,7 +11,9 @@
 
   @!frags.lesson.bookmarkToggle({ lesson })
 
-  <div class="hidden md:block h-5 w-px bg-base-100 mx-3"></div>
+  @if (lesson.repositoryUrl || ((lesson.videoBunnyId || lesson.videoR2Id) && auth.user && !auth.user.isFreeTier))
+    <div class="hidden md:block h-5 w-px bg-base-100 mx-3"></div>
+  @endif
 
   @!lesson.repositoryLink({ lesson })
   {{-- @if (lesson.repositoryUrl)

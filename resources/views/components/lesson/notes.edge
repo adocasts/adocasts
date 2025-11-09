@@ -46,8 +46,11 @@
           </li>
         @endeach
       @else
-        <li class="border border-dashed border-base-100 rounded-base p-6 text-base-content/40 mt-2">
-          You haven't taken any notes for this lesson
+        <li class="border border-dashed border-base-100 rounded-base p-6 text-base-content/40 mt-2 text-sm">
+          <h6 class="mb-1 font-bold text-base-content/80">
+            No notes yet
+          </h6>
+          You haven't added any notes yet. Use the form below to capture your key insights as you watch the lesson.
         </li>
       @endif
     </ul>
@@ -86,37 +89,41 @@
           </div>
         @end
       @else
-        <div class="flex-1 h-[240px]">
-          <div class="border border-dashed border-base-100 rounded-base p-6 text-base-content/60 mb-3">
+        <div class="flex-1 h-[250px]">
+          <div class="border border-dashed border-base-100 rounded-base p-6 text-base-content/60 mb-3 text-sm">
             <h6 class="mb-1 font-bold text-base-content/80">Total note limit reached ({{ Note.freeLimit }} of {{ Note.freeLimit }})</h6>
-            Your learning is on fire! To keep all those great ideas coming, join <a href="/pricing">Adocasts Plus</a> to
+            Your learning is on fire! To keep all those great ideas coming, join <a href="/pricing" class="link">Adocasts Plus</a> to
             store unlimited notes across all our lessons. Never lose a thought again!
           </div>
 
           @let(plusMonthly = $props?.plusMonthly || await PlanService.get(Plans.PLUS_MONTHLY))
           @let(cta = plusMonthly.hasActiveSale ? `On Sale Now for ${plusMonthly.displaySalePrice}/mo` : `Join for ${plusMonthly.displayPrice}/mo`)
 
-          @!plus.monthlyForm({ cta, plusMonthly })
+          <div class="flex items-center gap-3">
+            <div class="flex-1">
+              @!plus.monthlyForm({ cta, plusMonthly })
+            </div>
 
-          <a href="#" class="btn btn-outline btn-block mt-2">
-            Manage Notes
-          </a>
+            <a href="#" class="btn btn-outline">
+              Manage Notes
+            </a>
+          </div>
         </div>
       @end
     </div>
   @else
     <div class="flex-1">
-      <div class="border border-dashed border-base-100 rounded-base p-6 text-base-content/60">
+      <div class="border border-dashed border-base-100 rounded-base p-6 text-base-content/60 text-sm">
         <h6 class="mb-1 font-bold text-base-content/80">Stop losing your best ideas!</h6>
         Use our integrated note feature to capture and organize your key insights. Take a note at
         any timestamp and jump instantly back to that moment in the video with a single click.
       </div>
 
       <div class="flex items-center gap-3 p-6">
-        <a href="{{ route('auth.signup') }}" up-layer="new" up-size="grow" class="btn btn-outline btn-accent">
+        <a href="{{ route('auth.signup') }}" up-layer="new" up-size="grow" class="btn btn-outline btn-accent btn-sm">
           Sign up
         </a>
-        <a href="{{ route('auth.signin') }}" up-layer="new" up-size="grow" class="btn btn-outline">
+        <a href="{{ route('auth.signin') }}" up-layer="new" up-size="grow" class="btn btn-outline btn-sm">
           Sign in
         </a>
       </div>

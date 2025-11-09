@@ -105,6 +105,10 @@ export default class Up {
   }
 
   get isPage() {
+    return this.getMode() === 'root'
+  }
+
+  get isOriginPage() {
     return this.getOriginMode() === 'root'
   }
 

@@ -1,5 +1,5 @@
-import User from '#models/user'
 import Note from '#models/note'
+import User from '#models/user'
 import { BasePolicy } from '@adonisjs/bouncer'
 import type { AuthorizerResponse } from '@adonisjs/bouncer/types'
 import db from '@adonisjs/lucid/services/db'
@@ -15,8 +15,7 @@ export default class NotePolicy extends BasePolicy {
     }
 
     const { count } = await db.from('notes').where('user_id', user.id).count('*').firstOrFail()
-    console.log({ count })
-    return Number(count) <= Note.freeLimit
+    return Number(count) < Note.freeLimit
   }
 
   async update(user: User, note: Note): Promise<AuthorizerResponse> {

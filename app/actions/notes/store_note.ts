@@ -15,7 +15,7 @@ export default class StoreNote extends BaseAction {
 
     session.toast('success', 'Your note has been saved')
 
-    if (up.isPage) {
+    if (up.isOriginPage) {
       return response.redirect().back()
     }
 

@@ -363,6 +363,11 @@ pre > code {
   @apply !px-0 !pb-0;
 }
 
+.ProseMirror pre.shiki.github-dark code,
+.ProseMirror pre.shiki.github-light code {
+  max-height: unset;
+}
+
 pre.shiki.github-dark,
 pre.shiki.github-light {
   @apply !bg-base-100/50 px-0 pb-0 rounded-base border border-base-100;
@@ -519,7 +524,7 @@ pre.shiki.github-light {
   @apply w-full;
 
   .tiptap-help {
-    @apply left-2 -bottom-6;
+    @apply -bottom-6 left-2;
   }
 
   .prose-note {

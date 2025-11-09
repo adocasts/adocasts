@@ -9,7 +9,7 @@ export default class DestroyNote extends BaseAction {
 
     session.toast('success', 'Your note has been updated')
 
-    if (!note.postId || up.isPage) {
+    if (!note.postId || up.isOriginPage) {
       return response.redirect().back()
     }
 

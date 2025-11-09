@@ -15,7 +15,7 @@ export default class UpdateNote extends BaseAction {
 
     session.toast('success', 'Your note has been updated')
 
-    if (up.isPage) {
+    if (up.isOriginPage) {
       return response.redirect().back()
     }
 

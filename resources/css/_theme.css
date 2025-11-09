@@ -335,6 +335,10 @@ html[data-theme='adocasts-light'] {
     transform: translateX(-50%);
   }
 
+  &.no-indicator:before {
+    content: none;
+  }
+
   &:hover:before {
     @apply bg-base-content/40;
   }
@@ -347,7 +351,7 @@ html[data-theme='adocasts-light'] {
     @apply bg-base-content;
   }
 
-  > *:not(.sr-only) {
+  &:not(.no-indicator) > *:not(.sr-only) {
     @apply -top-1 relative scale-90;
   }
 }
