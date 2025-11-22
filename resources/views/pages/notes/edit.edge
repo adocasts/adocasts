@@ -14,9 +14,12 @@
     </div>
 
     @can('NotePolicy.update', note)
+      @let(forward = request.input('forward', request.header('referrer')))
+
       @form({ method: 'POST', action: form.put('notes.update', { id: note.id }), loadable: true, 'up-target': '#lessonNotes', 'up-layer': 'root' })
         <input type="hidden" name="timestampSeconds" value="{{ note.timestampSeconds ?? '' }}" />
         <input type="hidden" name="postId" value="{{ note.postId }}" />
+        <input type="hidden" name="forward" value="{{ forward ?? '' }}">
 
         @if (note.timestampSeconds)
           <div class="note-info flex w-[calc(100%_-_3rem)] items-center justify-between gap-6 mt-4">

@@ -25,6 +25,8 @@ import {
   throttleTestimonials,
   throttleVerifyEmail,
 } from './limiter.js'
+const DestroyLessonNote = () => import('#actions/notes/destroy_lesson_note')
+const RenderNotesIndex = () => import('#actions/notes/render_notes_index')
 const RemoveUserFromGitHubTeam = () => import('#actions/users/remove_user_from_github_team')
 const DestroyNote = () => import('#actions/notes/destroy_note')
 const UpdateNote = () => import('#actions/notes/update_note')
@@ -271,10 +273,12 @@ router.patch('/comments/:id/vote', [ToggleCommentVote]).as('comments.vote').use(
 router.delete('/comments/:id', [DestroyComment]).as('comments.destroy').use(middleware.auth())
 
 //* Notes
+router.get('/users/notes/:id?', [RenderNotesIndex]).as('notes.index').use(middleware.auth())
 router.post('/notes', [StoreNote]).as('notes.store').use([middleware.auth()])
 router.get('/notes/:id/edit', [RenderNoteEdit]).as('notes.edit').use(middleware.auth())
 router.put('/notes/:id', [UpdateNote]).as('notes.update').use(middleware.auth())
 router.delete('/notes/:id', [DestroyNote]).as('notes.destroy').use(middleware.auth())
+router.delete('/lessons/notes/:id', [DestroyLessonNote]).as('lessons.notes.destroy').use(middleware.auth())
 
 //* Testimonials
 router.get('/testimonials/user', [RenderUserTestimonials]).as('testimonials.user').use(middleware.auth())

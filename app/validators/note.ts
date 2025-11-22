@@ -11,6 +11,7 @@ export const noteStoreValidator = vine.compile(
 
 export const noteUpdateValidator = vine.compile(
   vine.object({
+    forward: vine.string().optional().nullable(),
     postId: vine.number().exists({ table: 'posts', column: 'id' }),
     timestampSeconds: vine.number().optional().nullable(),
     atTimestamp: vine.boolean().optional().nullable(),

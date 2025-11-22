@@ -19,7 +19,7 @@
                   @endcan
 
                   @can('NotePolicy.destroy', note)
-                    @form({ method: 'POST', action: form.delete('notes.destroy', { id: note.id }), 'up-confirm': `Are you sure you want to delete this note?` })
+                    @form({ method: 'POST', action: form.delete('lessons.notes.destroy', { id: note.id }), 'up-target': '#lessonNotes', 'up-confirm': `Are you sure you want to delete this note?` })
                       <button type="submit" class="text-error text-xs flex items-center gap-1">
                         @svg('solar:trash-bin-minimalistic-linear')
                         Delete
@@ -104,7 +104,7 @@
               @!plus.monthlyForm({ cta, plusMonthly })
             </div>
 
-            <a href="#" class="btn btn-outline">
+            <a href="{{ route('notes.index') }}" class="btn btn-outline">
               Manage Notes
             </a>
           </div>

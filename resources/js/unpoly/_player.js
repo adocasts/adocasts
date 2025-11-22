@@ -63,6 +63,11 @@ class VideoPlayer {
       delete window.$params.autoplay
     }
 
+    if (window.$params.startAt) {
+      this.watchSeconds = Number.parseInt(window.$params.startAt)
+      delete window.$params.startAt
+    }
+
     if (watchSeconds) {
       Alpine.store('app').videoTimestamp = watchSeconds
     }
