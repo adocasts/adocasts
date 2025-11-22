@@ -3,29 +3,34 @@
   desc: 'Access notes you\'ve taken during Adocasts lessons.'
 })
 
-  <main class="@container flex-1 max-w-[2000px] flex mx-auto" up-main-content>
-    <div class="xl:w-1/3 xl:bg-base-200/20 border-r border-base-100 h-full flex flex-col">
-      <h1 class="heading-4 px-3 md:px-6 !mb-0 pt-6">My notes</h1>
+  <main class="@container h-[calc(100vh_-_4rem)] flex-1 max-w-[2000px] flex mx-auto" up-main-content>
+    <div class="{{ html.classNames(['lg:w-1/3 lg:bg-base-200/20 border-r border-base-100 h-full flex-col', note ? 'hidden lg:flex' : 'flex' ])}}">
+      <h1 class="heading-4 px-3 md:px-6 pb-3 pt-6">My notes</h1>
       <ul class="lesson-notes-list list-none overflow-auto min-h-0 flex-1">
         @if (notes?.length)
-          @each (note in notes)
+          @each (item in notes)
             <li class="not-last:border-b border-base-100 group">
-              <div class="flex flex-col text-left items-start w-full px-3 md:px-6 py-3 my-1 rounded-md transition duration-200 group hover:bg-base-200/50 relative">
+              <div class="{{ 
+                html.classNames([
+                  'flex flex-col text-left items-start w-full px-3 md:px-6 py-3 my-1 rounded-md transition duration-200 group relative',
+                  item.id === note?.id ? 'bg-base-200/50 text-base-content' : 'text-base-content/60 hover:bg-base-200/50'  
+                ])
+              }}">
                 <div class="w-full flex justify-between items-center gap-3">
-                  <div class="text-xs font-bold uppercase text-base-content/40">
-                    {{ TimeService.dtmHumanShort(note.createdAt) }}
+                  <div class="text-xs font-bold uppercase">
+                    {{ TimeService.dtmHumanShort(item.createdAt) }}
                   </div>
 
                   <div class="flex gap-2 justify-end opacity-0 group-hover:opacity-100 duration-200 relative z-10">
-                    @can('NotePolicy.update', note)
-                      <a href="{{ route('notes.edit', { id: note.id }) }}" class="text-info text-xs flex items-center gap-1" up-layer="new" up-mode="modal">
+                    @can('NotePolicy.update', item)
+                      <a href="{{ route('notes.edit', { id: item.id }) }}" class="text-info text-xs flex items-center gap-1" up-layer="new" up-mode="modal">
                         @svg('solar:pen-new-round-linear')
                         Edit
                       </a>
                     @endcan
 
-                    @can('NotePolicy.destroy', note)
-                      @form({ method: 'POST', action: form.delete('notes.destroy', { id: note.id }), 'up-confirm': `Are you sure you want to delete this note?` })
+                    @can('NotePolicy.destroy', item)
+                      @form({ method: 'POST', action: form.delete('notes.destroy', { id: item.id }), 'up-confirm': `Are you sure you want to delete this note?` })
                         <button type="submit" class="text-error text-xs flex items-center gap-1">
                           @svg('solar:trash-bin-minimalistic-linear')
                           Delete
@@ -35,17 +40,17 @@
                   </div>
                 </div>
 
-                @if (note.post)
-                  <div class="text-xs italic text-base-content/40 my-1 relative z-10">
+                @if (item.post)
+                  <div class="text-xs italic my-1 relative z-10">
                     In
-                    <a href="{{ note.post.routeUrl }}" class="underline hover:text-primary duration-200 truncate">
-                      {{ note.post.title }}
+                    <a href="{{ item.post.routeUrl }}" class="underline hover:text-primary duration-200 truncate">
+                      {{ item.post.title }}
                     </a>
                   </div>
                 @endif
 
-                <a href="{{ route('notes.index', { id: note.id }) }}" class="opacity-60 xl:max-w-4xl link-grow">
-                  {{ string.excerpt(await parser.stripHtml(note.body), 180, { completeWords: true }) }}
+                <a href="{{ route('notes.index', { id: item.id }) }}" class="xl:max-w-4xl link-grow" up-scroll="restore">
+                  {{ string.excerpt(await parser.stripHtml(item.body), 180, { completeWords: true }) }}
                 </a>
               </div>
             </li>
@@ -61,14 +66,21 @@
       </ul>
     </div>
 
-    <div class="hidden xl:block flex-1">
+    <div class="{{ html.classNames(['lg:block flex-1', { 'hidden': !note }])}}">
       @if (note)
         @let(postUrl = note.post?.routeUrl ?? '#')
 
         @if (note.timestampSeconds)
           @assign(postUrl = `${postUrl}?startAt=${note.timestampSeconds}`)
         @endif
+
         <div class="flex flex-col h-full">
+          <div class="xl:hidden border-b border-base-100 px-6 lg:px-8 xl:px-12 py-3">
+            <a href="{{ route('notes.index') }}" class="link-hover hover:link-primary flex items-center gap-1.5">
+              @svg('solar:double-alt-arrow-left-outline', { class: 'w-4 h-4' })
+              Back to all notes
+            </a>
+          </div>
           <div class="border-b border-base-100 flex flex-wrap gap-x-6 gap-y-3 px-6 lg:px-8 xl:px-12 py-6">
             <div class="flex-1">
               <div class="font-bold uppercase">
@@ -112,8 +124,10 @@
             </div>
           </div>
 
-          <div class="prose max-w-4xl px-6 lg:px-8 xl:px-12 py-6 flex-1 overflow-auto">
-            {{{ await parser.highlight(note.body) }}}
+          <div class="overflow-auto flex-1 px-6 lg:px-8 xl:px-12 py-6">
+            <div class="prose max-w-4xl">
+              {{{ await parser.highlight(note.body) }}}
+            </div>
           </div>
         </div>
       @else
@@ -132,5 +146,9 @@
       @endif
     </div>
   </main>
+
+  @slot('footer')
+    <footer up-hungry up-id="footer"></footer>
+  @endslot
 
 @end
