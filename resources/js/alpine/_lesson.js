@@ -97,9 +97,11 @@ Alpine.data('repoDownload', ({ repositoryUrl }) => {
         
         href = response.data.url
       } catch (error) {
+        console.log({ error })
+        const message = typeof error?.response?.data === 'string' ? error?.response?.data : error?.response?.data?.message
         window.toasts.dispatchEvent(
           new CustomEvent('toast', {
-            detail: { type: 'error', message: error?.response?.data?.message || 'Failed to download repository' },
+            detail: { type: 'error', message: message || 'Failed to download repository' },
           })
         )
         this.isDownloading = false

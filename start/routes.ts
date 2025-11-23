@@ -18,6 +18,7 @@ import {
   throttleCommentsBurst,
   throttleDiscussions,
   throttleDiscussionsBurst,
+  throttleGitHubRepoDownload,
   throttleGitHubTeamInvite,
   throttleImageUpload,
   throttleOgImages,
@@ -169,7 +170,7 @@ router.on('/cookies').render('pages/policies/cookies').as('cookies')
 router.on('/guidelines').render('pages/policies/guidelines').as('guidelines')
 router.on('/uses').render('pages/uses').as('uses')
 router.get('/frags/*', [RenderFrag]).as('frag')
-router.post('/github/repo/download', [DownloadRepoZip]).as('github.repo.download')
+router.post('/github/repo/download', [DownloadRepoZip]).as('github.repo.download').use([middleware.auth(), throttleGitHubRepoDownload])
 
 //* Syndication
 router.get('/rss', [RenderRssXml]).as('rss')

@@ -150,6 +150,19 @@ export const throttleOgImages = limiter.define('ogImages', () => {
     )
 })
 
+export const throttleGitHubRepoDownload = limiter.define('verifyEmail', (ctx) => {
+  return limiter
+    .allowRequests(3)
+    .every('30 seconds')
+    .blockFor('1 minute')
+    .usingKey(`github_repo_download_${ctx.auth.user!.id}`)
+    .limitExceeded((error) =>
+      error.setMessage(
+        "You're downloading repositories too quickly. Please wait a bit before downloading another."
+      )
+    )
+})
+
 export const throttleGitHubTeamInvite = limiter.define('verifyEmail', (ctx) => {
   return limiter
     .allowRequests(3)
