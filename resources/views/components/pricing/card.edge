@@ -23,18 +23,18 @@
       
       <div>
         @if (plan.hasActiveSale)
-          <div class="mt-6 md:mt-3 flex items-center gap-4">
-            <div class="text-5xl font-semibold bg-gradient-to-b bg-base-content from-success/35 via-success/75 to-success bg-clip-text text-transparent">
-              {{ plan.displaySalePrice }}
-            </div>
-            <div class="text-5xl font-semibold bg-gradient-to-b bg-primary/25 from-white via-base-content/50 to-base-content/25 opacity-75 bg-clip-text text-transparent relative">
-              {{ plan.displayPrice }}
-              <div class="absolute top-1/2 left-1/2 -translate-1/2 w-full h-[2px] bg-base-content -rotate-45 rounded-full"></div>
-              <div class="absolute top-1/2 left-1/2 -translate-1/2 w-full h-[2px] bg-base-content rotate-45 rounded-full"></div>
+          <div class="mt-6 md:mt-3 flex flex-col gap-4">
+            <div class="flex items-center gap-4">
+              <div class="text-5xl font-semibold bg-gradient-to-b bg-base-content from-success/35 via-success/75 to-success bg-clip-text text-transparent">
+                {{ plan.displaySalePrice }}
+              </div>
+              <div class="text-5xl font-semibold bg-gradient-to-b bg-primary/25 from-white via-base-content/50 to-base-content/25 opacity-75 bg-clip-text text-transparent relative">
+                {{ plan.displayPrice }}
+                <div class="absolute top-1/2 left-1/2 -translate-1/2 w-full h-[2px] bg-base-content rounded-full"></div>
+              </div>
             </div>
             <div class="text-sm opacity-60">
-              <p>USD</p>
-              <p>per {{ name }}</p>
+              <p>USD per {{ name }}</p>
             </div>
           </div>
 

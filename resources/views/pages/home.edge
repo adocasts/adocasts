@@ -18,6 +18,24 @@
         </div>
       </div>
 
+      @let(plan = await PlanService.get(Plans.PLUS_MONTHLY))
+      @if (plan.hasActiveSale)
+        <div class="relative z-[39] bg-gradient-to-b from-base-100/50 to-base-100/20 border-b border-base-100 backdrop-blur-md">
+          <div class="container-x flex items-center gap-x-6 py-2 relative z-10 page">
+            <img class="hidden sm:inline-block w-8 animation-float" src="/imgs/robot/slice9.svg" alt="robot mascot smiling" />
+            <div class="flex flex-col justify-center leading-none gap-x-6">
+              <strong class="text-xl font-heading -mb-1">{{ plan.couponAmount }} Off Adocasts Plus</strong>
+              <span class="text-xs">Black Friday Sale Nov 24th - Dec 2nd</span>
+            </div>
+            <div class="flex flex-1 justify-end">
+              <a href="{{ route('pricing') }}" up-follow class="btn btn-success btn-outline">
+                <span class="hidden md:inline">View&nbsp;</span>Plans
+              </a>
+            </div>
+          </div>
+        </div>
+      @endif
+
       @let(lessonImages = lessons.map((lesson) => lesson.thumbnail).filter(Boolean))
 
       <div class="hero-lesson-grid absolute top-0 left-0 max-h-full overflow-hidden">
