@@ -16,6 +16,7 @@ export class SeriesShowDto extends ProgressableDto {
   declare id: number
   declare statusId: number
   declare difficultyId: number | null
+  declare paywallTypeId: number | null
   declare name: string
   declare slug: string
   declare description: string
@@ -23,6 +24,7 @@ export class SeriesShowDto extends ProgressableDto {
   declare topics: TopicDto[]
   declare lessons: SeriesLessonDto[]
   declare repositoryUrl?: string
+  declare repositoryAccessLevel: number
   declare youtubePlaylistUrl?: string
   declare modules: ModuleDto[]
   declare meta: Record<string, any>
@@ -46,6 +48,7 @@ export class SeriesShowDto extends ProgressableDto {
 
     this.id = series.id
     this.difficultyId = series.difficultyId
+    this.paywallTypeId = series.paywallTypeId
     this.statusId = series.statusId
     this.name = series.name
     this.slug = series.slug
@@ -54,6 +57,7 @@ export class SeriesShowDto extends ProgressableDto {
     this.topics = TopicDto.fromArray(series.taxonomies)
     this.lessons = SeriesLessonDto.fromArray(series.postsFlattened)
     this.repositoryUrl = series.repositoryUrl
+    this.repositoryAccessLevel = series.repositoryAccessLevel
     this.youtubePlaylistUrl = series.youtubePlaylistUrl
     this.modules = ModuleDto.fromArray(series.children)
     this.lessons = SeriesLessonDto.fromArray(series.posts)

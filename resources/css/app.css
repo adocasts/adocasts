@@ -1,16 +1,16 @@
 @import 'tailwindcss';
-@import "tailwindcss-animated";
-@import "./_theme.css";
-@import "./_footer.css";
-@import "./_accents.css";
-@import "./_banners.css";
-@import "./_container.css";
-@import "./_fades.css";
-@import "./_prose.css";
-@import "./_stats.css";
-@import "./_unpoly.css";
-@import "./_player.css";
-@import "./_utils.css";
+@import 'tailwindcss-animated';
+@import './_theme.css';
+@import './_footer.css';
+@import './_accents.css';
+@import './_banners.css';
+@import './_container.css';
+@import './_fades.css';
+@import './_prose.css';
+@import './_stats.css';
+@import './_unpoly.css';
+@import './_player.css';
+@import './_utils.css';
 @plugin "@tailwindcss/typography";
 
 [x-cloak] {
@@ -94,7 +94,10 @@ body {
 .radial-progress {
   &:before {
     --color: var(--color-base-100);
-    background: radial-gradient(farthest-side, currentColor 98%, #0000) top/var(--thickness) var(--thickness) no-repeat, conic-gradient(currentColor var(--radialprogress), var(--color, #0000) 0);
+    background:
+      radial-gradient(farthest-side, currentColor 98%, #0000) top/var(--thickness) var(--thickness)
+        no-repeat,
+      conic-gradient(currentColor var(--radialprogress), var(--color, #0000) 0);
   }
 }
 
@@ -148,8 +151,8 @@ a.link-grow {
 }
 
 .btn:has(svg),
-.menu>li>label:has(svg),
-.menu>li>a:has(svg) {
+.menu > li > label:has(svg),
+.menu > li > a:has(svg) {
   @apply gap-x-3;
 }
 
@@ -172,13 +175,29 @@ a.link-grow {
   &.mouseover {
     --btn-shadow: '';
     --btn-fg: var(--btn-color, var(--color-base-content));
-    --btn-bg: color-mix(in oklab,
-        var(--btn-color, var(--color-base-content)) 8%,
-        var(--color-base-100));
-    --btn-border: color-mix(in oklab,
-        var(--btn-color, var(--color-base-content)) 10%,
-        var(--color-base-100));
+    --btn-bg: color-mix(
+      in oklab,
+      var(--btn-color, var(--color-base-content)) 8%,
+      var(--color-base-100)
+    );
+    --btn-border: color-mix(
+      in oklab,
+      var(--btn-color, var(--color-base-content)) 10%,
+      var(--color-base-100)
+    );
     --btn-noise: none;
+  }
+}
+
+.dock-lesson-details {
+  > button:not(.dock-active):not(:hover) {
+    opacity: 0.6;
+  }
+
+  & > * {
+    &::after {
+      height: 0.125rem;
+    }
   }
 }
 
@@ -218,13 +237,13 @@ a.link-grow {
   grid-auto-columns: 100%;
   grid-template-rows: repeat(1, 1fr);
   grid-template-areas:
-    "area-1"
-    "area-2";
+    'area-1'
+    'area-2';
   gap: var(--gap);
 
   @variant lg {
     grid-auto-columns: calc(33.33% - (var(--gap) / 2));
-    grid-template-areas: "area-1 area-2 area-2";
+    grid-template-areas: 'area-1 area-2 area-2';
   }
 
   .area-1 {
@@ -353,8 +372,8 @@ a.link-grow {
     .img:nth-child(1),
     .img:nth-child(5),
     .img:nth-child(8) {
-      grid-column: span 2/span 2;
-      grid-row: span 2/span 2;
+      grid-column: span 2 / span 2;
+      grid-row: span 2 / span 2;
     }
   }
 
@@ -364,8 +383,8 @@ a.link-grow {
     .img:nth-child(1),
     .img:nth-child(4),
     .img:nth-child(5) {
-      grid-column: span 2/span 2;
-      grid-row: span 2/span 2;
+      grid-column: span 2 / span 2;
+      grid-row: span 2 / span 2;
     }
   }
 
@@ -375,8 +394,8 @@ a.link-grow {
     .img:nth-child(2),
     .img:nth-child(6),
     .img:nth-child(9) {
-      grid-column: span 2/span 2;
-      grid-row: span 2/span 2;
+      grid-column: span 2 / span 2;
+      grid-row: span 2 / span 2;
     }
   }
 
@@ -386,14 +405,14 @@ a.link-grow {
     .img:nth-child(3),
     .img:nth-child(8),
     .img:nth-child(10) {
-      grid-column: span 2/span 2;
-      grid-row: span 2/span 2;
+      grid-column: span 2 / span 2;
+      grid-row: span 2 / span 2;
     }
   }
 
   &:before {
     @apply bg-gradient-to-r from-base-300/85 from-40% to-base-300/50 md:to-base-300/0;
-    content: "";
+    content: '';
     width: 100%;
     height: 100%;
     position: absolute;
@@ -404,7 +423,7 @@ a.link-grow {
 
   &:after {
     @apply bg-gradient-to-b from-transparent to-base-300;
-    content: "";
+    content: '';
     width: 100%;
     height: 50%;
     position: absolute;
@@ -422,7 +441,7 @@ a.link-grow {
 @keyframes scale-in {
   0% {
     transform: scale(2.5);
-    opacity: .75;
+    opacity: 0.75;
   }
 
   100% {
@@ -470,11 +489,11 @@ a.link-grow {
 
 @keyframes marquee {
   0% {
-    transform: translateX(0)
+    transform: translateX(0);
   }
 
   100% {
-    transform: translateX(-100%)
+    transform: translateX(-100%);
   }
 }
 
@@ -484,14 +503,14 @@ a.link-grow {
 
 @keyframes float {
   0% {
-    transform: translateY(-.25rem);
+    transform: translateY(-0.25rem);
   }
 
   50% {
-    transform: translateY(.25rem);
+    transform: translateY(0.25rem);
   }
 
   100% {
-    transform: translateY(-.25rem);
+    transform: translateY(-0.25rem);
   }
 }

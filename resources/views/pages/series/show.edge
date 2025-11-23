@@ -42,11 +42,7 @@
             series
           })
 
-          @if (series.repositoryUrl)
-            <a href="{{ series.repositoryUrl }}" target="_blank" class="btn btn-outline btn-square">
-              @svg('simple-icons:github', { class: 'size-4' })
-            </a>
-          @endif
+          @!series.repositoryLink({ series })
         </div>
       </div>
 
@@ -169,11 +165,7 @@
               series
             })
 
-            @if (series.repositoryUrl)
-              <a href="{{ series.repositoryUrl }}" target="_blank" class="btn btn-outline btn-square">
-                @svg('simple-icons:github', { class: 'size-4' })
-              </a>
-            @endif
+            @!series.repositoryLink({ series })
           </div>
         </div>
       </div>

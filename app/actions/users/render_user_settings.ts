@@ -2,6 +2,8 @@ import GetPaginatedSessions from '#actions/auth/get_paginated_sessions'
 import BaseAction from '#actions/base_action'
 import stripe from '#services/stripe_service'
 import { HttpContext } from '@adonisjs/core/http'
+import PopulateGitHubUsernameFromId from './populate_github_username_from_id.js'
+import SyncUserGitHubTeamMembership from './sync_user_github_team_membership.js'
 
 export default class RenderUserSettings extends BaseAction {
   async asController({ view, request, params, auth }: HttpContext) {
@@ -11,6 +13,9 @@ export default class RenderUserSettings extends BaseAction {
     if (section === 'account') {
       const sessions = await GetPaginatedSessions.run(user, request.sessionToken)
       view.share({ sessions })
+
+      await PopulateGitHubUsernameFromId.run(user)
+      await SyncUserGitHubTeamMembership.run(user)
     }
 
     if (section === 'billing') {

@@ -108,6 +108,10 @@ export default class Up {
     return this.getMode() === 'root'
   }
 
+  get isOriginPage() {
+    return this.getOriginMode() === 'root'
+  }
+
   get isLayoutUpdate() {
     return this.getTarget() === 'body'
   }
@@ -158,6 +162,10 @@ export default class Up {
 
   getMode() {
     return this.getProperty('X-Up-Mode') || 'root'
+  }
+
+  getOriginMode() {
+    return this.getProperty('X-Up-Origin-Mode') || 'root'
   }
 
   getReloadFromTime() {

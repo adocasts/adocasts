@@ -7,7 +7,7 @@
     index: false
   }
 })
-  @layout.shell.asideLeft({ label: 'Settings Navigation' }) 
+  @layout.shell.asideLeft({ label: 'Settings Navigation' })
     @slot('aside')
       @include('partials/users/settings/nav')
     @endslot
@@ -68,11 +68,11 @@
         <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-100 md:mb-0 md:pb-0 md:border-b-0">
           <h3 class="card-title">Social Authentication</h3>
           <p class="text-base-content/60">
-            Manage your ability to login with a social provider in addition to your email and password 
+            Manage your ability to login with a social provider in addition to your email and password
           </p>
         </div>
 
-        <div class="flex-1 grid xl:grid-cols-2 items-center gap-3">
+        <div class="flex-1 grid xl:grid-cols-2 gap-3">
           <div class="flex flex-col items-center">
             <a {{ html.attrs({ href: '/google/redirect', 'up-follow': 'false', class: ['btn btn-outline btn-block flex-col h-auto py-3', { 'btn-primary': isGoogleUser }]}) }}>
               @svg('simple-icons:google', { class: 'size-5' })
@@ -88,7 +88,7 @@
               <a href="/google/unlink" class="underline text-sm mt-2">Unlink Your Google Account</a>
             @endif
           </div>
-    
+
           <div class="flex flex-col items-center">
             <a {{ html.attrs({ href: '/github/redirect', 'up-follow': 'false', class: ['btn btn-outline btn-block flex-col h-auto py-3', { 'btn-primary': isGitHubUser }]}) }}>
               @svg('simple-icons:github', { class: 'w-5 h-5' })
@@ -108,6 +108,75 @@
       @end
     @end
 
+    @card({ id: 'repoAccess', accent: false, class: 'mb-6' })
+      @let(isTeamMember = auth.user.githubTeamInviteStatus === 'pending' || auth.user.githubTeamInviteStatus === 'active')
+      @let(action = isTeamMember ? form.delete('settings.github.leave') : form.post('settings.github.invite'))
+
+      @if (auth.user.isFreeTier)
+        @let(plusMonthly = await PlanService.get(Plans.PLUS_MONTHLY))
+
+        <div class="card-body md:flex-row md:gap-6 xl:gap-10">
+          <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-100 md:mb-0 md:pb-0 md:border-b-0">
+            <h3 class="card-title">Repository Access</h3>
+            <p class="text-base-content/60">
+              Gain access to series code repositories by joining our Adocasts Plus team on GitHub. 
+              An invitation will be sent to your GitHub account after submission.
+            </p>
+          </div>
+            
+          <div class="flex-1">
+            <div class="mb-2 text-center">
+              Join Adocasts Plus to gain access to our GitHub team and code repositories.
+            </div>
+            @!plus.cta({ plusMonthly })
+          </div>
+        </div>
+      @else
+        @form({ action: action, class: 'card-body md:flex-row md:gap-6 xl:gap-10', 'up-scroll': 'preserve' })
+          <div class="w-full md:w-1/3 mb-6 pb-6 border-b border-base-100 md:mb-0 md:pb-0 md:border-b-0">
+            <h3 class="card-title">Repository Access</h3>
+            <p class="text-base-content/60">
+              Gain access to series code repositories by joining our Adocasts Plus team on GitHub.
+              An invitation will be sent to your GitHub account after submission.
+            </p>
+          </div>
+
+          <div class="flex-1">
+            @form.field({ label: 'GitHub Username', help: 'Please enter your GitHub username', name: 'username' })
+              @!form.input({
+                type: 'text',
+                value: auth.user.githubTeamInviteUsername ?? '',
+                class: 'w-full',
+                disabled: isTeamMember ? 'disabled' : null
+              })
+
+              @if (auth.user.githubTeamInviteStatus === 'active')
+                <a href="https://github.com/orgs/adocasts/teams/adocasts-plus" class="text-xs text-success mt-1 link-hover" target="_blank">
+                  You're on the Adocasts Plus GitHub team!
+                </a>
+              @elseif (auth.user.githubTeamInviteStatus === 'pending')
+                <a href="https://github.com/orgs/adocasts" class="text-xs text-info link-hover mt-1" target="_blank">
+                  Your invitation to join the Adocasts Plus GitHub team has been sent, please check GitHub.
+                </a>
+              @endif
+            @end
+
+            <div class="flex justify-end pt-3">
+              @if (isTeamMember)
+                <button type="submit" class="btn btn-outline btn-error">
+                  Leave Team
+                </button>
+              @else
+                <button type="submit" class="btn btn-outline btn-primary">
+                  Send Invitation
+                </button>
+              @endif
+            </div>
+          </div>
+        @end
+      @endif
+    @end
+
     @card({ accent: false, class: 'mb-6' })
       <div class="card-body">
         <div class="flex items-center justify-between">
@@ -125,9 +194,9 @@
         </div>
 
         <p class="text-base-content/60 text-sm mt-3">
-          Below are the last 15 active sessions for your account. 
+          Below are the last 15 active sessions for your account.
           Active sessions are sessions that haven't signed out or expired.
-          Location information is provided by <a class="anchor" href="https://lite.ip2location.com" target="_blank">IP2Location</a> 
+          Location information is provided by <a class="anchor" href="https://lite.ip2location.com" target="_blank">IP2Location</a>
           and is based on the IP Address of the session, accuracy will vary depending on the ISP/VPN.
         </p>
 

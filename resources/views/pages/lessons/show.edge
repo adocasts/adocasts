@@ -25,7 +25,7 @@
 
       <div class="flex flex-col">
         <div class="order-3 md:order-1 border-b border-base-100">
-          <div class="flex items-center justify-between gap-0.5 p-1.5">
+          <div class="flex items-center justify-between gap-0.5 p-1.5 xl:h-[47px]">
             <div class="hidden md:flex items-center">
               @if (series)
                 <a href="{{ route('series.show', { slug: series.slug }) }}" class="btn btn-ghost btn-primary">
@@ -43,9 +43,9 @@
             </div>
 
             <div class="flex-1 md:flex-auto flex justify-end items-center">
-              @!lesson.actionbar({ 
-                lesson, 
-                series, 
+              @!lesson.actionbar({
+                lesson,
+                series,
                 transcript,
                 class: `flex-1 md:flex-auto flex items-center justify-center md:justify-end ${ !series ? 'pr-4.5' : '' }`
               })
@@ -122,20 +122,20 @@
         </div>
       </div>
 
-      @can('PostPolicy.view', lesson)
-        @if (transcript)
-          <div class="border-b border-base-100 xl:hidden">
-            @!lesson.transcript({ 
-              transcript, 
-              id: 'transcriptMain',
-              class: 'flex flex-col max-w-prose mx-auto h-[min(275px,30vh)] pt-6 pb-6 px-6 md:px-0',
-            })
-          </div>
-        @endif
-      @endcan
-
       <div class="max-w-prose mx-auto flex gap-3 lg:gap-6 px-8 md:px-0 my-10 lg:my-16">
         <div class="@container flex-1">
+          @if (series)
+            <h3 class="heading-6 mb-1.5 flex items-center gap-3">
+              <a href="{{ route('series.show', { slug: series.slug }) }}" class="link link-hover link-primary">
+                {{ series.name }}
+              </a>
+
+              <span class="text-base-content/60">
+                #{{ lesson.lessonIndexDisplay }}
+              </span>
+            </h3>
+          @endif
+
           <h1 class="heading-2">
             {{ lesson.title }}
           </h1>
@@ -217,25 +217,57 @@
       <aside class="drawer-side !top-16 z-20">
         <label for="series-details-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
 
-        <div class="w-[var(--aside-width)] border-l border-base-100 xl:fixed right-0 top-16 h-[calc(100%_-_4rem)] flex flex-col overflow-hidden bg-base-300 dark:bg-base-300/85 backdrop-blur-md max-lx:shadow-sm">
+        <div x-data="{ tab: {{ defaultLessonPanel }} }" class="w-[var(--aside-width)] border-l border-base-100 xl:fixed right-0 top-16 h-[calc(100%_-_4rem)] flex flex-col bg-base-300 dark:bg-base-300/85 backdrop-blur-md max-lx:shadow-sm">
+          @form({ method: 'POST', action: form.patch('lessons.setDefaultPanel') })
+            <div class="dock dock-xs dock-lesson-details h-[48px] bg-transparent border-t-0 border-l-0 border-r-0 border-b border-base-100 static">
+              <button type="submit" name="panel" value="{{ LessonPanels.SERIES }}" :class="{ 'dock-active': tab === {{ LessonPanels.SERIES }} }" @click="tab = {{ LessonPanels.SERIES }}">
+                @svg('solar:playlist-outline', { class: 'size-[1.2em]' })
+                <span class="dock-label">Series</span>
+              </button>
+
+              <button type="submit" name="panel" value="{{ LessonPanels.TRANSCRIPT }}" :class="{ 'dock-active': tab === {{ LessonPanels.TRANSCRIPT }} }" @click="tab = {{ LessonPanels.TRANSCRIPT }}">
+                @svg('solar:clipboard-list-outline', { class: 'size-[1.2em]' })
+                <span class="dock-label">Transcript</span>
+              </button>
+
+              <button type="submit" name="panel" value="{{ LessonPanels.NOTES }}" :class="{ 'dock-active': tab === {{ LessonPanels.NOTES }} }" @click="tab = {{ LessonPanels.NOTES }}">
+                @svg('solar:notebook-outline', { class: 'size-[1.2em]' })
+                <span class="dock-label">Notes</span>
+              </button>
+            </div>
+          @end
+
           @can('PostPolicy.view', lesson)
-            @if (transcript)
-              @!lesson.transcript({ 
-                transcript, 
-                id: 'transcriptAside',
-                class: 'hidden xl:flex flex-col border-b border-base-100 h-[min(400px,40vh)] px-2 pt-6 pb-6',
-              })
-            @endif
+            <div x-show="tab === {{ LessonPanels.TRANSCRIPT }}" class="flex-1" x-cloak>
+              @if (transcript)
+                @!lesson.transcript({
+                  transcript,
+                  id: 'transcriptAside',
+                  class: 'hidden xl:flex flex-col border-b border-base-100 h-full px-2 pt-6',
+                })
+              @else
+                <div x class="border border-dashed border-base-100 rounded-base p-6 text-base-content/60 text-sm m-2">
+                  <h6 class="mb-1 font-bold text-base-content/80">No transcript</h6>
+                  Unfortunately, this lesson does not have a transcript available.
+                </div>
+              @endif
+            </div>
           @endcan
 
-          @!lesson.seriesLessonList({ lesson, series })
+          <div x-show="tab === {{ LessonPanels.SERIES }}" class="flex-1 flex flex-col">
+            @!lesson.seriesLessonList({ lesson, series })
+          </div>
+
+          <div x-show="tab === {{ LessonPanels.NOTES }}" class="flex-1 h-full" x-cloak>
+            @!lesson.notes({ lessonId: lesson.id, notes })
+          </div>
         </div>
       </aside>
     @endif
   </div>
 
   @if (auth.user?.isAdmin)
-    <div class="fab fixed bottom-3 left-3">
+    <div class="fixed bottom-3 left-3">
       <a href="https://cms.adocasts.com/posts/{{ lesson.id }}/edit" class="btn btn-circle btn-primary btn-soft" target="_blank">
         @svg('solar:clapperboard-edit-linear')
       </a>

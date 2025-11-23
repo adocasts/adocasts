@@ -7,6 +7,7 @@
 |
 */
 
+const SendGitHubTeamInvite = () => import('#actions/users/send_github_team_invite')
 import '#start/router/actions'
 import { Exception } from '@adonisjs/core/exceptions'
 import app from '@adonisjs/core/services/app'
@@ -17,12 +18,23 @@ import {
   throttleCommentsBurst,
   throttleDiscussions,
   throttleDiscussionsBurst,
+  throttleGitHubRepoDownload,
+  throttleGitHubTeamInvite,
   throttleImageUpload,
   throttleOgImages,
   throttleSignUp,
   throttleTestimonials,
   throttleVerifyEmail,
 } from './limiter.js'
+const DownloadRepoZip = () => import('#actions/general/download_repo_zip')
+const DestroyLessonNote = () => import('#actions/notes/destroy_lesson_note')
+const RenderNotesIndex = () => import('#actions/notes/render_notes_index')
+const RemoveUserFromGitHubTeam = () => import('#actions/users/remove_user_from_github_team')
+const DestroyNote = () => import('#actions/notes/destroy_note')
+const UpdateNote = () => import('#actions/notes/update_note')
+const RenderNoteEdit = () => import('#actions/notes/render_note_edit')
+const StoreNote = () => import('#actions/notes/store_note')
+const SetDefaultPostPanel = () => import('#actions/posts/set_default_post_panel')
 const RenderStreamsIndex = () => import('#actions/posts/render_streams_index')
 const GetUserMentionAutocomplete = () => import('#actions/users/get_user_mention_autocomplete')
 const UpdateTestimonial = () => import('#actions/testimonials/update_testimonial')
@@ -71,7 +83,6 @@ const RenderUserHistory = () => import('#actions/users/render_user_history')
 const RenderTestimonialForm = () => import('#actions/testimonials/render_testimonial_form')
 const StoreTestimonial = () => import('#actions/testimonials/store_testimonial')
 const GetSeriesLessonAtNumber = () => import('#actions/collections/get_series_lesson_at_number')
-const TogglePostTranscript = () => import('#actions/posts/toggle_post_transcript')
 const PatchUserPreferences = () => import('#actions/users/patch_user_preferences')
 const RenderOgImage = () => import('#actions/general/render_og_image')
 const RenderSearch = () => import('#actions/general/render_search')
@@ -159,6 +170,7 @@ router.on('/cookies').render('pages/policies/cookies').as('cookies')
 router.on('/guidelines').render('pages/policies/guidelines').as('guidelines')
 router.on('/uses').render('pages/uses').as('uses')
 router.get('/frags/*', [RenderFrag]).as('frag')
+router.post('/github/repo/download', [DownloadRepoZip]).as('github.repo.download').use([middleware.auth(), throttleGitHubRepoDownload])
 
 //* Syndication
 router.get('/rss', [RenderRssXml]).as('rss')
@@ -227,9 +239,9 @@ router.get('/topics/:slug/snippets', [RenderTopicShowSnippets]).as('topics.show.
 
 //* Lessons
 router.get('/lessons', [RenderLessonsIndex]).as('lessons.index')
+router.patch('/lessons/set-default-panel', [SetDefaultPostPanel]).as('lessons.setDefaultPanel')
 router.patch('/lessons/:slug/watchlist', [TogglePostWatchlist]).as('lessons.watchlist').use(middleware.auth())
 router.patch('/lessons/:slug/autoplay', [TogglePostAutoplay]).as('lessons.autoplay')
-router.patch('/lessons/:slug/transcript', [TogglePostTranscript]).as('lessons.transcript')
 router.get('/lessons/:slug', [RenderLessonShow]).as('lessons.show').use(middleware.postTypeCheck())
 router.get('/streams/:slug', [RenderLessonShow]).as('streams.show').use(middleware.postTypeCheck())
 router.get('/posts/:slug', [RenderLessonShow]).as('posts.show').use(middleware.postTypeCheck())
@@ -263,6 +275,14 @@ router.put('/comments/:id', [UpdateComment]).as('comments.update').use(middlewar
 router.patch('/comments/:id/vote', [ToggleCommentVote]).as('comments.vote').use(middleware.auth())
 router.delete('/comments/:id', [DestroyComment]).as('comments.destroy').use(middleware.auth())
 
+//* Notes
+router.get('/users/notes/:id?', [RenderNotesIndex]).as('notes.index').use(middleware.auth())
+router.post('/notes', [StoreNote]).as('notes.store').use([middleware.auth()])
+router.get('/notes/:id/edit', [RenderNoteEdit]).as('notes.edit').use(middleware.auth())
+router.put('/notes/:id', [UpdateNote]).as('notes.update').use(middleware.auth())
+router.delete('/notes/:id', [DestroyNote]).as('notes.destroy').use(middleware.auth())
+router.delete('/lessons/notes/:id', [DestroyLessonNote]).as('lessons.notes.destroy').use(middleware.auth())
+
 //* Testimonials
 router.get('/testimonials/user', [RenderUserTestimonials]).as('testimonials.user').use(middleware.auth())
 router.get('/testimonials/share', [RenderTestimonialForm]).as('testimonials.form').use(middleware.auth())
@@ -275,6 +295,8 @@ router.delete('/testimonials/:id', [DestroyTestimonial]).as('testimonials.destro
 router.get('/settings/:section?', [RenderUserSettings]).as('settings').use(middleware.auth())
 router.get('/settings/invoices/:invoice', [RenderUserInvoice]).as('settings.invoice').use(middleware.auth())
 router.patch('/settings/invoices/billto', [UpdateUserBillTo]).as('settings.invoice.billto').use(middleware.auth())
+router.post('/settings/github/invite', [SendGitHubTeamInvite]).as('settings.github.invite').use([middleware.auth(), throttleGitHubTeamInvite])
+router.delete('/settings/github/leave', [RemoveUserFromGitHubTeam]).as('settings.github.leave').use(middleware.auth())
 router.patch('/settings/username', [UpdateUsername]).as('settings.username').use(middleware.auth())
 router.put('/settings/email', [UpdateEmail]).as('settings.email').use(middleware.auth())
 router.get('/settings/revert/:id/:oldEmail/:newEmail', [RevertEmail]).as('settings.revert.email')

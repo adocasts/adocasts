@@ -19,7 +19,7 @@
     @apply bg-base-content/5 border-base-100;
   }
 
-  & :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  & :where(a):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
     @apply decoration-base-content/25 hover:decoration-base-content duration-200;
   }
 
@@ -231,7 +231,7 @@
 .prose .line,
 .hidden-content pre code {
   line-height: 1.75;
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 
 .prose img {
@@ -309,7 +309,7 @@ pre .filepath {
 
 pre ul.filepath-list {
   @apply text-base-content/60;
-  
+
   list-style: none;
   display: flex;
   margin: 0;
@@ -361,6 +361,11 @@ pre > code {
 
 .profile pre.shiki > code {
   @apply !px-0 !pb-0;
+}
+
+.ProseMirror pre.shiki.github-dark code,
+.ProseMirror pre.shiki.github-light code {
+  max-height: unset;
 }
 
 pre.shiki.github-dark,
@@ -489,7 +494,11 @@ pre.shiki.github-light {
   }
 
   .comment-info {
-    @apply top-4 left-14 z-10 absolute;
+    @apply top-4 left-6 z-10 absolute;
+  }
+
+  &:has(.comment-avatar) .comment-info {
+    @apply left-14;
   }
 
   .comment-actions {
@@ -498,5 +507,60 @@ pre.shiki.github-light {
 
   .tiptap-help {
     @apply bottom-4 left-4 md:left-6;
+  }
+}
+
+.lesson-notes {
+  .lesson-notes-list {
+    height: calc(100% - 19.5rem);
+  }
+
+  .lesson-notes-form {
+    height: 50rem;
+  }
+}
+
+.drawer-side .note-wrap {
+  @apply w-full;
+
+  .tiptap-help {
+    @apply -bottom-6 left-2;
+  }
+
+  .prose-note {
+    @apply h-44;
+
+    .ProseMirror {
+      @apply h-44;
+    }
+  }
+}
+
+.note-wrap {
+  .note-info {
+    @apply w-[calc(100%_-_1rem)] px-4 py-4 z-10 absolute top-px left-2 bg-base-300/25 backdrop-blur-sm;
+  }
+
+  .tiptap-help {
+    @apply left-0;
+  }
+
+  .prose-note {
+    width: 100%;
+    max-width: 100%;
+    max-height: max(60vh, 224px);
+    overflow: auto;
+
+    .ProseMirror {
+      @apply min-h-42;
+
+      &.ProseMirror-focused {
+        outline: none;
+      }
+    }
+  }
+
+  &:has(.note-info) .prose-note .ProseMirror {
+    @apply pt-14;
   }
 }

@@ -30,3 +30,9 @@ export const confirmUsernameValidator = vine.compile(
     user_username: vine.string().trim().confirmed({ confirmationField: 'username' }),
   })
 )
+
+export const githubTeamInviteValidator = vine.compile(
+  vine.object({
+    username: vine.string().trim(),
+  })
+)

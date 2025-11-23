@@ -5,6 +5,28 @@ import sharp, { AvailableFormatInfo, FormatEnum } from 'sharp'
 import { ImageOptions } from './asset_service.js'
 
 class AssetStorageService {
+  supportedFormats = [
+    'heic',
+    'heif',
+    'avif',
+    'jpeg',
+    'jpg',
+    'jpe',
+    'tile',
+    'dz',
+    'png',
+    'raw',
+    'tiff',
+    'tif',
+    'webp',
+    'gif',
+    'jp2',
+    'jpx',
+    'j2k',
+    'j2c',
+    'jxl',
+  ]
+
   async exists(filename: string) {
     return drive.use().exists(filename)
   }
@@ -30,6 +52,9 @@ class AssetStorageService {
   async alter(options: ImageOptions) {
     if (app.inTest) return
     if (options.format === 'svg+xml') return
+    if (options.format && !this.supportedFormats.includes(options.format as string)) {
+      return
+    }
 
     const file = await drive.use().getBytes(options.path)
     const image = sharp(file)

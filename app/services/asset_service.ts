@@ -67,7 +67,10 @@ export default class AssetService {
           break
         case AssetOptions.FORMAT_SHORT:
         case AssetOptions.FORMAT:
-          options.format = queries[key] as keyof FormatEnum | AvailableFormatInfo | 'svg+xml'
+          const format = (queries[key] || '').toLowerCase().split(' ').at(0)
+          if (format && assetStorage.supportedFormats.includes(format)) {
+            options.format = format as keyof FormatEnum | AvailableFormatInfo | 'svg+xml'
+          }
           break
         case AssetOptions.BLUR:
           // keep blur to increments of 10, max 100

@@ -1,0 +1,140 @@
+<div id="lessonNotes" class="px-2 w-full h-full lesson-notes">
+  @can('NotePolicy.view')
+    <ul class="lesson-notes-list list-none overflow-auto flex-1">
+      @if (notes?.length)
+        @each (note in notes)
+          <li class="not-last:border-b border-base-100 group">
+            <div class="flex flex-col text-left items-start w-full px-2 py-3 my-1 rounded-md transition duration-200 group hover:bg-base-200/50">
+              <div class="w-full flex justify-between items-center gap-3">
+                <div class="text-xs font-bold uppercase text-base-content/40">
+                  {{ TimeService.dtmHumanShort(note.createdAt) }}
+                </div>
+
+                <div class="flex gap-2 justify-end opacity-0 group-hover:opacity-100 duration-200">
+                  @can('NotePolicy.update', note)
+                    <a href="{{ route('notes.edit', { id: note.id }) }}" class="text-info text-xs flex items-center gap-1" up-layer="new" up-mode="modal">
+                      @svg('solar:pen-new-round-linear')
+                      Edit
+                    </a>
+                  @endcan
+
+                  @can('NotePolicy.destroy', note)
+                    @form({ method: 'POST', action: form.delete('lessons.notes.destroy', { id: note.id }), 'up-target': '#lessonNotes', 'up-confirm': `Are you sure you want to delete this note?` })
+                      <button type="submit" class="text-error text-xs flex items-center gap-1">
+                        @svg('solar:trash-bin-minimalistic-linear')
+                        Delete
+                      </button>
+                    @end
+                  @endcan
+                </div>
+              </div>
+              @if (note.timestampSeconds)
+                <button type="button" x-data @click="window.embed.startAtTime({{ note.timestampSeconds }})"
+                  class="w-full text-xs group-hover:text-primary flex items-center uppercase tracking-wide mt-1">
+                  <div class="font-bold">{{ TimeService.secondsToTime(note.timestampSeconds) }}</div>
+                  <span class="border-l border-base-content/20 ml-2 pl-2 flex items-center gap-2 opacity-0 group-hover:opacity-100 duration-200">
+                    @svg('solar:play-outline')
+                    Play From Here
+                  </span>
+                </button>
+              @endif
+
+              <div class="prose prose-sm w-full">
+                {{{ await parser.highlight(note.body) }}}
+              </div>
+            </div>
+          </li>
+        @endeach
+      @else
+        <li class="border border-dashed border-base-100 rounded-base p-6 text-base-content/40 mt-2 text-sm">
+          <h6 class="mb-1 font-bold text-base-content/80">
+            No notes yet
+          </h6>
+          You haven't added any notes yet. Use the form below to capture your key insights as you watch the lesson.
+        </li>
+      @endif
+    </ul>
+
+    <div class="lesson-notes-form border-t border-base-100 pt-2 -mx-2 px-4 pb-4 relative">
+      @can('NotePolicy.store')
+        @form({ method: 'POST', action: form.post('notes.store'), loadable: true, 'up-target': '#lessonNotes' })
+          <input type="hidden" name="postId" value="{{ lessonId }}" />
+          <input type="hidden" name="timestampSeconds" :value="$store.app.videoTimestamp" />
+
+          <div class="note-info flex w-full items-center justify-between gap-6 mb-2">
+            <span>
+              Add a Note
+            </span>
+
+            <label class="label text-sm">
+              <input type="checkbox" class="checkbox checkbox-xs" name="atTimestamp" checked="checked" />
+              At <span x-text="$store.app.videoTimestamp ? $store.app.secondsToTime($store.app.videoTimestamp) : 'timestamp'"></span>
+            </label>
+          </div>
+
+          @!tiptap({ value: '', wrapClass: 'note-wrap', class: 'prose-sm prose-note', name: 'body' })
+
+          @inputError('body')
+            <div class="alert alert-error alert-outline mt-2 absolute bottom-[calc(100%_+_.5rem)] left-2" x-data x-init="setTimeout(() => $el.remove(), 2500)">
+              {{ $messages.join(', ') }}
+            </div>
+          @end
+
+          <div class="note-actions flex justify-end gap-3">
+            <button type="submit" class="btn btn-sm btn-outline btn-primary" :disabled="sending">
+              <span x-show="sending" x-cloak class="flex items-center gap-2">
+                @svg('svg-spinners:blocks-shuffle-3', { class: 'w-4 h-4 -ml-1 -my-1' })
+                Saving ...
+              </span>
+              <span x-show="!sending" class="flex gap-3 items-center">
+                @let(icon = replyingTo ? 'solar:chat-square-arrow-outline' : 'solar:chat-round-line-outline')
+                @svg(icon, { class: 'w-4 h-4 -ml-1 -my-1' })
+                Save Note
+              </span>
+            </button>
+          </div>
+        @end
+      @else
+        <div class="flex-1 h-[250px]">
+          <div class="border border-dashed border-base-100 rounded-base p-6 text-base-content/60 mb-3 text-sm">
+            <h6 class="mb-1 font-bold text-base-content/80">Total note limit reached ({{ Note.freeLimit }} of {{ Note.freeLimit }})</h6>
+            Your learning is on fire! To keep all those great ideas coming, join <a href="/pricing" class="link">Adocasts Plus</a> to
+            store unlimited notes across all our lessons. Never lose a thought again!
+          </div>
+
+          @let(plusMonthly = $props?.plusMonthly || await PlanService.get(Plans.PLUS_MONTHLY))
+          @let(cta = plusMonthly.hasActiveSale ? `On Sale Now for ${plusMonthly.displaySalePrice}/mo` : `Join for ${plusMonthly.displayPrice}/mo`)
+
+          <div class="flex items-center gap-3">
+            <div class="flex-1">
+              @!plus.monthlyForm({ cta, plusMonthly })
+            </div>
+
+            <a href="{{ route('notes.index') }}" class="btn btn-outline">
+              Manage Notes
+            </a>
+          </div>
+        </div>
+      @end
+    </div>
+  @else
+    <div class="flex-1">
+      <div class="border border-dashed border-base-100 rounded-base p-6 text-base-content/60 text-sm">
+        <h6 class="mb-1 font-bold text-base-content/80">Stop losing your best ideas!</h6>
+        Use our integrated note feature to capture and organize your key insights. Take a note at
+        any timestamp and jump instantly back to that moment in the video with a single click.
+      </div>
+
+      <div class="flex items-center gap-3 p-6">
+        <a href="{{ route('auth.signup') }}" up-layer="new" up-size="grow" class="btn btn-outline btn-accent btn-sm">
+          Sign up
+        </a>
+        <a href="{{ route('auth.signin') }}" up-layer="new" up-size="grow" class="btn btn-outline btn-sm">
+          Sign in
+        </a>
+      </div>
+    </div>
+  @end
+
+  @!frags.toaster()
+</div>

@@ -1,3 +1,4 @@
+import LessonPanels from '#enums/lesson_panels'
 import Sorts from '#enums/sorts'
 import vine from '@vinejs/vine'
 
@@ -17,5 +18,11 @@ export const postSearchValidator = vine.compile(
     pattern: vine.string().trim().optional(),
     sort: vine.enum(Sorts).optional(),
     topics: vine.array(vine.string()).optional(),
+  })
+)
+
+export const defaultPostPanelValidator = vine.compile(
+  vine.object({
+    panel: vine.number().enum(LessonPanels),
   })
 )

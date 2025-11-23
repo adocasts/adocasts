@@ -21,6 +21,29 @@ Alpine.store('app', {
   videoTimestamp: 0,
   videoPlaying: false,
   showTranscript: document.body.dataset.showTranscript === 'true',
+
+  secondsToTime(totalSeconds) {
+    if (typeof totalSeconds === 'string') {
+      totalSeconds = Number(totalSeconds)
+    }
+
+    const hours = Math.floor(totalSeconds / 3600)
+
+    totalSeconds %= 3600
+
+    const minutes = Math.floor(totalSeconds / 60)
+
+    totalSeconds %= 60
+
+    const seconds = Math.floor(totalSeconds)
+    const short = `${(minutes + '').padStart(2, '0')}:${(seconds + '').padStart(2, '0')}`
+
+    if (!hours) {
+      return short
+    }
+
+    return `${(hours + '').padStart(2, '0')}:${short}`
+  }
 })
 
 Alpine.plugin(intersect)

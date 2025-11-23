@@ -1,6 +1,6 @@
 import Alpine from "alpinejs"
-import { DateTime } from 'luxon'
 import axios from "axios"
+import { DateTime } from 'luxon'
 
 Alpine.data('videoAutoPlayNext', (enabled = true, nextLessonUrl) => {
   return {
@@ -77,6 +77,48 @@ Alpine.data('videoDownload', ({ url, filename, authorization }) => {
       document.body.removeChild(anchor)
 
       URL.revokeObjectURL(href)
+
+      this.isDownloading = false
+    },
+  }
+})
+
+Alpine.data('repoDownload', ({ repositoryUrl }) => {
+  return {
+    isDownloading: false,
+
+    async download() {
+      let href
+      let headers = {}
+      this.isDownloading = true
+
+      try {
+        const response = await axios.post('/github/repo/download', { repositoryUrl })
+        
+        href = response.data.url
+      } catch (error) {
+        console.log({ error })
+        const message = typeof error?.response?.data === 'string' ? error?.response?.data : error?.response?.data?.message
+        window.toasts.dispatchEvent(
+          new CustomEvent('toast', {
+            detail: { type: 'error', message: message || 'Failed to download repository' },
+          })
+        )
+        this.isDownloading = false
+        console.error(error.message)
+        return
+      }
+
+      const anchor = document.createElement('a')
+
+      anchor.href = href
+      anchor.download = ''
+
+      document.body.appendChild(anchor)
+
+      anchor.click()
+
+      document.body.removeChild(anchor)
 
       this.isDownloading = false
     },

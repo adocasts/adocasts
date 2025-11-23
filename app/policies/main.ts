@@ -13,6 +13,8 @@
 */
 
 export const policies = {
+  CollectionPolicy: () => import('#policies/collection_policy'),
+  NotePolicy: () => import('#policies/note_policy'),
   AdPolicy: () => import('#policies/ad_policy'),
   AssetPolicy: () => import('#policies/asset_policy'),
   CommentPolicy: () => import('#policies/comment_policy'),

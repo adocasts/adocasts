@@ -1,0 +1,36 @@
+@can('PostPolicy.viewRepository', lesson)
+  @if (auth.user?.isGitHubTeamMember || lesson.repositoryAccessLevel === RepositoryAccessLevels.PUBLIC)
+    <a href="{{ lesson.repositoryUrl }}" target="_blank" class="group/git btn btn-ghost btn-square">
+      @svg('simple-icons:github', { class: 'size-4' })
+    </a>
+  @else
+    <span class="tooltip tooltip-bottom">
+      <div class="tooltip-content">
+        <div class="text-xs">
+          Join the Adocasts Plus GitHub Team to gain access to private code repositories
+        </div>
+      </div>
+
+      <a href="{{ route('settings', { section: 'account' }) }}#repoAccess" target="_blank" class="group/git btn btn-ghost btn-square relative">
+        <span class="relative">
+          @svg('simple-icons:github', { class: 'size-4 text-base-content/60 group-hover/git:text-base-content duration-200' })
+          <div class="absolute -top-2 -right-2">
+            @svg('solar:info-circle-bold', { class: 'size-3 text-warning/40' })
+          </div>
+        </span>
+      </a>
+    </span>
+  @endif
+@elseif (lesson.repositoryUrl)
+  <span class="tooltip tooltip-bottom" data-tip="Requires Adocasts Plus">
+    <button disabled class="group/git btn btn-ghost btn-square opacity-50 cursor-not-allowed relative">
+      <span class="relative">
+        @svg('simple-icons:github', { class: 'size-4 text-base-content/60 group-hover/git:text-base-content duration-200' })
+
+        <div class="absolute -top-2 -right-2">
+          @svg('solar:lock-linear', { class: 'size-2 text-error' })
+        </div>
+      </span>
+    </button>
+  </span>
+@endcan

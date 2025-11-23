@@ -1,3 +1,4 @@
+import LessonPanels from '#enums/lesson_panels'
 import vine from '@vinejs/vine'
 
 export const preferencesValidator = vine.compile(
@@ -5,8 +6,8 @@ export const preferencesValidator = vine.compile(
     isEnabledProfile: vine.accepted().optional(),
     isEnabledMiniPlayer: vine.accepted().optional(),
     isEnabledAutoplayNext: vine.accepted().optional(),
-    isEnabledTranscript: vine.accepted().optional(),
     isEnabledMentions: vine.accepted().optional(),
+    defaultLessonPanel: vine.number().enum(LessonPanels).optional(),
   })
 )
 
@@ -20,7 +21,6 @@ export const preferencePatchValidator = vine.compile(
           'isEnabledProfile',
           'isEnabledMiniPlayer',
           'isEnabledAutoplayNext',
-          'isEnabledTranscript',
           'isEnabledMentions',
         ])
         .optional(),

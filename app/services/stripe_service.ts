@@ -1,3 +1,5 @@
+import RemoveUserFromGitHubTeam from '#actions/users/remove_user_from_github_team'
+import SendGitHubTeamInvite from '#actions/users/send_github_team_invite'
 import Plans from '#enums/plans'
 import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
 import Plan from '#models/plan'
@@ -337,6 +339,13 @@ class StripeService {
     user.planPeriodEnd = null
 
     await user.save()
+
+    if (
+      !this.inTest &&
+      (user.githubTeamInviteStatus === 'active' || user.githubTeamInviteStatus === 'pending')
+    ) {
+      await RemoveUserFromGitHubTeam.run(user)
+    }
   }
 
   async onCheckoutCompleted(event: any) {
@@ -361,6 +370,10 @@ class StripeService {
     }
 
     await user.save()
+
+    if (!this.inTest && user.githubId && !user.githubTeamInviteStatus) {
+      await SendGitHubTeamInvite.run(user)
+    }
 
     // if switching to forever plan from another, cancel their subscription
     if (plan.id === Plans.FOREVER && previousPlanId) {

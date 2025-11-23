@@ -1,5 +1,6 @@
 import LessonShowDto from '#dtos/lesson_show'
 import PaywallTypes from '#enums/paywall_types'
+import RepositoryAccessLevels from '#enums/repository_access_levels'
 import States from '#enums/states'
 import Post from '#models/post'
 import User from '#models/user'
@@ -24,6 +25,19 @@ export default class PostPolicy extends BasePolicy {
     if (this.isAdmin(user) || this.isContributorLvl1(user) || this.isContributorLvl2(user))
       return true
     return false
+  }
+
+  @action({ allowGuest: true })
+  async viewRepository(user: User, post: Post | LessonShowDto) {
+    if (!post.repositoryUrl) return false
+
+    if (post.repositoryAccessLevel === RepositoryAccessLevels.PUBLIC) {
+      return true
+    }
+
+    if (!user) return false
+
+    return !user.isFreeTier
   }
 
   @action({ allowGuest: true })

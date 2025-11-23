@@ -2,12 +2,15 @@ import GetSeries from '#actions/collections/get_series'
 import GetUnreadNotificationCount from '#actions/notifications/get_unread_notification_count'
 import CommentTypes, { CommentTypeIdColumn } from '#enums/comment_types'
 import Difficulties from '#enums/difficulties'
+import LessonPanels from '#enums/lesson_panels'
 import PaywallTypes from '#enums/paywall_types'
 import Plans from '#enums/plans'
+import RepositoryAccessLevels from '#enums/repository_access_levels'
 import Sorts from '#enums/sorts'
 import Status from '#enums/status'
 import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
 import VideoTypes from '#enums/video_types'
+import Note from '#models/note'
 import CurrencyService from '#services/currency_service'
 import FormService from '#services/form_service'
 import HlsService from '#services/hls_service'
@@ -45,11 +48,16 @@ edge.global('Sorts', Sorts)
 edge.global('Status', Status)
 edge.global('Plans', Plans)
 edge.global('PaywallTypes', PaywallTypes)
+edge.global('RepositoryAccessLevels', RepositoryAccessLevels)
 edge.global('Difficulties', Difficulties)
 edge.global('CommentTypes', CommentTypes)
 edge.global('CommentTypeIdColumn', CommentTypeIdColumn)
 edge.global('StripeSubscriptionStatuses', StripeSubscriptionStatuses)
 edge.global('VideoTypes', VideoTypes)
+edge.global('LessonPanels', LessonPanels)
+
+// models
+edge.global('Note', Note)
 
 // utilities
 edge.global('_', _)

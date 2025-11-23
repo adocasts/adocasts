@@ -1,11 +1,12 @@
 import ProgressableDto from '#dtos/progressable_dto'
+import LessonPanels from '#enums/lesson_panels'
+import NotImplementedException from '#exceptions/not_implemented_exception'
 import { SimplePaginatorDto } from '@adocasts.com/dto/paginator'
 import is from '@adonisjs/core/helpers/is'
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import { createProgress, ProgressContext } from './_progress.js'
 import Up from './_up.js'
-import NotImplementedException from '#exceptions/not_implemented_exception'
 
 declare module '@adonisjs/core/http' {
   interface HttpContext {
@@ -26,7 +27,7 @@ export default class ContextMiddleware {
       up: ctx.up,
       theme,
       autoplayNext: this.#getAutoplayNext(ctx),
-      showTranscript: this.#getShowTranscript(ctx),
+      defaultLessonPanel: this.#getDefaultLessonPanel(ctx),
     })
 
     ctx.view.render = async (templatePath: string, state?: Record<string, any>) => {
@@ -96,11 +97,11 @@ export default class ContextMiddleware {
     return ctx.session.get('autoplayNext', 'true') === 'true'
   }
 
-  #getShowTranscript(ctx: HttpContext) {
+  #getDefaultLessonPanel(ctx: HttpContext) {
     if (ctx.auth.user) {
-      return ctx.auth.user.isEnabledTranscript
+      return ctx.auth.user.defaultLessonPanel ?? LessonPanels.SERIES
     }
 
-    return ctx.session.get('showTranscript', 'false') === 'true'
+    return ctx.session.get('defaultLessonPanel', LessonPanels.SERIES)
   }
 }

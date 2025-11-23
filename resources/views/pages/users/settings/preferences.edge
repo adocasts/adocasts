@@ -7,7 +7,7 @@
     index: false
   }
 })
-  @layout.shell.asideLeft({ label: 'Settings Navigation' }) 
+  @layout.shell.asideLeft({ label: 'Settings Navigation' })
     @slot('aside')
       @include('partials/users/settings/nav')
     @endslot
@@ -49,16 +49,6 @@
               <p class="text-base-content/60 text-xs text-wrap" x-cloak>
                 <span x-show="switchOn">When a lesson ends, the next lesson will start automatically</span>
                 <span x-show="!switchOn">When a lesson ends, the next lesson will not start automatically</span>
-              </p>
-            </div>
-          @end
-
-          @form.switch({ name: 'isEnabledTranscript', value: auth.user.isEnabledTranscript })
-            <div class="flex flex-col ml-3">
-              <strong class="text-base-content">Show video transcript</strong>
-              <p class="text-base-content/60 text-xs text-wrap" x-cloak>
-                <span x-show="switchOn">Lesson video transcripts will be displayed</span>
-                <span x-show="!switchOn">Lesson video transcripts will be hidden</span>
               </p>
             </div>
           @end

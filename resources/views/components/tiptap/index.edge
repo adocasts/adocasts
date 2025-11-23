@@ -10,7 +10,7 @@
 
 @if (allows)
 
-  <div x-data="editor({{ js.stringify(editorProps) }})">
+  <div x-data="editor({{ js.stringify(editorProps) }})" class="{{ html.classNames($props.rootClass) }}">
     <div x-show="isInitialized" class="bubble-menu bg-base-100 text-sm p-1 rounded-base">
       <template x-if="editor">
         <div class="flex items-center space-x-1">
