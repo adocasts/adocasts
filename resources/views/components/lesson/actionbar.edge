@@ -12,17 +12,34 @@
   @!frags.lesson.bookmarkToggle({ lesson })
 
   @if (lesson.repositoryUrl || ((lesson.videoBunnyId || lesson.videoR2Id) && auth.user && !auth.user.isFreeTier))
-    <div class="hidden md:block h-5 w-px bg-base-100 mx-3"></div>
+    <div class="h-5 w-px bg-base-100 mx-3"></div>
   @endif
 
   @!lesson.repositoryLink({ lesson })
-  {{-- @if (lesson.repositoryUrl)
-    @tooltip({ text: 'View Lesson Repository', class: 'tooltip-bottom' })
-      <a href="{{ lesson.repositoryUrl }}" class="group/tog btn btn-toggle btn-primary btn-square" up-follow="false" target="_blank">
-        @svg('solar:code-outline', { class: 'w-5 h-5 text-base-content/60 group-hover/tog:text-base-content duration-200' })
-      </a>
-    @end
-  @endif --}}
+
+  @if (lesson.repositoryUrl && auth.user && !auth.user.isFreeTier)
+    <div x-data="repoDownload({{ js.stringify({ repositoryUrl: lesson.repositoryUrl }) }})">
+      @tooltip({ class: 'tooltip-bottom' })
+        @slot('content')
+          <span x-show="isDownloading">
+            Downloading Repository
+          </span>
+          <span x-show="!isDownloading">
+            Download Repository
+          </span>
+        @endslot
+
+        <button type="button" class="group/down btn btn-ghost btn-square" @click="download" :disabled="isDownloading">
+          <span x-show="isDownloading" class="text-info">
+            @svg('svg-spinners:ring-resize', { class: 'w-5 h-5' })
+          </span>
+          <span x-show="!isDownloading">
+            @svg('solar:code-linear', { class: 'w-5 h-5 text-base-content/60 group-hover/down:text-base-content duration-200' })
+          </span>
+        </button>
+      @end
+    </div>
+  @endif
 
   @!frags.lesson.downloadVideo({ lesson })
 </div>

@@ -122,18 +122,6 @@
         </div>
       </div>
 
-      @can('PostPolicy.view', lesson)
-        @if (transcript)
-          <div class="border-b border-base-100 xl:hidden">
-            @!lesson.transcript({
-              transcript,
-              id: 'transcriptMain',
-              class: 'flex flex-col max-w-prose mx-auto h-[min(275px,30vh)] pt-6 pb-6 px-6 md:px-0',
-            })
-          </div>
-        @endif
-      @endcan
-
       <div class="max-w-prose mx-auto flex gap-3 lg:gap-6 px-8 md:px-0 my-10 lg:my-16">
         <div class="@container flex-1">
           @if (series)

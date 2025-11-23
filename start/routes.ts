@@ -25,6 +25,7 @@ import {
   throttleTestimonials,
   throttleVerifyEmail,
 } from './limiter.js'
+const DownloadRepoZip = () => import('#actions/general/download_repo_zip')
 const DestroyLessonNote = () => import('#actions/notes/destroy_lesson_note')
 const RenderNotesIndex = () => import('#actions/notes/render_notes_index')
 const RemoveUserFromGitHubTeam = () => import('#actions/users/remove_user_from_github_team')
@@ -168,6 +169,7 @@ router.on('/cookies').render('pages/policies/cookies').as('cookies')
 router.on('/guidelines').render('pages/policies/guidelines').as('guidelines')
 router.on('/uses').render('pages/uses').as('uses')
 router.get('/frags/*', [RenderFrag]).as('frag')
+router.post('/github/repo/download', [DownloadRepoZip]).as('github.repo.download')
 
 //* Syndication
 router.get('/rss', [RenderRssXml]).as('rss')

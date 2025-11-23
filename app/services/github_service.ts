@@ -19,6 +19,27 @@ export default class GitHubService {
     })
   }
 
+  #getRepoDetails(url: string) {
+    const parts = new URL(url).pathname.split('/').filter(Boolean)
+    if (parts.length >= 2) {
+      return { owner: parts[0], repo: parts[1] }
+    }
+    throw new Error('Invalid GitHub URL format.')
+  }
+
+  async getZipDownloadUrl(repositoryUrl: string) {
+    const { owner, repo } = this.#getRepoDetails(repositoryUrl)
+
+    const result = await this.#octokit.request('GET /repos/{owner}/{repo}/zipball/{ref}', {
+      owner,
+      repo,
+      ref: 'main',
+      headers: this.#headers,
+    })
+
+    return result.url
+  }
+
   async getUserById(githubId: string | number) {
     try {
       const response = await this.#octokit.request('GET /user/{account_id}', {
