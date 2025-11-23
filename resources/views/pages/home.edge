@@ -20,16 +20,16 @@
 
       @let(plan = await PlanService.get(Plans.PLUS_MONTHLY))
       @if (plan.hasActiveSale)
-        <div class="relative z-[39] bg-gradient-to-b from-base-100/50 to-base-100/20 border-b border-base-100 backdrop-blur-md">
-          <div class="container-x flex items-center gap-x-6 py-2 relative z-10 page">
+        <div class="container relative z-[39] pt-6 -mb-6">
+          <div class="flex items-center gap-x-6 px-6 py-3 rounded-base relative z-10 page bg-black/10 bg-gradient-to-b from-base-100/50 to-base-100/20 backdrop-blur-lg border border-base-100 shadow-lg">
             <img class="hidden sm:inline-block w-8 animation-float" src="/imgs/robot/slice9.svg" alt="robot mascot smiling" />
             <div class="flex flex-col justify-center leading-none gap-x-6">
-              <strong class="text-xl font-heading -mb-1">{{ plan.couponAmount }} Off Adocasts Plus</strong>
-              <span class="text-xs">Black Friday Sale Nov 23rd - Dec 7th</span>
+              <strong class="text-xl font-heading -mb-1">{{ plan.couponAmount }} Off <span class="hidden sm:inline">Adocasts Plus</span></strong>
+              <span class="text-xs uppercase tracking-wide">Black Friday Sale <br class="sm:hidden" /> Nov 23rd - Dec 7th</span>
             </div>
             <div class="flex flex-1 justify-end">
-              <a href="{{ route('pricing') }}" up-follow class="btn btn-success btn-outline">
-                <span class="hidden md:inline">View&nbsp;</span>Plans
+              <a href="{{ route('pricing') }}" up-follow class="btn btn-primary btn-outline">
+                <span class="hidden md:inline">View</span> Plans
               </a>
             </div>
           </div>
