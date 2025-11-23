@@ -55,7 +55,7 @@
       @endif
     </ul>
 
-    <div class="lesson-notes-form border-t border-base-100 pt-2 -mx-2 px-4 pb-4">
+    <div class="lesson-notes-form border-t border-base-100 pt-2 -mx-2 px-4 pb-4 relative">
       @can('NotePolicy.store')
         @form({ method: 'POST', action: form.post('notes.store'), loadable: true, 'up-target': '#lessonNotes' })
           <input type="hidden" name="postId" value="{{ lessonId }}" />
@@ -73,6 +73,12 @@
           </div>
 
           @!tiptap({ value: '', wrapClass: 'note-wrap', class: 'prose-sm prose-note', name: 'body' })
+
+          @inputError('body')
+            <div class="alert alert-error alert-outline mt-2 absolute bottom-[calc(100%_+_.5rem)] left-2" x-data x-init="setTimeout(() => $el.remove(), 2500)">
+              {{ $messages.join(', ') }}
+            </div>
+          @end
 
           <div class="note-actions flex justify-end gap-3">
             <button type="submit" class="btn btn-sm btn-outline btn-primary" :disabled="sending">
