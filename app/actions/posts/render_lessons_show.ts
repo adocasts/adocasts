@@ -1,4 +1,5 @@
 import BaseAction from '#actions/base_action'
+import GetPostNotes from '#actions/notes/get_post_notes'
 import NotFoundException from '#exceptions/not_found_exception'
 import PostPolicy from '#policies/post_policy'
 import TimeService from '#services/time_service'
@@ -7,7 +8,6 @@ import LessonShowDto from '../../dtos/lesson_show.js'
 import GetSeries from '../collections/get_series.js'
 import GetLesson from './get_lesson.js'
 import GetTranscript from './get_transcript.js'
-import GetPostNotes from '#actions/notes/get_post_notes'
 
 export default class RenderLessonShow extends BaseAction {
   async asController({ view, params, auth, bouncer }: HttpContext) {
@@ -18,6 +18,11 @@ export default class RenderLessonShow extends BaseAction {
 
     if (await bouncer.with(PostPolicy).denies('state', lesson)) {
       throw new NotFoundException('This post is not currently available to the public')
+    }
+
+    if (!lesson.repositoryUrl && series?.repositoryUrl) {
+      lesson.repositoryUrl = series.repositoryUrl
+      lesson.repositoryAccessLevel = series.repositoryAccessLevel
     }
 
     if (await this.#cannotView(bouncer, lesson)) {
