@@ -10,7 +10,6 @@ export default class GetOrCreateProgress extends BaseAction {
     const query: Partial<Progress> = { userId }
 
     if (data.postId) query.postId = data.postId
-    if (data.collectionId) query.collectionId = data.collectionId
 
     return Progress.firstOrNew(query, { userId })
   }

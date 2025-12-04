@@ -32,36 +32,39 @@ export default class extends BaseSchema {
       console.log(`Adding ${progressions.length} progresses`)
 
       for (const progression of progressions) {
-        if (!added.some(history => 
-          progression.user_id === history.user_id && 
-          progression.post_id === history.post_id && 
-          progression.collection_id === history.collection_id
-        )) {
-          await db
-            .table(this.tableName)
-            .insert({
-              id: progression.id, // keep the same id in case anyone is current watching a video
-              user_id: progression.user_id,
-              post_id: progression.post_id,
-              collection_id: progression.collection_id,
-              read_percent: progression.read_percent,
-              watch_percent: progression.watch_percent,
-              watch_seconds: progression.watch_seconds,
-              is_completed: progression.is_completed,
-              created_at: progression.created_at,
-              updated_at: progression.updated_at,
-            })
+        if (
+          !added.some(
+            (history) =>
+              progression.user_id === history.user_id &&
+              progression.post_id === history.post_id &&
+              progression.collection_id === history.collection_id
+          )
+        ) {
+          await db.table(this.tableName).insert({
+            id: progression.id, // keep the same id in case anyone is current watching a video
+            user_id: progression.user_id,
+            post_id: progression.post_id,
+            collection_id: progression.collection_id,
+            read_percent: progression.read_percent,
+            watch_percent: progression.watch_percent,
+            watch_seconds: progression.watch_seconds,
+            is_completed: progression.is_completed,
+            created_at: progression.created_at,
+            updated_at: progression.updated_at,
+          })
 
           added.push(progression)
         } else {
           duplicates.push(progression)
         }
       }
-      
+
       console.log(`Added ${added.length} progresses, skipped ${duplicates.length} duplicates`)
 
       // update the id sequence to start at max history id found
-      await db.knexRawQuery("SELECT SETVAL('progresses_id_seq', (SELECT MAX(id) FROM progresses), true)")
+      await db.knexRawQuery(
+        "SELECT SETVAL('progresses_id_seq', (SELECT MAX(id) FROM progresses), true)"
+      )
 
       console.log(`Updated id sequence`)
 
