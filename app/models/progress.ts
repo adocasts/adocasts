@@ -1,6 +1,6 @@
+import ProgressBuilder from '#builders/progress_builder'
 import Collection from '#models/collection'
 import Post from '#models/post'
-import ProgressBuilder from '#builders/progress_builder'
 import User from '#models/user'
 import { BaseModel, belongsTo, column, computed } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
@@ -19,9 +19,15 @@ export default class Progress extends BaseModel {
   @column()
   declare postId: number | null
 
+  /**
+   * @deprecated collectionId is no longer used on Progress records
+   */
   @column()
   declare collectionId: number | null
 
+  /**
+   * @deprecated readPercent is no longer used on Progress records
+   */
   @column()
   declare readPercent: number | null
 
