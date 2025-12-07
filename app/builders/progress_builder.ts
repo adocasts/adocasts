@@ -37,6 +37,11 @@ export default class ProgressBuilder extends BaseBuilder<typeof Progress, Progre
     return chain(builder)
   }
 
+  /**
+   * @deprecated collection_id is no longer populated on progresses
+   * @param chain
+   * @returns
+   */
   async collections<T>(chain: (builder: CollectionBuilder) => T) {
     const rows = await this.latest('collectionId')
     const collectionIds = rows.map((row) => row.collectionId!)
