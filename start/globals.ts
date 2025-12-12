@@ -11,6 +11,7 @@ import Status from '#enums/status'
 import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
 import VideoTypes from '#enums/video_types'
 import Note from '#models/note'
+import Post from '#models/post'
 import CurrencyService from '#services/currency_service'
 import FormService from '#services/form_service'
 import HlsService from '#services/hls_service'
@@ -58,6 +59,7 @@ edge.global('LessonPanels', LessonPanels)
 
 // models
 edge.global('Note', Note)
+edge.global('Post', Post)
 
 // utilities
 edge.global('_', _)

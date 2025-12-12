@@ -1,4 +1,5 @@
 import BaseAction from '#actions/base_action'
+import GetComments from '#actions/comments/get_comments'
 import CacheNamespaces from '#enums/cache_namespaces'
 import Post from '#models/post'
 import Watchlist from '#models/watchlist'
@@ -12,8 +13,10 @@ export default class GetSnippet extends BaseAction {
       factory: () => GetSnippet.fromDb(slug),
     })
 
+    const comments = await GetComments.run(snippet.id, 'post')
     const isInWatchlist = await Watchlist.forPost(userId, snippet.id)
 
+    snippet.comments = comments.list
     snippet.meta.isInWatchlist = isInWatchlist
 
     // TODO: cache
@@ -22,10 +25,6 @@ export default class GetSnippet extends BaseAction {
   }
 
   static async fromDb(slug: string) {
-    return Post.build()
-      .displaySnippetShow()
-      .where({ slug })
-      .withComments()
-      .firstOrFail(LessonShowDto)
+    return Post.build().displaySnippetShow().where({ slug }).firstOrFail(LessonShowDto)
   }
 }

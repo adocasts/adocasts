@@ -166,6 +166,28 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     return this
   }
 
+  withPostsPending(
+    postQuery?: (
+      query: ManyToManyQueryBuilderContract<typeof Post, any>
+    ) => ManyToManyQueryBuilderContract<typeof Post, any>,
+    {
+      orderBy = 'pivot_root_sort_order',
+      direction = 'asc',
+    }: {
+      orderBy?: 'pivot_sort_order' | 'pivot_root_sort_order'
+      direction?: 'asc' | 'desc'
+    } = {}
+  ) {
+    this.query.preload('posts', (query) =>
+      query
+        .apply((scope) => scope.forLessonDisplay())
+        .apply((scope) => scope.publishedOrPending())
+        .orderBy(orderBy, direction)
+        .if(typeof postQuery === 'function', (q) => postQuery!(q))
+    )
+    return this
+  }
+
   withPostsFlat(
     postQuery?: (
       query: ManyToManyQueryBuilderContract<typeof Post, any>
@@ -208,9 +230,33 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
     return this
   }
 
+  withChildrenPending() {
+    this.query.preload('children', (query) =>
+      query
+        .where('stateId', States.PUBLIC)
+        .whereHas('posts', (post) => post.apply((scope) => scope.publishedOrPending()))
+        .preload('posts', (post) =>
+          post
+            .apply((scope) => scope.forCollectionDisplay())
+            .apply((scope) => scope.publishedOrPending())
+            .selectDto(SeriesLessonDto)
+        )
+        .orderBy('sortOrder')
+        .selectDto(ModuleDto)
+    )
+    return this
+  }
+
   withPostCount() {
     this.query.withCount('postsFlattened', (query) =>
       query.apply((scope) => scope.published()).as('posts_count')
+    )
+    return this
+  }
+
+  withPostPendingCount() {
+    this.query.withCount('postsFlattened', (query) =>
+      query.apply((scope) => scope.publishedOrPending()).as('posts_pending_count')
     )
     return this
   }

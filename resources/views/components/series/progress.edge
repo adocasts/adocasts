@@ -82,6 +82,11 @@
           <span class="text-sm">
             <span class="font-bold">{{ progression.completedLessons ?? 0 }}</span>
             <span class="opacity-60">of {{ series.meta.posts_count }} Completed</span>
+
+            @if (series.meta.posts_pending_count && Number(series.meta.posts_pending_count) > Number(series.meta.posts_count))
+              @let(diff = Number(series.meta.posts_pending_count) - Number(series.meta.posts_count))
+              <span class="opacity-60"> (+{{ diff }} Upcoming)</span>
+            @endif
           </span>
         </div>
       </div>

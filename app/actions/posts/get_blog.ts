@@ -1,4 +1,5 @@
 import BaseAction from '#actions/base_action'
+import GetComments from '#actions/comments/get_comments'
 import CacheNamespaces from '#enums/cache_namespaces'
 import Post from '#models/post'
 import Watchlist from '#models/watchlist'
@@ -12,14 +13,16 @@ export default class GetBlog extends BaseAction {
       factory: () => GetBlog.fromDb(slug),
     })
 
+    const comments = await GetComments.run(blog.id, 'post')
     const isInWatchlist = await Watchlist.forPost(userId, blog.id)
 
+    blog.comments = comments.list
     blog.meta.isInWatchlist = isInWatchlist
 
     return blog
   }
 
   static async fromDb(slug: string) {
-    return Post.build().displayBlogShow().where({ slug }).withComments().firstOrFail(LessonShowDto)
+    return Post.build().displayBlogShow().where({ slug }).firstOrFail(LessonShowDto)
   }
 }

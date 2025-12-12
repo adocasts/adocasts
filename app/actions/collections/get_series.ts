@@ -3,16 +3,17 @@ import { SeriesShowDto } from '#dtos/series_show'
 import CacheNamespaces from '#enums/cache_namespaces'
 import { ProgressContext } from '#middleware/context/_progress'
 import Collection from '#models/collection'
+import Post from '#models/post'
 import Watchlist from '#models/watchlist'
 import cache from '@adonisjs/cache/services/main'
 import SeriesLessonDto from '../../dtos/series_lesson.js'
 import TopicDto from '../../dtos/topic.js'
 
 export default class GetSeries extends BaseAction {
-  async handle(slug: string, userId?: number) {
+  async handle(slug: string, userId?: number, usePending = false) {
     const series = await cache.namespace(CacheNamespaces.COLLECTIONS).getOrSet({
-      key: `GET_SERIES_${slug}`,
-      factory: () => this.fromDb(slug),
+      key: `GET_SERIES_${slug}_${usePending ? 'PENDING' : 'PUBLIC'}`,
+      factory: () => this.fromDb(slug, usePending),
     })
 
     series.meta.isInWatchlist = await Watchlist.forCollection(userId, series.id)
@@ -20,23 +21,40 @@ export default class GetSeries extends BaseAction {
     return series
   }
 
-  async fromDb(slug: string) {
+  async fromDb(slug: string, usePending = false) {
     return Collection.build()
       .series()
       .root()
       .publicOrPreview()
       .where({ slug })
-      .withPosts((query) => query.selectDto(SeriesLessonDto))
       .withTaxonomies((query) => query.selectDto(TopicDto))
-      .withChildren()
       .withPostCount()
       .withTotalMinutes()
+      .if(
+        usePending,
+        (q) =>
+          q
+            .withPostsPending((query) => query.selectDto(SeriesLessonDto))
+            .withChildrenPending()
+            .withPostPendingCount(),
+        (q) => q.withPosts((query) => query.selectDto(SeriesLessonDto)).withChildren()
+      )
       .firstOrFail(SeriesShowDto)
   }
 
   static flattenLessons(series: SeriesShowDto) {
-    if (series.lessons.length) return series.lessons
-    return series.modules.reduce<SeriesLessonDto[]>((flat, mod) => [...flat, ...mod.lessons], [])
+    let lessons: SeriesLessonDto[] = []
+
+    if (series.lessons.length) {
+      lessons = series.lessons
+    } else {
+      lessons = series.modules.reduce<SeriesLessonDto[]>(
+        (flat, mod) => [...flat, ...mod.lessons],
+        []
+      )
+    }
+
+    return lessons.filter((lesson) => Post.isPublished(lesson))
   }
 
   static nextUserLesson(series: SeriesShowDto, progress: ProgressContext) {

@@ -546,6 +546,10 @@ export default class Post extends BaseModel {
     }
   )
 
+  static publishedOrPending = scope((query) => {
+    query.whereIn('stateId', [States.PUBLIC, States.DRAFT, States.UNLISTED])
+  })
+
   static published = scope((query) => {
     query.where('stateId', States.PUBLIC).where('publishAt', '<=', DateTime.now().toSQL()!)
   })
@@ -632,4 +636,12 @@ export default class Post extends BaseModel {
         .orderBy(orderBy, direction)
     }
   )
+
+  static isPublished(post: { publishAt?: DateTime | string | null; stateId: number }) {
+    if (!post.publishAt) return false
+    return (
+      [States.PUBLIC, States.UNLISTED].includes(post.stateId) &&
+      DateTime.fromISO(post.publishAt.toString()) <= DateTime.now()
+    )
+  }
 }

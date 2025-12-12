@@ -26,9 +26,11 @@
 
         <div class="flex flex-1 items-center gap-3 mt-10">
           @if (nextUp)
+            @let(nextUpProgression = auth.user && progress.post.get(nextUp.id))
+
             <a href="{{ nextUp.routeUrl }}" class="btn btn-outline btn-primary flex-1 sm:btn-wide">
               @svg('solar:play-outline', { class: 'size-4 mr-1 opacity-80' })
-              @if (progression?.percent)
+              @if (progression?.percent && !nextUpProgression?.isCompleted)
                 Continue Series
               @else
                 Start Series
@@ -95,14 +97,22 @@
 
               <div class="collapse-content !p-0 mb-3">
                 @each (post in mod.lessons)
-                  @!post.cardSeries({ post, mod })
+                  @if (Post.isPublished(post))
+                    @!post.cardSeries({ post, mod })
+                  @else
+                    @!post.cardSeriesPreview({ post, mod })
+                  @endif
                 @endeach
               </div>
             </details>
           @endeach
 
           @each (post in series.lessons)
-            @!post.cardSeries({ post })
+            @if (Post.isPublished(post))
+              @!post.cardSeries({ post })
+            @else
+              @!post.cardSeriesPreview({ post })
+            @endif
           @endeach
 
           @if (!series.lessons?.length && !series.modules?.some(m => m.lessons?.length))
