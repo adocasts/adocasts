@@ -26,6 +26,7 @@ import {
   throttleTestimonials,
   throttleVerifyEmail,
 } from './limiter.js'
+const CheckUserPostAccess = () => import('#actions/users/check_user_post_access')
 const DownloadRepoZip = () => import('#actions/general/download_repo_zip')
 const DestroyLessonNote = () => import('#actions/notes/destroy_lesson_note')
 const RenderNotesIndex = () => import('#actions/notes/render_notes_index')
@@ -220,6 +221,7 @@ router.patch('/users/theme', [UpdateUserTheme]).as('users.theme')
 router.get('/users/:userId/notifications/:field/off', [DisableNotification]).as('users.notifications.disable.field')
 router.get('/users/:userId/notifications/off', [DisableAllNotifications]).as('users.notifications.disable')
 router.post('/api/mentions/list', [GetUserMentionAutocomplete]).as('api.mentions.list').use(middleware.auth())
+router.get('/api/user/check/post/:postId?', [CheckUserPostAccess]).as('api.user.check.post')
 
 //* Series
 router.get('/series', [RenderSeriesIndex]).as('series.index')
