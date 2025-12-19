@@ -39,6 +39,10 @@ export default class WatchlistNotifications extends BaseCommand {
       .whereBetween('publishAt', [start.toSQL(), end.toSQL()])
       .preload('watchlist')
       .preload('rootSeries', (query) => query.preload('watchlist'))
+      .orderBy([
+        { column: 'publishAt', order: 'desc' },
+        { column: 'id', order: 'desc' },
+      ])
 
     newPosts.map((post) => {
       const postUserIds = post.watchlist.map((item) => item.userId)

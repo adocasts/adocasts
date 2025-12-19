@@ -13,12 +13,12 @@
     <ul>
       @each (post in posts)
         <li style="margin-bottom: 1rem;">
-          <h5>
+          <h5 style="margin-bottom: .5rem;">
             <a href="{{ env('APP_DOMAIN') }}{{ post.routeUrl }}">
               {{ post.title }}
             </a>
           </h5>
-          <p>
+          <p style="margin-top: 0;">
             {{ post.description }}
           </p>
         </li>
@@ -26,7 +26,7 @@
     </ul>
   @end
 
-  @emails.button({ href: `{{ domain }}/users/watchlist` })
+  @emails.button({ href: `${env('APP_DOMAIN')}/users/watchlist` })
     View Watchlist
   @end
   
