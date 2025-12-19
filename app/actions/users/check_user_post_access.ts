@@ -4,14 +4,16 @@ import PostPolicy from '#policies/post_policy'
 import { HttpContext } from '@adonisjs/core/http'
 
 export default class CheckUserPostAccess extends BaseAction {
-  async asController({ auth, params, bouncer }: HttpContext) {
+  async asController({ response, auth, params, bouncer }: HttpContext) {
+    response.header('content-type', 'application/json')
+
     if (!params.postId) {
-      return auth.user?.isAdmin || auth.user?.isContributor
+      return response.json(auth.user?.isAdmin || auth.user?.isContributor)
     }
 
     const post = await Post.findOrFail(params.postId)
     const allowed = await bouncer.with(PostPolicy).allows('view', post)
 
-    return allowed
+    return response.json(allowed)
   }
 }
