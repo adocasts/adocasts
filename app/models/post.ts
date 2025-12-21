@@ -162,6 +162,9 @@ export default class Post extends BaseModel {
   @column.dateTime()
   declare updatedContentAt: DateTime | null
 
+  @column.dateTime()
+  declare ragAddedAt: DateTime | null
+
   @manyToMany(() => Asset, {
     pivotTable: 'asset_posts',
     pivotColumns: ['sort_order'],
