@@ -278,7 +278,9 @@ class VideoPlayer {
       src: `https://vid.adocasts.com/${this.videoId}/main.m3u8`,
       autoPlay: playOnReady,
       currentTime: this.watchSeconds,
-      layout: new VidstackPlayerLayout(),
+      layout: new VidstackPlayerLayout({
+        thumbnails: `https://vid.adocasts.com/${this.videoId}/thumbnails.vtt`
+      }),
       poster: this.element.dataset.poster,
     })
 
