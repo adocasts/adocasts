@@ -1,5 +1,0 @@
-@inject({ selected: $props.selected })
-
-<select class="select {{ $props.class || '' }}" {{ $props.except(['class', 'selected']).toAttrs() }}>
-  {{{ await $slots.main() }}}
-</select>

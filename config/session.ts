@@ -1,20 +1,10 @@
 import env from '#start/env'
 import app from '@adonisjs/core/services/app'
 import { defineConfig, stores } from '@adonisjs/session'
-import { SessionConfig } from '@adonisjs/session/types'
-
-export const sessionCookieName = 'adonis-session'
-export const sessionCookie: SessionConfig['cookie'] = {
-  path: '/',
-  httpOnly: true,
-  secure: app.inProduction,
-  sameSite: 'lax',
-  domain: '',
-}
 
 const sessionConfig = defineConfig({
   enabled: true,
-  cookieName: sessionCookieName,
+  cookieName: 'adonis-session',
 
   /**
    * When set to true, the session id cookie will be deleted
@@ -32,7 +22,12 @@ const sessionConfig = defineConfig({
    * Configuration for session cookie and the
    * cookie store
    */
-  cookie: sessionCookie,
+  cookie: {
+    path: '/',
+    httpOnly: true,
+    secure: app.inProduction,
+    sameSite: 'lax',
+  },
 
   /**
    * The store to use. Make sure to validate the environment

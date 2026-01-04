@@ -1,9 +1,0 @@
-<li>
-  <a class="block hover:bg-base-100 px-2 py-1 rounded" href="{{ href }}">
-    @if (name)
-      {{ name }}
-    @else
-      {{{ await $slots.main() }}}
-    @endif
-  </a>
-</li>

@@ -11,13 +11,6 @@ export default class SilentAuthMiddleware {
   async handle(ctx: HttpContext, next: NextFn) {
     await ctx.auth.check()
 
-    // if (ctx.auth.user) {
-    //   HyperDX.setTraceAttributes({
-    //     userId: ctx.auth.user.id,
-    //     userEmail: ctx.auth.user.email,
-    //   })
-    // }
-
     return next()
   }
 }

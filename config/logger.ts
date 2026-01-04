@@ -1,10 +1,9 @@
 import env from '#start/env'
-import { defineConfig, targets } from '@adonisjs/core/logger'
 import app from '@adonisjs/core/services/app'
+import { defineConfig, syncDestination, targets } from '@adonisjs/core/logger'
 
 const loggerConfig = defineConfig({
   default: 'app',
-
   /**
    * The loggers object can be used to define multiple loggers.
    * By default, we configure only one logger (named "app").
@@ -14,19 +13,9 @@ const loggerConfig = defineConfig({
       enabled: true,
       name: env.get('APP_NAME'),
       level: env.get('LOG_LEVEL'),
+      desination: !app.inProduction ? await syncDestination() : undefined,
       transport: {
-        // mixin: HyperDX.getPinoMixinFunction,
-        targets: targets()
-          .pushIf(!app.inProduction, targets.pretty())
-          .pushIf(app.inProduction, targets.file({ destination: 1 }))
-          // .pushIf(
-          //   app.inProduction && !!env.get('HYPERDX_INTEGESTION_KEY'),
-          //   HyperDX.getPinoTransport('error', {
-          //     // Send logs info and above
-          //     detectResources: true,
-          //   })
-          // )
-          .toArray(),
+        targets: [targets.file({ destination: 1 })],
       },
     },
   },

@@ -1,9 +1,0 @@
-@if (user?.isEnabledProfile)
-  <a href="{{ route('users.profile', { handle: user.handle }) }}" {{ $props.except(['user']).toAttrs() }} up-layer="root">
-    {{{ await $slots.main() }}}
-  </a>
-@else
-  <span {{ $props.except(['user']).toAttrs() }}>
-    {{{ await $slots.main() }}}
-  </span>
-@endif

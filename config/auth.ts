@@ -2,15 +2,11 @@ import { defineConfig } from '@adonisjs/auth'
 import { sessionGuard, sessionUserProvider } from '@adonisjs/auth/session'
 import type { InferAuthenticators, InferAuthEvents, Authenticators } from '@adonisjs/auth/types'
 
-export const sessionLogCookieName = 'ado-ident'
-export const rememberMeTokensAge = '2 years'
-
 const authConfig = defineConfig({
   default: 'web',
   guards: {
     web: sessionGuard({
-      rememberMeTokensAge,
-      useRememberMeTokens: true,
+      useRememberMeTokens: false,
       provider: sessionUserProvider({
         model: () => import('#models/user'),
       }),

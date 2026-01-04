@@ -1,6 +1,21 @@
+import { indexPages } from '@adonisjs/inertia'
+import { indexEntities } from '@adonisjs/core'
 import { defineConfig } from '@adonisjs/core/app'
+import { generateRegistry } from '@tuyau/core/hooks'
 
 export default defineConfig({
+  /*
+  |--------------------------------------------------------------------------
+  | Experimental flags
+  |--------------------------------------------------------------------------
+  |
+  | The following features will be enabled by default in the next major release
+  | of AdonisJS. You can opt into them today to avoid any breaking changes
+  | during upgrade.
+  |
+  */
+  experimental: {},
+
   /*
   |--------------------------------------------------------------------------
   | Commands
@@ -10,15 +25,7 @@ export default defineConfig({
   | will be scanned automatically from the "./commands" directory.
   |
   */
-  commands: [
-    () => import('@adonisjs/core/commands'),
-    () => import('@adonisjs/lucid/commands'),
-    () => import('@adonisjs/bouncer/commands'),
-    () => import('@adonisjs/mail/commands'),
-    () => import('@adonisjs/cache/commands'),
-    () => import('@adocasts.com/actions/commands'),
-    () => import('@adocasts.com/dto/commands'),
-  ],
+  commands: [() => import('@adonisjs/core/commands'), () => import('@adonisjs/lucid/commands')],
 
   /*
   |--------------------------------------------------------------------------
@@ -43,14 +50,9 @@ export default defineConfig({
     () => import('@adonisjs/shield/shield_provider'),
     () => import('@adonisjs/static/static_provider'),
     () => import('@adonisjs/lucid/database_provider'),
+    () => import('@adonisjs/cors/cors_provider'),
+    () => import('@adonisjs/inertia/inertia_provider'),
     () => import('@adonisjs/auth/auth_provider'),
-    () => import('@adonisjs/ally/ally_provider'),
-    () => import('@adonisjs/bouncer/bouncer_provider'),
-    () => import('@adonisjs/limiter/limiter_provider'),
-    () => import('@adonisjs/mail/mail_provider'),
-    () => import('@adonisjs/redis/redis_provider'),
-    () => import('@adonisjs/cache/cache_provider'),
-    () => import('@adonisjs/drive/drive_provider'),
   ],
 
   /*
@@ -61,18 +63,7 @@ export default defineConfig({
   | List of modules to import before starting the application.
   |
   */
-  preloads: [
-    () => import('#start/routes'),
-    () => import('#start/kernel'),
-    () => import('#start/globals'),
-    () => import('#start/validator/index'),
-    () => import('#start/events'),
-    () => import('#start/lucid/base_model'),
-    () => import('#start/lucid/query_builder'),
-    () => import('#start/context/index'),
-    () => import('#start/session/toast'),
-    () => import('#start/hyperdx'),
-  ],
+  preloads: [() => import('#start/routes'), () => import('#start/kernel')],
 
   /*
   |--------------------------------------------------------------------------
@@ -95,10 +86,24 @@ export default defineConfig({
         name: 'functional',
         timeout: 30000,
       },
+      {
+        files: ['tests/browser/**/*.spec(.ts|.js)'],
+        name: 'browser',
+        timeout: 300000,
+      },
     ],
     forceExit: false,
   },
 
+  /*
+  |--------------------------------------------------------------------------
+  | Metafiles
+  |--------------------------------------------------------------------------
+  |
+  | A collection of files you want to copy to the build folder when creating
+  | the production build.
+  |
+  */
   metaFiles: [
     {
       pattern: 'resources/views/**/*.edge',
@@ -110,8 +115,14 @@ export default defineConfig({
     },
   ],
 
-  assetsBundler: false,
   hooks: {
-    onBuildStarting: [() => import('@adonisjs/vite/build_hook')],
+    init: [
+      indexEntities({
+        transformers: { enabled: true, withSharedProps: true },
+      }),
+      indexPages({ framework: 'react' }),
+      generateRegistry(),
+    ],
+    buildStarting: [() => import('@adonisjs/vite/build_hook')],
   },
 })

@@ -1,9 +1,0 @@
-<div x-data="carousel" class="container-vars faded-scroll-carousel {{ $props.class || '' }}" :style="overflowStyle">
-  <div class="w-full carousel carousel-center space-x-3" @scroll="handleScroll">
-    <div class="carousel-item !mx-0 carousel-item-viewport-offset"></div>
-    
-    {{{ await $slots.main() }}}
-    
-    <div class="carousel-item !-ml-3 carousel-item-viewport-offset"></div>
-  </div>
-</div>

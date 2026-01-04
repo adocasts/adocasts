@@ -1,24 +1,26 @@
-import adonisjs from '@adonisjs/vite/client'
-import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import adonisjs from '@adonisjs/vite/client'
+import inertia from '@adonisjs/inertia/vite'
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  server: {
-    allowedHosts: ['adocasts.local'],
-  },
   plugins: [
+    react(),
     tailwindcss(),
-    adonisjs({
-      /**
-       * Entrypoints of your application. Each entrypoint will
-       * result in a separate bundle.
-       */
-      entrypoints: ['resources/css/app.css', 'resources/js/app.js', 'resources/js/pdf.js'],
-
-      /**
-       * Paths to watch and reload the browser on file change
-       */
-      reload: ['resources/views/**/*.edge'],
-    }),
+    inertia({ ssr: { enabled: true, entrypoint: 'inertia/ssr.tsx' } }),
+    adonisjs({ entrypoints: ['inertia/app.tsx'], reload: ['resources/views/**/*.edge'] }),
   ],
+
+  /**
+   * Define aliases for importing modules from
+   * your frontend code
+   */
+  resolve: {
+    alias: {
+      '@/': `${import.meta.dirname}/inertia/`,
+      '~/': `${import.meta.dirname}/inertia/`,
+      '~generated': `${import.meta.dirname}/.adonisjs/client/`,
+    },
+  },
 })

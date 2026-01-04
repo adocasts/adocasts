@@ -2,13 +2,10 @@ import { assert } from '@japa/assert'
 import app from '@adonisjs/core/services/app'
 import type { Config } from '@japa/runner/types'
 import { pluginAdonisJS } from '@japa/plugin-adonisjs'
-import { apiClient } from '@japa/api-client'
-import { sessionApiClient } from '@adonisjs/session/plugins/api_client'
-import { authApiClient } from '@adonisjs/auth/plugins/api_client'
-import { shieldApiClient } from '@adonisjs/shield/plugins/api_client'
 import testUtils from '@adonisjs/core/services/test_utils'
-import { sessionLogClient } from '#start/japa/session_log'
-import { toastClient } from '#start/japa/toast'
+import { browserClient } from '@japa/browser-client'
+import { authBrowserClient } from '@adonisjs/auth/plugins/browser_client'
+import { sessionBrowserClient } from '@adonisjs/session/plugins/browser_client'
 
 /**
  * This file is imported by the "bin/test.ts" entrypoint file
@@ -20,13 +17,10 @@ import { toastClient } from '#start/japa/toast'
  */
 export const plugins: Config['plugins'] = [
   assert(),
-  apiClient(),
   pluginAdonisJS(app),
-  authApiClient(app),
-  sessionApiClient(app),
-  shieldApiClient(),
-  sessionLogClient(),
-  toastClient(),
+  browserClient({ runInSuites: ['browser'] }),
+  sessionBrowserClient(app),
+  authBrowserClient(app),
 ]
 
 /**
@@ -37,7 +31,7 @@ export const plugins: Config['plugins'] = [
  * The teardown functions are executed after all the tests
  */
 export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
-  setup: [() => testUtils.db().migrate(), () => testUtils.db().seed()],
+  setup: [],
   teardown: [],
 }
 

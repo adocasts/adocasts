@@ -1,0 +1,142 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: var(--color-zinc-50);
+  --foreground: var(--color-zinc-900);
+  --card: var(--color-white);
+  --card-foreground: var(--color-zinc-900);
+  --popover: var(--color-white);
+  --popover-foreground: var(--color-zinc-900);
+  --primary: var(--color-zinc-800);
+  --primary-foreground: var(--color-zinc-50);
+  --secondary: --alpha(var(--color-black) / 4%);
+  --secondary-foreground: var(--color-zinc-900);
+  --muted: --alpha(var(--color-black) / 4%);
+  --muted-foreground: var(--color-zinc-600);
+  --accent: --alpha(var(--color-black) / 4%);
+  --accent-foreground: var(--color-zinc-900);
+  --destructive: var(--color-red-500);
+  --destructive-foreground: var(--color-red-700);
+  --info: var(--color-blue-500);
+  --info-foreground: var(--color-blue-700);
+  --success: var(--color-emerald-500);
+  --success-foreground: var(--color-emerald-700);
+  --warning: var(--color-amber-500);
+  --warning-foreground: var(--color-amber-700);
+  --border: --alpha(var(--color-black) / 12%);
+  --input: --alpha(var(--color-black) / 12%);
+  --ring: var(--color-zinc-400);
+}
+
+.dark {
+  --background: var(--color-zinc-950);
+  --foreground: var(--color-zinc-100);
+  --card: color-mix(in srgb,
+      var(--color-zinc-900) 80%,
+      var(--color-zinc-950));
+  --card-foreground: var(--color-zinc-100);
+  --popover: var(--color-zinc-900);
+  --popover-foreground: var(--color-zinc-100);
+  --primary: var(--color-zinc-100);
+  --primary-foreground: var(--color-zinc-900);
+  --secondary: --alpha(var(--color-white) / 6%);
+  --secondary-foreground: var(--color-zinc-100);
+  --muted: --alpha(var(--color-white) / 6%);
+  --muted-foreground: var(--color-zinc-400);
+  --accent: --alpha(var(--color-white) / 6%);
+  --accent-foreground: var(--color-zinc-100);
+  --destructive: var(--color-red-500);
+  --destructive-foreground: var(--color-red-400);
+  --info: var(--color-blue-500);
+  --info-foreground: var(--color-blue-400);
+  --success: var(--color-emerald-500);
+  --success-foreground: var(--color-emerald-400);
+  --warning: var(--color-amber-500);
+  --warning-foreground: var(--color-amber-400);
+  --border: --alpha(var(--color-white) / 12%);
+  --input: --alpha(var(--color-white) / 12%);
+  --ring: var(--color-zinc-500);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html,
+  body,
+  #app {
+    @apply w-full h-full;
+  }
+
+  main {
+    @apply bg-white;
+  }
+
+  .after-border,
+  .after-border-b {
+    position: relative;
+  }
+
+  .after-border:after {
+    @apply border border-border/50;
+    content: "";
+    border-radius: calc(var(--radius-xl) + 4px);
+    position: absolute;
+    inset: -5px;
+    z-index: -1;
+  }
+
+  .after-border-b:after {
+    @apply border-b border-border/50;
+    content: "";
+    width: 100%;
+    position: absolute;
+    bottom: -1px;
+    z-index: -1;
+  }
+
+  .link {
+    @apply underline-offset-4 underline;
+  }
+
+  .link-hover {
+    @apply underline-offset-4 hover:underline;
+  }
+}
