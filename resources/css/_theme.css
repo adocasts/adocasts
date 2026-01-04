@@ -264,7 +264,7 @@ html[data-theme='adocasts-light'] {
 
     &.menu-active {
       background-color: color-mix(in oklab, var(--color-primary), transparent 90%);
-      border: 1px solid var(--color-primary);
+      border: 1px solid color-mix(in oklab, var(--color-primary), transparent 50%);
     }
   }
 

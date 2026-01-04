@@ -11,8 +11,8 @@
     @slot('aside')
 
       <form method="GET" action="{{ route('series.index') }}" up-target="[series-list]" up-scroll="false" up-history="true" up-autosubmit="true">
-        <div class="mb-3 md:mb-6">
-          <ul x-data="{ sort: {{ js.stringify(filters?.sort ?? Sorts.LATEST) }} }" class="menu w-full gap-1 p-0">
+        <div class="mb-3">
+          <ul x-data="{ sort: {{ js.stringify(filters?.sort ?? Sorts.LATEST) }} }" class="menu w-full gap-0.5 p-0 text-sm">
             <li>
               @!form.select.radio({
                 value: Sorts.LATEST,
@@ -52,6 +52,7 @@
           @!form.checkbox({
             name: 'difficulties[]',
             label: 'Beginner',
+            class: 'checkbox checkbox-xs',
             value: Difficulties.BEGINNER, fade: true,
             checked: filters.difficulties?.includes(Difficulties.BEGINNER) ? 'checked' : null
           })
@@ -59,6 +60,7 @@
           @!form.checkbox({
             name: 'difficulties[]',
             label: 'Intermediate',
+            class: 'checkbox checkbox-xs',
             value: Difficulties.INTERMEDIATE, fade: true,
             checked: filters.difficulties?.includes(Difficulties.INTERMEDIATE) ? 'checked' : null
           })
@@ -66,6 +68,7 @@
           @!form.checkbox({
             name: 'difficulties[]',
             label: 'Advanced',
+            class: 'checkbox checkbox-xs',
             value: Difficulties.ADVANCED, fade: true,
             checked: filters.difficulties?.includes(Difficulties.ADVANCED) ? 'checked' : null
           })
@@ -85,6 +88,7 @@
             @!form.checkbox({
               name: 'topics[]',
               label: topic.name,
+              class: 'checkbox checkbox-xs',
               // count: topic.meta.collections_count,
               value: topic.slug, fade: true,
               checked: filters.topics?.includes(topic.slug) ? 'checked' : null

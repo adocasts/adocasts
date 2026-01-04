@@ -43,8 +43,8 @@
         @end
       </div>
 
-      <div class="mb-3 md:mb-6">
-        <ul x-data="{ feed: {{ js.stringify(feed) }} }" class="menu w-full gap-1 p-0">
+      <div class="mb-3">
+        <ul x-data="{ feed: {{ js.stringify(feed) }} }" class="menu w-full gap-0.5 p-0 text-sm">
           <li>
             @!form.select.radio({
               name: 'feed',
@@ -90,6 +90,7 @@
             name: 'topics[]', 
             label: topic.name, 
             value: topic.slug, 
+            class: 'checkbox checkbox-xs',
             checked: filters?.topics?.includes(topic.slug),
             fade: true 
           })

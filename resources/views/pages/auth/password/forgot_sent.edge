@@ -2,16 +2,18 @@
   title: 'Account Assistance | Password Reset Link Sent'
 })
 
-  @card({ class: html.classNames(['w-[27rem] mx-auto p-6', { 'my-12': up.isPage }]), accent: false })
+  <div class="w-full">
+    @card({ class: html.classNames(['w-[27rem] mx-auto p-6', { 'my-12': up.isPage }]), accent: false })
 
-    <h1 class="heading-2a !mb-3">Please check your email</h1>
-    <p>
-      If an account was found, you'll be receiving an email with a link to reset your password shortly.
-    </p>
+      <h1 class="heading-2a !mb-3">Please check your email</h1>
+      <p>
+        If an account was found, you'll be receiving an email with a link to reset your password shortly.
+      </p>
 
-    <a href="/" class="btn btn-outline btn-primary btn-block mt-6">
-      Return home
-    </a>
-  @end
+      <a href="/" class="btn btn-outline btn-primary btn-block mt-6">
+        Return home
+      </a>
+    @end
+  </div>
 
 @end

@@ -4,9 +4,9 @@
 @assign(main.class = html.classNames(['@container section-y -mt-3 md:mt-0 flex-1', $props.main?.class]))
 
 @if (overflow)
-  @assign(aside.class = html.classNames(['@container w-[285px] xl:w-[330px] hidden lg:block max-h-[calc(100vh_-_4rem)] lg:sticky lg:top-16 overflow-y-auto section-y -ml-1 pl-1 lg:pr-10 lg:border-r border-base-100', $props.aside?.class]))
+  @assign(aside.class = html.classNames(['@container w-[250px] xl:w-[285px] hidden lg:block max-h-[calc(100vh_-_4rem)] lg:sticky lg:top-16 overflow-y-auto section-y -ml-1 pl-1 lg:pr-10 lg:border-r border-base-100', $props.aside?.class]))
 @else
-  @assign(aside.class = html.classNames(['@container w-[285px] xl:w-[330px] hidden lg:block section-y lg:pr-10 lg:border-r border-base-100', $props.aside?.class]))
+  @assign(aside.class = html.classNames(['@container w-[250px] xl:w-[285px] hidden lg:block section-y lg:pr-10 lg:border-r border-base-100', $props.aside?.class]))
 @endif
 
 <div class="drawer container mx-auto flex flex-wrap gap-6 lg:gap-12 relative z-10">

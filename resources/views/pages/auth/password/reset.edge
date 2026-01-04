@@ -3,36 +3,38 @@
   desc: "Reset your Adocasts account password if you've forgotten it. Regain access to your AdonisJS and NodeJS lessons quickly and securely."
 })
 
-  @card({ class: html.classNames(['w-[27rem] mx-auto p-6', { 'my-12': up.isPage }]), accent: false })
+  <div class="w-full">
+    @card({ class: html.classNames(['w-[27rem] mx-auto p-6', { 'my-12': up.isPage }]), accent: false })
 
-    <h1 class="heading-2a !mb-0">Reset your password</h1>
+      <h1 class="heading-2a !mb-0">Reset your password</h1>
 
-    @if (isSignatureValid)
-      @form({
-        method: 'post',
-        action: form.post('auth.password.reset.store'),
-        class: 'flex flex-col mt-6',
-      })
-        <input type="hidden" name="email" value="{{ email }}">
-        <input type="hidden" name="token" value="{{ token }}">
+      @if (isSignatureValid)
+        @form({
+          method: 'post',
+          action: form.post('auth.password.reset.store'),
+          class: 'flex flex-col mt-6',
+        })
+          <input type="hidden" name="email" value="{{ email }}">
+          <input type="hidden" name="token" value="{{ token }}">
 
-        @form.field({ label: 'Password', name: 'password', class: 'w-full' })
-          @!form.input({ type: 'password', class: 'w-full', placeholder: 'Enter a new and secure password', required: true, autofocus: true })
+          @form.field({ label: 'Password', name: 'password', class: 'w-full' })
+            @!form.input({ type: 'password', class: 'w-full', placeholder: 'Enter a new and secure password', required: true, autofocus: true })
+          @end
+
+          <button type="submit" class="btn btn-outline btn-primary">
+            Update password
+          </button>
         @end
+      @else
+        <p class="text-error mb-6">
+          Your password reset link is invalid or expired
+        </p>
 
-        <button type="submit" class="btn btn-outline btn-primary">
-          Update password
-        </button>
-      @end
-    @else
-      <p class="text-error mb-6">
-        Your password reset link is invalid or expired
-      </p>
-
-      <a href="{{ route('auth.password.forgot') }}" class="btn btn-block btn-outline btn-error">
-        Try again
-      </a>
-    @endif
-  @end
+        <a href="{{ route('auth.password.forgot') }}" class="btn btn-block btn-outline btn-error">
+          Try again
+        </a>
+      @endif
+    @end
+  </div>
 
 @end

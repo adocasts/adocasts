@@ -1,27 +1,27 @@
 <div class="mb-3 md:mb-6">
   <div class="font-semibold opacity-60 text-sm mb-3">Policies</div>
-  <ul x-data="{ policy: {{ js.stringify(policy) }} }" class="menu w-full gap-1 p-0">
+  <ul x-data="{ policy: {{ js.stringify(policy) }} }" class="menu w-full gap-0.5 p-0">
     <li>
       <a href="{{ route('terms') }}" :class="{ 'menu-active': policy === 'terms' }">
-        @svg('solar:clipboard-list-linear', { class: 'size-5 text-base-content/80' })
+        @svg('solar:clipboard-list-linear', { class: 'size-4 text-base-content/80' })
         Terms of Use
       </a>
     </li>
     <li>
       <a href="{{ route('privacy') }}" :class="{ 'menu-active': policy === 'privacy' }">
-        @svg('solar:ghost-smile-linear', { class: 'size-5 text-base-content/80' })
+        @svg('solar:ghost-smile-linear', { class: 'size-4 text-base-content/80' })
         Privacy Policy
       </a>
     </li>
     <li>
       <a href="{{ route('cookies') }}" :class="{ 'menu-active': policy === 'cookies' }">
-        @svg('solar:donut-bitten-line-duotone', { class: 'size-5 text-base-content/80' })
+        @svg('solar:donut-bitten-line-duotone', { class: 'size-4 text-base-content/80' })
         Cookie Policy
       </a>
     </li>
     <li>
       <a href="{{ route('guidelines') }}" :class="{ 'menu-active': policy === 'guidelines' }">
-        @svg('solar:file-text-linear', { class: 'size-5 text-base-content/80' })
+        @svg('solar:file-text-linear', { class: 'size-4 text-base-content/80' })
         Content Guidelines
       </a>
     </li>

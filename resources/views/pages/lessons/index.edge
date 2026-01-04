@@ -12,8 +12,8 @@
     @slot('aside')
 
       <form method="GET" action="{{ route('lessons.index') }}" up-target="[lesson-list]" up-scroll="false" up-autosubmit="true" up-history="true">
-        <div class="mb-3 md:mb-6">
-          <ul x-data="{ sort: {{ js.stringify(filters?.sort ?? Sorts.LATEST) }} }" class="menu w-full gap-1 p-0">
+        <div class="mb-3">
+          <ul x-data="{ sort: {{ js.stringify(filters?.sort ?? Sorts.LATEST) }} }" class="menu w-full gap-0.5 p-0 text-sm">
             <li>
               @!form.select.radio({
                 value: Sorts.LATEST,
@@ -73,6 +73,7 @@
               label: topic.name,
               count: topic.meta.lessons_count,
               value: topic.slug, fade: true,
+              class: 'checkbox checkbox-xs',
               checked: filters.topics?.includes(topic.slug) ? 'checked' : null
             })
           @endeach

@@ -12,8 +12,8 @@
     @endif
 
     <form id="searchForm" method="GET" action="{{ route('search', { feed }) }}" up-autosubmit="true" up-focus="keep" up-scroll="none" up-target="#searchForm,[search-results]">
-      <div class="mb-3 md:mb-6">
-        <ul x-data="{ feed: {{ js.stringify(feed) }} }" class="menu w-full gap-1 p-0">
+      <div class="mb-3">
+        <ul x-data="{ feed: {{ js.stringify(feed) }} }" class="menu w-full gap-0.5 p-0 text-sm">
           <li>
             @!form.select.radio({
               name: 'feed',
@@ -37,9 +37,9 @@
 
       @if (feed === 'series')
         @collapse.filter({ title: 'Difficulty', class: 'collapse-arrow', open: true })
-          @!form.checkbox({ name: 'difficulties[]', label: 'Beginner', value: Difficulties.BEGINNER, fade: true })
-          @!form.checkbox({ name: 'difficulties[]', label: 'Intermediate', value: Difficulties.INTERMEDIATE, fade: true })
-          @!form.checkbox({ name: 'difficulties[]', label: 'Advanced', value: Difficulties.ADVANCED, fade: true })
+          @!form.checkbox({ name: 'difficulties[]', class: 'checkbox checkbox-xs', label: 'Beginner', value: Difficulties.BEGINNER, fade: true })
+          @!form.checkbox({ name: 'difficulties[]', class: 'checkbox checkbox-xs', label: 'Intermediate', value: Difficulties.INTERMEDIATE, fade: true })
+          @!form.checkbox({ name: 'difficulties[]', class: 'checkbox checkbox-xs', label: 'Advanced', value: Difficulties.ADVANCED, fade: true })
         @end
       @endif
 
@@ -59,6 +59,7 @@
             label: topic.name, 
             count: feed === 'lessons' ? topic.meta.lessons_count : topic.meta.collections_count, 
             value: topic.slug, 
+            class: 'checkbox checkbox-xs',
             checked: filters?.topics?.includes(topic.slug),
             fade: true 
           })
