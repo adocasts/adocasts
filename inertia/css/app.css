@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -63,9 +63,7 @@
 .dark {
   --background: var(--color-zinc-950);
   --foreground: var(--color-zinc-100);
-  --card: color-mix(in srgb,
-      var(--color-zinc-900) 80%,
-      var(--color-zinc-950));
+  --card: color-mix(in srgb, var(--color-zinc-900) 80%, var(--color-zinc-950));
   --card-foreground: var(--color-zinc-100);
   --popover: var(--color-zinc-900);
   --popover-foreground: var(--color-zinc-100);
@@ -109,6 +107,90 @@
     @apply bg-white;
   }
 
+  .ado-layout {
+    @apply flex flex-col w-full h-full;
+
+    --spacer: --spacing(6);
+    --header-height: 4.5rem;
+    --sidebar-width: 200px;
+
+    width: 100%;
+    max-width: 1450px;
+    margin: 0 auto;
+    transition: padding 300ms ease-in-out;
+
+    .ado-header {
+      @apply flex items-center;
+
+      height: var(--header-height);
+
+      .ado-header--sidebar {
+        @apply flex items-center;
+
+        width: 1rem;
+        padding: 0 calc(var(--spacer) / 2);
+        transition: width 300ms ease-in-out;
+      }
+
+      .ado-header--main {
+        @apply flex-1 flex items-center;
+
+        height: var(--header-height);
+        padding: 0 var(--spacer);
+      }
+    }
+
+    .ado-content {
+      @apply flex flex-1;
+
+      margin-bottom: var(--spacer);
+
+      .ado-sidebar {
+        @apply h-full flex flex-col overflow-hidden;
+
+        width: 0;
+        transition: width 300ms ease-in-out;
+
+        .ado-sidebar--inner {
+          @apply flex-1 overflow-y-auto;
+
+          width: var(--sidebar-width);
+          padding: var(--spacer) calc(var(--spacer) / 2);
+        }
+      }
+
+      .ado-main {
+        @apply flex-1 h-full flex flex-col;
+
+        .ado-main--inner {
+          @apply flex-1 border-y overflow-auto lg:border-x lg:rounded-xl;
+
+          padding: var(--spacer);
+        }
+      }
+    }
+
+    &.sidebar-open {
+      /*padding-right: var(--spacer);*/
+
+      .ado-header {
+        .ado-header--sidebar {
+          width: var(--sidebar-width);
+        }
+      }
+
+      .ado-content {
+        .ado-sidebar {
+          width: var(--sidebar-width);
+        }
+
+        .ado-main--inner {
+          @apply border-x rounded-xl;
+        }
+      }
+    }
+  }
+
   .after-border,
   .after-border-b {
     position: relative;
@@ -116,7 +198,7 @@
 
   .after-border:after {
     @apply border border-border/50;
-    content: "";
+    content: '';
     border-radius: calc(var(--radius-xl) + 4px);
     position: absolute;
     inset: -5px;
@@ -125,7 +207,7 @@
 
   .after-border-b:after {
     @apply border-b border-border/50;
-    content: "";
+    content: '';
     width: 100%;
     position: absolute;
     bottom: -1px;

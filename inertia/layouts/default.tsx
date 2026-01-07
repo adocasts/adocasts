@@ -1,10 +1,16 @@
 import { Data } from '~generated/data'
 import { toast, Toaster } from 'sonner'
-import { ComponentType, JSX, ReactElement, ReactNode, useEffect, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 import { usePage } from '@inertiajs/react'
 import { Form, Link } from '@adonisjs/inertia/react'
 import { Button } from '~/components/ui/button'
-import { BookIcon, LibraryIcon, MessageCircleIcon, NotebookTextIcon, PanelLeftIcon } from 'lucide-react'
+import {
+  BookIcon,
+  LibraryIcon,
+  MessageCircleIcon,
+  NotebookTextIcon,
+  PanelLeftIcon,
+} from 'lucide-react'
 
 type LayoutProps = {
   children: ReactElement<Data.SharedProps>
@@ -12,9 +18,8 @@ type LayoutProps = {
   addon?: () => JSX.Element
 }
 
-export default function Layout({ sidebar, addon, children }: LayoutProps) {
+export default function AuthLayout({ sidebar, addon, children }: LayoutProps) {
   const [isShowSidebar, setIsShowSidebar] = useState(true)
-  const sidebarShowWidth = 'w-[min(30%,200px)]'
 
   useEffect(() => {
     toast.dismiss()
@@ -26,30 +31,34 @@ export default function Layout({ sidebar, addon, children }: LayoutProps) {
 
   return (
     <>
-      <div className="flex flex-col w-full h-full container mx-auto after-border after:border-dashed">
-        <div className="h-18 flex items-center pr-6">
-          <div className={`${isShowSidebar ? sidebarShowWidth : 'w-4'} duration-300 flex items-center px-6`}>
-            <Button size="icon" variant="ghost" onClick={() => setIsShowSidebar(prev => !prev)}>
+      <div
+        className={`ado-layout after-border after:-inset-2.5 after:border-dashed ${isShowSidebar ? 'sidebar-open' : ''}`}
+      >
+        <div className="ado-header">
+          <div className="ado-header--sidebar">
+            <Button size="icon" variant="ghost" onClick={() => setIsShowSidebar((prev) => !prev)}>
               <PanelLeftIcon />
             </Button>
           </div>
 
-          <header className='h-18 flex-1 flex items-center px-6'>
-            <div className='w-full flex justify-between items-center gap-6'>
+          <header className="ado-header--main">
+            <div className="w-full flex justify-between items-center gap-6">
               <div>
                 <Link route="home">
                   <img src="/imgs/logo-black.svg" alt="Adocasts Logo" className="h-8" />
                 </Link>
               </div>
               <div>
-                <nav className='flex items-center gap-3'>
+                <nav className="flex items-center gap-3">
                   {children.props.user ? (
                     <Form route="session.destroy">
                       <button type="submit"> Logout </button>
                     </Form>
                   ) : (
                     <>
-                      <Button variant="ghost" render={<Link route="new_account.create" />}>Sign up</Button>
+                      <Button variant="ghost" render={<Link route="new_account.create" />}>
+                        Sign up
+                      </Button>
                       <Button render={<Link route="session.create" />}>Sign in</Button>
                     </>
                   )}
@@ -59,56 +68,62 @@ export default function Layout({ sidebar, addon, children }: LayoutProps) {
           </header>
         </div>
 
-        <div className={`flex flex-1 mb-6 duration-300 ${isShowSidebar ? 'mr-6' : ''}`}>
-          <div className={`${isShowSidebar ? sidebarShowWidth : 'w-0'} h-full flex flex-col overflow-hidden duration-300`}>
-            <div className='flex-1 overflow-y-auto p-6'>
-              <div className='flex flex-col gap-1.5 pb-4 mb-6 after-border-b after:border-dashed'>
-                <Button variant="nav" render={<Link route="series.index" />}>
-                  <LibraryIcon />
-                  Series
-                </Button>
-                <Button variant="nav" render={<Link route="home" />}>
-                  <BookIcon />
-                  Lessons
-                </Button>
-                <Button variant="nav" render={<Link route="home" />}>
-                  <NotebookTextIcon />
-                  Blog
-                </Button>
-                <Button variant="nav" render={<Link route="home" />}>
-                  <MessageCircleIcon />
-                  Forum
-                </Button>
-              </div>
+        <div className="ado-content">
+          <div className="ado-sidebar">
+            <div className="ado-sidebar--inner">
+              {sidebar ? (
+                sidebar()
+              ) : (
+                <>
+                  <div className="flex flex-col gap-1.5 pb-4 mb-6 after-border-b after:border-dashed">
+                    <Button variant="nav" render={<Link route="series.index" />}>
+                      <LibraryIcon />
+                      Series
+                    </Button>
+                    <Button variant="nav" render={<Link route="home" />}>
+                      <BookIcon />
+                      Lessons
+                    </Button>
+                    <Button variant="nav" render={<Link route="home" />}>
+                      <NotebookTextIcon />
+                      Blog
+                    </Button>
+                    <Button variant="nav" render={<Link route="home" />}>
+                      <MessageCircleIcon />
+                      Forum
+                    </Button>
+                  </div>
 
-              {addon ? addon() : (
-                <div className="mb-8">
-                  <h5 className="text-muted-foreground text-xs uppercase tracking-wider mb-2">
-                    Your activity
-                  </h5>
+                  {addon ? (
+                    addon()
+                  ) : (
+                    <div className="mb-8">
+                      <h5 className="text-muted-foreground text-xs uppercase tracking-wider mb-2">
+                        Your activity
+                      </h5>
 
-                  <ul>
-                    <li>Series progress</li>
-                    <li>History</li>
-                    <li>Watchlist</li>
-                    <li>Bookmarks</li>
-                  </ul>
+                      <ul>
+                        <li>Series progress</li>
+                        <li>History</li>
+                        <li>Watchlist</li>
+                        <li>Bookmarks</li>
+                      </ul>
 
-                  {/* ... continue watching (show last watched, non-completed, lesson) */}
-                </div>
+                      {/* ... continue watching (show last watched, non-completed, lesson) */}
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>
 
-          <div className={`flex-1 h-full flex flex-col ${isShowSidebar ? 'after-border' : ''}`}>
-            <main className={`flex-1 p-6 border-y overflow-auto duration-300 ${isShowSidebar ? 'border-x rounded-xl' : ''}`}>
-              {children}
-            </main>  
+          <div className={`ado-main ${isShowSidebar ? 'after-border' : ''}`}>
+            <main className="ado-main--inner">{children}</main>
           </div>
         </div>
       </div>
 
-      {/* <Toaster position="top-center" richColors /> */}
+      <Toaster position="top-center" richColors />
     </>
   )
 }

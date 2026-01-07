@@ -1,18 +1,33 @@
 import vine from '@vinejs/vine'
 
-/**
- * Shared rules for email and password.
- */
-const email = () => vine.string().email().maxLength(254)
-const password = () => vine.string().minLength(8).maxLength(32)
+export const emailValidator = vine.create({
+  email: vine.string().email(),
+})
 
-/**
- * Validator to use when performing self-signup
- */
-export const signupValidator = vine.create({
-  fullName: vine.string().nullable(),
-  email: email().unique({ table: 'users', column: 'email' }),
-  password: password().confirmed({
-    confirmationField: 'passwordConfirmation',
+export const billtoValidator = vine.create({
+  billToInfo: vine.string().maxLength(500).nullable().optional(),
+})
+
+export const mentionListValidator = vine.create({
+  pattern: vine.string().trim().toLowerCase().optional(),
+})
+
+export const userHistoryValidator = vine.create({
+  page: vine
+    .number()
+    .parse((v) => v ?? 1)
+    .positive()
+    .optional(),
+  perPage: vine
+    .number()
+    .parse((v) => v ?? 20)
+    .positive()
+    .max(50)
+    .optional(),
+  params: vine.object({
+    tab: vine
+      .enum(['series', 'lessons'])
+      .parse((v) => v ?? 'series')
+      .optional(),
   }),
 })
