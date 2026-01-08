@@ -3,7 +3,7 @@ import NotificationTypes from '#enums/notification_types'
 import NotImplementedException from '#exceptions/not_implemented_exception'
 import Profile from '#models/profile'
 import User from '#models/user'
-import Emitter from '@adonisjs/core/services/emitter'
+import emitter from '@adonisjs/core/services/emitter'
 import { belongsTo, computed } from '@adonisjs/lucid/orm'
 import { TransactionClientContract } from '@adonisjs/lucid/types/database'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
@@ -66,8 +66,8 @@ export default class Notification extends NotificationSchema {
     const user = await User.query().where({ id: userId }).preload('profile').firstOrFail()
 
     if (!this.isEmailEnabled(user.profile)) return
-    if (!trx) return Emitter.emit('notification:send', { notification: this, user })
+    if (!trx) return emitter.emit('notification:send', { notification: this, user })
 
-    trx.on('commit', () => Emitter.emit('notification:send', { notification: this, user }))
+    trx.on('commit', () => emitter.emit('notification:send', { notification: this, user }))
   }
 }

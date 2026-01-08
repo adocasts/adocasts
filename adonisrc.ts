@@ -67,6 +67,7 @@ export default defineConfig({
     () => import('#start/routes'),
     () => import('#start/kernel'),
     () => import('#start/validator/index'),
+    () => import('#start/events'),
   ],
 
   /*

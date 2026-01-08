@@ -75,10 +75,10 @@ export default class Discussion extends DiscussionSchema {
       query.where('typeId', DiscussionViewTypes.VIEW)
     },
   })
-  declare views: HasMany<typeof DiscussionView>
+  declare discussionViews: HasMany<typeof DiscussionView>
 
   @hasMany(() => DiscussionView)
-  declare impressions: HasMany<typeof DiscussionView>
+  declare discussionImpressions: HasMany<typeof DiscussionView>
 
   @hasMany(() => DiscussionVote)
   declare votes: HasMany<typeof DiscussionVote>

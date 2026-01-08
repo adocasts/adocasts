@@ -117,6 +117,7 @@ export default class Comment extends CommentSchema {
 
   @beforeSave()
   static async sanitize(comment: Comment) {
+    if (!comment.body) return
     comment.body = SanitizeService.sanitize(comment.body)
   }
 

@@ -7,7 +7,6 @@ import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { DateTime } from 'luxon'
 // import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
 import { PostSchema } from '#database/schema'
-import LessonSeriesDto from '#dtos/lesson_series'
 import AssetTypes from '#enums/asset_types'
 import BodyTypes from '#enums/body_types'
 import CollectionTypes from '#enums/collection_types'
@@ -29,11 +28,6 @@ import TimeService from '#services/time_service'
 import env from '#start/env'
 import router from '@adonisjs/core/services/router'
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
-import AssetDto from '../dtos/asset.js'
-import AuthorDto from '../dtos/author.js'
-import CaptionDto from '../dtos/caption.js'
-import ChapterDto from '../dtos/chapter.js'
-import TopicDto from '../dtos/topic.js'
 
 export default class Post extends PostSchema {
   @manyToMany(() => Asset, {
@@ -445,11 +439,11 @@ export default class Post extends PostSchema {
     (query: ModelQueryBuilderContract<typeof Post>) => void
   >((query) => {
     query
-      .preload('thumbnails', (thumbnails) => thumbnails.selectDto(AssetDto))
-      .preload('rootSeries', (series) => series.selectDto(LessonSeriesDto))
-      .preload('series', (series) => series.selectDto(LessonSeriesDto))
-      .preload('authors', (authors) => authors.selectDto(AuthorDto))
-      .preload('taxonomies', (taxonomies) => taxonomies.selectDto(TopicDto))
+      .preload('thumbnails')
+      .preload('rootSeries')
+      .preload('series')
+      .preload('authors')
+      .preload('taxonomies')
   })
 
   static forLessonDisplayShow = scope<
@@ -457,25 +451,20 @@ export default class Post extends PostSchema {
     (query: ModelQueryBuilderContract<typeof Post>) => void
   >((query) => {
     query
-      .preload('thumbnails', (thumbnails) => thumbnails.selectDto(AssetDto))
-      .preload('rootSeries', (series) =>
-        series.preload('asset', (asset) => asset.selectDto(AssetDto)).selectDto(LessonSeriesDto)
-      )
-      .preload('series', (series) => series.selectDto(LessonSeriesDto))
-      .preload('authors', (authors) => authors.selectDto(AuthorDto))
-      .preload('taxonomies', (taxonomies) => taxonomies.selectDto(TopicDto))
-      .preload('captions', (captions) => captions.orderBy('sort_order').selectDto(CaptionDto))
-      .preload('chapters', (chapters) => chapters.orderBy('sort_order').selectDto(ChapterDto))
+      .preload('thumbnails')
+      .preload('authors')
+      .preload('taxonomies')
+      .preload('series')
+      .preload('rootSeries', (series) => series.preload('asset'))
+      .preload('captions', (captions) => captions.orderBy('sort_order'))
+      .preload('chapters', (chapters) => chapters.orderBy('sort_order'))
   })
 
   static forBlogDisplay = scope<
     typeof Post,
     (query: ModelQueryBuilderContract<typeof Post>) => void
   >((query) => {
-    query
-      .preload('thumbnails', (thumbnails) => thumbnails.selectDto(AssetDto))
-      .preload('authors', (authors) => authors.selectDto(AuthorDto))
-      .preload('taxonomies', (taxonomies) => taxonomies.selectDto(TopicDto))
+    query.preload('thumbnails').preload('authors').preload('taxonomies')
   })
 
   static forBlogDisplayShow = scope<
@@ -483,11 +472,11 @@ export default class Post extends PostSchema {
     (query: ModelQueryBuilderContract<typeof Post>) => void
   >((query) => {
     query
-      .preload('thumbnails', (thumbnails) => thumbnails.selectDto(AssetDto))
-      .preload('authors', (authors) => authors.selectDto(AuthorDto))
-      .preload('taxonomies', (taxonomies) => taxonomies.selectDto(TopicDto))
-      .preload('captions', (captions) => captions.orderBy('sort_order').selectDto(CaptionDto))
-      .preload('chapters', (chapters) => chapters.orderBy('sort_order').selectDto(ChapterDto))
+      .preload('thumbnails')
+      .preload('authors')
+      .preload('taxonomies')
+      .preload('captions', (captions) => captions.orderBy('sort_order'))
+      .preload('chapters', (chapters) => chapters.orderBy('sort_order'))
   })
 
   static forCollectionDisplay = scope<
@@ -504,10 +493,7 @@ export default class Post extends PostSchema {
         direction: 'asc',
       }
     ) => {
-      query
-        .preload('thumbnails', (thumbnails) => thumbnails.selectDto(AssetDto))
-        .preload('rootSeries', (series) => series.selectDto(LessonSeriesDto))
-        .orderBy(orderBy, direction)
+      query.preload('thumbnails').preload('rootSeries').orderBy(orderBy, direction)
     }
   )
 
