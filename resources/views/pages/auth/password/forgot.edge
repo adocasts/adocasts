@@ -19,8 +19,9 @@
 
       @form({
         method: 'post',
-        action: form.post('auth.password.forgot'),
+        action: form.post('auth.password.forgot.send'),
         class: 'flex flex-col mt-6',
+        turnstile: true,
       })
         @form.field({ name: 'email', label: 'Email', class: 'w-full' })
           @!form.input({ class: 'w-full', placeholder: "Enter your account's email", required: true, autofocus: true })
