@@ -1,4 +1,4 @@
-import SanitizeService from '#services/sanitize_service'
+import htmlHelpers from '#services/helpers/html'
 import vine from '@vinejs/vine'
 
 export const discussionSearchValidator = vine.create({
@@ -25,7 +25,7 @@ export const discussionValidator = vine.create({
     .string()
     .trim()
     .minLength(4)
-    .transform((value) => SanitizeService.sanitize(value)),
+    .transform((value) => htmlHelpers.sanitize(value)),
   taxonomyId: vine.number().positive().exists({ table: 'taxonomies', column: 'id' }).optional(),
 })
 

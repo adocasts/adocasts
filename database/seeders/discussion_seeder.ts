@@ -1,4 +1,4 @@
-import { DiscussionFactory } from '#factories/discussion_factory'
+import { DiscussionFactory } from '#database/factories/discussion_factory'
 import app from '@adonisjs/core/services/app'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 

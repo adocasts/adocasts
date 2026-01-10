@@ -34,7 +34,7 @@ export default class AccountListener {
 
     await mail.send((mailer) => {
       mailer
-        .to(user.email)
+        .to(user.email!)
         .subject("[Adocasts] Your account's email has been successfully reverted")
         .html(html)
       //.htmlView('emails/email_reverted', { user })
@@ -46,7 +46,7 @@ export default class AccountListener {
     const html = await edge.render('emails/password_reset', { user, href })
 
     await mail.send((message) => {
-      message.to(user.email).subject('[Adocasts] Reset your password').html(html)
+      message.to(user.email!).subject('[Adocasts] Reset your password').html(html)
     })
   }
 
@@ -55,7 +55,7 @@ export default class AccountListener {
 
     await mail.send((message) => {
       message
-        .to(user.email)
+        .to(user.email!)
         .subject('[Adocasts] Your password has been successfully reset')
         .html(html)
     })
@@ -66,7 +66,7 @@ export default class AccountListener {
     const html = await edge.render('emails/new_device', { user, log, href })
 
     await mail.send((mailer) => {
-      mailer.to(user.email).subject('We noticed a new sign in to your Adocasts account').html(html)
+      mailer.to(user.email!).subject('We noticed a new sign in to your Adocasts account').html(html)
     })
   }
 
@@ -87,7 +87,7 @@ export default class AccountListener {
     const html = await edge.render('emails/verify_email', { user, href })
 
     await mail.send((mailer) => {
-      mailer.to(user.email).subject('[Adocasts] Please verify your email').html(html)
+      mailer.to(user.email!).subject('[Adocasts] Please verify your email').html(html)
     })
   }
 }

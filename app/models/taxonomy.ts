@@ -12,7 +12,7 @@ import Discussion from '#models/discussion'
 import History from '#models/history'
 import Post from '#models/post'
 import User from '#models/user'
-import SlugService from '#services/slug_service'
+import SlugService from '#services/core/slug_service'
 import Database from '@adonisjs/lucid/services/db'
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 

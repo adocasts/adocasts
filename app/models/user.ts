@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { beforeSave, belongsTo, computed, hasMany, hasOne, manyToMany } from '@adonisjs/lucid/orm'
 import type { BelongsTo, HasMany, HasOne, ManyToMany } from '@adonisjs/lucid/types/relations'
 // import { slugify } from '@ioc:Adonis/Addons/LucidSlugify' // TODO
@@ -22,7 +21,7 @@ import Progress from '#models/progress'
 import RequestVote from '#models/request_vote'
 import SessionLog from '#models/session_log'
 import Watchlist from '#models/watchlist'
-import SlugService from '#services/slug_service'
+import SlugService from '#services/core/slug_service'
 import env from '#start/env'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
@@ -199,9 +198,6 @@ export default class User extends compose(UserSchema, AuthFinder) {
   })
   declare initiatedNotifications: HasMany<typeof Notification>
 
-  @hasMany(() => Question)
-  declare questions: HasMany<typeof Question>
-
   @hasMany(() => LessonRequest)
   declare lessonRequests: HasMany<typeof LessonRequest>
 
@@ -220,10 +216,11 @@ export default class User extends compose(UserSchema, AuthFinder) {
   declare testimonials: HasMany<typeof Testimonial>
 
   async verifyPasswordForAuth(plainTextPassword: string) {
-    return hash.use('argon').verify(this.password, plainTextPassword)
+    return hash.use('argon').verify(this.password!, plainTextPassword)
   }
 }
 
+//@ts-ignore
 User['findForAuth'] = function (uids: string[], value: string) {
   return User.query()
     .whereNotNull('password')

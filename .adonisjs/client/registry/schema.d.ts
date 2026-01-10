@@ -5,6 +5,17 @@ import type { ExtractBody, ExtractQuery, ExtractQueryForGet } from '@tuyau/core/
 import type { InferInput } from '@vinejs/vine/types'
 
 export interface Registry {
+  'drive.fs.serve': {
+    methods: ["GET","HEAD"]
+    pattern: '/uploads/*'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+    }
+  }
   'home': {
     methods: ["GET","HEAD"]
     pattern: '/'
@@ -31,10 +42,10 @@ export interface Registry {
     methods: ["POST"]
     pattern: '/signup'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/user').signupValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#validators/auth').signUpValidator)>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/user').signupValidator)>>
+      query: ExtractQuery<InferInput<(typeof import('#validators/auth').signUpValidator)>>
       response: Awaited<ReturnType<import('#controllers/new_account_controller').default['store']>>
     }
   }
@@ -46,7 +57,7 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: Awaited<ReturnType<import('#controllers/session_controller').default['create']>>
+      response: Awaited<ReturnType<import('#actions/auth/render_signin_page').default['handleController']>>
     }
   }
   'session.store': {
@@ -57,7 +68,7 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: Awaited<ReturnType<import('#controllers/session_controller').default['store']>>
+      response: Awaited<ReturnType<import('#actions/auth/store_session_signin').default['handleController']>>
     }
   }
   'session.destroy': {

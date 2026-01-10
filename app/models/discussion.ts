@@ -7,8 +7,8 @@ import Comment from '#models/comment'
 import DiscussionView from '#models/discussion_view'
 import Taxonomy from '#models/taxonomy'
 import User from '#models/user'
-import SlugService from '#services/slug_service'
-import TimeService from '#services/time_service'
+import timeHelpers from '#services/helpers/time'
+import SlugService from '#services/core/slug_service'
 import router from '@adonisjs/core/services/router'
 import { beforeSave, belongsTo, computed, hasMany, scope } from '@adonisjs/lucid/orm'
 import Database from '@adonisjs/lucid/services/db'
@@ -43,12 +43,12 @@ export default class Discussion extends DiscussionSchema {
 
   @computed()
   get createdAgo() {
-    return TimeService.timeago(this.createdAt)
+    return timeHelpers.timeago(this.createdAt)
   }
 
   @computed()
   get updatedAgo() {
-    return TimeService.timeago(this.updatedAt)
+    return timeHelpers.timeago(this.updatedAt)
   }
 
   @computed()

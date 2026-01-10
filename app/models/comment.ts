@@ -5,8 +5,8 @@ import Discussion from '#models/discussion'
 import LessonRequest from '#models/lesson_request'
 import Post from '#models/post'
 import User from '#models/user'
-import SanitizeService from '#services/sanitize_service'
-import TimeService from '#services/time_service'
+import htmlHelpers from '#services/helpers/html'
+import timeHelpers from '#services/helpers/time'
 import { commentStoreValidator } from '#validators/comment'
 import {
   beforeCreate,
@@ -58,7 +58,7 @@ export default class Comment extends CommentSchema {
   }
 
   get timeago() {
-    return TimeService.timeago(this.createdAt)
+    return timeHelpers.timeago(this.createdAt)
   }
 
   get goPath() {
@@ -118,7 +118,7 @@ export default class Comment extends CommentSchema {
   @beforeSave()
   static async sanitize(comment: Comment) {
     if (!comment.body) return
-    comment.body = SanitizeService.sanitize(comment.body)
+    comment.body = htmlHelpers.sanitize(comment.body)
   }
 
   static getTypeId(comment: Comment | Infer<typeof commentStoreValidator>) {

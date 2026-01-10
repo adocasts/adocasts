@@ -1,9 +1,9 @@
+import { AssetFactory } from '#database/factories/asset_factory'
+import { PostFactory } from '#database/factories/post_factory'
+import { UserFactory } from '#database/factories/user_factory'
+import CollectionTypes from '#enums/collection_types'
 import Collection from '#models/collection'
 import Factory from '@adonisjs/lucid/factories'
-import { UserFactory } from '#factories/user_factory'
-import { PostFactory } from '#factories/post_factory'
-import { AssetFactory } from '#factories/asset_factory'
-import CollectionTypes from '#enums/collection_types'
 
 export const CollectionFactory = Factory.define(Collection, ({ faker }) => ({
   name: faker.commerce.productName(),

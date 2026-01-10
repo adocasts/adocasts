@@ -1,6 +1,6 @@
 import { SessionLogSchema } from '#database/schema'
 import User from '#models/user'
-import TimeService from '#services/time_service'
+import timeHelpers from '#services/helpers/time'
 import { belongsTo, computed } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import { UAParser } from 'ua-parser-js'
@@ -16,10 +16,10 @@ export default class SessionLog extends SessionLogSchema {
     if (!this.lastTouchedAt && !this.loginAt) return ''
 
     if (!this.lastTouchedAt) {
-      return TimeService.timeago(this.loginAt)
+      return timeHelpers.timeago(this.loginAt)
     }
 
-    return TimeService.timeago(this.lastTouchedAt)
+    return timeHelpers.timeago(this.lastTouchedAt)
   }
 
   @computed()

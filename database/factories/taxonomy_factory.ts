@@ -1,8 +1,8 @@
+import { AssetFactory } from '#database/factories/asset_factory'
+import { CollectionFactory } from '#database/factories/collection_factory'
+import { PostFactory } from '#database/factories/post_factory'
 import Taxonomy from '#models/taxonomy'
 import Factory from '@adonisjs/lucid/factories'
-import { PostFactory } from '#factories/post_factory'
-import { AssetFactory } from '#factories/asset_factory'
-import { CollectionFactory } from '#factories/collection_factory'
 
 export const TaxonomyFactory = Factory.define(Taxonomy, ({ faker }) => ({
   name: faker.word.words({ count: { min: 1, max: 3 } }),

@@ -21,7 +21,7 @@ export default function Signup() {
           </CardDescription>
         </CardHeader>
 
-        <Form route="session.store">
+        <Form route="new_account.store">
           {({ errors }) => (
             <CardPanel className="flex flex-col gap-3">
               <Field>

@@ -1,6 +1,6 @@
-import Factory from '@adonisjs/lucid/factories'
+import { UserFactory } from '#database/factories/user_factory'
 import Profile from '#models/profile'
-import { UserFactory } from '#factories/user_factory'
+import Factory from '@adonisjs/lucid/factories'
 
 export const ProfileFactory = Factory.define(Profile, ({ faker }) => ({
   biography: faker.lorem.paragraph(),

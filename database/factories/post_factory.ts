@@ -1,14 +1,14 @@
-import Post from '#models/post'
-import Factory from '@adonisjs/lucid/factories'
-import States from '#enums/states'
-import { UserFactory } from '#factories/user_factory'
-import { DateTime } from 'luxon'
-import { CommentFactory } from '#factories/comment_factory'
+import { AssetFactory } from '#database/factories/asset_factory'
+import { CommentFactory } from '#database/factories/comment_factory'
+import { UserFactory } from '#database/factories/user_factory'
 import PaywallTypes from '#enums/paywall_types'
+import States from '#enums/states'
 import VideoTypes from '#enums/video_types'
-import { AssetFactory } from '#factories/asset_factory'
+import Post from '#models/post'
+import listHelpers from '#services/helpers/list'
 import string from '@adonisjs/core/helpers/string'
-import { ListService } from '#services/list_service'
+import Factory from '@adonisjs/lucid/factories'
+import { DateTime } from 'luxon'
 
 const youtubeUrls = [
   'https://www.youtube.com/watch?v=Npn-2qweD5k',
@@ -39,7 +39,7 @@ export const PostFactory = Factory.define(Post, ({ faker }) => ({
   .state('timedPaywall', (post) => (post.paywallTypeId = PaywallTypes.DELAYED_RELEASE))
   .state('video', (post, { faker }) => {
     post.videoTypeId = VideoTypes.YOUTUBE
-    post.videoUrl = ListService.getRandom(youtubeUrls)
+    post.videoUrl = listHelpers.getRandom(youtubeUrls)
     post.videoSeconds = faker.number.int({ min: 90, max: 3600 })
   })
   .relation('authors', () => UserFactory)

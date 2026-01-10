@@ -1,4 +1,3 @@
-import LessonRequestBuilder from '#builders/lesson_request_builder'
 import { LessonRequestSchema } from '#database/schema'
 import States, { StateDesc } from '#enums/states'
 import Comment from '#models/comment'
@@ -7,8 +6,6 @@ import { belongsTo, computed, hasMany, manyToMany } from '@adonisjs/lucid/orm'
 import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 
 export default class LessonRequest extends LessonRequestSchema {
-  static build = () => new LessonRequestBuilder()
-
   @belongsTo(() => User)
   declare user: BelongsTo<typeof User>
 
@@ -35,7 +32,7 @@ export default class LessonRequest extends LessonRequestSchema {
       return 'Completed'
     }
 
-    return StateDesc[this.stateId]
+    return StateDesc[this.stateId as States]
   }
 
   @computed()

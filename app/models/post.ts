@@ -22,9 +22,9 @@ import PostChapter from '#models/post_chapter'
 import Progress from '#models/progress'
 import Taxonomy from '#models/taxonomy'
 import Watchlist from '#models/watchlist'
-import ReadService from '#services/read_service'
-import SlugService from '#services/slug_service'
-import TimeService from '#services/time_service'
+import readingHelpers from '#services/helpers/reading'
+import timeHelpers from '#services/helpers/time'
+import SlugService from '#services/core/slug_service'
 import env from '#start/env'
 import router from '@adonisjs/core/services/router'
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
@@ -255,7 +255,7 @@ export default class Post extends PostSchema {
   @computed()
   get watchMinutes() {
     if (!this.videoSeconds) return '0m'
-    return TimeService.secondsToTimestring(this.videoSeconds)
+    return timeHelpers.secondsToTimestring(this.videoSeconds)
   }
 
   @computed()
@@ -325,7 +325,7 @@ export default class Post extends PostSchema {
       post.bodyTypeId = BodyTypes.HTML
     }
 
-    const readTime = ReadService.getReadCounts(post.body)
+    const readTime = readingHelpers.getReadCounts(post.body)
     post.readMinutes = readTime.minutes
     post.readTime = readTime.time
     post.wordCount = readTime.words

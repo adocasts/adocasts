@@ -1,9 +1,9 @@
-import factory from '@adonisjs/lucid/factories'
 import Discussion from '#models/discussion'
 import Taxonomy from '#models/taxonomy'
-import { UserFactory } from './user_factory.js'
+import listHelpers from '#services/helpers/list'
+import factory from '@adonisjs/lucid/factories'
 import { CommentFactory } from './comment_factory.js'
-import { ListService } from '#services/list_service'
+import { UserFactory } from './user_factory.js'
 
 export const DiscussionFactory = factory
   .define(Discussion, async ({ faker }) => {
@@ -11,7 +11,7 @@ export const DiscussionFactory = factory
     return {
       title: faker.lorem.words({ min: 4, max: 10 }),
       body: faker.lorem.paragraphs({ min: 1, max: 6 }),
-      taxonomyId: ListService.getRandom(taxonomies),
+      taxonomyId: listHelpers.getRandom(taxonomies),
     }
   })
   .relation('user', () => UserFactory)

@@ -2,7 +2,7 @@ import { PlanSchema } from '#database/schema'
 import CouponDurations from '#enums/coupon_durations'
 import Plans from '#enums/plans'
 import User from '#models/user'
-import CurrencyService from '#services/currency_service'
+import currencyHelpers from '#services/helpers/currency'
 import Env from '#start/env'
 import { computed, hasMany } from '@adonisjs/lucid/orm'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
@@ -50,7 +50,7 @@ export default class Plan extends PlanSchema {
     let duration = isForeverPlan ? '' : 'while subscribed'
 
     if (this.couponDiscountFixed)
-      amount = `${CurrencyService.format(this.couponDiscountFixed, 'USD')}`
+      amount = `${currencyHelpers.format(this.couponDiscountFixed, 'USD')}`
     if (this.couponDurationId === CouponDurations.ONCE)
       duration = isForeverPlan ? '' : `off your first ${isAnnualPlan ? 'year' : 'month'}`
 
@@ -62,7 +62,7 @@ export default class Plan extends PlanSchema {
     let amount = `${this.couponDiscountPercent}%`
 
     if (this.couponDiscountFixed)
-      amount = `${CurrencyService.format(this.couponDiscountFixed, 'USD')}`
+      amount = `${currencyHelpers.format(this.couponDiscountFixed, 'USD')}`
 
     return amount
   }
@@ -82,11 +82,11 @@ export default class Plan extends PlanSchema {
 
   @computed()
   get displayPrice() {
-    return CurrencyService.format(this.price, 'USD')
+    return currencyHelpers.format(this.price, 'USD')
   }
 
   @computed()
   get displaySalePrice() {
-    return CurrencyService.format(this.salePrice, 'USD')
+    return currencyHelpers.format(this.salePrice, 'USD')
   }
 }

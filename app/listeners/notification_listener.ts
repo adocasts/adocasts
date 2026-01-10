@@ -32,7 +32,7 @@ export default class NotificationListener {
     })
 
     await mail.send((mailer) => {
-      mailer.to(user.email).subject(`[Adocasts] ${notification.title}`).html(html)
+      mailer.to(user.email!).subject(`[Adocasts] ${notification.title}`).html(html)
     })
   }
 }

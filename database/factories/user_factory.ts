@@ -1,12 +1,12 @@
-import Factory from '@adonisjs/lucid/factories'
+import { CollectionFactory } from '#database/factories/collection_factory'
+import { CommentFactory } from '#database/factories/comment_factory'
+import { PostFactory } from '#database/factories/post_factory'
+import { ProfileFactory } from '#database/factories/profile_factory'
 import Plans from '#enums/plans'
 import Roles from '#enums/roles'
-import User from '#models/user'
-import { CommentFactory } from '#factories/comment_factory'
-import { PostFactory } from '#factories/post_factory'
-import { ProfileFactory } from '#factories/profile_factory'
-import { CollectionFactory } from '#factories/collection_factory'
 import StripeSubscriptionStatuses from '#enums/stripe_subscription_statuses'
+import User from '#models/user'
+import Factory from '@adonisjs/lucid/factories'
 import { SessionLogFactory } from './session_log_factory.js'
 
 export const UserFactory = Factory.define(User, ({ faker }) => ({

@@ -1,8 +1,8 @@
+import { PostFactory } from '#database/factories/post_factory'
+import { UserFactory } from '#database/factories/user_factory'
+import States from '#enums/states'
 import Comment from '#models/comment'
 import Factory from '@adonisjs/lucid/factories'
-import { UserFactory } from '#factories/user_factory'
-import { PostFactory } from '#factories/post_factory'
-import States from '#enums/states'
 
 export const CommentFactory = Factory.define(Comment, async ({ faker }) => ({
   body: faker.lorem.paragraph(),

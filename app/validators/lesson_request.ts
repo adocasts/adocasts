@@ -1,6 +1,6 @@
 import LessonRequestSorts from '#enums/lesson_request_sorts'
 import States from '#enums/states'
-import SanitizeService from '#services/sanitize_service'
+import htmlHelpers from '#services/helpers/html'
 import vine from '@vinejs/vine'
 
 export const lessonRequestSearchValidator = vine.create({
@@ -11,7 +11,7 @@ export const lessonRequestSearchValidator = vine.create({
 
 export const lessonRequestStoreValidator = vine.create({
   name: vine.string().minLength(10).maxLength(255),
-  body: vine.string().transform((value) => SanitizeService.sanitize(value)),
+  body: vine.string().transform((value) => htmlHelpers.sanitize(value)),
   nonDuplicate: vine.accepted(),
 })
 
@@ -21,5 +21,5 @@ export const lessonRequestUpdateStateValidator = vine.create({
 
 export const lessonRequestUpdateValidator = vine.create({
   name: vine.string().minLength(10).maxLength(255),
-  body: vine.string().transform((value) => SanitizeService.sanitize(value)),
+  body: vine.string().transform((value) => htmlHelpers.sanitize(value)),
 })
