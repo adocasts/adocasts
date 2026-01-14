@@ -195,7 +195,7 @@ router.post('/api/image/upload', [StoreAsset]).as('assets.img.store').use([middl
 //* Auth
 router.get('/signin', [RenderSignInPage]).as('auth.signin').use(middleware.guest())
 router.get('/signup', [RenderSignUpPage]).as('auth.signup').use(middleware.guest())
-router.post('/signin', [StoreSessionSignIn]).as('auth.signin.store').use(middleware.guest())
+router.post('/signin', [StoreSessionSignIn]).as('auth.signin.store').use([middleware.guest(), middleware.turnstile()])
 router.post('/signup', [StoreSessionSignUp]).as('auth.signup.store').use([middleware.guest(), middleware.turnstile(), throttleSignUp])
 router.delete('/signout', [DestroySession]).as('auth.sessions.destroy')
 
