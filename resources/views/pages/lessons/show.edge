@@ -145,7 +145,7 @@
             In This Lesson
           </div>
           <p class="text-pretty font-medium opacity-60 sm:text-lg mb-8">
-            @if (lesson.description.startsWith('In this lesson,'))
+            @if (lesson.description?.startsWith('In this lesson,'))
               @let([char, ...desc] = lesson.description.replace('In this lesson,', '').trim())
 
               {{ [char?.toUpperCase(), ...desc].join('') }}

@@ -2,7 +2,7 @@ import Alpine from 'alpinejs'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { Player } from 'player.js'
-import { TextTrack } from 'vidstack'
+import { LocalMediaStorage, TextTrack } from 'vidstack'
 import { VidstackPlayer, VidstackPlayerLayout } from 'vidstack/global/player'
 import 'vidstack/player/styles/default/layouts/video.css'
 import 'vidstack/player/styles/default/theme.css'
@@ -13,6 +13,12 @@ let playerInterval = null
 let keepPlayerPostId = null
 let keepPlayer = false
 let nextUpInterval = null
+
+class CustomLocalMediaStorage extends LocalMediaStorage {
+  async setTime(time, ended) {
+    // noop - handling this ourselves, don't want per-video localstorage item
+  }
+}
 
 class VideoPlayer {
   constructor({
@@ -281,6 +287,7 @@ class VideoPlayer {
       layout: new VidstackPlayerLayout({
         thumbnails: `https://vid.adocasts.com/${this.videoId}/thumbnails.vtt`
       }),
+      storage: new CustomLocalMediaStorage(),
       poster: this.element.dataset.poster,
     })
 
