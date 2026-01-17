@@ -19,6 +19,7 @@ declare module '@adonisjs/core/types' {
     'email:reverted': { user: User }
     'email:new_device': { user: User; log: SessionLog }
     'email:email_verification': { user: User }
+    'password:changed': { user: User }
     'notification:send': { notification: Notification; user: User }
     'test': { test: string }
   }
@@ -33,6 +34,7 @@ emitter.on('email:changed', [AccountListener, 'onEmailChanged'])
 emitter.on('email:reverted', [AccountListener, 'onEmailReverted'])
 emitter.on('email:new_device', [AccountListener, 'onNewDevice'])
 emitter.on('email:email_verification', [AccountListener, 'onVerifyEmail'])
+emitter.on('password:changed', [AccountListener, 'onPasswordChanged'])
 emitter.on('notification:send', [NotificationListener, 'onSend'])
 
 // done: migrated to actions

@@ -14,6 +14,13 @@ export const updateEmailValidator = vine.compile(
   })
 )
 
+export const updatePasswordValidator = vine.compile(
+  vine.object({
+    currentPassword: vine.string(),
+    password: vine.string().minLength(8).confirmed(),
+  })
+)
+
 export const emailNotificationValidator = vine.compile(
   vine.object({
     emailOnComment: vine.accepted().optional(),

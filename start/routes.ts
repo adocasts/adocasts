@@ -14,17 +14,17 @@ import app from '@adonisjs/core/services/app'
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 import {
-  throttleComments,
-  throttleCommentsBurst,
-  throttleDiscussions,
-  throttleDiscussionsBurst,
-  throttleGitHubRepoDownload,
-  throttleGitHubTeamInvite,
-  throttleImageUpload,
-  throttleOgImages,
-  throttleSignUp,
-  throttleTestimonials,
-  throttleVerifyEmail,
+    throttleComments,
+    throttleCommentsBurst,
+    throttleDiscussions,
+    throttleDiscussionsBurst,
+    throttleGitHubRepoDownload,
+    throttleGitHubTeamInvite,
+    throttleImageUpload,
+    throttleOgImages,
+    throttleSignUp,
+    throttleTestimonials,
+    throttleVerifyEmail,
 } from './limiter.js'
 const CheckUserPostAccess = () => import('#actions/users/check_user_post_access')
 const DownloadRepoZip = () => import('#actions/general/download_repo_zip')
@@ -117,6 +117,7 @@ const RenderResetPassword = () => import('#actions/auth/password/render_reset_pa
 const ResetPassword = () => import('#actions/auth/password/reset_password')
 const UpdateUsername = () => import('#actions/users/update_username')
 const UpdateEmail = () => import('#actions/users/update_email')
+const UpdatePassword = () => import('#actions/users/update_password')
 const RevertEmail = () => import('#actions/users/revert_email')
 const RenderUserSettings = () => import('#actions/users/render_user_settings')
 const RenderUserProfile = () => import('#actions/users/render_user_profile')
@@ -301,6 +302,7 @@ router.post('/settings/github/invite', [SendGitHubTeamInvite]).as('settings.gith
 router.delete('/settings/github/leave', [RemoveUserFromGitHubTeam]).as('settings.github.leave').use(middleware.auth())
 router.patch('/settings/username', [UpdateUsername]).as('settings.username').use(middleware.auth())
 router.put('/settings/email', [UpdateEmail]).as('settings.email').use(middleware.auth())
+router.put('/settings/password', [UpdatePassword]).as('settings.password').use(middleware.auth())
 router.get('/settings/revert/:id/:oldEmail/:newEmail', [RevertEmail]).as('settings.revert.email')
 router.put('/settings/profile', [UpdateUserProfile]).as('settings.profile').use(middleware.auth())
 router.put('/settings/preferences', [UpdateUserPreferences]).as('settings.preferences').use(middleware.auth())
