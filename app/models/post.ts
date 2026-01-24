@@ -43,6 +43,7 @@ import AuthorDto from '../dtos/author.js'
 import CaptionDto from '../dtos/caption.js'
 import ChapterDto from '../dtos/chapter.js'
 import TopicDto from '../dtos/topic.js'
+import FrameworkVersion from './framework_version.js'
 
 export default class Post extends BaseModel {
   static build = () => PostBuilder.new()
@@ -202,6 +203,12 @@ export default class Post extends BaseModel {
     pivotColumns: ['sort_order'],
   })
   declare taxonomies: ManyToMany<typeof Taxonomy>
+
+  @manyToMany(() => FrameworkVersion, {
+    pivotTable: 'post_framework_versions',
+    pivotTimestamps: true,
+  })
+  declare frameworkVersions: ManyToMany<typeof FrameworkVersion>
 
   @manyToMany(() => Collection, {
     onQuery(query) {

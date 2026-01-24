@@ -27,6 +27,7 @@ import Database from '@adonisjs/lucid/services/db'
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { DateTime } from 'luxon'
+import FrameworkVersion from './framework_version.js'
 
 export default class Collection extends BaseModel {
   static build = () => CollectionBuilder.new()
@@ -154,6 +155,12 @@ export default class Collection extends BaseModel {
     pivotTable: 'collection_taxonomies',
   })
   declare taxonomies: ManyToMany<typeof Taxonomy>
+
+  @manyToMany(() => FrameworkVersion, {
+    pivotTable: 'collection_framework_versions',
+    pivotTimestamps: true,
+  })
+  declare frameworkVersions: ManyToMany<typeof FrameworkVersion>
 
   @hasMany(() => Collection, {
     foreignKey: 'parentId',

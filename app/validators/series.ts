@@ -5,6 +5,7 @@ import vine from '@vinejs/vine'
 export const seriesIndexValidator = vine.compile(
   vine.object({
     sort: vine.enum(Sorts).optional(),
+    frameworkVersions: vine.array(vine.string()).optional(),
     difficulties: vine.array(vine.number().enum(Difficulties)).optional(),
     topics: vine.array(vine.string()).optional(),
   })

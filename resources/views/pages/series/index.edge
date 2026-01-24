@@ -83,6 +83,21 @@
           </div>
         </div> --}}
 
+        @if (frameworkVersions.length)
+          @collapse.filter({ title: 'Version', class: 'collapse-arrow !px-0', open: true })
+            @each (frameworkVersion in frameworkVersions)
+              @!form.checkbox({
+                name: 'frameworkVersions[]',
+                label: frameworkVersion.name,
+                class: 'checkbox checkbox-xs',
+                value: frameworkVersion.slug, 
+                fade: true,
+                checked: filters.frameworkVersions?.includes(frameworkVersion.slug) ? 'checked' : null
+              })
+            @endeach
+          @end
+        @end
+
         @collapse.filter({ title: 'Topic', class: 'collapse-arrow !px-0', open: true })
           @each (topic in topics)
             @!form.checkbox({

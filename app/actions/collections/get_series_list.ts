@@ -1,4 +1,5 @@
 import BaseAction from '#actions/base_action'
+import FrameworkVersionDto from '#dtos/framework_version'
 import SeriesListDto from '#dtos/series_list'
 import CacheNamespaces from '#enums/cache_namespaces'
 import Sorts from '#enums/sorts'
@@ -18,6 +19,7 @@ interface CacheOptions {
   sort?: Validator['sort']
   topics?: Validator['topics']
   difficulties?: Validator['difficulties']
+  frameworkVersions?: Validator['frameworkVersions']
 }
 
 export interface DbOptions {
@@ -29,7 +31,7 @@ export interface DbOptions {
 }
 
 export default class GetSeriesList extends BaseAction {
-  async handle({ topics, difficulties, limit, sort }: CacheOptions = {}) {
+  async handle({ topics, difficulties, frameworkVersions, limit, sort }: CacheOptions = {}) {
     let series = await cache.namespace(CacheNamespaces.COLLECTIONS).getOrSet({
       key: `GET_SERIES_LIST`,
       factory: () => GetSeriesList.fromDb().dto(SeriesListDto),
@@ -41,6 +43,13 @@ export default class GetSeriesList extends BaseAction {
 
     if (Array.isArray(difficulties)) {
       series = series.filter((s) => s.difficultyId && difficulties.includes(s.difficultyId))
+    }
+
+    if (Array.isArray(frameworkVersions)) {
+      series = series.filter(
+        (s) =>
+          s.frameworkVersions && s.frameworkVersions.some((v) => frameworkVersions.includes(v.slug))
+      )
     }
 
     if (limit) {
@@ -56,6 +65,7 @@ export default class GetSeriesList extends BaseAction {
       .whereHasPosts()
       .withPostCount()
       .withTotalMinutes()
+      .withFrameworkVersions((query) => query.selectDto(FrameworkVersionDto))
       .withTaxonomies((query) => query.selectDto(TopicDto))
       .orderLatestUpdated()
       .if(options?.topic, (builder) => builder.whereHasTaxonomy(options!.topic!))

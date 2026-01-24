@@ -17,6 +17,7 @@ export default class GetLessonsPaginated extends BaseAction {
       .displayLesson()
       .search(filters.pattern)
       .whereHasTaxonomy(filters.topics)
+      .whereHasFrameworkVersion(filters.frameworkVersions)
       .orderBySort(filters.sort)
       .paginate(page, perPage)
 

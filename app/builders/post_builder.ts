@@ -140,6 +140,20 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
     return this
   }
 
+  whereHasFrameworkVersion(slug?: string | string[]) {
+    if (Array.isArray(slug)) {
+      this.query.whereHas('frameworkVersions', (query) =>
+        query.whereIn('framework_versions.slug', slug)
+      )
+    } else if (slug) {
+      this.query.whereHas('frameworkVersions', (query) =>
+        query.where('framework_versions.slug', slug)
+      )
+    }
+
+    return this
+  }
+
   whereInWatchlist(userId: number) {
     this.query.whereHas('watchlist', (query) => query.where({ userId }))
     return this

@@ -1,6 +1,7 @@
 import ProgressTypes from '#enums/progress_types'
 import Collection from '#models/collection'
 import AssetDto from './asset.js'
+import FrameworkVersionDto from './framework_version.js'
 import ProgressableDto from './progressable_dto.js'
 import SeriesLessonDto from './series_lesson.js'
 import TopicDto from './topic.js'
@@ -20,6 +21,7 @@ export default class SeriesListDto extends ProgressableDto {
   declare asset: AssetDto | null
   declare topics: TopicDto[]
   declare lessons: SeriesLessonDto[]
+  declare frameworkVersions: FrameworkVersionDto[]
   declare meta: Record<string, any>
 
   constructor(series?: Collection) {
@@ -35,6 +37,7 @@ export default class SeriesListDto extends ProgressableDto {
     this.asset = series.asset
     this.topics = TopicDto.fromArray(series.taxonomies)
     this.lessons = SeriesLessonDto.fromArray(series.postsFlattened)
+    this.frameworkVersions = FrameworkVersionDto.fromArray(series.frameworkVersions)
     this.meta = series.$extras
   }
 }

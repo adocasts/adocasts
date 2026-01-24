@@ -1,4 +1,5 @@
 import BaseAction from '#actions/base_action'
+import GetFrameworkVersionsFilter from '#actions/framework_versions/get_framework_versions_filter'
 import GetTopicsFilter from '#actions/taxonomies/get_topics_filter'
 import { postSearchValidator } from '#validators/post'
 import { HttpContext } from '@adonisjs/core/http'
@@ -10,8 +11,9 @@ export default class RenderLessonsIndex extends BaseAction {
 
   async asController({ view }: HttpContext, filters: Infer<typeof this.validator>) {
     const lessons = await GetLessonsPaginated.run(filters, 'lessons.index')
+    const frameworkVersions = await GetFrameworkVersionsFilter.run('posts')
     const topics = await GetTopicsFilter.run('lessons')
 
-    return view.render('pages/lessons/index', { lessons, topics, filters })
+    return view.render('pages/lessons/index', { lessons, frameworkVersions, topics, filters })
   }
 }

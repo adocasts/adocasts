@@ -17,6 +17,7 @@ export const postSearchValidator = vine.compile(
       .optional(),
     pattern: vine.string().trim().optional(),
     sort: vine.enum(Sorts).optional(),
+    frameworkVersions: vine.array(vine.string()).optional(),
     topics: vine.array(vine.string()).optional(),
   })
 )

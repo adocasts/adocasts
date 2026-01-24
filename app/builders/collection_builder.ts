@@ -4,6 +4,7 @@ import CollectionTypes from '#enums/collection_types'
 import States from '#enums/states'
 import Status from '#enums/status'
 import Collection from '#models/collection'
+import FrameworkVersion from '#models/framework_version'
 import Post from '#models/post'
 import Taxonomy from '#models/taxonomy'
 import is from '@adonisjs/core/helpers/is'
@@ -125,6 +126,17 @@ export default class CollectionBuilder extends BaseBuilder<typeof Collection, Co
 
   withAsset() {
     this.query.preload('asset')
+    return this
+  }
+
+  withFrameworkVersions(
+    versionQuery?: (
+      query: ManyToManyQueryBuilderContract<typeof FrameworkVersion, any>
+    ) => ManyToManyQueryBuilderContract<typeof FrameworkVersion, any>
+  ) {
+    this.query.preload('frameworkVersions', (query) =>
+      query.if(typeof versionQuery === 'function', (q) => versionQuery!(q))
+    )
     return this
   }
 
