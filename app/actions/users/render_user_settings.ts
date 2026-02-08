@@ -1,14 +1,21 @@
 import GetPaginatedSessions from '#actions/auth/get_paginated_sessions'
 import BaseAction from '#actions/base_action'
+import NotFoundException from '#exceptions/not_found_exception'
 import stripe from '#services/stripe_service'
 import { HttpContext } from '@adonisjs/core/http'
 import PopulateGitHubUsernameFromId from './populate_github_username_from_id.js'
 import SyncUserGitHubTeamMembership from './sync_user_github_team_membership.js'
 
+const sections = ['account', 'billing', 'profile', 'preferences', 'notifications']
+
 export default class RenderUserSettings extends BaseAction {
   async asController({ view, request, params, auth }: HttpContext) {
     const section = params.section ?? 'account'
     const user = auth.user!
+
+    if (!sections.includes(section)) {
+      throw new NotFoundException(`Unknown settings section: ${section}`)
+    }
 
     if (section === 'account') {
       const sessions = await GetPaginatedSessions.run(user, request.sessionToken)
