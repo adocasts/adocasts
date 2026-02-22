@@ -44,7 +44,7 @@
     @stack('dumper')
 
     @if (env('TURNSTILE_ENABLED'))
-      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
     @endif
   </head>
   <body class="max-w-[120rem] mx-auto flex flex-col" {{ html.attrs({ style: $props.style }) }} data-show-transcript="{{ showTranscript }}">
