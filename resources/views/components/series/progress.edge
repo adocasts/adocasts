@@ -21,7 +21,7 @@
         <div>
           <div class="font-bold">
             @let(percent = (progression.percent ?? 0) / 100)
-            {{ Number.isNaN(percent) ? '0' : percent.toLocaleString([], { style: 'percent' }) }} Completed
+            {{ Number.isNaN(percent) ? '0%' : percent.toLocaleString([], { style: 'percent' }) }} Completed
           </div>
           <div class="opacity-60">
             @if (!progression.watchSeconds && !progression.percent)
