@@ -20,7 +20,8 @@
       <div class="flex items-center justify-between gap-3">
         <div>
           <div class="font-bold">
-            {{ ((progression.percent ?? 0) / 100).toLocaleString([], { style: 'percent' }) }} Completed
+            @let(percent = (progression.percent ?? 0) / 100)
+            {{ Number.isNaN(percent) ? '0' : percent.toLocaleString([], { style: 'percent' }) }} Completed
           </div>
           <div class="opacity-60">
             @if (!progression.watchSeconds && !progression.percent)

@@ -122,7 +122,7 @@
           @endif
         </div>
 
-        @if (series.statusId === Status.IN_PROGRESS)
+        @if ([Status.IN_PROGRESS, Status.COMING_SOON].includes(series.statusId))
           <div class="border border-base-100 border-dashed bg-base-200/50 py-4 px-4 sm:px-12 rounded-base flex sm:items-center gap-6">
             <div class="pt-3 sm:pt-0">
               <img class="w-32" src="/imgs/robot/slice6.svg" alt="excited robot" />
