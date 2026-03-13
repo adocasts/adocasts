@@ -3,6 +3,7 @@ import { ExceptionHandler, HttpContext } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
 import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
 import { errors as limiterErrors } from '@adonisjs/limiter'
+import { errors as lucidErrors } from '@adonisjs/lucid'
 import { errors as shieldErrors } from '@adonisjs/shield'
 import { errors as vineErrors } from '@vinejs/vine'
 
@@ -77,6 +78,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
     // }
 
     if (
+      error instanceof lucidErrors.E_ROW_NOT_FOUND ||
       error instanceof coreErrors.E_ROUTE_NOT_FOUND ||
       error instanceof shieldErrors.E_BAD_CSRF_TOKEN ||
       error instanceof vineErrors.E_VALIDATION_ERROR ||
