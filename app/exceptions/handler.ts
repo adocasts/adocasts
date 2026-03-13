@@ -8,6 +8,7 @@ import { errors as shieldErrors } from '@adonisjs/shield'
 import { errors as vineErrors } from '@vinejs/vine'
 
 import logger from '#services/logger_service'
+import NotFoundException from './not_found_exception.js'
 
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
@@ -78,6 +79,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
     // }
 
     if (
+      error instanceof NotFoundException ||
       error instanceof lucidErrors.E_ROW_NOT_FOUND ||
       error instanceof coreErrors.E_ROUTE_NOT_FOUND ||
       error instanceof shieldErrors.E_BAD_CSRF_TOKEN ||
