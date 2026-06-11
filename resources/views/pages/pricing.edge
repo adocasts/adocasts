@@ -7,6 +7,32 @@
     index: true
   }
 })
+@if (!isPlusEnabled)
+  <div class="w-full">
+    <div class="-mt-16 pt-28 relative">
+      <section class="section-y mx-auto">
+        <div class="max-w-2xl px-6 mx-auto relative z-10 text-center">
+          <img class="w-20 mx-auto mb-6 animation-float" src="/imgs/robot/slice1.svg" alt="robot mascot smiling" />
+          <h1 class="heading-2 mb-4">Adocasts Plus has been retired</h1>
+          <p class="text-lg/8 text-base-content/70 mb-8">
+            Adocasts Plus is no longer available for new subscriptions — and the best part is
+            <strong>all of our content is now free for everyone</strong>. Dive in and start learning!
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-4">
+            <a href="{{ route('series.index') }}" class="btn btn-primary btn-outline">Browse Series</a>
+            <a href="{{ route('lessons.index') }}" class="btn btn-outline">Browse Lessons</a>
+          </div>
+          @if (auth.user && !auth.user.isFreeTier)
+            <p class="text-sm text-base-content/60 mt-8">
+              Already a member? You can manage your existing subscription from your
+              <a class="link" href="{{ route('settings', { section: 'billing' }) }}">billing settings</a>.
+            </p>
+          @endif
+        </div>
+      </section>
+    </div>
+  </div>
+@else
   <div class="w-full">
     <div class="-mt-16 pt-28 relative">
       <div class="absolute inset-x-0 bottom-0 top-0 bg-radial-[at_50%_-50%] from-primary/35 to-primary/0 dark:from-secondary/50 dark:to-secondary/0 z-1">
@@ -255,4 +281,5 @@
       </dl>
     </section>
   </div>
+@endif
 @end

@@ -1,6 +1,6 @@
 import BaseAction from '#actions/base_action'
 import User from '#models/user'
-import stripe from '#services/stripe_service'
+import stripe, { StripeService } from '#services/stripe_service'
 import { signUpValidator } from '#validators/auth'
 import { HttpContext } from '@adonisjs/core/http'
 import { Infer } from '@vinejs/vine/types'
@@ -60,7 +60,7 @@ export default class StoreSessionSignUp extends BaseAction {
   }
 
   async #checkForPlan(user: User, options: Validator['options'] = {}) {
-    if (!options.plan) return { bail: false, status: '', message: '' }
+    if (!options.plan || !StripeService.isActive) return { bail: false, status: '', message: '' }
 
     const { status, message, checkout } = await stripe.tryCreateCheckoutSession(user, options.plan)
 

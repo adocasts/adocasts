@@ -64,6 +64,9 @@ edge.global('Post', Post)
 // utilities
 edge.global('_', _)
 edge.global('env', (key: string) => env.get(key))
+// master switch for the Adocasts Plus / Stripe sunset — when false, content is open,
+// perks are ungated, and all subscribe CTAs/marketing are hidden (see STRIPE_ENABLED)
+edge.global('isPlusEnabled', Boolean(env.get('STRIPE_ENABLED') ?? true))
 edge.global('string', stringHelpers)
 edge.global('DateTime', DateTime)
 edge.global('TimeService', TimeService)

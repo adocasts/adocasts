@@ -1,7 +1,7 @@
 @let(plusMonthly = $props.plusMonthly || await PlanService.get(Plans.PLUS_MONTHLY))
 @let(cta = plusMonthly.hasActiveSale ? `On Sale Now for ${plusMonthly.displaySalePrice}/mo` : `Join for ${plusMonthly.displayPrice}/mo`)
 
-@if (env('STRIPE_ENABLED'))
+@if (isPlusEnabled)
   @if (auth.user)
     @!plus.monthlyForm({ cta, plusMonthly })
   @else
@@ -12,8 +12,4 @@
       Sign in
     </a>
   @endif
-@else
-  <div class="border border-transparent bg-slate-100/50 text-slate-600 shadow-sm px-4 py-2 rounded-md text-sm font-medium">
-    Adocasts Plus is coming soon
-  </div>
 @endif

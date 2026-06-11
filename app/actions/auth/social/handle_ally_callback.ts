@@ -1,6 +1,6 @@
 import BaseAction from '#actions/base_action'
 import Profile from '#models/profile'
-import stripe from '#services/stripe_service'
+import stripe, { StripeService } from '#services/stripe_service'
 import { HttpContext } from '@adonisjs/core/http'
 import GetAllyUser from './get_ally_user.js'
 import OnSignInSucceeded from '../on_signin_succeeded.js'
@@ -31,7 +31,7 @@ export default class HandleAllyCallback extends BaseAction {
       return response.redirect().toRoute('settings', { section: 'account' })
     }
 
-    if (session.has('plan')) {
+    if (session.has('plan') && StripeService.isActive) {
       const { status, message, checkout } = await stripe.tryCreateCheckoutSession(
         user!,
         session.get('plan')

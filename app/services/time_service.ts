@@ -2,6 +2,7 @@ import LessonShowDto from '#dtos/lesson_show'
 import PaywallTypes from '#enums/paywall_types'
 import States from '#enums/states'
 import Post from '#models/post'
+import env from '#start/env'
 import { DateTime } from 'luxon'
 
 export default class TimeService {
@@ -101,6 +102,7 @@ export default class TimeService {
   }
 
   static getIsPaywalled(post: Post | LessonShowDto) {
+    if (!(env.get('STRIPE_ENABLED') ?? true)) return false // Plus sunset: nothing is paywalled
     if (post.paywallTypeId === PaywallTypes.NONE) return false
     if (post.paywallTypeId === PaywallTypes.FULL) return true
     if (!post.publishAt) return false

@@ -28,9 +28,8 @@
       @!menu.link({ text: 'Preferences', href: route('settings', { section: 'preferences' }), 'up-layer': 'root' })
       @!menu.link({ text: 'Notifications', href: route('settings', { section: 'notifications' }), 'up-layer': 'root' })
 
-      @if (env('STRIPE_ENABLED'))
-        @!menu.link({ text: 'Billing', href: route('settings', { section: 'billing' }), 'up-layer': 'root' })
-      @endif
+      {{-- Billing stays available after the Plus sunset so existing subscribers can manage/cancel --}}
+      @!menu.link({ text: 'Billing', href: route('settings', { section: 'billing' }), 'up-layer': 'root' })
 
       <p class="font-semibold text-2xs uppercase tracking-wider text-slate-400 mt-8 mb-2">Testimonials</p>
       

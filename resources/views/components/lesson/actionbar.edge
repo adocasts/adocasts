@@ -11,13 +11,13 @@
 
   @!frags.lesson.bookmarkToggle({ lesson })
 
-  @if (lesson.repositoryUrl || ((lesson.videoBunnyId || lesson.videoR2Id) && auth.user && !auth.user.isFreeTier))
+  @if (lesson.repositoryUrl || ((lesson.videoBunnyId || lesson.videoR2Id) && auth.user && (!isPlusEnabled || !auth.user.isFreeTier)))
     <div class="h-5 w-px bg-base-100 mx-3"></div>
   @endif
 
   @!lesson.repositoryLink({ lesson })
 
-  @if (lesson.repositoryUrl && auth.user && !auth.user.isFreeTier)
+  @if (lesson.repositoryUrl && auth.user && (!isPlusEnabled || !auth.user.isFreeTier))
     <div x-data="repoDownload({{ js.stringify({ repositoryUrl: lesson.repositoryUrl }) }})">
       @tooltip({ class: 'tooltip-bottom' })
         @slot('content')

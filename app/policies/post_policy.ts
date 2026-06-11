@@ -5,6 +5,7 @@ import States from '#enums/states'
 import Post from '#models/post'
 import User from '#models/user'
 import BasePolicy from '#policies/base_policy'
+import { StripeService } from '#services/stripe_service'
 import TimeService from '#services/time_service'
 import { action } from '@adonisjs/bouncer'
 import type { AuthorizerResponse } from '@adonisjs/bouncer/types'
@@ -13,6 +14,7 @@ import { DateTime } from 'luxon'
 export default class PostPolicy extends BasePolicy {
   @action({ allowGuest: true })
   view(user: User, post: Post | LessonShowDto): AuthorizerResponse {
+    if (!StripeService.isActive) return true // Plus sunset: all content is open
     if (user && !user.isFreeTier) return true
     if (post.paywallTypeId === PaywallTypes.NONE) return true
     if (post.paywallTypeId === PaywallTypes.FULL) return false
@@ -36,6 +38,8 @@ export default class PostPolicy extends BasePolicy {
     }
 
     if (!user) return false
+
+    if (!StripeService.isActive) return true // Plus sunset: open to any authenticated user
 
     return !user.isFreeTier
   }

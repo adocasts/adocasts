@@ -1,7 +1,7 @@
 import BaseAction from '#actions/base_action'
 import AuthAttempt from '#models/auth_attempt'
 import User from '#models/user'
-import stripe from '#services/stripe_service'
+import stripe, { StripeService } from '#services/stripe_service'
 import { signInValidator } from '#validators/auth'
 import { errors } from '@adonisjs/auth'
 import { HttpContext } from '@adonisjs/core/http'
@@ -82,7 +82,7 @@ export default class StoreSessionSignIn extends BaseAction {
   }
 
   async #checkForPlan(user: User, options: Validator['options'] = {}) {
-    if (!options.plan) return { bail: false, status: '', message: '' }
+    if (!options.plan || !StripeService.isActive) return { bail: false, status: '', message: '' }
 
     if (!user.isFreeTier) {
       return {

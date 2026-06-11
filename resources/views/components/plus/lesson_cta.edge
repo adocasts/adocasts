@@ -1,3 +1,4 @@
+@if (isPlusEnabled)
 @let(plusMonthly = $props.plusMonthly || await PlanService.get(Plans.PLUS_MONTHLY))
 @let(isDelayedRelease = lesson.paywallTypeId === PaywallTypes.DELAYED_RELEASE)
 @let(size = $props.size ?? 'base')
@@ -64,4 +65,5 @@
       </div>
     @endif
   </div>
+@endif
 @endif

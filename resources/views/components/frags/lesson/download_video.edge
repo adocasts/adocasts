@@ -1,4 +1,4 @@
-@if (lesson.hasVideo && lesson.videoBunnyId && auth.user && !auth.user.isFreeTier)
+@if (lesson.hasVideo && lesson.videoBunnyId && auth.user && (!isPlusEnabled || !auth.user.isFreeTier))
   @let(bunnyUrl = `${env('VIDEO_DOMAIN')}/${lesson.videoBunnyId}/original`)
   @let(bunnyFilename = [lesson.series?.name, lesson.series?.lessonIndexDisplay, lesson.title].filter(Boolean).join(' - '))
   <div x-data="videoDownload({{ js.stringify({ url: bunnyUrl, filename: bunnyFilename }) }})">
@@ -22,7 +22,7 @@
       </button>
     @end
   </div>
-@elseif (lesson.hasVideo && lesson.videoR2Id && auth.user && !auth.user.isFreeTier)
+@elseif (lesson.hasVideo && lesson.videoR2Id && auth.user && (!isPlusEnabled || !auth.user.isFreeTier))
   @let(r2Url = `https://vid.adocasts.com/${lesson.videoR2Id}/video.mp4`)
   @let(r2Filename = [lesson.series?.name, lesson.series?.lessonIndexDisplay, lesson.title].filter(Boolean).join(' - '))
   @let(r2Authorization = hls.getSignature(auth.user, lesson))

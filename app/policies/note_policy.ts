@@ -1,5 +1,6 @@
 import Note from '#models/note'
 import User from '#models/user'
+import { StripeService } from '#services/stripe_service'
 import { BasePolicy } from '@adonisjs/bouncer'
 import type { AuthorizerResponse } from '@adonisjs/bouncer/types'
 import db from '@adonisjs/lucid/services/db'
@@ -10,6 +11,11 @@ export default class NotePolicy extends BasePolicy {
   }
 
   async store(user: User): Promise<AuthorizerResponse> {
+    // Plus sunset: note limit lifted for any authenticated user (route stays auth-gated)
+    if (user && !StripeService.isActive) {
+      return true
+    }
+
     if (!user.isFreeTier) {
       return true
     }
