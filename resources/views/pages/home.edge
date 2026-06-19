@@ -36,6 +36,20 @@
         </div>
       @endif
 
+      <div class="container relative z-[39] pt-6 -mb-6">
+          <div class="flex items-center gap-x-6 px-4 py-1.5 rounded-base relative z-10 page bg-black/30 bg-gradient-to-b from-base-100/50 to-base-100/20 backdrop-blur-lg border border-base-100 shadow-lg">
+            <div class="flex items-center leading-none gap-x-3">
+              @svg('solar:info-square-outline')
+              <span class="text-sm">Adocasts Plus is being sunset</span>
+            </div>
+            <div class="flex flex-1 justify-end">
+              <a href="https://adocasts.com/news/saying-goodbye-to-adocasts-plus" up-follow class="btn btn-primary btn-outline btn-sm">
+                Read More
+              </a>
+            </div>
+          </div>
+        </div>
+
       @let(lessonImages = lessons.map((lesson) => lesson.thumbnail).filter(Boolean))
 
       <div class="hero-lesson-grid absolute top-0 left-0 max-h-full overflow-hidden grayscale-100 dark:grayscale-0 opacity-30 dark:opacity-100">
