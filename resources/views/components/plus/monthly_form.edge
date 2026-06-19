@@ -1,4 +1,4 @@
-@if (isPlusEnabled)
+@if (isPlusEnabled && isPlusCtaEnabled)
   @let(plusMonthly = $props.plusMonthly || await PlanService.get(Plans.PLUS_MONTHLY))
   @let(block = $props.block || false)
 

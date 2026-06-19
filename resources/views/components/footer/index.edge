@@ -15,7 +15,7 @@
       <a href="{{ route('contact') }}" class="link link-hover">Contact</a>
       <a href="{{ route('uses') }}" class="link link-hover">Uses</a>
     </nav>
-    @if (isPlusEnabled)
+    @if (isPlusEnabled && isPlusCtaEnabled)
       <nav class="w-1/2 sm:w-1/4 md:w-full max-sm:pr-4">
         <h6 class="footer-title">Adocasts Plus</h6>
         <a href="{{ route('pricing') }}" class="link link-hover">Pricing</a>

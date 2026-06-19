@@ -1,7 +1,7 @@
 @let(plusMonthly = $props.plusMonthly || await PlanService.get(Plans.PLUS_MONTHLY))
 @let(cta = plusMonthly.hasActiveSale ? `On Sale Now for ${plusMonthly.displaySalePrice}/mo` : `Join for ${plusMonthly.displayPrice}/mo`)
 
-@if (isPlusEnabled)
+@if (isPlusEnabled && isPlusCtaEnabled)
   @if (auth.user)
     @!plus.monthlyForm({ cta, plusMonthly })
   @else

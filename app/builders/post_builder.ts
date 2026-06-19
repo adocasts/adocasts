@@ -53,7 +53,7 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
 
   displayBlogShow(options?: DisplayOptions) {
     this.whereBlog()
-    this.if(!options?.skipPublishCheck, (builder) => builder.published())
+    this.if(!options?.skipPublishCheck, (builder) => builder.publishedOrUnlisted())
     this.orderPublished().query.apply((scope) => scope.forBlogDisplayShow())
     return this
   }
@@ -67,13 +67,20 @@ export default class PostBuilder extends BaseBuilder<typeof Post, Post> {
 
   displaySnippetShow(options?: DisplayOptions) {
     this.whereType(PostTypes.SNIPPET)
-    this.if(!options?.skipPublishCheck, (builder) => builder.published())
+    this.if(!options?.skipPublishCheck, (builder) => builder.publishedOrUnlisted())
     this.orderPublished().query.apply((scope) => scope.forBlogDisplayShow())
     return this
   }
 
   published() {
     this.query.apply((scope) => scope.published())
+    return this
+  }
+
+  publishedOrUnlisted() {
+    this.query.where((q) => {
+      q.apply((scope) => scope.published()).orWhere('stateId', States.UNLISTED)
+    })
     return this
   }
 
