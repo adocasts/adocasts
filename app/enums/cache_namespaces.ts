@@ -4,7 +4,6 @@ const enum CacheNamespaces {
   TAXONOMIES = 'TAXONOMIES',
   PLANS = 'PLANS',
   FEED = 'FEED',
-  SCHEDULE = 'SCHEDULE',
   SYNDICATION = 'SYNDICATION',
 }
 

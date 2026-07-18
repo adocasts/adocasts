@@ -91,7 +91,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 
     const url = ctx.request.url(true)
     const userAgent = ctx.request.header('User-Agent')
-    const alertIgnorePaths = ['/assets/', '/schedule/']
+    const alertIgnorePaths = ['/assets/']
     const alertIgnoreAgents = ['crawler', 'bot']
     const ignorePath = alertIgnorePaths.some((path) => url.startsWith(path))
     const ignoreAgent = alertIgnoreAgents.some((agent) => userAgent?.includes(agent))

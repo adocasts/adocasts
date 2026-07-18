@@ -128,7 +128,6 @@ const ToggleDiscussionSolvedAt = () => import('#actions/discussions/toggle_discu
 const DestroyDiscussion = () => import('#actions/discussions/destroy_discussion')
 const UpdateDiscussion = () => import('#actions/discussions/update_discussion')
 const RenderDiscussionsEdit = () => import('#actions/discussions/render_discussions_edit')
-const RenderSchedule = () => import('#actions/general/render_schedule')
 
 /* eslint-disable */
 
@@ -160,7 +159,6 @@ if (app.inDev) {
 
 //* General
 router.get('/', [RenderHome]).as('home')
-router.get('/schedule/:year?/:month?', [RenderSchedule]).as('schedules.index').where('year', router.matchers.number()).where('month', router.matchers.number())
 router.get('/pricing', [RenderPricing]).as('pricing')
 router.get('/search/:feed?', [RenderSearch]).as('search')
 router.get('/og-image/:entity?/:slug?', [RenderOgImage]).as('og.img').use(throttleOgImages)

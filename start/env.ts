@@ -119,14 +119,6 @@ export default await Env.create(new URL('../', import.meta.url), {
 
   /*
   |----------------------------------------------------------
-  | Variables for external APIs
-  |----------------------------------------------------------
-  */
-  PLOTMYCOURSE_API_URL: Env.schema.string(),
-  PLOTMYCOURSE_API_KEY: Env.schema.string.optional(),
-
-  /*
-  |----------------------------------------------------------
   | Variables for image/video hosting
   |----------------------------------------------------------
   */
